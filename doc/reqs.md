@@ -24,6 +24,8 @@
 * FR-15: Dev shall be able to apply a baseline style (a “css reset”) to a whole page.
 * FR-16: Solution shall provide one or more “css resets” that devs can override to customise, then apply to their whole page. **[pri=low]**
 * FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
+* FR-18: When looking at a style definition, Dev shall be able to passively understand if any attributes are being overridden.
+* FR-19: When looking at a style definition, Dev shall be able to passively understand which attributes are being overridden. **[pri=low]**
 
 #### Preferences
 * PR-01: It would be better not to push psuedo-selector logic upon devs and have them write code for what the browser already does.
