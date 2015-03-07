@@ -1,6 +1,14 @@
-* Styles are vals/traits/classes/object/defs.
+# TODO
+
+These are just stray thoughts that I jotted down while reading through initial
+discussions, before determining the requirements.
+
+Not really solution ideas yet.
+
+* Styles can be vals/defs.
+* Styles can be traits/classes/objects.
 * Style is applied by reference at tag.
-* Style can be a function with tag as arg.
+* Style can be a function with tag as arg. NO. UNSAFE.
 * Style can be a value like `<.div(myStyle, “Cool”)`
 * scalajs-react can be modified to pass the element to the style. (ie. applied like a value but is a fn that take the element)
 * scalajs-react can be modified to allow traversal of the element's children so styles can apply sub-styles (at runtime).
