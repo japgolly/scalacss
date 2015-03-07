@@ -26,11 +26,13 @@
 * FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
 * FR-18: When looking at a style definition, Dev shall be able to passively understand if any attributes are being overridden.
 * FR-19: When looking at a style definition, Dev shall be able to passively understand which attributes are being overridden. **[pri=low]**
+* FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
 
 #### Preferences
 * PR-01: It would be better not to push psuedo-selector logic upon devs and have them write code for what the browser already does.
 * PR-02: It would be nice to edit a logical style in the browser directly. If styles are inline then one can only modify a single tag's style at a time.
 * PR-03: Solution should not require scalajs-react. scalajs-react should depend on Solution with provide a small bridge.
+* PR-04: When generating CSS, if the target platform is known, Solution should omit unapplicable platform-specific CSS (FR-20).
 
 #### Quality Requirements
 * QR-01: A page of 1000 DOM elements with 400 different styles, 20% of elements having 3 styles, 10% having 5, should render in ≤ 2 sec.
