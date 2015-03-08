@@ -3,21 +3,23 @@ import shapeless._
 
 object Test {
 
+  // --------------------------------------------------------------------------
+  // Basics
+
   trait Condition
   case object Default extends Condition
   case class Psuedo(sel: String) extends Condition // like :hover
   // media query etc
 
+  // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
   case class Key(cssName: String)
   type Value = String
   type KVs   = NonEmptyList[(Key, Value)]
   type Style = Map[Condition, KVs]
 
 
-
-
-
-
+  // --------------------------------------------------------------------------
+  // Style => StyleSheet (CSS)
 
   trait ApplicableStyle {
     def className: String
@@ -65,6 +67,7 @@ object Test {
 
 }
 
+// =====================================================================================================================
 object Example {
   import Test._
 
@@ -103,17 +106,18 @@ object Example {
 
 // TODO
 // ====
+// * Allow styles to declare preferred classNames.
+//
+//#### Definition
+// FR-02: Dev shall be able to define a style that depends on required input. (ie. a function)
+// FR-04: Dev shall be able to define a style that depends on the current plaform (eg. IE 8, mobile)
+// FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
+// FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
+// FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
+
+//#### Composition
 // FR-05: Dev shall be able to compose styles to form a new style.
 // FR-06: Dev shall be able to define a style that extends an existing style.
-// FR-07: Dev shall be able to define custom CSS attributes.
-// FR-08: Scalac shall prevent compilation without proof that a referenced style exists.
-// FR-09: Scalac shall prevent compilation without proof that attributes used in a style are either part of the CSS spec or custom as per FR-7.
-
-// FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
-// FR-02: Dev shall be able to define a style that depends on required input. (ie. a function)
-// FR-03: Dev shall be able to define a style that depends on browser/page state (eg. `:hover`, `:visited`)
-// FR-04: Dev shall be able to define a style that depends on the current plaform (eg. IE 8, mobile)
-
 // FR-10: Dev shall be able to specify a composition strategy when merging styles.
 // FR-11: Solution shall provide a composition stategy that prevents composition.
 // FR-12: Solution shall provide a composition stategy that overrides (i.e. discards one side and chooses the other).
@@ -122,8 +126,3 @@ object Example {
 // FR-18: When looking at a style definition, Dev shall be able to passively understand if any attributes are being overridden.
 // FR-19: When looking at a style definition, Dev shall be able to passively understand which attributes are being overridden. **[pri=low]**
 
-// FR-15: Dev shall be able to apply a baseline style (a “css reset”) to a whole page.
-// FR-16: Solution shall provide one or more “css resets” that devs can override to customise, then apply to their whole page. **[pri=low]**
-// FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
-
-// FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
