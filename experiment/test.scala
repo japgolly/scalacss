@@ -10,7 +10,7 @@ object Test {
   trait Condition
   case object Default extends Condition
   case class Psuedo(sel: String) extends Condition // like :hover
-  // media query etc
+  // TODO psuedo selectors form a finite set. Should hardcode and give the same type safety as css attr keys.
 
   // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
   case class Key(cssName: String)
@@ -82,6 +82,29 @@ object Test {
     def over(d: Domain[I]): StyleFnT[I] = StyleFnT(f, d)
   }
 
+  // --------------------------------------------------------------------------
+  // FR-04: Dev shall be able to define a style that depends on the current plaform (eg. IE 8, mobile)
+
+  case class MediaQuery(q: String) extends Condition // like @media (max-width: 600px)
+  // Later, this can be turned into an AST and run to omit unnecessary CSS.
+  // Not now.
+
+  // This will only be available on the JS side.
+  // In fact, a separate library which is just a scalajs facade would be better.
+  // If scalacss needs it, it can depend on it.
+  object Platform {
+    val name: String = "IE"
+    val version: String = "10.0"
+    // ...
+    // https://github.com/bestiejs/platform.js
+  }
+
+  // TODO Inspecting in JS at runtime is one thing but it doesn't fully satisfy FR-04.
+  // To have a style definition include a platform condition such that we can generate static output outside of JS:
+  //   1. Generate CSS with conds like .ie8.ie9.x123 and gen some JS to apply one at runtime?
+  //   2. Rescope this req to only work at JS runtime.
+  // Note: Neither SASS or LESS have a solution. People just generate multiple CSS files and use shitty IE cond
+  // comments to load the additional styles.
 
 }
 
@@ -155,7 +178,6 @@ object Example {
 // * Allow styles to declare preferred classNames.
 //
 //#### Definition
-// FR-04: Dev shall be able to define a style that depends on the current plaform (eg. IE 8, mobile)
 // FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
 // FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
 // FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
