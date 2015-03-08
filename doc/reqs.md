@@ -15,6 +15,7 @@
 * FR-07: Dev shall be able to define custom CSS attributes.
 * FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
 * FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
+* FR-21: Dev shall be able to create a group of styles that can be included into an external project's styles in Ω(1) LoC.
 
 ##### Composition
 * FR-05: Dev shall be able to compose styles to form a new style.
