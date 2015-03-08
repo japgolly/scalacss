@@ -1,5 +1,6 @@
 import scalaz._
 import shapeless._
+import japgolly.nyaya.test.Domain
 
 object Test {
 
@@ -15,8 +16,9 @@ object Test {
   case class Key(cssName: String)
   type Value = String
   type KVs   = NonEmptyList[(Key, Value)]
-  type Style = Map[Condition, KVs]
 
+  trait Style
+  case class StaticStyle(value: Map[Condition, KVs]) extends Style
 
   // --------------------------------------------------------------------------
   // Style => StyleSheet (CSS)
@@ -50,10 +52,17 @@ object Test {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
     private def inc(): Int = { val j = _i; _i = j + 1; j }
-    def register(s: Style)(implicit g: StyleSheetGen): ApplicableStyle = {
+    def register(s: StaticStyle)(implicit g: StyleSheetGen): ApplicableStyle = {
       val a = g.aps(s, g name inc())
       _styles = a :: _styles
       a
+    }
+    def register[I](s: StyleFnT[I])(implicit g: StyleSheetGen): I => ApplicableStyle = {
+      // equals/hashCode could fuck people here
+      val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
+        q.updated(i, register(s.f(i))))
+      // Add custom warning for failure
+      m.apply
     }
     def styles: List[ApplicableStyle] = _styles
     def css: String = ??? // use styles, blah blah blah
@@ -65,28 +74,60 @@ object Test {
   // but can change all creations in scope from Style => ApplicableStyle and vica-versa via a single line change (ie.
   // to the ctx with the ops on it.)
 
+  // --------------------------------------------------------------------------
+  // FR-02: I ⇒ Style
+
+  case class StyleFnT[I](f: I => StaticStyle, d: Domain[I]) extends Style
+  case class StyleFnP[I](f: I => StaticStyle) { // Doesn't really need own class. Just (I => Style) => Domain => StyleFnT
+    def over(d: Domain[I]): StyleFnT[I] = StyleFnT(f, d)
+  }
+
+
 }
 
 // =====================================================================================================================
 object Example {
   import Test._
 
-  val backgroundColor = Key("backgroundColor")
-  val fontWeight      = Key("fontWeight")
+  val backgroundColor = Key("background-color")
+  val fontWeight      = Key("font-weight")
   val resize          = Key("resize")
   val outline         = Key("outline")
+  val paddingLeft     = Key("padding-left")
 
   implicit class KeyExt(val k: Key) extends AnyVal {
     def :=(v: Value) = (k,v)
   }
 
-  val style1: Style = Map(Default -> NonEmptyList(backgroundColor := "green", fontWeight := "bold"))
-  val style2: Style = Map(Default -> NonEmptyList(resize := "none", outline := "none"))
+  // Better to have unit classes like PX, EM, EX, then use implicits like 1.as[PX] or something
+  // Can still keep this nicer syntax tho (although then it's 2 ways of doing same thing)
+  implicit class IntExt(val i: Int) extends AnyVal {
+    def px = s"$i.px"
+    def em = s"$i.em"
+    def ex = s"$i.ex"
+  }
+
+  def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle =
+    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)))
+
+  // Styles definitions
+
+  val style1 = quickStyle(backgroundColor := "green", fontWeight := "bold")
+  val style2 = quickStyle(resize := "none", outline := "none")
+
+  val boolStyle = StyleFnT[Boolean](b => quickStyle(backgroundColor := (if (b) "none" else "#ddd")), Domain.boolean)
+  val intStyle  = StyleFnP[Int]    (i => quickStyle(paddingLeft     := (i*4).ex))
 
   class Module1(implicit sss: SSS1) {
-    val style1: ApplicableStyle = sss register Map(Default -> NonEmptyList(backgroundColor := "red"))
-    val style2: ApplicableStyle = sss register Map(Default -> NonEmptyList(resize := "none"))
+    val style1: ApplicableStyle = sss register quickStyle(backgroundColor := "red")
+    val style2: ApplicableStyle = sss register quickStyle(resize := "none")
   }
+  class Module2(maxWhatevers: Int)(implicit sss: SSS1) {
+    val styleFn_b: Boolean => ApplicableStyle = sss register boolStyle
+    val styleFn_i: Int     => ApplicableStyle = sss register intStyle.over(Domain.ofRange(0 to maxWhatevers))
+  }
+
+  // CSS gen
 
   implicit val g: StyleSheetGen = ???
   object SS3 {
@@ -94,13 +135,18 @@ object Example {
   }
   object SS1 {
     private implicit val sss = new SSS1
+    lazy val css = sss.css
+
     val style1a: ApplicableStyle = sss register style1
     val style2a: ApplicableStyle = sss register style2
-    val styleInline: ApplicableStyle = sss register Map(Default -> NonEmptyList(resize := "none", outline := "none"))
-    val module = new Module1
-    module.style1.className
 
-    lazy val css = sss.css
+    val styleInline: ApplicableStyle = sss register quickStyle(resize := "none", outline := "none")
+
+    val styleFn_b: Boolean => ApplicableStyle = sss register boolStyle
+    val styleFn_i: Int     => ApplicableStyle = sss register intStyle.over(Domain.ofRange(0 to 10))
+
+    val m1 = new Module1
+    val m2 = new Module2(maxWhatevers = 10)
   }
 }
 
@@ -109,7 +155,6 @@ object Example {
 // * Allow styles to declare preferred classNames.
 //
 //#### Definition
-// FR-02: Dev shall be able to define a style that depends on required input. (ie. a function)
 // FR-04: Dev shall be able to define a style that depends on the current plaform (eg. IE 8, mobile)
 // FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
 // FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
