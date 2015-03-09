@@ -17,6 +17,9 @@ See [doc/reqs.md](https://github.com/japgolly/scalacss/blob/master/doc/reqs.md).
 
 Please feel free to review and discuss in Gitter chat.
 
-##### Next: Solution design.
+##### Current Focus: Design.
 
-Initial thoughts are in [doc/solution_ideas.md](https://github.com/japgolly/scalacss/blob/master/doc/solution_ideas.md).
+Figuring out types mostly.
+Ongoing in [experiment](https://github.com/japgolly/scalacss/tree/master/experiment),
+mostly in [experiment/main.scala](https://github.com/japgolly/scalacss/blob/master/experiment/main.scala).
+Be prepared for ugliness but rest assured that its temporary.

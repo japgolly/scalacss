@@ -249,4 +249,7 @@ object Example {
 // FR-14: Dev shall be able to specify different composition strategies per attribute type. (i.e. `border-top`, the `margin` family)
 // FR-18: When looking at a style definition, Dev shall be able to passively understand if any attributes are being overridden.
 // FR-19: When looking at a style definition, Dev shall be able to passively understand which attributes are being overridden. **[pri=low]**
-
+// Ideas:
+// - keys are keys. Merge policy implicits required at merge time.
+// - keys have a concept of overrideability. Prevent override by default, specify when override ok?
+// - Fuck it at the type level, just put runtime warnings in (conflicts are discovered immediately as all CSS is static)
