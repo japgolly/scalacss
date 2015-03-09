@@ -17,7 +17,7 @@ object Test {
   // TODO psuedo selectors form a finite set. Should hardcode and give the same type safety as css attr keys.
 
   // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
-  case class Key(cssName: String)
+  case class Key(keys: Environment => List[String])
   type Value = String
   type KVs   = NonEmptyList[(Key, Value)]
 
@@ -103,15 +103,18 @@ object Test {
   // Later, this can be turned into an AST and run to omit unnecessary CSS.
   // Not now.
 
-  // This will only be available on the JS side.
-  // In fact, a separate library which is just a scalajs facade would be better.
-  // If scalacss needs it, it can depend on it.
-  object Platform {
-    val name: String = "IE"
-    val version: String = "10.0"
-    // ...
-    // https://github.com/bestiejs/platform.js
-  }
+  // Env details are gathered in JS-land but blank on the server-side (unless manually specified).
+  sealed trait Browser
+  case object IE extends Browser
+  case object Chrome extends Browser
+  // ... whatever
+  case class Environment(screenWidth : Option[Int],
+                         screenHeight: Option[Int],
+                         browser     : Set[Browser], // This is Set instead of Option cos we might be able to rule out
+                                                     // some browsers but not all. More importantly, it allows the
+                                                     // server to generate CSS for select browsers instead of all-or-1.
+                         browserVer  : Option[String])
+                         // etc etc more later
 
   // TODO Inspecting in JS at runtime is one thing but it doesn't fully satisfy FR-04.
   // To have a style definition include a platform condition such that we can generate static output outside of JS:
@@ -154,11 +157,19 @@ object Test {
 object Example {
   import Test._
 
-  val backgroundColor = Key("background-color")
-  val fontWeight      = Key("font-weight")
-  val resize          = Key("resize")
-  val outline         = Key("outline")
-  val paddingLeft     = Key("padding-left")
+  def prefixes(suf: String): Environment => List[String] = e => {
+    var r = suf :: Nil
+    if (e.browser contains IE) r ::= s"-ms-$suf"
+    // blah blah
+    r
+  }
+
+  val backgroundColor = Key(Function.const("background-color" :: Nil))
+  val fontWeight      = Key(Function.const("font-weight" :: Nil))
+  val resize          = Key(Function.const("resize" :: Nil))
+  val outline         = Key(Function.const("outline" :: Nil))
+  val paddingLeft     = Key(Function.const("padding-left" :: Nil))
+  val borderRadius    = Key(prefixes("border-radius"))
 
   implicit class KeyExt(val k: Key) extends AnyVal {
     def :=(v: Value) = (k,v)
@@ -236,9 +247,6 @@ object Example {
 // * Allow styles to declare preferred classNames.
 // * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
-//#### Definition
-// FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
-
 //#### Composition
 // FR-05: Dev shall be able to compose styles to form a new style.
 // FR-06: Dev shall be able to define a style that extends an existing style.
