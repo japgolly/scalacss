@@ -17,14 +17,12 @@ object Test {
   case class Psuedo(sel: String) extends Condition // like :hover
   // TODO psuedo selectors form a finite set. Should hardcode and give the same type safety as css attr keys.
 
-  // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
   type KeyF = Environment => Value => List[CssAttr]
   case class Key(humanName: String, f: KeyF, cmp: Key => KeyComparison)
   type Value = String
   type KV    = (Key, Value)
   type KVs   = NonEmptyList[KV]
 
-  // Next composition needs to know when a key overrides another.
   implicit val keyEquality: Equal[Key] = Equal.equalRef // (or by humanName? in which case maybe rename to id/key?)
   sealed trait KeyComparison
   case object SameKey         extends KeyComparison
@@ -42,53 +40,6 @@ object Test {
   // Keys like "label a", ">li"
   // Replace & with style class, prepend if no &. (eg. "&.debug", ">li", "&>li")
   type UnsafeChildren = Map[String, StaticStyle]
-
-  // --------------------------------------------------------------------------
-  // Style => StyleSheet (CSS)
-
-  case class CssAttr(key: String, value: String)
-
-  trait ApplicableStyle {
-    def className: String
-    def style: Style
-  }
-
-  trait StyleSheet {
-    def styles: List[ApplicableStyle]
-  }
-
-  type ClassName       = String
-  type StyleSheetState = Int
-  trait StyleSheetGen {
-    val name: Int => ClassName
-    val aps: (SingleStyle, ClassName) => ApplicableStyle
-  }
-  class SSS1(implicit g: StyleSheetGen) {
-    private var _i = 0
-    private var _styles: List[ApplicableStyle] = Nil
-    private def inc(): Int = { val j = _i; _i = j + 1; j }
-    def registerAs(cn: ClassName, s: StaticStyle): ApplicableStyle = {
-      val a = g.aps(s, cn)
-      _styles = a :: _styles
-      a
-    }
-    def register(s: StaticStyle): ApplicableStyle =
-      registerAs(s.className getOrElse g.name(inc()), s)
-    def register[I](s: StyleFnT[I]): I => ApplicableStyle = {
-      // equals/hashCode could fuck people here
-      val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
-        q.updated(i, register(s.f(i))))
-      // Add custom warning for failure
-      m.apply
-    }
-    def registerC[M <: HList](c: CompositeStyle)(implicit mapper: Mapper.Aux[registerS.type, c.L, M], usage: MkUsage[M]) : usage.Out = usage apply mapper(c.l)
-    object registerS extends Poly1 {
-      implicit def caseStaticW[W] = at[Named[W,StaticStyle]](_ map (register(_)))
-      implicit def caseStyleFnW[W,I] = at[Named[W,StyleFnT[I]]](_ map (register(_)))
-    }
-    def styles: List[ApplicableStyle] = _styles
-    def css: String = ??? // use styles, blah blah blah
-  }
 
   // --------------------------------------------------------------------------
   // FR-02: I ⇒ Style
@@ -185,7 +136,59 @@ object Test {
   def extend(a: StaticStyle, b: StaticStyle) = compose(a,b)(Merger.replace)
   // ...
   // TODO Maybe use implicits with dep-types for compose. extend would be a one-liner then.
+
+
+  // --------------------------------------------------------------------------
+  // Style => StyleSheet (CSS)
+  // --------------------------------------------------------------------------
+
+  case class CssAttr(key: String, value: String)
+
+  trait ApplicableStyle {
+    def className: String
+    def style: Style
+  }
+
+  trait StyleSheet {
+    def styles: List[ApplicableStyle]
+  }
+
+  type ClassName       = String
+  type StyleSheetState = Int
+  trait StyleSheetGen {
+    val name: Int => ClassName
+    val aps: (SingleStyle, ClassName) => ApplicableStyle
+  }
+
+  class SSS1(implicit g: StyleSheetGen) {
+    private var _i = 0
+    private var _styles: List[ApplicableStyle] = Nil
+    private def inc(): Int = { val j = _i; _i = j + 1; j }
+    def registerAs(cn: ClassName, s: StaticStyle): ApplicableStyle = {
+      val a = g.aps(s, cn)
+      _styles = a :: _styles
+      a
+    }
+    def register(s: StaticStyle): ApplicableStyle =
+      registerAs(s.className getOrElse g.name(inc()), s)
+    def register[I](s: StyleFnT[I]): I => ApplicableStyle = {
+      // equals/hashCode could fuck people here
+      val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
+        q.updated(i, register(s.f(i))))
+      // Add custom warning for failure
+      m.apply
+    }
+    def registerC[M <: HList](c: CompositeStyle)(implicit mapper: Mapper.Aux[registerS.type, c.L, M], usage: MkUsage[M]) : usage.Out = usage apply mapper(c.l)
+    object registerS extends Poly1 {
+      implicit def caseStaticW[W] = at[Named[W,StaticStyle]](_ map (register(_)))
+      implicit def caseStyleFnW[W,I] = at[Named[W,StyleFnT[I]]](_ map (register(_)))
+    }
+    def styles: List[ApplicableStyle] = _styles
+    def css: String = ??? // use styles, blah blah blah
+  }
 }
+
+
 
 // =====================================================================================================================
 object Example {
