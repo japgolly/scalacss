@@ -17,7 +17,8 @@ object Test {
   // TODO psuedo selectors form a finite set. Should hardcode and give the same type safety as css attr keys.
 
   // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
-  case class Key(keys: Environment => List[String])
+  type KeyF = Environment => Value => List[CssAttr]
+  case class Key(f: KeyF)
   type Value = String
   type KVs   = NonEmptyList[(Key, Value)]
 
@@ -31,6 +32,8 @@ object Test {
 
   // --------------------------------------------------------------------------
   // Style => StyleSheet (CSS)
+
+  case class CssAttr(key: String, value: String)
 
   trait ApplicableStyle {
     def className: String
@@ -157,18 +160,20 @@ object Test {
 object Example {
   import Test._
 
-  def prefixes(suf: String): Environment => List[String] = e => {
-    var r = suf :: Nil
-    if (e.browser contains IE) r ::= s"-ms-$suf"
+  def prefixes(k: String): KeyF = e => v => {
+    var r = CssAttr(k ,v) :: Nil
+    if (e.browser contains IE) r ::= CssAttr(s"-ms-$k", v)
     // blah blah
     r
   }
 
-  val backgroundColor = Key(Function.const("background-color" :: Nil))
-  val fontWeight      = Key(Function.const("font-weight" :: Nil))
-  val resize          = Key(Function.const("resize" :: Nil))
-  val outline         = Key(Function.const("outline" :: Nil))
-  val paddingLeft     = Key(Function.const("padding-left" :: Nil))
+  def simpleKey(name: String) = Key(_ => CssAttr(name, _) :: Nil)
+
+  val backgroundColor = simpleKey("background-color")
+  val fontWeight      = simpleKey("font-weight")
+  val resize          = simpleKey("resize")
+  val outline         = simpleKey("outline")
+  val paddingLeft     = simpleKey("padding-left")
   val borderRadius    = Key(prefixes("border-radius"))
 
   implicit class KeyExt(val k: Key) extends AnyVal {
@@ -261,3 +266,34 @@ object Example {
 // - keys are keys. Merge policy implicits required at merge time.
 // - keys have a concept of overrideability. Prevent override by default, specify when override ok?
 // - Fuck it at the type level, just put runtime warnings in (conflicts are discovered immediately as all CSS is static)
+//
+/*
+
+modal.fade .modal-dialog {
+  .translate(0, -25%);
+  .transition-transform(~"0.3s ease-out");
+}
+    BECOMES
+.modal.fade .modal-dialog {
+  -webkit-transition: -webkit-transform .3s ease-out;
+       -o-transition:      -o-transform .3s ease-out;
+          transition:         transform .3s ease-out;
+  -webkit-transform: translate(0, -25%);
+      -ms-transform: translate(0, -25%);
+       -o-transform: translate(0, -25%);
+          transform: translate(0, -25%);
+}
+
+.carousel-control.left {
+  #gradient > .horizontal(@start-color: rgba(0,0,0,.5); @end-color: rgba(0,0,0,.0001));
+}
+    BECOMES
+.carousel-control.left {
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
+  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)));
+  background-image:         linear-gradient(to right, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+  background-repeat: repeat-x;
+}
+*/
