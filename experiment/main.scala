@@ -295,13 +295,8 @@ object Example {
   }
 }
 
-// TODO: Untyped Composition
-// =========================
-// FR-05: Dev shall be able to compose styles to form a new style.
-// FR-06: Dev shall be able to define a style that extends an existing style.
-//
-// TODO: Composition
-// =================
+// TODO: Composition (type-level)
+// ==============================
 // FR-05: Dev shall be able to compose styles to form a new style.
 // FR-06: Dev shall be able to define a style that extends an existing style.
 // FR-10: Dev shall be able to specify a composition strategy when merging styles.
