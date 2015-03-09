@@ -176,6 +176,7 @@ object Example {
 // TODO
 // ====
 // * Allow styles to declare preferred classNames.
+// * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
 //#### Definition
 // FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
