@@ -63,16 +63,6 @@ object Test {
     val name: Int => ClassName
     val aps: (SingleStyle, ClassName) => ApplicableStyle
   }
-  // Style → StyleSheet → (StyleSheet, ApplicableStyle)
-  // 1. Implicit with mutable var?
-  // 2. Trait with mutable var?
-  // 3. StateT somehow?
-  // def ss3_ap(style: Style)(implicit g: StyleSheetGen): State[StyleSheetState, ApplicableStyle] =
-    // State { s =>
-      // val as = g.aps(style, g.name(s))
-      // val s2 = s + 1
-      // (s2, as)
-    // }
   class SSS1(implicit g: StyleSheetGen) {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
@@ -99,12 +89,6 @@ object Test {
     def styles: List[ApplicableStyle] = _styles
     def css: String = ??? // use styles, blah blah blah
   }
-  // (3) won't work stupid, it would need a (S₁ → … → Sₙ → StyleObject). Too annoying.
-  // (1) is sweet. Easily passable to modules. So much so that Style (as opposed to ApplicableStyle) would pretty much
-  // never be needed, right? Composition might need it.
-  // An idea might be to have creation ops as a trait, then stick it on different ctxs - allows same creation syntax
-  // but can change all creations in scope from Style => ApplicableStyle and vica-versa via a single line change (ie.
-  // to the ctx with the ops on it.)
 
   // --------------------------------------------------------------------------
   // FR-02: I ⇒ Style
@@ -271,9 +255,6 @@ object Example {
   // CSS gen
 
   implicit val g: StyleSheetGen = null
-  // object SS3 {
-    // val oops: State[StyleSheetState, ApplicableStyle] = ss3_ap(style1)
-  // }
   object SS1 {
     private implicit val sss = new SSS1
     lazy val css = sss.css
