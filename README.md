@@ -12,14 +12,22 @@ The first thoughts about the conception of this project are gathered in two plac
 
 # Status
 
+##### Requirements
+
 Analysis and the Requirements first draft are done.
 See [doc/reqs.md](https://github.com/japgolly/scalacss/blob/master/doc/reqs.md).
 
 Please feel free to review and discuss in Gitter chat.
 
-##### Current Focus: Design.
+##### Types & Design
 
-Figuring out types mostly.
-Ongoing in [experiment](https://github.com/japgolly/scalacss/tree/master/experiment),
-mostly in [experiment/main.scala](https://github.com/japgolly/scalacss/blob/master/experiment/main.scala).
-Be prepared for ugliness but rest assured that its temporary.
+Low-level types are done in [experiment/main.scala](https://github.com/japgolly/scalacss/blob/master/experiment/main.scala).
+(Be prepared for ugliness - it's experimentation.)
+
+It's been decided that compile-time key conflict resolution will be defered. Resolution will be performed at runtime for now.
+
+There will be a high-level interface on top to make usage as nice, easy and concise as LESS/SASS.
+
+##### Implementation
+
+In progress.
