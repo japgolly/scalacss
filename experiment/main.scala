@@ -252,11 +252,13 @@ object Example {
   }
 }
 
-// TODO
-// ====
-// * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
+// TODO: Untyped Composition
+// =========================
+// FR-05: Dev shall be able to compose styles to form a new style.
+// FR-06: Dev shall be able to define a style that extends an existing style.
 //
-//#### Composition
+// TODO: Composition
+// =================
 // FR-05: Dev shall be able to compose styles to form a new style.
 // FR-06: Dev shall be able to define a style that extends an existing style.
 // FR-10: Dev shall be able to specify a composition strategy when merging styles.
@@ -266,38 +268,10 @@ object Example {
 // FR-14: Dev shall be able to specify different composition strategies per attribute type. (i.e. `border-top`, the `margin` family)
 // FR-18: When looking at a style definition, Dev shall be able to passively understand if any attributes are being overridden.
 // FR-19: When looking at a style definition, Dev shall be able to passively understand which attributes are being overridden. **[pri=low]**
-// Ideas:
-// - keys are keys. Merge policy implicits required at merge time.
-// - keys have a concept of overrideability. Prevent override by default, specify when override ok?
-// - Fuck it at the type level, just put runtime warnings in (conflicts are discovered immediately as all CSS is static)
+// * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
-/*
-
-modal.fade .modal-dialog {
-  .translate(0, -25%);
-  .transition-transform(~"0.3s ease-out");
-}
-    BECOMES
-.modal.fade .modal-dialog {
-  -webkit-transition: -webkit-transform .3s ease-out;
-       -o-transition:      -o-transform .3s ease-out;
-          transition:         transform .3s ease-out;
-  -webkit-transform: translate(0, -25%);
-      -ms-transform: translate(0, -25%);
-       -o-transform: translate(0, -25%);
-          transform: translate(0, -25%);
-}
-
-.carousel-control.left {
-  #gradient > .horizontal(@start-color: rgba(0,0,0,.5); @end-color: rgba(0,0,0,.0001));
-}
-    BECOMES
-.carousel-control.left {
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
-  background-image:      -o-linear-gradient(left, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
-  background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, .5)), to(rgba(0, 0, 0, .0001)));
-  background-image:         linear-gradient(to right, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
-  background-repeat: repeat-x;
-}
-*/
+// Ideas:
+// - Keys are just keys. Merge policy implicits required at merge time.
+// - Keys have a concept of overrideability. Prevent override by default, specify when override ok?
+// - Fuck it at the type level, just put runtime warnings in (conflicts are discovered immediately as all CSS is static)
+// - Have different key sets: 1) fast, untyped, no override protection. 2) HList-backed with override features.
