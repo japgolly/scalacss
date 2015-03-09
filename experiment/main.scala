@@ -24,7 +24,9 @@ object Test {
 
   trait Style
   trait SingleStyle extends Style
-  case class StaticStyle(values: Map[Condition, KVs], unsafeChildren: UnsafeChildren) extends SingleStyle
+  case class StaticStyle(values        : Map[Condition, KVs],
+                         unsafeChildren: UnsafeChildren,
+                         className     : Option[String]) extends SingleStyle
 
   // Keys like "label a", ">li"
   // Replace & with style class, prepend if no &. (eg. "&.debug", ">li", "&>li")
@@ -64,11 +66,13 @@ object Test {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
     private def inc(): Int = { val j = _i; _i = j + 1; j }
-    def register(s: StaticStyle): ApplicableStyle = {
-      val a = g.aps(s, g name inc())
+    def registerAs(cn: ClassName, s: StaticStyle): ApplicableStyle = {
+      val a = g.aps(s, cn)
       _styles = a :: _styles
       a
     }
+    def register(s: StaticStyle): ApplicableStyle =
+      registerAs(s.className getOrElse g.name(inc()), s)
     def register[I](s: StyleFnT[I]): I => ApplicableStyle = {
       // equals/hashCode could fuck people here
       val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
@@ -189,7 +193,7 @@ object Example {
   }
 
   def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle =
-    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)), Map.empty)
+    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)), Map.empty, None)
 
   // Styles definitions
 
@@ -218,7 +222,8 @@ object Example {
   val hasUnsafeChildren =
     StaticStyle(
       Map(Default -> NonEmptyList(fontWeight := "bold")),
-      Map("button.red" -> quickStyle(backgroundColor := "red")))
+      Map("button.red" -> quickStyle(backgroundColor := "red")),
+      None)
 
   // CSS gen
 
@@ -231,7 +236,7 @@ object Example {
     lazy val css = sss.css
 
     val style1a: ApplicableStyle = sss register style1
-    val style2a: ApplicableStyle = sss register style2
+    val style2a: ApplicableStyle = sss.registerAs("style2", style2)
 
     val styleInline: ApplicableStyle = sss register quickStyle(resize := "none", outline := "none")
 
@@ -249,7 +254,6 @@ object Example {
 
 // TODO
 // ====
-// * Allow styles to declare preferred classNames.
 // * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
 //#### Composition
