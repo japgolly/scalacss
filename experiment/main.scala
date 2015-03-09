@@ -3,6 +3,7 @@ import shapeless._
 import shapeless.ops.hlist._
 import shapeless.syntax.singleton._
 import japgolly.nyaya.test.Domain
+import ScalaExt._
 
 import CompositeStyleStuff._
 
@@ -18,13 +19,23 @@ object Test {
 
   // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
   type KeyF = Environment => Value => List[CssAttr]
-  case class Key(f: KeyF)
+  case class Key(humanName: String, f: KeyF, cmp: Key => KeyComparison)
   type Value = String
-  type KVs   = NonEmptyList[(Key, Value)]
+  type KV    = (Key, Value)
+  type KVs   = NonEmptyList[KV]
+
+  // Next composition needs to know when a key overrides another.
+  implicit val keyEquality: Equal[Key] = Equal.equalRef // (or by humanName? in which case maybe rename to id/key?)
+  sealed trait KeyComparison
+  case object SameKey         extends KeyComparison
+  case object FullOverride    extends KeyComparison // margin fully overrides margin-left
+  case object PartialOverride extends KeyComparison // margin-left partially overrides margin
+  case object Unrelated       extends KeyComparison
+  // Write laws for this ↑
 
   trait Style
   trait SingleStyle extends Style
-  case class StaticStyle(values        : Map[Condition, KVs],
+  case class StaticStyle(values        : Map[Condition, (KVs, List[Warning])],
                          unsafeChildren: UnsafeChildren,
                          className     : Option[String]) extends SingleStyle
 
@@ -158,6 +169,38 @@ object Test {
       CompositeStyle(b :: l)
   }
 
+  // --------------------------------------------------------------------------
+  // Composition
+
+  type Warning = String
+
+  case class Merger(f: (KVs, KV) => (List[KV], List[Warning])) {
+    @inline def apply(lo: KVs, hi: KV) = f(lo, hi)
+    def and(m: Merger): Merger = ??? // TODO make semigroup
+    // def map (g: EndoFn[List[KV]]) = Merger((lo,hi) => f(lo,hi) map1 g)
+    // def mapW(g: EndoFn[List[Warning]]) = Merger((lo,hi) => f(lo,hi) map2 g)
+  }
+  object Merger {
+    val concat  = Merger((lo,hi) => (lo.list ::: hi :: Nil, Nil))
+    val replace = Merger((lo,hi) => (hi :: Nil, Nil))
+    val warn    = Merger((lo,hi) => (Nil, s"${hi._1.humanName} overrides ${lo.list.map(_._1.humanName) mkString ","}." :: Nil))
+  }
+
+  def compose     (a: StaticStyle, b: StaticStyle)(implicit m: Merger): StaticStyle = ???
+  def compose[  B](a: StaticStyle, b: StyleFnT[B])(implicit m: Merger): StyleFnT[B] = ???
+  def compose[  B](a: StaticStyle, b: StyleFnP[B])(implicit m: Merger): StyleFnP[B] = ???
+  def compose[A  ](a: StyleFnT[A], b: StaticStyle)(implicit m: Merger): StyleFnT[A] = ???
+  def compose[A,B](a: StyleFnT[A], b: StyleFnT[B])(implicit m: Merger): StyleFnT[(A,B)] = ???
+  def compose[A,B](a: StyleFnT[A], b: StyleFnP[B])(implicit m: Merger): Domain[B] ⇒ StyleFnT[(A,B)] = ???
+  def compose[A  ](a: StyleFnP[A], b: StaticStyle)(implicit m: Merger): StyleFnP[A] = ???
+  def compose[A,B](a: StyleFnP[A], b: StyleFnT[B])(implicit m: Merger): Domain[A] ⇒ StyleFnT[(A,B)] = ???
+  def compose[A,B](a: StyleFnP[A], b: StyleFnP[B])(implicit m: Merger): (Domain[A], Domain[B]) => StyleFnT[(A,B)] = ???
+
+  implicit val recommendMerger = Merger.concat and Merger.warn
+
+  def extend(a: StaticStyle, b: StaticStyle) = compose(a,b)(Merger.replace)
+  // ...
+  // TODO Maybe use implicits with dep-types for compose. extend would be a one-liner then.
 }
 
 // =====================================================================================================================
@@ -171,14 +214,14 @@ object Example {
     r
   }
 
-  def simpleKey(name: String) = Key(_ => CssAttr(name, _) :: Nil)
+  def simpleKey(name: String) = Key(name, _ => CssAttr(name, _) :: Nil, ???)
 
   val backgroundColor = simpleKey("background-color")
   val fontWeight      = simpleKey("font-weight")
   val resize          = simpleKey("resize")
   val outline         = simpleKey("outline")
   val paddingLeft     = simpleKey("padding-left")
-  val borderRadius    = Key(prefixes("border-radius"))
+  val borderRadius    = Key("border-radius", prefixes("border-radius"), ???)
 
   implicit class KeyExt(val k: Key) extends AnyVal {
     def :=(v: Value) = (k,v)
@@ -193,7 +236,7 @@ object Example {
   }
 
   def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle =
-    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)), Map.empty, None)
+    StaticStyle(Map(Default -> (NonEmptyList(a, b: _*), Nil)), Map.empty, None)
 
   // Styles definitions
 
@@ -221,7 +264,7 @@ object Example {
 
   val hasUnsafeChildren =
     StaticStyle(
-      Map(Default -> NonEmptyList(fontWeight := "bold")),
+      Map(Default -> (NonEmptyList(fontWeight := "bold"), Nil)),
       Map("button.red" -> quickStyle(backgroundColor := "red")),
       None)
 
