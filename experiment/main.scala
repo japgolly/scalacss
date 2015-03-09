@@ -19,18 +19,18 @@ object Test {
   // Note: Don't replace with singleton types. Needs wrap or tag for FR-09.
   type KeyF = Environment => Value => List[CssAttr]
   case class Key(f: KeyF)
-  type Value = String
-  type KVs   = NonEmptyList[(Key, Value)]
+  type Value  = String
+  type KVs[K] = NonEmptyList[(K, Value)]
 
   trait Style
   trait SingleStyle extends Style
-  case class StaticStyle(values        : Map[Condition, KVs],
-                         unsafeChildren: UnsafeChildren,
-                         className     : Option[String]) extends SingleStyle
+  case class StaticStyle[K](values        : Map[Condition, KVs[K]],
+                            unsafeChildren: UnsafeChildren[K],
+                            className     : Option[String]) extends SingleStyle
 
   // Keys like "label a", ">li"
   // Replace & with style class, prepend if no &. (eg. "&.debug", ">li", "&>li")
-  type UnsafeChildren = Map[String, StaticStyle]
+  type UnsafeChildren[K] = Map[String, StaticStyle[K]]
 
   // --------------------------------------------------------------------------
   // Style => StyleSheet (CSS)
@@ -52,20 +52,43 @@ object Test {
     val name: Int => ClassName
     val aps: (SingleStyle, ClassName) => ApplicableStyle
   }
-  // Style → StyleSheet → (StyleSheet, ApplicableStyle)
-  // 1. Implicit with mutable var?
-  // 2. Trait with mutable var?
-  // 3. StateT somehow?
-  // def ss3_ap(style: Style)(implicit g: StyleSheetGen): State[StyleSheetState, ApplicableStyle] =
-    // State { s =>
-      // val as = g.aps(style, g.name(s))
-      // val s2 = s + 1
-      // (s2, as)
-    // }
-  class SSS1(implicit g: StyleSheetGen) {
+
+  trait RegisterK[K] {
+    val keyf: K => KeyF
+  }
+  implicit object RegisterK_untyped extends RegisterK[Key] {
+    override val keyf = (_: Key).f
+  }
+
+
+  class SSS1[K](implicit g: StyleSheetGen, rk: RegisterK[K]) {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
     private def inc(): Int = { val j = _i; _i = j + 1; j }
+
+
+    def registerAs(cn: ClassName, s: StaticStyle[K]): ApplicableStyle = {
+      val a = g.aps(s, cn)
+      _styles = a :: _styles
+      a
+    }
+    def register(s: StaticStyle[K]): ApplicableStyle =
+      registerAs(s.className getOrElse g.name(inc()), s)
+    def register[I](s: StyleFnT[K,I]): I => ApplicableStyle = {
+      // equals/hashCode could fuck people here
+      val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
+        q.updated(i, register(s.f(i))))
+      // Add custom warning for failure
+      m.apply
+    }
+    def registerC[M <: HList](c: CompositeStyle)(implicit mapper: Mapper.Aux[registerS.type, c.L, M], usage: MkUsage[M]) : usage.Out = usage apply mapper(c.l)
+    object registerS extends Poly1 {
+      implicit def caseStaticW[W] = at[Named[W,StaticStyle[K]]](_ map (register(_)))
+      implicit def caseStyleFnW[W,I] = at[Named[W,StyleFnT[K,I]]](_ map (register(_)))
+    }
+
+
+    /*
     def registerAs(cn: ClassName, s: StaticStyle): ApplicableStyle = {
       val a = g.aps(s, cn)
       _styles = a :: _styles
@@ -85,6 +108,7 @@ object Test {
       implicit def caseStaticW[W] = at[Named[W,StaticStyle]](_ map (register(_)))
       implicit def caseStyleFnW[W,I] = at[Named[W,StyleFnT[I]]](_ map (register(_)))
     }
+    */
     def styles: List[ApplicableStyle] = _styles
     def css: String = ??? // use styles, blah blah blah
   }
@@ -98,9 +122,9 @@ object Test {
   // --------------------------------------------------------------------------
   // FR-02: I ⇒ Style
 
-  case class StyleFnT[I](f: I => StaticStyle, d: Domain[I]) extends SingleStyle
-  case class StyleFnP[I](f: I => StaticStyle) { // Doesn't really need own class. Just (I => Style) => Domain => StyleFnT
-    def over(d: Domain[I]): StyleFnT[I] = StyleFnT(f, d)
+  case class StyleFnT[K,I](f: I => StaticStyle[K], d: Domain[I]) extends SingleStyle
+  case class StyleFnP[K,I](f: I => StaticStyle[K]) { // Doesn't really need own class. Just (I => Style) => Domain => StyleFnT
+    def over(d: Domain[I]): StyleFnT[K,I] = StyleFnT(f, d)
   }
 
   // --------------------------------------------------------------------------
@@ -192,7 +216,7 @@ object Example {
     def ex = s"$i.ex"
   }
 
-  def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle =
+  def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle[Key] =
     StaticStyle(Map(Default -> NonEmptyList(a, b: _*)), Map.empty, None)
 
   // Styles definitions
@@ -200,14 +224,14 @@ object Example {
   val style1 = quickStyle(backgroundColor := "green", fontWeight := "bold")
   val style2 = quickStyle(resize := "none", outline := "none")
 
-  val boolStyle = StyleFnT[Boolean](b => quickStyle(backgroundColor := (if (b) "none" else "#ddd")), Domain.boolean)
-  val intStyle  = StyleFnP[Int]    (i => quickStyle(paddingLeft     := (i*4).ex))
+  val boolStyle = StyleFnT[Key,Boolean](b => quickStyle(backgroundColor := (if (b) "none" else "#ddd")), Domain.boolean)
+  val intStyle  = StyleFnP[Key,Int]    (i => quickStyle(paddingLeft     := (i*4).ex))
 
-  class Module1(implicit sss: SSS1) {
+  class Module1(implicit sss: SSS1[Key]) {
     val style1: ApplicableStyle = sss register quickStyle(backgroundColor := "red")
     val style2: ApplicableStyle = sss register quickStyle(resize := "none")
   }
-  class Module2(maxWhatevers: Int)(implicit sss: SSS1) {
+  class Module2(maxWhatevers: Int)(implicit sss: SSS1[Key]) {
     val styleFn_b: Boolean => ApplicableStyle = sss register boolStyle
     val styleFn_i: Int     => ApplicableStyle = sss register intStyle.over(Domain.ofRange(0 to maxWhatevers))
   }
