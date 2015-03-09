@@ -23,7 +23,11 @@ object Test {
 
   trait Style
   trait SingleStyle extends Style
-  case class StaticStyle(value: Map[Condition, KVs]) extends SingleStyle
+  case class StaticStyle(values: Map[Condition, KVs], unsafeChildren: UnsafeChildren) extends SingleStyle
+
+  // Keys like "label a", ">li"
+  // Replace & with style class, prepend if no &. (eg. "&.debug", ">li", "&>li")
+  type UnsafeChildren = Map[String, StaticStyle]
 
   // --------------------------------------------------------------------------
   // Style => StyleSheet (CSS)
@@ -169,7 +173,7 @@ object Example {
   }
 
   def quickStyle(a: (Key, Value), b: (Key, Value)*): StaticStyle =
-    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)))
+    StaticStyle(Map(Default -> NonEmptyList(a, b: _*)), Map.empty)
 
   // Styles definitions
 
@@ -194,6 +198,11 @@ object Example {
     val checkbox  = boolStyle
     container.named('cont) :*: label.named('label) :*: checkbox.named('chk)
   }
+
+  val hasUnsafeChildren =
+    StaticStyle(
+      Map(Default -> NonEmptyList(fontWeight := "bold")),
+      Map("button.red" -> quickStyle(backgroundColor := "red")))
 
   // CSS gen
 
@@ -228,7 +237,6 @@ object Example {
 // * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
 //#### Definition
-// FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
 // FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
 
 //#### Composition
