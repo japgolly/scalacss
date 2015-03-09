@@ -36,7 +36,6 @@ object NamedChildrenPoC {
     _('body, b =>
       s"Header = $h, body = $b"))
 
-
   // Doesn't compile:
   // myCompStyle('header, h =>
   //   _('sidebar, b =>
