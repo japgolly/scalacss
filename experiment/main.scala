@@ -1,6 +1,10 @@
 import scalaz._
 import shapeless._
+import shapeless.ops.hlist._
+import shapeless.syntax.singleton._
 import japgolly.nyaya.test.Domain
+
+import CompositeStyleStuff._
 
 object Test {
 
@@ -18,7 +22,8 @@ object Test {
   type KVs   = NonEmptyList[(Key, Value)]
 
   trait Style
-  case class StaticStyle(value: Map[Condition, KVs]) extends Style
+  trait SingleStyle extends Style
+  case class StaticStyle(value: Map[Condition, KVs]) extends SingleStyle
 
   // --------------------------------------------------------------------------
   // Style => StyleSheet (CSS)
@@ -36,18 +41,18 @@ object Test {
   type StyleSheetState = Int
   trait StyleSheetGen {
     val name: Int => ClassName
-    val aps: (Style, ClassName) => ApplicableStyle
+    val aps: (SingleStyle, ClassName) => ApplicableStyle
   }
   // Style → StyleSheet → (StyleSheet, ApplicableStyle)
   // 1. Implicit with mutable var?
   // 2. Trait with mutable var?
   // 3. StateT somehow?
-  def ss3_ap(style: Style)(implicit g: StyleSheetGen): State[StyleSheetState, ApplicableStyle] =
-    State { s =>
-      val as = g.aps(style, g.name(s))
-      val s2 = s + 1
-      (s2, as)
-    }
+  // def ss3_ap(style: Style)(implicit g: StyleSheetGen): State[StyleSheetState, ApplicableStyle] =
+    // State { s =>
+      // val as = g.aps(style, g.name(s))
+      // val s2 = s + 1
+      // (s2, as)
+    // }
   class SSS1 {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
@@ -64,6 +69,9 @@ object Test {
       // Add custom warning for failure
       m.apply
     }
+    // def register(s: CompositeStyle)(implicit g: StyleSheetGen): ApplicableStyle = {
+      // TODO
+    // }
     def styles: List[ApplicableStyle] = _styles
     def css: String = ??? // use styles, blah blah blah
   }
@@ -77,7 +85,7 @@ object Test {
   // --------------------------------------------------------------------------
   // FR-02: I ⇒ Style
 
-  case class StyleFnT[I](f: I => StaticStyle, d: Domain[I]) extends Style
+  case class StyleFnT[I](f: I => StaticStyle, d: Domain[I]) extends SingleStyle
   case class StyleFnP[I](f: I => StaticStyle) { // Doesn't really need own class. Just (I => Style) => Domain => StyleFnT
     def over(d: Domain[I]): StyleFnT[I] = StyleFnT(f, d)
   }
@@ -105,6 +113,49 @@ object Test {
   //   2. Rescope this req to only work at JS runtime.
   // Note: Neither SASS or LESS have a solution. People just generate multiple CSS files and use shitty IE cond
   // comments to load the additional styles.
+
+  // --------------------------------------------------------------------------
+  // Style composites
+  // FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
+
+  implicit class SStyleExt[SS <: SingleStyle](val s: SS) extends AnyVal {
+    def named(w: Witness): NamedSingleStyle { type W = w.T; type S = SS } =
+      new NamedSingleStyle { type W = w.T; type S = SS; val style = s }
+  }
+
+  trait NamedSingleStyle {
+    type W
+    type S <: SingleStyle
+    val style : S
+    def n: Named[W, S] = Named(style)
+    def :*:(b: NamedSingleStyle) = //: CompositeStyleAux[b.type, this.type, HNil] = // todo prevent dup names
+      CompositeStyle(b.n :: n :: HNil)
+  }
+
+  type CompositeStyleAux[l <: HList, u] = CompositeStyle { type L = l; type U = u }
+
+  private def CompositeStyle[_L <: HList](_l: _L)(implicit u: MkUsage[_L]): CompositeStyleAux[_L, u.Out] =
+    new CompositeStyle {
+      type L = _L
+      type U = u.Out
+      val l = _l
+      implicit def uu = u
+    }
+
+  trait CompositeStyle extends Style {
+    type L <: HList
+    type U
+    val l: L
+    implicit def uu: MkUsage.Aux[L, U]
+
+    // def *[C <: NamedSingleStyle](c: C)(implicit u: MkUsage[C :: L]): CompositeStyleAux[C :: L, u.Out] = // todo prevent dup names
+    def :*:[C <: NamedSingleStyle](c: C) =
+      CompositeStyle(c.n :: l)
+
+    def register(r: SingleStyle => ApplicableStyle) = {
+    }
+
+  }
 
 }
 
@@ -150,12 +201,19 @@ object Example {
     val styleFn_i: Int     => ApplicableStyle = sss register intStyle.over(Domain.ofRange(0 to maxWhatevers))
   }
 
+  val compStyle = {
+    val container = quickStyle(fontWeight := "bold")
+    val label     = quickStyle(backgroundColor := "red")
+    val checkbox  = boolStyle
+    container.named('cont) :*: label.named('label) :*: checkbox.named('chk)
+  }
+
   // CSS gen
 
-  implicit val g: StyleSheetGen = ???
-  object SS3 {
-    val oops: State[StyleSheetState, ApplicableStyle] = ss3_ap(style1)
-  }
+  implicit val g: StyleSheetGen = null
+  // object SS3 {
+    // val oops: State[StyleSheetState, ApplicableStyle] = ss3_ap(style1)
+  // }
   object SS1 {
     private implicit val sss = new SSS1
     lazy val css = sss.css
@@ -179,7 +237,6 @@ object Example {
 // * Don't forget overlap between unit and composite CSS attributes (eg. paddingLeft & padding)
 //
 //#### Definition
-// FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
 // FR-17: Dev shall be able to define a style that affects unspecified, optionally existant children. (Must like & in LESS. Required for FR-15.)
 // FR-20: For styles that require repeated declaration with different keys (eg `-moz-`), Dev shall be able to specify the style and its variants with a single declaration.
 

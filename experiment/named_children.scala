@@ -109,3 +109,44 @@ object NamedChildrenPoC {
   sb('b, b => _('c, _ + b))
 
 }
+
+// =====================================================================================================================
+// Again for real
+
+object CompositeStyleStuff {
+
+  case class Named[W,A](a: A)
+
+  final class UsageH[W, A, B](a: A, b: B) {
+    def apply[C](n: W, f: A => B => C): C = f(a)(b)
+  }
+
+  final class UsageT[W, A](a: A) {
+    def apply[B](n: W, f: A => B): B = f(a)
+  }
+
+  sealed abstract class MkUsage[L <: HList] {
+    type Out
+    val apply: L => Out
+  }
+
+  object MkUsage extends MkUsageLowPri {
+    type Aux[L <: HList, O] = MkUsage[L]{ type Out = O }
+
+    def apply[L <: HList, O](f: L => O): Aux[L, O] =
+      new MkUsage[L] {
+        override type Out = O
+        override val apply = f
+      }
+
+    implicit def mkUsageT[W,A]: Aux[Named[W,A] :: HNil, UsageT[W,A]] =
+      MkUsage(l => new UsageT(l.head.a))
+  }
+
+  sealed trait MkUsageLowPri {
+    implicit def mkUsageH[W, A, T <: HList](implicit t: MkUsage[T]): MkUsage.Aux[Named[W,A] :: T, UsageH[W,A,t.Out]] =
+      MkUsage(l => new UsageH(l.head.a, t apply l.tail))
+  }
+
+  def usage[L <: HList](l: L)(implicit m: MkUsage[L]): m.Out = m apply l
+}
