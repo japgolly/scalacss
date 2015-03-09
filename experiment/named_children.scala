@@ -40,4 +40,72 @@ object NamedChildrenPoC {
   // myCompStyle('header, h =>
   //   _('sidebar, b =>
   //     s"Header = $h, sidebar = $b"))
+
+  // -----------------------------------------------------
+
+  val x = (Witness('a), "Aye") :: (Witness('b), "BB") :: (Witness('c), "Sea") :: HNil
+
+  val l = x.tail.tail
+
+  final class MidStep[W, A, B](a: A, b: B) {
+    def apply[C](n: W, f: A => B => C): C = f(a)(b)
+  }
+  final class LastStep[W, A](a: A) {
+    def apply[B](n: W, f: A => B): B = f(a)
+  }
+  def MidStep[A,B](w: Witness, a: A, b: B) = new MidStep[w.T, A, B](a, b)
+  def LastStep[A](w: Witness, a: A) = new LastStep[w.T, A](a)
+
+  val s3 = LastStep(Witness('c), 3)
+  val s2 = MidStep(Witness('b), 20, s3)
+  val s1 = MidStep(Witness('a), 100, s2)
+
+  s1('a, a =>
+      _('b, b =>
+        _('c, a + b + _)))
+
+  // -----------------------------------------------------
+
+  case class Named[W,A](a: A)
+
+  trait MkStep[L <: HList] {
+    type Out
+    def apply(l: L): Out
+  }
+  def mkSteps[L <: HList](l: L)(implicit m: MkStep[L]): m.Out = m(l)
+
+  type MkStepAux[L <: HList, O] = MkStep[L]{ type Out = O }
+
+  trait LowPri {
+    implicit def mkMidStep[W, A, T <: HList](implicit next: MkStep[T]): MkStepAux[Named[W,A] :: T, MidStep[W,A,next.Out]] = {
+      type L = Named[W,A] :: T
+      new MkStep[L] {
+        override type Out = MidStep[W,A,next.Out]
+        override def apply(l: L): Out = new MidStep[W,A,next.Out](l.head.a, next(l.tail))
+      }
+    }
+  }
+
+  object TopPri extends LowPri {
+    implicit def mkTailStep[W,A]: MkStepAux[Named[W,A] :: HNil, LastStep[W,A]] = {
+      type L = Named[W,A] :: HNil
+      new MkStep[L] {
+        override type Out = LastStep[W,A]
+        override def apply(l: L): Out = new LastStep[W,A](l.head.a)
+      }
+    }
+  }
+  import TopPri._
+
+
+  val wc = Witness('c)
+  val hc = Named[wc.T, Int](123) :: HNil
+  val sc = mkSteps(hc)
+  sc('c, identity)
+
+  val wb = Witness('b)
+  val hb = Named[wb.T, Int](100) :: hc
+  val sb = mkSteps(hb)
+  sb('b, b => _('c, _ + b))
+
 }
