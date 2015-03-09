@@ -115,7 +115,9 @@ object NamedChildrenPoC {
 
 object CompositeStyleStuff {
 
-  case class Named[W,A](a: A)
+  case class Named[W,A](a: A) {
+    def map[B](f: A => B): Named[W,B] = Named(f(a))
+  }
 
   final class UsageH[W, A, B](a: A, b: B) {
     def apply[C](n: W, f: A => B => C): C = f(a)(b)

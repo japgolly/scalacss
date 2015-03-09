@@ -53,25 +53,27 @@ object Test {
       // val s2 = s + 1
       // (s2, as)
     // }
-  class SSS1 {
+  class SSS1(implicit g: StyleSheetGen) {
     private var _i = 0
     private var _styles: List[ApplicableStyle] = Nil
     private def inc(): Int = { val j = _i; _i = j + 1; j }
-    def register(s: StaticStyle)(implicit g: StyleSheetGen): ApplicableStyle = {
+    def register(s: StaticStyle): ApplicableStyle = {
       val a = g.aps(s, g name inc())
       _styles = a :: _styles
       a
     }
-    def register[I](s: StyleFnT[I])(implicit g: StyleSheetGen): I => ApplicableStyle = {
+    def register[I](s: StyleFnT[I]): I => ApplicableStyle = {
       // equals/hashCode could fuck people here
       val m = s.d.toStream.foldLeft(Map.empty[I, ApplicableStyle])((q, i) =>
         q.updated(i, register(s.f(i))))
       // Add custom warning for failure
       m.apply
     }
-    // def register(s: CompositeStyle)(implicit g: StyleSheetGen): ApplicableStyle = {
-      // TODO
-    // }
+    def registerC[M <: HList](c: CompositeStyle)(implicit mapper: Mapper.Aux[registerS.type, c.L, M], usage: MkUsage[M]) : usage.Out = usage apply mapper(c.l)
+    object registerS extends Poly1 {
+      implicit def caseStaticW[W] = at[Named[W,StaticStyle]](_ map (register(_)))
+      implicit def caseStyleFnW[W,I] = at[Named[W,StyleFnT[I]]](_ map (register(_)))
+    }
     def styles: List[ApplicableStyle] = _styles
     def css: String = ??? // use styles, blah blah blah
   }
@@ -118,43 +120,28 @@ object Test {
   // Style composites
   // FR-01: Dev shall be able to define a style that requires a specific configuration of children such that the compiler will enforce that the children are styled.
 
-  implicit class SStyleExt[SS <: SingleStyle](val s: SS) extends AnyVal {
-    def named(w: Witness): NamedSingleStyle { type W = w.T; type S = SS } =
-      new NamedSingleStyle { type W = w.T; type S = SS; val style = s }
+  implicit class SStyleExt[S <: SingleStyle](val s: S) extends AnyVal {
+    def named(w: Witness): Named[w.T, S] = Named(s)
   }
 
-  trait NamedSingleStyle {
-    type W
-    type S <: SingleStyle
-    val style : S
-    def n: Named[W, S] = Named(style)
-    def :*:(b: NamedSingleStyle) = //: CompositeStyleAux[b.type, this.type, HNil] = // todo prevent dup names
-      CompositeStyle(b.n :: n :: HNil)
+  implicit class NSStyleExt[W, S <: SingleStyle](val n: Named[W, S]) extends AnyVal {
+    def :*:[W2, S2](b: Named[W2,S2]) = // todo prevent dup names
+      CompositeStyle(b :: n :: HNil)
   }
 
-  type CompositeStyleAux[l <: HList, u] = CompositeStyle { type L = l; type U = u }
+  type CompositeStyleAux[l <: HList] = CompositeStyle { type L = l }
 
-  private def CompositeStyle[_L <: HList](_l: _L)(implicit u: MkUsage[_L]): CompositeStyleAux[_L, u.Out] =
+  private def CompositeStyle[_L <: HList](_l: _L): CompositeStyleAux[_L] =
     new CompositeStyle {
       type L = _L
-      type U = u.Out
       val l = _l
-      implicit def uu = u
     }
 
   trait CompositeStyle extends Style {
     type L <: HList
-    type U
     val l: L
-    implicit def uu: MkUsage.Aux[L, U]
-
-    // def *[C <: NamedSingleStyle](c: C)(implicit u: MkUsage[C :: L]): CompositeStyleAux[C :: L, u.Out] = // todo prevent dup names
-    def :*:[C <: NamedSingleStyle](c: C) =
-      CompositeStyle(c.n :: l)
-
-    def register(r: SingleStyle => ApplicableStyle) = {
-    }
-
+    def :*:[W2, S2](b: Named[W2,S2]) = // todo prevent dup names
+      CompositeStyle(b :: l)
   }
 
 }
@@ -228,6 +215,10 @@ object Example {
 
     val m1 = new Module1
     val m2 = new Module2(maxWhatevers = 10)
+    m2.styleFn_i(7).className
+
+    val compStyleA = sss registerC compStyle
+    compStyleA('cont, o => _('label, l => _('chk, c => s"${o.className}|${l.className}|${c(true).className}")))
   }
 }
 
