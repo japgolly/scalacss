@@ -85,10 +85,15 @@ object Env {
       OS[F](e, e, e)
   }
 
-  def empty[F[+_]](e: F[Nothing]): Env[F] =
-    Env[F](Platform empty e, Media empty e)
+  val empty: Env =
+    EnvF.empty(None)
 }
 
 import Env._
 
-final case class Env[F[_]](platform: Platform[F], media: Media[F])
+final case class EnvF[F[_]](platform: Platform[F], media: Media[F])
+
+object EnvF {
+  def empty[F[+_]](e: F[Nothing]): EnvF[F] =
+    EnvF[F](Platform empty e, Media empty e)
+}
