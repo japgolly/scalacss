@@ -20,6 +20,7 @@ final class Attr(val id: String, val gen: Attr.Gen, private[Attr] val cmp0: Attr
   override def toString = id
 
   import AttrComparison._
+  // TODO test transitivity
   def cmp(that: Attr): AttrComparison =
     cmp0(this, that) match {
       case Unrelated =>
@@ -42,10 +43,13 @@ object Attr {
     new Attr(id, gen, cmp)
 
   def simple(css: String): Attr =
-    Attr(css, _ => CssKV(css, _) :: Nil, AttrComparison.byEquality)
+    simpleG(css, AttrComparison.byEquality)
 
   def simpleFO(css: String, overrides: Attr*): Attr =
-    Attr(css, _ => CssKV(css, _) :: Nil, AttrComparison.full(overrides: _*))
+    simpleG(css, AttrComparison.full(overrides: _*))
+
+  def simpleG(css: String, cmp: AttrComparison.Fn): Attr =
+    Attr(css, _ => CssKV(css, _) :: Nil, cmp)
 }
 
 sealed trait AttrComparison
@@ -62,8 +66,14 @@ object AttrComparison {
   val byEquality: Fn =
     (a, b) => if (Equal[Attr].equal(a, b)) Same else Unrelated
 
-  def full(overrides: Attr*): Fn = {
+  def full(overrides: Attr*): Fn =
+    set(overrides: _*)(FullOverride, Unrelated)
+
+  def set(overrides: Attr*)(t: AttrComparison, f: AttrComparison): Fn = {
     val set = Set(overrides: _*)
-    (_, b) => if (set contains b) FullOverride else Unrelated
+    cond(set.contains, t, f)
   }
+
+  def cond(c: Attr => Boolean, t: AttrComparison, f: AttrComparison): Fn =
+    (_, b) => if (c(b)) t else f
 }

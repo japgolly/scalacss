@@ -1806,13 +1806,6 @@ val unicodeBidi = Attr.simple("unicode-bidi")
 val unicodeRange = Attr.simple("unicode-range")
 
 /**
- * The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case.
- *
- * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unset">MDN</a>
- */
-val unset = Attr.simple("unset")
-
-/**
  * The vertical-align CSS property specifies the vertical alignment of an inline or table-cell box.
  *
  * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align">MDN</a>

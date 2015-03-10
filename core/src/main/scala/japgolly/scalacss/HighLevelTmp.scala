@@ -1,5 +1,7 @@
 package japgolly.scalacss
 
+import AttrComparison.{FullOverride, Unrelated}
+
 // TODO Move HighLevelTmp
 
 trait HighLevelTmp {
@@ -25,20 +27,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-self">MDN</a>
    */
   val alignSelf = Attr.simple("align-self")
-
-  /**
-   * The CSS all shorthand property resets all properties, but unicode-bidi and direction to their initial or inherited value.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/all">MDN</a>
-   */
-  val all = Attr.simple("all")
-
-  /**
-   * The animation CSS property is a shorthand property for animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, animation-fill-mode and animation-play-state.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
-   */
-  val animation = Attr.simple("animation")
 
   /**
    * The animation-delay CSS property specifies when the animation should start. This lets the animation sequence begin some time after it's applied to an element.
@@ -102,13 +90,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility">MDN</a>
    */
   val backfaceVisibility = Attr.simple("backface-visibility")
-
-  /**
-   * The background CSS property is a shorthand for setting the individual background values in a single place in the style sheet. background can be used to set the values for one or more of: background-clip, background-color, background-image, background-origin, background-position, background-repeat, background-size, and background-attachment.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">MDN</a>
-   */
-  val background = Attr.simple("background")
 
   /**
    * If a background-image is specified, the background-attachment CSS property determines whether that image's position is fixed within the viewport, or scrolls along with its containing block.
@@ -181,20 +162,6 @@ trait HighLevelTmp {
   val blockSize = Attr.simple("block-size")
 
   /**
-   * The border CSS property is a shorthand property for setting the individual border property values in a single place in the style sheet. border can be used to set the values for one or more of: border-width, border-style, border-color.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border">MDN</a>
-   */
-  val border = Attr.simple("border")
-
-  /**
-   * The border-block-end CSS property is a shorthand property for setting the individual logical block end border property values in a single place in the style sheet. border-block-end can be used to set the values for one or more of: border-block-end-width, border-block-end-style, border-block-end-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end">MDN</a>
-   */
-  val borderBlockEnd = Attr.simple("border-block-end")
-
-  /**
    * The border-block-end-color CSS property defines the color of the logical block end border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end-color">MDN</a>
@@ -216,13 +183,6 @@ trait HighLevelTmp {
   val borderBlockEndWidth = Attr.simple("border-block-end-width")
 
   /**
-   * The border-block-start CSS property is a shorthand property for setting the individual logical block start border property values in a single place in the style sheet. border-block-start can be used to set the values for one or more of: border-block-start-width, border-block-start-style, border-block-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start">MDN</a>
-   */
-  val borderBlockStart = Attr.simple("border-block-start")
-
-  /**
    * The border-block-start-color CSS property defines the color of the logical block start border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start-color">MDN</a>
@@ -242,13 +202,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start-width">MDN</a>
    */
   val borderBlockStartWidth = Attr.simple("border-block-start-width")
-
-  /**
-   * The border-bottom CSS property is a shorthand that sets the values of border-bottom-color, border-bottom-style, and border-bottom-width. These properties describe the bottom border of elements.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom">MDN</a>
-   */
-  val borderBottom = Attr.simple("border-bottom")
 
   /**
    * The border-bottom-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-bottom are more convenient and preferable.
@@ -293,13 +246,6 @@ trait HighLevelTmp {
   val borderCollapse = Attr.simple("border-collapse")
 
   /**
-   * The border-color CSS property is a shorthand for setting the color of the four sides of an element's border: border-top-color, border-right-color, border-bottom-color, border-left-color
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-color">MDN</a>
-   */
-  val borderColor = Attr.simple("border-color")
-
-  /**
    * The border-image CSS property allows drawing an image on the borders of elements. This makes drawing complex looking widgets much simpler than it has been and removes the need for nine boxes in some cases.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image">MDN</a>
@@ -342,13 +288,6 @@ trait HighLevelTmp {
   val borderImageWidth = Attr.simple("border-image-width")
 
   /**
-   * The border-inline-end CSS property is a shorthand property for setting the individual logical inline end border property values in a single place in the style sheet. border-inline-end can be used to set the values for one or more of: border-inline-end-width, border-inline-end-style, border-inline-end-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end">MDN</a>
-   */
-  val borderInlineEnd = Attr.simple("border-inline-end")
-
-  /**
    * The border-inline-end-color CSS property defines the color of the logical inline end border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end-color">MDN</a>
@@ -370,13 +309,6 @@ trait HighLevelTmp {
   val borderInlineEndWidth = Attr.simple("border-inline-end-width")
 
   /**
-   * The border-inline-start CSS property is a shorthand property for setting the individual logical inline start border property values in a single place in the style sheet. border-inline-start can be used to set the values for one or more of: border-inline-start-width, border-inline-start-style, border-inline-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start">MDN</a>
-   */
-  val borderInlineStart = Attr.simple("border-inline-start")
-
-  /**
    * The border-inline-start-color CSS property defines the color of the logical inline start border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start-color">MDN</a>
@@ -396,13 +328,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start-width">MDN</a>
    */
   val borderInlineStartWidth = Attr.simple("border-inline-start-width")
-
-  /**
-   * The border-left CSS property is a shorthand that sets the values of border-left-color, border-left-style, and border-left-width. These properties describe the left border of elements.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left">MDN</a>
-   */
-  val borderLeft = Attr.simple("border-left")
 
   /**
    * The border-left-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-left are more convenient and preferable.
@@ -431,13 +356,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius">MDN</a>
    */
   val borderRadius = Attr.simple("border-radius")
-
-  /**
-   * The border-right CSS property is a shorthand that sets the values of border-right-color, border-right-style, and border-right-width. These properties describe the right border of elements.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right">MDN</a>
-   */
-  val borderRight = Attr.simple("border-right")
 
   /**
    * The border-right-color CSS property sets the color of the right border of an element. Note that in many cases the shorthand CSS properties  border-color or border-right are more convenient and preferable.
@@ -473,13 +391,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-style">MDN</a>
    */
   val borderStyle = Attr.simple("border-style")
-
-  /**
-   * The border-top CSS property is a shorthand that sets the values of border-top-color, border-top-style, and border-top-width. These properties describe the top border of elements.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top">MDN</a>
-   */
-  val borderTop = Attr.simple("border-top")
 
   /**
    * The border-top-color CSS property sets the color of the top border of an element. Note that in many cases the shorthand CSS properties border-color or border-top are more convenient and preferable.
@@ -608,13 +519,6 @@ trait HighLevelTmp {
   val color = Attr.simple("color")
 
   /**
-   * The columns CSS property is a shorthand property allowing to set both the column-width and the column-count properties at the same time.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/columns">MDN</a>
-   */
-  val columns = Attr.simple("columns")
-
-  /**
    * The column-count CSS property describes the number of columns of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-count">MDN</a>
@@ -634,13 +538,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap">MDN</a>
    */
   val columnGap = Attr.simple("column-gap")
-
-  /**
-   * In multi-column layouts, the column-rule CSS property specifies a straight line, or "rule", to be drawn between each column. It is a convenient shorthand to avoid setting each of the individual column-rule-* properties separately : column-rule-width, column-rule-style and column-rule-color.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule">MDN</a>
-   */
-  val columnRule = Attr.simple("column-rule")
 
   /**
    * The column-rule-color CSS property lets you set the color of the rule drawn between columns in multi-column layouts.
@@ -734,13 +631,6 @@ trait HighLevelTmp {
   val filter = Attr.simple("filter")
 
   /**
-   * The flex CSS property is a shorthand property specifying the ability of a flex item to alter its dimensions to fill available space. Flex items can be stretched to use available space proportional to their flex grow factor or their flex shrink factor to prevent overflow.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
-   */
-  val flex = Attr.simple("flex")
-
-  /**
    * The CSS flex-basis property specifies the flex basis which is the initial main size of a flex item. The property determines the size of the content-box unless specified otherwise using box-sizing.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis">MDN</a>
@@ -753,13 +643,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction">MDN</a>
    */
   val flexDirection = Attr.simple("flex-direction")
-
-  /**
-   * The CSS flex-flow property is a shorthand property for flex-direction and flex-wrap individual properties.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-flow">MDN</a>
-   */
-  val flexFlow = Attr.simple("flex-flow")
 
   /**
    * The CSS flex-grow property specifies the flex grow factor of a flex item.
@@ -788,13 +671,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float">MDN</a>
    */
   val float = Attr.simple("float")
-
-  /**
-   * The font CSS property is either a shorthand property for setting font-style, font-variant, font-weight, font-size, line-height and font-family, or a way to set the element's font to a system font, using specific keywords.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font">MDN</a>
-   */
-  val font = Attr.simple("font")
 
   /**
    * The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule.
@@ -858,13 +734,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis">MDN</a>
    */
   val fontSynthesis = Attr.simple("font-synthesis")
-
-  /**
-   * The font-variant CSS property selects a normal, or small-caps face from a font family. Setting the CSS Level 2 (Revision 1) values of the  font-variant property, that is normal or small-caps, is also possible by using the font shorthand.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant">MDN</a>
-   */
-  val fontVariant = Attr.simple("font-variant")
 
   /**
    * The font-variant-alternates CSS property controls the usage of alternate glyphs associated to alternative names defined in @font-feature-values.
@@ -1133,13 +1002,6 @@ trait HighLevelTmp {
   val lineHeight = Attr.simple("line-height")
 
   /**
-   * The list-style CSS property is a shorthand property for setting list-style-type, list-style-image and list-style-position.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style">MDN</a>
-   */
-  val listStyle = Attr.simple("list-style")
-
-  /**
    * The list-style-image CSS property sets the image that will be used as the list item marker.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-image">MDN</a>
@@ -1159,13 +1021,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type">MDN</a>
    */
   val listStyleType = Attr.simple("list-style-type")
-
-  /**
-   * The margin CSS property sets the margin for all four sides. It is a shorthand to avoid setting each side separately with the other margin properties: margin-top, margin-right, margin-bottom and margin-left.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">MDN</a>
-   */
-  val margin = Attr.simple("margin")
 
   /**
    * The margin-block-end CSS property defines the logical block end margin of an element, which maps to a physical margin depending on the element's writing mode, directionality, and text orientation. It corresponds to the margin-top, margin-right, margin-bottom, or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
@@ -1369,13 +1224,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/orphans">MDN</a>
    */
   val orphans = Attr.simple("orphans")
-
-  /**
-   * The CSS outline property is a shorthand property for setting one or more of the individual outline properties outline-style, outline-width and outline-color in a single declaration. In most cases the use of this shortcut is preferable and more convenient.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline">MDN</a>
-   */
-  val outline = Attr.simple("outline")
 
   /**
    * The outline-color CSS property sets the color of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out.
@@ -1763,13 +1611,6 @@ trait HighLevelTmp {
   val transformStyle = Attr.simple("transform-style")
 
   /**
-   * The CSS transition property is a shorthand property for transition-property, transition-duration, transition-timing-function, and transition-delay. It allows to define the transition between two states of an element. Different states may be defined using pseudo-classes like :hover or :active or dynamically set using JavaScript.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
-   */
-  val transition = Attr.simple("transition")
-
-  /**
    * The transition-delay CSS property specifies the amount of time to wait between a change being requested to a property that is to be transitioned and the start of the transition effect.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay">MDN</a>
@@ -1810,13 +1651,6 @@ trait HighLevelTmp {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range">MDN</a>
    */
   val unicodeRange = Attr.simple("unicode-range")
-
-  /**
-   * The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unset">MDN</a>
-   */
-  val unset = Attr.simple("unset")
 
   /**
    * The vertical-align CSS property specifies the vertical alignment of an inline or table-cell box.
@@ -1895,4 +1729,179 @@ trait HighLevelTmp {
    */
   val zIndex = Attr.simple("z-index")
 
+  // -------------------------------------------------------------------------------------------------------------------
+  // Overriding Attributes
+  // -------------------------------------------------------------------------------------------------------------------
+
+  /**
+   * The CSS all shorthand property resets all properties, but unicode-bidi and direction to their initial or inherited value.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/all">MDN</a>
+   */
+  val all = Attr.simpleG("all", AttrComparison.set(unicodeBidi, direction)(Unrelated, FullOverride))
+
+  /**
+   * The animation CSS property is a shorthand property for animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, animation-fill-mode and animation-play-state.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
+   */
+  val animation = Attr.simpleFO("animation",
+    animationName, animationDuration, animationTimingFunction, animationDelay, animationIterationCount,
+    animationDirection, animationFillMode, animationPlayState)
+
+  /**
+   * The background CSS property is a shorthand for setting the individual background values in a single place in the style sheet. background can be used to set the values for one or more of: background-clip, background-color, background-image, background-origin, background-position, background-repeat, background-size, and background-attachment.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">MDN</a>
+   */
+  val background = Attr.simpleFO("background",
+    backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat,
+    backgroundSize, backgroundAttachment)
+
+  /**
+   * The border-bottom CSS property is a shorthand that sets the values of border-bottom-color, border-bottom-style, and border-bottom-width. These properties describe the bottom border of elements.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom">MDN</a>
+   */
+  val borderBottom = Attr.simpleFO("border-bottom", borderBottomColor, borderBottomStyle, borderBottomWidth)
+
+  /**
+   * The border-left CSS property is a shorthand that sets the values of border-left-color, border-left-style, and border-left-width. These properties describe the left border of elements.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left">MDN</a>
+   */
+  val borderLeft = Attr.simpleFO("border-left", borderLeftColor, borderLeftStyle, borderLeftWidth)
+
+  /**
+   * The border-right CSS property is a shorthand that sets the values of border-right-color, border-right-style, and border-right-width. These properties describe the right border of elements.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right">MDN</a>
+   */
+  val borderRight = Attr.simpleFO("border-right", borderRightColor, borderRightStyle, borderRightWidth)
+
+  /**
+   * The border-top CSS property is a shorthand that sets the values of border-top-color, border-top-style, and border-top-width. These properties describe the top border of elements.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top">MDN</a>
+   */
+  val borderTop = Attr.simpleFO("border-top", borderTopColor, borderTopStyle, borderTopWidth)
+
+  /**
+   * The border-block-start CSS property is a shorthand property for setting the individual logical block start border property values in a single place in the style sheet. border-block-start can be used to set the values for one or more of: border-block-start-width, border-block-start-style, border-block-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start">MDN</a>
+   */
+  val borderBlockStart = Attr.simpleFO("border-block-start",
+    borderBlockStartWidth, borderBlockStartStyle, borderBlockStartColor,
+    borderTop, borderRight, borderBottom, borderLeft)
+
+  /**
+   * The border-block-end CSS property is a shorthand property for setting the individual logical block end border property values in a single place in the style sheet. border-block-end can be used to set the values for one or more of: border-block-end-width, border-block-end-style, border-block-end-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end">MDN</a>
+   */
+  val borderBlockEnd = Attr.simpleFO("border-block-end",
+    borderBlockEndWidth, borderBlockEndStyle, borderBlockEndColor,
+    borderTop, borderRight, borderBottom, borderLeft)
+
+  /**
+   * The border-color CSS property is a shorthand for setting the color of the four sides of an element's border: border-top-color, border-right-color, border-bottom-color, border-left-color
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-color">MDN</a>
+   */
+  val borderColor = Attr.simpleFO("border-color", borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
+
+  /**
+   * The border-inline-end CSS property is a shorthand property for setting the individual logical inline end border property values in a single place in the style sheet. border-inline-end can be used to set the values for one or more of: border-inline-end-width, border-inline-end-style, border-inline-end-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end">MDN</a>
+   */
+  val borderInlineEnd = Attr.simpleFO("border-inline-end", borderInlineEndWidth, borderInlineEndStyle, borderInlineEndColor)
+
+  /**
+   * The border-inline-start CSS property is a shorthand property for setting the individual logical inline start border property values in a single place in the style sheet. border-inline-start can be used to set the values for one or more of: border-inline-start-width, border-inline-start-style, border-inline-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start">MDN</a>
+   */
+  val borderInlineStart = Attr.simpleFO("border-inline-start", borderInlineStartWidth, borderInlineStartStyle, borderInlineStartColor)
+
+  /**
+   * The border CSS property is a shorthand property for setting the individual border property values in a single place in the style sheet. border can be used to set the values for one or more of: border-width, border-style, border-color.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border">MDN</a>
+   */
+  val border = Attr.simpleFO("border", borderWidth, borderStyle, borderColor)
+
+  /**
+   * The columns CSS property is a shorthand property allowing to set both the column-width and the column-count properties at the same time.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/columns">MDN</a>
+   */
+  val columns = Attr.simpleFO("columns", columnWidth, columnCount)
+
+  /**
+   * In multi-column layouts, the column-rule CSS property specifies a straight line, or "rule", to be drawn between each column. It is a convenient shorthand to avoid setting each of the individual column-rule-* properties separately : column-rule-width, column-rule-style and column-rule-color.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule">MDN</a>
+   */
+  val columnRule = Attr.simpleFO("column-rule", columnRuleWidth, columnRuleStyle, columnRuleColor)
+
+  /**
+   * The flex CSS property is a shorthand property specifying the ability of a flex item to alter its dimensions to fill available space. Flex items can be stretched to use available space proportional to their flex grow factor or their flex shrink factor to prevent overflow.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
+   */
+  val flex = Attr.simpleFO("flex", flexGrow, flexShrink, flexBasis)
+
+  /**
+   * The CSS flex-flow property is a shorthand property for flex-direction and flex-wrap individual properties.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-flow">MDN</a>
+   */
+  val flexFlow = Attr.simpleFO("flex-flow", flexDirection, flexWrap)
+
+  /**
+   * The font-variant CSS property selects a normal, or small-caps face from a font family. Setting the CSS Level 2 (Revision 1) values of the  font-variant property, that is normal or small-caps, is also possible by using the font shorthand.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant">MDN</a>
+   */
+  val fontVariant = Attr.simpleFO("font-variant",
+    fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric,
+    fontVariantPosition)
+
+  /**
+   * The font CSS property is either a shorthand property for setting font-style, font-variant, font-weight, font-size, line-height and font-family, or a way to set the element's font to a system font, using specific keywords.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font">MDN</a>
+   */
+  val font = Attr.simpleFO("font", fontStyle, fontVariant, fontWeight, fontSize, lineHeight, fontFamily)
+
+  /**
+   * The list-style CSS property is a shorthand property for setting list-style-type, list-style-image and list-style-position.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style">MDN</a>
+   */
+  val listStyle = Attr.simpleFO("list-style", listStyleType, listStyleImage, listStylePosition)
+
+  /**
+   * The margin CSS property sets the margin for all four sides. It is a shorthand to avoid setting each side separately with the other margin properties: margin-top, margin-right, margin-bottom and margin-left.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">MDN</a>
+   */
+  val margin = Attr.simpleFO("margin", marginTop, marginRight, marginBottom, marginLeft)
+
+  /**
+   * The CSS outline property is a shorthand property for setting one or more of the individual outline properties outline-style, outline-width and outline-color in a single declaration. In most cases the use of this shortcut is preferable and more convenient.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline">MDN</a>
+   */
+  val outline = Attr.simpleFO("outline", outlineStyle, outlineWidth, outlineColor)
+
+  /**
+   * The CSS transition property is a shorthand property for transition-property, transition-duration, transition-timing-function, and transition-delay. It allows to define the transition between two states of an element. Different states may be defined using pseudo-classes like :hover or :active or dynamically set using JavaScript.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
+   */
+  val transition = Attr.simpleFO("transition",
+    transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay)
 }
