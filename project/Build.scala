@@ -26,15 +26,27 @@ object ScalaCSS extends Build {
         updateOptions      := updateOptions.value.withCachedResolution(true))
     ) :+ Typical.settings("scalacss")
 
-  val scalazCore = Library("org.scalaz", "scalaz-core", "7.1.1").myJsFork("scalaz").jsVersion(_+"-2")
-  val shapeless  = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
+  object scalaz {
+    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.1").myJsFork("scalaz").jsVersion(_+"-2")
+    val core       = m("core")
+    val effect     = m("effect") > core
+    val concurrent = m("concurrent") > effect
+  }
+  object nyaya {
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.8")
+    val core = m("core")
+    val test = m("test")
+  }
+  val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
 
   // ==============================================================================================
   override def rootProject = Some(core)
 
+  core.settings(libraryDependencies += "org.apache.derby" % "derby" % "10.4.1.3" % Test)
+
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
       .configure(utestSettings())
-      .addLibs(scalazCore, shapeless)
+      .addLibs(scalaz.core, shapeless, nyaya.core, nyaya.test % Test)
     )
 }

@@ -14,24 +14,33 @@ object Dialect {
 
   type PE = Project => Project
 
-  case class Library(jvmG: String, jvmA: String, jvmV: String, jsG: String, jsA: String, jsV: String, scope: Option[String]) {
+  case class Library(jvmG: String, jvmA: String, jvmV: String,
+                     jsG: String, jsA: String, jsV: String,
+                     scope: Option[String], tdeps: List[Library]) {
     def jsGroup(v: String) = copy(jsG = v)
     def jsArtifact(v: String) = copy(jsA = v)
     def jsVersion(v: String) = copy(jsV = v)
     def jsVersion(f: String => String) = copy(jsV = f(jsV))
-    def %(s: String) = copy(scope = Some(s))
+    def %(s: String): Library = copy(scope = Some(s))
+    def %(s: Configuration): Library = %(s.name)
     def myJsFork(n: String) = jsGroup("com.github.japgolly.fork."+n)
-    def apply(d: Dialect) = {
+
+    def moduleId(d: Dialect): ModuleID = {
       val l = d match {
         case JVM => jvmG %% jvmA % jvmV
         case JS  => jsG %%%! jsA % jsV
       }
       scope.fold(l)(l % _)
     }
+    def apply(d: Dialect): List[ModuleID] = {
+      val t = scope.fold(tdeps)(s => tdeps.map(_ % s))
+      (this :: t).map(_ moduleId d)
+    }
+    def >(l: Library) = copy(tdeps = l :: this.tdeps)
   }
   object Library {
     def apply(jvmG: String, jvmA: String, jvmV: String) =
-      new Library(jvmG, jvmA, jvmV, jvmG, jvmA, jvmV, None)
+      new Library(jvmG, jvmA, jvmV, jvmG, jvmA, jvmV, None, Nil)
   }
 
   /** CDS = Cross Dialect Settings */
@@ -52,7 +61,7 @@ object Dialect {
     def configure(ss: CDS*): CDS = ss.foldLeft(this)(_ :+ _)
 
     def addLibs(ls: Library*): CDS =
-      jj(d => _.settings(libraryDependencies ++= ls.map(_(d))))
+      jj(d => _.settings(libraryDependencies ++= ls.flatMap(_(d))))
 
     def dependsOn(jvm: => Project, js: => Project) =
       jj(d => _.dependsOn(d match {case JVM => jvm; case JS => js}))

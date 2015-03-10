@@ -1,8 +1,15 @@
 package japgolly.scalacss
 
-import AttrComparison.{FullOverride, Unrelated}
+import scalaz.NonEmptyList
+import AttrCmp.{Overlap, Unrelated}
 
 // TODO Rename and move HighLevelTmp
+
+object Attrs extends Attrs {
+
+  // fgrep 'final val ' ./core/src/main/scala/japgolly/scalacss/HighLevelTmp.scala | perl -pe 's/^.+ val | = .*//g' | sort | xargs | perl -pe 's/ /, /g'
+  val values = NonEmptyList[Attr](alignContent, alignItems, alignSelf, all, animation, animationDelay, animationDirection, animationDuration, animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction, backfaceVisibility, background, backgroundAttachment, backgroundBlendMode, backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat, backgroundSize, blockSize, border, borderBlockEnd, borderBlockEndColor, borderBlockEndStyle, borderBlockEndWidth, borderBlockStart, borderBlockStartColor, borderBlockStartStyle, borderBlockStartWidth, borderBottom, borderBottomColor, borderBottomLeftRadius, borderBottomRightRadius, borderBottomStyle, borderBottomWidth, borderCollapse, borderColor, borderImage, borderImageOutset, borderImageRepeat, borderImageSlice, borderImageSource, borderImageWidth, borderInlineEnd, borderInlineEndColor, borderInlineEndStyle, borderInlineEndWidth, borderInlineStart, borderInlineStartColor, borderInlineStartStyle, borderInlineStartWidth, borderLeft, borderLeftColor, borderLeftStyle, borderLeftWidth, borderRadius, borderRight, borderRightColor, borderRightStyle, borderRightWidth, borderSpacing, borderStyle, borderTop, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderTopStyle, borderTopWidth, borderWidth, bottom, boxDecorationBreak, boxShadow, boxSizing, breakAfter, breakBefore, breakInside, captionSide, clear, clip, clipPath, color, columnCount, columnFill, columnGap, columnRule, columnRuleColor, columnRuleStyle, columnRuleWidth, columns, columnSpan, columnWidth, content, counterIncrement, counterReset, cursor, direction, display, emptyCells, filter, flex, flexBasis, flexDirection, flexFlow, flexGrow, flexShrink, flexWrap, float, font, fontFamily, fontFeatureSettings, fontKerning, fontLanguageOverride, fontSize, fontSizeAdjust, fontStretch, fontStyle, fontSynthesis, fontVariant, fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric, fontVariantPosition, fontWeight, grid, gridArea, gridAutoColumns, gridAutoFlow, gridAutoPosition, gridAutoRows, gridColumn, gridColumnEnd, gridColumnStart, gridRow, gridRowEnd, gridRowStart, gridTemplate, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, height, hyphens, imageOrientation, imageRendering, imageResolution, imeMode, inherit, initial, inlineSize, isolation, justifyContent, left, letterSpacing, lineBreak, lineHeight, listStyle, listStyleImage, listStylePosition, listStyleType, margin, marginBlockEnd, marginBlockStart, marginBottom, marginInlineEnd, marginInlineStart, marginLeft, marginRight, marginTop, marks, mask, maskType, maxBlockSize, maxHeight, maxInlineSize, maxWidth, minBlockSize, minHeight, minInlineSize, minWidth, mixBlendMode, objectFit, objectPosition, offsetBlockEnd, offsetBlockStart, offsetInlineEnd, offsetInlineStart, opacity, order, orphans, outline, outlineColor, outlineOffset, outlineStyle, outlineWidth, overflow, overflowWrap, overflowX, overflowY, padding, paddingBlockEnd, paddingBlockStart, paddingBottom, paddingInlineEnd, paddingInlineStart, paddingLeft, paddingRight, paddingTop, pageBreakAfter, pageBreakBefore, pageBreakInside, perspective, perspectiveOrigin, pointerEvents, position, quotes, resize, right, rubyAlign, rubyMerge, rubyPosition, scrollBehavior, shapeImageThreshold, shapeMargin, shapeOutside, tableLayout, tabSize, textAlign, textAlignLast, textCombineUpright, textDecoration, textDecorationColor, textDecorationLine, textDecorationStyle, textIndent, textOrientation, textOverflow, textRendering, textShadow, textTransform, textUnderlinePosition, top, touchAction, transform, transformOrigin, transformStyle, transition, transitionDelay, transitionDuration, transitionProperty, transitionTimingFunction, unicodeBidi, unicodeRange, verticalAlign, visibility, whiteSpace, widows, width, willChange, wordBreak, wordSpacing, wordWrap, writingMode, zIndex)
+}
 
 trait Attrs {
 
@@ -1738,14 +1745,14 @@ trait Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/all">MDN</a>
    */
   final val all = Attr.simpleG("all",
-    AttrComparison.set(unicodeBidi, direction)(Unrelated, FullOverride))
+    AttrCmp.set(unicodeBidi, direction)(Unrelated, Overlap))
 
   /**
    * The animation CSS property is a shorthand property for animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, animation-fill-mode and animation-play-state.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
    */
-  final val animation = Attr.simpleFO("animation",
+  final val animation = Attr.simpleO("animation")(
     animationName, animationDuration, animationTimingFunction, animationDelay, animationIterationCount,
     animationDirection, animationFillMode, animationPlayState)
 
@@ -1754,7 +1761,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">MDN</a>
    */
-  final val background = Attr.simpleFO("background",
+  final val background = Attr.simpleO("background")(
     backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat,
     backgroundSize, backgroundAttachment)
 
@@ -1763,7 +1770,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom">MDN</a>
    */
-  final val borderBottom = Attr.simpleFO("border-bottom",
+  final val borderBottom = Attr.simpleO("border-bottom")(
     borderBottomColor, borderBottomStyle, borderBottomWidth)
 
   /**
@@ -1771,7 +1778,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left">MDN</a>
    */
-  final val borderLeft = Attr.simpleFO("border-left",
+  final val borderLeft = Attr.simpleO("border-left")(
     borderLeftColor, borderLeftStyle, borderLeftWidth)
 
   /**
@@ -1779,7 +1786,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right">MDN</a>
    */
-  final val borderRight = Attr.simpleFO("border-right",
+  final val borderRight = Attr.simpleO("border-right")(
     borderRightColor, borderRightStyle, borderRightWidth)
 
   /**
@@ -1787,7 +1794,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top">MDN</a>
    */
-  final val borderTop = Attr.simpleFO("border-top",
+  final val borderTop = Attr.simpleO("border-top")(
     borderTopColor, borderTopStyle, borderTopWidth)
 
   /**
@@ -1795,7 +1802,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start">MDN</a>
    */
-  final val borderBlockStart = Attr.simpleFO("border-block-start",
+  final val borderBlockStart = Attr.simpleO("border-block-start")(
     borderBlockStartWidth, borderBlockStartStyle, borderBlockStartColor,
     borderTop, borderRight, borderBottom, borderLeft)
 
@@ -1804,7 +1811,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end">MDN</a>
    */
-  final val borderBlockEnd = Attr.simpleFO("border-block-end",
+  final val borderBlockEnd = Attr.simpleO("border-block-end")(
     borderBlockEndWidth, borderBlockEndStyle, borderBlockEndColor,
     borderTop, borderRight, borderBottom, borderLeft)
 
@@ -1813,7 +1820,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-color">MDN</a>
    */
-  final val borderColor = Attr.simpleFO("border-color",
+  final val borderColor = Attr.simpleO("border-color")(
     borderTopColor, borderRightColor, borderBottomColor, borderLeftColor)
 
   /**
@@ -1821,7 +1828,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end">MDN</a>
    */
-  final val borderInlineEnd = Attr.simpleFO("border-inline-end",
+  final val borderInlineEnd = Attr.simpleO("border-inline-end")(
     borderInlineEndWidth, borderInlineEndStyle, borderInlineEndColor)
 
   /**
@@ -1829,7 +1836,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start">MDN</a>
    */
-  final val borderInlineStart = Attr.simpleFO("border-inline-start",
+  final val borderInlineStart = Attr.simpleO("border-inline-start")(
     borderInlineStartWidth, borderInlineStartStyle, borderInlineStartColor)
 
   /**
@@ -1837,7 +1844,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border">MDN</a>
    */
-  final val border = Attr.simpleFO("border",
+  final val border = Attr.simpleO("border")(
     borderWidth, borderStyle, borderColor)
 
   /**
@@ -1845,15 +1852,15 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/columns">MDN</a>
    */
-  final val columns = Attr.simpleFO("columns",
+  final val columns = Attr.simpleO("columns")(
     columnWidth, columnCount)
 
   /**
-   * In multi-column layouts, the column-rule CSS property specifies a straight line, or "rule", to be drawn between each column. It is a convenient shorthand to avoid setting each of the individual column-rule-* properties separately : column-rule-width, column-rule-style and column-rule-color.
+   * In multi-column layouts, the column-rule CSS property specifies a straight line, or "rule")( to be drawn between each column. It is a convenient shorthand to avoid setting each of the individual column-rule-* properties separately : column-rule-width, column-rule-style and column-rule-color.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule">MDN</a>
    */
-  final val columnRule = Attr.simpleFO("column-rule",
+  final val columnRule = Attr.simpleO("column-rule")(
     columnRuleWidth, columnRuleStyle, columnRuleColor)
 
   /**
@@ -1861,7 +1868,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
    */
-  final val flex = Attr.simpleFO("flex",
+  final val flex = Attr.simpleO("flex")(
     flexGrow, flexShrink, flexBasis)
 
   /**
@@ -1869,7 +1876,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-flow">MDN</a>
    */
-  final val flexFlow = Attr.simpleFO("flex-flow",
+  final val flexFlow = Attr.simpleO("flex-flow")(
     flexDirection, flexWrap)
 
   /**
@@ -1877,7 +1884,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant">MDN</a>
    */
-  final val fontVariant = Attr.simpleFO("font-variant",
+  final val fontVariant = Attr.simpleO("font-variant")(
     fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric,
     fontVariantPosition)
 
@@ -1886,7 +1893,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font">MDN</a>
    */
-  final val font = Attr.simpleFO("font",
+  final val font = Attr.simpleO("font")(
     fontStyle, fontVariant, fontWeight, fontSize, lineHeight, fontFamily)
 
   /**
@@ -1894,7 +1901,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style">MDN</a>
    */
-  final val listStyle = Attr.simpleFO("list-style",
+  final val listStyle = Attr.simpleO("list-style")(
     listStyleType, listStyleImage, listStylePosition)
 
   /**
@@ -1902,7 +1909,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">MDN</a>
    */
-  final val margin = Attr.simpleFO("margin",
+  final val margin = Attr.simpleO("margin")(
     marginTop, marginRight, marginBottom, marginLeft)
 
   /**
@@ -1910,7 +1917,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline">MDN</a>
    */
-  final val outline = Attr.simpleFO("outline",
+  final val outline = Attr.simpleO("outline")(
     outlineStyle, outlineWidth, outlineColor)
 
   /**
@@ -1918,6 +1925,6 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
    */
-  final val transition = Attr.simpleFO("transition",
+  final val transition = Attr.simpleO("transition")(
     transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay)
 }
