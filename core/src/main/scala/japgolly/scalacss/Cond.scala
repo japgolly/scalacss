@@ -27,7 +27,7 @@ abstract class Pseudo(val value: String) extends Cond {
 
 object Pseudo {
 
-  case class Composite private[scalacss] (h: Pseudo, t: List[Pseudo]) extends Pseudo((h :: t).foldLeft("")(_ + _.value))
+  final case class Composite private[scalacss] (h: Pseudo, t: List[Pseudo]) extends Pseudo((h :: t).foldLeft("")(_ + _.value))
 
   /** Selects the active link. */
   case object Active extends Pseudo(":active")
@@ -63,7 +63,7 @@ object Pseudo {
   case object Invalid extends Pseudo(":invalid")
 
   /** Selects every &lt;p&gt; element with a lang attribute value starting with "it". */
-  case class Lang(language: String) extends Pseudo(s":lang($language)")
+  final case class Lang(language: String) extends Pseudo(s":lang($language)")
 
   /** Selects every &lt;p&gt; elements that is the last child of its parent. */
   case object LastChild extends Pseudo(":last-child")
@@ -75,22 +75,22 @@ object Pseudo {
   case object Link extends Pseudo(":link")
 
   /** Selects every element that is not a &lt;p&gt; element. */
-  case class Not(selector: String) extends Pseudo(s":not($selector)")
+  final case class Not(selector: String) extends Pseudo(s":not($selector)")
   object Not {
     def apply(selector: Pseudo): Not = Not(selector.value)
   }
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
-  case class NthChild(n: Int) extends Pseudo(s":nth-child($n)")
+  final case class NthChild(n: Int) extends Pseudo(s":nth-child($n)")
 
   /** Selects every &lt;p&gt; element that is the second child of its parent, counting from the last child. */
-  case class NthLastChild(n: Int) extends Pseudo(s":nth-last-child($n)")
+  final case class NthLastChild(n: Int) extends Pseudo(s":nth-last-child($n)")
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent, counting from the last child. */
-  case class NthLastOfType(n: Int) extends Pseudo(s":nth-last-of-type($n)")
+  final case class NthLastOfType(n: Int) extends Pseudo(s":nth-last-of-type($n)")
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent. */
-  case class NthOfType(n: Int) extends Pseudo(s":nth-of-type($n)")
+  final case class NthOfType(n: Int) extends Pseudo(s":nth-of-type($n)")
 
   /** Selects every &lt;p&gt; element that is the only &lt;p&gt; element of its parent. */
   case object OnlyOfType extends Pseudo(":only-of-type")
@@ -145,5 +145,5 @@ object Pseudo {
 // =====================================================================================================================
 
 // TODO MediaQuery
-// case class MediaQuery(q: String) extends Cond // like @media (max-width: 600px)
+// final case class MediaQuery(q: String) extends Cond // like @media (max-width: 600px)
 // Later, this can be turned into an AST and run to omit unnecessary CSS.
