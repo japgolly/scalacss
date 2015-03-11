@@ -4,6 +4,7 @@ import japgolly.nyaya.test._
 import japgolly.nyaya.test.PropTest._
 import utest._
 import TestUtil._
+import AttrCmp.{Overlap, Unrelated}
 
 object AttrTest extends TestSuite {
 
@@ -20,18 +21,22 @@ object AttrTest extends TestSuite {
   override val tests = TestSuite {
     'laws1 - Attr.laws1.mustBeProvedBy(builtInAttrs)
     'laws2 - Attr.laws2.mustBeProvedBy(builtInAttrPairs)
-    'laws3 - Attr.laws3.mustBeSatisfiedBy(builtInAttrTriplets)
+//    'laws3 - Attr.laws3.mustBeSatisfiedBy(builtInAttrTriplets)
 
-    /*
-    'overlapTransitivity {
-      // A ← B → C → D
-      val a = Attr.simple("a")
-      val d = Attr.simple("d")
-      val c = Attr.simpleO("c")(d)
-      val b = Attr.simpleO("b")(a, c) // not even referenced
-      assertEq("a cmp d", a cmp d, Overlap)
-      assertEq("d cmp a", d cmp a, Overlap)
+    'overlap {
+      def test(e: AttrCmp, a: Attr, b: Attr): Unit =
+        assertEq(s"$a cmp $b", e, a cmp b)
+      import Attrs._
+      test(Unrelated, padding,     margin)
+      test(Overlap,   padding,     paddingLeft)
+      test(Overlap,   all,         padding)
+      test(Overlap,   all,         paddingLeft)
+      test(Overlap,   border,      borderLeft)
+      test(Overlap,   border,      borderColor)
+      test(Overlap,   borderLeft,  borderColor)
+      test(Unrelated, borderStyle, borderColor)
+      test(Unrelated, borderLeft,  borderRightColor)
+      test(Unrelated, borderLeft,  borderRight)
     }
-    */
   }
 }

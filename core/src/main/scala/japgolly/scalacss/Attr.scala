@@ -1,7 +1,8 @@
 package japgolly.scalacss
 
-import scalaz.Equal
-import japgolly.nyaya.Prop
+import japgolly.nyaya._
+import scala.annotation.tailrec
+import scalaz.{Need, NonEmptyList, Equal}
 
 /**
  * A style attribute.
@@ -12,17 +13,36 @@ import japgolly.nyaya.Prop
  * @param id A name by which this attribute can be identified. It is used for attribute equality and describing itself
  *           in messages to the developer. It doesn't not appear in output CSS.
  */
-final class Attr(val id: String, val gen: Attr.Gen, private[Attr] val cmp0: AttrCmp.Fn) {
-  override def hashCode = id.##
-  override def equals(t: Any) = t match {
+sealed abstract class Attr(val id: String, val gen: Attr.Gen) {
+  override final def hashCode = id.##
+  override final def equals(t: Any) = t match {
     case b: Attr => b.id == id
     case _       => false
   }
-  override def toString = id
+  override final def toString = id
 
-  // TODO test transitivity
-  def cmp(that: Attr): AttrCmp =
-    AttrCmp.byEquality(this, that) >> cmp0(this, that) >> that.cmp0(that, this)
+  final def cmp(that: Attr): AttrCmp =
+    AttrCmp.default(this, that)
+
+  def realAttrs: Set[RealAttr]
+}
+
+final class RealAttr(id: String, gen: Attr.Gen) extends Attr(id, gen) {
+  override val realAttrs = Set[RealAttr](this)
+}
+
+final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyList[Attr]]) extends Attr(id, gen) {
+  override lazy val realAttrs = {
+    @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: List[Attr]): Set[RealAttr] =
+      queue match {
+        case Nil                       => found
+        case a :: t if seen contains a => go(seen, found, t)
+        case (a: RealAttr)  :: t       => go(seen + a, found + a, t)
+        case (a: AliasAttr) :: t       => go(seen + a, found, a.targets.value.list ::: t)
+        // ↗ Using a.targets instead of a.realAttrs to avoid potential deadlock
+      }
+    go(Set.empty, Set.empty, targets.value.list)
+  }
 }
 
 object Attr {
@@ -30,17 +50,22 @@ object Attr {
 
   implicit val equality: Equal[Attr] = Equal.equalA
 
-  def apply(id: String, gen: Attr.Gen, cmp: (Attr, Attr) => AttrCmp): Attr =
-    new Attr(id, gen, cmp)
+  def simpleGen(css: String): Gen =
+    _ => CssKV(css, _) :: Nil
 
-  def simple(css: String): Attr =
-    simpleG(css, AttrCmp.nop)
+  def real(css: String): Attr =
+    new RealAttr(css, simpleGen(css))
 
-  def simpleO(css: String)(as: Attr*): Attr =
-    simpleG(css, AttrCmp.overlap(as: _*))
+  def alias(css: String)(f: AliasB.type => NonEmptyList[Attr]): Attr =
+    new AliasAttr(css, simpleGen(css), Need(f(AliasB)))
 
-  def simpleG(css: String, cmp: AttrCmp.Fn): Attr =
-    Attr(css, _ => CssKV(css, _) :: Nil, cmp)
+  /**
+   * Helper for creating a lazy NonEmptyList[Attr] so that initialisation order doesn't matter,
+   * and attributes can have recursive definitions.
+   */
+  object AliasB {
+    @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
+  }
 
   def laws1: Prop[Attr] = (
     Prop.equal[Attr, AttrCmp]("cmp is reflexive: a.cmp(a) = Same", a => a cmp a, _ => AttrCmp.Same)
@@ -48,20 +73,14 @@ object Attr {
   )
 
   def laws2: Prop[(Attr, Attr)] =
-    Prop.equal[(Attr, Attr), AttrCmp]("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
-
-  def laws3: Prop[(Attr, Attr, Attr)] =
-    Prop.atom("Overlap is transitive: a @ b ∧ b @ c ⇒ a @ c", { case (a, b, c) =>
-      import AttrCmp.Overlap
-      if (a.cmp(b) == Overlap && b.cmp(c) == Overlap && a.cmp(c) != Overlap)
-        Some(s"$a overlaps $b which overlaps $c, but [$a cmp $c] = ${a cmp c}")
-      else None
-    })
+    Prop.equal("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
 }
 
+// =====================================================================================================================
 sealed abstract class AttrCmp {
   def >>(next: => AttrCmp): AttrCmp
 }
+
 object AttrCmp {
   case object Unrelated extends AttrCmp {
     override def >>(next: => AttrCmp): AttrCmp = next
@@ -78,20 +97,19 @@ object AttrCmp {
 
   type Fn = (Attr, Attr) => AttrCmp
 
-  val nop: Fn =
-    (_, _) => Unrelated
-
   val byEquality: Fn =
     (a, b) => if (Equal[Attr].equal(a, b)) Same else Unrelated
 
-  def overlap(as: Attr*): Fn =
-    set(as: _*)(Overlap, Unrelated)
+  val byRealAttrs: Fn =
+    (x, y) => {
+      val a = x.realAttrs
+      val b = y.realAttrs
+      if (a exists b.contains) Overlap else Unrelated
+    }
 
-  def set(as: Attr*)(t: AttrCmp, f: AttrCmp): Fn = {
-    val set = Set(as: _*)
-    cond(set.contains, t, f)
-  }
+  def compose(fst: Fn, snd: Fn): Fn =
+    (a, b) => fst(a,b) >> snd(a,b)
 
-  def cond(c: Attr => Boolean, t: AttrCmp, f: AttrCmp): Fn =
-    (_, b) => if (c(b)) t else f
+  val default: Fn =
+    compose(byEquality, byRealAttrs)
 }
