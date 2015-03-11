@@ -7,5 +7,10 @@
 .*.swo
 .*.swn
 .metadata
-.idea
+.idea*
+projectFilesBackup*
 target
+
+misc.ods
+experiment/main2.scala
+asd.zip
