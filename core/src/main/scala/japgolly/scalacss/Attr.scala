@@ -2,7 +2,8 @@ package japgolly.scalacss
 
 import japgolly.nyaya._
 import scala.annotation.tailrec
-import scalaz.{Need, NonEmptyList, Equal}
+import scalaz.{Equal, Need, NonEmptyList, Order}
+import scalaz.std.string.stringInstance
 
 /**
  * A style attribute.
@@ -24,15 +25,15 @@ sealed abstract class Attr(val id: String, val gen: Attr.Gen) {
   final def cmp(that: Attr): AttrCmp =
     AttrCmp.default(this, that)
 
-  def realAttrs: Set[RealAttr]
+  def real: Set[RealAttr]
 }
 
 final class RealAttr(id: String, gen: Attr.Gen) extends Attr(id, gen) {
-  override val realAttrs = Set[RealAttr](this)
+  override val real = Set[RealAttr](this)
 }
 
 final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyList[Attr]]) extends Attr(id, gen) {
-  override lazy val realAttrs = {
+  override lazy val real = {
     @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: List[Attr]): Set[RealAttr] =
       queue match {
         case Nil                       => found
@@ -48,7 +49,7 @@ final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyList[
 object Attr {
   type Gen = Env => Value => List[CssKV]
 
-  implicit val equality: Equal[Attr] = Equal.equalA
+  implicit val order: Order[Attr] = Order.orderBy(_.id)
 
   def simpleGen(css: String): Gen =
     _ => CssKV(css, _) :: Nil
@@ -102,8 +103,8 @@ object AttrCmp {
 
   val byRealAttrs: Fn =
     (x, y) => {
-      val a = x.realAttrs
-      val b = y.realAttrs
+      val a = x.real
+      val b = y.real
       if (a exists b.contains) Overlap else Unrelated
     }
 
