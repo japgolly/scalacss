@@ -5,7 +5,7 @@ cd "$(dirname "$(readlink -e "$0")")" || exit 1
 n=css_toc
 
 cat $n.html \
-  | fgrep -v '>unset<' \
+  | egrep -v '>(unset|inherit)<' \
   | grep '^<li><a' | egrep -v '<code>&lt;|\(\)</code>' | grep '/Web/CSS/[a-z][^"#]*"' \
   | perl -pe '
       sub camelCase {

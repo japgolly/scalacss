@@ -2,7 +2,7 @@
 cd "$(dirname "$(readlink -e "$0")")" || exit 1
 
 fgrep shorthand css_toc.html \
-  | fgrep -v '>unset<' \
+  | egrep -v '>(unset|inherit)<' \
   | grep -v 'Note that in many cases the shorthand CSS properties.*are more convenient' \
   | perl -pe '
       s/^.*title=.(.+).><code>(.+?)<.*/\2\n\1\n/;
