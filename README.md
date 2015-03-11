@@ -1,7 +1,7 @@
 # scalacss
 
+[![Build Status](https://travis-ci.org/japgolly/scalacss.svg?branch=master)](https://travis-ci.org/japgolly/scalacss)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/japgolly/scalacss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 
 > Server code, client JS and HTML are all compiler-verified in Scala, leaving CSS as the last part of my webapp mega-project where I feel unsafe that it always works and is maintainable.
 
