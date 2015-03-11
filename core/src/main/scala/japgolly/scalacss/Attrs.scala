@@ -2,14 +2,45 @@ package japgolly.scalacss
 
 import scalaz.{Need, NonEmptyList}
 
-// TODO Rename and move HighLevelTmp
-
 object Attrs extends Attrs {
 
-  // fgrep 'final val ' ./core/src/main/scala/japgolly/scalacss/HighLevelTmp.scala | perl -pe 's/^.+ val | = .*//g' | sort | xargs | perl -pe 's/ /, /g'
-
-  private[scalacss] val valuesForAllAttr: NonEmptyList[Attr] =
-    NonEmptyList[Attr](alignContent, alignItems, alignSelf, animation, animationDelay, animationDirection, animationDuration, animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction, backfaceVisibility, background, backgroundAttachment, backgroundBlendMode, backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat, backgroundSize, blockSize, border, borderBlockEnd, borderBlockEndColor, borderBlockEndStyle, borderBlockEndWidth, borderBlockStart, borderBlockStartColor, borderBlockStartStyle, borderBlockStartWidth, borderBottom, borderBottomColor, borderBottomLeftRadius, borderBottomRightRadius, borderBottomStyle, borderBottomWidth, borderCollapse, borderColor, borderImage, borderImageOutset, borderImageRepeat, borderImageSlice, borderImageSource, borderImageWidth, borderInlineEnd, borderInlineEndColor, borderInlineEndStyle, borderInlineEndWidth, borderInlineStart, borderInlineStartColor, borderInlineStartStyle, borderInlineStartWidth, borderLeft, borderLeftColor, borderLeftStyle, borderLeftWidth, borderRadius, borderRight, borderRightColor, borderRightStyle, borderRightWidth, borderSpacing, borderStyle, borderTop, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderTopStyle, borderTopWidth, borderWidth, bottom, boxDecorationBreak, boxShadow, boxSizing, breakAfter, breakBefore, breakInside, captionSide, clear, clip, clipPath, color, columnCount, columnFill, columnGap, columnRule, columnRuleColor, columnRuleStyle, columnRuleWidth, columns, columnSpan, columnWidth, content, counterIncrement, counterReset, cursor, display, emptyCells, filter, flex, flexBasis, flexDirection, flexFlow, flexGrow, flexShrink, flexWrap, float, font, fontFamily, fontFeatureSettings, fontKerning, fontLanguageOverride, fontSize, fontSizeAdjust, fontStretch, fontStyle, fontSynthesis, fontVariant, fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric, fontVariantPosition, fontWeight, grid, gridArea, gridAutoColumns, gridAutoFlow, gridAutoPosition, gridAutoRows, gridColumn, gridColumnEnd, gridColumnStart, gridRow, gridRowEnd, gridRowStart, gridTemplate, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, height, hyphens, imageOrientation, imageRendering, imageResolution, imeMode, initial, inlineSize, isolation, justifyContent, left, letterSpacing, lineBreak, lineHeight, listStyle, listStyleImage, listStylePosition, listStyleType, margin, marginBlockEnd, marginBlockStart, marginBottom, marginInlineEnd, marginInlineStart, marginLeft, marginRight, marginTop, marks, mask, maskType, maxBlockSize, maxHeight, maxInlineSize, maxWidth, minBlockSize, minHeight, minInlineSize, minWidth, mixBlendMode, objectFit, objectPosition, offsetBlockEnd, offsetBlockStart, offsetInlineEnd, offsetInlineStart, opacity, order, orphans, outline, outlineColor, outlineOffset, outlineStyle, outlineWidth, overflow, overflowWrap, overflowX, overflowY, padding, paddingBlockEnd, paddingBlockStart, paddingBottom, paddingInlineEnd, paddingInlineStart, paddingLeft, paddingRight, paddingTop, pageBreakAfter, pageBreakBefore, pageBreakInside, perspective, perspectiveOrigin, pointerEvents, position, quotes, resize, right, rubyAlign, rubyMerge, rubyPosition, scrollBehavior, shapeImageThreshold, shapeMargin, shapeOutside, tableLayout, tabSize, textAlign, textAlignLast, textCombineUpright, textDecoration, textDecorationColor, textDecorationLine, textDecorationStyle, textIndent, textOrientation, textOverflow, textRendering, textShadow, textTransform, textUnderlinePosition, top, touchAction, transform, transformOrigin, transformStyle, transition, transitionDelay, transitionDuration, transitionProperty, transitionTimingFunction, unicodeRange, verticalAlign, visibility, whiteSpace, widows, width, willChange, wordBreak, wordSpacing, wordWrap, writingMode, zIndex)
+  private[scalacss] val valuesForAllAttr = NonEmptyList[Attr](
+    alignContent, alignItems, alignSelf, animation, animationDelay, animationDirection, animationDuration,
+    animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction,
+    backfaceVisibility, background, backgroundAttachment, backgroundBlendMode, backgroundClip, backgroundColor,
+    backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat, backgroundSize, blockSize, border,
+    borderBlockEnd, borderBlockEndColor, borderBlockEndStyle, borderBlockEndWidth, borderBlockStart,
+    borderBlockStartColor, borderBlockStartStyle, borderBlockStartWidth, borderBottom, borderBottomColor,
+    borderBottomLeftRadius, borderBottomRightRadius, borderBottomStyle, borderBottomWidth, borderCollapse, borderColor,
+    borderImage, borderImageOutset, borderImageRepeat, borderImageSlice, borderImageSource, borderImageWidth,
+    borderInlineEnd, borderInlineEndColor, borderInlineEndStyle, borderInlineEndWidth, borderInlineStart,
+    borderInlineStartColor, borderInlineStartStyle, borderInlineStartWidth, borderLeft, borderLeftColor,
+    borderLeftStyle, borderLeftWidth, borderRadius, borderRight, borderRightColor, borderRightStyle, borderRightWidth,
+    borderSpacing, borderStyle, borderTop, borderTopColor, borderTopLeftRadius, borderTopRightRadius, borderTopStyle,
+    borderTopWidth, borderWidth, bottom, boxDecorationBreak, boxShadow, boxSizing, breakAfter, breakBefore, breakInside,
+    captionSide, clear, clip, clipPath, color, columnCount, columnFill, columnGap, columnRule, columnRuleColor,
+    columnRuleStyle, columnRuleWidth, columns, columnSpan, columnWidth, content, counterIncrement, counterReset, cursor,
+    display, emptyCells, filter, flex, flexBasis, flexDirection, flexFlow, flexGrow, flexShrink, flexWrap, float, font,
+    fontFamily, fontFeatureSettings, fontKerning, fontLanguageOverride, fontSize, fontSizeAdjust, fontStretch,
+    fontStyle, fontSynthesis, fontVariant, fontVariantAlternates, fontVariantCaps, fontVariantEastAsian,
+    fontVariantLigatures, fontVariantNumeric, fontVariantPosition, fontWeight, grid, gridArea, gridAutoColumns,
+    gridAutoFlow, gridAutoPosition, gridAutoRows, gridColumn, gridColumnEnd, gridColumnStart, gridRow, gridRowEnd,
+    gridRowStart, gridTemplate, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, height, hyphens,
+    imageOrientation, imageRendering, imageResolution, imeMode, initial, inlineSize, isolation, justifyContent, left,
+    letterSpacing, lineBreak, lineHeight, listStyle, listStyleImage, listStylePosition, listStyleType, margin,
+    marginBlockEnd, marginBlockStart, marginBottom, marginInlineEnd, marginInlineStart, marginLeft, marginRight,
+    marginTop, marks, mask, maskType, maxBlockSize, maxHeight, maxInlineSize, maxWidth, minBlockSize, minHeight,
+    minInlineSize, minWidth, mixBlendMode, objectFit, objectPosition, offsetBlockEnd, offsetBlockStart, offsetInlineEnd,
+    offsetInlineStart, opacity, order, orphans, outline, outlineColor, outlineOffset, outlineStyle, outlineWidth,
+    overflow, overflowWrap, overflowX, overflowY, padding, paddingBlockEnd, paddingBlockStart, paddingBottom,
+    paddingInlineEnd, paddingInlineStart, paddingLeft, paddingRight, paddingTop, pageBreakAfter, pageBreakBefore,
+    pageBreakInside, perspective, perspectiveOrigin, pointerEvents, position, quotes, resize, right, rubyAlign,
+    rubyMerge, rubyPosition, scrollBehavior, shapeImageThreshold, shapeMargin, shapeOutside, tableLayout, tabSize,
+    textAlign, textAlignLast, textCombineUpright, textDecoration, textDecorationColor, textDecorationLine,
+    textDecorationStyle, textIndent, textOrientation, textOverflow, textRendering, textShadow, textTransform,
+    textUnderlinePosition, top, touchAction, transform, transformOrigin, transformStyle, transition, transitionDelay,
+    transitionDuration, transitionProperty, transitionTimingFunction, unicodeRange, verticalAlign, visibility,
+    whiteSpace, widows, width, willChange, wordBreak, wordSpacing, wordWrap, writingMode, zIndex)
 
   val values: NonEmptyList[Attr] =
     List(all, unicodeBidi, direction) <::: valuesForAllAttr
