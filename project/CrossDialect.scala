@@ -127,6 +127,8 @@ object Dialect {
 object Typical {
   import Dialect._
 
+  val clearScreenTask = TaskKey[Unit]("clear", "Clears the screen.")
+
   def addSourceDialect(name: String): PE =
     _.settings(unmanagedSourceDirectories in Compile += baseDirectory.value / s"src/main/scala-$name")
 
@@ -160,11 +162,14 @@ object Typical {
       preventPublication
     ).
     all(
-      addCommandAliases(
-        "t"  -> "; test:compile ; test",
-        "tt" -> ";+test:compile ;+test",
-        "T"  -> "; clean ;t",
-        "TT" -> ";+clean ;tt")
+      _.settings(
+        clearScreenTask := { println("\033[2J\033[;H") })
+      .configure(
+        addCommandAliases(
+        "t"  -> ";clear ; test:compile ; test",
+        "tt" -> ";clear ;+test:compile ;+test",
+        "T"  -> ";clear ; clean ;t",
+        "TT" -> ";clear ;+clean ;tt"))
     ).
     jj(_ => publicationSettings(ghProject)).
     jvm(

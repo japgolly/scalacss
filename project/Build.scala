@@ -25,6 +25,10 @@ object ScalaCSS extends Build {
                                 "-language:postfixOps", "-language:implicitConversions",
                                 "-language:higherKinds", "-language:existentials"),
         updateOptions      := updateOptions.value.withCachedResolution(true))
+      .configure(addCommandAliases(
+        "qc"  -> "~ ;clear ;core-jvm/compile",
+        "qtc" -> "~ ;clear ;core-jvm/test:compile"
+      ))
     ) :+ Typical.settings("scalacss")
 
   object scalaz {
@@ -49,5 +53,6 @@ object ScalaCSS extends Build {
     crossDialectProject("core", commonSettings
       .configure(utestSettings())
       .addLibs(scalaz.core, shapeless, nyaya.core, nyaya.test % Test)
+      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._")
     )
 }
