@@ -19,7 +19,8 @@ object ScalaCSS extends Build {
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
         scalaVersion       := Scala211,
-        crossScalaVersions := Seq("2.10.5", Scala211),
+        // Needs Shapeless for Scala 2.10
+        // crossScalaVersions := Seq("2.10.5", Scala211),
         scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
                                 "-language:postfixOps", "-language:implicitConversions",
                                 "-language:higherKinds", "-language:existentials"),
