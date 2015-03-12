@@ -66,6 +66,9 @@ final class StyleF[I](val f: I => StyleS, val domain: Domain[I]) extends Style1
 object StyleF {
   def apply[I](f: I => StyleS): Domain[I] => StyleF[I] =
     new StyleF(f, _)
+
+  def bool(f: Boolean => StyleS): StyleF[Boolean] =
+    StyleF(f)(Domain.boolean)
 }
 
 /**

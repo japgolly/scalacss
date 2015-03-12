@@ -5,7 +5,10 @@ import scalaz.syntax.equal._
 
 object TestUtil extends TestUtil
 
-trait TestUtil extends scalaz.std.StringInstances {
+trait TestUtil
+  extends scalaz.std.StringInstances
+     with scalaz.std.AnyValInstances
+     with scalaz.std.ListInstances {
 
   def assertEq[A: Equal](actual: A, expect: A): Unit =
     assertEq(None, actual, expect)

@@ -1,6 +1,6 @@
 package japgolly
 
-import scalaz.NonEmptyList
+import scalaz.{Equal, NonEmptyList}
 
 package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
@@ -17,6 +17,8 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
   final case class AVsAndWarnings(avs: AVs, warnings: List[Warning])
 
+  final case class ClassName(value: String)
+
   /**
    * Describes the context of a number of CSS attribute-value pairs.
    *
@@ -24,14 +26,15 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
    */
   type CssSelector = String
 
-  final case class ClassName(value: String)
-
   /**
    * A CSS attribute and its corresponding value.
    *
    * Example: `CssKV("margin-bottom", "12px")`
    */
   final case class CssKV(key: String, value: String)
+  object CssKV {
+    implicit val equality: Equal[CssKV] = Equal.equalA
+  }
 
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.

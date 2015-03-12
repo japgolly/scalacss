@@ -25,7 +25,7 @@ object QuickDemo extends TestSuite {
   import MutableRegister._
 
   //  val ng = new NameGen.IncFmt("class_%04d")
-  val ng = new NameGen.Alphabet(NameGen.alphaNumeric, "_" + _)
+  val ng = NameGen.short("_")
   val reg = new MutableRegister(ng, ErrorHandler.noisy)
   reg register style1
   reg register style2

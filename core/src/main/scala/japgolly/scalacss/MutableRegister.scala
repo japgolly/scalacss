@@ -91,8 +91,14 @@ object MutableRegister { // ====================================================
       }
     }
 
-    val alphaNumeric: Array[Char] =
+    val alphaNumericChars: Array[Char] =
       (('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')).toArray
+
+    def short(prefix: String = ""): NameGen =
+      new NameGen.Alphabet(alphaNumericChars, prefix + _)
+
+    def numbered(prefix: String = "scalacss-"): NameGen =
+      new NameGen.IncFmt(prefix + "%04d")
   }
 
   // ===================================================================================================================

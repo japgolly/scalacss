@@ -7,10 +7,13 @@ object Css {
   def apply(styles: TraversableOnce[StyleA])(implicit env: Env): Css =
     styles.toStream flatMap style
 
+  def className(cn: ClassName): String =
+    "." + cn.value
+
   def selector(cn: ClassName, c: Cond): CssSelector =
     c match {
-      case NoCond    => s".${cn.value}"
-      case p: Pseudo => s".${cn.value}${p.value}"
+      case NoCond    => className(cn)
+      case p: Pseudo => className(cn) + p.value
     }
 
   def av(av: AV)(implicit env: Env): List[CssKV] =
