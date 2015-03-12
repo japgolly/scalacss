@@ -2,12 +2,19 @@ package japgolly.scalacss
 
 import scala.annotation.tailrec
 import scalaz.NonEmptyList
+import shapeless._
+import shapeless.ops.hlist.Mapper
 import MutableRegister.{ErrorHandler, NameGen}
+import StyleC.{Named, MkUsage}
 
 /**
- * TODO Doc MutableRegister and friends
+ * TODO Doc & test MutableRegister and friends inc. Style[FC]
  *
  * This is the only portion of the library that is mutable and has side-effects.
+ *
+ * Performs magic using mutability and side-effects so that ........
+ *
+ * Thread-safe.
  */
 final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
@@ -23,7 +30,8 @@ final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(impl
 
   // Convenience methods
   @inline def register(s: StyleS): StyleA = registerS(s)
-  @inline def register[I](s: StyleF[I])(implicit m: StyleLookup[I]): I => StyleA = registerF(s)
+  @inline def register[I](s: StyleF[I])(implicit l: StyleLookup[I]): I => StyleA = registerF(s)
+  @inline def register[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out = registerC(s)(m, u)
 
   def registerS(s: StyleS): StyleA = {
     val cn = s.className.fold(nextName())(ClassName)
@@ -42,13 +50,21 @@ final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(impl
     a
   }
 
-  def registerF[I](s: StyleF[I])(implicit m: StyleLookup[I]): I => StyleA = {
-    val add = m.add
+  def registerF[I](s: StyleF[I])(implicit l: StyleLookup[I]): I => StyleA = {
+    val add = l.add
     val lookup = mutex(
-      s.domain.toStream.foldLeft(m.empty)((q, i) =>
+      s.domain.toStream.foldLeft(l.empty)((q, i) =>
         add(q, i, registerS(s f i))))
-    val f = m.get(lookup)
+    val f = l.get(lookup)
     i => f(i) getOrElse errHandler.badInput(s, i)
+  }
+
+  def registerC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out =
+    u apply m(s.styles)
+
+  object _registerC extends Poly1 {
+    implicit def cs[W]                : Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
+    implicit def cf[W, I: StyleLookup]: Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
   def styles: List[StyleA] =

@@ -1,6 +1,8 @@
 package japgolly.scalacss
 
 import scalaz.NonEmptyList
+import shapeless._
+import shapeless.syntax.singleton._ // TODO It would be nice to avoid the need for this import at client site
 import utest._
 import japgolly.TODO.Domain
 import Attrs._
@@ -25,7 +27,10 @@ object MutableRegisterTest extends TestSuite {
   val sc2 = ss1.named('a) :*: ss2.named('b) :*: ss3.named('c) :*: ss4.named('d)
   val sc3 = sfb.named('b) :*: ss1.named('s) :*: sfi.named('i)
 
-  def assertDistinct(ns: ClassName*): Unit = {
+  def assertDistinctClasses(as: StyleA*): Unit =
+    assertDistinctClassNames(as.map(_.className): _*)
+
+  def assertDistinctClassNames(ns: ClassName*): Unit = {
     val l = ns.map(_.value).toList
     assertEq(l, l.distinct)
   }
@@ -39,7 +44,7 @@ object MutableRegisterTest extends TestSuite {
       val a2 = reg register ss2
       val a3 = reg register ss3
       val a4 = reg register ss4
-      assertDistinct(a1.className, a2.className, a3.className, a4.className)
+      assertDistinctClasses(a1, a2, a3, a4)
       val css = Css(reg.styles).toMap
       assertEq(css(Css className a1.className), NonEmptyList(CssKV("margin-top", "1px")))
       assertEq(css(Css className a2.className), NonEmptyList(CssKV("margin-bottom", "2px")))
@@ -53,7 +58,7 @@ object MutableRegisterTest extends TestSuite {
         d.foreach { i =>
           assert(f(i) eq f(i))
         }
-        assertDistinct(d.map(f).map(_.className): _*)
+        assertDistinctClasses(d.map(f): _*)
       }
 
       val fb: Boolean => StyleA = reg register sfb
@@ -62,6 +67,30 @@ object MutableRegisterTest extends TestSuite {
       assertEq(css.size, 2 + 4)
       test(fb, Domain.boolean.toStream)
       test(fi, sfid.toStream)
+    }
+
+    'registerC {
+      val c1 = reg register sc1
+      val c2 = reg register sc2
+      val c3 = reg register sc3
+
+      val result =
+        c1('a)(a => _('b)(b => {
+          assertDistinctClasses(a, b)
+          123
+        }))
+      assertEq(result, 123)
+
+      c2('a)(a =>
+        _('b)(b =>
+          _('c)(c =>
+            _('d)(d =>
+              assertDistinctClasses(a, b, c, d)))))
+
+      c3('b)(b =>
+        _('s)(s =>
+          _('i)(i =>
+            assertDistinctClasses(b(true), b(false), s, i(0), i(1), i(2), i(3)))))
     }
   }
 }

@@ -19,9 +19,7 @@ sealed trait Style
 /**
  * A single style that applied to a single subject.
  */
-sealed abstract class Style1 extends Style {
-  final def named(w: Witness): StyleC.Named[w.T, this.type] = StyleC.Named(this)
-}
+sealed abstract class Style1 extends Style
 
 object Style {
 
@@ -53,7 +51,10 @@ object Style {
  */
 final class StyleS(val data      : Map[Cond, AVsAndWarnings],
                    val unsafeExts: Style.UnsafeExts,
-                   val className : Option[String]) extends Style1
+                   val className : Option[String]) extends Style1 {
+
+  def named(w: Witness): StyleC.Named[w.T, StyleS] = StyleC.Named(this)
+}
 
 /**
  * A function to a style. A style that depends on input provided when used.
@@ -61,7 +62,9 @@ final class StyleS(val data      : Map[Cond, AVsAndWarnings],
  * @tparam I Input required by the style.
  * @param domain The function domain. All possible (or legal) inputs to this function.
  */
-final class StyleF[I](val f: I => StyleS, val domain: Domain[I]) extends Style1
+final class StyleF[I](val f: I => StyleS, val domain: Domain[I]) extends Style1 {
+  def named(w: Witness): StyleC.Named[w.T, StyleF[I]] = StyleC.Named(this)
+}
 
 object StyleF {
   def apply[I](f: I => StyleS): Domain[I] => StyleF[I] =
@@ -111,7 +114,8 @@ object StyleC {
   final case class Named[W, A](value: A) {
     type This = Named[W, A]
 
-    def map[B](f: A => B): Named[W, B] = Named(f(value))
+    def map[B](f: A => B): Named[W, B] =
+      Named(f(value))
 
     def :*:[HW, H](h: Named[HW, H])(implicit u: UniqueCons[Named[HW, H], This :: HNil]): u.Out =
       u(h, this :: HNil)
@@ -155,5 +159,45 @@ object StyleC {
       UniquePrepend[A :: HNil, L, w.Out]((a, l) => w(a.head, l))
     implicit def ind[H, T <: HList, L <: HList](implicit w: UniqueCons[H, L], next: UniquePrepend[T, H :: L]) =
       UniquePrepend[H :: T, L, next.Out]((ht, l) => next(ht.tail, w(ht.head, l).styles))
+  }
+
+  /**
+   * For lack of a better name, this provides the protocol by which a composite style can be used.
+   * Meaning when a user wants to apply a [[StyleC]], they are handed a [[Usage]], which by following the nested
+   * `apply` calls, concludes with them having a [[StyleA]] for each sub-style in the [[StyleC]].
+   *
+   * @tparam W The singleton-type of the name of the current sub-style.
+   * @tparam A When this is in the user's hands, this will be a [[StyleA]] of the current sub-style.
+   * @tparam B When this is in the user's hands, this will be a [[Usage]]/[[UsageEnd]] of the next sub-style.
+   */
+  final class Usage[W, A, B](a: A, b: B) {
+    def apply[C](name: W)(f: A => B => C): C = f(a)(b)
+  }
+
+  final class UsageEnd[W, A](a: A) {
+    def apply[B](name: W)(f: A => B): B = f(a)
+  }
+
+  sealed trait MkUsage[L <: HList] {
+    type Out
+    val apply: L => Out
+  }
+
+  object MkUsage extends MkUsageLowPri {
+    type Aux[L <: HList, O] = MkUsage[L] {type Out = O }
+
+    def apply[L <: HList, O](f: L => O): Aux[L, O] =
+      new MkUsage[L] {
+        override type Out = O
+        override val apply = f
+      }
+
+    implicit def mkUsageT[W, A]: Aux[Named[W, A] :: HNil, UsageEnd[W, A]] =
+      MkUsage(l => new UsageEnd(l.head.value))
+  }
+
+  sealed trait MkUsageLowPri {
+    implicit def mkUsageH[W, A, T <: HList](implicit t: MkUsage[T]): MkUsage.Aux[Named[W, A] :: T, Usage[W, A, t.Out]] =
+      MkUsage(l => new Usage(l.head.value, t apply l.tail))
   }
 }
