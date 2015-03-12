@@ -27,7 +27,8 @@ object ScalaCSS extends Build {
         updateOptions      := updateOptions.value.withCachedResolution(true))
       .configure(addCommandAliases(
         "qc"  -> "~ ;clear ;core-jvm/compile",
-        "qtc" -> "~ ;clear ;core-jvm/test:compile"
+        "qtc" -> "~ ;clear ;core-jvm/test:compile",
+        "qt"  -> "~ ;clear ;core-jvm/test"
       ))
     ) :+ Typical.settings("scalacss")
 

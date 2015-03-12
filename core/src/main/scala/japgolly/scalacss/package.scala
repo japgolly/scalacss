@@ -2,7 +2,7 @@ package japgolly
 
 import scalaz.NonEmptyList
 
-package object scalacss {
+package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
   type Env = EnvF[Option]
 
@@ -24,6 +24,8 @@ package object scalacss {
    */
   type CssSelector = String
 
+  final case class ClassName(value: String)
+
   /**
    * A CSS attribute and its corresponding value.
    *
@@ -31,7 +33,21 @@ package object scalacss {
    */
   final case class CssKV(key: String, value: String)
 
-  final case class ClassName(value: String)
+  /**
+   * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
+   */
+  type Css = Stream[(CssSelector, NonEmptyList[CssKV])]
 
-  type Warning  = String
+  type Warning = String
+
+  /**
+   * Applicable style.
+   *
+   * A style that needs no more processing and can be applied to some target.
+   */
+  final case class StyleA(className: ClassName, style: StyleS)
+
+  abstract class Mutex {
+    @inline def apply[A](f: => A): A
+  }
 }

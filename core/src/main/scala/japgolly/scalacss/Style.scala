@@ -12,6 +12,7 @@ import japgolly.TODO.Domain
  *   - [[StyleS]]: Static.    `{s}`
  *   - [[StyleF]]: Function.  `{i ⇒ s}`
  *   - [[StyleC]]: Composite. `{s₁,…,sₙ}`
+ *   - [[StyleA]]: Applicable. `class="…"`
  */
 sealed trait Style
 
