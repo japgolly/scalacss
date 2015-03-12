@@ -7,11 +7,11 @@ import japgolly.TODO.Domain
 /**
  * A high-level style, that can describe a subject and its children in a variety of conditions.
  *
- * Flavours
- * ========
- * [[StyleS]]: (S = static)
- * [[StyleF]]: (F = function)
- * [[StyleC]]: (C = composite)
+ * ==Types==
+ *
+ *   - [[StyleS]]: Static.    `{s}`
+ *   - [[StyleF]]: Function.  `{i ⇒ s}`
+ *   - [[StyleC]]: Composite. `{s₁,…,sₙ}`
  */
 sealed trait Style
 
@@ -37,8 +37,10 @@ object Style {
 
   /**
    * @param sel A CSS selector based on the intended parent's selector.
-   *            Example: `_ + " h1"` will style all child `h1` elements.
-   *            Example: `_ + ".debug"` will specify a style only active when a `"debug"` class is present.
+   *
+   *            Example: `(_+" h1")` will style all child `h1` elements.
+   *
+   *            Example: `(_+".debug")` will specify a style only active when a `"debug"` class is present.
    */
   final case class UnsafeExt(sel: CssSelector => CssSelector, style: StyleS)
 }
@@ -71,6 +73,7 @@ object StyleF {
  * This ''demands'' that anyone using this style:
  *
  *   1. Obtain an instance of all sub-styles.
+ *
  *   2. Acknowledge the purpose of each sub-style (and thus not accept them in the wrong order and apply them to the
  *   wrong targets).
  *
