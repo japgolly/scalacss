@@ -4,6 +4,9 @@ import shapeless._
 import shapeless.ops.hlist.Reverse
 import japgolly.TODO.Domain
 
+import scala.runtime.AbstractFunction1
+import scalaz.Monoid
+
 /**
  * A high-level style, that can describe a subject and its children in a variety of conditions.
  *
@@ -32,7 +35,7 @@ object Style {
    * An example of what this would be useful for, is styling the entire page, declaring the default font and size,
    * the properties of all `h1` elements, etc.
    */
-  type UnsafeExts = List[UnsafeExt]
+  type UnsafeExts = Vector[UnsafeExt]
 
   /**
    * @param sel A CSS selector based on the intended parent's selector.
@@ -52,9 +55,25 @@ object Style {
 final class StyleS(val data      : Map[Cond, AVs],
                    val unsafeExts: Style.UnsafeExts,
                    val className : Option[String],
-                   val warnings  : List[Warning]) extends Style1 {
+                   val warnings  : Vector[Warning]) extends Style1 {
 
   def named(w: Witness): StyleC.Named[w.T, StyleS] = StyleC.Named(this)
+
+  def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
+  def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
+  def compose[I](r: StyleF.P[I])(implicit c: Compose): StyleF.P[I] = c(this, r)
+}
+
+object StyleS {
+  /** Helper method for common case where only data needs to be specified. */
+  def data(d: Map[Cond, AVs]): StyleS =
+    new StyleS(d, Vector.empty, None, Vector.empty)
+
+  implicit def styleSMonoid(implicit c: Compose): Monoid[StyleS] =
+    new Monoid[StyleS] {
+      override def zero                            = data(Map.empty)
+      override def append(a: StyleS, b: => StyleS) = a compose b
+    }
 }
 
 /**
@@ -64,12 +83,35 @@ final class StyleS(val data      : Map[Cond, AVs],
  * @param domain The function domain. All possible (or legal) inputs to this function.
  */
 final class StyleF[I](val f: I => StyleS, val domain: Domain[I]) extends Style1 {
-  def named(w: Witness): StyleC.Named[w.T, StyleF[I]] = StyleC.Named(this)
+  def named(w: Witness): StyleC.Named[w.T, StyleF[I]] =
+    StyleC.Named(this)
+
+  def mod(g: StyleS => StyleS): StyleF[I] =
+    new StyleF(g compose f, domain)
+
+  def compose   (r: StyleS     )(implicit c: Compose): StyleF[I]                   = c(this, r)
+  def compose[J](r: StyleF  [J])(implicit c: Compose): StyleF[(I, J)]              = c(this, r)
+  def compose[J](r: StyleF.P[J])(implicit c: Compose): Domain[J] => StyleF[(I, J)] = c(this, r)
 }
 
 object StyleF {
-  def apply[I](f: I => StyleS): Domain[I] => StyleF[I] =
-    new StyleF(f, _)
+
+  def apply[I](f: I => StyleS): StyleF.P[I] =
+    P(new StyleF(f, _))
+
+  /**
+   * A `Domain[I] => StyleF[I]` with additional methods.
+   *
+   * The P can stand for ''P''ending, or ''P''re, in that a `StyleF.P` is nearly a `StyleF`.
+   * Names are hard ok? Shuttup!
+   */
+  sealed trait P[I] extends AbstractFunction1[Domain[I], StyleF[I]] {
+    def compose   (r: StyleS     )(implicit c: Compose): StyleF.P[I]                              = c(this, r)
+    def compose[J](r: StyleF  [J])(implicit c: Compose): Domain[I] => StyleF[(I, J)]              = c(this, r)
+    def compose[J](r: StyleF.P[J])(implicit c: Compose): (Domain[I], Domain[J]) => StyleF[(I, J)] = c(this, r)
+  }
+  def P[I](f: Domain[I] => StyleF[I]): P[I] =
+    new P[I] { override def apply(d: Domain[I]) = f(d) }
 
   def bool(f: Boolean => StyleS): StyleF[Boolean] =
     StyleF(f)(Domain.boolean)

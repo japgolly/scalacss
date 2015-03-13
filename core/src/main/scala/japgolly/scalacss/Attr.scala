@@ -52,7 +52,7 @@ object Attr {
   implicit val order: Order[Attr] = Order.orderBy(_.id)
 
   def simpleGen(css: String): Gen =
-    _ => v => Vector(CssKV(css, v))
+    _ => v => Vector1(CssKV(css, v))
 
   def real(css: String): Attr =
     new RealAttr(css, simpleGen(css))

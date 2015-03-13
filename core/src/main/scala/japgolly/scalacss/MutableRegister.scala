@@ -127,7 +127,7 @@ object MutableRegister { // ====================================================
     class Noisy(println: String => Unit) extends ErrorHandler {
       override def warn =
         Some((cn, w) => {
-          this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.desc}")
+          this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.msg}")
         })
       override def badInput[I](s: StyleF[I], i: I): Nothing = {
         val legal = s.domain.toStream.mkString(",")
@@ -148,10 +148,10 @@ object MutableRegister { // ====================================================
 
     val fallbackStyle: StyleA = { // TODO update when Style gets nice DSL
       import Attrs._
-      val s = new StyleS(Map(Cond.empty -> NonEmptyVector(
+      val s = StyleS.data(Map(Cond.empty -> NonEmptyVector(
         AV(backgroundColor, "#ffbaba"),
         AV(color, "#d8000c"))
-      ), Nil, None, Nil)
+      ))
       StyleA(ClassName("_SCSS_ERROR_"), s)
     }
   }

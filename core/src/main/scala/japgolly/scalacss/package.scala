@@ -1,17 +1,10 @@
 package japgolly
 
+import scala.collection.GenTraversableOnce
 import scalaz.{Equal, Foldable1, OneAnd}
 import scalaz.std.vector._
 
 package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
-
-  type NonEmptyVector[A] = OneAnd[Vector, A]
-  @inline def NonEmptyVector[A](h: A, t: A*): NonEmptyVector[A] =
-    OneAnd(h, t.toVector)
-  implicit val nonEmptyVectorFoldable1: Foldable1[NonEmptyVector] =
-    OneAnd.oneAndFoldable[Vector]
-  implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
-    OneAnd.oneAndEqual[Vector, A]
 
   type Env = EnvF[Option]
 
@@ -48,7 +41,8 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
    */
   type Css = Stream[(CssSelector, NonEmptyVector[CssKV])]
 
-  final case class Warning(cond: Cond, desc: String)
+  type WarningMsg = String
+  final case class Warning(cond: Cond, msg: WarningMsg)
 
   /**
    * Applicable style.
@@ -60,4 +54,48 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
   abstract class Mutex {
     @inline def apply[A](f: => A): A
   }
+
+  // ===================================================================================================================
+  type NonEmptyVector[A] = OneAnd[Vector, A]
+
+  object NonEmptyVector {
+    @inline def apply[A](h: A, t: A*): NonEmptyVector[A] =
+      OneAnd(h, t.toVector)
+
+    def end[A](init: Vector[A], last: A): NonEmptyVector[A] =
+      if (init.isEmpty)
+        OneAnd(last, Vector.empty)
+      else
+        OneAnd(init.head, init.tail :+ last)
+
+    @inline def maybe[A, B](v: Vector[A], empty: => B)(f: NonEmptyVector[A] => B): B =
+      if (v.isEmpty) empty else f(OneAnd(v.head, v.tail))
+  }
+
+  implicit val nonEmptyVectorFoldable1: Foldable1[NonEmptyVector] =
+    OneAnd.oneAndFoldable[Vector]
+
+  implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
+    OneAnd.oneAndEqual[Vector, A]
+
+  @inline implicit class NonEmptyVectorExt[A](val self: NonEmptyVector[A]) extends AnyVal {
+    @inline def modt(f: Vector[A] => Vector[A]): NonEmptyVector[A] =
+      OneAnd(self.head, f(self.tail))
+
+    @inline def :+(a: A): NonEmptyVector[A] =
+      modt(_ :+ a)
+
+    @inline def ++(as: GenTraversableOnce[A]): NonEmptyVector[A] =
+      modt(_ ++ as)
+
+    def ++:(as: Vector[A]): NonEmptyVector[A] =
+      if (as.isEmpty) self else OneAnd(as.head, as.tail ++ vector)
+
+    @inline def vector: Vector[A] =
+      self.head +: self.tail
+  }
+
+  /** Faster than Vector(a) */
+  @inline private[scalacss] def Vector1[A](a: A): Vector[A] =
+    Vector.empty :+ a
 }

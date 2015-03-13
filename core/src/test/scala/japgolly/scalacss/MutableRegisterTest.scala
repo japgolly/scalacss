@@ -11,7 +11,7 @@ import TestUtil._
 object MutableRegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
-    new StyleS(Map(Cond.empty -> NonEmptyVector(av, avs: _*)), Nil, None, Nil)
+    StyleS.data(Map(Cond.empty -> NonEmptyVector(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))

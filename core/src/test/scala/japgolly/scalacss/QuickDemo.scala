@@ -7,19 +7,19 @@ object QuickDemo extends TestSuite {
 
   import Attrs._
 
-  val style1 = new StyleS(Map(
+  val style1 = StyleS.data(Map(
     Cond.empty -> NonEmptyVector(
       AV(margin, "12px"), AV(textAlign, "center"), AV(color, "red"))
     , Cond.empty.visited -> NonEmptyVector(
       AV(color, "#d4d4d4"), AV(fontWeight, "bold"))
-  ), Nil, None, Nil)
+  ))
 
-  val style2 = new StyleS(Map(
+  val style2 = StyleS.data(Map(
     Cond.empty -> NonEmptyVector(
       AV(fontWeight, "bold"))
     , Cond.empty.hover.not(".debug") -> NonEmptyVector(
       AV(backgroundColor, "green"), AV(fontWeight, "normal"))
-  ), Nil, None, Nil)
+  ))
 
   import MutableRegister._
 

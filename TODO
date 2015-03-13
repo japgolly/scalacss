@@ -1,8 +1,12 @@
 * Style composition.
-* Polymorphic style decl (gen or register)
+
 * Style DSL.
 * Units like 10px
+
+* Polymorphic style decl (gen or register)
+
 * CSS Reset.
+
 * Browser prefixes (Env + Attr instances)
 * Env provision in JS.
 * Defaults for {Jvm,Js} ⊗ {Dev,Prod}
