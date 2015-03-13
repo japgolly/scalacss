@@ -1,7 +1,6 @@
 package japgolly.scalacss
 
 import scalaz.syntax.foldable1._
-import japgolly.TODO.Domain
 
 /**
  * TODO Doc this file

@@ -1,6 +1,5 @@
 package japgolly.scalacss
 
-import japgolly.nyaya._
 import scala.annotation.tailrec
 import scalaz.{Equal, Need, NonEmptyList, Order}
 import scalaz.std.string.stringInstance
@@ -67,14 +66,6 @@ object Attr {
   object AliasB {
     @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
   }
-
-  def laws1: Prop[Attr] = (
-    Prop.equal[Attr, AttrCmp]("cmp is reflexive: a.cmp(a) = Same", a => a cmp a, _ => AttrCmp.Same)
-    & Prop.test("id is populated", _.id.nonEmpty)
-  )
-
-  def laws2: Prop[(Attr, Attr)] =
-    Prop.equal("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
 }
 
 // =====================================================================================================================

@@ -3,7 +3,6 @@ package japgolly.scalacss
 import shapeless._
 import shapeless.syntax.singleton._ // TODO It would be nice to avoid the need for this import at client site
 import utest._
-import japgolly.TODO.Domain
 import Attrs._
 import MutableRegister._
 import TestUtil._

@@ -10,6 +10,9 @@ trait TestUtil
      with scalaz.std.AnyValInstances
      with scalaz.std.ListInstances {
 
+  @inline def NDomain = japgolly.nyaya.test.Domain
+  type NDomain[A] = japgolly.nyaya.test.Domain[A]
+
   def assertEq[A: Equal](actual: A, expect: A): Unit =
     assertEq(None, actual, expect)
 

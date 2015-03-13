@@ -1,11 +1,9 @@
 package japgolly.scalacss
 
-import shapeless._
-import shapeless.ops.hlist.Reverse
-import japgolly.TODO.Domain
-
 import scala.runtime.AbstractFunction1
 import scalaz.Monoid
+import shapeless._
+import shapeless.ops.hlist.Reverse
 
 /**
  * A high-level style, that can describe a subject and its children in a variety of conditions.
