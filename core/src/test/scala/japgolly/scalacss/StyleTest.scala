@@ -5,7 +5,7 @@ import utest._
 
 object StyleTest extends TestSuite {
 
-  val s  = new StyleS(Map.empty, Nil, None)
+  val s  = new StyleS(Map.empty, Nil, None, Nil)
   val sf = StyleF[Int](_ => null)(null)
 
   val af = sf named 'a

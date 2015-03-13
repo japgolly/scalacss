@@ -39,10 +39,9 @@ final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(impl
     // Optional side-effects for warnings
     // TODO Warn about reregistration
     for {
-      wf                            <- errHandler.warn
-      (cond, AVsAndWarnings(_, ws)) <- s.data if ws.nonEmpty
-      warning                       <- ws
-    } wf(cn, cond, warning)
+      wf      <- errHandler.warn
+      warning <- s.warnings
+    } wf(cn, warning)
 
     // Register
     val a = StyleA(cn, s)
@@ -120,7 +119,7 @@ object MutableRegister { // ====================================================
   // ===================================================================================================================
 
   trait ErrorHandler {
-    def warn: Option[(ClassName, Cond, Warning) => Unit]
+    def warn: Option[(ClassName, Warning) => Unit]
     def badInput[I](s: StyleF[I], input: I): StyleA
   }
 
@@ -128,8 +127,8 @@ object MutableRegister { // ====================================================
 
     class Noisy(println: String => Unit) extends ErrorHandler {
       override def warn =
-        Some((cn, cond, w) => {
-          this.println(s"[CSS WARNING] ${Css.selector(cn, cond)} -- $w")
+        Some((cn, w) => {
+          this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.desc}")
         })
       override def badInput[I](s: StyleF[I], i: I): Nothing = {
         val legal = s.domain.toStream.mkString(",")
@@ -150,10 +149,10 @@ object MutableRegister { // ====================================================
 
     val fallbackStyle: StyleA = {
       import Attrs._
-      val s = new StyleS(Map(Cond.empty -> AVsAndWarnings(NonEmptyList(
+      val s = new StyleS(Map(Cond.empty -> NonEmptyList(
         AV(backgroundColor, "#ffbaba"),
         AV(color, "#d8000c"))
-        , Nil)), Nil, None)
+      ), Nil, None, Nil)
       StyleA(ClassName("_SCSS_ERROR_"), s)
     }
   }

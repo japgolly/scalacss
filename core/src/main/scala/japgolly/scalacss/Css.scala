@@ -22,7 +22,7 @@ object Css {
   def style(s: StyleA)(implicit env: Env): Css = {
     val cn = s.className
     s.style.data.toStream.flatMap {
-      case (cond, AVsAndWarnings(avs, _)) =>
+      case (cond, avs) =>
         avs.list.flatMap(av) match {
           case h :: t => Stream((selector(cn, cond), NonEmptyList.nel(h, t)))
           case Nil    => Stream.empty

@@ -9,18 +9,18 @@ object QuickDemo extends TestSuite {
   import Attrs._
 
   val style1 = new StyleS(Map(
-    Cond.empty -> AVsAndWarnings(NonEmptyList(
-      AV(margin, "12px"), AV(textAlign, "center"), AV(color, "red")), Nil)
-    , Cond.empty.visited -> AVsAndWarnings(NonEmptyList(
-      AV(color, "#d4d4d4"), AV(fontWeight, "bold")), Nil)
-  ), Nil, None)
+    Cond.empty -> NonEmptyList(
+      AV(margin, "12px"), AV(textAlign, "center"), AV(color, "red"))
+    , Cond.empty.visited -> NonEmptyList(
+      AV(color, "#d4d4d4"), AV(fontWeight, "bold"))
+  ), Nil, None, Nil)
 
   val style2 = new StyleS(Map(
-    Cond.empty -> AVsAndWarnings(NonEmptyList(
-      AV(fontWeight, "bold")), Nil)
-    , Cond.empty.hover.not(".debug") -> AVsAndWarnings(NonEmptyList(
-      AV(backgroundColor, "green"), AV(fontWeight, "normal")), Nil)
-  ), Nil, None)
+    Cond.empty -> NonEmptyList(
+      AV(fontWeight, "bold"))
+    , Cond.empty.hover.not(".debug") -> NonEmptyList(
+      AV(backgroundColor, "green"), AV(fontWeight, "normal"))
+  ), Nil, None, Nil)
 
   import MutableRegister._
 

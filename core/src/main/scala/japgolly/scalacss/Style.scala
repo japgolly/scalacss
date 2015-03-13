@@ -49,9 +49,10 @@ object Style {
  *
  * @param className Manually specifies this style's class name. By default it is automatically generated.
  */
-final class StyleS(val data      : Map[Cond, AVsAndWarnings],
+final class StyleS(val data      : Map[Cond, AVs],
                    val unsafeExts: Style.UnsafeExts,
-                   val className : Option[String]) extends Style1 {
+                   val className : Option[String],
+                   val warnings  : List[Warning]) extends Style1 {
 
   def named(w: Witness): StyleC.Named[w.T, StyleS] = StyleC.Named(this)
 }

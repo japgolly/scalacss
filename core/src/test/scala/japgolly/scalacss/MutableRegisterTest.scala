@@ -12,7 +12,7 @@ import TestUtil._
 object MutableRegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
-    new StyleS(Map(Cond.empty -> AVsAndWarnings(NonEmptyList(av, avs: _*), Nil)), Nil, None)
+    new StyleS(Map(Cond.empty -> NonEmptyList(av, avs: _*)), Nil, None, Nil)
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))

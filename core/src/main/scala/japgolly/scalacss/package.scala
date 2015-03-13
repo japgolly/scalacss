@@ -15,8 +15,6 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
   type AVs = NonEmptyList[AV]
 
-  final case class AVsAndWarnings(avs: AVs, warnings: List[Warning])
-
   final case class ClassName(value: String)
 
   /**
@@ -41,7 +39,7 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
    */
   type Css = Stream[(CssSelector, NonEmptyList[CssKV])]
 
-  type Warning = String
+  final case class Warning(cond: Cond, desc: String)
 
   /**
    * Applicable style.
