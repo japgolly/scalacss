@@ -1,8 +1,6 @@
 package japgolly.scalacss
 
 import scalaz.{==>>, Order}
-import scalaz.std.anyVal.{intInstance, longInstance}
-import scalaz.std.string.stringInstance
 
 trait StyleLookup[I] {
   type T
@@ -40,9 +38,17 @@ object StyleLookup extends StyleLookupLowPri {
         }
     }
 
-  // Convenience for common types. Users won't need to import scalaz.std instances.
+  implicit def scalaMap[I]: StyleLookup[I] =
+    new StyleLookup[I] {
+      override type T    = Map[I, StyleA]
+      override def empty = Map.empty
+      override def add   = _.updated(_, _)
+      override def get   = _.get
+    }
 
-  implicit val int   : StyleLookup[Int]    = order
-  implicit val long  : StyleLookup[Long]   = order
-  implicit val string: StyleLookup[String] = order
+  // Convenience for common types.
+
+  implicit val int   : StyleLookup[Int]    = scalaMap
+  implicit val long  : StyleLookup[Long]   = scalaMap
+  implicit val string: StyleLookup[String] = scalaMap
 }
