@@ -78,4 +78,7 @@ object StringRenderer {
       _ => sb append "}\n\n",
       () => ())
   }
+
+  val defaultPretty =
+    new StringRenderer(formatPretty())
 }

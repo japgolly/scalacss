@@ -2,7 +2,7 @@ package japgolly
 
 import scala.collection.GenTraversableOnce
 import scalaz.{Equal, Foldable1, OneAnd}
-import scalaz.std.vector._
+import scalaz.std.AllInstances._
 
 package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
@@ -40,6 +40,8 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
   type Css = Stream[(CssSelector, NonEmptyVector[CssKV])]
+  implicit val cssEquality: Equal[Css] =
+    streamEqual(tuple2Equal(stringInstance, nonEmptyVectorEquality(CssKV.equality)))
 
   type WarningMsg = String
   final case class Warning(cond: Cond, msg: WarningMsg)

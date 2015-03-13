@@ -50,16 +50,24 @@ object Style {
  *
  * @param className Manually specifies this style's class name. By default it is automatically generated.
  */
-final class StyleS(val data      : Map[Cond, AVs],
-                   val unsafeExts: Style.UnsafeExts,
-                   val className : Option[String],
-                   val warnings  : Vector[Warning]) extends Style1 {
+final case class StyleS(data      : Map[Cond, AVs],
+                        unsafeExts: Style.UnsafeExts,
+                        className : Option[String],
+                        warnings  : Vector[Warning]) extends Style1 {
 
   def named(w: Witness): StyleC.Named[w.T, StyleS] = StyleC.Named(this)
 
   def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
   def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
   def compose[I](r: StyleF.P[I])(implicit c: Compose): StyleF.P[I] = c(this, r)
+
+  override def toString = inspect
+
+  def inspectCss: Css =
+    Css.style(StyleA(ClassName(className getOrElse "???"), this))(Env.empty)
+
+  def inspect: String =
+    StringRenderer.defaultPretty(inspectCss)
 }
 
 object StyleS {

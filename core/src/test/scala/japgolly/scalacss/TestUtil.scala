@@ -7,6 +7,9 @@ object TestUtil extends TestUtil
 
 trait TestUtil
   extends scalaz.std.StringInstances
+     with scalaz.std.StreamInstances
+     with scalaz.std.VectorInstances
+     with scalaz.std.TupleInstances
      with scalaz.std.AnyValInstances
      with scalaz.std.ListInstances {
 

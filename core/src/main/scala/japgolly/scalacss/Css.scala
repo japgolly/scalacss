@@ -31,4 +31,15 @@ object Css {
           Stream((selector(cn, cond), OneAnd(r.head, r.tail)))
         }
   }
+
+  def flatten(css: Css): Stream[(CssSelector, CssKV)] =
+    css.flatMap { case (sel, kvs) =>
+      kvs.vector.toStream.map(kv => (sel, kv))
+    }
+
+  type Flat3 = (CssSelector, String, String)
+  def flatten3(css: Css): Stream[Flat3] =
+    css.flatMap { case (sel, kvs) =>
+      kvs.vector.toStream.map(kv => (sel, kv.key, kv.value))
+    }
 }
