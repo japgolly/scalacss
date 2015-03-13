@@ -68,6 +68,13 @@ final case class StyleS(data      : Map[Cond, AVs],
 
   def inspect: String =
     StringRenderer.defaultPretty(inspectCss)
+
+  def conflicts: Map[Cond, Set[AV]] = {
+    data.toStream
+      .map { case (c, avs) => (c, AttrCmp.conflicts(avs.vector)) }
+      .filter(_._2.nonEmpty)
+      .toMap
+  }
 }
 
 object StyleS {

@@ -1,5 +1,6 @@
 package japgolly.scalacss
 
+import scalaz.OneAnd
 import scalaz.syntax.foldable1._
 
 /**
@@ -19,17 +20,12 @@ final case class Compose(rules: Compose.Rules) {
 
     val newData = {
       @inline def mergeAVs(c: Cond, avs: AVs, into: AVs): AVs =
-        avs.foldLeft(into)((q, av) => mergeAV(c, av, q))
+        into.foldLeft(avs)((q, av) => mergeAV(c, av, q))
 
       @inline def mergeAV(c: Cond, av: AV, into: AVs): AVs = {
-        import AttrCmp._
-        val (ok, ko) =
-          into.vector.partition(i => av.attr.cmp(i.attr) match {
-            case Unrelated      => true
-            case Same | Overlap => false
-          })
-        NonEmptyVector.maybe(ko, NonEmptyVector.end(ok, av))(ko1 =>
-          ok ++: absorbWarning(c, rules.mergeAttrs(ko1, av)))
+        val (ko, ok) = into.vector.partition(i => av.attr.cmp(i.attr).conflict)
+        NonEmptyVector.maybe(ko, OneAnd(av, ok))(ko1 =>
+          absorbWarning(c, rules.mergeAttrs(av, ko1)) ++ ok)
       }
 
       b.data.foldLeft(a.data) { case (data, (c, newAVs)) =>
@@ -82,33 +78,34 @@ object Compose {
 
   trait Rules {
     def mergeClassNames(lo: String, hi: String): (Option[String], Vector[WarningMsg])
-    def mergeAttrs     (lo: AVs,    hi: AV)    : (AVs           , Vector[WarningMsg])
+    def mergeAttrs     (lo: AV,     hi: AVs)   : (AVs           , Vector[WarningMsg])
   }
 
   object Rules {
-    type AttrMerge = (AVs, AV) => AVs
+    type AttrMerge = (AV, AVs) => AVs
 
     val append: AttrMerge =
-      (lo, hi) => lo :+ hi
-
-    val ignore: AttrMerge =
-      (lo, _) => lo
+      (lo, hi) => lo +: hi
 
     val replace: AttrMerge =
-      (_, hi) => NonEmptyVector(hi)
+      (_, hi) => hi
 
     def silent(merge: AttrMerge): Rules =
       new Rules {
         override def mergeClassNames(lo: String, hi: String) = (Some(hi)     , Vector.empty)
-        override def mergeAttrs(lo: AVs, hi: AV)             = (merge(lo, hi), Vector.empty)
+        override def mergeAttrs(lo: AV, hi: AVs)             = (merge(lo, hi), Vector.empty)
       }
 
     def warn(merge: AttrMerge): Rules =
       new Rules {
         override def mergeClassNames(lo: String, hi: String) =
           (Some(hi), Vector1(s"Overriding explicit className '$lo' with '$hi'."))
-        override def mergeAttrs(lo: AVs, hi: AV) =
-          (merge(lo, hi), Vector1(s"${hi.attr.id} overrides ${lo.vector.map(_.attr.id) mkString ","}."))
+
+        override def mergeAttrs(lo: AV, hi: AVs) = {
+          def show1(x: AV) = x.attr.id
+          def showN(x: AVs) = if (x.tail.isEmpty) show1(x.head) else x.vector.map(show1).mkString("{", ",", "}")
+          (merge(lo, hi), Vector1(s"${show1(lo)} overridden by ${showN(hi)}."))
+        }
       }
   }
 }

@@ -71,15 +71,18 @@ object Attr {
 // =====================================================================================================================
 sealed abstract class AttrCmp {
   def >>(next: => AttrCmp): AttrCmp
+  def conflict: Boolean
 }
 
 object AttrCmp {
   case object Unrelated extends AttrCmp {
     override def >>(next: => AttrCmp): AttrCmp = next
+    override def conflict = false
   }
 
   sealed abstract class Conflict extends AttrCmp  {
     override def >>(next: => AttrCmp): AttrCmp = this
+    override def conflict = true
   }
 
   case object Same    extends Conflict
@@ -104,4 +107,17 @@ object AttrCmp {
 
   val default: Fn =
     compose(byEquality, byRealAttrs)
+
+  def conflicts(avs: Vector[AV]): Set[AV] = {
+    @tailrec def go(untested: Vector[AV], conflicts: Set[AV]): Set[AV] =
+      if (untested.length <= 1)
+        conflicts
+      else {
+        val h = untested.head
+        val (ko, ok) = untested.tail.partition(i => h.attr.cmp(i.attr).conflict)
+        val c2 = if (ko.isEmpty) conflicts else conflicts + h ++ ko
+        go(ok, c2)
+      }
+    go(avs, Set.empty)
+  }
 }

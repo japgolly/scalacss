@@ -24,9 +24,15 @@ object ComposeTest extends TestSuite {
       {case (a,b) => flat(a compose b).sorted })
   }
 
-  // replace
+  val replaceTest = {
+    implicit val impc = new Compose(Compose.Rules.silent(Compose.Rules.replace))
+    Prop.allPresent[(TT)]("a∘b ⊇ b")(
+      {case (_, b) => flat(b).toSet },
+      {case (a, b) => flat(a compose b) })
+  }
 
   override val tests = TestSuite {
-    'append - appendTest.mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(5000))
+    'append  - appendTest .mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
+    'replace - replaceTest.mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
   }
 }
