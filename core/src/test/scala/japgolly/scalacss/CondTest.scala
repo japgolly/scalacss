@@ -9,8 +9,8 @@ object CondTest extends TestSuite {
     'pseudo {
       import Pseudo._
       'not {
-        assertEq(Not("div").value, ":not(div)")
-        assertEq(Not(Link).value, ":not(:link)")
+        assertEq(Not("div").cssValue, ":not(div)")
+        assertEq(Not(Link).cssValue, ":not(:link)")
       }
     }
   }

@@ -1,7 +1,4 @@
 * Style composition.
-* Pseudo : CssSel endo.
-* Cond monoid
-* Cond chaining .hover.visited
 * Polymorphic style decl (gen or register)
 * Style DSL.
 * Units like 10px

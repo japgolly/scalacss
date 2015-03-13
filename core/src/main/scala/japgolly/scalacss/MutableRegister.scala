@@ -150,7 +150,7 @@ object MutableRegister { // ====================================================
 
     val fallbackStyle: StyleA = {
       import Attrs._
-      val s = new StyleS(Map(NoCond -> AVsAndWarnings(NonEmptyList(
+      val s = new StyleS(Map(Cond.empty -> AVsAndWarnings(NonEmptyList(
         AV(backgroundColor, "#ffbaba"),
         AV(color, "#d8000c"))
         , Nil)), Nil, None)

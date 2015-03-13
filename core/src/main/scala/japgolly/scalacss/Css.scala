@@ -10,11 +10,11 @@ object Css {
   def className(cn: ClassName): String =
     "." + cn.value
 
-  def selector(cn: ClassName, c: Cond): CssSelector =
-    c match {
-      case NoCond    => className(cn)
-      case p: Pseudo => className(cn) + p.value
-    }
+  def selector(cn: ClassName, c: Cond): CssSelector = {
+    var sel = className(cn)
+    c.pseudo.foreach { p => sel += p.cssValue }
+    sel
+  }
 
   def av(av: AV)(implicit env: Env): List[CssKV] =
     av.attr.gen(env)(av.value)

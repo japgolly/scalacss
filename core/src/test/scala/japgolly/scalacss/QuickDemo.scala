@@ -9,16 +9,16 @@ object QuickDemo extends TestSuite {
   import Attrs._
 
   val style1 = new StyleS(Map(
-    NoCond -> AVsAndWarnings(NonEmptyList(
+    Cond.empty -> AVsAndWarnings(NonEmptyList(
       AV(margin, "12px"), AV(textAlign, "center"), AV(color, "red")), Nil)
-    , Pseudo.Visited -> AVsAndWarnings(NonEmptyList(
+    , Cond.empty.visited -> AVsAndWarnings(NonEmptyList(
       AV(color, "#d4d4d4"), AV(fontWeight, "bold")), Nil)
   ), Nil, None)
 
   val style2 = new StyleS(Map(
-    NoCond -> AVsAndWarnings(NonEmptyList(
+    Cond.empty -> AVsAndWarnings(NonEmptyList(
       AV(fontWeight, "bold")), Nil)
-    , (Pseudo.Hover & Pseudo.Not(".debug")) -> AVsAndWarnings(NonEmptyList(
+    , Cond.empty.hover.not(".debug") -> AVsAndWarnings(NonEmptyList(
       AV(backgroundColor, "green"), AV(fontWeight, "normal")), Nil)
   ), Nil, None)
 
