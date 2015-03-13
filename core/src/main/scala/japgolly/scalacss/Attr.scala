@@ -47,12 +47,12 @@ final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyList[
 }
 
 object Attr {
-  type Gen = Env => Value => List[CssKV]
+  type Gen = Env => Value => Vector[CssKV]
 
   implicit val order: Order[Attr] = Order.orderBy(_.id)
 
   def simpleGen(css: String): Gen =
-    _ => CssKV(css, _) :: Nil
+    _ => v => Vector(CssKV(css, v))
 
   def real(css: String): Attr =
     new RealAttr(css, simpleGen(css))

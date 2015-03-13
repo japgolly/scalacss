@@ -1,8 +1,17 @@
 package japgolly
 
-import scalaz.{Equal, NonEmptyList}
+import scalaz.{Equal, Foldable1, OneAnd}
+import scalaz.std.vector._
 
 package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
+
+  type NonEmptyVector[A] = OneAnd[Vector, A]
+  @inline def NonEmptyVector[A](h: A, t: A*): NonEmptyVector[A] =
+    OneAnd(h, t.toVector)
+  implicit val nonEmptyVectorFoldable1: Foldable1[NonEmptyVector] =
+    OneAnd.oneAndFoldable[Vector]
+  implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
+    OneAnd.oneAndEqual[Vector, A]
 
   type Env = EnvF[Option]
 
@@ -13,7 +22,7 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
 
   final case class AV(attr: Attr, value: Value)
 
-  type AVs = NonEmptyList[AV]
+  type AVs = NonEmptyVector[AV]
 
   final case class ClassName(value: String)
 
@@ -37,7 +46,7 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
-  type Css = Stream[(CssSelector, NonEmptyList[CssKV])]
+  type Css = Stream[(CssSelector, NonEmptyVector[CssKV])]
 
   final case class Warning(cond: Cond, desc: String)
 

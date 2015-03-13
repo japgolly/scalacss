@@ -1,7 +1,6 @@
 package japgolly.scalacss
 
 import scala.annotation.tailrec
-import scalaz.NonEmptyList
 import shapeless._
 import shapeless.ops.hlist.Mapper
 import MutableRegister.{ErrorHandler, NameGen}
@@ -147,9 +146,9 @@ object MutableRegister { // ====================================================
         override def badInput[I](s: StyleF[I], i: I) = fallbackStyle
       }
 
-    val fallbackStyle: StyleA = {
+    val fallbackStyle: StyleA = { // TODO update when Style gets nice DSL
       import Attrs._
-      val s = new StyleS(Map(Cond.empty -> NonEmptyList(
+      val s = new StyleS(Map(Cond.empty -> NonEmptyVector(
         AV(backgroundColor, "#ffbaba"),
         AV(color, "#d8000c"))
       ), Nil, None, Nil)

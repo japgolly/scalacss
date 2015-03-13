@@ -1,6 +1,5 @@
 package japgolly.scalacss
 
-import scalaz.NonEmptyList
 import shapeless._
 import shapeless.syntax.singleton._ // TODO It would be nice to avoid the need for this import at client site
 import utest._
@@ -12,7 +11,7 @@ import TestUtil._
 object MutableRegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
-    new StyleS(Map(Cond.empty -> NonEmptyList(av, avs: _*)), Nil, None, Nil)
+    new StyleS(Map(Cond.empty -> NonEmptyVector(av, avs: _*)), Nil, None, Nil)
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))
@@ -46,10 +45,10 @@ object MutableRegisterTest extends TestSuite {
       val a4 = reg register ss4
       assertDistinctClasses(a1, a2, a3, a4)
       val css = Css(reg.styles).toMap
-      assertEq(css(Css className a1.className), NonEmptyList(CssKV("margin-top", "1px")))
-      assertEq(css(Css className a2.className), NonEmptyList(CssKV("margin-bottom", "2px")))
-      assertEq(css(Css className a3.className), NonEmptyList(CssKV("margin-right", "3px")))
-      assertEq(css(Css className a4.className), NonEmptyList(CssKV("margin-left", "4px")))
+      assertEq(css(Css className a1.className), NonEmptyVector(CssKV("margin-top", "1px")))
+      assertEq(css(Css className a2.className), NonEmptyVector(CssKV("margin-bottom", "2px")))
+      assertEq(css(Css className a3.className), NonEmptyVector(CssKV("margin-right", "3px")))
+      assertEq(css(Css className a4.className), NonEmptyVector(CssKV("margin-left", "4px")))
       assertEq(css.size, 4)
     }
 

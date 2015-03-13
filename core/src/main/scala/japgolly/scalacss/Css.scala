@@ -1,6 +1,7 @@
 package japgolly.scalacss
 
-import scalaz.NonEmptyList
+import scalaz.OneAnd
+import scalaz.syntax.foldable1._
 
 object Css {
 
@@ -16,17 +17,18 @@ object Css {
     sel
   }
 
-  def av(av: AV)(implicit env: Env): List[CssKV] =
+  def av(av: AV)(implicit env: Env): Vector[CssKV] =
     av.attr.gen(env)(av.value)
 
   def style(s: StyleA)(implicit env: Env): Css = {
     val cn = s.className
     s.style.data.toStream.flatMap {
-      case (cond, avs) =>
-        avs.list.flatMap(av) match {
-          case h :: t => Stream((selector(cn, cond), NonEmptyList.nel(h, t)))
-          case Nil    => Stream.empty
+      case (cond, avs1) =>
+        val r = avs1.foldMapLeft1(av)(_ ++ av(_))
+        if (r.isEmpty)
+          Stream.empty
+        else
+          Stream((selector(cn, cond), OneAnd(r.head, r.tail)))
         }
-    }
   }
 }
