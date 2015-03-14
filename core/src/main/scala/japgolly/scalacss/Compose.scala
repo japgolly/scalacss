@@ -76,6 +76,9 @@ final case class Compose(rules: Compose.Rules) {
 
 object Compose {
 
+  val safe: Compose =
+    new Compose(Rules.warn(Rules.append))
+
   trait Rules {
     def mergeClassNames(lo: String, hi: String): (Option[String], Vector[WarningMsg])
     def mergeAttrs     (lo: AV,     hi: AVs)   : (AVs           , Vector[WarningMsg])

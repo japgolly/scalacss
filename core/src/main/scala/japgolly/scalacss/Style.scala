@@ -64,7 +64,7 @@ final case class StyleS(data      : Map[Cond, AVs],
   override def toString = inspect
 
   def inspectCss: Css =
-    Css.style(StyleA(ClassName(className getOrElse "???"), this))(Env.empty)
+    Css.styleA(StyleA(ClassName(className getOrElse "???"), this))(Env.empty)
 
   def inspect: String =
     StringRenderer.defaultPretty(inspectCss)
@@ -78,13 +78,20 @@ final case class StyleS(data      : Map[Cond, AVs],
 }
 
 object StyleS {
-  /** Helper method for common case where only data needs to be specified. */
-  def data(d: Map[Cond, AVs]): StyleS =
+  /** Helper method for common case where only data is specified. */
+  @inline def data(d: Map[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty)
+
+  /** Helper method for common case where only one condition is specified. */
+  @inline def data1(c: Cond, avs: AVs): StyleS =
+    data(Map.empty.updated(c, avs))
+
+  val empty: StyleS =
+    data(Map.empty)
 
   implicit def styleSMonoid(implicit c: Compose): Monoid[StyleS] =
     new Monoid[StyleS] {
-      override def zero                            = data(Map.empty)
+      override def zero                            = empty
       override def append(a: StyleS, b: => StyleS) = a compose b
     }
 }

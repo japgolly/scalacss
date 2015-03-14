@@ -93,6 +93,9 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
     @inline def ++(as: GenTraversableOnce[A]): NonEmptyVector[A] =
       modt(_ ++ as)
 
+    @inline def ++(b: NonEmptyVector[A]): NonEmptyVector[A] =
+      ++(b.vector)
+
     def ++:(as: Vector[A]): NonEmptyVector[A] =
       if (as.isEmpty) self else OneAnd(as.head, as.tail ++ vector)
 
