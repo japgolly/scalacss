@@ -91,6 +91,8 @@ object Pseudo {
 
   final case class Custom(override val cssValue: String) extends Pseudo1(cssValue)
 
+  type PseudoF = Pseudo.type => Pseudo
+
   /**
    * Trait providing a nice chaining DSL.
    */
@@ -113,6 +115,7 @@ object Pseudo {
     final def link                           : Out = addPseudo(Link)
     final def not          (selector: String): Out = addPseudo(Not(selector))
     final def not          (selector: Pseudo): Out = addPseudo(Not(selector))
+    final def not          (f: PseudoF)      : Out = addPseudo(Not(f))
     final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n))
     final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n))
     final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n))
@@ -183,6 +186,7 @@ object Pseudo {
   final case class Not(selector: String) extends Pseudo1(s":not($selector)")
   object Not {
     def apply(selector: Pseudo): Not = Not(selector.cssValue)
+    def apply(f: PseudoF)      : Not = Not(f(Pseudo))
   }
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
