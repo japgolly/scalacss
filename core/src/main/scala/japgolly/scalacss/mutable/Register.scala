@@ -17,7 +17,7 @@ import Register.{ErrorHandler, NameGen}
 final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
   var _nameGen = initNameGen
-  var _styles = List.empty[StyleA]
+  var _styles = Vector.empty[StyleA]
 
   private def nextName(): ClassName =
     mutex {
@@ -43,7 +43,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
 
     // Register
     val a = StyleA(cn, s)
-    mutex { _styles ::= a }
+    mutex { _styles :+= a }
     a
   }
 
@@ -64,7 +64,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     implicit def cf[W, I: StyleLookup]: Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
-  def styles: List[StyleA] =
+  def styles: Vector[StyleA] =
     mutex(_styles)
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
