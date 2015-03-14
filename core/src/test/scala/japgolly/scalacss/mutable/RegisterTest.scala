@@ -1,13 +1,14 @@
-package japgolly.scalacss
+package japgolly.scalacss.mutable
 
 import shapeless._
 import shapeless.syntax.singleton._ // TODO It would be nice to avoid the need for this import at client site
 import utest._
+import japgolly.scalacss._
 import Attrs._
-import MutableRegister._
+import Register._
 import TestUtil._
 
-object MutableRegisterTest extends TestSuite {
+object RegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
     StyleS.data(Map(Cond.empty -> NonEmptyVector(av, avs: _*)))
@@ -34,7 +35,7 @@ object MutableRegisterTest extends TestSuite {
   }
 
   override val tests = TestSuite {
-    val reg = new MutableRegister(NameGen.short(), ErrorHandler.noisy)
+    val reg = new Register(NameGen.short(), ErrorHandler.noisy)
     implicit def env = Env.empty
 
     'registerS {

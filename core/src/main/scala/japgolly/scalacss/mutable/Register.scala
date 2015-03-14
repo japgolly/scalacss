@@ -1,21 +1,20 @@
-package japgolly.scalacss
+package japgolly.scalacss.mutable
 
 import scala.annotation.tailrec
 import shapeless._
 import shapeless.ops.hlist.Mapper
-import MutableRegister.{ErrorHandler, NameGen}
+import japgolly.scalacss._
 import StyleC.{Named, MkUsage}
+import Register.{ErrorHandler, NameGen}
 
 /**
  * TODO Doc & test MutableRegister and friends inc. Style[FC]
- *
- * This is the only portion of the library that is mutable and has side-effects.
  *
  * Performs magic using mutability and side-effects so that ........
  *
  * Thread-safe.
  */
-final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
+final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
   var _nameGen = initNameGen
   var _styles = List.empty[StyleA]
@@ -73,7 +72,7 @@ final class MutableRegister(initNameGen: NameGen, errHandler: ErrorHandler)(impl
 }
 
 
-object MutableRegister { // ============================================================================================
+object Register { // ===================================================================================================
 
   trait NameGen {
     def next: (ClassName, NameGen)
@@ -146,12 +145,10 @@ object MutableRegister { // ====================================================
         override def badInput[I](s: StyleF[I], i: I) = fallbackStyle
       }
 
-    val fallbackStyle: StyleA = { // TODO update when Style gets nice DSL
+    val fallbackStyle: StyleA = {
       import Attrs._
-      val s = StyleS.data(Map(Cond.empty -> NonEmptyVector(
-        AV(backgroundColor, "#ffbaba"),
-        AV(color, "#d8000c"))
-      ))
+      import DSL._
+      val s = style(backgroundColor ~ "#ffbaba", color ~"#d8000c")(Compose.safe)
       StyleA(ClassName("_SCSS_ERROR_"), s)
     }
   }

@@ -4,7 +4,7 @@ import scala.collection.GenTraversableOnce
 import scalaz.{Equal, Foldable1, OneAnd}
 import scalaz.std.AllInstances._
 
-package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
+package object scalacss {
 
   type Env = EnvF[Option]
 
@@ -52,10 +52,6 @@ package object scalacss extends japgolly.scalacss.ScalaPlatform.Implicits {
    * A style that needs no more processing and can be applied to some target.
    */
   final case class StyleA(className: ClassName, style: StyleS)
-
-  abstract class Mutex {
-    @inline def apply[A](f: => A): A
-  }
 
   // ===================================================================================================================
   type NonEmptyVector[A] = OneAnd[Vector, A]
