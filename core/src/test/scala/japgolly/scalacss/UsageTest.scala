@@ -64,7 +64,7 @@ object UsageTest extends TestSuite {
     }
 
     'zeroLiteral {
-      val ok: AV = padding ~ 0
+      padding ~ 0
       illTyped("padding ~ 1")
     }
   }
