@@ -3,16 +3,10 @@ package japgolly.scalacss
 import shapeless.Witness
 import Style.{UnsafeExt, UnsafeExts}
 
-object DSL {
-
+object DslBase {
   val zeroType = Witness(0)
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Implicits
-
-  @inline implicit def ValueZero(z: zeroType.T): String = "0"
-
-  @inline implicit final class DslInt(val self: Int) extends AnyVal {
+  final class DslInt(val self: Int) extends AnyVal {
     @inline private def unit(u: String): Value = self.toString + u
 
     /** Centimeters. */
@@ -79,40 +73,67 @@ object DSL {
     @inline def pct = unit("%")
   }
 
-  @inline implicit final class DslAttr(val self: Attr) extends AnyVal {
+  final class DslAttr(val self: Attr) extends AnyVal {
     @inline def ~(value: Value): AV = AV(self, value)
   }
 
-  @inline implicit final class DslAV(val self: AV) extends AnyVal {
+  final class DslAV(val self: AV) extends AnyVal {
     @inline def &(b: AV) : AVs = NonEmptyVector(self, b)
     @inline def &(b: AVs): AVs = self +: b
   }
 
-  @inline implicit final class DslAVs(val self: AVs) extends AnyVal {
+  final class DslAVs(val self: AVs) extends AnyVal {
     @inline def &(b: AV) : AVs = self :+ b
     @inline def &(b: AVs): AVs = self ++ b
   }
 
   final class DslCond(val c: Cond) extends AnyVal {
     @inline def apply()             : ToStyle = new ToStyle(StyleS.empty)
+    @inline def apply(avs: AVs)     : ToStyle = new ToStyle(StyleS.data1(c, avs))
     @inline def apply(h: AV, t: AV*): ToStyle = apply(NonEmptyVector(h, t: _*))
-    @inline def apply(avs: AVs)     : ToStyle = (c, avs)
   }
-  @inline implicit def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
-
-  @inline implicit def CondPseudo(x: Pseudo): Cond = Cond(Some(x))
 
   final class ToStyle(val s: StyleS) extends AnyVal
-  @inline implicit def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(NonEmptyVector(x))
-          implicit def ToStyleAVs            (x: AVs)       : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
-          implicit def ToStyleCAV [C <% Cond](x: (C, AV))   : ToStyle = new ToStyle(StyleS.data1(x._1, NonEmptyVector(x._2)))
-          implicit def ToStyleCAVs[C <% Cond](x: (C, AVs))  : ToStyle = new ToStyle(StyleS.data1(x._1, x._2))
-  @inline implicit def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
-          implicit def ToStyleUnsafeExts     (x: UnsafeExts): ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
-  @inline implicit def ToStyleStyleS         (x: StyleS)    : ToStyle = new ToStyle(x)
+}
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Explicits
+import DslBase._
+
+// =====================================================================================================================
+abstract class DslBase {
+
+  @inline implicit final def ValueZero(z: zeroType.T): Value = "0"
+
+  @inline implicit final def autoDslInt (a: Int) : DslInt  = new DslInt(a)
+  @inline implicit final def autoDslAttr(a: Attr): DslAttr = new DslAttr(a)
+  @inline implicit final def autoDslAV  (a: AV)  : DslAV   = new DslAV(a)
+  @inline implicit final def autoDslAVs (a: AVs) : DslAVs  = new DslAVs(a)
+
+  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
+
+  @inline implicit final def CondPseudo(x: Pseudo): Cond = Cond(Some(x))
+
+  @inline implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(NonEmptyVector(x))
+          implicit final def ToStyleAVs            (x: AVs)       : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
+          implicit final def ToStyleCAV [C <% Cond](x: (C, AV))   : ToStyle = new ToStyle(StyleS.data1(x._1, NonEmptyVector(x._2)))
+          implicit final def ToStyleCAVs[C <% Cond](x: (C, AVs))  : ToStyle = new ToStyle(StyleS.data1(x._1, x._2))
+  @inline implicit final def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
+          implicit final def ToStyleUnsafeExts     (x: UnsafeExts): ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
+  @inline implicit final def ToStyleStyleS         (x: StyleS)    : ToStyle = new ToStyle(x)
+
+  protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
+
+  def unsafeExt(f: String => String)(t: ToStyle*)(implicit c: Compose): UnsafeExt =
+    UnsafeExt(f, styleS(t: _*))
+
+  def unsafeChild(n: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
+    unsafeExt(_ + " " + n)(t: _*)
+}
+
+// =====================================================================================================================
+object Dsl extends DslBase {
+
+  override protected def styleS(t: ToStyle*)(implicit c: Compose) =
+    style(t: _*)
 
   def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleS =
     style(t: _*).copy(className = Option(className))
@@ -120,10 +141,4 @@ object DSL {
   def style(t: ToStyle*)(implicit c: Compose): StyleS =
     if (t.isEmpty) StyleS.empty
     else t.map(_.s).reduce(_ compose _)
-
-  def unsafeExt(f: String => String)(t: ToStyle*)(implicit c: Compose): UnsafeExt =
-    UnsafeExt(f, style(t: _*))
-
-  def unsafeChild(n: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
-    unsafeExt(_ + " " + n)(t: _*)
 }

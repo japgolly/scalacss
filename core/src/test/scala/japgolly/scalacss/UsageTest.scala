@@ -4,7 +4,7 @@ import shapeless.test.illTyped
 import utest._
 import TestUtil._
 import Attrs._
-import DSL._
+import Dsl._
 import Pseudo._
 
 object UsageTest extends TestSuite {
