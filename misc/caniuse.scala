@@ -61,12 +61,21 @@ object Caniuse {
 
     println(s"Found ${agents.size} agents...")
 
+    type MSS = Map[String, String]
+
     case class Data(
       key: String,
       title: String,
       desc: String,
       spec: String,
-      stats: Map[String, Map[String, String]])
+      stats: Map[String, MSS])
+
+    val N = new NaturalOrderComparator()
+    def consolidate(m: MSS): MSS =
+      m.toStream.sortWith((a,b) => N.compare(a._1, b._1)<0)
+          .foldLeft(Map.empty[String, String]){case (q,(a,b)) => q.updated(b, q.get(b).fold(a)(_+","+a)) }
+          .toStream.map{case (a,b) => (b,a)}.toMap
+
 
     val dataj = json.cursor --\ "data" focus
     val cssj = dataj.assoc.get.filter(kv =>
@@ -76,7 +85,7 @@ object Caniuse {
         v.field("title") |> str,
         v.field("description") |> str,
         v.field("spec") |> str,
-        (+v --\ "stats" focus).jdecode[Map[String, Map[String, String]]].toOption.get)
+        (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
     }.sortBy(_.key)
 
     println(s"Found ${data.size} CSS properties...")
@@ -106,7 +115,7 @@ object Caniuse {
       // m => m.toList.foldLeft("Map.empty"){case (q,(k,v)) => s"$q.updated(${f(k)},${g(v)})" }
       m => if (m.isEmpty) "Map.empty" else
       m.toStream.map{case (k,v) => (f(k),g(v))}.sortBy(_._1)
-        .foldLeft("Map("){case (q,(k,v)) => s"$q$k -> $v, " }.dropRight(2) + ")"
+        .foldLeft("Map("){case (q,(k,v)) => s"$q$k -> $v, "}.dropRight(2) + ")"
 
     // def fmtAgent(a: Agent) = {
       // import a._
@@ -121,6 +130,7 @@ object Caniuse {
 
     def fmtData(d: Data) = {
       import d._
+      val stats2 = stats.mapValues(m => m.toList.map{case(a,b) => (b,a)}.toMap)
       s"""/**
    * $title
    *
@@ -128,7 +138,7 @@ object Caniuse {
    *
    * $spec
    */
-  lazy val ${camel(key)}: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtstr, fmtsup))(stats)}
+  def ${camel(key)}: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
 """}
 
     val output = s"""package $pkg
@@ -142,7 +152,7 @@ object Caniuse {
 object $obj {
   type Prefix  = String
   type VerStr  = String
-  type Subject = Map[Agent, Map[VerStr, Support]]
+  type Subject = Map[Agent, Map[Support, VerStr]]
 
   sealed trait Support
   object Support {
@@ -164,13 +174,15 @@ object $obj {
 
   ${data map fmtData mkString "\n  "}
 }
-"""
+""".replaceAll(" +\n","\n")
 
     // println(s"\n${"-"*100}\n$output")
 
     println(s"Writing to $fout")
+    val bytes = output.getBytes("UTF-8")
     import java.nio.file._
-    Files.write(Paths.get(fout), output.getBytes("UTF-8"));
+    Files.write(Paths.get(fout), bytes)
+    println(s"Wrote ${bytes.length} bytes.")
 
     println("Done.")
   }

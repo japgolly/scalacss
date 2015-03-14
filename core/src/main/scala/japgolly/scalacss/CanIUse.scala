@@ -9,7 +9,7 @@ package japgolly.scalacss
 object CanIUse {
   type Prefix  = String
   type VerStr  = String
-  type Subject = Map[Agent, Map[VerStr, Support]]
+  type Subject = Map[Agent, Map[Support, VerStr]]
 
   sealed trait Support
   object Support {
@@ -49,21 +49,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#the-background-attachment
    */
-  lazy val backgroundAttachment: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Partial), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Partial), 
-    BlackberryBrowser -> Map("10" -> Unknown, "7" -> Partial), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Partial, "3.5" -> Partial, "3.6" -> Partial, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Partial, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Partial, "9.5-9.6" -> Partial), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Unknown, "11" -> Unknown, "11.1" -> Unknown, "11.5" -> Unknown, "12" -> Unknown, "12.1" -> Full, "24" -> None), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def backgroundAttachment: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.4,4.4.3-4.4.4,37", Partial -> "4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Partial -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Partial -> "9.9"),
+    BlackberryBrowser -> Map(Partial -> "7", Unknown -> "10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3", Partial -> "5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Partial -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1", None -> "24", Unknown -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2,4"))
 
   /**
    * CSS3 Background-image options
@@ -72,21 +72,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#backgrounds
    */
-  lazy val backgroundImgOpts: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> Partial, "37" -> Full, "4" -> Partial, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> PartialX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> PartialX, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Partial, "5.1" -> Partial, "6" -> Partial, "6.1" -> Partial, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def backgroundImgOpts: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Partial -> "3,4,4.1,4.2-4.3", PartialX -> "2.1", PartialX -> "2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Partial -> "4,5,6,7,8,9,10,11,12,13,14"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5", PartialX -> "3.6"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1,4.2-4.3,6.0-6.1", Partial -> "5.0-5.1"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6", PartialX -> "10.0-10.1"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "7,7.1,8", Partial -> "3.1,3.2,4,5,5.1,6,6.1"))
 
   /**
    * CSS3 Border images
@@ -95,21 +95,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#the-border-image
    */
-  lazy val borderImage: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> Full, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> PartialX), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> PartialX, "3.6" -> PartialX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    IE                -> Map("10" -> None, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> None, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Partial, "10.6" -> Partial, "11" -> PartialX, "11.1" -> PartialX, "11.5" -> PartialX, "11.6" -> PartialX, "12" -> PartialX, "12.1" -> PartialX, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> PartialX, "11.1" -> PartialX, "11.5" -> PartialX, "12" -> PartialX, "12.1" -> PartialX, "24" -> Full), 
-    Safari            -> Map("3.1" -> PartialX, "3.2" -> PartialX, "4" -> PartialX, "5" -> PartialX, "5.1" -> PartialX, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def borderImage: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", PartialX -> "7"),
+    Chrome            -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "15", PartialX -> "4,5,6,7,8,9,10,11,12,13,14"),
+    Firefox           -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3", PartialX -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14"),
+    IE                -> Map(Full -> "11,TP", None -> "5.5,6,7,8,9,10"),
+    IEMobile          -> Map(Full -> "11", None -> "10"),
+    IOSSafari         -> Map(Full -> "6.0-6.1,7.0-7.1,8,8.1", PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1", Partial -> "10.5,10.6", PartialX -> "11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10", PartialX -> "11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "6,6.1,7,7.1,8", PartialX -> "3.1,3.2,4,5,5.1"))
 
   /**
    * CSS3 Border-radius (rounded corners)
@@ -118,21 +118,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#the-border-radius
    */
-  lazy val borderRadius: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> PartialX, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def borderRadius: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", FullX -> "2.1"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3,3.5,3.6", PartialX -> "2"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", FullX -> "3.2"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", None -> "10"),
+    Safari            -> Map(Full -> "5,7,7.1,8", Full -> "5.1,6,6.1", FullX -> "3.1,3.2,4"))
 
   /**
    * calc() as CSS unit value
@@ -141,21 +141,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-values/#calc
    */
-  lazy val calc: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Partial, "4.4.3-4.4.4" -> Partial), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Partial, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> FullX, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> FullX, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def calc: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3", Partial -> "4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", None -> "7"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "19,20,21,22,23,24,25", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15", None -> "2,3,3.5,3.6"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8", Partial -> "9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "6.0-6.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "6", None -> "3.1,3.2,4,5,5.1"))
 
   /**
    * CSS3 Animation
@@ -164,21 +164,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-animations/
    */
-  lazy val cssAnimation: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> FullX, "12.1" -> Full, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> Full, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssAnimation: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "5,6,7,8,9,10,11,12,13,14,15", None -> "2,3,3.5,3.6,4"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "12.1", FullX -> "12,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1", FullX -> "24", None -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * CSS Appearance
@@ -187,21 +187,21 @@ object CanIUse {
    *
    * http://wiki.csswg.org/spec/css4-ui#appearance
    */
-  lazy val cssAppearance: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssAppearance: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10", Partial -> "11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS background-position edge offsets
@@ -210,21 +210,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#background-position
    */
-  lazy val cssBackgroundOffsets: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> None, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssBackgroundOffsets: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", None -> "7"),
+    Chrome            -> Map(Full -> "25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"),
+    Firefox           -> Map(Full -> "13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", None -> "10"),
+    Safari            -> Map(Full -> "7,7.1,8", None -> "3.1,3.2,4,5,5.1,6,6.1"))
 
   /**
    * CSS background-blend-mode
@@ -233,21 +233,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/compositing-1/#background-blend-mode
    */
-  lazy val cssBackgroundblendmode: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> Full, "8" -> Full))
+  def cssBackgroundblendmode: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
+    Firefox           -> Map(Full -> "30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "7.1,8", None -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
    * CSS box-decoration-break
@@ -256,21 +256,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-break/#break-decoration
    */
-  lazy val cssBoxdecorationbreak: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> FullX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> Unknown), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> Unknown, "10.5" -> Unknown, "10.6" -> Unknown, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> Unknown, "9.5-9.6" -> Unknown), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Unknown, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssBoxdecorationbreak: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
+    Chrome            -> Map(FullX -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "11,11.1,11.5,11.6,12,12.1", FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unknown -> "9,9.5-9.6,10.0-10.1,10.5,10.6"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1", FullX -> "24", Unknown -> "10"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * CSS3 Box-shadow
@@ -279,21 +279,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#box-shadow
    */
-  lazy val cssBoxshadow: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> FullX), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> FullX, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> PartialX, "3.2" -> PartialX, "4" -> PartialX, "5" -> FullX, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssBoxshadow: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", FullX -> "7"),
+    Chrome            -> Map(Full -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.5,3.6", None -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", FullX -> "4.0-4.1,4.2-4.3", PartialX -> "3.2"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", None -> "10"),
+    Safari            -> Map(Full -> "5.1,6,6.1,7,7.1,8", FullX -> "5", PartialX -> "3.1,3.2,4"))
 
   /**
    * CSS Canvas Drawings
@@ -302,21 +302,21 @@ object CanIUse {
    *
    * http://webkit.org/blog/176/css-canvas-drawing/
    */
-  lazy val cssCanvas: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> Unknown, "38" -> Unknown, "39" -> Unknown, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssCanvas: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36", Unknown -> "37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * CSS clip-path property
@@ -325,21 +325,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-masking-1/#the-clip-path
    */
-  lazy val cssClipPath: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> PartialX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> PartialX, "4.4.3-4.4.4" -> PartialX), 
-    AndroidChrome     -> Map("40" -> PartialX), 
-    AndroidFirefox    -> Map("33" -> Partial), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> None, "40" -> PartialX, "41" -> PartialX, "42" -> PartialX, "43" -> PartialX, "44" -> PartialX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "3" -> None, "3.5" -> Partial, "3.6" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Partial, "37" -> Partial, "38" -> Partial, "39" -> Partial, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> PartialX, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> PartialX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> PartialX, "7.1" -> PartialX, "8" -> PartialX))
+  def cssClipPath: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3", PartialX -> "4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23", PartialX -> "24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1", PartialX -> "7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", PartialX -> "24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1", PartialX -> "7,7.1,8"))
 
   /**
    * CSS Counters
@@ -348,21 +348,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/generate.html#counters
    */
-  lazy val cssCounters: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssCounters: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "8,9,10,11,TP", None -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Crisp edges/pixelated images
@@ -371,21 +371,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-images-3/#valdef-image-rendering-crisp-edges
    */
-  lazy val cssCrispEdges: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> Unknown, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> PartialX, "11" -> PartialX, "5.5" -> None, "6" -> None, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX, "TP" -> PartialX), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> PartialX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> FullX, "12" -> FullX, "12.1" -> FullX, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> FullX, "12.1" -> FullX, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> PartialX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssCrispEdges: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7", Unknown -> "10"),
+    Chrome            -> Map(Full -> "41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40"),
+    Firefox           -> Map(FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5"),
+    IE                -> Map(None -> "5.5,6", PartialX -> "7,8,9,10,11,TP"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3", PartialX -> "5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "28,29", FullX -> "11.6,12,12.1", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,15,16,17,18,19,20,21,22,23,24,25,26,27"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "12,12.1", None -> "10,11,11.1,11.5,24"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1", PartialX -> "6"))
 
   /**
    * CSS Device Adaptation
@@ -394,21 +394,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-device-adapt/
    */
-  lazy val cssDeviceadaptation: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> PartialX, "11" -> PartialX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> PartialX), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> PartialX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> PartialX), 
-    OperaMobile       -> Map("10" -> None, "11" -> PartialX, "11.1" -> PartialX, "11.5" -> PartialX, "12" -> PartialX, "12.1" -> PartialX, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> Unknown, "7" -> Unknown, "7.1" -> Unknown, "8" -> Unknown))
+  def cssDeviceadaptation: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9", PartialX -> "10,11,TP"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(PartialX -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,24", PartialX -> "11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6", Unknown -> "6.1,7,7.1,8"))
 
   /**
    * CSS Feature Queries
@@ -417,21 +417,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-conditional/#at-supports
    */
-  lazy val cssFeaturequeries: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssFeaturequeries: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27"),
+    Firefox           -> Map(Full -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS Filter Effects
@@ -440,21 +440,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/filter-effects/
    */
-  lazy val cssFilters: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> FullX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> Partial), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "3" -> None, "3.5" -> None, "3.6" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssFilters: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", None -> "7"),
+    Chrome            -> Map(FullX -> "18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17"),
+    Firefox           -> Map(Full -> "35,36,37,38,39", None -> "2,3,3.5", Partial -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", Partial -> "34"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1"))
 
   /**
    * CSS position:fixed
@@ -463,21 +463,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/visuren.html#fixed-positioning
    */
-  lazy val cssFixed: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Partial, "2.2" -> Partial, "2.3" -> Partial, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> Full, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssFixed: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", Partial -> "2.1,2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "7,8,9,10,11,TP", None -> "5.5", None -> "6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3", Partial -> "5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS font-stretch
@@ -486,44 +486,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-fonts-3/#font-stretch-prop
    */
-  lazy val cssFontStretch: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> Unknown, "43" -> Unknown, "44" -> Unknown, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> Unknown, "29" -> Unknown, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssFontStretch: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41", Unknown -> "42,43,44"),
+    Firefox           -> Map(Full -> "9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27", Unknown -> "28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS Generated content for pseudo-elements
    *
-   * Method of displaying text or images before or after the given element's contents using the ::before and ::after pseudo-elements. All browsers with support also support the `attr()` notation in the `content` property. 
+   * Method of displaying text or images before or after the given element's contents using the ::before and ::after pseudo-elements. All browsers with support also support the `attr()` notation in the `content` property.
    *
    * http://www.w3.org/TR/CSS21/generate.html
    */
-  lazy val cssGencontent: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssGencontent: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7", Partial -> "8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS Gradients
@@ -532,21 +532,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-images/
    */
-  lazy val cssGradients: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> Full, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> PartialX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> PartialX, "11.5" -> PartialX, "11.6" -> FullX, "12" -> FullX, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> PartialX, "11.5" -> PartialX, "12" -> FullX, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> PartialX, "5" -> PartialX, "5.1" -> FullX, "6" -> FullX, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssGradients: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", PartialX -> "7"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", PartialX -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", None -> "2,3,3.5"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", PartialX -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11", PartialX -> "11.1,11.5"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", None -> "10,11", PartialX -> "11.1,11.5"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", None -> "3.1,3.2", PartialX -> "4,5"))
 
   /**
    * CSS Grid Layout
@@ -555,21 +555,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-grid-layout/
    */
-  lazy val cssGrid: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> Unknown, "38" -> Unknown, "39" -> Unknown, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> PartialX, "11" -> PartialX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> PartialX), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> PartialX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssGrid: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1", None -> "4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24", None -> "25,26,27,28", None -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18", None -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36", Unknown -> "37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8", None -> "9", PartialX -> "10,11,TP"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1", None -> "6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27", None -> "28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", None -> "24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1", None -> "6,6.1,7,7.1,8"))
 
   /**
    * CSS Hyphenation
@@ -578,21 +578,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-text/#hyphenation
    */
-  lazy val cssHyphens: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "5" -> None, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> FullX, "11" -> FullX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> FullX), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssHyphens: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5"),
+    IE                -> Map(FullX -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "5.1,6,6.1,7,7.1,8", None -> "3.1,3.2,4,5"))
 
   /**
    * CSS3 image-orientation
@@ -601,21 +601,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-images/#image-orientation
    */
-  lazy val cssImageOrientation: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Partial, "8.1" -> Partial), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssImageOrientation: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS image-set
@@ -624,21 +624,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-images-3/#image-set-notation
    */
-  lazy val cssImageSet: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> FullX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> Unknown), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssImageSet: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
+    Chrome            -> Map(FullX -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1"))
 
   /**
    * CSS Masks
@@ -647,21 +647,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-masking/
    */
-  lazy val cssMasks: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> PartialX, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> PartialX, "4.4.3-4.4.4" -> PartialX), 
-    AndroidChrome     -> Map("40" -> PartialX), 
-    AndroidFirefox    -> Map("33" -> Partial), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> PartialX, "7" -> PartialX), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> PartialX, "40" -> PartialX, "41" -> PartialX, "42" -> PartialX, "43" -> PartialX, "44" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "3" -> None, "3.5" -> Partial, "3.6" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Partial, "37" -> Partial, "38" -> Partial, "39" -> Partial, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> PartialX, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> PartialX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> PartialX, "5" -> PartialX, "5.1" -> PartialX, "6" -> PartialX, "6.1" -> PartialX, "7" -> PartialX, "7.1" -> PartialX, "8" -> PartialX))
+  def cssMasks: Subject = Map(
+    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "7,10"),
+    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", PartialX -> "24"),
+    Safari            -> Map(None -> "3.1,3.2", PartialX -> "4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Media Queries: resolution feature
@@ -670,21 +670,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-mediaqueries/#resolution
    */
-  lazy val cssMediaResolution: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Unknown, "2.2" -> Unknown, "2.3" -> Unknown, "3" -> Unknown, "37" -> Full, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> PartialX, "7" -> PartialX), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Partial, "3.6" -> Partial, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> Unknown, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> PartialX, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> PartialX, "10.5" -> PartialX, "10.6" -> PartialX, "11" -> PartialX, "11.1" -> PartialX, "11.5" -> PartialX, "11.6" -> PartialX, "12" -> PartialX, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> PartialX), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Unknown, "11" -> Unknown, "11.1" -> Unknown, "11.5" -> Unknown, "12" -> Unknown, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> PartialX, "5" -> PartialX, "5.1" -> PartialX, "6" -> PartialX, "6.1" -> PartialX, "7" -> PartialX, "7.1" -> PartialX, "8" -> PartialX))
+  def cssMediaResolution: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "4,4.1,4.2-4.3", Unknown -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "7,10"),
+    Chrome            -> Map(Full -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15"),
+    IE                -> Map(None -> "5.5,6,7,8", Partial -> "9,10,11", Partial -> "TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unknown -> "3.2"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9", PartialX -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", Unknown -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(None -> "3.1,3.2", PartialX -> "4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Media Queries
@@ -693,21 +693,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-mediaqueries/
    */
-  lazy val cssMediaqueries: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssMediaqueries: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
 
   /**
    * Blending of HTML/SVG elements
@@ -716,21 +716,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/compositing-1/#mix-blend-mode
    */
-  lazy val cssMixblendmode: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> Full, "8" -> Full))
+  def cssMixblendmode: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", None -> "29,30,31,32,33,34,35,36,37,38,39,40"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "7.1,8", None -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
    * CSS3 Opacity
@@ -739,21 +739,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-color/
    */
-  lazy val cssOpacity: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssOpacity: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * :placeholder-shown CSS pseudo-class
@@ -762,21 +762,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/selectors4/#placeholder
    */
-  lazy val cssPlaceholder: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> PartialX, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> PartialX, "4.4.3-4.4.4" -> PartialX), 
-    AndroidChrome     -> Map("40" -> PartialX), 
-    AndroidFirefox    -> Map("33" -> PartialX), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> PartialX, "7" -> Unknown), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> PartialX, "40" -> PartialX, "41" -> PartialX, "42" -> PartialX, "43" -> PartialX, "44" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "2" -> None, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    IE                -> Map("10" -> PartialX, "11" -> PartialX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> PartialX), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> PartialX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> PartialX, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> PartialX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> PartialX, "5.1" -> PartialX, "6" -> PartialX, "6.1" -> PartialX, "7" -> PartialX, "7.1" -> PartialX, "8" -> PartialX))
+  def cssPlaceholder: Subject = Map(
+    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(PartialX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "10", Unknown -> "7"),
+    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6", PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9", PartialX -> "10,11,TP"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1", PartialX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", PartialX -> "24"),
+    Safari            -> Map(None -> "3.1,3.2,4", PartialX -> "5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS Reflections
@@ -785,21 +785,21 @@ object CanIUse {
    *
    * http://webkit.org/blog/182/css-reflections/
    */
-  lazy val cssReflections: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssReflections: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * CSS Regions
@@ -808,21 +808,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-regions/
    */
-  lazy val cssRegions: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> PartialX, "11" -> PartialX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> PartialX), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> PartialX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssRegions: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,35,36,37,38,39,40,41,42,43,44", None -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34", PartialX -> "15,16,17,18"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9", PartialX -> "10,11,TP"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * CSS Repeating Gradients
@@ -831,44 +831,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-images/#repeating-gradients
    */
-  lazy val cssRepeatingGradients: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> None), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> PartialX, "11.5" -> PartialX, "11.6" -> FullX, "12" -> FullX, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> PartialX, "11.5" -> PartialX, "12" -> FullX, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> FullX, "6" -> FullX, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssRepeatingGradients: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", None -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", None -> "7"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", None -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", None -> "2,3,3.5"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", None -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11", PartialX -> "11.1,11.5"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", None -> "10,11", PartialX -> "11.1,11.5"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", None -> "3.1,3.2,4,5"))
 
   /**
    * CSS resize property
    *
-   * Method of allowing an element to be resized by the user, with options to limit to a given direction. 
+   * Method of allowing an element to be resized by the user, with options to limit to a given direction.
    *
    * http://www.w3.org/TR/css3-ui/#resize
    */
-  lazy val cssResize: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> Partial, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssResize: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4", None -> "2,3,3.5,3.6"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12", Partial -> "12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * CSS 2.1 selectors
@@ -877,21 +877,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/selector.html
    */
-  lazy val cssSel2: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> Full, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssSel2: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "7,8,9,10,11,TP", None -> "5.5", None -> "6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 selectors
@@ -900,21 +900,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-selectors/
    */
-  lazy val cssSel3: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> Partial, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssSel3: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5", None -> "6", Partial -> "7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.2,4,5,5.1,6,6.1,7,7.1,8", None -> "3.1"))
 
   /**
    * ::selection CSS pseudo-element
@@ -923,21 +923,21 @@ object CanIUse {
    *
    * https://developer.mozilla.org/en-US/docs/Web/CSS/::selection
    */
-  lazy val cssSelection: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Unknown, "11" -> Unknown, "11.1" -> Unknown, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssSelection: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11.5,12,12.1,24", Unknown -> "10,11,11.1"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS Shapes Level 1
@@ -946,21 +946,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-shapes/
    */
-  lazy val cssShapes: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> FullX, "8" -> FullX))
+  def cssShapes: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", None -> "34,35,36"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "7.1,8", None -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
    * CSS position:sticky
@@ -969,21 +969,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-position/#sticky-positioning
    */
-  lazy val cssSticky: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def cssSticky: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,37,38,39,40,41,42,43,44", None -> "23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", None -> "26,27,28,29,30,31"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * CSS Table display
@@ -992,21 +992,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/tables.html
    */
-  lazy val cssTable: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssTable: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "8,9,10,11,TP", None -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 text-align-last
@@ -1015,21 +1015,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-text/#text-align-last-property
    */
-  lazy val cssTextAlignLast: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssTextAlignLast: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34", None -> "35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11"),
+    IE                -> Map(Partial -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21", None -> "22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Text-shadow
@@ -1038,21 +1038,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-text-decor-3/#text-shadow-property
    */
-  lazy val cssTextshadow: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Partial), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssTextshadow: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
 
   /**
    * CSS touch-action property
@@ -1061,21 +1061,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/pointerevents/#the-touch-action-css-property
    */
-  lazy val cssTouchAction: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> FullX, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> FullX, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssTouchAction: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", None -> "29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "11,TP", FullX -> "10", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "11", FullX -> "10"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Transitions
@@ -1084,21 +1084,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-transitions/
    */
-  lazy val cssTransitions: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> Full, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> FullX, "10.6" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "11.6" -> FullX, "12" -> FullX, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "12" -> FullX, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def cssTransitions: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15", None -> "2,3,3.5,3.6"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "10.5,10.6,11,11.1,11.5,11.6,12", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * CSS Variables
@@ -1107,21 +1107,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-variables/
    */
-  lazy val cssVariables: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> Unknown, "43" -> Unknown, "44" -> Unknown, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> Unknown, "29" -> Unknown, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def cssVariables: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41", Unknown -> "42,43,44"),
+    Firefox           -> Map(Full -> "31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27", Unknown -> "28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Box-sizing
@@ -1130,21 +1130,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-ui/#box-sizing
    */
-  lazy val css3Boxsizing: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> Partial, "4" -> Partial, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> Partial, "4.4.3-4.4.4" -> Partial), 
-    AndroidChrome     -> Map("40" -> Partial), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Partial), 
-    BlackberryBrowser -> Map("10" -> Partial, "7" -> PartialX), 
-    Chrome            -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Partial, "37" -> Partial, "38" -> Partial, "39" -> Partial, "4" -> PartialX, "40" -> Partial, "41" -> Partial, "42" -> Partial, "43" -> Partial, "44" -> Partial, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> Full, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> Partial, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Partial, "8.1" -> Partial), 
-    Opera             -> Map("10.0-10.1" -> Partial, "10.5" -> Partial, "10.6" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "11.6" -> Partial, "12" -> Partial, "12.1" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "9" -> None, "9.5-9.6" -> Partial), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "12" -> Partial, "12.1" -> Partial, "24" -> Partial), 
-    Safari            -> Map("3.1" -> PartialX, "3.2" -> PartialX, "4" -> PartialX, "5" -> PartialX, "5.1" -> Partial, "6" -> Partial, "6.1" -> Partial, "7" -> Partial, "7.1" -> Partial, "8" -> Partial))
+  def css3Boxsizing: Subject = Map(
+    AndroidBrowser    -> Map(Partial -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Partial -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Partial -> "9.9"),
+    BlackberryBrowser -> Map(Partial -> "10", PartialX -> "7"),
+    Chrome            -> Map(Partial -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", PartialX -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "29,30,31,32,33,34,35,36,37,38,39", FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"),
+    IE                -> Map(None -> "5.5,6,7", Partial -> "8,9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(Partial -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", PartialX -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(None -> "9", Partial -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Partial -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Partial -> "5.1,6,6.1,7,7.1,8", PartialX -> "3.1,3.2,4,5"))
 
   /**
    * CSS3 Colors
@@ -1153,44 +1153,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-color/
    */
-  lazy val css3Colors: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Partial, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Partial), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def css3Colors: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "2"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9", Partial -> "9.5-9.6"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Cursors (original values)
    *
-   * CSS3 cursor values added in the 2004 spec, including none, context-menu, cell, vertical-text, alias, copy, no-drop, not-allowed, nesw-resize, nwse-resize, col-resize, row-resize and all-scroll. 
+   * CSS3 cursor values added in the 2004 spec, including none, context-menu, cell, vertical-text, alias, copy, no-drop, not-allowed, nesw-resize, nwse-resize, col-resize, row-resize and all-scroll.
    *
    * http://www.w3.org/TR/css3-ui/#cursor
    */
-  lazy val css3Cursors: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> Unknown, "7" -> None), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Partial, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Partial, "3.5" -> Partial, "3.6" -> Partial, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> Partial, "10.5" -> Partial, "10.6" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "11.6" -> Partial, "12" -> Partial, "12.1" -> Partial, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Partial, "9.5-9.6" -> Partial), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def css3Cursors: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7", Unknown -> "10"),
+    Chrome            -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Partial -> "4"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "2,3,3.5,3.6"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Partial -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2,4"))
 
   /**
    * CSS3 Cursors (new values)
@@ -1199,21 +1199,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-ui/#cursor
    */
-  lazy val css3CursorsNewer: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def css3CursorsNewer: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(Full -> "37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
+    Firefox           -> Map(Full -> "24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "11.6,12,12.1,24,25,26,27,28,29", FullX -> "15,16,17,18,19,20,21,22,23", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 tab-size
@@ -1222,44 +1222,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-text/#tab-size1
    */
-  lazy val css3Tabsize: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "11.6" -> FullX, "12" -> FullX, "12.1" -> FullX, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> FullX), 
-    OperaMobile       -> Map("10" -> None, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "12" -> FullX, "12.1" -> FullX, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def css3Tabsize: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
+    Firefox           -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "10.6,11,11.1,11.5,11.6,12,12.1", None -> "9,9.5-9.6,10.0-10.1,10.5"),
+    OperaMini         -> Map(FullX -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", FullX -> "11,11.1,11.5,12,12.1", None -> "10"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * CSS currentColor value
    *
-   * A CSS value that will apply the existing `color` value to other properties like `background-color`, etc. 
+   * A CSS value that will apply the existing `color` value to other properties like `background-color`, etc.
    *
    * http://www.w3.org/TR/css3-color/#currentcolor
    */
-  lazy val currentcolor: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Unknown, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def currentcolor: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unknown -> "3.2"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * Flexible Box Layout Module
@@ -1268,21 +1268,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-flexbox/
    */
-  lazy val flexbox: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> Full, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> PartialX), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "2" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Full, "29" -> Full, "3" -> PartialX, "3.5" -> PartialX, "3.6" -> PartialX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    IE                -> Map("10" -> PartialX, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> PartialX, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> Full, "15" -> FullX, "16" -> FullX, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> PartialX, "3.2" -> PartialX, "4" -> PartialX, "5" -> PartialX, "5.1" -> PartialX, "6" -> PartialX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def flexbox: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", PartialX -> "7"),
+    Chrome            -> Map(Full -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "21,22,23,24,25,26,27,28", PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
+    Firefox           -> Map(Full -> "28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "22,23,24,25,26,27", PartialX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    IE                -> Map(Full -> "11,TP", None -> "5.5,6,7,8,9", PartialX -> "10"),
+    IEMobile          -> Map(Full -> "11", PartialX -> "10"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "12.1,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "15,16", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", None -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", PartialX -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * Font feature settings
@@ -1291,21 +1291,21 @@ object CanIUse {
    *
    * http://w3.org/TR/css3-fonts/#font-rend-props
    */
-  lazy val fontFeature: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> FullX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> Partial, "5" -> Partial, "5.1" -> Partial, "6" -> Partial, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def fontFeature: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", None -> "7"),
+    Chrome            -> Map(FullX -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15", PartialX -> "16,17,18,19,20"),
+    Firefox           -> Map(Full -> "34,35,36,37,38,39", FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", None -> "2,3,3.5,3.6", PartialX -> "4,5,6,7,8,9,10,11,12,13,14"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,6.1,7,7.1,8", Partial -> "4,5,5.1,6"))
 
   /**
    * CSS Font Loading
@@ -1314,21 +1314,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-font-loading/
    */
-  lazy val fontLoading: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def fontLoading: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
+    Firefox           -> Map(Full -> "37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34", None -> "35,36"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS font-size-adjust
@@ -1337,21 +1337,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-fonts-3/#font-size-adjust-prop
    */
-  lazy val fontSizeAdjust: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> Unknown, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def fontSizeAdjust: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,29", Unknown -> "28"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Font unicode-range subsetting
@@ -1360,21 +1360,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-fonts/#descdef-unicode-range
    */
-  lazy val fontUnicodeRange: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Partial, "2.2" -> Partial, "2.3" -> Partial, "3" -> Partial, "37" -> Full, "4" -> Partial, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> Partial, "4.4.3-4.4.4" -> Partial), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Partial), 
-    AndroidUC         -> Map("9.9" -> Partial), 
-    BlackberryBrowser -> Map("10" -> Unknown, "7" -> Unknown), 
-    Chrome            -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Partial, "8.1" -> Partial), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Partial), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Partial, "5.1" -> Partial, "6" -> Partial, "6.1" -> Partial, "7" -> Partial, "7.1" -> Partial, "8" -> Partial))
+  def fontUnicodeRange: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", Partial -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(Partial -> "9.9"),
+    BlackberryBrowser -> Map(Unknown -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", Partial -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    Firefox           -> Map(Full -> "38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35", None -> "36,37"),
+    IE                -> Map(None -> "5.5,6,7,8", Partial -> "9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", Partial -> "15,16,17,18,19,20,21,22"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", Partial -> "24"),
+    Safari            -> Map(Partial -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * @font-face Web fonts
@@ -1383,21 +1383,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-webfonts/
    */
-  lazy val fontface: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> Partial, "2.3" -> Partial, "3" -> Partial, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Partial), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def fontface: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", None -> "2.1", Partial -> "2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1"),
+    Opera             -> Map(Full -> "10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.2,4,5,5.1,6,6.1,7,7.1,8", None -> "3.1"))
 
   /**
    * getComputedStyle
@@ -1406,44 +1406,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/cssom/#dom-window-getcomputedstyle
    */
-  lazy val getcomputedstyle: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Partial, "2.2" -> Partial, "2.3" -> Partial, "3" -> Partial, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Partial), 
-    Chrome            -> Map("10" -> Partial, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Partial, "3.5" -> Partial, "3.6" -> Partial, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Partial, "10.5" -> Partial, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Partial, "9.5-9.6" -> Partial), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Partial, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def getcomputedstyle: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", Partial -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
+    Chrome            -> Map(Full -> "11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Partial -> "4,5,6,7,8,9,10"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2", Partial -> "3,3.5,3.6"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Partial -> "9,9.5-9.6,10.0-10.1,10.5"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Partial -> "10"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2,4"))
 
   /**
    * CSS inline-block
    *
-   * Method of displaying an element as a block while flowing it with text. 
+   * Method of displaying an element as a block while flowing it with text.
    *
    * http://www.w3.org/TR/CSS21/visuren.html#fixed-positioning
    */
-  lazy val inlineBlock: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> PartialX, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def inlineBlock: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", PartialX -> "2"),
+    IE                -> Map(Full -> "8,9,10,11,TP", Partial -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Intrinsic & Extrinsic Sizing
@@ -1452,21 +1452,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-sizing/
    */
-  lazy val intrinsicWidth: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> FullX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> None, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def intrinsicWidth: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", None -> "7"),
+    Chrome            -> Map(FullX -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    Firefox           -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * Improved kerning pairs & ligatures
@@ -1475,44 +1475,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/SVG11/painting.html#TextRenderingProperty
    */
-  lazy val kerningPairsLigatures: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> None), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> Unknown, "4.0-4.1" -> Unknown, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def kerningPairsLigatures: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", None -> "7"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unknown -> "3.2,4.0-4.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2,4"))
 
   /**
    * CSS min/max-width/height
    *
-   * Method of setting a minimum or maximum width or height to an element. 
+   * Method of setting a minimum or maximum width or height to an element.
    *
    * http://www.w3.org/TR/CSS21/visudet.html#min-max-widths
    */
-  lazy val minmaxwh: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> Full, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def minmaxwh: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "7,8,9,10,11,TP", None -> "5.5,6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Multiple backgrounds
@@ -1521,21 +1521,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/
    */
-  lazy val multibackgrounds: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def multibackgrounds: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Multiple column layout
@@ -1544,21 +1544,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-multicol/
    */
-  lazy val multicolumn: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> PartialX, "2.2" -> PartialX, "2.3" -> PartialX, "3" -> PartialX, "37" -> PartialX, "4" -> PartialX, "4.1" -> PartialX, "4.2-4.3" -> PartialX, "4.4" -> PartialX, "4.4.3-4.4.4" -> PartialX), 
-    AndroidChrome     -> Map("40" -> PartialX), 
-    AndroidFirefox    -> Map("33" -> PartialX), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> PartialX, "7" -> PartialX), 
-    Chrome            -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> PartialX, "40" -> PartialX, "41" -> PartialX, "42" -> PartialX, "43" -> PartialX, "44" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    Firefox           -> Map("10" -> PartialX, "11" -> PartialX, "12" -> PartialX, "13" -> PartialX, "14" -> PartialX, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "2" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "3" -> PartialX, "3.5" -> PartialX, "3.6" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> PartialX, "5" -> PartialX, "6" -> PartialX, "7" -> PartialX, "8" -> PartialX, "9" -> PartialX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> PartialX, "4.2-4.3" -> PartialX, "5.0-5.1" -> PartialX, "6.0-6.1" -> PartialX, "7.0-7.1" -> PartialX, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> PartialX), 
-    Safari            -> Map("3.1" -> PartialX, "3.2" -> PartialX, "4" -> PartialX, "5" -> PartialX, "5.1" -> PartialX, "6" -> PartialX, "6.1" -> PartialX, "7" -> PartialX, "7.1" -> PartialX, "8" -> PartialX))
+  def multicolumn: Subject = Map(
+    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(PartialX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "7,10"),
+    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(PartialX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "11.1,11.5,11.6,12,12.1", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11", PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11.1,11.5,12,12.1", None -> "10,11", PartialX -> "24"),
+    Safari            -> Map(PartialX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 object-fit/object-position
@@ -1567,21 +1567,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-images/
    */
-  lazy val objectFit: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> Partial, "8.1" -> Partial), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "11.6" -> FullX, "12" -> FullX, "12.1" -> FullX, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> FullX), 
-    OperaMobile       -> Map("10" -> None, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "12" -> FullX, "12.1" -> FullX, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> Partial, "8" -> Partial))
+  def objectFit: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"),
+    Firefox           -> Map(Full -> "36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1", Partial -> "8,8.1"),
+    Opera             -> Map(Full -> "19,20,21,22,23,24,25,26,27,28,29", FullX -> "10.6,11,11.1,11.5,11.6,12,12.1", None -> "9,9.5-9.6,10.0-10.1,10.5,15,16,17,18"),
+    OperaMini         -> Map(FullX -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", FullX -> "11,11.1,11.5,12,12.1", None -> "10"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7", Partial -> "7.1,8"))
 
   /**
    * CSS outline
@@ -1590,44 +1590,44 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS2/ui.html#propdef-outline
    */
-  lazy val outline: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> Full, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> Full, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def outline: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "8", Full -> "9,10,11,TP", None -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Full -> "12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS pointer-events (for HTML)
    *
-   * This CSS property, when set to "none" allows elements to not receive hover/click events, instead the event will occur on anything behind it. 
+   * This CSS property, when set to "none" allows elements to not receive hover/click events, instead the event will occur on anything behind it.
    *
    * http://wiki.csswg.org/spec/css4-ui#pointer-events
    */
-  lazy val pointerEvents: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> None, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> None, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def pointerEvents: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5"),
+    IE                -> Map(Full -> "11,TP", None -> "5.5,6,7,8,9,10"),
+    IEMobile          -> Map(Full -> "11", None -> "10"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * rem (root em) units
@@ -1636,21 +1636,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-values/#font-relative-lengths
    */
-  lazy val rem: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Unknown, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Unknown, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def rem: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unknown -> "4,5"),
+    Firefox           -> Map(Full -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", None -> "3.2"),
+    Opera             -> Map(Full -> "11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12,12.1,24", None -> "10,11,11.1,11.5"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2,4"))
 
   /**
    * Scoped CSS
@@ -1659,21 +1659,21 @@ object CanIUse {
    *
    * https://html.spec.whatwg.org/multipage/semantics.html#attr-style-scoped
    */
-  lazy val styleScoped: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> Unknown, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def styleScoped: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,37,38,39,40,41,42,43,44", None -> "20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
+    Firefox           -> Map(Full -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,24", Unknown -> "12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * SVG in CSS backgrounds
@@ -1682,21 +1682,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#background-image
    */
-  lazy val svgCss: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> Full), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "12" -> Partial, "12.1" -> Partial, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> Partial, "4" -> Partial, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def svgCss: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Partial -> "4"),
+    Firefox           -> Map(Full -> "24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6", Partial -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23"),
+    IE                -> Map(Full -> "9,10,11,TP", None -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Partial -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", None -> "3.1", Partial -> "3.2,4"))
 
   /**
    * text-decoration styling
@@ -1705,21 +1705,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-text-decor-3/#line-decoration
    */
-  lazy val textDecoration: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> None, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> PartialX, "8.1" -> PartialX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> PartialX, "8" -> PartialX))
+  def textDecoration: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", None -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "36,37,38,39", FullX -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35", None -> "2,3,3.5,3.6,4,5"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1", PartialX -> "8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7", PartialX -> "7.1,8"))
 
   /**
    * text-emphasis styling
@@ -1728,21 +1728,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-text-decor-3/#text-emphasis
    */
-  lazy val textEmphasis: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> PartialX, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> PartialX, "4.4.3-4.4.4" -> PartialX), 
-    AndroidChrome     -> Map("40" -> PartialX), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> PartialX), 
-    BlackberryBrowser -> Map("10" -> Unknown, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "30" -> PartialX, "31" -> PartialX, "32" -> PartialX, "33" -> PartialX, "34" -> PartialX, "35" -> PartialX, "36" -> PartialX, "37" -> PartialX, "38" -> PartialX, "39" -> PartialX, "4" -> None, "40" -> PartialX, "41" -> PartialX, "42" -> PartialX, "43" -> PartialX, "44" -> PartialX, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> PartialX, "16" -> PartialX, "17" -> PartialX, "18" -> PartialX, "19" -> PartialX, "20" -> PartialX, "21" -> PartialX, "22" -> PartialX, "23" -> PartialX, "24" -> PartialX, "25" -> PartialX, "26" -> PartialX, "27" -> PartialX, "28" -> PartialX, "29" -> PartialX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> PartialX), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> PartialX, "7" -> PartialX, "7.1" -> Full, "8" -> Full))
+  def textEmphasis: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3", PartialX -> "4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7", Unknown -> "10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24", PartialX -> "25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", PartialX -> "24"),
+    Safari            -> Map(Full -> "7.1,8", None -> "3.1,3.2,4,5,5.1,6", PartialX -> "6.1,7"))
 
   /**
    * CSS3 Text-overflow
@@ -1751,21 +1751,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-ui/#text-overflow0
    */
-  lazy val textOverflow: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Full, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Full, "4.0-4.1" -> Full, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> FullX, "10.5" -> FullX, "10.6" -> FullX, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> FullX, "9.5-9.6" -> FullX), 
-    OperaMini         -> Map("5.0-8.0" -> Full), 
-    OperaMobile       -> Map("10" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "12" -> FullX, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def textOverflow: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6"),
+    IE                -> Map(Full -> "6,7,8,9,10,11,TP", None -> "5.5"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "9,9.5-9.6,10.0-10.1,10.5,10.6"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS text-size-adjust
@@ -1774,21 +1774,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-size-adjust/
    */
-  lazy val textSizeAdjust: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> None, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> None), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "40" -> None, "41" -> None, "42" -> None, "43" -> None, "44" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> None, "38" -> None, "39" -> None, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> FullX, "11" -> FullX), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> None), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def textSizeAdjust: Subject = Map(
+    AndroidBrowser    -> Map(None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(None -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(FullX -> "10,11"),
+    IOSSafari         -> Map(FullX -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS text-stroke
@@ -1797,21 +1797,21 @@ object CanIUse {
    *
    * http://developer.apple.com/library/safari/documentation/appleapplications/reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266-_webkit_text_stroke
    */
-  lazy val textStroke: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> None, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> None, "37" -> Unknown, "38" -> Unknown, "39" -> Unknown, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> PartialX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def textStroke: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", None -> "3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36", Unknown -> "37,38,39"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(FullX -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", PartialX -> "3.2"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Transforms
@@ -1820,21 +1820,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-2d-transforms/
    */
-  lazy val transforms2d: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> Full, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> FullX, "3.6" -> FullX, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> FullX, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> FullX, "10.6" -> FullX, "11" -> FullX, "11.1" -> FullX, "11.5" -> FullX, "11.6" -> FullX, "12" -> FullX, "12.1" -> Full, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def transforms2d: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15", None -> "2,3"),
+    IE                -> Map(Full -> "10,11,TP", FullX -> "9", None -> "5.5", None -> "6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "12.1,23,24,25,26,27,28,29", FullX -> "10.5,10.6,11,11.1,11.5,11.6,12,15,16,17,18,19,20,21,22", None -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", None -> "10"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 3D Transforms
@@ -1843,67 +1843,67 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-3d-transforms/
    */
-  lazy val transforms3d: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> FullX, "37" -> Full, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def transforms3d: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", FullX -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4", None -> "2.1,2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", FullX -> "12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35", None -> "4,5,6,7,8,9,10,11"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "10,11,12,13,14,15", None -> "2,3,3.5,3.6,4,5,6,7,8,9"),
+    IE                -> Map(Full -> "TP", None -> "5.5,6,7,8,9", Partial -> "10,11"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "23,24,25,26,27,28,29", FullX -> "15,16,17,18,19,20,21,22", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", None -> "3.1,3.2"))
 
   /**
    * TTF/OTF - TrueType and OpenType font support
    *
-   * Support for the TrueType (.ttf)and OpenType (.otf) outline font formats in @font-face. 
+   * Support for the TrueType (.ttf)and OpenType (.otf) outline font formats in @font-face.
    *
    * http://developer.apple.com/fonts/TTRefMan/index.html
    */
-  lazy val ttf: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> Full, "2.3" -> Full, "3" -> Full, "37" -> Full, "4" -> Full, "4.1" -> Full, "4.2-4.3" -> Full, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Full), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Full), 
-    Chrome            -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    Firefox           -> Map("10" -> Full, "11" -> Full, "12" -> Full, "13" -> Full, "14" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> Full, "3.6" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Full, "5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Unknown, "11" -> Unknown), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> Full, "5.0-5.1" -> Full, "6.0-6.1" -> Full, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> Full, "10.5" -> Full, "10.6" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "11.6" -> Full, "12" -> Full, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> Full, "11" -> Full, "11.1" -> Full, "11.5" -> Full, "12" -> Full, "12.1" -> Full, "24" -> Full), 
-    Safari            -> Map("3.1" -> Full, "3.2" -> Full, "4" -> Full, "5" -> Full, "5.1" -> Full, "6" -> Full, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def ttf: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", None -> "2.1"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3"),
+    IE                -> Map(None -> "5.5,6,7,8", Partial -> "9,10,11,TP"),
+    IEMobile          -> Map(Unknown -> "10,11"),
+    IOSSafari         -> Map(Full -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", None -> "3.2,4.0-4.1"),
+    Opera             -> Map(Full -> "10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS user-select: none
    *
-   * Method of preventing text/element selection using CSS. 
+   * Method of preventing text/element selection using CSS.
    *
    * https://developer.mozilla.org/en-US/docs/CSS/user-select
    */
-  lazy val userSelectNone: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> FullX, "2.2" -> FullX, "2.3" -> FullX, "3" -> FullX, "37" -> FullX, "4" -> FullX, "4.1" -> FullX, "4.2-4.3" -> FullX, "4.4" -> FullX, "4.4.3-4.4.4" -> FullX), 
-    AndroidChrome     -> Map("40" -> FullX), 
-    AndroidFirefox    -> Map("33" -> FullX), 
-    AndroidUC         -> Map("9.9" -> FullX), 
-    BlackberryBrowser -> Map("10" -> FullX, "7" -> FullX), 
-    Chrome            -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> Unknown, "40" -> FullX, "41" -> FullX, "42" -> FullX, "43" -> FullX, "44" -> FullX, "5" -> Unknown, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    Firefox           -> Map("10" -> FullX, "11" -> FullX, "12" -> FullX, "13" -> FullX, "14" -> FullX, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "2" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "3" -> FullX, "3.5" -> FullX, "3.6" -> FullX, "30" -> FullX, "31" -> FullX, "32" -> FullX, "33" -> FullX, "34" -> FullX, "35" -> FullX, "36" -> FullX, "37" -> FullX, "38" -> FullX, "39" -> FullX, "4" -> FullX, "5" -> FullX, "6" -> FullX, "7" -> FullX, "8" -> FullX, "9" -> FullX), 
-    IE                -> Map("10" -> FullX, "11" -> FullX, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> FullX), 
-    IEMobile          -> Map("10" -> FullX, "11" -> FullX), 
-    IOSSafari         -> Map("3.2" -> FullX, "4.0-4.1" -> FullX, "4.2-4.3" -> FullX, "5.0-5.1" -> FullX, "6.0-6.1" -> FullX, "7.0-7.1" -> FullX, "8" -> FullX, "8.1" -> FullX), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> FullX, "16" -> FullX, "17" -> FullX, "18" -> FullX, "19" -> FullX, "20" -> FullX, "21" -> FullX, "22" -> FullX, "23" -> FullX, "24" -> FullX, "25" -> FullX, "26" -> FullX, "27" -> FullX, "28" -> FullX, "29" -> FullX, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> FullX), 
-    Safari            -> Map("3.1" -> FullX, "3.2" -> FullX, "4" -> FullX, "5" -> FullX, "5.1" -> FullX, "6" -> FullX, "6.1" -> FullX, "7" -> FullX, "7.1" -> FullX, "8" -> FullX))
+  def userSelectNone: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unknown -> "4,5"),
+    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(FullX -> "10,11,TP", None -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(FullX -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Viewport units: vw, vh, vmin, vmax
@@ -1912,21 +1912,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-values/#viewport-relative-lengths
    */
-  lazy val viewportUnits: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> Partial, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> Partial, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def viewportUnits: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7", Partial -> "10"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19", Partial -> "20,21,22,23,24,25"),
+    Firefox           -> Map(Full -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18"),
+    IE                -> Map(None -> "5.5,6,7,8", Partial -> "9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1", Partial -> "6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", None -> "3.1,3.2,4,5,5.1", Partial -> "6"))
 
   /**
    * CSS will-change property
@@ -1935,21 +1935,21 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-will-change/
    */
-  lazy val willChange: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> None, "2.2" -> None, "2.3" -> None, "3" -> None, "37" -> Full, "4" -> None, "4.1" -> None, "4.2-4.3" -> None, "4.4" -> None, "4.4.3-4.4.4" -> None), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> None), 
-    AndroidUC         -> Map("9.9" -> None), 
-    BlackberryBrowser -> Map("10" -> None, "7" -> None), 
-    Chrome            -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "2" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> None, "25" -> None, "26" -> None, "27" -> None, "28" -> None, "29" -> None, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> None, "31" -> None, "32" -> None, "33" -> None, "34" -> None, "35" -> None, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> None, "11" -> None, "5.5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None, "TP" -> None), 
-    IEMobile          -> Map("10" -> None, "11" -> None), 
-    IOSSafari         -> Map("3.2" -> None, "4.0-4.1" -> None, "4.2-4.3" -> None, "5.0-5.1" -> None, "6.0-6.1" -> None, "7.0-7.1" -> None, "8" -> None, "8.1" -> None), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> None, "16" -> None, "17" -> None, "18" -> None, "19" -> None, "20" -> None, "21" -> None, "22" -> None, "23" -> None, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Full), 
-    Safari            -> Map("3.1" -> None, "3.2" -> None, "4" -> None, "5" -> None, "5.1" -> None, "6" -> None, "6.1" -> None, "7" -> None, "7.1" -> None, "8" -> None))
+  def willChange: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", None -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(None -> "33"),
+    AndroidUC         -> Map(None -> "9.9"),
+    BlackberryBrowser -> Map(None -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", None -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    Firefox           -> Map(Full -> "36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", None -> "29,30,31,32,33,34,35"),
+    IE                -> Map(None -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(None -> "10,11"),
+    IOSSafari         -> Map(None -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", None -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(None -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 word-break
@@ -1958,21 +1958,21 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-text/#word-break
    */
-  lazy val wordBreak: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Partial, "2.2" -> Partial, "2.3" -> Partial, "3" -> Partial, "37" -> Partial, "4" -> Partial, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> Partial, "4.4.3-4.4.4" -> Partial), 
-    AndroidChrome     -> Map("40" -> Partial), 
-    AndroidFirefox    -> Map("33" -> Full), 
-    AndroidUC         -> Map("9.9" -> Partial), 
-    BlackberryBrowser -> Map("10" -> Partial, "7" -> Partial), 
-    Chrome            -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Partial, "37" -> Partial, "38" -> Partial, "39" -> Partial, "4" -> Partial, "40" -> Partial, "41" -> Partial, "42" -> Partial, "43" -> Partial, "44" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    Firefox           -> Map("10" -> None, "11" -> None, "12" -> None, "13" -> None, "14" -> None, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "2" -> None, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "3" -> None, "3.5" -> None, "3.6" -> None, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> None, "5" -> None, "6" -> None, "7" -> None, "8" -> None, "9" -> None), 
-    IE                -> Map("10" -> Full, "11" -> Full, "5.5" -> Full, "6" -> Full, "7" -> Full, "8" -> Full, "9" -> Full, "TP" -> Full), 
-    IEMobile          -> Map("10" -> Full, "11" -> Full), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Partial, "8" -> Partial, "8.1" -> Partial), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> None, "10.6" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "11.6" -> None, "12" -> None, "12.1" -> None, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> None), 
-    OperaMobile       -> Map("10" -> None, "11" -> None, "11.1" -> None, "11.5" -> None, "12" -> None, "12.1" -> None, "24" -> Partial), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Partial, "5.1" -> Partial, "6" -> Partial, "6.1" -> Partial, "7" -> Partial, "7.1" -> Partial, "8" -> Partial))
+  def wordBreak: Subject = Map(
+    AndroidBrowser    -> Map(Partial -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Partial -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Partial -> "9.9"),
+    BlackberryBrowser -> Map(Partial -> "7,10"),
+    Chrome            -> Map(Partial -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", None -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14"),
+    IE                -> Map(Full -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(None -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1", Partial -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(None -> "5.0-8.0"),
+    OperaMobile       -> Map(None -> "10,11,11.1,11.5,12,12.1", Partial -> "24"),
+    Safari            -> Map(Partial -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Overflow-wrap
@@ -1981,20 +1981,20 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-text/#overflow-wrap
    */
-  lazy val wordwrap: Subject = Map(
-    AndroidBrowser    -> Map("2.1" -> Partial, "2.2" -> Partial, "2.3" -> Partial, "3" -> Partial, "37" -> Full, "4" -> Partial, "4.1" -> Partial, "4.2-4.3" -> Partial, "4.4" -> Full, "4.4.3-4.4.4" -> Full), 
-    AndroidChrome     -> Map("40" -> Full), 
-    AndroidFirefox    -> Map("33" -> Partial), 
-    AndroidUC         -> Map("9.9" -> Partial), 
-    BlackberryBrowser -> Map("10" -> Full, "7" -> Partial), 
-    Chrome            -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "30" -> Full, "31" -> Full, "32" -> Full, "33" -> Full, "34" -> Full, "35" -> Full, "36" -> Full, "37" -> Full, "38" -> Full, "39" -> Full, "4" -> Partial, "40" -> Full, "41" -> Full, "42" -> Full, "43" -> Full, "44" -> Full, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    Firefox           -> Map("10" -> Partial, "11" -> Partial, "12" -> Partial, "13" -> Partial, "14" -> Partial, "15" -> Partial, "16" -> Partial, "17" -> Partial, "18" -> Partial, "19" -> Partial, "2" -> None, "20" -> Partial, "21" -> Partial, "22" -> Partial, "23" -> Partial, "24" -> Partial, "25" -> Partial, "26" -> Partial, "27" -> Partial, "28" -> Partial, "29" -> Partial, "3" -> None, "3.5" -> Partial, "3.6" -> Partial, "30" -> Partial, "31" -> Partial, "32" -> Partial, "33" -> Partial, "34" -> Partial, "35" -> Partial, "36" -> Partial, "37" -> Partial, "38" -> Partial, "39" -> Partial, "4" -> Partial, "5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial), 
-    IE                -> Map("10" -> Partial, "11" -> Partial, "5.5" -> Partial, "6" -> Partial, "7" -> Partial, "8" -> Partial, "9" -> Partial, "TP" -> Partial), 
-    IEMobile          -> Map("10" -> Partial, "11" -> Partial), 
-    IOSSafari         -> Map("3.2" -> Partial, "4.0-4.1" -> Partial, "4.2-4.3" -> Partial, "5.0-5.1" -> Partial, "6.0-6.1" -> Partial, "7.0-7.1" -> Full, "8" -> Full, "8.1" -> Full), 
-    Opera             -> Map("10.0-10.1" -> None, "10.5" -> Partial, "10.6" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "11.6" -> Partial, "12" -> Partial, "12.1" -> Full, "15" -> Full, "16" -> Full, "17" -> Full, "18" -> Full, "19" -> Full, "20" -> Full, "21" -> Full, "22" -> Full, "23" -> Full, "24" -> Full, "25" -> Full, "26" -> Full, "27" -> Full, "28" -> Full, "29" -> Full, "9" -> None, "9.5-9.6" -> None), 
-    OperaMini         -> Map("5.0-8.0" -> Partial), 
-    OperaMobile       -> Map("10" -> Partial, "11" -> Partial, "11.1" -> Partial, "11.5" -> Partial, "12" -> Partial, "12.1" -> Partial, "24" -> Full), 
-    Safari            -> Map("3.1" -> Partial, "3.2" -> Partial, "4" -> Partial, "5" -> Partial, "5.1" -> Partial, "6" -> Partial, "6.1" -> Full, "7" -> Full, "7.1" -> Full, "8" -> Full))
+  def wordwrap: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Partial -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(Partial -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
+    Chrome            -> Map(Full -> "23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Partial -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22"),
+    Firefox           -> Map(None -> "2,3", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Partial -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", None -> "9,9.5-9.6,10.0-10.1", Partial -> "10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Partial -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", Partial -> "3.1,3.2,4,5,5.1,6"))
 
 }
