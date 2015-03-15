@@ -52,6 +52,52 @@ object CanIUse {
   import Support._
 
   /**
+   * CSS3 Animation
+   *
+   * Complex method of animating certain properties of an element
+   *
+   * http://www.w3.org/TR/css3-animations/
+   */
+  def animation: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5,3.6,4"),
+    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "12.1", FullX -> "12,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1", FullX -> "24", Unsupported -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
+
+  /**
+   * CSS Appearance
+   *
+   * The `appearance` property defines how elements (particularly form controls) appear by default. By setting the value to `none` the default appearance can be entirely redefined using other CSS properties.
+   *
+   * http://wiki.csswg.org/spec/css4-ui#appearance
+   */
+  def appearance: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "11", Unsupported -> "10"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * CSS background-attachment
    *
    * Method of defining how a background image is attached to a scrollable element. Values include `scroll` (default), `fixed` and `local`.
@@ -96,6 +142,52 @@ object CanIUse {
     OperaMini         -> Map(Partial -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
     Safari            -> Map(Full -> "7,7.1,8", Partial -> "3.1,3.2,4,5,5.1,6,6.1"))
+
+  /**
+   * CSS background-position edge offsets
+   *
+   * Allows CSS background images to be positioned relative to the specified edge using the 3 to 4 value syntax. For example: `background-position: right 5px bottom 5px;` for positioning 5px from the bottom-right corner.
+   *
+   * http://www.w3.org/TR/css3-background/#background-position
+   */
+  def backgroundOffsets: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Unsupported -> "7"),
+    Chrome            -> Map(Full -> "25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"),
+    Firefox           -> Map(Full -> "13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12"),
+    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Unsupported -> "10"),
+    Safari            -> Map(Full -> "7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1"))
+
+  /**
+   * CSS background-blend-mode
+   *
+   * Allows blending between CSS background images, gradients, and colors.
+   *
+   * http://www.w3.org/TR/compositing-1/#background-blend-mode
+   */
+  def backgroundblendmode: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
+    Firefox           -> Map(Full -> "30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
    * CSS3 Border images
@@ -144,6 +236,52 @@ object CanIUse {
     Safari            -> Map(Full -> "5,7,7.1,8", Full -> "5.1,6,6.1", FullX -> "3.1,3.2,4"))
 
   /**
+   * CSS box-decoration-break
+   *
+   * Controls whether the box's margins, borders, padding, and other decorations wrap the broken edges of the box fragments (when the box is split by a break (page/column/region/line).
+   *
+   * http://www.w3.org/TR/css3-break/#break-decoration
+   */
+  def boxdecorationbreak: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
+    Chrome            -> Map(FullX -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "11,11.1,11.5,11.6,12,12.1", FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unknown -> "9,9.5-9.6,10.0-10.1,10.5,10.6"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1", FullX -> "24", Unknown -> "10"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
+
+  /**
+   * CSS3 Box-shadow
+   *
+   * Method of displaying an inner or outer shadow effect to elements
+   *
+   * http://www.w3.org/TR/css3-background/#box-shadow
+   */
+  def boxshadow: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", FullX -> "7"),
+    Chrome            -> Map(Full -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.5,3.6", Unsupported -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", FullX -> "4.0-4.1,4.2-4.3", PartialX -> "3.2"),
+    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Unsupported -> "10"),
+    Safari            -> Map(Full -> "5.1,6,6.1,7,7.1,8", FullX -> "5", PartialX -> "3.1,3.2,4"))
+
+  /**
    * calc() as CSS unit value
    *
    * Method of allowing calculated values for length units, i.e. `width: calc(100% - 3em)`
@@ -167,151 +305,13 @@ object CanIUse {
     Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "6", Unsupported -> "3.1,3.2,4,5,5.1"))
 
   /**
-   * CSS3 Animation
-   *
-   * Complex method of animating certain properties of an element
-   *
-   * http://www.w3.org/TR/css3-animations/
-   */
-  def cssAnimation: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "7,10"),
-    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5,3.6,4"),
-    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "12.1", FullX -> "12,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "12.1", FullX -> "24", Unsupported -> "10,11,11.1,11.5,12"),
-    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
-
-  /**
-   * CSS Appearance
-   *
-   * The `appearance` property defines how elements (particularly form controls) appear by default. By setting the value to `none` the default appearance can be entirely redefined using other CSS properties.
-   *
-   * http://wiki.csswg.org/spec/css4-ui#appearance
-   */
-  def cssAppearance: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(FullX -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "7,10"),
-    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Partial -> "11", Unsupported -> "10"),
-    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS background-position edge offsets
-   *
-   * Allows CSS background images to be positioned relative to the specified edge using the 3 to 4 value syntax. For example: `background-position: right 5px bottom 5px;` for positioning 5px from the bottom-right corner.
-   *
-   * http://www.w3.org/TR/css3-background/#background-position
-   */
-  def cssBackgroundOffsets: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "10", Unsupported -> "7"),
-    Chrome            -> Map(Full -> "25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24"),
-    Firefox           -> Map(Full -> "13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12"),
-    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
-    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Unsupported -> "10"),
-    Safari            -> Map(Full -> "7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1"))
-
-  /**
-   * CSS background-blend-mode
-   *
-   * Allows blending between CSS background images, gradients, and colors.
-   *
-   * http://www.w3.org/TR/compositing-1/#background-blend-mode
-   */
-  def cssBackgroundblendmode: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
-    Firefox           -> Map(Full -> "30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Full -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
-    Opera             -> Map(Full -> "22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(Full -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
-
-  /**
-   * CSS box-decoration-break
-   *
-   * Controls whether the box's margins, borders, padding, and other decorations wrap the broken edges of the box fragments (when the box is split by a break (page/column/region/line).
-   *
-   * http://www.w3.org/TR/css3-break/#break-decoration
-   */
-  def cssBoxdecorationbreak: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
-    Chrome            -> Map(FullX -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
-    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
-    Opera             -> Map(Full -> "11,11.1,11.5,11.6,12,12.1", FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unknown -> "9,9.5-9.6,10.0-10.1,10.5,10.6"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1", FullX -> "24", Unknown -> "10"),
-    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
-
-  /**
-   * CSS3 Box-shadow
-   *
-   * Method of displaying an inner or outer shadow effect to elements
-   *
-   * http://www.w3.org/TR/css3-background/#box-shadow
-   */
-  def cssBoxshadow: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "10", FullX -> "7"),
-    Chrome            -> Map(Full -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9"),
-    Firefox           -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.5,3.6", Unsupported -> "2,3"),
-    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", FullX -> "4.0-4.1,4.2-4.3", PartialX -> "3.2"),
-    Opera             -> Map(Full -> "10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Unsupported -> "10"),
-    Safari            -> Map(Full -> "5.1,6,6.1,7,7.1,8", FullX -> "5", PartialX -> "3.1,3.2,4"))
-
-  /**
    * CSS Canvas Drawings
    *
    * Method of using HTML5 Canvas as a background image. Not currently part of any specification.
    *
    * http://webkit.org/blog/176/css-canvas-drawing/
    */
-  def cssCanvas: Subject = Map(
+  def canvas: Subject = Map(
     AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(FullX -> "40"),
     AndroidFirefox    -> Map(Unsupported -> "33"),
@@ -334,7 +334,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-masking-1/#the-clip-path
    */
-  def cssClipPath: Subject = Map(
+  def clipPath: Subject = Map(
     AndroidBrowser    -> Map(PartialX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
     AndroidChrome     -> Map(PartialX -> "40"),
     AndroidFirefox    -> Map(Partial -> "33"),
@@ -357,7 +357,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/generate.html#counters
    */
-  def cssCounters: Subject = Map(
+  def counters: Subject = Map(
     AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -380,7 +380,7 @@ object CanIUse {
    *
    * http://dev.w3.org/csswg/css-images-3/#valdef-image-rendering-crisp-edges
    */
-  def cssCrispEdges: Subject = Map(
+  def crispEdges: Subject = Map(
     AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Unsupported -> "40"),
     AndroidFirefox    -> Map(FullX -> "33"),
@@ -395,742 +395,6 @@ object CanIUse {
     OperaMini         -> Map(Unsupported -> "5.0-8.0"),
     OperaMobile       -> Map(FullX -> "12,12.1", Unsupported -> "10,11,11.1,11.5,24"),
     Safari            -> Map(FullX -> "6.1,7,7.1,8", PartialX -> "6", Unsupported -> "3.1,3.2,4,5,5.1"))
-
-  /**
-   * CSS Device Adaptation
-   *
-   * A standard way to override the size of viewport in web page, standardizing and replacing Apple's own popular &lt;meta&gt; viewport implementation.
-   *
-   * http://www.w3.org/TR/css-device-adapt/
-   */
-  def cssDeviceadaptation: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(PartialX -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(PartialX -> "5.0-8.0"),
-    OperaMobile       -> Map(PartialX -> "11,11.1,11.5,12,12.1", Unsupported -> "10,24"),
-    Safari            -> Map(Unknown -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
-
-  /**
-   * CSS Feature Queries
-   *
-   * CSS Feature Queries allow authors to condition rules based on whether particular property declarations are supported in CSS using the @supports at rule.
-   *
-   * http://www.w3.org/TR/css3-conditional/#at-supports
-   */
-  def cssFeaturequeries: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27"),
-    Firefox           -> Map(Full -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS Filter Effects
-   *
-   * Method of applying filter effects (like blur, grayscale, brightness, contrast and hue) to elements, previously only possible by using SVG.
-   *
-   * http://www.w3.org/TR/filter-effects/
-   */
-  def cssFilters: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(Partial -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "10", Unsupported -> "7"),
-    Chrome            -> Map(FullX -> "18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17"),
-    Firefox           -> Map(Full -> "35,36,37,38,39", Partial -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", Partial -> "34", Unsupported -> "2,3,3.5"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
-    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1"))
-
-  /**
-   * CSS position:fixed
-   *
-   * Method of keeping an element in a fixed location regardless of scroll position
-   *
-   * http://www.w3.org/TR/CSS21/visuren.html#fixed-positioning
-   */
-  def cssFixed: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", Partial -> "2.1,2.2,2.3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "7,8,9,10,11,TP", Unsupported -> "5.5", Unsupported -> "6"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "8,8.1", Partial -> "5.0-5.1,6.0-6.1,7.0-7.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3"),
-    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS font-stretch
-   *
-   * If a font has multiple types of variations based on the width of characters, the `font-stretch` property allows the appropriate one to be selected. The property in itself does not cause the browser to stretch to a font.
-   *
-   * http://www.w3.org/TR/css-fonts-3/#font-stretch-prop
-   */
-  def cssFontStretch: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unknown -> "42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"),
-    Firefox           -> Map(Full -> "9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8"),
-    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unknown -> "28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS Generated content for pseudo-elements
-   *
-   * Method of displaying text or images before or after the given element's contents using the ::before and ::after pseudo-elements. All browsers with support also support the `attr()` notation in the `content` property.
-   *
-   * http://www.w3.org/TR/CSS21/generate.html
-   */
-  def cssGencontent: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "9,10,11,TP", Partial -> "8", Unsupported -> "5.5,6,7"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS Gradients
-   *
-   * Method of defining a linear or radial color gradient as a CSS image.
-   *
-   * http://www.w3.org/TR/css3-images/
-   */
-  def cssGradients: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", PartialX -> "2.1,2.2,2.3,3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "10", PartialX -> "7"),
-    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", PartialX -> "4,5,6,7,8,9"),
-    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5"),
-    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", PartialX -> "3.2,4.0-4.1,4.2-4.3"),
-    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", PartialX -> "11.1,11.5", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", PartialX -> "11.1,11.5", Unsupported -> "10,11"),
-    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", PartialX -> "4,5", Unsupported -> "3.1,3.2"))
-
-  /**
-   * CSS Grid Layout
-   *
-   * Method of using a grid concept to lay out content, providing a mechanism for authors to divide available space for lay out into columns and rows using a set of predictable sizing behaviors
-   *
-   * http://www.w3.org/TR/css3-grid-layout/
-   */
-  def cssGrid: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1", Unsupported -> "4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24", Unsupported -> "25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Unknown -> "37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18", Unsupported -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
-    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8", Unsupported -> "9"),
-    IEMobile          -> Map(PartialX -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1", Unsupported -> "6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27", Unsupported -> "28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1", Unsupported -> "24"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1", Unsupported -> "6,6.1,7,7.1,8"))
-
-  /**
-   * CSS Hyphenation
-   *
-   * Method of controlling when words at the end of lines should be hyphenated using the "hyphens" property.
-   *
-   * http://www.w3.org/TR/css3-text/#hyphenation
-   */
-  def cssHyphens: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(FullX -> "33"),
-    AndroidUC         -> Map(PartialX -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(FullX -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5"),
-    IE                -> Map(FullX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(FullX -> "5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5"))
-
-  /**
-   * CSS3 image-orientation
-   *
-   * CSS property used generally to fix the intended orientation of an image. This can be done using 90 degree increments or based on the image's EXIF data using the "from-image" value.
-   *
-   * http://www.w3.org/TR/css3-images/#image-orientation
-   */
-  def cssImageOrientation: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS image-set
-   *
-   * Method of letting the browser pick the most appropriate CSS background image from a given set, primarily for high PPI screens.
-   *
-   * http://dev.w3.org/csswg/css-images-3/#image-set-notation
-   */
-  def cssImageSet: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
-    Chrome            -> Map(FullX -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
-    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1"))
-
-  /**
-   * CSS Masks
-   *
-   * Method of displaying part of an element, using a selected image as a mask
-   *
-   * http://www.w3.org/TR/css-masking/
-   */
-  def cssMasks: Subject = Map(
-    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(PartialX -> "40"),
-    AndroidFirefox    -> Map(Partial -> "33"),
-    AndroidUC         -> Map(PartialX -> "9.9"),
-    BlackberryBrowser -> Map(PartialX -> "7,10"),
-    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(PartialX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(PartialX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
-
-  /**
-   * Media Queries: resolution feature
-   *
-   * Allows a media query to be set based on the device pixels used per CSS unit. While the standard uses `min`/`max-resolution` for this, some browsers support the older non-standard `device-pixel-ratio` media query.
-   *
-   * http://www.w3.org/TR/css3-mediaqueries/#resolution
-   */
-  def cssMediaResolution: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "4,4.1,4.2-4.3", Unknown -> "2.1,2.2,2.3,3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(PartialX -> "9.9"),
-    BlackberryBrowser -> Map(PartialX -> "7,10"),
-    Chrome            -> Map(Full -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"),
-    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3"),
-    IE                -> Map(Partial -> "9,10,11", Partial -> "TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Partial -> "10,11"),
-    IOSSafari         -> Map(PartialX -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unknown -> "3.2"),
-    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", PartialX -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12", Unsupported -> "9"),
-    OperaMini         -> Map(Partial -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "12.1,24", Unknown -> "10,11,11.1,11.5,12"),
-    Safari            -> Map(PartialX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
-
-  /**
-   * CSS3 Media Queries
-   *
-   * Method of applying styles based on media information. Includes things like page and device dimensions
-   *
-   * http://www.w3.org/TR/css3-mediaqueries/
-   */
-  def cssMediaqueries: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
-    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
-
-  /**
-   * Blending of HTML/SVG elements
-   *
-   * Allows blending between arbitrary SVG and HTML elements
-   *
-   * http://www.w3.org/TR/compositing-1/#mix-blend-mode
-   */
-  def cssMixblendmode: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39,40"),
-    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Full -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
-
-  /**
-   * CSS3 Opacity
-   *
-   * Method of setting the transparency level of an element
-   *
-   * http://www.w3.org/TR/css3-color/
-   */
-  def cssOpacity: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * :placeholder-shown CSS pseudo-class
-   *
-   * The :placeholder-shown pseudo-class represents the placeholder contents of a form field with placeholder text.
-   *
-   * http://www.w3.org/TR/selectors4/#placeholder
-   */
-  def cssPlaceholder: Subject = Map(
-    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(PartialX -> "40"),
-    AndroidFirefox    -> Map(PartialX -> "33"),
-    AndroidUC         -> Map(PartialX -> "9.9"),
-    BlackberryBrowser -> Map(PartialX -> "10", Unknown -> "7"),
-    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6"),
-    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(PartialX -> "10,11"),
-    IOSSafari         -> Map(PartialX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1"),
-    Opera             -> Map(PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(PartialX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(PartialX -> "5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4"))
-
-  /**
-   * CSS Reflections
-   *
-   * Method of displaying a reflection of an element
-   *
-   * http://webkit.org/blog/182/css-reflections/
-   */
-  def cssReflections: Subject = Map(
-    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(FullX -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "7,10"),
-    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
-
-  /**
-   * CSS Regions
-   *
-   * Method of flowing content into multiple elements.
-   *
-   * http://www.w3.org/TR/css3-regions/
-   */
-  def cssRegions: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(PartialX -> "15,16,17,18", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,35,36,37,38,39,40,41,42,43,44", Unsupported -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(PartialX -> "10,11"),
-    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
-
-  /**
-   * CSS Repeating Gradients
-   *
-   * Method of defining a repeating linear or radial color gradient as a CSS image.
-   *
-   * http://www.w3.org/TR/css3-images/#repeating-gradients
-   */
-  def cssRepeatingGradients: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", Unsupported -> "2.1,2.2,2.3,3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "10", Unsupported -> "7"),
-    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", Unsupported -> "4,5,6,7,8,9"),
-    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5"),
-    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3"),
-    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", PartialX -> "11.1,11.5", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", PartialX -> "11.1,11.5", Unsupported -> "10,11"),
-    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", Unsupported -> "3.1,3.2,4,5"))
-
-  /**
-   * CSS resize property
-   *
-   * Method of allowing an element to be resized by the user, with options to limit to a given direction.
-   *
-   * http://www.w3.org/TR/css3-ui/#resize
-   */
-  def cssResize: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4", Unsupported -> "2,3,3.5,3.6"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Partial -> "12.1", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
-
-  /**
-   * CSS 2.1 selectors
-   *
-   * Basic CSS selectors including: `*` (universal selector), `&gt;` (child selector), `:first-child`, `:link`, `:visited`, `:active`, `:hover`, `:focus`, `:lang()`, `+` (adjacent sibling selector), `[attr]`, `[attr="val"]`, `[attr~="val"]`, `[attr|="bar"]`, `.foo` (class selector), `#foo` (id selector)
-   *
-   * http://www.w3.org/TR/CSS21/selector.html
-   */
-  def cssSel2: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "7,8,9,10,11,TP", Unsupported -> "5.5", Unsupported -> "6"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS3 selectors
-   *
-   * Advanced element selection using selectors including: `[foo^="bar"]`, `[foo$="bar"]`, `[foo*="bar"]`, `:root`, `:nth-child()`,  `:nth-last-child()`, `nth-of-type`, `nth-last-of-type()`, `:last-child`, `:first-of-type`, `:last-of-type`, `:only-child`, `:only-of-type`, `:empty`, `:target`, `:enabled`, `:disabled`, `:checked`, `:not()`, `~` (general sibling)
-   *
-   * http://www.w3.org/TR/css3-selectors/
-   */
-  def cssSel3: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
-    IE                -> Map(Full -> "9,10,11,TP", Partial -> "7,8", Unsupported -> "5.5", Unsupported -> "6"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.2,4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1"))
-
-  /**
-   * ::selection CSS pseudo-element
-   *
-   * The ::selection CSS pseudo-element applies rules to the portion of a document that has been highlighted (e.g., selected with the mouse or another pointing device) by the user.
-   *
-   * https://developer.mozilla.org/en-US/docs/Web/CSS/::selection
-   */
-  def cssSelection: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(FullX -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "11.5,12,12.1,24", Unknown -> "10,11,11.1"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS Shapes Level 1
-   *
-   * Allows geometric shapes to be set in CSS to define an area for text to flow around.
-   *
-   * http://www.w3.org/TR/css-shapes/
-   */
-  def cssShapes: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", Unsupported -> "34,35,36"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
-    Opera             -> Map(Full -> "24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(FullX -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
-
-  /**
-   * CSS position:sticky
-   *
-   * Keeps elements positioned as "fixed" or "relative" depending on how it appears in the viewport. As a result the element is "stuck" when necessary while scrolling.
-   *
-   * http://dev.w3.org/csswg/css-position/#sticky-positioning
-   */
-  def cssSticky: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,37,38,39,40,41,42,43,44", Unsupported -> "23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
-    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", Unsupported -> "26,27,28,29,30,31"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
-
-  /**
-   * CSS Table display
-   *
-   * Method of displaying elements as tables, rows, and cells
-   *
-   * http://www.w3.org/TR/CSS21/tables.html
-   */
-  def cssTable: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "7,10"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "8,9,10,11,TP", Unsupported -> "5.5,6,7"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Full -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS3 text-align-last
-   *
-   * CSS property to describe how the last line of a block or a line right before a forced line break when `text-align` is `justify`.
-   *
-   * http://www.w3.org/TR/css3-text/#text-align-last-property
-   */
-  def cssTextAlignLast: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(FullX -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34", Unsupported -> "35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(FullX -> "12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11"),
-    IE                -> Map(Partial -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Partial -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21", Unsupported -> "22,23,24,25,26,27,28,29"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS3 Text-shadow
-   *
-   * Method of applying one or more shadow or blur effects to text
-   *
-   * http://www.w3.org/TR/css-text-decor-3/#text-shadow-property
-   */
-  def cssTextshadow: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Full -> "9.9"),
-    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
-    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
-    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
-    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
-    OperaMini         -> Map(Partial -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
-
-  /**
-   * CSS touch-action property
-   *
-   * touch-action is a CSS property that controls filtering of gesture events, providing developers with a declarative mechanism to selectively disable touch scrolling (in one or both axes), pinch-zooming or double-tap-zooming.
-   *
-   * http://www.w3.org/TR/pointerevents/#the-touch-action-css-property
-   */
-  def cssTouchAction: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Unsupported -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
-    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39"),
-    IE                -> Map(Full -> "11,TP", FullX -> "10", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "11", FullX -> "10"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Full -> "23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
-
-  /**
-   * CSS3 Transitions
-   *
-   * Simple method of animating certain properties of an element
-   *
-   * http://www.w3.org/TR/css3-transitions/
-   */
-  def cssTransitions: Subject = Map(
-    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
-    AndroidChrome     -> Map(Full -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(FullX -> "9.9"),
-    BlackberryBrowser -> Map(FullX -> "7,10"),
-    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
-    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5,3.6"),
-    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
-    IEMobile          -> Map(Full -> "10,11"),
-    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
-    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "10.5,10.6,11,11.1,11.5,11.6,12", Unsupported -> "9,9.5-9.6,10.0-10.1"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "10,11,11.1,11.5,12"),
-    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "3.1,3.2,4,5,5.1,6"))
-
-  /**
-   * CSS Variables
-   *
-   * Permits the declaration and usage of cascading variables in stylesheets.
-   *
-   * http://www.w3.org/TR/css-variables/
-   */
-  def cssVariables: Subject = Map(
-    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
-    AndroidChrome     -> Map(Unsupported -> "40"),
-    AndroidFirefox    -> Map(Full -> "33"),
-    AndroidUC         -> Map(Unsupported -> "9.9"),
-    BlackberryBrowser -> Map(Unsupported -> "7,10"),
-    Chrome            -> Map(Unknown -> "42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"),
-    Firefox           -> Map(Full -> "31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"),
-    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
-    IEMobile          -> Map(Unsupported -> "10,11"),
-    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
-    Opera             -> Map(Unknown -> "28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27"),
-    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
-    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
-    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * CSS3 Box-sizing
@@ -1271,6 +535,98 @@ object CanIUse {
     Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
 
   /**
+   * CSS Device Adaptation
+   *
+   * A standard way to override the size of viewport in web page, standardizing and replacing Apple's own popular &lt;meta&gt; viewport implementation.
+   *
+   * http://www.w3.org/TR/css-device-adapt/
+   */
+  def deviceadaptation: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(PartialX -> "5.0-8.0"),
+    OperaMobile       -> Map(PartialX -> "11,11.1,11.5,12,12.1", Unsupported -> "10,24"),
+    Safari            -> Map(Unknown -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
+
+  /**
+   * CSS Feature Queries
+   *
+   * CSS Feature Queries allow authors to condition rules based on whether particular property declarations are supported in CSS using the @supports at rule.
+   *
+   * http://www.w3.org/TR/css3-conditional/#at-supports
+   */
+  def featurequeries: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27"),
+    Firefox           -> Map(Full -> "22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS Filter Effects
+   *
+   * Method of applying filter effects (like blur, grayscale, brightness, contrast and hue) to elements, previously only possible by using SVG.
+   *
+   * http://www.w3.org/TR/filter-effects/
+   */
+  def filters: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unsupported -> "7"),
+    Chrome            -> Map(FullX -> "18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17"),
+    Firefox           -> Map(Full -> "35,36,37,38,39", Partial -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", Partial -> "34", Unsupported -> "2,3,3.5"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1"))
+
+  /**
+   * CSS position:fixed
+   *
+   * Method of keeping an element in a fixed location regardless of scroll position
+   *
+   * http://www.w3.org/TR/CSS21/visuren.html#fixed-positioning
+   */
+  def fixed: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", Partial -> "2.1,2.2,2.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "7,8,9,10,11,TP", Unsupported -> "5.5", Unsupported -> "6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", Partial -> "5.0-5.1,6.0-6.1,7.0-7.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * Flexible Box Layout Module
    *
    * Method of positioning elements in horizontal or vertical stacks. Support includes the support for the all properties prefixed with `flex` as well as `align-content`, `align-items`, `align-self`, and `justify-content`.
@@ -1363,6 +719,29 @@ object CanIUse {
     Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
+   * CSS font-stretch
+   *
+   * If a font has multiple types of variations based on the width of characters, the `font-stretch` property allows the appropriate one to be selected. The property in itself does not cause the browser to stretch to a font.
+   *
+   * http://www.w3.org/TR/css-fonts-3/#font-stretch-prop
+   */
+  def fontStretch: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unknown -> "42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"),
+    Firefox           -> Map(Full -> "9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8"),
+    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unknown -> "28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * Font unicode-range subsetting
    *
    * This @font-face descriptor defines the set of Unicode codepoints that may be supported by the font face for which it is declared. The descriptor value is a comma-delimited list of Unicode range (&lt;urange&gt;) values. The union of these ranges defines the set of codepoints that serves as a hint for user agents when deciding whether or not to download a font resource for a given text run.
@@ -1409,6 +788,29 @@ object CanIUse {
     Safari            -> Map(Full -> "3.2,4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1"))
 
   /**
+   * CSS Generated content for pseudo-elements
+   *
+   * Method of displaying text or images before or after the given element's contents using the ::before and ::after pseudo-elements. All browsers with support also support the `attr()` notation in the `content` property.
+   *
+   * http://www.w3.org/TR/CSS21/generate.html
+   */
+  def gencontent: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "8", Unsupported -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * getComputedStyle
    *
    * API to get the current computed CSS styles applied to an element. This may be the current value applied by an animation or as set by a stylesheet.
@@ -1430,6 +832,121 @@ object CanIUse {
     OperaMini         -> Map(Partial -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "11,11.1,11.5,12,12.1,24", Partial -> "10"),
     Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2,4"))
+
+  /**
+   * CSS Gradients
+   *
+   * Method of defining a linear or radial color gradient as a CSS image.
+   *
+   * http://www.w3.org/TR/css3-images/
+   */
+  def gradients: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", PartialX -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", PartialX -> "7"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", PartialX -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5"),
+    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", PartialX -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", PartialX -> "11.1,11.5", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", PartialX -> "11.1,11.5", Unsupported -> "10,11"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", PartialX -> "4,5", Unsupported -> "3.1,3.2"))
+
+  /**
+   * CSS Grid Layout
+   *
+   * Method of using a grid concept to lay out content, providing a mechanism for authors to divide available space for lay out into columns and rows using a set of predictable sizing behaviors
+   *
+   * http://www.w3.org/TR/css3-grid-layout/
+   */
+  def grid: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1", Unsupported -> "4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24", Unsupported -> "25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Unknown -> "37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18", Unsupported -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
+    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8", Unsupported -> "9"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1", Unsupported -> "6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27", Unsupported -> "28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1", Unsupported -> "24"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1", Unsupported -> "6,6.1,7,7.1,8"))
+
+  /**
+   * CSS Hyphenation
+   *
+   * Method of controlling when words at the end of lines should be hyphenated using the "hyphens" property.
+   *
+   * http://www.w3.org/TR/css3-text/#hyphenation
+   */
+  def hyphens: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5"),
+    IE                -> Map(FullX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5"))
+
+  /**
+   * CSS3 image-orientation
+   *
+   * CSS property used generally to fix the intended orientation of an image. This can be done using 90 degree increments or based on the image's EXIF data using the "from-image" value.
+   *
+   * http://www.w3.org/TR/css3-images/#image-orientation
+   */
+  def imageOrientation: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Partial -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS image-set
+   *
+   * Method of letting the browser pick the most appropriate CSS background image from a given set, primarily for high PPI screens.
+   *
+   * http://dev.w3.org/csswg/css-images-3/#image-set-notation
+   */
+  def imageSet: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unknown -> "7"),
+    Chrome            -> Map(FullX -> "21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1"))
 
   /**
    * CSS inline-block
@@ -1501,6 +1018,75 @@ object CanIUse {
     Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4"))
 
   /**
+   * CSS Masks
+   *
+   * Method of displaying part of an element, using a selected image as a mask
+   *
+   * http://www.w3.org/TR/css-masking/
+   */
+  def masks: Subject = Map(
+    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(Partial -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "7,10"),
+    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(PartialX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(PartialX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
+
+  /**
+   * Media Queries: resolution feature
+   *
+   * Allows a media query to be set based on the device pixels used per CSS unit. While the standard uses `min`/`max-resolution` for this, some browsers support the older non-standard `device-pixel-ratio` media query.
+   *
+   * http://www.w3.org/TR/css3-mediaqueries/#resolution
+   */
+  def mediaResolution: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "4,4.1,4.2-4.3", Unknown -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "7,10"),
+    Chrome            -> Map(Full -> "29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Partial -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3"),
+    IE                -> Map(Partial -> "9,10,11", Partial -> "TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unknown -> "3.2"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", PartialX -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12", Unsupported -> "9"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", Unknown -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(PartialX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
+
+  /**
+   * CSS3 Media Queries
+   *
+   * Method of applying styles based on media information. Includes things like page and device dimensions
+   *
+   * http://www.w3.org/TR/css3-mediaqueries/
+   */
+  def mediaqueries: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
+
+  /**
    * CSS min/max-width/height
    *
    * Method of setting a minimum or maximum width or height to an element.
@@ -1522,6 +1108,29 @@ object CanIUse {
     OperaMini         -> Map(Full -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
     Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * Blending of HTML/SVG elements
+   *
+   * Allows blending between arbitrary SVG and HTML elements
+   *
+   * http://www.w3.org/TR/compositing-1/#mix-blend-mode
+   */
+  def mixblendmode: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39,40"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Full -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
    * CSS3 Multiple backgrounds
@@ -1593,6 +1202,29 @@ object CanIUse {
     Safari            -> Map(Partial -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
 
   /**
+   * CSS3 Opacity
+   *
+   * Method of setting the transparency level of an element
+   *
+   * http://www.w3.org/TR/css3-color/
+   */
+  def opacity: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * CSS outline
    *
    * The CSS outline property is a shorthand property for setting one or more of the individual outline properties outline-style, outline-width and outline-color in a single rule. In most cases the use of this shortcut is preferable and more convenient.
@@ -1614,6 +1246,29 @@ object CanIUse {
     OperaMini         -> Map(Unsupported -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
     Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * :placeholder-shown CSS pseudo-class
+   *
+   * The :placeholder-shown pseudo-class represents the placeholder contents of a form field with placeholder text.
+   *
+   * http://www.w3.org/TR/selectors4/#placeholder
+   */
+  def placeholder: Subject = Map(
+    AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(PartialX -> "40"),
+    AndroidFirefox    -> Map(PartialX -> "33"),
+    AndroidUC         -> Map(PartialX -> "9.9"),
+    BlackberryBrowser -> Map(PartialX -> "10", Unknown -> "7"),
+    Chrome            -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(PartialX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6"),
+    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(PartialX -> "4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1"),
+    Opera             -> Map(PartialX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(PartialX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(PartialX -> "5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4"))
 
   /**
    * CSS pointer-events (for HTML)
@@ -1639,6 +1294,52 @@ object CanIUse {
     Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
 
   /**
+   * CSS Reflections
+   *
+   * Method of displaying a reflection of an element
+   *
+   * http://webkit.org/blog/182/css-reflections/
+   */
+  def reflections: Subject = Map(
+    AndroidBrowser    -> Map(FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(FullX -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(FullX -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
+
+  /**
+   * CSS Regions
+   *
+   * Method of flowing content into multiple elements.
+   *
+   * http://www.w3.org/TR/css3-regions/
+   */
+  def regions: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(PartialX -> "15,16,17,18", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,35,36,37,38,39,40,41,42,43,44", Unsupported -> "19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(PartialX -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(PartialX -> "10,11"),
+    IOSSafari         -> Map(FullX -> "7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
+
+  /**
    * rem (root em) units
    *
    * Type of unit similar to "em", but relative only to the root element, not any parent element. Thus compounding does not occur as it does with "em" units.
@@ -1660,6 +1361,167 @@ object CanIUse {
     OperaMini         -> Map(Unsupported -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "12,12.1,24", Unsupported -> "10,11,11.1,11.5"),
     Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2,4"))
+
+  /**
+   * CSS Repeating Gradients
+   *
+   * Method of defining a repeating linear or radial color gradient as a CSS image.
+   *
+   * http://www.w3.org/TR/css3-images/#repeating-gradients
+   */
+  def repeatingGradients: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "4,4.1,4.2-4.3", Unsupported -> "2.1,2.2,2.3,3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "10", Unsupported -> "7"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", Unsupported -> "4,5,6,7,8,9"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "3.6,4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5"),
+    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "5.0-5.1,6.0-6.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "11.6,12", PartialX -> "11.1,11.5", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "12", PartialX -> "11.1,11.5", Unsupported -> "10,11"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "5.1,6", Unsupported -> "3.1,3.2,4,5"))
+
+  /**
+   * CSS resize property
+   *
+   * Method of allowing an element to be resized by the user, with options to limit to a given direction.
+   *
+   * http://www.w3.org/TR/css3-ui/#resize
+   */
+  def resize: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4", Unsupported -> "2,3,3.5,3.6"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Partial -> "12.1", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
+
+  /**
+   * CSS 2.1 selectors
+   *
+   * Basic CSS selectors including: `*` (universal selector), `&gt;` (child selector), `:first-child`, `:link`, `:visited`, `:active`, `:hover`, `:focus`, `:lang()`, `+` (adjacent sibling selector), `[attr]`, `[attr="val"]`, `[attr~="val"]`, `[attr|="bar"]`, `.foo` (class selector), `#foo` (id selector)
+   *
+   * http://www.w3.org/TR/CSS21/selector.html
+   */
+  def sel2: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "7,8,9,10,11,TP", Unsupported -> "5.5", Unsupported -> "6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS3 selectors
+   *
+   * Advanced element selection using selectors including: `[foo^="bar"]`, `[foo$="bar"]`, `[foo*="bar"]`, `:root`, `:nth-child()`,  `:nth-last-child()`, `nth-of-type`, `nth-last-of-type()`, `:last-child`, `:first-of-type`, `:last-of-type`, `:only-child`, `:only-of-type`, `:empty`, `:target`, `:enabled`, `:disabled`, `:checked`, `:not()`, `~` (general sibling)
+   *
+   * http://www.w3.org/TR/css3-selectors/
+   */
+  def sel3: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
+    IE                -> Map(Full -> "9,10,11,TP", Partial -> "7,8", Unsupported -> "5.5", Unsupported -> "6"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.2,4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1"))
+
+  /**
+   * ::selection CSS pseudo-element
+   *
+   * The ::selection CSS pseudo-element applies rules to the portion of a document that has been highlighted (e.g., selected with the mouse or another pointing device) by the user.
+   *
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/::selection
+   */
+  def selection: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "9,10,11,TP", Unsupported -> "5.5,6,7,8"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "11.5,12,12.1,24", Unknown -> "10,11,11.1"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS Shapes Level 1
+   *
+   * Allows geometric shapes to be set in CSS to define an area for text to flow around.
+   *
+   * http://www.w3.org/TR/css-shapes/
+   */
+  def shapes: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33", Unsupported -> "34,35,36"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1"),
+    Opera             -> Map(Full -> "24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(FullX -> "7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7"))
+
+  /**
+   * CSS position:sticky
+   *
+   * Keeps elements positioned as "fixed" or "relative" depending on how it appears in the viewport. As a result the element is "stuck" when necessary while scrolling.
+   *
+   * http://dev.w3.org/csswg/css-position/#sticky-positioning
+   */
+  def sticky: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,37,38,39,40,41,42,43,44", Unsupported -> "23,24,25,26,27,28,29,30,31,32,33,34,35,36"),
+    Firefox           -> Map(Full -> "32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25", Unsupported -> "26,27,28,29,30,31"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(FullX -> "6.0-6.1,7.0-7.1,8,8.1", Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(FullX -> "6.1,7,7.1,8", Unsupported -> "3.1,3.2,4,5,5.1,6"))
 
   /**
    * Scoped CSS
@@ -1706,6 +1568,52 @@ object CanIUse {
     OperaMini         -> Map(Partial -> "5.0-8.0"),
     OperaMobile       -> Map(Full -> "24", Partial -> "10,11,11.1,11.5,12,12.1"),
     Safari            -> Map(Full -> "5,5.1,6,6.1,7,7.1,8", Partial -> "3.2,4", Unsupported -> "3.1"))
+
+  /**
+   * CSS Table display
+   *
+   * Method of displaying elements as tables, rows, and cells
+   *
+   * http://www.w3.org/TR/CSS21/tables.html
+   */
+  def table: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "7,10"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "8,9,10,11,TP", Unsupported -> "5.5,6,7"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Full -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS3 text-align-last
+   *
+   * CSS property to describe how the last line of a block or a line right before a forced line break when `text-align` is `justify`.
+   *
+   * http://www.w3.org/TR/css3-text/#text-align-last-property
+   */
+  def textAlignLast: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(FullX -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34", Unsupported -> "35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(FullX -> "12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11"),
+    IE                -> Map(Partial -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Partial -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21", Unsupported -> "22,23,24,25,26,27,28,29"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * text-decoration styling
@@ -1823,6 +1731,52 @@ object CanIUse {
     Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
+   * CSS3 Text-shadow
+   *
+   * Method of applying one or more shadow or blur effects to text
+   *
+   * http://www.w3.org/TR/css-text-decor-3/#text-shadow-property
+   */
+  def textshadow: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Full -> "9.9"),
+    BlackberryBrowser -> Map(Full -> "10", Partial -> "7"),
+    Chrome            -> Map(Full -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44"),
+    Firefox           -> Map(Full -> "3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", Unsupported -> "2,3"),
+    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", Unsupported -> "9"),
+    OperaMini         -> Map(Partial -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Full -> "4,5,5.1,6,6.1,7,7.1,8", Partial -> "3.1,3.2"))
+
+  /**
+   * CSS touch-action property
+   *
+   * touch-action is a CSS property that controls filtering of gesture events, providing developers with a declarative mechanism to selectively disable touch scrolling (in one or both axes), pinch-zooming or double-tap-zooming.
+   *
+   * http://www.w3.org/TR/pointerevents/#the-touch-action-css-property
+   */
+  def touchAction: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Unsupported -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Full -> "36,37,38,39,40,41,42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35"),
+    Firefox           -> Map(Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28", Unsupported -> "29,30,31,32,33,34,35,36,37,38,39"),
+    IE                -> Map(Full -> "11,TP", FullX -> "10", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "11", FullX -> "10"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Full -> "23,24,25,26,27,28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
    * CSS3 Transforms
    *
    * Method of transforming an element including rotating, scaling, etc.
@@ -1869,6 +1823,29 @@ object CanIUse {
     Safari            -> Map(FullX -> "4,5,5.1,6,6.1,7,7.1,8", Unsupported -> "3.1,3.2"))
 
   /**
+   * CSS3 Transitions
+   *
+   * Simple method of animating certain properties of an element
+   *
+   * http://www.w3.org/TR/css3-transitions/
+   */
+  def transitions: Subject = Map(
+    AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
+    AndroidChrome     -> Map(Full -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(FullX -> "9.9"),
+    BlackberryBrowser -> Map(FullX -> "7,10"),
+    Chrome            -> Map(Full -> "26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25"),
+    Firefox           -> Map(Full -> "16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39", FullX -> "4,5,6,7,8,9,10,11,12,13,14,15", Unsupported -> "2,3,3.5,3.6"),
+    IE                -> Map(Full -> "10,11,TP", Unsupported -> "5.5,6,7,8,9"),
+    IEMobile          -> Map(Full -> "10,11"),
+    IOSSafari         -> Map(Full -> "7.0-7.1,8,8.1", FullX -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1"),
+    Opera             -> Map(Full -> "12.1,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29", FullX -> "10.5,10.6,11,11.1,11.5,11.6,12", Unsupported -> "9,9.5-9.6,10.0-10.1"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Full -> "12.1,24", FullX -> "10,11,11.1,11.5,12"),
+    Safari            -> Map(Full -> "6.1,7,7.1,8", FullX -> "3.1,3.2,4,5,5.1,6"))
+
+  /**
    * TTF/OTF - TrueType and OpenType font support
    *
    * Support for the TrueType (.ttf)and OpenType (.otf) outline font formats in @font-face.
@@ -1913,6 +1890,29 @@ object CanIUse {
     OperaMini         -> Map(Unsupported -> "5.0-8.0"),
     OperaMobile       -> Map(FullX -> "24", Unsupported -> "10,11,11.1,11.5,12,12.1"),
     Safari            -> Map(FullX -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
+
+  /**
+   * CSS Variables
+   *
+   * Permits the declaration and usage of cascading variables in stylesheets.
+   *
+   * http://www.w3.org/TR/css-variables/
+   */
+  def variables: Subject = Map(
+    AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
+    AndroidChrome     -> Map(Unsupported -> "40"),
+    AndroidFirefox    -> Map(Full -> "33"),
+    AndroidUC         -> Map(Unsupported -> "9.9"),
+    BlackberryBrowser -> Map(Unsupported -> "7,10"),
+    Chrome            -> Map(Unknown -> "42,43,44", Unsupported -> "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41"),
+    Firefox           -> Map(Full -> "31,32,33,34,35,36,37,38,39", Unsupported -> "2,3,3.5,3.6,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"),
+    IE                -> Map(Unsupported -> "5.5,6,7,8,9,10,11,TP"),
+    IEMobile          -> Map(Unsupported -> "10,11"),
+    IOSSafari         -> Map(Unsupported -> "3.2,4.0-4.1,4.2-4.3,5.0-5.1,6.0-6.1,7.0-7.1,8,8.1"),
+    Opera             -> Map(Unknown -> "28,29", Unsupported -> "9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1,15,16,17,18,19,20,21,22,23,24,25,26,27"),
+    OperaMini         -> Map(Unsupported -> "5.0-8.0"),
+    OperaMobile       -> Map(Unsupported -> "10,11,11.1,11.5,12,12.1,24"),
+    Safari            -> Map(Unsupported -> "3.1,3.2,4,5,5.1,6,6.1,7,7.1,8"))
 
   /**
    * Viewport units: vw, vh, vmin, vmax

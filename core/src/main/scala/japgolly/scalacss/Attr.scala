@@ -50,14 +50,23 @@ object Attr {
 
   implicit val order: Order[Attr] = Order.orderBy(_.id)
 
-  def simpleGen(css: String): Gen =
+  def genSimple(css: String): Gen =
     _ => v => Vector1(CssKV(css, v))
 
   def real(css: String): Attr =
-    new RealAttr(css, simpleGen(css))
+    new RealAttr(css, genSimple(css))
 
-  def alias(css: String)(f: AliasB.type => NonEmptyList[Attr]): Attr =
-    new AliasAttr(css, simpleGen(css), Need(f(AliasB)))
+  def real(css: String, subject: CanIUse.Subject): Attr =
+    new RealAttr(css, canIGen(css, subject))
+
+  def alias(css: String) =
+    _alias(css, genSimple(css))
+
+  def alias(css: String, subject: CanIUse.Subject) =
+    _alias(css, canIGen(css, subject))
+
+  private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyList[Attr]) => Attr =
+    f => new AliasAttr(id, g, Need(f(AliasB)))
 
   /**
    * Helper for creating a lazy NonEmptyList[Attr] so that initialisation order doesn't matter,
@@ -67,17 +76,11 @@ object Attr {
     @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
   }
 
-  import CanIUse2._
-
-  def real(css: String, subject: CanIUse.Subject): Attr = {
+  def canIGen(key: String, subject: CanIUse.Subject): Gen = {
+    import CanIUse2._
     val prefixes = prefixPlan(subject)
-    val g: Attr.Gen = _ => v => applyPrefixes(prefixes, css, v)
-    // TODO ↑ Use env to control prefixes
-    new RealAttr(css, g)
+    _ => v => applyPrefixes(prefixes, key, v) // TODO Use env to control prefixes
   }
-
-  def alias(css: String, subject: CanIUse.Subject)(f: AliasB.type => NonEmptyList[Attr]): Attr =
-    ???
 }
 
 // =====================================================================================================================

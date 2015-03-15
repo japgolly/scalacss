@@ -1,6 +1,8 @@
 package japgolly.scalacss
 
-import scalaz.Memo
+import scalaz.{Memo, Semigroup}
+import scalaz.std.map._
+import scalaz.syntax.semigroup._
 import CanIUse._
 import Support._
 
@@ -8,6 +10,13 @@ import Support._
  * Derivations of the raw data in [[CanIUse]].
  */
 object CanIUse2 {
+
+  implicit val verStrSemigroup: Semigroup[VerStr] =
+    new Semigroup[VerStr] {
+      override def append(a: VerStr, b: => VerStr): VerStr = a + "," + b
+    }
+
+  val transforms = transforms2d |+| transforms3d
 
   /*
   sealed trait Browser

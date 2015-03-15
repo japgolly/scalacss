@@ -81,7 +81,10 @@ object Caniuse {
       title: String,
       desc: String,
       spec: String,
-      stats: Map[String, MSS])
+      stats: Map[String, MSS]) {
+
+      val scalaval = "^css([A-Z])".r.replaceAllIn(camel(key), _.group(1).toLowerCase)
+    }
 
     val dataj = json.cursor --\ "data" focus
     val cssj = dataj.assoc.get.filter(kv =>
@@ -92,7 +95,7 @@ object Caniuse {
         v.field("description") |> str,
         v.field("spec") |> str,
         (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
-    }.sortBy(_.key)
+    }.sortBy(_.scalaval)
 
     println(s"Found ${data.size} CSS properties...")
 
@@ -152,7 +155,7 @@ object Caniuse {
    *
    * $spec
    */
-  def ${camel(key)}: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
+  def $scalaval: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
 """}
 
     val prefixes = agents.map(_.allPrefixes).reduce(_ ++ _).toList.sorted

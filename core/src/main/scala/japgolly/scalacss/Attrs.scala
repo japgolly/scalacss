@@ -53,84 +53,84 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-content">MDN</a>
    */
-  final val alignContent = Attr.real("align-content")
+  final val alignContent = Attr.real("align-content", CanIUse.flexbox)
 
   /**
    * The CSS align-items property aligns flex items of the current flex line the same way as justify-content but in the perpendicular direction.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-items">MDN</a>
    */
-  final val alignItems = Attr.real("align-items")
+  final val alignItems = Attr.real("align-items", CanIUse.flexbox)
 
   /**
    * The align-self CSS property aligns flex items of the current flex line overriding the align-items value. If any of the flex item's cross-axis margin is set to auto, then align-self is ignored.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-self">MDN</a>
    */
-  final val alignSelf = Attr.real("align-self")
+  final val alignSelf = Attr.real("align-self", CanIUse.flexbox)
 
   /**
    * The animation-delay CSS property specifies when the animation should start. This lets the animation sequence begin some time after it's applied to an element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay">MDN</a>
    */
-  final val animationDelay = Attr.real("animation-delay", CanIUse.cssAnimation)
+  final val animationDelay = Attr.real("animation-delay", CanIUse.animation)
 
   /**
    * The animation-direction CSS property indicates whether the animation should play in reverse on alternate cycles.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction">MDN</a>
    */
-  final val animationDirection = Attr.real("animation-direction", CanIUse.cssAnimation)
+  final val animationDirection = Attr.real("animation-direction", CanIUse.animation)
 
   /**
    * The animation-duration CSS property specifies the length of time that an animation should take to complete one cycle.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-duration">MDN</a>
    */
-  final val animationDuration = Attr.real("animation-duration", CanIUse.cssAnimation)
+  final val animationDuration = Attr.real("animation-duration", CanIUse.animation)
 
   /**
    * The animation-fill-mode CSS property specifies how a CSS animation should apply styles to its target before and after it is executing.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">MDN</a>
    */
-  final val animationFillMode = Attr.real("animation-fill-mode", CanIUse.cssAnimation)
+  final val animationFillMode = Attr.real("animation-fill-mode", CanIUse.animation)
 
   /**
    * The animation-iteration-count CSS property defines the number of times an animation cycle should be played before stopping.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">MDN</a>
    */
-  final val animationIterationCount = Attr.real("animation-iteration-count", CanIUse.cssAnimation)
+  final val animationIterationCount = Attr.real("animation-iteration-count", CanIUse.animation)
 
   /**
    * The animation-name CSS property specifies a list of animations that should be applied to the selected element. Each name indicates a @keyframes at-rule that defines the property values for the animation sequence.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-name">MDN</a>
    */
-  final val animationName = Attr.real("animation-name", CanIUse.cssAnimation)
+  final val animationName = Attr.real("animation-name", CanIUse.animation)
 
   /**
    * The animation-play-state CSS property determines whether an animation is running or paused. You can query this property's value to determine whether or not the animation is currently running; in addition, you can set its value to pause and resume playback of an animation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">MDN</a>
    */
-  final val animationPlayState = Attr.real("animation-play-state", CanIUse.cssAnimation)
+  final val animationPlayState = Attr.real("animation-play-state", CanIUse.animation)
 
   /**
    * The CSS animation-timing-function property specifies how a CSS animation should progress over the duration of each cycle. The possible values are one or several &lt;timing-function>.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function">MDN</a>
    */
-  final val animationTimingFunction = Attr.real("animation-timing-function", CanIUse.cssAnimation)
+  final val animationTimingFunction = Attr.real("animation-timing-function", CanIUse.animation)
 
   /**
    * The CSS backface-visibility property determines whether or not the back face of the element is visible when facing the user. The back face of an element always is a transparent background, letting, when visible, a mirror image of the front face be displayed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility">MDN</a>
    */
-  final val backfaceVisibility = Attr.real("backface-visibility")
+  final val backfaceVisibility = Attr.real("backface-visibility", CanIUse2.transforms)
 
   /**
    * If a background-image is specified, the background-attachment CSS property determines whether that image's position is fixed within the viewport, or scrolls along with its containing block.
@@ -368,21 +368,21 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-decoration-break">MDN</a>
    */
-  final val boxDecorationBreak = Attr.real("box-decoration-break", CanIUse.cssBoxdecorationbreak)
+  final val boxDecorationBreak = Attr.real("box-decoration-break", CanIUse.boxdecorationbreak)
 
   /**
    * The box-shadow CSS property describes one or more shadow effects as a comma-separated list.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow">MDN</a>
    */
-  final val boxShadow = Attr.real("box-shadow", CanIUse.cssBoxshadow)
+  final val boxShadow = Attr.real("box-shadow", CanIUse.boxshadow)
 
   /**
    * The box-sizing CSS property is used to alter the default CSS box model used to calculate widths and heights of elements. It is possible to use this property to emulate the behavior of browsers that do not correctly support the CSS box model specification.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing">MDN</a>
    */
-  final val boxSizing = Attr.real("box-sizing")
+  final val boxSizing = Attr.real("box-sizing", CanIUse.css3Boxsizing)
 
   /**
    * The break-after CSS property describes how the page, column or region break behavior after the generated box. If there is no generated box, the property is ignored.
@@ -431,7 +431,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path">MDN</a>
    */
-  final val clipPath = Attr.real("clip-path", CanIUse.cssClipPath)
+  final val clipPath = Attr.real("clip-path", CanIUse.clipPath)
 
   /**
    * The CSS color property sets the foreground color of an element's text content, and its decorations. It doesn't affect any other characteristic of the element; it should really be called text-color and would have been named so, save for historical reasons and its appearance in CSS Level 1.
@@ -445,56 +445,56 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-count">MDN</a>
    */
-  final val columnCount = Attr.real("column-count")
+  final val columnCount = Attr.real("column-count", CanIUse.multicolumn)
 
   /**
    * The column-fill CSS property controls how contents are partitioned into columns. Contents are either balanced, which means that contents in all columns will have the same height or, when using auto, just take up the room the content needs.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-fill">MDN</a>
    */
-  final val columnFill = Attr.real("column-fill")
+  final val columnFill = Attr.real("column-fill", CanIUse.multicolumn)
 
   /**
    * The column-gap CSS property sets the size of the gap between columns for elements which are specified to display as a multi-column element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap">MDN</a>
    */
-  final val columnGap = Attr.real("column-gap")
+  final val columnGap = Attr.real("column-gap", CanIUse.multicolumn)
 
   /**
    * The column-rule-color CSS property lets you set the color of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-color">MDN</a>
    */
-  final val columnRuleColor = Attr.real("column-rule-color")
+  final val columnRuleColor = Attr.real("column-rule-color", CanIUse.multicolumn)
 
   /**
    * The column-rule-style CSS property lets you set the style of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-style">MDN</a>
    */
-  final val columnRuleStyle = Attr.real("column-rule-style")
+  final val columnRuleStyle = Attr.real("column-rule-style", CanIUse.multicolumn)
 
   /**
    * The column-rule-width CSS property lets you set the width of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-width">MDN</a>
    */
-  final val columnRuleWidth = Attr.real("column-rule-width")
+  final val columnRuleWidth = Attr.real("column-rule-width", CanIUse.multicolumn)
 
   /**
    * The column-span CSS property makes it possible for an element to span across all columns when its value is set to all. An element that spans more than one column is called a spanning element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-span">MDN</a>
    */
-  final val columnSpan = Attr.real("column-span")
+  final val columnSpan = Attr.real("column-span", CanIUse.multicolumn)
 
   /**
    * The column-width CSS property suggests an optimal column width. This is not a absolute value but a mere hint. Browser will adjust the width of the column around that suggested value, allowing to achieve scalable designs that fit different screen size. Especially in presence of the column-count CSS property which has precedence, to set an exact column width, all length values must be specified. In horizontal text these are width, column-width, column-gap, and column-rule-width.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-width">MDN</a>
    */
-  final val columnWidth = Attr.real("column-width")
+  final val columnWidth = Attr.real("column-width", CanIUse.multicolumn)
 
   /**
    * The content CSS property is used with the ::before and ::after pseudo-elements to generate content in an element. Objects inserted using the content property are anonymous replaced elements.
@@ -508,14 +508,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-increment">MDN</a>
    */
-  final val counterIncrement = Attr.real("counter-increment", CanIUse.cssCounters)
+  final val counterIncrement = Attr.real("counter-increment", CanIUse.counters)
 
   /**
    * The counter-reset CSS property is used to reset CSS Counters to a given value.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-reset">MDN</a>
    */
-  final val counterReset = Attr.real("counter-reset", CanIUse.cssCounters)
+  final val counterReset = Attr.real("counter-reset", CanIUse.counters)
 
   /**
    * The cursor CSS property specifies the mouse cursor displayed when the mouse pointer is over an element.
@@ -550,42 +550,42 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">MDN</a>
    */
-  final val filter = Attr.real("filter", CanIUse.cssFilters)
+  final val filter = Attr.real("filter", CanIUse.filters)
 
   /**
    * The CSS flex-basis property specifies the flex basis which is the initial main size of a flex item. The property determines the size of the content-box unless specified otherwise using box-sizing.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis">MDN</a>
    */
-  final val flexBasis = Attr.real("flex-basis")
+  final val flexBasis = Attr.real("flex-basis", CanIUse.flexbox)
 
   /**
    * The CSS flex-direction property specifies how flex items are placed in the flex container defining the main axis and the direction (normal or reversed).
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction">MDN</a>
    */
-  final val flexDirection = Attr.real("flex-direction")
+  final val flexDirection = Attr.real("flex-direction", CanIUse.flexbox)
 
   /**
    * The CSS flex-grow property specifies the flex grow factor of a flex item.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow">MDN</a>
    */
-  final val flexGrow = Attr.real("flex-grow")
+  final val flexGrow = Attr.real("flex-grow", CanIUse.flexbox)
 
   /**
    * The CSS flex-shrink property specifies the flex shrink factor of a flex item.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink">MDN</a>
    */
-  final val flexShrink = Attr.real("flex-shrink")
+  final val flexShrink = Attr.real("flex-shrink", CanIUse.flexbox)
 
   /**
    * The CSS flex-wrap property specifies whether the children are forced into a single line or if the items can be flowed on multiple lines.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-wrap">MDN</a>
    */
-  final val flexWrap = Attr.real("flex-wrap")
+  final val flexWrap = Attr.real("flex-wrap", CanIUse.flexbox)
 
   /**
    * The float CSS property specifies that an element should be taken from the normal flow and placed along the left or right side of its container, where text and inline elements will wrap around it. A floating element is one where the computed value of float is not none.
@@ -606,7 +606,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings">MDN</a>
    */
-  final val fontFeatureSettings = Attr.real("font-feature-settings")
+  final val fontFeatureSettings = Attr.real("font-feature-settings", CanIUse.fontFeature)
 
   /**
    * The font-kerning CSS property controls the usage of the kerning information; that is, it controls how letters are spaced. The kerning information is stored in the font, and if the font is well-kerned, this feature allows spacing between characters to be very similar, whatever the characters are.
@@ -641,7 +641,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-stretch">MDN</a>
    */
-  final val fontStretch = Attr.real("font-stretch", CanIUse.cssFontStretch)
+  final val fontStretch = Attr.real("font-stretch", CanIUse.fontStretch)
 
   /**
    * The font-style CSS property allows italic or oblique faces to be selected within a font-family.
@@ -830,7 +830,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens">MDN</a>
    */
-  final val hyphens = Attr.real("hyphens", CanIUse.cssHyphens)
+  final val hyphens = Attr.real("hyphens", CanIUse.hyphens)
 
   /**
    * The image-rendering CSS property provides a hint to the user agent about how to handle its image rendering.  It applies to any images appearing on the element properties, but has no effect on non-scaled images.. For example, if the natural size of the image is 100×100px but the page author specifies the dimensions to 200×200px (or 50×50px), then the image will be upscaled (or downscaled) to the new dimensions using the specified algorithm. Scaling may also apply due to user interaction (zooming).
@@ -886,7 +886,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content">MDN</a>
    */
-  final val justifyContent = Attr.real("justify-content")
+  final val justifyContent = Attr.real("justify-content", CanIUse.flexbox)
 
   /**
    * The left CSS property specifies part of the position of positioned elements.
@@ -977,14 +977,15 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/mask">MDN</a>
    */
-  final val mask = Attr.real("mask")
+  final val mask = Attr.real("mask", CanIUse.masks)
+  // TODO mask is shorthand - missing mask properties: http://www.w3.org/TR/css-masking/
 
   /**
    * The CSS mask-type properties defines if a SVG &lt;mask> element is a luminance or an alpha mask.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/mask-type">MDN</a>
    */
-  final val maskType = Attr.real("mask-type")
+  final val maskType = Attr.real("mask-type", CanIUse.masks)
 
   /**
    * The max-height CSS property is used to set the maximum height of a given element. It prevents the used value of the height property from becoming larger than the value specified for max-height.
@@ -1026,7 +1027,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit">MDN</a>
    */
-  final val objectFit = Attr.real("object-fit")
+  final val objectFit = Attr.real("object-fit", CanIUse.objectFit)
 
   /**
    * The object-position property determines the alignment of the replaced element inside its box.
@@ -1040,7 +1041,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/opacity">MDN</a>
    */
-  final val opacity = Attr.real("opacity")
+  final val opacity = Attr.real("opacity", CanIUse.opacity)
 
   /**
    * The CSS order property specifies the order used to lay out flex items in their flex container. Elements are laid out by ascending order of the order value. Elements with the same order value are laid out in the order they appear in the source code.
@@ -1061,28 +1062,28 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-color">MDN</a>
    */
-  final val outlineColor = Attr.real("outline-color")
+  final val outlineColor = Attr.real("outline-color", CanIUse.outline)
 
   /**
    * The outline-offset CSS property is used to set space between an outline and the edge or border of an element. An outline is a line that is drawn around elements, outside the border edge.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-offset">MDN</a>
    */
-  final val outlineOffset = Attr.real("outline-offset")
+  final val outlineOffset = Attr.real("outline-offset", CanIUse.outline)
 
   /**
    * The outline-style CSS property is used to set the style of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-style">MDN</a>
    */
-  final val outlineStyle = Attr.real("outline-style")
+  final val outlineStyle = Attr.real("outline-style", CanIUse.outline)
 
   /**
    * The outline-width CSS property is used to set the width of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out:
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-width">MDN</a>
    */
-  final val outlineWidth = Attr.real("outline-width")
+  final val outlineWidth = Attr.real("outline-width", CanIUse.outline)
 
   /**
    * The overflow CSS property specifies whether to clip content, render scrollbars or just display content when it overflows its block level container.
@@ -1166,14 +1167,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective">MDN</a>
    */
-  final val perspective = Attr.real("perspective")
+  final val perspective = Attr.real("perspective", CanIUse2.transforms)
 
   /**
    * The perspective-origin CSS property determines the position the viewer is looking at. It is used as the vanishing point by the perspective property.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective-origin">MDN</a>
    */
-  final val perspectiveOrigin = Attr.real("perspective-origin")
+  final val perspectiveOrigin = Attr.real("perspective-origin", CanIUse2.transforms)
 
   /**
    * The CSS property pointer-events allows authors to control under what circumstances (if any) a particular graphic element can become the target of mouse events. When this property is unspecified, the same characteristics of the visiblePainted value apply to SVG content.
@@ -1201,7 +1202,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/resize">MDN</a>
    */
-  final val resize = Attr.real("resize")
+  final val resize = Attr.real("resize", CanIUse.resize)
 
   /**
    * The right CSS property specifies part of the position of positioned elements.
@@ -1243,21 +1244,21 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-image-threshold">MDN</a>
    */
-  final val shapeImageThreshold = Attr.real("shape-image-threshold")
+  final val shapeImageThreshold = Attr.real("shape-image-threshold", CanIUse.shapes)
 
   /**
    * The shape-margin CSS property adds a margin to shape-outside.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-margin">MDN</a>
    */
-  final val shapeMargin = Attr.real("shape-margin")
+  final val shapeMargin = Attr.real("shape-margin", CanIUse.shapes)
 
   /**
    * The shape-outside CSS property uses shape values to define the float area for a float and will cause inline content to wrap around the shape instead of the float's bounding box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-outside">MDN</a>
    */
-  final val shapeOutside = Attr.real("shape-outside")
+  final val shapeOutside = Attr.real("shape-outside", CanIUse.shapes)
 
   /**
    * The table-layout CSS property defines the algorithm to be used to layout the table cells, rows, and columns.
@@ -1271,7 +1272,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/tab-size">MDN</a>
    */
-  final val tabSize = Attr.real("tab-size")
+  final val tabSize = Attr.real("tab-size", CanIUse.css3Tabsize)
 
   /**
    * The text-align CSS property describes how inline content like text is aligned in its parent block element. text-align does not control the alignment of block elements itself, only their inline content.
@@ -1285,7 +1286,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align-last">MDN</a>
    */
-  final val textAlignLast = Attr.real("text-align-last")
+  final val textAlignLast = Attr.real("text-align-last", CanIUse.textAlignLast)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
@@ -1299,21 +1300,21 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color">MDN</a>
    */
-  final val textDecorationColor = Attr.real("text-decoration-color")
+  final val textDecorationColor = Attr.real("text-decoration-color", CanIUse.textDecoration)
 
   /**
    * The text-decoration-line CSS property sets what kind of line decorations are added to an element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line">MDN</a>
    */
-  final val textDecorationLine = Attr.real("text-decoration-line")
+  final val textDecorationLine = Attr.real("text-decoration-line", CanIUse.textDecoration)
 
   /**
    * The text-decoration-style CSS property defines the style of the lines specified by text-decoration-line. The style applies to all lines, there is no way to define different style for each of the line defined by text-decoration-line.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-style">MDN</a>
    */
-  final val textDecorationStyle = Attr.real("text-decoration-style")
+  final val textDecorationStyle = Attr.real("text-decoration-style", CanIUse.textDecoration)
 
   /**
    * The text-indent CSS property specifies how much horizontal space should be left before the beginning of the first line of the text content of an element. Horizontal spacing is with respect to the left (or right, for right-to-left layout) edge of the containing block element's box.
@@ -1334,7 +1335,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow">MDN</a>
    */
-  final val textOverflow = Attr.real("text-overflow")
+  final val textOverflow = Attr.real("text-overflow", CanIUse.textOverflow)
 
   /**
    * The text-rendering CSS property provides information to the rendering engine about what to optimize for when rendering text. The browser makes trade-offs among speed, legibility, and geometric precision. The text-rendering property is an SVG property that is not defined in any CSS standard. However, Gecko and WebKit browsers let you apply this property to HTML and XML content on Windows, Mac OS X and Linux.
@@ -1348,7 +1349,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow">MDN</a>
    */
-  final val textShadow = Attr.real("text-shadow")
+  final val textShadow = Attr.real("text-shadow", CanIUse.textshadow)
 
   /**
    * The text-transform CSS property specifies how to capitalize an element's text. It can be used to make text appear in all-uppercase or all-lowercase, or with each word capitalized.
@@ -1376,56 +1377,56 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action">MDN</a>
    */
-  final val touchAction = Attr.real("touch-action")
+  final val touchAction = Attr.real("touch-action", CanIUse.touchAction)
 
   /**
    * The CSS transform property lets you modify the coordinate space of the CSS visual formatting model. Using it, elements can be translated, rotated, scaled, and skewed according to the values set.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN</a>
    */
-  final val transform = Attr.real("transform")
+  final val transform = Attr.real("transform", CanIUse2.transforms)
 
   /**
    * The transform-origin CSS property lets you modify the origin for transformations of an element. For example, the transform-origin of the rotate() function is the centre of rotation. (This property is applied by first translating the element by the negated value of the property, then applying the element's transform, then translating by the property value.)
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-origin">MDN</a>
    */
-  final val transformOrigin = Attr.real("transform-origin")
+  final val transformOrigin = Attr.real("transform-origin", CanIUse2.transforms)
 
   /**
    * The transform-style CSS property determines if the children of the element are positioned in the 3D-space or are flattened in the plane of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style">MDN</a>
    */
-  final val transformStyle = Attr.real("transform-style")
+  final val transformStyle = Attr.real("transform-style", CanIUse2.transforms)
 
   /**
    * The transition-delay CSS property specifies the amount of time to wait between a change being requested to a property that is to be transitioned and the start of the transition effect.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay">MDN</a>
    */
-  final val transitionDelay = Attr.real("transition-delay")
+  final val transitionDelay = Attr.real("transition-delay", CanIUse.transitions)
 
   /**
    * The transition-duration CSS property specifies the number of seconds or milliseconds a transition animation should take to complete. By default, the value is 0s, meaning that no animation will occur.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration">MDN</a>
    */
-  final val transitionDuration = Attr.real("transition-duration")
+  final val transitionDuration = Attr.real("transition-duration", CanIUse.transitions)
 
   /**
    * The transition-property CSS property is used to specify the names of CSS properties to which a transition effect should be applied.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-property">MDN</a>
    */
-  final val transitionProperty = Attr.real("transition-property")
+  final val transitionProperty = Attr.real("transition-property", CanIUse.transitions)
 
   /**
    * The CSS transition-timing-function property is used to describe how the intermediate values of the CSS properties being affected by a transition effect are calculated. This in essence lets you establish an acceleration curve, so that the speed of the transition can vary over its duration.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function">MDN</a>
    */
-  final val transitionTimingFunction = Attr.real("transition-timing-function")
+  final val transitionTimingFunction = Attr.real("transition-timing-function", CanIUse.transitions)
 
   /**
    * The unicode-bidi CSS property together with the direction property relates to the handling of bidirectional text in a document. For example, if a block of text contains both left-to-right and right-to-left text then the user-agent uses a complex Unicode algorithm to decide how to display the text. This property overrides this algorithm and allows the developer to control the text embedding.
@@ -1488,7 +1489,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break">MDN</a>
    */
-  final val wordBreak = Attr.real("word-break")
+  final val wordBreak = Attr.real("word-break", CanIUse.wordBreak)
 
   /**
    * The word-spacing CSS property specifies spacing behavior between tags and words.
@@ -1502,7 +1503,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap">MDN</a>
    */
-  final val wordWrap = Attr.real("word-wrap")
+  final val wordWrap = Attr.real("word-wrap", CanIUse.wordwrap)
 
   /**
    * The writing-mode CSS property defines whether lines of text are laid out horizontally or vertically and the direction in which blocks progress.
@@ -1528,14 +1529,14 @@ trait Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/all">MDN</a>
    */
   final val all: AliasAttr =
-    new AliasAttr("all", Attr.simpleGen("all"), Need(Attrs.valuesForAllAttr))
+    new AliasAttr("all", Attr.genSimple("all"), Need(Attrs.valuesForAllAttr))
 
   /**
    * The animation CSS property is a shorthand property for animation-name, animation-duration, animation-timing-function, animation-delay, animation-iteration-count, animation-direction, animation-fill-mode and animation-play-state.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
    */
-  final val animation = Attr.alias("animation", CanIUse.cssAnimation)(_(
+  final val animation = Attr.alias("animation", CanIUse.animation)(_(
     animationName, animationDuration, animationTimingFunction, animationDelay, animationIterationCount,
     animationDirection, animationFillMode, animationPlayState))
 
@@ -1768,7 +1769,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/columns">MDN</a>
    */
-  final val columns = Attr.alias("columns")(_(
+  final val columns = Attr.alias("columns", CanIUse.multicolumn)(_(
     columnWidth, columnCount))
 
   /**
@@ -1776,7 +1777,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule">MDN</a>
    */
-  final val columnRule = Attr.alias("column-rule")(_(
+  final val columnRule = Attr.alias("column-rule", CanIUse.multicolumn)(_(
     columnRuleWidth, columnRuleStyle, columnRuleColor))
 
   /**
@@ -1784,7 +1785,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
    */
-  final val flex = Attr.alias("flex")(_(
+  final val flex = Attr.alias("flex", CanIUse.flexbox)(_(
     flexGrow, flexShrink, flexBasis))
 
   /**
@@ -1792,7 +1793,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-flow">MDN</a>
    */
-  final val flexFlow = Attr.alias("flex-flow")(_(
+  final val flexFlow = Attr.alias("flex-flow", CanIUse.flexbox)(_(
     flexDirection, flexWrap))
 
   /**
@@ -1921,8 +1922,8 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline">MDN</a>
    */
-  final val outline = Attr.alias("outline")(_(
-    outlineStyle, outlineWidth, outlineColor))
+  final val outline = Attr.alias("outline", CanIUse.outline)(_(
+    outlineStyle, outlineWidth, outlineColor)) // not outlineOffset
 
   /**
    * The padding CSS property sets the required padding space on all sides of an element. The padding area is the space between the content of the element and its border. Negative values are not allowed.
@@ -1965,7 +1966,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration">MDN</a>
    */
-  final val textDecoration = Attr.alias("text-decoration")(_(
+  final val textDecoration = Attr.alias("text-decoration", CanIUse.textDecoration)(_(
     textDecorationColor, textDecorationLine, textDecorationStyle))
 
   /**
@@ -1973,6 +1974,6 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
    */
-  final val transition = Attr.alias("transition")(_(
+  final val transition = Attr.alias("transition", CanIUse.transitions)(_(
     transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay))
 }
