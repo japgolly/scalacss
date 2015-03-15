@@ -6,6 +6,7 @@ import japgolly.nyaya.test.PropTest._
 import utest._
 import TestUtil._
 import AttrCmp.{Overlap, Unrelated}
+import Attrs._
 
 object AttrTest extends TestSuite {
 
@@ -35,7 +36,6 @@ object AttrTest extends TestSuite {
     'overlap {
       def test(e: AttrCmp, a: Attr, b: Attr): Unit =
         assertEq(s"$a cmp $b", e, a cmp b)
-      import Attrs._
       test(Unrelated, padding,     margin)
       test(Overlap,   padding,     paddingLeft)
       test(Overlap,   all,         padding)
@@ -46,6 +46,17 @@ object AttrTest extends TestSuite {
       test(Unrelated, borderStyle, borderColor)
       test(Unrelated, borderLeft,  borderRightColor)
       test(Unrelated, borderLeft,  borderRight)
+    }
+
+    'prefixes {
+      def test(a: Attr, exp: String*): Unit = {
+        val x = a.gen(Env.empty)("x").map(_.key).sorted
+        val y = exp.toVector.sorted
+        assertEq(x, y)
+      }
+      test(textAlign,    "text-align")
+      test(borderRadius, "border-radius", "-moz-border-radius", "-webkit-border-radius")
+      test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
     }
   }
 }
