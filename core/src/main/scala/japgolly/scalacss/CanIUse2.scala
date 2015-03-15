@@ -59,7 +59,7 @@ object CanIUse2 {
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
     Memo.mutableHashMapMemo(
-      subjectPrefixes(_).toVector.map(Some.apply) :+ None)
+      subjectPrefixes(_).toVector.map(Some.apply) :+ None) // TODO None is a wrong assumption eg. text-stroke
 
   @inline def applyPrefix(op: Option[Prefix], key: String, value: String): CssKV =
     CssKV(op.fold(key)(p => s"-${p.value}-$key"), value)

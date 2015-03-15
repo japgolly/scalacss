@@ -12,26 +12,32 @@
 CanIUse subjects pending action:
 * appearance
 * backgroundImgOpts
-* calc
 * canvas
+* reflections -- missing attr box-reflect
+* regions -- missing attrs flow-into etc
+* textEmphasis -- missing attr
+* textSizeAdjust -- missing attr
+* textStroke -- missing attr
+* userSelectNone -- missing attr
+
+CanIUse subjects affecting CSS values:
+* calc
 * crispEdges
 * css3CursorsNewer
-* deviceadaptation
 * gradients
 * imageSet
 * intrinsicWidth
-* mediaResolution
-* placeholder
-* reflections
-* regions
 * repeatingGradients
+* sticky
+* viewportUnits
+
+CanIUse subjects affecting pseudo selectors:
+* placeholder
 * sel2
 * sel3
 * selection
-* sticky
-* textEmphasis
-* textSizeAdjust
-* textStroke
-* userSelectNone
-* viewportUnits
+
+CanIUse subjects affecting media queries:
+* deviceadaptation
+* mediaResolution
 
