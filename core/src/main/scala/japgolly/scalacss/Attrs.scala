@@ -40,7 +40,9 @@ object Attrs extends Attrs {
     textDecorationStyle, textIndent, textOrientation, textOverflow, textRendering, textShadow, textTransform,
     textUnderlinePosition, top, touchAction, transform, transformOrigin, transformStyle, transition, transitionDelay,
     transitionDuration, transitionProperty, transitionTimingFunction, unicodeRange, verticalAlign, visibility,
-    whiteSpace, widows, width, willChange, wordBreak, wordSpacing, wordWrap, writingMode, zIndex)
+    whiteSpace, widows, width, willChange, wordBreak, wordSpacing, wordWrap, writingMode, zIndex,
+    boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
+    textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect)
 
   val values: NonEmptyList[Attr] =
     List(all, unicodeBidi, direction) <::: valuesForAllAttr
@@ -371,6 +373,16 @@ trait Attrs {
   final val boxDecorationBreak = Attr.real("box-decoration-break", CanIUse.boxdecorationbreak)
 
   /**
+   * The -webkit-box-reflect CSS property lets you reflect the content of an element in one specific direction.
+   *
+   * Note: This feature is not intended to be used by Web sites. To achieve reflection on the Web, the standard way is
+   * to use the CSS `element()` function.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-box-reflect">MDN</a>
+   */
+  final val boxReflect = Attr.real("box-reflect", CanIUse.reflections)
+
+  /**
    * The box-shadow CSS property describes one or more shadow effects as a comma-separated list.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow">MDN</a>
@@ -593,6 +605,20 @@ trait Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float">MDN</a>
    */
   final val float = Attr.real("float")
+
+  /**
+   * Flows content from a named flow (specified by a corresponding flow-into) through selected elements to form a dynamic chain of layout regions.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/flow-from">WPD</a>
+   */
+  final val flowFrom = Attr.real("flow-from", CanIUse.regions)
+
+  /**
+   * Diverts the selected element's content into a named flow, used to thread content through different layout regions specified by flow-from.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/flow-into">WPD</a>
+   */
+  final val flowInto = Attr.real("flow-into", CanIUse.regions)
 
   /**
    * The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule.
@@ -1163,6 +1189,13 @@ trait Attrs {
   final val quotes = Attr.real("quotes")
 
   /**
+   * Controls whether the last region in a chain displays additional 'overset' content according its default overflow property, or	if it displays a fragment of content as if it were flowing into a subsequent region.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/region-fragment">WPD</a>
+   */
+  final val regionFragment = Attr.real("region-fragment", CanIUse.regions)
+
+  /**
    * The resize CSS property lets you control the resizability of an element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/resize">MDN</a>
@@ -1282,6 +1315,27 @@ trait Attrs {
   final val textDecorationStyle = Attr.real("text-decoration-style", CanIUse.textDecoration)
 
   /**
+   * The text-emphasis-color property specifies the foreground color of the emphasis marks.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis-color">WPD</a>
+   */
+  final val textEmphasisColor = Attr.real("text-emphasis-color", CanIUse.textEmphasis)
+
+  /**
+   * This property describes where emphasis marks are drawn at.
+   *
+   * @see <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis-position">w3.org</a>
+   */
+  final val textEmphasisPosition = Attr.real("text-emphasis-position", CanIUse.textEmphasis)
+
+  /**
+   * The text-emphasis-style property applies special emphasis marks to an element's text.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis-style">WPD</a>
+   */
+  final val textEmphasisStyle = Attr.real("text-emphasis-style", CanIUse.textEmphasis)
+
+  /**
    * The text-indent CSS property specifies how much horizontal space should be left before the beginning of the first line of the text content of an element. Horizontal spacing is with respect to the left (or right, for right-to-left layout) edge of the containing block element's box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-indent">MDN</a>
@@ -1315,6 +1369,27 @@ trait Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow">MDN</a>
    */
   final val textShadow = Attr.real("text-shadow", CanIUse.textshadow)
+
+  /**
+   * On mobile devices, the text-size-adjust CSS property allows Web authors to control if and how the text-inflating algorithm is applied to the textual content of the element it is applied to.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-size-adjust">MDN</a>
+   */
+  final val textSizeAdjust = Attr.real("text-size-adjust", CanIUse.textSizeAdjust)
+
+  /**
+   * Apple extension. Specifies the color of the outline (stroke) of text.
+   *
+   * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-color">Safari CSS Reference</a>
+   */
+  final val textStrokeColor = Attr.real("text-stroke-color", CanIUse.textStroke)
+
+  /**
+   * Apple extension. Specifies the width for the text outline.
+   *
+   * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-width">Safari CSS Reference</a>
+   */
+  final val textStrokeWidth = Attr.real("text-stroke-width", CanIUse.textStroke)
 
   /**
    * The text-transform CSS property specifies how to capitalize an element's text. It can be used to make text appear in all-uppercase or all-lowercase, or with each word capitalized.
@@ -1406,6 +1481,13 @@ trait Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range">MDN</a>
    */
   final val unicodeRange = Attr.real("unicode-range")
+
+  /**
+   * Controls the actual Selection operation. This doesn't have any effect on content loaded as chrome, except in textboxes. A similar property 'user-focus' was proposed in early drafts of a predecessor of css3-ui but was rejected by the working group.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/user-select">MDN</a>
+   */
+  final val userSelect = Attr.real("user-select", CanIUse.userSelectNone)
 
   /**
    * The vertical-align CSS property specifies the vertical alignment of an inline or table-cell box.
@@ -1965,10 +2047,35 @@ trait Attrs {
     textDecorationColor, textDecorationLine, textDecorationStyle))
 
   /**
+   * The text-emphasis property will apply special emphasis marks to the elements text. Slightly similar to the text-decoration property only that this property can have affect on the line-height. It also is noted that this is shorthand for text-emphasis-style and for text-emphasis-color.
+   *
+   * Note that `text-emphasis-position` is not reset in this shorthand. This is because typically the shape and color vary, but the position is consistent for a particular language throughout the document. Therefore the position should inherit independently.
+   *
+   * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis">WPD</a>
+   */
+  final val textEmphasis = Attr.alias("text-emphasis", CanIUse.textEmphasis)(_(
+    textEmphasisColor, textEmphasisStyle)) // Not textEmphasisPosition
+
+  /**
+   * Apple extension. Specifies the color of the outline (stroke) of text.
+   *
+   * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266-_webkit_text_stroke">Safari CSS Reference</a>
+   */
+  final val textStroke = Attr.alias("text-stroke", CanIUse.textStroke)(_(
+    textStrokeColor, textStrokeWidth))
+
+  /**
    * The CSS transition property is a shorthand property for transition-property, transition-duration, transition-timing-function, and transition-delay. It allows to define the transition between two states of an element. Different states may be defined using pseudo-classes like :hover or :active or dynamically set using JavaScript.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
    */
   final val transition = Attr.alias("transition", CanIUse.transitions)(_(
     transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay))
+
+//  /**
+//   * xxxxxxxx
+//   *
+//   * @see <a href="xxxxxxxx">MDN</a>
+//   */
+//  final val xxxxxxxx = Attr.real("xxxxxxxx")
 }

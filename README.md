@@ -53,14 +53,16 @@ In progress.
 
 ##### Upcoming...
 
+* Add more attrs discovered by caniuse.com data.
+
 * Media query AST.
 * Type-safe CSS values.
 * Automatic browser prefixes for _values_ (using caniuse.com data).
 * CSS Reset.
-* Add more attrs discovered by caniuse.com data.
 * Add more psuedo selectors discovered by caniuse.com data.
 * In Scala.JS, omit unnecessary browser prefixes.
 * Detect more problems, add more warnings.
 * More DSL for composite styles.
 * Default settings for {JVM,JS} ⊗ {Dev,Prod}.
 * Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
+

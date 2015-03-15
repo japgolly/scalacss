@@ -13,12 +13,6 @@ CanIUse subjects pending action:
 * appearance
 * backgroundImgOpts
 * canvas
-* reflections -- missing attr box-reflect
-* regions -- missing attrs flow-into etc
-* textEmphasis -- missing attr
-* textSizeAdjust -- missing attr
-* textStroke -- missing attr
-* userSelectNone -- missing attr
 
 CanIUse subjects affecting CSS values:
 * calc
