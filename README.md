@@ -31,3 +31,35 @@ There will be a high-level interface on top to make usage as nice, easy and conc
 ##### Implementation
 
 In progress.
+
+# Features / Progress
+
+##### Week #1
+
+* Attributes.
+* Pseudo selectors.
+* Automatic browser prefixes for properties (using caniuse.com data).
+* Attribute conflict detection.
+* Customisable composition behaviour.
+* Static styles.
+* Functional styles.
+* Composite styles / style families.
+* Concise DSL.
+* CSS generation (for external CSS files) in minified format, pretty-printed or custom.
+* Anonymous CSS generation (for internal styling like in Scala.JS).
+* Reusable styles (modules).
+* Ability to dynamically tailor CSS to environment. (As yet, unused.)
+* Path-dependent children like in LESS/SASS.
+
+##### Upcoming...
+
+* Media queriy AST.
+* Type-safe CSS values.
+* Automatic browser prefixes for _values_ (using caniuse.com data).
+* CSS Reset.
+* Add more attrs discovered by caniuse.com data.
+* Add more psuedo selectors discovered by caniuse.com data.
+* In Scala.JS, omit unnecessary browser prefixes.
+* Detect more problems, add more warnings.
+* DSL for composite styles.
+* Add default settings for {JVM,JS} ⊗ {Dev,Prod}.
