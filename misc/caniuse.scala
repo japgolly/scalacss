@@ -12,6 +12,8 @@ object Caniuse {
 
   def camel(s: String) = "[_-]+([a-z\\d])".r.replaceAllIn(s, _.group(1).toUpperCase)
 
+  def htmlsafe(s: String) = s.replace("<","&lt;").replace(">","&gt;")
+
   def main(args: Array[String]): Unit = {
 
     val dataTxt = io.Source.fromFile("caniuse/data.json").mkString
@@ -19,6 +21,14 @@ object Caniuse {
     val json = Parse.parse(dataTxt).fold(sys.error, identity)
 
     // ====================================================================================================
+
+    val N = new NaturalOrderComparator()
+    def consolidate(m: MSS): MSS =
+      m.toStream.sortWith((a,b) => N.compare(a._1, b._1)<0)
+          .foldLeft(Map.empty[String, String]){case (q,(a,b)) => q.updated(b, q.get(b).fold(a)(_+","+a)) }
+          .toStream.map{case (a,b) => (b,a)}.toMap
+    val removeAt: String => String =
+      _.replaceFirst("^@","")
 
     val agentkey0: String => String = {
       case "ie"      => "IE"
@@ -45,7 +55,10 @@ object Caniuse {
       browser: String,
       versions: List[String],
       prefix: String,
-      prefixExceptions: Map[String,String])
+      prefixExceptions: Map[String,String]) {
+
+      def allPrefixes = prefixExceptions.values.toSet + prefix
+    }
 
     val agents = {
       val jo = json.field("agents").obj.get
@@ -55,7 +68,7 @@ object Caniuse {
           j.field("browser") |> str,
           j.field("versions").array.get.filterNot(_.isNull).map(str),
           j.field("prefix") |> str,
-          j.field("prefix_exceptions").map(_.jdecode[Map[String,String]].toOption.get) getOrElse Map.empty)
+          j.field("prefix_exceptions").map(_.jdecode[MSS].toOption.get |> consolidate) getOrElse Map.empty)
       }
     }
 
@@ -70,19 +83,12 @@ object Caniuse {
       spec: String,
       stats: Map[String, MSS])
 
-    val N = new NaturalOrderComparator()
-    def consolidate(m: MSS): MSS =
-      m.toStream.sortWith((a,b) => N.compare(a._1, b._1)<0)
-          .foldLeft(Map.empty[String, String]){case (q,(a,b)) => q.updated(b, q.get(b).fold(a)(_+","+a)) }
-          .toStream.map{case (a,b) => (b,a)}.toMap
-
-
     val dataj = json.cursor --\ "data" focus
     val cssj = dataj.assoc.get.filter(kv =>
                  (+kv._2 --\ "categories" focus).toString.toUpperCase contains "CSS")
     val data = cssj.map{ case (k,v) =>
       Data(k.toString,
-        v.field("title") |> str,
+        v.field("title") |> str |> removeAt,
         v.field("description") |> str,
         v.field("spec") |> str,
         (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
@@ -104,8 +110,8 @@ object Caniuse {
         s.head match {
           case 'y' => s"Full$x"
           case 'a' => s"Partial$x"
-          case 'n' => "None"
-          case 'p' => "None" // Don't ask me why. Eg: css-fixed, css-grid
+          case 'n' => "Unsupported"
+          case 'p' => "Unsupported" // Don't ask me why. Eg: css-fixed, css-grid
           case 'u' => "Unknown"
           case _   => sys error s"What? '$s'"
         }
@@ -117,6 +123,13 @@ object Caniuse {
       m.toStream.map{case (k,v) => (f(k),g(v))}.sortBy(_._1)
         .foldLeft("Map("){case (q,(k,v)) => s"$q$k -> $v, "}.dropRight(2) + ")"
 
+    def fmtpref2(p: String) = String.format("%-6s", p)
+
+    def fmtpref(p: String): String = {
+      val p2 = fmtpref2(p)
+      s"""case object $p2 extends Prefix("$p")"""
+    }
+
     // def fmtAgent(a: Agent) = {
       // import a._
       // s"""/** $browser */
@@ -125,21 +138,24 @@ object Caniuse {
 
     def fmtAgent(a: Agent) = {
       import a._
-      s"""val $key = Agent("$prefix", ${fmtmap(fmtstr, fmtstr)(prefixExceptions)})"""
+      val p2 = fmtpref2(prefix)
+      s"""val $key = Agent($p2, ${fmtmap(fmtstr, identity[String])(prefixExceptions)})"""
     }
 
     def fmtData(d: Data) = {
       import d._
       val stats2 = stats.mapValues(m => m.toList.map{case(a,b) => (b,a)}.toMap)
       s"""/**
-   * $title
+   * ${htmlsafe(title)}
    *
-   * $desc
+   * ${htmlsafe(desc)}
    *
    * $spec
    */
   def ${camel(key)}: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
 """}
+
+    val prefixes = agents.map(_.allPrefixes).reduce(_ ++ _).toList.sorted
 
     val output = s"""package $pkg
 
@@ -150,19 +166,25 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 object $obj {
-  type Prefix  = String
   type VerStr  = String
   type Subject = Map[Agent, Map[Support, VerStr]]
 
   sealed trait Support
   object Support {
-    case object None     extends Support
-    case object Unknown  extends Support
-    case object Partial  extends Support
-    case object Full     extends Support
-    case object PartialX extends Support
-    case object FullX    extends Support
+    case object Unsupported extends Support
+    case object Unknown     extends Support
+    case object Partial     extends Support
+    case object Full        extends Support
+    case object PartialX    extends Support
+    case object FullX       extends Support
   }
+
+  sealed abstract class Prefix(val value: String)
+  object Prefix {
+    ${prefixes map fmtpref mkString "\n    "}
+  }
+
+  import Prefix._
 
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {

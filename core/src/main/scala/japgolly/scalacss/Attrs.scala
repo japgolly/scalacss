@@ -74,56 +74,56 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay">MDN</a>
    */
-  final val animationDelay = Attr.real("animation-delay")
+  final val animationDelay = Attr.real("animation-delay", CanIUse.cssAnimation)
 
   /**
    * The animation-direction CSS property indicates whether the animation should play in reverse on alternate cycles.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction">MDN</a>
    */
-  final val animationDirection = Attr.real("animation-direction")
+  final val animationDirection = Attr.real("animation-direction", CanIUse.cssAnimation)
 
   /**
    * The animation-duration CSS property specifies the length of time that an animation should take to complete one cycle.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-duration">MDN</a>
    */
-  final val animationDuration = Attr.real("animation-duration")
+  final val animationDuration = Attr.real("animation-duration", CanIUse.cssAnimation)
 
   /**
    * The animation-fill-mode CSS property specifies how a CSS animation should apply styles to its target before and after it is executing.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">MDN</a>
    */
-  final val animationFillMode = Attr.real("animation-fill-mode")
+  final val animationFillMode = Attr.real("animation-fill-mode", CanIUse.cssAnimation)
 
   /**
    * The animation-iteration-count CSS property defines the number of times an animation cycle should be played before stopping.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">MDN</a>
    */
-  final val animationIterationCount = Attr.real("animation-iteration-count")
+  final val animationIterationCount = Attr.real("animation-iteration-count", CanIUse.cssAnimation)
 
   /**
    * The animation-name CSS property specifies a list of animations that should be applied to the selected element. Each name indicates a @keyframes at-rule that defines the property values for the animation sequence.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-name">MDN</a>
    */
-  final val animationName = Attr.real("animation-name")
+  final val animationName = Attr.real("animation-name", CanIUse.cssAnimation)
 
   /**
    * The animation-play-state CSS property determines whether an animation is running or paused. You can query this property's value to determine whether or not the animation is currently running; in addition, you can set its value to pause and resume playback of an animation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">MDN</a>
    */
-  final val animationPlayState = Attr.real("animation-play-state")
+  final val animationPlayState = Attr.real("animation-play-state", CanIUse.cssAnimation)
 
   /**
    * The CSS animation-timing-function property specifies how a CSS animation should progress over the duration of each cycle. The possible values are one or several &lt;timing-function>.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function">MDN</a>
    */
-  final val animationTimingFunction = Attr.real("animation-timing-function")
+  final val animationTimingFunction = Attr.real("animation-timing-function", CanIUse.cssAnimation)
 
   /**
    * The CSS backface-visibility property determines whether or not the back face of the element is visible when facing the user. The back face of an element always is a transparent background, letting, when visible, a mirror image of the front face be displayed.
@@ -137,7 +137,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-attachment">MDN</a>
    */
-  final val backgroundAttachment = Attr.real("background-attachment")
+  final val backgroundAttachment = Attr.real("background-attachment", CanIUse.backgroundAttachment)
 
   /**
    * The background-blend-mode CSS property describes how the element's background images should blend with each other and the element's background color.
@@ -207,14 +207,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-left-radius">MDN</a>
    */
-  final val borderBottomLeftRadius = Attr.real("border-bottom-left-radius")
+  final val borderBottomLeftRadius = Attr.real("border-bottom-left-radius", CanIUse.borderRadius)
 
   /**
    * The border-bottom-right-radius CSS property sets the rounding of the bottom-right corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0 no rounding is done and the corner is square.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-right-radius">MDN</a>
    */
-  final val borderBottomRightRadius = Attr.real("border-bottom-right-radius")
+  final val borderBottomRightRadius = Attr.real("border-bottom-right-radius", CanIUse.borderRadius)
 
   /**
    * The border-bottom-style CSS property sets the line style of the bottom border of a box.
@@ -242,35 +242,35 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-outset">MDN</a>
    */
-  final val borderImageOutset = Attr.real("border-image-outset")
+  final val borderImageOutset = Attr.real("border-image-outset", CanIUse.borderImage)
 
   /**
    * The border-image-repeat CSS property defines how the middle part of a border image is handled so that it can match the size of the border. It has a one-value syntax that describes the behavior of all the sides, and a two-value syntax that sets a different value for the horizontal and vertical behavior.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-repeat">MDN</a>
    */
-  final val borderImageRepeat = Attr.real("border-image-repeat")
+  final val borderImageRepeat = Attr.real("border-image-repeat", CanIUse.borderImage)
 
   /**
    * The border-image-slice CSS property divides the image specified by border-image-source in nine regions: the four corners, the four edges and the middle. It does this by specifying 4 inwards offsets.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-slice">MDN</a>
    */
-  final val borderImageSlice = Attr.real("border-image-slice")
+  final val borderImageSlice = Attr.real("border-image-slice", CanIUse.borderImage)
 
   /**
    * The border-image-source CSS property defines the &lt;image> to use instead of the style of the border. If this property is set to none, the style defined by border-style is used instead.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-source">MDN</a>
    */
-  final val borderImageSource = Attr.real("border-image-source")
+  final val borderImageSource = Attr.real("border-image-source", CanIUse.borderImage)
 
   /**
    * The border-image-width CSS property defines the width of the border. If specified, it overrides the border-width property.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-width">MDN</a>
    */
-  final val borderImageWidth = Attr.real("border-image-width")
+  final val borderImageWidth = Attr.real("border-image-width", CanIUse.borderImage)
 
   /**
    * The border-left-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-left are more convenient and preferable.
@@ -333,14 +333,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-left-radius">MDN</a>
    */
-  final val borderTopLeftRadius = Attr.real("border-top-left-radius")
+  final val borderTopLeftRadius = Attr.real("border-top-left-radius", CanIUse.borderRadius)
 
   /**
    * The border-top-right-radius CSS property sets the rounding of the top-right corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0 no rounding is done and the corner is square.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-right-radius">MDN</a>
    */
-  final val borderTopRightRadius = Attr.real("border-top-right-radius")
+  final val borderTopRightRadius = Attr.real("border-top-right-radius", CanIUse.borderRadius)
 
   /**
    * The border-top-style CSS property sets the line style of the top border of a box.
@@ -368,14 +368,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-decoration-break">MDN</a>
    */
-  final val boxDecorationBreak = Attr.real("box-decoration-break")
+  final val boxDecorationBreak = Attr.real("box-decoration-break", CanIUse.cssBoxdecorationbreak)
 
   /**
    * The box-shadow CSS property describes one or more shadow effects as a comma-separated list.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow">MDN</a>
    */
-  final val boxShadow = Attr.real("box-shadow")
+  final val boxShadow = Attr.real("box-shadow", CanIUse.cssBoxshadow)
 
   /**
    * The box-sizing CSS property is used to alter the default CSS box model used to calculate widths and heights of elements. It is possible to use this property to emulate the behavior of browsers that do not correctly support the CSS box model specification.
@@ -431,7 +431,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path">MDN</a>
    */
-  final val clipPath = Attr.real("clip-path")
+  final val clipPath = Attr.real("clip-path", CanIUse.cssClipPath)
 
   /**
    * The CSS color property sets the foreground color of an element's text content, and its decorations. It doesn't affect any other characteristic of the element; it should really be called text-color and would have been named so, save for historical reasons and its appearance in CSS Level 1.
@@ -508,14 +508,14 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-increment">MDN</a>
    */
-  final val counterIncrement = Attr.real("counter-increment")
+  final val counterIncrement = Attr.real("counter-increment", CanIUse.cssCounters)
 
   /**
    * The counter-reset CSS property is used to reset CSS Counters to a given value.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-reset">MDN</a>
    */
-  final val counterReset = Attr.real("counter-reset")
+  final val counterReset = Attr.real("counter-reset", CanIUse.cssCounters)
 
   /**
    * The cursor CSS property specifies the mouse cursor displayed when the mouse pointer is over an element.
@@ -550,7 +550,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">MDN</a>
    */
-  final val filter = Attr.real("filter")
+  final val filter = Attr.real("filter", CanIUse.cssFilters)
 
   /**
    * The CSS flex-basis property specifies the flex basis which is the initial main size of a flex item. The property determines the size of the content-box unless specified otherwise using box-sizing.
@@ -641,7 +641,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-stretch">MDN</a>
    */
-  final val fontStretch = Attr.real("font-stretch")
+  final val fontStretch = Attr.real("font-stretch", CanIUse.cssFontStretch)
 
   /**
    * The font-style CSS property allows italic or oblique faces to be selected within a font-family.
@@ -830,7 +830,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens">MDN</a>
    */
-  final val hyphens = Attr.real("hyphens")
+  final val hyphens = Attr.real("hyphens", CanIUse.cssHyphens)
 
   /**
    * The image-rendering CSS property provides a hint to the user agent about how to handle its image rendering.  It applies to any images appearing on the element properties, but has no effect on non-scaled images.. For example, if the natural size of the image is 100×100px but the page author specifies the dimensions to 200×200px (or 50×50px), then the image will be upscaled (or downscaled) to the new dimensions using the specified algorithm. Scaling may also apply due to user interaction (zooming).
@@ -1535,7 +1535,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
    */
-  final val animation = Attr.alias("animation")(_(
+  final val animation = Attr.alias("animation", CanIUse.cssAnimation)(_(
     animationName, animationDuration, animationTimingFunction, animationDelay, animationIterationCount,
     animationDirection, animationFillMode, animationPlayState))
 
@@ -1648,7 +1648,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image">MDN</a>
    */
-  final val borderImage = Attr.alias("border-image")(_(
+  final val borderImage = Attr.alias("border-image", CanIUse.borderImage)(_(
     borderImageOutset, borderImageRepeat, borderImageSlice, borderImageSource, borderImageWidth))
 
   /**
@@ -1728,7 +1728,7 @@ trait Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius">MDN</a>
    */
-  final val borderRadius = Attr.alias("border-radius")(_(
+  final val borderRadius = Attr.alias("border-radius", CanIUse.borderRadius)(_(
     borderTopLeftRadius, borderTopRightRadius, borderBottomRightRadius, borderBottomLeftRadius))
 
   /**

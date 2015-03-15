@@ -66,6 +66,18 @@ object Attr {
   object AliasB {
     @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
   }
+
+  import CanIUse2._
+
+  def real(css: String, subject: CanIUse.Subject): Attr = {
+    val prefixes = prefixPlan(subject)
+    val g: Attr.Gen = _ => v => applyPrefixes(prefixes, css, v)
+    // TODO ↑ Use env to control prefixes
+    new RealAttr(css, g)
+  }
+
+  def alias(css: String, subject: CanIUse.Subject)(f: AliasB.type => NonEmptyList[Attr]): Attr =
+    ???
 }
 
 // =====================================================================================================================

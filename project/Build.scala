@@ -26,6 +26,9 @@ object ScalaCSS extends Build {
                                 "-language:higherKinds", "-language:existentials"),
         updateOptions      := updateOptions.value.withCachedResolution(true))
       .configure(addCommandAliases(
+        "/"   -> "project core",
+        "cj"  -> "project core-jvm",
+        "cjs" -> "project core-js",
         "qc"  -> "~ ;clear ;core-jvm/compile",
         "qtc" -> "~ ;clear ;core-jvm/test:compile",
         "qt"  -> "~ ;clear ;core-jvm/test"
@@ -54,6 +57,6 @@ object ScalaCSS extends Build {
     crossDialectProject("core", commonSettings
       .configure(utestSettings())
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
-      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._")
+      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
     )
 }
