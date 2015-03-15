@@ -58,8 +58,11 @@ object CanIUse2 {
 
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
-    Memo.mutableHashMapMemo(
-      subjectPrefixes(_).toVector.map(Some.apply) :+ None) // TODO None is a wrong assumption eg. text-stroke
+    Memo.mutableHashMapMemo {s =>
+      val ps = subjectPrefixes(s).toVector.map(Some.apply)
+      val np = s.exists(_._2.exists(t => !needsPrefix(t._1)))
+      if (np) ps :+ None else ps
+    }
 
   @inline def applyPrefix(op: Option[Prefix], key: String, value: String): CssKV =
     CssKV(op.fold(key)(p => s"-${p.value}-$key"), value)
@@ -67,5 +70,4 @@ object CanIUse2 {
   def applyPrefixes(ps: PrefixPlan, key: String, value: String): Vector[CssKV] =
     ps.foldLeft(Vector.empty[CssKV])(
       _ :+ applyPrefix(_, key, value))
-
 }
