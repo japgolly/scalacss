@@ -1,0 +1,20 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox">Formal syntax: none | auto | <var>&lt;percentage&gt;</var>
+</pre>
+
+<pre>text-size-adjust: none               /* text is never inflated */
+text-size-adjust: auto               /* text may be inflated */
+text-size-adjust: <var>&lt;percentage&gt;</var>       /* text may be inflated of this exact proportion */
+
+text-size-adjust: inherit</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>none</code></dt>
+ <dd>Is a keyword preventing the usage of the inflation algorithm on the element. Basically, this means that the element will be displayed without its font inflated. On desktop Webkit-based browsers, this will only prevent any zoom on the whole page.</dd>
+ <dt><code>auto</code></dt>
+ <dd>Is a keyword allowing the usage of the inflation algorithm on the element. Browsers are not forced to use it and they won't do it on desktops and on some tablets. Its main use is to cancel a <code>none</code> value previously set.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>A percentage value is a synonym of the <code>auto</code> keyword, with the additional information that the percentage value is the increase rate to be applied to the font size when the inflation algorithm is applied.</dd>
+</dl>

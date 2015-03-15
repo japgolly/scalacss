@@ -1,0 +1,37 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> capitalize <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> uppercase <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> lowercase <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> full-width</code>
+</pre>
+<pre>text-transform: capitalize
+text-transform: uppercase
+text-transform: lowercase
+text-transform: none
+text-transform: full-width
+
+text-transform: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>capitalize</code></dt>
+ <dd>
+  <p>Is a keyword forcing the first <em>letter</em> of each word to be converted to uppercase. Other characters are unchanged; that is, they retain their original case as written in the element's text. A letter is any Unicode character part of the Letter or Number general categories <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span> : it excludes any punctuation marks or symbols at the beginning of the word.</p>
+  <div class="note">
+   Authors should not expect <code class="css">capitalize</code> to follow language-specific titlecasing conventions (such as skipping articles in English).</div>
+ </dd>
+ <dt>
+  <code>uppercase</code></dt>
+ <dd>
+  Is a keyword forcing all characters to be converted to uppercase.</dd>
+ <dt>
+  <code>lowercase</code></dt>
+ <dd>
+  Is a keyword forcing all characters to be converted to lowercase.</dd>
+ <dt>
+  <code>none</code></dt>
+ <dd>
+  Is a keyword preventing the case of all characters to be changed.</dd>
+ <dt>
+  <code>full-width</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Is a keyword forcing the writing of a character, mainly ideograms and latin scripts inside a square, allowing them to be aligned in the usual East Asian scripts (like Chinese or Japanese).</dd>
+ 
+</dl>

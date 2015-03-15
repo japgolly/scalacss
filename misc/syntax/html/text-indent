@@ -1,0 +1,29 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_ampersand" title="Double ampersand: The two entities are mandatory, but may appear in any order.">&amp;&amp;</a> [ hanging <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> each-line ]</code></pre>
+
+<pre>text-indent: 3mm       /* &lt;length&gt;values */
+text-indent: 40px
+text-indent: 15%       /* &lt;percentage&gt; values, relatives to the containing block width */
+text-indent: each-line /* keywords values */
+text-indent: hanging
+
+text-indent: inherit
+&lt;/percentage&gt;&lt;/length&gt;</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>Indentation is specified as an absolute <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a>. Negative values are allowed. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> values for possible units.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>Indentation is a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> of the containing block width.</dd>
+ <dt><code>each-line</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Indentation affects the first line of the block container as well as each line after a
+ <i>forced line break</i>
+ , but does not affect lines after a
+
+ <i>soft wrap break</i>
+ .</dd>
+ <dt><code>hanging</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Inverts which lines are indented. All lines <em>except</em> the first line will be indented.</dd>
+</dl>

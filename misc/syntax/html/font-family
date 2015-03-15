@@ -1,0 +1,57 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-family-name" title="&lt;string&gt; | &lt;IDENT&gt;+">&lt;family-name&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-generic-family" title="Tooltip not found in DB.">&lt;generic-family&gt;</a> ]<a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code> 
+</pre>
+
+<pre>font-family: Gill Sans Extrabold, sans-serif
+font-family: "Goudy Bookletter 1911", sans-serif
+
+font-family: sans-serif
+font-family: serif
+font-family: fantasy
+font-family: cursive
+font-family: monospace
+
+font-family: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<table class="standard-table"><tbody><tr><td><code>&lt;family-name&gt;</code></td>
+   <td>The name of a font family. For example, "Times" and "Helvetica" are font families. Font family names containing whitespace should be quoted.</td>
+  </tr><tr><td><code>&lt;generic-name&gt;</code></td>
+   <td>
+    <p>Generic font families are a fallback mechanism, a means of preserving some of the style sheet author's intent in case when none of the specified fonts are available. Generic family names are keywords and must not be quoted. A generic font family should be the a last alternative in the list of font family names.</p>
+
+    <dl><dt><code>serif</code></dt>
+     <dd style="font-family: Palatino,&quot;Palatino Linotype&quot;,Palladio,&quot;URW Palladio&quot;,serif;">Glyphs have finishing strokes, flared or tapering ends, or have actual serifed endings.<br/>
+     E.g.  Palatino, "Palatino Linotype", Palladio, "URW Palladio", serif</dd>
+     <dt><code>sans-serif</code></dt>
+     <dd style="font-family: &quot;Trebuchet MS&quot;,&quot;Liberation Sans&quot;,&quot;Nimbus Sans L&quot;,sans-serif;">Glyphs have stroke endings that are plain.<br/>
+     E.g. 'Trebuchet MS', 'Liberation Sans', 'Nimbus Sans L', sans-serif</dd>
+     <dt><code>monospace</code></dt>
+     <dd style="font-family: &quot;DejaVu Sans Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;, Monaco, &quot;Lucida Console&quot;, monospace;">All glyphs have the same fixed width.<br/>
+     E.g. "DejaVu Sans Mono", Menlo, Consolas, "Liberation Mono", Monaco, "Lucida Console", monospace</dd>
+     <dt><code>cursive</code></dt>
+     <dd>Glyphs in cursive fonts generally have either joining strokes or other cursive characteristics beyond those of italic typefaces. The glyphs are partially or completely connected, and the result looks more like handwritten pen or brush writing than printed letterwork.</dd>
+     <dt><code>fantasy</code></dt>
+     <dd>Fantasy fonts are primarily decorative fonts that contain playful representations of characters.</dd>
+    </dl></td>
+  </tr></tbody></table><h3 id="Valid_family_names">Valid family names</h3>
+
+<p>Font family names must either be given quoted as strings, or unquoted as a sequence of one or more identifiers. This means that punctuation characters and digits at the start of each token must be escaped in unquoted font family names.</p>
+
+<p>For example, the following declarations are valid:</p>
+
+<pre>font-family: Gill Sans Extrabold, sans-serif;
+font-family: "Goudy Bookletter 1911", sans-serif;</pre>
+
+<p>The following declarations are <strong>invalid</strong>:</p>
+
+<pre>font-family: Goudy Bookletter 1911, sans-serif;
+font-family: Red/Black, sans-serif;
+font-family: "Lucida" Grande, sans-serif;
+font-family: Ahem!, sans-serif;
+font-family: test@foo, sans-serif;
+font-family: #POUND, sans-serif;
+font-family: Hawaii 5-0, sans-serif;</pre>

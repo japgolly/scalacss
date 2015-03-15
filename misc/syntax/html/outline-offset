@@ -1,0 +1,14 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a></code>
+</pre>
+<pre>outline-offset: 3px
+outline-offset: 0.2em
+
+outline-offset: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  The width of the space. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for possible units. Negative values place the outline inside the element.</dd>
+</dl>

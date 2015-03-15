@@ -1,0 +1,33 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> max-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> min-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> fit-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> fill-available</code>
+</pre>
+
+<pre>max-height: 3.5em
+max-height: 75%
+max-height: none
+max-height: max-content
+max-height: min-content
+max-height: fit-content
+max-height: fill-available
+
+max-height: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>A fixed maximum height. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for possible units.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>The <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> is calculated with respect to the height of the containing block. If the height of the containing block is not specified explicitly, the percentage value is treated as <code>none</code>.</dd>
+ <dt><code>none</code></dt>
+ <dd>No limit on the height of the box.</dd>
+ <dt><code>max-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The intrinsic preferred height.</dd>
+ <dt><code>min-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The intrinsic minimum height.</dd>
+ <dt><code>fill-available</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The containing block height minus vertical margin, border and padding. Some browsers implement an ancient name for this keyword, <code>available</code>.</dd>
+ <dt><code>fit-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The same as <code>max-content.</code></dd>
+</dl>

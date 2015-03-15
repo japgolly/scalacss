@@ -1,0 +1,20 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/min-width" title="&lt;length&gt; | &lt;percentage&gt; | auto | max-content | min-content | fit-content | fill-available">&lt;'min-width'&gt;</a></code>
+</pre>
+
+<pre>min-block-size: 100px           /* &lt;length&gt; values */
+min-block-size: 5em
+
+min-block-size: 10%             /* &lt;percentage&gt; values */
+
+min-block-size: max-content     /* Keyword values */
+min-block-size: min-content
+min-block-size: fit-content
+min-block-size: fill-available
+
+min-block-size: inherit</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>The <code>min-block-size</code> property takes the same values as the <a href="/en-US/docs/Web/CSS/min-width" title="The min-width CSS property is used to set the minimum width of a given element. It prevents the used value of the width property from becoming smaller than the value specified for min-width."><code>min-width</code></a> and <a href="/en-US/docs/Web/CSS/min-height" title="The min-height CSS property is used to set the minimum height of a given element. It prevents the used value of the height property from becoming smaller than the value specified for min-height."><code>min-height</code></a> properties.</p>

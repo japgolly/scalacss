@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>over <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> under <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inter-character</code></pre>
+
+<pre>ruby-position: over
+ruby-position: under
+ruby-position: inter-character
+
+ruby-position: inherit
+ruby-position: initial
+ruby-position: unset
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>over</code></dt>
+ <dd><img alt="Over example" src="https://mdn.mozillademos.org/files/10251/Screen%20Shot%202015-03-04%20at%2013.02.20.png" style="height: 31px; width: 77px;"/>Is a keyword indicating that the ruby has to be placed over the main text for horizontal scripts and right to it for vertical scripts.</dd>
+ <dt><code>under</code></dt>
+ <dd><img alt="Under example" src="https://mdn.mozillademos.org/files/10249/Screen%20Shot%202015-03-04%20at%2013.02.07.png" style="height: 34px; width: 78px;"/>Is a keyword indicating that the ruby has to be placed under the main text for horizontal scripts and left to it for vertical scripts.</dd>
+ <dt><code>inter-character</code></dt>
+ <dd>Is a keyword indicating that the ruby has to be placed between the different characters.</dd>
+</dl>

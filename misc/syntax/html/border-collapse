@@ -1,0 +1,17 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>collapse <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> separate</code>
+</pre>
+<pre>border-collapse: collapse
+border-collapse: separate
+
+border-collapse: inherit</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>separate</code></dt>
+ <dd>
+  Is a keyword requesting the use of the separated-border table rendering model. It is the default value.</dd>
+ <dt>
+  <code>collapse</code></dt>
+ <dd>
+  Is a keyword requesting the use of the collapsed-border table rendering model.</dd>
+</dl>

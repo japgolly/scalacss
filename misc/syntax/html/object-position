@@ -1,0 +1,8 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:  <code><a href="/en-US/docs/Web/CSS/position_value" title="">&lt;position&gt;</a></code></pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;position&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/position_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;position&gt;</code></a>, that is one to four values representing a 2D position regarding the edges of the element's box. Relative or absolute offsets can be given. Note that the position can be set outside of the element's box.</dd>
+</dl>

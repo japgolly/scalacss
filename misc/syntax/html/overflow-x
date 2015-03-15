@@ -1,0 +1,24 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>visible <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> hidden <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> scroll <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto</code>
+</pre>
+
+<pre>overflow-x: visible
+overflow-x: hidden
+overflow-x: scroll
+overflow-x: auto
+
+overflow-x: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>visible</code></dt>
+ <dd>Content is not clipped, it may be rendered outside the content box.</dd>
+ <dt><code>hidden</code></dt>
+ <dd>The content is clipped and no scrollbars are provided.</dd>
+ <dt><code>scroll</code></dt>
+ <dd>The content is clipped and desktop browsers use scrollbars, whether or not any content is clipped. This avoids any problem with scrollbars appearing and disappearing in a dynamic environment. Printers may print overflowing content.</dd>
+ <dt><code>auto</code></dt>
+ <dd>Depends on the user agent. Desktop browsers like Firefox provide scrollbars if content overflows.</dd>
+</dl>

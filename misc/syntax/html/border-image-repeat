@@ -1,0 +1,41 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ stretch <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> repeat <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> round ]{1,2}</code>  </pre>
+<pre>border-image-repeat: <em>type</em>                    <em>  /* One-value syntax */</em>       E.g. border-image-value: stretch;
+border-image-repeat: <em>horizontal</em> <em>vertical</em>       <em>/* Two-value syntax */       </em>E.g. border-image-width: round space;
+
+border-image-repeat: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <em>type</em></dt>
+ <dd>
+  One of the <code><span class="gm_ gm_b51b146c-8d12-892b-53b8-18f62e829f9a gm-spell">stretch</span></code>, <code>repeat</code>, <code>round</code>, or <code>space</code> keywords denoting how the image is treated both horizontally and vertically.</dd>
+ <dt>
+  <em>horizontal</em></dt>
+ <dd>
+  One of the <code><span class="gm_ gm_2758d9e1-a5e9-d4a2-1917-ffd22b1b77cc gm-spell">stretch</span></code>, <code>repeat</code>, <code>round</code>, or <code>space</code> keywords denoting how the image is treated horizontally.</dd>
+ <dt>
+  <em>vertical</em></dt>
+ <dd>
+  One of the <code><span class="gm_ gm_4cdc6083-81ca-1415-1d64-1c54e4ee6434 gm-spell">stretch</span></code>, <code>repeat</code>, <code>round</code>, or <code>space</code> keywords denoting how the image is treated vertically.</dd>
+ <dt>
+  <code>stretch</code></dt>
+ <dd>
+  Keyword indicating that the image must be stretched to fill the gap between the two borders.</dd>
+ <dt>
+  <code>repeat</code></dt>
+ <dd>
+  Keyword indicating that the image must be repeated until it fills the gap between the two borders.</dd>
+ <dt>
+  <code>round</code></dt>
+ <dd>
+  Keyword indicating that the image must be repeated until it fills the gap between the two borders. If the image doesn't fit after being repeated for an integral number of times, the image is rescaled to fit.</dd>
+ <dt>
+  <code>space</code></dt>
+ <dd>
+  Keyword indicating that the image must be tiled to fill the area. If the image doesn't fill the area with a whole number of tiles, the extra space is distributed around the tiles.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Keyword indicating that all four values are inherited from their parents' calculated element value.</dd>
+</dl>

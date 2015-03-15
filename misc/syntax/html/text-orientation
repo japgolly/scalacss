@@ -1,0 +1,40 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>mixed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> upright <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> sideways-right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> sideways-left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> sideways <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> use-glyph-orientation</code>
+</pre>
+<pre>text-orientation: mixed
+text-orientation: upright
+text-orientation: sideways-right
+text-orientation: sideways-left
+text-orientation: sideways
+text-orientation: use-glyph-orientation
+
+text-orientation: inherit
+text-orientation: initial
+text-orientation: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>mixed</code></dt>
+ <dd>
+  This keyword leads to have characters for horizontal-only scripts being turned 90°, while the glyphs for vertical scripts are laid out naturally.</dd>
+ <dt>
+  <code>upright</code></dt>
+ <dd>
+  This keyword leads to have characters for horizontal-only scripts to be laid out naturally (upright), as well as the glyphs for vertical scripts. Note that this keyword lead all characters to be considered as ltr: the used value of <a href="/en-US/docs/Web/CSS/direction" title="Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS."><code>direction</code></a> is <code>ltr</code>, whatever the user could try to set it to.</dd>
+ <dt>
+  <code>sideways-right</code></dt>
+ <dd>
+  This keyword leads to have characters laid out like if they were laid out horizontally, but with the whole line rotated 90° to the right.</dd>
+ <dt>
+  <code>sideways-left</code></dt>
+ <dd>
+  This keyword leads to have characters laid out like if they were laid out horizontally, but with the whole line rotated 90° to the left.</dd>
+ <dt>
+  <code>sideways</code></dt>
+ <dd>
+  This keyword leads to have characters laid out like if they were laid out horizontally, but with the whole line rotated 90° to the right if <a href="/en-US/docs/Web/CSS/writing-mode" title="The writing-mode CSS property defines whether lines of text are laid out horizontally or vertically and the direction in which blocks progress."><code>writing-mode</code></a> is <code>vertical-rl</code> or to the left, if it is <code>vertical-lr</code>.</dd>
+ <dt>
+  <code>use-glyph-orientation</code></dt>
+ <dd>
+  On SVG elements, this keyword leads to use the value of the deprecated SVG properties<code> <span class="property">glyph-orientation-vertical</span></code> and <code>glyph-orientation-horizontal</code>.</dd>
+</dl>

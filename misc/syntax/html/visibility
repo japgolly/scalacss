@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>visible <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> hidden <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> collapse</code>
+</pre>
+<pre>visibility: visible
+visibility: hidden
+visibility: collapse
+
+visibility: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>visible</code></dt>
+ <dd>
+  Default value, the box is visible.</dd>
+ <dt>
+  <code>hidden</code></dt>
+ <dd>
+  The box is invisible (fully transparent, nothing is drawn), but still affects layout.  Descendants of the element will be visible if they have <code>visibility:visible</code> (this doesn't work in IE up to version 7).</dd>
+ <dt>
+  <code>collapse</code></dt>
+ <dd>
+  For table rows, columns, column groups, and row groups the row(s) or column(s) are hidden and the space they would have occupied is removed (as if <code><a href="/en-US/docs/Web/CSS/display" title="The display CSS property specifies the type of rendering box used for an element. In HTML, default display property values are taken from behaviors described in the HTML specifications or from the browser/user default stylesheet. The default value in XML is inline."><code>display</code></a>: none</code> were applied to the column/row of the table). However, the size of other rows and columns is still calculated as though the cells in the collapsed row(s) or column(s) are present. This was designed for fast removal of a row/column from a table without having to recalculate widths and heights for every portion of the table. For XUL elements, the computed size of the element is always zero, regardless of other styles that would normally affect the size, although margins still take effect. For other elements, <code>collapse</code> is treated the same as <code>hidden</code>.</dd>
+</dl><h3 id="Interpolation">Interpolation</h3>
+<p>Visiblity values are interpolable between <em>visible</em> and <em>not-visible</em>. One of the start or ending values must therefore be <em><code>visible</code></em> or no interpolation can happen. If one of the values is <code class="css">visible</code>, interpolated as a discrete step where values of the timing function between <code>0</code> and <code>1</code> map to <code class="css">visible</code> and other values of the timing function (which occur only at the start/end of the transition or as a result of <code class="css">cubic-bezier()</code> functions with y values outside of [0, 1]) map to the closer endpoint.</p>

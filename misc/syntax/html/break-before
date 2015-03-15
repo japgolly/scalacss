@@ -1,0 +1,71 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> always <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> page <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> column <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid-page <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid-colum</code>
+</pre>
+<pre>break-before: auto
+break-before: always
+break-before: left
+break-before: right
+break-before: recto
+break-before: verso
+break-before: page
+break-before: column
+break-before: region
+break-before: avoid
+break-before: avoid-page
+break-before: avoid-column
+break-before: avoid-region
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  Initial value. Allows, meaning neither forbid nor force, any break (either page, column or region) to be be inserted before the principle box.</dd>
+ <dt>
+  <code>always</code></dt>
+ <dd>
+  Always force page breaks before the principle box. This is a synonym of <code>page</code>, it has been kept to facilitate transition from <a href="/en-US/docs/Web/CSS/page-break-before" title="The page-break-before CSS property adjusts page breaks before the current element."><code>page-break-before</code></a> which is subset of this property.</dd>
+ <dt>
+  <code>avoid</code></dt>
+ <dd>
+  Prevent any break, either page, column or region, to be inserted right before the principle box.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  Force one or two page breaks right before the principle box so that the next page is formatted as a left page.</dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  Force one or two page breaks right before the principle box so that the next page is formatted as a right page.</dd>
+ <dt>
+  <code>page</code></dt>
+ <dd>
+  Always force one page break right before the principle box.</dd>
+ <dt>
+  <code>column</code></dt>
+ <dd>
+  Always force one column break right before the principle box.</dd>
+ <dt>
+  <code>region </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Always force one region break right before the principle box.</dd>
+ <dt>
+  <code>recto</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Force one or two page breaks right before the principle box so that next page is formatted as a recto page, that is a right page in a left-to-right spread or a left page in a right-to-left spread.</dd>
+ <dt>
+  <code>verso </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Force one or two page breaks right before the principle box so that next page is formatted as a verso page, that is a left page in a left-to-right spread or a right page in a right-to-left spread.</dd>
+ <dt>
+  <code>avoid-page</code></dt>
+ <dd>
+  Avoid any page break right before the principle box.</dd>
+ <dt>
+  <code>avoid-column</code></dt>
+ <dd>
+  Avoid any column break right before the principle box.</dd>
+ <dt>
+  <code>avoid-region </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Avoid any region break right before the principle box.</dd>
+</dl>

@@ -1,0 +1,39 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-shape-box" title="Tooltip not found in DB.">&lt;shape-box&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-basic-shape" title="Tooltip not found in DB.">&lt;basic-shape&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/image" title="">&lt;image&gt;</a></code></pre>
+<pre>shape-outside: none
+shape-outside: margin-box
+shape-outside: content-box
+shape-outside: border-box
+shape-outside: padding box
+
+shape-outside: circle()
+shape-outside: ellipse()
+shape-oustide: inset(10px 10px 10px 10px)
+shape-outside: polygon(10px 10px, 20px 20px, 30px 30px)
+
+shape-outside: url(image.png)
+
+shape-outside: <a href="/en-US/docs/Web/CSS/initial">initial</a>
+shape-outside: <a href="/en-US/docs/Web/CSS/inherit">inherit</a>
+shape-outside: <a href="/en-US/docs/Web/CSS/unset">unset</a>
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  The float area is unaffected</dd>
+ <dt>
+  <code>&lt;shape-box&gt;</code></dt>
+ <dd>
+  If one of these is specified by itself the shape is computed based on one of '<strong><code>margin-box</code></strong>', '<strong><code>border-box</code></strong>', '<strong><code>padding-box</code></strong>' or '<strong><code>content-box</code></strong>' which us their respective boxes including curvature from <code>border-radius</code>, similar to '<code><a href="/en-US/docs/CSS/background-clip" title="backround-clip">background-clip</a></code>'.</dd>
+ <dt>
+  <span style="font-family: 'Courier New', 'Andale Mono', monospace; line-height: normal;">&lt;basic-shape&gt;</span></dt>
+ <dd>
+  The shape is computed based on the values of one of '<strong><code>inset()</code></strong>', '<strong><code>circle()</code></strong>', '<strong><code>ellipse()</code></strong>' or '<strong><code>polygon()</code></strong>'. If a <strong><code>&lt;shape-box&gt;</code></strong> is also supplied, this defines the reference box for the <strong><code>&lt;basic-shape&gt;</code></strong> function. If <strong><code>&lt;shape-box&gt;</code></strong> is not supplied, then the reference box defaults to '<strong><code>margin-box</code></strong>'.</dd>
+</dl><dl><dt>
+  <span style="font-family: 'Courier New', 'Andale Mono', monospace; line-height: normal;">&lt;image&gt;</span></dt>
+ <dd>
+  The shape is extracted and computed based on the alpha channel of the specified <strong><code>&lt;image&gt;</code></strong> as defined by '<strong><code>shape-image-threshold</code></strong>'.</dd>
+ <dd>
+  User agents must use the potentially CORS-enabled fetch method defined by the HTML5 specification for all URLs in a '<strong><code>shape-outside</code></strong>' value. When fetching, user agents must use "Anonymous" mode, set the referrer source to the stylesheet's URL and set the origin to the URL of the containing document. If this results in network errors such that there is no valid fallback image, the effect is as if the value '<code><strong>none</strong></code>' had been specified.</dd>
+</dl>

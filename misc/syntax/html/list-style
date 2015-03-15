@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/list-style-type" title="disc | circle | square | decimal | decimal-leading-zero | lower-roman | upper-roman | lower-greek | lower-latin | upper-latin | armenian | georgian | lower-alpha | upper-alpha | none">&lt;'list-style-type'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/list-style-position" title="inside | outside">&lt;'list-style-position'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/list-style-image" title="&lt;uri&gt; | none">&lt;'list-style-image'&gt;</a></code></pre>
+<h3 id="Values" name="Values">Values</h3>
+<p>Accepts one, two or three keywords in any order.</p>
+<dl><dt>
+  <code>&lt;'list-style-type'&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/list-style-type" title="The list-style-type CSS property specifies appearance of a list item element. As it is the only one which defaults to display:list-item, this is usually a &lt;li&gt; element, but can be any element with this display value."><code>list-style-type</code></a></dd>
+ <dt>
+  <code>&lt;'list-style-image'&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/list-style-image" title="The list-style-image CSS property sets the image that will be used as the list item marker."><code>list-style-image</code></a></dd>
+ <dt>
+  <code>&lt;'list-style-position'&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/list-style-position" title="The list-style-position CSS property specifies the position of the marker box in the principal block box."><code>list-style-position</code></a></dd>
+</dl>

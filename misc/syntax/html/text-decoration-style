@@ -1,0 +1,43 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>solid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> double <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> dotted <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> dashed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> wavy</code>
+</pre>
+<pre>text-decoration-style: solid
+text-decoration-style: double
+text-decoration-style: dotted
+text-decoration-style: dashed
+text-decoration-style: wavy
+
+text-decoration-style: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>solid double dotted dashed wavy</code></dt>
+ <dd>
+  Is one of the following keywords :
+  <table class="standard-table"><thead><tr><th scope="col">Keyword</th>
+     <th scope="col">Description</th>
+     <th scope="col">Comment</th>
+    </tr></thead><tbody><tr><td><code>solid</code></td>
+     <td>Draws a single line</td>
+     <td> </td>
+    </tr><tr><td><code>double</code></td>
+     <td>Draws a double line</td>
+     <td> </td>
+    </tr><tr><td><code>dotted</code></td>
+     <td>Draws a dotted line</td>
+     <td> </td>
+    </tr><tr><td><code>dashed</code></td>
+     <td>Draws a dashed line</td>
+     <td> </td>
+    </tr><tr><td><code>wavy</code></td>
+     <td>Draws a wavy line</td>
+     <td> </td>
+    </tr><tr><td><code>-moz-none</code><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span><code> </code></td>
+     <td>Do not draw a line</td>
+     <td><strong>Do not use</strong><strong> :</strong> use <a href="/en-US/docs/Web/CSS/text-decoration-line" title="The text-decoration-line CSS property sets what kind of line decorations are added to an element."><code>text-decoration-line</code></a><code>: none</code> instead</td>
+    </tr></tbody></table></dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Is a keyword indicating to reuse the value calculated on the parent element.</dd>
+</dl>

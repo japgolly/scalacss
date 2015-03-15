@@ -1,0 +1,18 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>flat <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> preserve-3d</code>
+</pre>
+<pre>transform-style: preserve-3d
+transform-style: flat
+
+transform-style: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>preserve-3d</code></dt>
+ <dd>
+  Indicates that the children of the element should be positioned in the 3D-space.</dd>
+ <dt>
+  <code>flat</code></dt>
+ <dd>
+  Indicates that the children of the element are lying in the plane of the element itself.</dd>
+</dl>

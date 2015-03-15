@@ -1,0 +1,20 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox">Formal syntax: &lt;urange&gt;#
+        where: &lt;urange&gt; = <em>single_codepoint</em> | <em>codepoint_range</em> | <em>wildcard_range</em>
+</pre>
+
+<pre><code>unicode-range: U+26               /* single_codepoint */</code>
+<code>unicode-range: <code>U+0025-00FF        /* </code>codepoint_range */</code>
+<code>unicode-range: <code>U+4??              /* </code>wildcard_range</code> */
+<code>unicode-range: <code><code>U+0025-00FF, </code></code><code><code>U+4?? /* </code></code>multiple values can be separated by commas */</code></pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><em><b>single_codepoint</b></em></dt>
+ <dd>A single Unicode character code point, for example <code>U+26</code>.</dd>
+ <dt><em><b>codepoint_range</b></em></dt>
+ <dd>A range of Unicode code points. So for example, <code>U+0025-00FF</code> means <em>include all characters in the range <code>U+0025</code> to <code>U+00FF</code></em>.</dd>
+ <dt><em><b>wildcard_range</b></em></dt>
+ <dd>A range of Unicode code points containing wildcard characters, that is using the <code>'?'</code> character, so for example <code>U+4??</code> means <em>include all characters in the range <code>U+400</code> to <code>U+4FF</code></em>.</dd>
+</dl>

@@ -1,0 +1,27 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><code>[ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-bg-layer" title="&lt;bg-image&gt; || &lt;position&gt; [ / &lt;bg-size&gt; ]? || &lt;repeat-style&gt; || &lt;attachment&gt; || &lt;box&gt;{1,2}">&lt;bg-layer&gt;</a> , ]<a href="/en-US/docs/CSS/Value_definition_syntax#Asterisk_(*)" title="Asterisk multiplier: The previous entity may appear 0, 1 or several times.">*</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-final-bg-layer" title="&lt;bg-image&gt; || &lt;position&gt; [ / &lt;bg-size&gt; ]? || &lt;repeat-style&gt; || &lt;attachment&gt; || &lt;box&gt;{1,2} || &lt;'background-color'&gt;">&lt;final-bg-layer&gt;</a></code></code>
+               where &lt;bg-layer&gt; = &lt;bg-image&gt; || &lt;position&gt; [ / &lt;bg-size&gt; ]? || &lt;repeat-style&gt; || &lt;attachment&gt; || &lt;box&gt; || &lt;box&gt;
+               and &lt;final-bg-layer&gt; = <span style="font-size: 1rem; background-color: rgb(255, 255, 238);">&lt;bg-image&gt; || &lt;position&gt; [ / &lt;bg-size&gt; ]? || &lt;repeat-style&gt; || &lt;attachment&gt; || &lt;box&gt; || &lt;box&gt;</span><span style="font-size: 1rem; background-color: rgb(255, 255, 238);"> || </span><span style="font-style: inherit; font-weight: inherit; font-size: 1rem; color: rgb(0, 0, 0); background-color: rgba(234, 239, 242, 0.247059);">&lt;background-color&gt;</span></pre>
+
+<div class="note"><strong>Note:</strong> The <a href="/en-US/docs/Web/CSS/background-color" title="The background-color CSS property sets the background color of an element, either through a color value or the keyword transparent."><code>background-color</code></a> can only be defined on the last background, as there is only one background color for the whole element.</div>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<p>One or more of the following, in any order:</p>
+
+<dl><dt><code>&lt;attachment&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-attachment" title="If a background-image is specified, the background-attachment CSS property determines whether that image's position is fixed within the viewport, or scrolls along with its containing block."><code>background-attachment</code></a></dd>
+ <dt><code>&lt;box&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-clip" title="Technical review completed. Editorial review completed."><code>background-clip</code></a></dd>
+ <dt><code>&lt;background-color&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-color" title="The background-color CSS property sets the background color of an element, either through a color value or the keyword transparent."><code>background-color</code></a></dd>
+ <dt><code>&lt;bg-image&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-image" title="The CSS background-image property sets one or several background images for an element. The images are drawn on stacking context layers on top of each other. The first layer specified is drawn as if it is closest to the user. The borders of the element are then drawn on top of them, and the background-color is drawn beneath them."><code>background-image</code></a></dd>
+ <dt><span style="font-family: 'Courier New', 'Andale Mono', monospace; font-style: inherit; font-weight: inherit; line-height: 1.5;">&lt;position&gt;</span></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-position" title="The background-position CSS property sets the initial position, relative to the background position layer defined by background-origin for each defined background image."><code>background-position</code></a></dd>
+ <dt><code>&lt;repeat-style&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-repeat" title="The background-repeat CSS property defines how background images are repeated. A background image can be repeated along the horizontal axis, the vertical axis, both axes, or not repeated at all."><code>background-repeat</code></a></dd>
+ <dt><code>&lt;bg-size&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/background-size" title="The background-size CSS property specifies the size of the background images. The size of the image can be fully constrained or only partially in order to preserve its intrinsic ratio."><code>background-size</code></a>. This property must be specified after <strong>&lt;position&gt;</strong>, separated with the '/' character.</dd>
+</dl>

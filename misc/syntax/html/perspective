@@ -1,0 +1,18 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a></code></pre>
+<pre>perspective: none
+perspective: 20px     /* &lt;length&gt; values */
+perspective: 3.5em
+
+perspective: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  Is a keyword indicating that no perspective transform has to be applied.</dd>
+ <dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> giving the distance from the user to the z=0 plane. It is used to apply a perspective transform to the element and its content. If it <code>0</code> or a negative value, no perspective transform is applied.</dd>
+</dl>

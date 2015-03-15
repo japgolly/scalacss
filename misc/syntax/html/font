@@ -1,0 +1,35 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ [ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘font-style’" title="Tooltip not found in DB.">&lt;‘font-style’&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-font-variant-css21" title="Tooltip not found in DB.">&lt;font-variant-css21&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘font-weight’" title="Tooltip not found in DB.">&lt;‘font-weight’&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘font-stretch’" title="Tooltip not found in DB.">&lt;‘font-stretch’&gt;</a> ]<a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘font-size’" title="Tooltip not found in DB.">&lt;‘font-size’&gt;</a> [ / <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘line-height’" title="Tooltip not found in DB.">&lt;‘line-height’&gt;</a> ]<a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-‘font-family’" title="Tooltip not found in DB.">&lt;‘font-family’&gt;</a> ] <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> caption <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> icon <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> menu <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> message-box <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> small-caption <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> status-bar</code></pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;'font-style'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/font-style" title="The font-style CSS property allows italic or oblique faces to be selected within a font-family."><code>font-style</code></a> CSS property.</dd>
+ <dt><code>&lt;'font-variant'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/font-variant" title="The font-variant CSS property selects a normal, or small-caps face from a font family. Setting the CSS Level 2 (Revision 1) values of the  font-variant property, that is normal or small-caps, is also possible by using the font shorthand."><code>font-variant</code></a> CSS property.</dd>
+ <dt><code>&lt;'font-weight'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/font-weight" title="The font-weight CSS property specifies the weight or boldness of the font. However, some fonts are not available in all weights; some are available only on normal and bold."><code>font-weight</code></a> CSS property.</dd>
+ <dt><code>&lt;'font-size'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/font-size" title="The font-size CSS property specifies the size of the font – specifically the desired height of glyphs from the font. Setting the font size may, in turn, change the size of other items, since it is used to compute the value of em and ex length units."><code>font-size</code></a> CSS property.</dd>
+ <dt><code>&lt;'line-height'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/line-height" title="On block level elements, the line-height CSS property specifies the minimal height of line boxes within the element."><code>line-height</code></a> CSS property.</dd>
+ <dt><code>&lt;'font-family'&gt;</code></dt>
+ <dd>See the <a href="/en-US/docs/Web/CSS/font-family" title="The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule."><code>font-family</code></a> CSS property.</dd>
+ <dt><code>caption</code> <code>icon</code> <code>menu</code> <code>message-box</code> <code>small-caption</code> <code>status-bar</code></dt>
+ <dd>Instead of specifying individual longhand properties, a keyword can be used to represent a specific system font:
+ <table class="standard-table"><tbody><tr><td><code>caption</code></td>
+    <td>The font used for captioned controls (e.g., buttons, drop-downs, etc.).</td>
+   </tr><tr><td><code>icon</code></td>
+    <td>The font used to label icons.</td>
+   </tr><tr><td><code>menu</code></td>
+    <td>The font used in menus (e.g., dropdown menus and menu lists).</td>
+   </tr><tr><td><code>message-box</code></td>
+    <td>The font used in dialog boxes.</td>
+   </tr><tr><td><code>small-caption</code></td>
+    <td>The font used for labeling small controls.</td>
+   </tr><tr><td><code>status-bar</code></td>
+    <td>The font used in window status bars.</td>
+   </tr></tbody></table>
+ Browsers implementing these often implement several more, prefixed, values; Gecko implements <code>-moz-window</code>, <code>-moz-document</code>, <code>-moz-desktop</code>, <code>-moz-info</code>, <code>-moz-dialog</code>, <code>-moz-button</code>, <code>-moz-pull-down-menu</code>, <code>-moz-list</code> and <code>-moz-field</code>.</dd>
+</dl><p> </p>

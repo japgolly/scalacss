@@ -1,0 +1,27 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto ]{1,4}</code></pre>
+
+<pre>margin: <em>style</em>                  /* <em>One-value syntax</em>   */  E.g. margin: 1em; 
+margin: <em>vertical</em> <em>horizontal</em>    /* <em>Two-value syntax</em>   */  E.g. margin: 5% auto; 
+margin: <em>top</em> <em>horizontal</em> <em>bottom</em>  /* <em>Three-value syntax</em> */  E.g. margin: 1em auto 2em; 
+margin: <em>top</em> <em>right</em> <em>bottom</em> <em>left</em>  /* <em>Four-value syntax</em>  */  E.g. margin: 2px 1em 0 auto; 
+
+margin: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>Accepts one, two, three or four values of the following:</p>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>Specifies a fixed width. Negative Values are allowed. See for <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> possible units.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>A <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> relative to the <strong>width</strong> of the containing block. Negative values are allowed.</dd>
+ <dt><code>auto</code></dt>
+ <dd><code>auto </code>is replaced by some suitable value, e.g. it can be used for centering of blocks.<br/><code>div { width:50%;  margin:0 auto; }</code> centers the div container horizontally.</dd>
+</dl><ul><li><strong>One</strong> single value applies to all <strong>four sides</strong>.</li>
+ <li><strong>Two</strong> values apply first to <strong>top and bottom</strong>, the second one to <strong>left and right</strong>.</li>
+ <li><strong>Three</strong> values apply first to <strong>top</strong>, second to <strong>left and right</strong> and third to <strong>bottom</strong>.</li>
+ <li><strong>Four</strong> values apply to <strong>top</strong>, <strong>right</strong>, <strong>bottom</strong> and <strong>left</strong> in that order (clockwise).</li>
+</ul>

@@ -1,0 +1,14 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")" || exit 1
+
+lst=attrs.lst
+total=$(wc -l $lst | awk '{print $1}')
+i=0
+for f in $(sort attrs.lst); do
+  ((++i))
+  h=html/$f
+  if [ ! -e $h ]; then
+    echo "[$i/$total] $f"
+    curl -s 'https://developer.mozilla.org/en-US/docs/Web/CSS/'$f'?raw&macros&include&section=Syntax' -o $h
+  fi
+done

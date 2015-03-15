@@ -1,0 +1,36 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> auto</code>
+</pre>
+<pre>top: 3px         /* &lt;length&gt; values */
+top: 2.4em
+
+top: 10%         /* &lt;percentages&gt; of the height of the containing block */
+
+top: auto
+
+top: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  Is a negative, null or positive <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> that represents:
+  <ul><li>for <em>absolutely positioned elements</em>, the distance to the top edge of the containing block;</li>
+   <li>for <em>relatively positioned elements</em>, the offset that the element is moved below its position in the normal flow if it wasn't positioned.</li>
+  </ul></dd>
+ <dt>
+  <code>&lt;percentage&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> of the containing block's height, used as described in the <a href="#Summary">summary</a>.</dd>
+ <dt>
+  <code>auto</code></dt>
+ <dd>
+  Is a keyword that represents:
+  <ul><li>for absolutely positioned elements, the position the element based on the <a href="/en-US/docs/Web/CSS/bottom" title=""><code>bottom</code></a> property and treat <code>height: auto</code> as a height based on the content.</li>
+   <li>for relatively positioned elements, the offset the element from its original position based on the <a href="/en-US/docs/Web/CSS/bottom" title=""><code>bottom</code></a> property, or if <code>bottom</code> is also <code>auto</code>, do not offset it at all.</li>
+  </ul></dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Is a keyword indicating that the value is the same than the computed value from its parent element (which may not be its containing block). This computed value is then handled like it was a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a>, <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> or the <code>auto</code> keyword.</dd>
+</dl>

@@ -1,0 +1,42 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ under <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> [ left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> right ] ]</code>
+</pre>
+<pre>text-underline-position: auto
+text-underline-position: under
+text-underline-position: left
+text-underline-position: right
+text-underline-position: under left
+text-underline-position: right under
+
+text-underline-position: inherit
+</pre>
+<h3 id="Specifications" name="Specifications">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  This keyword allows the browser to use an algorithm to choose between <code>under</code> and <code>alphabetic</code>.</dd>
+ <dt>
+  <code>under</code></dt>
+ <dd>
+  This keyword forces the line to be set below the <em>alphabetic baseline</em>, at a position where it won't cross any descender. This is useful to prevent chemical or mathematical formulas, which make a large use of subscripts, to be illegible.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  In vertical writing-modes, this keyword forces the line to be placed on the <em>left</em> of the characters. In horizontal writing-modes, it is a synonym of <code>under.</code></dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  In vertical writing-modes, this keyword forces the line to be placed on the <em>right</em> of the characters. In horizontal writing-modes, it is a synonym of <code>under.</code></dd>
+ <dt>
+  <code>auto-pos</code><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></dt>
+ <dd>
+  This keyword is a synonym of <code>auto</code> which must be used instead</dd>
+ <dt>
+  <code>above</code><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></dt>
+ <dd>
+  This keyword forces the line to be above the text. When used with East-Asian text, using the <code>auto</code> keyword will lead to a similar effect.</dd>
+ <dt>
+  <code>below</code><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></dt>
+ <dd>
+  This keyword forces the line to be under the text. When used with alphabetic text, using the <code>auto</code> keyword will lead to a similar effect.</dd>
+</dl>

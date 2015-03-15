@@ -1,0 +1,63 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[<a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a>] <a href="/en-US/docs/CSS/Value_definition_syntax#Double_ampersand" title="Double ampersand: the two entities are mandatory, but may appear in any order.">&amp;&amp;</a> [border-box <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> content-box]<a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: the previous entity is optional (it may be used once, or not at all).">?</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> available <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> min-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> max-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> fit-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> auto</code></pre>
+<pre>width: 300px        /* &lt;length&gt; values */
+width: 25em
+
+width: 75%          /* &lt;percentage&gt; values */
+
+width: border-box   /* Keyword values */
+width: content-box
+width: max-content
+width: min-content
+width: available
+width: fit-content
+width: auto
+
+width: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/length"><code>&lt;length&gt;</code></a> for possible units.</dd>
+ <dt>
+  <code>&lt;percentage&gt;</code></dt>
+ <dd>
+  Specified as a <a href="/en-US/docs/Web/CSS/percentage"><code>&lt;percentage&gt;</code></a> of containing block's width.</dd>
+ <dt>
+  <code>border-box </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  If present, the preceding <a href="/en-US/docs/Web/CSS/length"><code>&lt;length&gt;</code></a> or <a href="/en-US/docs/Web/CSS/percentage"><code>&lt;percentage&gt;</code></a> is applied to the element's border box.</dd>
+ <dt>
+  <code>content-box</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  If present, the preceding <a href="/en-US/docs/Web/CSS/length"><code>&lt;length&gt;</code></a> or <a href="/en-US/docs/Web/CSS/percentage"><code>&lt;percentage&gt;</code></a> is applied to the element's content box.</dd>
+ <dt>
+  <code>auto</code></dt>
+ <dd>
+  The browser will calculate and select a width for the specified element.</dd>
+ <dt>
+  <code>max-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The intrinsic preferred width.</dd>
+ <dt>
+  <code>min-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The intrinsic minimum width.</dd>
+ <dt>
+  <code>available</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The containing block width minus horizontal margin, border and padding.
+  <div class="note">
+   <strong>Note:</strong> WebKit implements a variation of this value, under the name <code>fill-available</code> as of December 2013.</div>
+ </dd>
+ <dt>
+  <code>fit-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The larger of:
+  <ul><li>the intrinsic minimum width</li>
+   <li>the smaller of the intrinsic preferred width and the available width</li>
+  </ul><div class="note">
+   <strong>Note:</strong> WebKit implements an earlier version of this value, under the name <code>intrinsic</code>, but as of June 2012, implements <code>fit-content</code> as well.</div>
+ </dd>
+</dl>

@@ -1,0 +1,23 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/timing-function" title="Possible values: cubic-bezier(), steps(), linear, ease, ease-in, ease-out, east-in-out, step-start-step-end">&lt;timing-function&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>transition-timing-function: ease
+transition-timing-function: ease-in
+transition-timing-function: ease-out
+transition-timing-function: ease-in-out
+transition-timing-function: linear
+transition-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1)
+transition-timing-function: step-start
+transition-timing-function: step-end
+transition-timing-function: steps(4, end)
+
+transition-timing-function: ease, step-start, cubic-bezier(0.1, 0.7, 1.0, 0.1)
+
+transition-timing-function: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;timing-function&gt;</code></dt>
+ <dd>
+  Each <a href="/en-US/docs/Web/CSS/timing-function" title=""><code>&lt;timing-function&gt;</code></a> represents the timing function to link to the corresponding property to transition, as defined in <a href="/en-US/docs/Web/CSS/transition-property" title=""><code>transition-property</code></a>.</dd>
+</dl>

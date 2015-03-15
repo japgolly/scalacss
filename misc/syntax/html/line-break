@@ -1,0 +1,28 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> loose <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> strict</code>
+</pre>
+<pre>line-break: auto
+line-break: loose
+line-break: normal
+line-break: strict
+
+line-break: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  break text using  the default line break rule.</dd>
+ <dt>
+  <code>loose</code></dt>
+ <dd>
+  break text using the line break rule that the line is shorter like a newspaper.</dd>
+ <dt>
+  <code>normal</code></dt>
+ <dd>
+  break text using the common line break rule.</dd>
+ <dt>
+  <code>strict</code></dt>
+ <dd>
+  break text using the stringent line break rule.</dd>
+</dl>

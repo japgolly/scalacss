@@ -1,0 +1,44 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> small-caps <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> all-small-caps <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> petite-caps <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> all-petite-caps <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> unicase <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> titling-caps</code></pre>
+<pre>font-variant-caps: normal
+font-variant-caps: small-caps
+font-variant-caps: all-small-caps
+font-variant-caps: petite-caps
+font-variant-caps: all-petite-caps
+font-variant-caps: unicase 
+font-variant-caps: titling-caps
+
+font-variant-caps: initial
+font-variant-caps: inherit
+font-variant-caps: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword leads to the deactivation of the use of such alternate glyphs.</dd>
+ <dt>
+  <code>small-caps</code></dt>
+ <dd>
+  This keyword forces the use of small capitals letters for lower case characters. It corresponds to the OpenType value <code>smcp</code>; if the font doesn't support them, it synthesizes the glyphs.</dd>
+ <dt>
+  <code>all-small-caps</code></dt>
+ <dd>
+  This keyword forces the use of small capital letters for lower case characters. It corresponds to the OpenType values <code>smcp</code> and <code>c2sc</code>; if the font doesn't support them, it synthesizes the glyphs.</dd>
+ <dt>
+  <code>petite-caps</code></dt>
+ <dd>
+  This keyword forces the use of petite capital letters for lower case characters. It corresponds to the OpenType value <code>pcap</code>; if the font doesn't support them, small caps glyphs are used instead.</dd>
+ <dt>
+  <code>all-petite-caps</code></dt>
+ <dd>
+  This keyword forces the use of petite capital letters for lower case characters. It corresponds to the OpenType values <code>pcap</code> and <code>c2pc</code>; if the font doesn't support them, small caps glyphs are used instead.</dd>
+ <dt>
+  <code>unicase</code></dt>
+ <dd>
+  This keyword forces the use of small capital letters for upper case characters. It corresponds to the OpenType value <code>unic</code>; if the font doesn't support them, small caps glyphs are used for the upper case characters instead.</dd>
+ <dt>
+  <code>titling-caps</code></dt>
+ <dd>
+  This keyword forces the use of special capitals for titling, for both lower and uppercase letters. Regular uppercase glyphs are usually designed to be rendered with lowercase glyphs: they tend to appear too bold when a long run of text use such glyphs. The special glyphs used here are designed not to produce this effect. This keyword corresponds to the OpenType value <code>titl</code>; if the font doesn't support it, the keyword has no visible action.</dd>
+</dl>

@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> italic <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> oblique</code>
+</pre>
+<pre>font-style: normal
+font-style: italic
+font-style: oblique
+
+font-style: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<p><strong>Italic</strong> forms are generally cursive in nature while <strong>oblique</strong> faces are typically sloped versions of the regular face. Oblique faces can be simulated by artificially sloping the glyphs of the regular face.</p>
+<dl><dt>
+  normal</dt>
+ <dd>
+  Selects a font that is classified as <code>normal</code> within a <a href="/en-US/docs/Web/CSS/font-family" title="The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule."><code>font-family</code></a></dd>
+ <dt>
+  italic</dt>
+ <dd>
+  Selects a font that is labeled <code>italic</code>, if that is not available, one labeled <code>oblique</code></dd>
+ <dt>
+  oblique</dt>
+ <dd>
+  Selects a font that is labeled <code>oblique</code></dd>
+</dl>

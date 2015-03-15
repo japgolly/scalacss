@@ -1,0 +1,61 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-east-asian-variant-values" title="Tooltip not found in DB.">&lt;east-asian-variant-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-east-asian-width-values" title="Tooltip not found in DB.">&lt;east-asian-width-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> ruby ] </code></pre>
+<pre>font-variant-east-asian: normal
+font-variant-east-asian: ruby
+font-variant-east-asian: jis78              /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: jis83              /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: jis90              /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: jis04              /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: simplified         /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: traditional        /* &lt;east-asian-variant-values&gt; */
+font-variant-east-asian: full-width         /* &lt;east-asian-width-values&gt; */
+font-variant-east-asian: proportional-width /* &lt;east-asian-width-values&gt; */
+font-variant-east-asian: ruby full-width jis83
+
+font-variant-east-asian: initial
+font-variant-east-asian: inherit
+font-variant-east-asian: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword leads to the deactivation of the use of such alternate glyphs.</dd>
+ <dt>
+  <code>ruby</code></dt>
+ <dd>
+  This keyword forces the use of special glyphs for ruby characters. As these are usually smaller, font creators often designs specific forms, usually slightly bolder to improve the contrast. This keyword corresponds to the OpenType values <code>ruby</code>.</dd>
+ <dt>
+  <em>&lt;east-asian-variant-values</em>&gt;</dt>
+ <dd>
+  These values activates the figures defined in specific standard. Possible values are:
+  <table class="standard-table"><tbody><tr><th>Keyword</th>
+     <th>Standard defining the glyphs</th>
+     <th>OpenType equivalent</th>
+    </tr><tr><td><code>jis78</code></td>
+     <td><a href="http://en.wikipedia.org/wiki/JIS_X_0208">JIS X 208 version 1978</a></td>
+     <td><code>jp78</code></td>
+    </tr><tr><td><code>jis83</code></td>
+     <td><a href="http://en.wikipedia.org/wiki/JIS_X_0208">JIS X 208 version 1983</a></td>
+     <td><code>jp83</code></td>
+    </tr><tr><td><code>jis90</code></td>
+     <td><a href="http://en.wikipedia.org/wiki/JIS_X_0208">JIS X 208 version 1990</a></td>
+     <td><code>jp90</code></td>
+    </tr><tr><td><code>jis04</code></td>
+     <td><a href="http://en.wikipedia.org/wiki/JIS_X_0208">JIS X 208 version 2004</a></td>
+     <td><code>jp04</code></td>
+    </tr><tr><td><code>simplified</code></td>
+     <td>None, use the simplified Chinese glyphs</td>
+     <td><code>smpl</code></td>
+    </tr><tr><td><code>traditional</code></td>
+     <td>None, use the traditional Chinese glyphs</td>
+     <td><code>trad</code></td>
+    </tr></tbody></table></dd>
+ <dt>
+  <em>&lt;<em>east-asian-width-values</em></em>&gt;</dt>
+ <dd>
+  These values controls the sizing of figures used for East Asian characters. Two values are possible:
+  <ul><li><code>proportional-width</code> activating the set of figures where numbers are not all of the same size. It corresponds to the OpenType values <code>pwid</code>.</li>
+   <li><code>full-width</code> activating the set of figures where numbers are all of the same size, allowing them to be easily aligned like in tables. It corresponds to the OpenType values <code>fwid</code>.</li>
+  </ul></dd>
+</dl>

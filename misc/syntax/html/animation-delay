@@ -1,0 +1,12 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/time" title="Possible values: a number followed by 's' or 'ms' like 3s, -2.5ms, or 0s.">&lt;time&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>animation-delay: 3s
+animation-delay: 2s, 4ms
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;time&gt;</code></dt>
+ <dd>
+  The time offset from the time at which the animation is applied to the element at which the animation should begin. This may be specified in either seconds (by specifying <code>s</code> as the unit) or milliseconds (by specifying <code>ms</code> as the unit). If you don't specify a unit, the statement is invalid.</dd>
+</dl>

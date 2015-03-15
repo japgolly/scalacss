@@ -1,0 +1,27 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-single-animation-name" title="none | IDENT">&lt;single-animation-name&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code></pre>
+
+<pre>animation-name: none
+animation-name: test_05
+animation-name: -specific
+animation-name: sliding-vertically
+
+animation-name: test1
+animation-name: test1, animation4
+animation-name: none, -moz-specific, sliding
+
+animation-name: <a href="/en-US/docs/Web/CSS/initial">initial</a>
+animation-name: <a href="/en-US/docs/Web/CSS/inherit">inherit</a>
+animation-name: <a href="/en-US/docs/Web/CSS/unset">unset</a>
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p><code>&lt;single-animation-name&gt;</code> is one of the following keywords:</p>
+
+<dl><dt><code>none</code></dt>
+ <dd>Is a special keyword denoting no keyframes. It can be used to deactivate an animation without changing the ordering of the other identifiers, or to deactivate animations coming from the cascade.</dd>
+ <dt><a href="/en-US/docs/Web/CSS/custom-ident" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;custom-ident&gt;</code></a></dt>
+ <dd>A string identifying the animation. This identifier is composed by a combination of case-insensitive letters <code>a</code> to <code>z</code>, numbers <code>0</code> to <code>9</code>, underscores (<code>_</code>), and/or dashes (<code>-</code>). The first non-dash character must be a letter (that is, no number at the beginning of it, even if preceded by a dash.) Also, two dashes are forbidden at the beginning of the identifier. It can't be <code>none</code>, <code>unset</code>, <code>initial</code>, or <code>inherit</code> in any combination of cases.</dd>
+</dl>

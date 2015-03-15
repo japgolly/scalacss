@@ -1,0 +1,28 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>:  <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-single-animation-direction" title="normal | reverse | alternate | alternate-reverse">&lt;single-animation-direction&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>animation-direction: normal
+animation-direction: reverse
+animation-direction: alternate
+animation-direction: alternate-reverse
+animation-direction: normal, reverse
+animation-direction: alternate, reverse, normal
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  The animation should play forward each cycle. In other words, each time the animation cycles, the animation will reset to the beginning state and start over again. This is the default animation direction setting.</dd>
+ <dt>
+  <code>alternate</code></dt>
+ <dd>
+  The animation should reverse direction each cycle. When playing in reverse, the animation steps are performed backward. In addition, timing functions are also reversed; for example, an <code>ease-in</code> animation is replaced with an <code>ease-out</code> animation when played in reverse. The count to determine if it is an even or an odd iteration starts at one.</dd>
+ <dt>
+  <code>reverse</code></dt>
+ <dd>
+  The animation plays backward each cycle. Each time the animation cycles, the animation resets to the end state and start over again.</dd>
+ <dt>
+  <code>alternate-reverse</code></dt>
+ <dd>
+  The animation plays backward on the first play-through, then forward on the next, then continues to alternate. The count to determinate if it is an even or an odd iteration starts at one.</dd>
+</dl>

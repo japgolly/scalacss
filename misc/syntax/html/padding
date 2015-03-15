@@ -1,0 +1,40 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> ]{1,4}</code></pre>
+
+<h3 id="Values">Values</h3>
+
+<p>Specifies one, two, three or four of the following values:</p>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>Specifies a non-negative fixed width. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for details.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>With respect to the<strong> width </strong>of the containing block.</dd>
+</dl><ul><li><strong>One</strong> single value applies to <em>all 4 sides</em></li>
+ <li><strong>Two</strong> values apply to <strong>1.</strong> <em>top and bottom</em> and <strong>2.</strong> to the <em>left and right</em> side</li>
+ <li><strong>Three</strong> values apply to <strong>1.</strong> <em>top</em>, <strong>2.</strong> <em>right and left</em> and <strong>3.</strong> to the <em>bottom</em> side</li>
+ <li><strong>Four</strong> values apply to <strong>1.</strong> <em>top</em>, <strong>2.</strong> <em>right</em>, <strong>3.</strong> <em>bottom</em> and <strong>4.</strong> to the <em>left</em> side</li>
+</ul><h3 id="Examples">Examples</h3>
+
+<pre class="brush: css"> padding: 5%;               /* on all sides 5% padding */
+</pre>
+
+<pre class="brush: css"> padding: 10px;              /* on all sides 10px padding */
+</pre>
+
+<pre class="brush: css"> padding: 10px 20px;         /*  top and bottom 10px padding  */
+                             /*  left and right 20px padding  */
+</pre>
+
+<pre class="brush: css"> padding: 10px 3% 20px;      /*  top 10px padding          */
+                             /*  left and right 3% padding */
+                             /*  bottom 20px padding       */
+</pre>
+
+<pre class="brush: css"> padding: 1em 3px 30px 5px;  /*  top    1em  padding  */
+                             /*  right  3px  padding  */
+                             /*  bottom 30px padding  */
+                             /*  left   5px  padding  */
+</pre>
+
+<p style="padding: 5% 1em; border: outset currentColor;">border:outset; padding:5% 1em;</p>

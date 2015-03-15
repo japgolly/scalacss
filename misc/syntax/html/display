@@ -1,0 +1,118 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> block <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> list-item <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-block <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-table <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-cell <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-column <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-column-group <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-footer-group <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-header-group <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-row <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> table-row-group <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> flex <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-flex <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> grid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-grid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> run-in <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> ruby <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> ruby-base <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> ruby-text <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> ruby-base-container <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> ruby-text-container <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> contents</code>
+</pre>
+
+<pre>display: none
+
+display: inline
+display: block
+display: contents
+display: list-item
+display: inline-block
+display: inline-table
+display: table
+display: table-cell
+display: table-column
+display: table-column-group
+display: table-footer-group
+display: table-header-group
+display: table-row
+display: table-row-group
+display: flex
+display: inline-flex
+display: grid
+display: inline-grid
+display: ruby
+display: ruby-base
+display: ruby-text
+display: ruby-base-container
+display: ruby-text-container 
+display: run-in
+
+display: inherit
+display: initial
+display: unset
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p><em><strong>display-value</strong></em></p>
+
+<dl><dd>Is a keyword defining the rendering type to apply to the element. Its possible values and their meanings are:
+ <table class="standard-table"><thead><tr><td class="header" colspan="1">Value set</td>
+    <td class="header">Value</td>
+    <td class="header">Description</td>
+   </tr></thead><tbody><tr><td colspan="1" rowspan="4">Basic values (CSS 1)</td>
+    <td><code>none</code></td>
+    <td>
+     <p>Turns off the display of an element (it has no effect on layout); all descendant elements also have their display turned off. The document is rendered as though the element did not exist.</p>
+
+     <p>To render an element box's dimensions, yet have its contents be invisible, see the <a href="/en-US/docs/Web/CSS/visibility" title="The visibility CSS property has two purposes:"><code>visibility</code></a> property.</p>
+    </td>
+   </tr><tr><td><code>inline</code></td>
+    <td>The element gener<span id="cke_bm_280S" style="display: none;"> </span>ates one or more inline element boxes.</td>
+   </tr><tr><td><code>block</code></td>
+    <td>The element generates a block element box.</td>
+   </tr><tr><td><code>list-item</code></td>
+    <td>The element generates a block box for the content and a separate list-item inline box.</td>
+   </tr><tr><td>Extended values (CSS 2.1)</td>
+    <td><code>inline-block</code></td>
+    <td>The element generates a block element box that will be flowed with surrounding content as if it were a single inline box (behaving much like a replaced element would)</td>
+   </tr><tr><td colspan="1" rowspan="10">Table model values (CSS 2.1)</td>
+    <td><code>inline-table</code></td>
+    <td>The<code> inline-table </code>value does not have a direct mapping in HTML. It behaves like a <a href="/en-US/docs/Web/HTML/Element/table" title="The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more."><code>&lt;table&gt;</code></a> HTML element, but as an inline box, rather than a block-level box. Inside the table box is a block-level context.</td>
+   </tr><tr><td><code>table</code></td>
+    <td>These elements behaves like  <a href="/en-US/docs/Web/HTML/Element/table" title="The HTML Table Element (&lt;table&gt;) represents data in two dimensions or more."><code>&lt;table&gt;</code></a> HTML elements. It defines a block-level box.</td>
+   </tr><tr><td><code>table-caption</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/caption" title="The HTML &lt;caption&gt; Element (or HTML Table Caption Element) represents the title of a table. Though it is always the first descendant of a &lt;table&gt;, its styling, using CSS, may place it elsewhere, relative to the table."><code>&lt;caption&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-cell</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/td" title="The Table cell HTML element (&lt;td&gt;) defines a cell of a table that contains data. It participates in the table model."><code>&lt;td&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-column</code></td>
+    <td>These elements behave like  <a href="/en-US/docs/Web/HTML/Element/col" title="The HTML &lt;col&gt; Element (or HTML Table Column Element) defines a column within a table and is used for defining common semantics on all common cells. It is generally found within a &lt;colgroup&gt; element."><code>&lt;col&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-column-group</code></td>
+    <td>These elements behave like  <a href="/en-US/docs/Web/HTML/Element/colgroup" title="The HTML &lt;colgroup&gt; Element (or HTML Table Column Group Element) defines a group of columns within a table."><code>&lt;colgroup&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-footer-group</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/tfoot" title="The HTML Table Foot Element (&lt;tfoot&gt;) defines a set of rows summarizing the columns of the table."><code>&lt;tfoot&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-header-group</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/thead" title="The HTML Table Head Element (&lt;thead&gt;) defines a set of rows defining the head of the columns of the table."><code>&lt;thead&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-row</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/tr" title="The HTML Table Row Element (&lt;tr&gt;) defines a row of cells in a table. Those can be a mix of &lt;td&gt; and &lt;th&gt; elements."><code>&lt;tr&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>table-row-group</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/tbody" title="The HTML Table Body Element (&lt;tbody&gt;) defines one or more rows as the body of its parent &lt;table&gt; element when no &lt;tr&gt; elements are children of the parent.  In conjunction with a preceding &lt;tfoot&gt; and &lt;thead&gt; element, (&lt;tbody&gt;) provides additional semantic information for devices such as printers and displays. Of the parent table's child elements, (&lt;tbody&gt;) will represent the content, if longer than a page, that will most likely differ for each page printed. The &lt;tfoot&gt; and &lt;thead&gt; elements' content will be consistent for each page printed. For displays, (&lt;tbody&gt;) will enable separate scrolling from the &lt;tfoot&gt;, &lt;thead&gt; and &lt;caption&gt; elements of the same parent &lt;table&gt; element."><code>&lt;tbody&gt;</code></a> HTML elements</td>
+   </tr><tr><td colspan="1" rowspan="2">Flexbox model values (<a href="/en-US/docs/CSS/CSS3" title="CSS3">CSS3</a>)</td>
+    <td><code>flex</code></td>
+    <td>The element behaves like a block element and lays out its content according to the flexbox model.</td>
+   </tr><tr><td><code>inline-flex</code></td>
+    <td>The element behaves like an inline element and lays out its content according to the flexbox model.</td>
+   </tr><tr><td colspan="1" rowspan="2">Grid box model values (<a href="/en-US/docs/CSS/CSS3" title="CSS3">CSS3</a>) <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></td>
+    <td><code>grid</code></td>
+    <td>
+     <p>The element behaves like a block element and lays out its content according to the grid model.</p>
+
+     <div class="note">As this is experimental, <a href="/en-US/docs/CSS/display#Browser_Compatibility" title="https://developer.mozilla.org/en/CSS/display#Browser_Compatibility">most browsers don't support it</a>. Especially pay attention that <code>-moz-grid</code> is not the prefixed version of this, but a <a class="link-https" href="https://bugzilla.mozilla.org/show_bug.cgi?id=616605#c10" title="https://bugzilla.mozilla.org/show_bug.cgi?id=616605#c10">XUL layout model</a> that must not be used on a Web site.</div>
+    </td>
+   </tr><tr><td><code>inline-grid</code></td>
+    <td>The element behaves like an inline element and lays out its content according to the grid model.</td>
+   </tr><tr><td colspan="1" rowspan="5">Ruby formatting model values (<a href="/en-US/docs/CSS/CSS3" title="CSS3">CSS3</a>)<span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></td>
+    <td><code>ruby</code></td>
+    <td>The element behaves like an inline element and lays out its content according to the ruby formatting model. It behaves like the corresponding <a href="/en-US/docs/Web/HTML/Element/ruby" title="The HTML &lt;ruby&gt; Element represents a ruby annotation. Ruby annotations are for showing pronounciation of East Asian characters."><code>&lt;ruby&gt;</code></a> HTML elements.</td>
+   </tr><tr><td><code>ruby-base</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/rb" title="This article hasn't been written yet. Please consider contributing!"><code>&lt;rb&gt;</code></a> elements.</td>
+   </tr><tr><td><code>ruby-text</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/rt" title="The HTML &lt;rt&gt; Element embraces pronunciation of character presented in a ruby annotations, which are for showing pronunciation of East Asian characters and the &lt;rt&gt; element is used inside of &lt;ruby&gt; element."><code>&lt;rt&gt;</code></a> elements.</td>
+   </tr><tr><td><code>ruby-base-container</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/rbc" title="This article hasn't been written yet. Please consider contributing!"><code>&lt;rbc&gt;</code></a> elements generated as anonymous boxes.</td>
+   </tr><tr><td><code>ruby-text-container</code></td>
+    <td>These elements behave like <a href="/en-US/docs/Web/HTML/Element/rbc" title="This article hasn't been written yet. Please consider contributing!"><code>&lt;rbc&gt;</code></a> elements.</td>
+   </tr><tr><td colspan="1" rowspan="2">Experimental values <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></td>
+    <td><code>run-in</code></td>
+    <td>
+     <ul><li>If the run-in box contains a block box, same as block.</li>
+      <li>If a block box follows the run-in box, the run-in box becomes the first inline box of the block box.</li>
+      <li>If an inline box follows, the run-in box becomes a block box.</li>
+     </ul></td>
+   </tr><tr><td><code>contents</code></td>
+    <td>These elements don't produce a specific box by themselves. They are replaced by their pseudo-box and their child boxes.</td>
+   </tr></tbody></table></dd>
+</dl>

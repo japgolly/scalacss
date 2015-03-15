@@ -1,0 +1,33 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> bottom] <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ [ <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> right ] <a href="/en-US/docs/CSS/Value_definition_syntax#Double_ampersand" title="Double ampersand: the two entities are mandatory, but may appear in any order.">&amp;&amp;</a> [ <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> bottom ] ]</code>
+</pre>
+<pre>perspective-origin: <em>x-position</em>            /* one-value syntax */
+perspective-origin: <em>x-position</em> <em>y-position</em> /* two-value syntax */
+
+When both <em>x-position</em> and <em>y-position</em> are keywords, the following is also valid:
+perspective-origin: <em>y-position x-position</em>
+
+perspective-origin: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <em>x-position</em></dt>
+ <dd>
+  Indicates the position of the abscissa of the <em>vanishing point</em>. It can have one of the following values:
+  <ul><li><a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> indicating the position relative to the width of the element. The value may be negative.</li>
+   <li><a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> indicating the position using a length value. The value may be negative.</li>
+   <li><code>left</code>, a keyword being a shortcut for the <code>0</code> length value.</li>
+   <li><code>center</code>, a keyword being a shortcut for the <code>50%</code> percentage value.</li>
+   <li><code>right</code>, a keyword being a shortcut for the <code>100%</code> percentage value.</li>
+  </ul></dd>
+ <dt>
+  <em>y-position</em></dt>
+ <dd>
+  Indicates the position of the ordinate of the <em>vanishing point</em>. It can have one of the following values:
+  <ul><li><a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> indicating the position relative to the height of the element. The value may be negative.</li>
+   <li><a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> indicating the position using a length value. The value may be negative.</li>
+   <li><code>top</code>, a keyword being a shortcut for the <code>0</code> length value.</li>
+   <li><code>center</code>, a keyword being a shortcut for the <code>50%</code> percentage value.</li>
+   <li><code>bottom</code>, a keyword being a shortcut for the <code>100%</code> percentage value.</li>
+  </ul></dd>
+</dl>

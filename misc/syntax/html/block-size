@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/width" title="[&lt;length&gt; | &lt;percentage&gt;] &amp;&amp; [border-box | content-box]? | available | min-content | max-content | fit-content | auto">&lt;'width'&gt;</a></code>
+</pre>
+
+<pre>block-size: 300px        /* &lt;length&gt; values */
+block-size: 25em
+
+block-size: 75%          /* &lt;percentage&gt; values */
+
+block-size: border-box   /* Keyword values */
+block-size: content-box
+block-size: max-content
+block-size: min-content
+block-size: available
+block-size: fit-content
+block-size: auto
+
+block-size: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>The <code>block-size</code> property takes the same values as the <a href="/en-US/docs/Web/CSS/width" title="The width CSS property specifies the width of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>width</code></a> and <a href="/en-US/docs/Web/CSS/height" title="The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>height</code></a> properties.</p>

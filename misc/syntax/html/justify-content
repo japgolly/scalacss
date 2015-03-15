@@ -1,0 +1,27 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>flex-start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> flex-end <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> space-between <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> space-around</code>
+</pre>
+
+<pre>justify-content: flex-start
+justify-content: flex-end
+justify-content: center
+justify-content: space-between
+justify-content: space-around
+
+justify-content: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>flex-start</code></dt>
+ <dd>The flex items are packed starting from the <strong>main-start</strong>. Margins of the first flex item is flushed with the main-start edge of the line and each following flex item is flushed with the preceding.</dd>
+ <dt><code>flex-end</code></dt>
+ <dd>The flex items are packed starting from the <strong>main-end</strong>. The margin edge of the last flex item is flushed with the main-end edge of the line and each preceding flex item is flushed with the following.</dd>
+ <dt><code>center</code></dt>
+ <dd>The flex items are packed toward the center of the line. The flex items are flushed with each other and aligned in the center of the line. Space between the main-start edge of the line and first item and between main-end and the last item of the line is the same.</dd>
+ <dt><code>space-between</code></dt>
+ <dd>Flex items are evenly distributed along the line. The spacing is done such as the space between two adjacent items is the same. Main-start edge and main-end edge are flushed with respectively first and last flex item edges.</dd>
+ <dt><code>space-around</code></dt>
+ <dd>Flex items are evenly distributed so that the space between two adjacent items is the same. The empty space before the first and after the last items equals half of the space between two adjacent items.</dd>
+</dl>

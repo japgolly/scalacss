@@ -1,0 +1,10 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/color" title="&lt;color&gt;">&lt;'color'&gt;</a></code>
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;'border-color'&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/border-color" title="The border-color CSS property is a shorthand for setting the color of the four sides of an element's border: border-top-color, border-right-color, border-bottom-color, border-left-color"><code>border-color</code></a></dd>
+</dl>

@@ -1,0 +1,17 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/left" title="&lt;length&gt; | &lt;percentage&gt; | auto">&lt;'left'&gt;</a></code>
+</pre>
+
+<pre>offset-inline-end: 3px         /* &lt;length&gt; values */
+offset-inline-end: 2.4em
+
+offset-inline-end: 10%         /* &lt;percentage&gt;s of the width or height of the containing block */
+
+offset-inline-end: auto
+
+offset-inline-end: inherit</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>The <code>offset-inline-end</code> property takes the same values as the <a href="/en-US/docs/Web/CSS/left" title="The left CSS property specifies part of the position of positioned elements."><code>left</code></a> property.</p>

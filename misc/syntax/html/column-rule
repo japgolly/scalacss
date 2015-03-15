@@ -1,0 +1,18 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/column-rule-width" title="&lt;br-width&gt;">&lt;'column-rule-width'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/column-rule-style" title="&lt;br-style&gt;">&lt;'column-rule-style'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/column-rule-color" title="&lt;color&gt;">&lt;'column-rule-color'&gt;</a></code>
+</pre>
+<h3 id="Values">Values</h3>
+<p>Accepts one, two or three values in any order:</p>
+<dl><dt>
+  <code>&lt;'column-rule-width'&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> or one of the three keywords, <code>thin</code>, <code>medium</code> or <code>thick</code>. See <a href="/en-US/docs/Web/CSS/border-width" title=""><code>border-width</code></a> for details.</dd>
+ <dt>
+  <code>&lt;'column-rule-style'&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/border-style" title=""><code>border-style</code></a> for possible values and details.</dd>
+ <dt>
+  <code>&lt;'column-rule-color'&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/color_value" title=""><code>&lt;color&gt;</code></a> value.</dd>
+</dl>

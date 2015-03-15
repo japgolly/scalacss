@@ -1,0 +1,50 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bottom] <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> [ [ <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> right ] <a href="/en-US/docs/CSS/Value_definition_syntax#Double_ampersand" title="Double ampersand: The two entities are mandatory, but may appear in any order.">&amp;&amp;</a> [ <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bottom ] ] <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a></code>
+</pre>
+
+<pre>transform-origin: <em>x-offset</em>                                   /* One-value syntax */   E.g.  transform-origin: 2px 
+transform-origin: <em>offset-keyword</em>                                                      E.g.  transform-origin: bottom
+
+transform-origin: <em>x-offset</em> <em>y-offset</em>                          /* Two-value syntax */   E.g.  transform-origin: 3cm 2px
+transform-origin: <em>y-offset</em> <em>x-offset-keyword</em>                                           E.g.  transform-origin: 2px left
+transform-origin: <em>x-offset-keyword</em> <em>y-offset</em>                                           E.g.  transform-origin: left 2px
+transform-origin: x-<em>offset-keyword</em> <em>y-offset-keyword</em>                                   E.g.  transform-origin: right top
+transform-origin: <em>y-offset-keyword</em> <em>x-offset-keyword</em>                                   E.g.  transform-origin: top right
+
+transform-origin: <em>x-offset</em> <em>y-offset</em> <em>z-offset</em>                 /* Three-value syntax */ E.g.  transform-origin: 2px 30% 10px
+transform-origin: <em>y-offset</em> <em>x-offset-keyword</em> <em>z-offset</em>                                  E.g.  transform-origin: 2px left 10px
+transform-origin: <em>x-offset-keyword</em> <em>y-offset</em> <em>z-offset</em>                                  E.g.  transform-origin: left 5px -3px
+transform-origin: x-<em>offset-keyword</em> <em>y-offset-keyword z-offset</em>                          E.g.  transform-origin: right bottom 2cm
+transform-origin: <em>y-offset-keyword</em> <em>x-offset-keyword z-offset</em>                          E.g.  transform-origin: bottom right 2cm
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><em>x-offset</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> describing how far from the left edge of the box the origin of the transform is set.</dd>
+ <dt><em>offset-keyword</em></dt>
+ <dd>Is one of the <code>left</code>, <code>right</code>, <code>top</code>, <code>bottom</code> or <code>center</code> keyword describing the corresponding offset.</dd>
+ <dt><em>y-offset</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> describing how far from the top edge of the box the origin of the transform is set.</dd>
+ <dt><em>x-offset-keyword</em></dt>
+ <dd>Is one of the <code>left</code>, <code>right</code> or <code>center</code> keyword describing how far from the left edge of the box the origin of the transform is set.</dd>
+ <dt><em>y-offset-keyword</em></dt>
+ <dd>Is one of the <code>top</code>, <code>bottom</code> or <code>center</code> keyword describing how far from the top edge of the box the origin of the transform is set.</dd>
+ <dt><em>z-offset</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> (and never a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> which would make the statement invalid) describing how far from the user eye the z=0 origin is set.</dd>
+</dl><p>The keywords are convenience shorthands and match the following <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> values:</p>
+
+<table class="standard-table"><thead><tr><th scope="col">keyword</th>
+   <th scope="col">value</th>
+  </tr></thead><tbody><tr><td><code>left</code></td>
+   <td><code>0%</code></td>
+  </tr><tr><td><code>center</code></td>
+   <td><code>50%</code></td>
+  </tr><tr><td><code>right</code></td>
+   <td><code>100%</code></td>
+  </tr><tr><td><code>top</code></td>
+   <td><code>0%</code></td>
+  </tr><tr><td><code>bottom</code></td>
+   <td><code>100%</code></td>
+  </tr></tbody></table>

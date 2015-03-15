@@ -1,0 +1,30 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox" style="font-size: 14px;"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-animateable-feature" title="scroll-position | contents | &lt;custom-ident&gt;">&lt;animateable-feature&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code>
+</pre>
+
+<pre>will-change: auto
+will-change: scroll-position
+will-change: contents
+will-change: transform        // Example of &lt;custom-ident&gt; 
+will-change: opacity          // Example of &lt;custom-ident&gt;
+will-change: left, top        // Example of two &lt;animateable-feature&gt;
+
+will-change: unset
+will-change: initial
+will-change: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>auto</code></dt>
+ <dd>This keyword expresses no particular intent; the user agent should apply whatever heuristics and optimizations it normally does.</dd>
+</dl><p>The <code>&lt;animateable-feature&gt;</code> can be one of the following values:</p>
+
+<dl><dt><code>scroll-position</code></dt>
+ <dd>Indicates that the author expects to animate or change the scroll position of the element in the near future.</dd>
+ <dt><code>contents</code></dt>
+ <dd>Indicates that the author expects to animate or change something about the element’s contents in the near future.</dd>
+ <dt><a href="/en-US/docs/Web/CSS/custom-ident" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;custom-ident&gt;</code></a></dt>
+ <dd>Indicates that the author expects to animate or change the property with the given name on the element in the near future. If the property given is a shorthand, it indicates the expectation for all the longhands the shorthand expands to. It cannot be one of the following values: <code>unset</code>, <code>initial</code>, <code>inherit</code>, <code>will-change</code>, <code>auto</code>, <code>scroll-position</code>, or <code>contents</code>.</dd>
+</dl>

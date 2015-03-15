@@ -1,0 +1,103 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bold <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bolder <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> lighter <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 100 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 200 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 300 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 400 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 500 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 600 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 700 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 800 <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> 900</code></pre>
+
+<pre><code>font-weight: normal
+font-weight: bold
+
+font-weight: lighter
+font-weight: bolder
+
+font-weight: 100
+font-weight: 200
+font-weight: 300
+font-weight: 400
+font-weight: 500
+font-weight: 600
+font-weight: 700
+font-weight: 800
+font-weight: 900
+
+font-weight: inherit</code></pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>Normal font weight. Same as <code>400</code>.</dd>
+ <dt><code>bold</code></dt>
+ <dd>Bold font weight. Same as <code>700</code>.</dd>
+ <dt><code>lighter</code></dt>
+ <dd>One font weight lighter than the parent element (among the available weights of the font).</dd>
+ <dt><code>bolder</code></dt>
+ <dd>One font weight darker than the parent element (among the available weights of the font).</dd>
+ <dt><code>100</code>, <code>200</code>, <code>300</code>, <code>400</code>, <code>500</code>, <code>600</code>, <code>700</code>, <code>800</code>, <code>900</code></dt>
+ <dd>Numeric font weights for fonts that provide more than just normal and bold.</dd>
+</dl><h3 id="Examples" name="Examples">Fallback</h3>
+
+<p>If the exact weight given is unavailable, then the following heuristic is used to determine the weight actually rendered:</p>
+
+<ul><li>If a weight greater than <code>500</code> is given, the closest available darker weight is used (or, if there is none, the closest available lighter weight).</li>
+ <li>If a weight less than <code>400</code> is given, the closest available lighter weight is used (or, if there is none, the closest available darker weight).</li>
+ <li>If a weight of exactly <code>400</code> is given, then <code>500</code> is used. If <code>500</code> is not available, then the heuristic for font weights less than 500 is used.</li>
+ <li>If a weight of exactly <code>500</code> is given, then <code>400</code> is used. If <code>400</code> is not available, then the heuristic for font weights less than 400 is used.</li>
+</ul><p>This means that for fonts that provide only <code style="font-style: normal;">normal</code> and <code style="font-style: normal;">bold</code>, <code style="font-style: normal;">100</code>-<code>500</code> are normal, and <code style="font-style: normal;">600</code>-<code style="font-style: normal;">900</code> are bold.</p>
+
+<h3 id="Meaning_of_relative_weights">Meaning of relative weights</h3>
+
+<p>When <code>lighter</code> or <code>bolder</code> is given, the following chart is used to calculate the absolute weight of the element:</p>
+
+<table><thead><tr><th>Inherited value</th>
+   <th><code>bolder</code></th>
+   <th><code>lighter</code></th>
+  </tr></thead><tbody><tr><th>100</th>
+   <td>400</td>
+   <td>100</td>
+  </tr><tr><th>200</th>
+   <td>400</td>
+   <td>100</td>
+  </tr><tr><th>300</th>
+   <td>400</td>
+   <td>100</td>
+  </tr><tr><th>400</th>
+   <td>700</td>
+   <td>100</td>
+  </tr><tr><th>500</th>
+   <td>700</td>
+   <td>100</td>
+  </tr><tr><th>600</th>
+   <td>900</td>
+   <td>400</td>
+  </tr><tr><th>700</th>
+   <td>900</td>
+   <td>400</td>
+  </tr><tr><th>800</th>
+   <td>900</td>
+   <td>700</td>
+  </tr><tr><th>900</th>
+   <td>900</td>
+   <td>700</td>
+  </tr></tbody></table><h3 id="Examples" name="Examples">Common weight name mapping</h3>
+
+<p>The 100 to 900 values roughly correspond to the following common weight names:</p>
+
+<dl><dt><code>100</code></dt>
+ <dd>Thin (Hairline)</dd>
+ <dt><code>200</code></dt>
+ <dd>Extra Light (Ultra Light)</dd>
+ <dt><code>300</code></dt>
+ <dd>Light</dd>
+ <dt><code>400</code></dt>
+ <dd>Normal</dd>
+ <dt><code>500</code></dt>
+ <dd>Medium</dd>
+ <dt><code>600</code></dt>
+ <dd>Semi Bold (Demi Bold)</dd>
+ <dt><code>700</code></dt>
+ <dd>Bold</dd>
+ <dt><code>800</code></dt>
+ <dd>Extra Bold (Ultra Bold)</dd>
+ <dt><code>900</code></dt>
+ <dd>Black (Heavy)</dd>
+</dl><h3 id="Examples" name="Examples">Interpolation</h3>
+
+<p>A <code>font-weight</code> value is interpolated via discrete steps (multiples of 100). The interpolation happens in real number space and is converted to an integer by rounding to the nearest multiple of 100, with values halfway between multiples of 100 rounded towards positive infinity.</p>

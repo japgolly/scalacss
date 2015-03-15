@@ -1,0 +1,25 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ weight <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> style ]</code></pre>
+<pre>font-synthesis: none
+font-synthesis: weight
+font-synthesis: style
+font-synthesis: weight style
+
+font-synthesis: initial
+font-synthesis: inherit
+font-synthesis: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  This keyword indicates that neither bold nor italic typeface must be synthesized.</dd>
+ <dt>
+  <code>weight</code></dt>
+ <dd>
+  This keyword indicates that a bold typeface may be synthesized if needed.</dd>
+ <dt>
+  <code>style</code></dt>
+ <dd>
+  This keyword indicates that an italic typeface may be synthesized if needed.</dd>
+</dl>

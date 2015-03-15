@@ -1,0 +1,17 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="eval">marks: [ crop || cross ] | none
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>crop</code></dt>
+ <dd>
+  Crop marks will be displayed.</dd>
+ <dt>
+  <code>cross</code></dt>
+ <dd>
+  Cross marks will be displayed.</dd>
+</dl><dl><dt>
+  <code>none</code></dt>
+ <dd>
+  No marks will be displayed.</dd>
+</dl>

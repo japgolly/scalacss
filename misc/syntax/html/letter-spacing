@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a></code>
+</pre>
+
+<pre>letter-spacing: normal
+
+letter-spacing: 0.3em
+letter-spacing: 3px
+letter-spacing: .3px
+
+letter-spacing: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>The spacing is the normal spacing for the current font. This value allows the user agent to alter the space between characters in order to justify text. That's the difference to the length value<code> 0</code>.</dd>
+ <dt><code>&lt;length&gt;</code></dt>
+ <dd>Indicates inter-character space <strong><em>in addition to</em></strong> the default space between characters. Values may be negative, but there may be implementation-specific limits. User agents may not further increase or decrease the inter-character space in order to justify text.<br/>
+ See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> values for possible units.</dd>
+</dl>

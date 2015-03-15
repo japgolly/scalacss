@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/number" title="">&lt;number&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a></code>
+</pre>
+
+<pre id="simplesyntax">line-height: normal 
+line-height: 3.5    /* &lt;number&gt; values */
+line-height: 3em    /* &lt;length&gt; values */
+line-height: 34%    /* &lt;percentage&gt; values */
+
+line-height: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>Depends on the user agent. Desktop browsers (including Firefox) use a default value of roughly<strong><code> 1.2</code></strong>, depending on the element's<code> font-family</code>.</dd>
+ <dt><code>&lt;number&gt;</code></dt>
+ <dd>The used value is this unitless <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a> multiplied by the element's font size. The computed value is the same as the specified<code> &lt;number&gt;</code>. In most cases <strong>this is the preferred way</strong> to set <code>line-height</code> with no unexpected results in case of inheritance.</dd>
+ <dt><code>&lt;length&gt;</code></dt>
+ <dd>The specified <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> is used in the calculation of the line box height. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> values for possible units.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>Relative to the font size of the element itself. The computed value is this percentage multiplied by the element's computed font size.<br/><strong>Percentage</strong> and <strong>em</strong> values may have unexpected results, see "Notes" section.</dd>
+</dl>

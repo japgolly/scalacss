@@ -1,0 +1,4 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/flex-direction" title="row | row-reverse | column | column-reverse">&lt;'flex-direction'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/flex-wrap" title="nowrap | wrap | wrap-reverse">&lt;'flex-wrap'&gt;</a></code></pre>
+<h3 id="Values">Values</h3>
+<p>See <a href="/en-US/docs/CSS/flex-direction" title="en-US/docs/CSS/flex-direction"><code>flex-direction</code></a> and <a href="/en-US/docs/CSS/flex-wrap" title="flex-wrap"><code>flex-wrap</code></a> for details on the values.</p>

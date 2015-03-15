@@ -1,0 +1,32 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto</code>
+</pre>
+
+<pre>bottom: 3px         /* &lt;length&gt; values */
+bottom: 2.4em
+
+bottom: 10%         /* &lt;percentages&gt; of the height of the containing block */
+
+bottom: auto
+
+bottom: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>A negative, <code>null</code>, or positive <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> that represents:
+ <ul><li>for <strong>absolutely positioned elements</strong>, the distance to the bottom edge of the containing block;</li>
+  <li>for <strong>relatively positioned elements</strong>, the offset that the element is moved above its position in the normal flow if it wasn't positioned.</li>
+ </ul></dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>A <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> of the containing block's height, used as described in the <a href="#Summary">summary</a>.</dd>
+ <dt><code>auto</code></dt>
+ <dd>Specifies that:
+ <ul><li>for <strong>absolutely positioned elements</strong>, the position of the element is based on the <a href="/en-US/docs/Web/CSS/top" title="The top CSS property specifies part of the position of positioned elements. It has no effect on non-positioned elements."><code>top</code></a> property, and <code>height: auto</code> is treated as a height based on the content.</li>
+  <li>for <strong>relatively positioned elements</strong>, the offset the element from its original position is based on the <a href="/en-US/docs/Web/CSS/top" title="The top CSS property specifies part of the position of positioned elements. It has no effect on non-positioned elements."><code>top</code></a> property, or if <code>top</code> is also <code>auto</code>, the element is not moved vertically at all.</li>
+ </ul></dd>
+ <dt><code>inherit</code></dt>
+ <dd>Indicates that the value is the same as the computed value from its parent element (which may not be its containing block). This computed value is then handled as if it were a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a>, <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a>, or the <code>auto</code> keyword.</dd>
+</dl>

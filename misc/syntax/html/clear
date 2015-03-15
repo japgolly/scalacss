@@ -1,0 +1,27 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> both</code></pre>
+<pre>clear: none
+clear: left
+clear: right
+clear: both
+
+clear: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  The element is <em>not</em> moved down to clear past floating elements.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  The element is moved down to clear past <em>left</em> floats.</dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  The element is moved down to clear past <em>right</em> floats.</dd>
+ <dt>
+  <code>both</code></dt>
+ <dd>
+  The element is moved down to clear past <em>both</em> left and right floats.</dd>
+</dl>

@@ -1,0 +1,18 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code>content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/width" title="[&lt;length&gt; | &lt;percentage&gt;] &amp;&amp; [border-box | content-box]? | available | min-content | max-content | fit-content | auto">&lt;'width'&gt;</a></code>
+</pre>
+
+<pre>flex-basis: 10em      /* &lt;'width'&gt; */
+flex-basis: 3px       /* &lt;'width'&gt; */
+flex-basis: auto      /* &lt;'width'&gt; */
+flex-basis: content
+
+flex-basis: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;'width'&gt;</code></dt>
+ <dd>Defined as a number followed by a absolute unit such as <code>px</code>, <code>mm</code> or <code>pt</code>, or a percentage of the parent flex container main size property. Negative values are invalid.</dd>
+</dl>

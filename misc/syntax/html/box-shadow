@@ -1,0 +1,20 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: none | [inset? &amp;&amp; [ &lt;offset-x&gt; &lt;offset-y&gt; &lt;blur-radius&gt;? &lt;spread-radius&gt;? &lt;color&gt;? ] ]#</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>inset</code></dt>
+ <dd>If not specified (default), the shadow is assumed to be a drop shadow (as if the box were raised above the content).<br/>
+ The presence of the <code>inset</code> keyword changes the shadow to one inside the frame (as if the content was depressed inside the box). Inset shadows are drawn inside the border (even transparent ones), above the background, but below content.</dd>
+ <dt><code>&lt;offset-x&gt;</code> <code>&lt;offset-y&gt;</code></dt>
+ <dd>These are two <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> values to set the shadow offset. <code>&lt;offset-x&gt;</code> specifies the horizontal distance. Negative values place the shadow to the left of the element. <code>&lt;offset-y&gt;</code> specifies the vertical distance. Negative values place the shadow above the element. See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for possible units.<br/>
+ If both values are <code>0</code>, the shadow is placed behind the element (and may generate a blur effect if <code>&lt;blur-radius&gt;</code> and/or <code>&lt;spread-radius&gt;</code> is set).</dd>
+ <dt><code>&lt;blur-radius&gt;</code></dt>
+ <dd>This is a third <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value. The larger this value, the bigger the blur, so the shadow becomes bigger and lighter. Negative values are not allowed. If not specified, it will be <code>0</code> (the shadow's edge is sharp).</dd>
+ <dt><code>&lt;spread-radius&gt;</code></dt>
+ <dd>This is a fourth <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value. Positive values will cause the shadow to expand and grow bigger, negative values will cause the shadow to shrink. If not specified, it will be <code>0</code> (the shadow will be the same size as the element).</dd>
+ <dt><code>&lt;color&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> values for possible keywords and notations.<br/>
+ If not specified, the color used depends on the browser - it is usually the value of the <a href="/en-US/docs/Web/CSS/color" title="The CSS color property sets the foreground color of an element's text content, and its decorations. It doesn't affect any other characteristic of the element; it should really be called text-color and would have been named so, save for historical reasons and its appearance in CSS Level 1."><code>color</code></a> property, but note that Safari currently paints a transparent shadow in this case.</dd>
+</dl>

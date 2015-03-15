@@ -1,0 +1,21 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/max-width" title="&lt;length&gt; | &lt;percentage&gt; | none | max-content | min-content | fit-content | fill-available">&lt;'max-width'&gt;</a></code>
+</pre>
+
+<pre>max-block-size: 300px           /* &lt;length&gt; values */
+max-block-size: 25em
+
+max-block-size: 75%             /* &lt;percentage&gt; values */
+
+max-block-size: none            /* Keyword values */
+max-block-size: max-content
+max-block-size: min-content
+max-block-size: fit-content
+max-block-size: fill-available
+
+max-block-size: inherit</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>The <code>max-block-size</code> property takes the same values as the <a href="/en-US/docs/Web/CSS/max-width" title="The max-width CSS property is used to set the maximum width of a given element. It prevents the used value of the width property from becoming larger than the value specified for max-width."><code>max-width</code></a> and <a href="/en-US/docs/Web/CSS/max-height" title="The max-height CSS property is used to set the maximum height of a given element. It prevents the used value of the height property from becoming larger than the value specified for max-height."><code>max-height</code></a> properties.</p>

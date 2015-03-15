@@ -1,0 +1,18 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-uri" title="Tooltip not found in DB.">&lt;uri&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none</code>
+</pre>
+
+<pre>list-style-image: none
+list-style-image: url('starsolid.gif')
+
+list-style-image: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;uri&gt;</code></dt>
+ <dd>Location of image to use as the marker.</dd>
+ <dt><code>none</code></dt>
+ <dd>Specifies that no image is used as the marker. If this value is set, the marker defined in <a href="/en-US/docs/Web/CSS/list-style-type" title="The list-style-type CSS property specifies appearance of a list item element. As it is the only one which defaults to display:list-item, this is usually a &lt;li&gt; element, but can be any element with this display value."><code>list-style-type</code></a> will be used instead.</dd>
+</dl>

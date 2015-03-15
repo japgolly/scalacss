@@ -1,0 +1,21 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/number" title="">&lt;number&gt;</a></code></pre>
+
+<pre>font-size-adjust: none
+font-size-adjust: 3
+font-size-adjust: 10.7
+font-size-adjust: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>none</code></dt>
+ <dd>Choose the size of the font based only on the <a href="/en-US/docs/Web/CSS/font-size" title="The font-size CSS property specifies the size of the font – specifically the desired height of glyphs from the font. Setting the font size may, in turn, change the size of other items, since it is used to compute the value of em and ex length units."><code>font-size</code></a> property.</dd>
+ <dt><code>&lt;number&gt;</code></dt>
+ <dd>
+ <p>Choose the size of the font so that its lowercase letters (as determined by the x-height of the font) are the specified number times the <a href="/en-US/docs/Web/CSS/font-size" title="The font-size CSS property specifies the size of the font – specifically the desired height of glyphs from the font. Setting the font size may, in turn, change the size of other items, since it is used to compute the value of em and ex length units."><code>font-size</code></a>.</p>
+
+ <p>The number specified should generally be the aspect ratio (ratio of x-height to font size) of the first choice <a href="/en-US/docs/Web/CSS/font-family" title="The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule."><code>font-family</code></a>. This means that the first choice font, when available, will appear the same size in browsers, whether or not they support <code>font-size-adjust</code>.</p>
+ </dd>
+</dl>

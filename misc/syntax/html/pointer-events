@@ -1,0 +1,45 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="syntaxbox" style="white-space: pre-wrap;">pointer-events:  <em>auto</em> | none | visiblePainted | visibleFill | visibleStroke | visible | painted | fill | stroke | all | inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  The element behaves as it would if the <code>pointer-events</code> property was not specified. In SVG content, this value and the value <code>visiblePainted</code> have the same effect.</dd>
+ <dt>
+  <code>none</code></dt>
+ <dd>
+  The element is never the <a href="/en-US/docs/Web/API/event.target">target</a> of mouse events; however, mouse events may target its descendant elements if those descendants have <code>pointer-events</code> set to some other value. In these circumstances, mouse events will trigger event listeners on this parent element as appropriate on their way to/from the descendant during the event capture/<a href="/en-US/docs/Web/API/event.bubbles">bubble</a> phases.</dd>
+ <dt>
+  <code>visiblePainted</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the <code>visibility</code> property is set to <code>visible</code> and when the mouse cursor is over the interior (i.e., 'fill') of the element and the <code>fill</code> property is set to a value other than <code>none</code>, or when the mouse cursor is over the perimeter (i.e., 'stroke') of the element and the <code>stroke</code> property is set to a value other than <code>none</code>.</dd>
+ <dt>
+  <code>visibleFill</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the <code>visibility</code> property is set to <code>visible</code> and when the mouse cursor is over the interior (i.e., fill) of the element. The value of the <code>fill</code> property does not effect event processing.</dd>
+ <dt>
+  <code>visibleStroke</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the <code>visibility</code> property is set to <code>visible</code> and when the mouse cursor is over the perimeter (i.e., stroke) of the element. The value of the <code>stroke</code> property does not effect event processing.</dd>
+ <dt>
+  <code>visible</code></dt>
+ <dd>
+  SVG only. The element can be the target of a mouse event when the <code>visibility</code> property is set to <code>visible</code> and the mouse cursor is over either the interior (i.e., fill) or the perimeter (i.e., stroke) of the element. The values of the <code>fill</code> and <code>stroke</code> do not effect event processing.</dd>
+ <dt>
+  <code>painted</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the mouse cursor is over the interior (i.e., 'fill') of the element and the <code>fill</code> property is set to a value other than <code>none</code>, or when the mouse cursor is over the perimeter (i.e., 'stroke') of the element and the <code>stroke</code> property is set to a value other than <code>none</code>. The value of the <code>visibility</code> property does not effect event processing.</dd>
+ <dt>
+  <code>fill</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the pointer is over the interior (i.e., fill) of the element. The values of the <code>fill</code> and <code>visibility</code> properties do not effect event processing.</dd>
+ <dt>
+  <code>stroke</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the pointer is over the perimeter (i.e., stroke) of the element. The values of the <code>stroke</code> and <code>visibility</code> properties do not effect event processing.</dd>
+ <dt>
+  <code>all</code></dt>
+ <dd>
+  SVG only. The element can only be the target of a mouse event when the pointer is over the interior (i.e., fill) or the perimeter (i.e., stroke) of the element. The values of the <code>fill</code>, <code>stroke</code> and <code>visibility</code> properties do not effect event processing.</dd>
+</dl>

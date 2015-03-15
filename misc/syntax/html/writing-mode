@@ -1,0 +1,33 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>horizontal-tb <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> vertical-rl <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> vertical-lr</code>
+</pre>
+
+<pre>writing-mode: horizontal-tb
+writing-mode: vertical-rl
+writing-mode: vertical-lr
+
+writing-mode: inherit
+writing-mode: initial
+writing-mode: unsel
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>horizontal-tb</code></dt>
+ <dd>Content flows horizontally from left to right, vertically from top to bottom. The next horizontal line is positioned below the previous line.</dd>
+ <dt><code>vertical-rl</code></dt>
+ <dd>Content flows vertically from top to bottom, horizontally from left to right. The next vertical line is positioned to the right of the previous line.</dd>
+ <dt><code>vertical-lr</code></dt>
+ <dd>Content flows vertically from top to bottom, horizontally from right to left. The next vertical line is positioned to the left of the previous line.</dd>
+ <dt><code>lr</code> <span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>Deprecated except for SVG1 documents. For CSS, use <code style="font-size: 14px; color: rgb(51, 51, 51);">horizontal-tb</code>.</dd>
+ <dt><code>lr-tb</code> <span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>Deprecated except for SVG1 documents. For CSS, use <code style="font-size: 14px; color: rgb(51, 51, 51);">horizontal-tb</code>.</dd>
+ <dt><code>rl</code> <span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>Deprecated except for SVG1 documents. For CSS, use <code style="font-size: 14px; color: rgb(51, 51, 51);">horizontal-tb</code>.</dd>
+ <dt><code>tb</code> <span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>Deprecated except for SVG1 documents. For CSS, use <code style="font-size: 14px; color: rgb(51, 51, 51);">vertical-rl</code>.</dd>
+ <dt><code>tb-rl</code> <span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>Deprecated except for SVG1 documents. For CSS, use <code style="font-size: 14px; color: rgb(51, 51, 51);">vertical-rl</code>.</dd>
+</dl>
