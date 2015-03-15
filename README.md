@@ -61,5 +61,5 @@ In progress.
 * Add more psuedo selectors discovered by caniuse.com data.
 * In Scala.JS, omit unnecessary browser prefixes.
 * Detect more problems, add more warnings.
-* DSL for composite styles.
-* Add default settings for {JVM,JS} ⊗ {Dev,Prod}.
+* More DSL for composite styles.
+* Default settings for {JVM,JS} ⊗ {Dev,Prod}.
