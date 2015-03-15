@@ -58,7 +58,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-animations/
    */
-  def animation: Subject = Map(
+  val animation: Subject = Map(
     AndroidBrowser    -> Map(FullX -> "4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3"),
     AndroidChrome     -> Map(FullX -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -196,7 +196,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#the-border-image
    */
-  def borderImage: Subject = Map(
+  val borderImage: Subject = Map(
     AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -219,7 +219,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-background/#the-border-radius
    */
-  def borderRadius: Subject = Map(
+  val borderRadius: Subject = Map(
     AndroidBrowser    -> Map(Full -> "2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37", FullX -> "2.1"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -357,7 +357,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS21/generate.html#counters
    */
-  def counters: Subject = Map(
+  val counters: Subject = Map(
     AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -564,7 +564,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-flexbox/
    */
-  def flexbox: Subject = Map(
+  val flexbox: Subject = Map(
     AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -679,7 +679,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-grid-layout/
    */
-  def grid: Subject = Map(
+  val grid: Subject = Map(
     AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1", Unsupported -> "4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Unsupported -> "40"),
     AndroidFirefox    -> Map(Unsupported -> "33"),
@@ -794,7 +794,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-masking/
    */
-  def masks: Subject = Map(
+  val masks: Subject = Map(
     AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(PartialX -> "40"),
     AndroidFirefox    -> Map(Partial -> "33"),
@@ -840,7 +840,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-multicol/
    */
-  def multicolumn: Subject = Map(
+  val multicolumn: Subject = Map(
     AndroidBrowser    -> Map(PartialX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(PartialX -> "40"),
     AndroidFirefox    -> Map(PartialX -> "33"),
@@ -909,7 +909,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/CSS2/ui.html#propdef-outline
    */
-  def outline: Subject = Map(
+  val outline: Subject = Map(
     AndroidBrowser    -> Map(Full -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
@@ -1116,7 +1116,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-shapes/
    */
-  def shapes: Subject = Map(
+  val shapes: Subject = Map(
     AndroidBrowser    -> Map(Full -> "37", Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Unsupported -> "33"),
@@ -1185,7 +1185,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css-text-decor-3/#line-decoration
    */
-  def textDecoration: Subject = Map(
+  val textDecoration: Subject = Map(
     AndroidBrowser    -> Map(Unsupported -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3,4.4,4.4.3-4.4.4,37"),
     AndroidChrome     -> Map(Unsupported -> "40"),
     AndroidFirefox    -> Map(FullX -> "33"),
@@ -1392,7 +1392,7 @@ object CanIUse {
    *
    * http://www.w3.org/TR/css3-transitions/
    */
-  def transitions: Subject = Map(
+  val transitions: Subject = Map(
     AndroidBrowser    -> Map(Full -> "4.4,4.4.3-4.4.4,37", FullX -> "2.1,2.2,2.3,3,4,4.1,4.2-4.3"),
     AndroidChrome     -> Map(Full -> "40"),
     AndroidFirefox    -> Map(Full -> "33"),
