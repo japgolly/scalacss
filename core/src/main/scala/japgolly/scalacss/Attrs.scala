@@ -709,114 +709,79 @@ trait Attrs {
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid">MDN</a>
-   */
-  final val grid = Attr.real("grid")
-
-  /**
-   * The documentation about this has not yet been written; please consider contributing!
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-area">MDN</a>
-   */
-  final val gridArea = Attr.real("grid-area")
-
-  /**
-   * The documentation about this has not yet been written; please consider contributing!
-   *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-columns">MDN</a>
    */
-  final val gridAutoColumns = Attr.real("grid-auto-columns")
+  final val gridAutoColumns = Attr.real("grid-auto-columns", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow">MDN</a>
    */
-  final val gridAutoFlow = Attr.real("grid-auto-flow")
+  final val gridAutoFlow = Attr.real("grid-auto-flow", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-position">MDN</a>
    */
-  final val gridAutoPosition = Attr.real("grid-auto-position")
+  final val gridAutoPosition = Attr.real("grid-auto-position", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-rows">MDN</a>
    */
-  final val gridAutoRows = Attr.real("grid-auto-rows")
-
-  /**
-   * The documentation about this has not yet been written; please consider contributing!
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column">MDN</a>
-   */
-  final val gridColumn = Attr.real("grid-column")
+  final val gridAutoRows = Attr.real("grid-auto-rows", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-start">MDN</a>
    */
-  final val gridColumnStart = Attr.real("grid-column-start")
+  final val gridColumnStart = Attr.real("grid-column-start", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-end">MDN</a>
    */
-  final val gridColumnEnd = Attr.real("grid-column-end")
-
-  /**
-   * The documentation about this has not yet been written; please consider contributing!
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row">MDN</a>
-   */
-  final val gridRow = Attr.real("grid-row")
+  final val gridColumnEnd = Attr.real("grid-column-end", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-start">MDN</a>
    */
-  final val gridRowStart = Attr.real("grid-row-start")
+  final val gridRowStart = Attr.real("grid-row-start", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-end">MDN</a>
    */
-  final val gridRowEnd = Attr.real("grid-row-end")
-
-  /**
-   * The documentation about this has not yet been written; please consider contributing!
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template">MDN</a>
-   */
-  final val gridTemplate = Attr.real("grid-template")
+  final val gridRowEnd = Attr.real("grid-row-end", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas">MDN</a>
    */
-  final val gridTemplateAreas = Attr.real("grid-template-areas")
+  final val gridTemplateAreas = Attr.real("grid-template-areas", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows">MDN</a>
    */
-  final val gridTemplateRows = Attr.real("grid-template-rows")
+  final val gridTemplateRows = Attr.real("grid-template-rows", CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns">MDN</a>
    */
-  final val gridTemplateColumns = Attr.real("grid-template-columns")
+  final val gridTemplateColumns = Attr.real("grid-template-columns", CanIUse.grid)
 
   /**
    * The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element.
@@ -1812,6 +1777,36 @@ trait Attrs {
   final val fontVariant = Attr.alias("font-variant")(_(
     fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric,
     fontVariantPosition))
+
+  /**
+   * @see <a href="http://www.w3.org/TR/css3-grid-layout/#grid-shorthand">css3-grid-layout#grid</a>
+   */
+  final val grid = Attr.alias("grid", CanIUse.grid)(_(
+    gridTemplate, gridAutoFlow, gridAutoColumns, gridAutoRows))
+
+  /**
+   * @see <a href="http://www.w3.org/TR/css3-grid-layout/#common-uses">css3-grid-layout#common-uses</a>
+   */
+  final val gridArea = Attr.alias("grid-area", CanIUse.grid)(_(
+    gridColumn, gridRow))
+
+  /**
+   * @see <a href="http://www.w3.org/TR/css3-grid-layout/#placement-shorthands">css3-grid-layout#placement-shorthands</a>
+   */
+  final val gridColumn = Attr.alias("grid-column", CanIUse.grid)(_(
+    gridColumnStart, gridColumnEnd))
+
+  /**
+   * @see <a href="http://www.w3.org/TR/css3-grid-layout/#placement-shorthands">css3-grid-layout#placement-shorthands</a>
+   */
+  final val gridRow = Attr.alias("grid-row", CanIUse.grid)(_(
+    gridRowStart, gridRowEnd))
+
+  /**
+   * @see <a href="http://www.w3.org/TR/css3-grid-layout/#propdef-grid-template">css3-grid-layout#grid-template</a>
+   */
+  final val gridTemplate = Attr.alias("grid-template", CanIUse.grid)(_(
+    gridTemplateAreas, gridTemplateColumns, gridTemplateRows))
 
   /**
    * The list-style CSS property is a shorthand property for setting list-style-type, list-style-image and list-style-position.
