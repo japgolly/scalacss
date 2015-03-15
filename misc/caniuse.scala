@@ -30,6 +30,37 @@ object Caniuse {
     val removeAt: String => String =
       _.replaceFirst("^@","")
 
+    val dataToIgnore = Set[String](
+       "css3Colors"
+      ,"css3Cursors"
+      ,"cssBackgroundblendmode"
+      ,"cssBackgroundOffsets"
+      ,"cssFeaturequeries"
+      ,"cssFixed"
+      ,"cssGencontent"
+      ,"cssImageOrientation"
+      ,"currentcolor"
+      ,"fontface"
+      ,"fontLoading"
+      ,"fontSizeAdjust"
+      ,"fontUnicodeRange"
+      ,"getcomputedstyle"
+      ,"inlineBlock"
+      ,"kerningPairsLigatures"
+      ,"mediaqueries"
+      ,"minmaxwh"
+      ,"mixblendmode"
+      ,"multibackgrounds"
+      ,"pointerEvents"
+      ,"rem"
+      ,"styleScoped"
+      ,"svgCss"
+      ,"table"
+      ,"ttf"
+      ,"variables"
+      ,"willChange"
+    )
+
     val agentkey0: String => String = {
       case "ie"      => "IE"
       case "firefox" => "Firefox"
@@ -95,7 +126,8 @@ object Caniuse {
         v.field("description") |> str,
         v.field("spec") |> str,
         (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
-    }.sortBy(_.scalaval)
+    }.filterNot(dataToIgnore contains _.scalaval)
+      .sortBy(_.scalaval)
 
     println(s"Found ${data.size} CSS properties...")
 

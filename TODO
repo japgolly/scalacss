@@ -6,3 +6,33 @@
 * Env provision in JS.
 * Defaults for {Jvm,Js} ⊗ {Dev,Prod}
 * Media query AST.
+
+================================================================================
+
+CanIUse subjects pending action:
+* appearance
+* backgroundImgOpts
+* calc
+* canvas
+* crispEdges
+* css3CursorsNewer
+* deviceadaptation
+* gradients
+* grid
+* imageSet
+* intrinsicWidth
+* mediaResolution
+* placeholder
+* reflections
+* regions
+* repeatingGradients
+* sel2
+* sel3
+* selection
+* sticky
+* textEmphasis
+* textSizeAdjust
+* textStroke
+* userSelectNone
+* viewportUnits
+
