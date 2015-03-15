@@ -39,21 +39,21 @@ In progress.
 * Attributes.
 * Pseudo selectors.
 * Automatic browser prefixes for properties (using caniuse.com data).
-* Attribute conflict detection.
-* Customisable composition behaviour.
+* Attribute conflict detection. (Transitive using reachability of underlying properties. Eg. `grid-area` affects `grid-row` which affects `grid-row-start`.)
+* Various (customisable) composition behaviours.
 * Static styles.
 * Functional styles.
-* Composite styles / style families.
+* Safe composite styles. (style families, style groups)
 * Concise DSL.
 * CSS generation (for external CSS files) in minified format, pretty-printed or custom.
 * Anonymous CSS generation (for internal styling like in Scala.JS).
 * Reusable styles (modules).
-* Ability to dynamically tailor CSS to environment. (As yet, unused.)
+* Ability to dynamically tailor CSS to environment. (Able but as yet, unused.)
 * Path-dependent children like in LESS/SASS.
 
 ##### Upcoming...
 
-* Media queriy AST.
+* Media query AST.
 * Type-safe CSS values.
 * Automatic browser prefixes for _values_ (using caniuse.com data).
 * CSS Reset.
