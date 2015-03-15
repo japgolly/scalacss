@@ -63,3 +63,4 @@ In progress.
 * Detect more problems, add more warnings.
 * More DSL for composite styles.
 * Default settings for {JVM,JS} ⊗ {Dev,Prod}.
+* Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
