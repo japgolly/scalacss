@@ -6,29 +6,31 @@ import TestUtil._
 import Attrs._
 import Dsl._
 import Pseudo._
-/*
+
 object UsageTest extends TestSuite {
   implicit def composition = Compose.safe
 
   val s1 =
     style(
-      margin ~ 12.px,
-      padding ~ 2.ex,
+      margin  := 12.px,
+      padding :=  2.ex,
 
       Hover(
-        fontWeight ~ "normal",
-        lineHeight ~ 1.em,
-        padding    ~ 0),
+        fontWeight.normal,
+        lineHeight(1.em),
+        padding    := 0),
 
       Visited.not(FirstChild)(
-        fontWeight ~ "bold"),
+        fontWeight.bold),
 
       unsafeChild("nav.debug")(
-        backgroundColor ~ "#f88",
-        color ~ "#000",
+        backgroundColor("#f88"),
+        color.black,
 
         unsafeChild("h1")(
-          fontSize ~ 150.pct))
+          fontSize(150.%%)
+        )
+      )
     )
 
   override val tests = TestSuite {
@@ -54,7 +56,7 @@ object UsageTest extends TestSuite {
           |
           |.a1 nav.debug {
           |  background-color: #f88;
-          |  color: #000;
+          |  color: black;
           |}
           |
           |.a1 nav.debug h1 {
@@ -64,9 +66,8 @@ object UsageTest extends TestSuite {
     }
 
     'zeroLiteral {
-      padding ~ 0
+      padding := 0
       illTyped("padding ~ 1")
     }
   }
 }
-*/

@@ -1,12 +1,10 @@
 package japgolly.scalacss
 
-sealed trait ValueClass
-
 /**
  * A CSS value that is valid for some context `T`.
  */
-final case class ValueT[T <: ValueClass](value: Value) {
-  @inline def retype[A <: ValueClass] = this.asInstanceOf[ValueT[A]]
+final case class ValueT[T <: ValueT.ValueClass](value: Value) {
+  @inline def retype[A <: ValueT.ValueClass] = this.asInstanceOf[ValueT[A]]
 }
 
 object ValueT {
@@ -39,12 +37,34 @@ object ValueT {
   }
 
   final case class Length(n: Int, u: LengthUnit) {
-    def value = n.toString + "." + u.value
+    def value = n.toString + u.value
   }
 
   final case class Percentage(n: Int) {
     def value: Value = n.toString + "%"
   }
+
+  // -------------------------------------------------------------------------------------------------------------------
+  // Classes
+
+  /**
+   * Represented a context in which a finite set of types are valid.
+   *
+   * Example:
+   * {{{
+   *   &lt;br-width&gt; = &lt;length&gt; | thin | medium | thick
+   * }}}
+   */
+  sealed trait ValueClass
+
+  sealed trait Integer   extends ValueClass
+  sealed trait Number    extends ValueClass
+  sealed trait Len       extends ValueClass
+  sealed trait LenPct    extends ValueClass
+  sealed trait LenPctNum extends ValueClass
+  sealed trait BrWidth   extends ValueClass
+  sealed trait BrStyle   extends ValueClass
+  sealed trait Color     extends ValueClass
 
   // -------------------------------------------------------------------------------------------------------------------
   // Rules
@@ -77,40 +97,34 @@ object ValueT {
       apply(_.value)
   }
 
-  implicit def ruleApply[From, To <: ValueClass](f: From)(implicit r: From ==> To): ValueT[To] = r(f)
+  object Rules extends Rules
+  abstract class Rules {
+    @inline implicit def ruleApply[From, To <: ValueClass](f: From)(implicit r: From ==> To): ValueT[To] = r(f)
 
-  implicit def ruleChain[A, B <: ValueClass, C <: ValueClass](implicit ab: A ==> B, bc: B >=> C): A ==> C =
-    ab >> bc
+    @inline implicit def ruleChain[A, B <: ValueClass, C <: ValueClass](implicit ab: A ==> B, bc: B >=> C): A ==> C =
+      ab >> bc
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Classes
+    @inline implicit def ruleLen_L: Len <== Length = Rule(_.value)
 
-  sealed trait Len extends ValueClass
-  implicit val ruleLen_L: Len <== Length = Rule(_.value)
+    @inline implicit def ruleInteger_I: Integer <== Int = Rule(_.toString)
 
-  sealed trait Integer extends ValueClass
-  implicit val ruleInteger_I: Integer <== Int = Rule(_.toString)
+    @inline implicit def ruleNumber_I: Number <== Int    = Rule(_.toString)
+    @inline implicit def ruleNumber_D: Number <== Double = Rule(_.toString)
 
-  sealed trait Number extends ValueClass
-  implicit val ruleNumber_I: Number <== Int    = Rule(_.toString)
-  implicit def ruleNumber_D: Number <== Double = Rule(_.toString)
+    @inline implicit def ruleLenPct_L: LenPct <=< Len        = Rule.retype
+    @inline implicit def ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
 
-  sealed trait LenPct extends ValueClass
-  implicit val ruleLenPct_L: LenPct <=< Len        = Rule.retype
-  implicit val ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
+    @inline implicit def ruleLenPctNum_LP: LenPctNum <=< LenPct = Rule.retype
+    @inline implicit def ruleLenPctNum_N : LenPctNum <=< Number = Rule.retype
+    // diverging @inline implicit expansion requires these ↙ :(
+    @inline implicit def ruleLenPctNum_L : LenPctNum <=< Len = Rule.retype
+    @inline implicit def ruleLenPctNum_I : LenPctNum <== Int = Rule(_.toString)
 
-  sealed trait LenPctNum extends ValueClass
-  implicit val ruleLenPctNum_LP: LenPctNum <=< LenPct = Rule.retype
-  implicit val ruleLenPctNum_N : LenPctNum <=< Number = Rule.retype
+    @inline implicit def ruleBrWidth_1                                      : BrWidth <=< Len = Rule.retype
+    @inline implicit def ruleBrWidth_2[L <: Literal with Literal.BrWidthLit]: BrWidth <== L   = Rule.literal
 
-  sealed trait BrWidth extends ValueClass
-  implicit val ruleBrWidth_1                                      : BrWidth <=< Len = Rule.retype
-  implicit def ruleBrWidth_2[L <: Literal with Literal.BrWidthLit]: BrWidth <== L   = Rule.literal
-
-  sealed trait BrStyle extends ValueClass
-  implicit def ruleBrStyle_L[L <: Literal with Literal.BrStyleLit]: BrWidth <== L = Rule.literal
-
-  sealed trait Color extends ValueClass
+    @inline implicit def ruleBrStyle_L[L <: Literal with Literal.BrStyleLit]: BrStyle <== L = Rule.literal
+  }
 
   // -------------------------------------------------------------------------------------------------------------------
   // Attributes with type-safe values
@@ -140,7 +154,7 @@ object ValueT {
 
   abstract class TypedAttrT[T <: ValueClass] extends TypedAttrBase {
     final def apply(v: ValueT[T]): AV = av(v.value)
-    //    final def apply[From](f: From)(implicit r: From ==> T): AV = av(r(f).value)
+//        final def apply[From](f: From)(implicit r: From ==> T): AV = av(r(f).value)
   }
 
   abstract class TypedAttrT0[T <: ValueClass] extends TypedAttrT[T] {

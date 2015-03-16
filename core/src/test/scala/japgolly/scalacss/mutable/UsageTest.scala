@@ -4,7 +4,7 @@ import utest._
 import japgolly.scalacss._
 import TestUtil._
 import Register.{NameGen, ErrorHandler}
-/*
+
 object UsageTest extends TestSuite {
 
   def newRegister = new Register(NameGen.numbered("demo-"), ErrorHandler.noisy)
@@ -16,33 +16,35 @@ object UsageTest extends TestSuite {
 
     val s1: StyleA =
       style(
-        margin ~ 12.px,
-        padding ~ 2.ex,
+        margin := 12.px,
+        padding := 2.ex,
 
         Hover(
-          fontWeight ~ "normal",
-          lineHeight ~ 1.em,
-          padding    ~ 0),
+          fontWeight.normal,
+          lineHeight(1.em),
+          padding := 0),
 
         Visited.not(FirstChild)(
-          fontWeight ~ "bold"),
+          fontWeight.bold),
 
         unsafeChild("nav.debug")(
-          backgroundColor ~ "#f88",
-          color ~ "#000",
+          backgroundColor("#f88"),
+          color.black,
 
           unsafeChild("h1")(
-            fontSize ~ 150.pct))
+            fontSize(150.%%)
+          ))
       )
 
     val everythingOk: Boolean => StyleA =
       boolStyle(ok => styleS(
-        backgroundColor ~ (if (ok) "green" else "red"),
-        maxWidth ~ 80.ex))
+        backgroundColor(if (ok) Color.green else Color.red),
+        maxWidth(80.ex)
+      ))
 
     val indent: Int => StyleA =
       styleF(Domain.ofRange(1 to 3))(i =>
-        styleS(paddingLeft ~ (i * 4).ex))
+        styleS(paddingLeft((i * 4).ex)))
   }
 
   def norm(css: String) = css.trim
@@ -69,7 +71,7 @@ object UsageTest extends TestSuite {
         |
         |.demo-0001 nav.debug {
         |  background-color: #f88;
-        |  color: #000;
+        |  color: black;
         |}
         |
         |.demo-0001 nav.debug h1 {
@@ -107,4 +109,3 @@ object UsageTest extends TestSuite {
     assertEq(SS.indent(3).className.value, "demo-0006")
   }
 }
-*/

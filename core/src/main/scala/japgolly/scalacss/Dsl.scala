@@ -2,46 +2,49 @@ package japgolly.scalacss
 
 import shapeless.Witness
 import Style.{UnsafeExt, UnsafeExts}
+import ValueT._
 
 object DslBase {
   val zeroType = Witness(0)
 
   final class DslInt(val self: Int) extends AnyVal {
-    @inline private def unit(u: String): Value = self.toString + u
+    
+    @inline private def mkUnit(u: LengthUnit): Length =
+      Length(self, u)
 
     /** Centimeters. */
-    @inline def cm = unit("cm")
+    @inline def cm = mkUnit(LengthUnit.cm)
 
     /**
      * This unit represents the width, or more precisely the advance measure, of the glyph '0' (zero, the Unicode
      * character U+0030) in the element's font.
      */
-    @inline def ch = unit("ch")
+    @inline def ch = mkUnit(LengthUnit.ch)
 
     /**
      * This unit represents the calculated font-size of the element.
      * If used on the `font-size` property itself, it represents the inherited `font-size` of the element.
      */
-    @inline def em = unit("em")
+    @inline def em = mkUnit(LengthUnit.em)
 
     /**
      * This unit represents the x-height of the element's font.
      * On fonts with the 'x' letter, this is generally the height of lowercase letters in the font;
      * 1ex ≈ 0.5em in many fonts.
      */
-    @inline def ex = unit("ex")
+    @inline def ex = mkUnit(LengthUnit.ex)
 
     /** Inches (1in = 2.54 cm). */
-    @inline def inches = unit("inches")
+    @inline def in = mkUnit(LengthUnit.in)
 
     /** Millimeters. */
-    @inline def mm = unit("mm")
+    @inline def mm = mkUnit(LengthUnit.mm)
 
     /** Picas (1pc = 12pt). */
-    @inline def pc = unit("pc")
+    @inline def pc = mkUnit(LengthUnit.pc)
 
     /** Points (1pt = 1/72 of 1in). */
-    @inline def pt = unit("pt")
+    @inline def pt = mkUnit(LengthUnit.pt)
 
     /**
      * Pixel. Relative to the viewing device.
@@ -49,33 +52,44 @@ object DslBase {
      * For printers and very high resolution screens one CSS pixel implies multiple device pixels, so that the number
      * of pixel per inch stays around 96.
      */
-    @inline def px = unit("px")
+    @inline def px = mkUnit(LengthUnit.px)
 
     /**
      * This unit represents the `font-size` of the root element (e.g. the `font-size` of the `&lt;html&gt;` element).
      * When used on the `font-size` on this root element, it represents its initial value.
      */
-    @inline def rem = unit("rem")
+    @inline def rem = mkUnit(LengthUnit.rem)
 
     /** 1/100th of the height of the viewport. */
-    @inline def vh = unit("vh")
+    @inline def vh = mkUnit(LengthUnit.vh)
 
     /** 1/100th of the minimum value between the height and the width of the viewport. */
-    @inline def vmin = unit("vmin")
+    @inline def vmin = mkUnit(LengthUnit.vmin)
 
     /** 1/100th of the maximum value between the height and the width of the viewport. */
-    @inline def vmax = unit("vmax")
+    @inline def vmax = mkUnit(LengthUnit.vmax)
 
     /** 1/100th of the width of the viewport. */
-    @inline def vw = unit("vw")
+    @inline def vw = mkUnit(LengthUnit.vw)
 
     /** Size as a percentage. */
-    @inline def pct = unit("%")
+    @inline def %% = Percentage(self)
+  }
+  
+  final class DslAttr(val self: Attr) extends AnyVal {
+    /** Untyped assignment */
+    @inline def :=(value: Value): AV = AV(self, value)
   }
 
-  final class DslAttr(val self: Attr) extends AnyVal {
-    @inline def ~(value: Value): AV = AV(self, value)
+  final class DslTypedAttrBase(val self: TypedAttrBase) extends AnyVal {
+    /** Untyped assignment */
+    @inline def :=!(value: Value): AV = AV(self, value)
   }
+
+//  final class DslTypedAttrT[T <: ValueClass](val self: TypedAttrT[T]) extends AnyVal {
+//    /** Typed assignment */
+//    @inline def :=(value: ValueT[T]): AV = self(value)
+//  }
 
   final class DslAV(val self: AV) extends AnyVal {
     @inline def &(b: AV) : AVs = NonEmptyVector(self, b)
@@ -99,14 +113,19 @@ object DslBase {
 import DslBase._
 
 // =====================================================================================================================
-abstract class DslBase {
+abstract class DslBase extends ValueT.Rules {
 
-  @inline implicit final def ValueZero(z: zeroType.T): Value = "0"
+  @inline implicit final def untypedCssValueFromZero   (z: zeroType.T): Value = "0"
+  @inline implicit final def untypedCssValueFromLength (x: Length)    : Value = x.value
+  @inline implicit final def untypedCssValueFromPercent(x: Percentage): Value = x.value
 
   @inline implicit final def autoDslInt (a: Int) : DslInt  = new DslInt(a)
   @inline implicit final def autoDslAttr(a: Attr): DslAttr = new DslAttr(a)
   @inline implicit final def autoDslAV  (a: AV)  : DslAV   = new DslAV(a)
   @inline implicit final def autoDslAVs (a: AVs) : DslAVs  = new DslAVs(a)
+
+  @inline implicit final def autoDslTypedAttrBase(a: TypedAttrBase): DslTypedAttrBase = new DslTypedAttrBase(a)
+  // @inline implicit final def autoDslTypedAttrT[T <: ValueClass](a: TypedAttrT[T]): DslTypedAttrT[T] = new DslTypedAttrT(a)
 
   @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
 

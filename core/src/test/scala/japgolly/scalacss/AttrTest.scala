@@ -3,12 +3,10 @@ package japgolly.scalacss
 import japgolly.nyaya._
 import japgolly.nyaya.test._
 import japgolly.nyaya.test.PropTest._
-import shapeless.test.illTyped
 import utest._
 import TestUtil._
 import AttrCmp.{Overlap, Unrelated}
 import Attrs._
-import ValueT._
 
 object AttrTest extends TestSuite {
 
@@ -59,32 +57,6 @@ object AttrTest extends TestSuite {
       test(textAlign,    "text-align")
       test(borderRadius, "border-radius", "-moz-border-radius", "-webkit-border-radius")
       test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
-    }
-
-    'typedValues {
-      val len = Length(12, LengthUnit.px)
-      val pct = Percentage(25)
-
-      // ValueT[LenPct]
-      verticalAlign(len)
-      verticalAlign(pct)
-      //verticalAlign(0)
-      illTyped("verticalAlign(1)")
-
-      // BrWidth
-      borderLeftWidth(len)
-      borderLeftWidth(Literal.thin)
-      borderLeftWidth(Literal.thick)
-      illTyped("borderLeftWidth(pct)")
-      illTyped("borderLeftWidth(Literal.rtl)")
-
-      // BrWidth
-//      borderLeftStyle(Literal.none)
-//      borderLeftStyle(Literal.dashed)
-      illTyped("borderLeftStyle(len)")
-      illTyped("borderLeftStyle(pct)")
-      illTyped("borderLeftStyle(Literal.rtl)")
-      illTyped("borderLeftStyle(Literal.thin)")
     }
   }
 }
