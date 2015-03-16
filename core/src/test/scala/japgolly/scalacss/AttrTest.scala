@@ -8,7 +8,7 @@ import utest._
 import TestUtil._
 import AttrCmp.{Overlap, Unrelated}
 import Attrs._
-import ValueTypes._
+import ValueT._
 
 object AttrTest extends TestSuite {
 
@@ -62,10 +62,8 @@ object AttrTest extends TestSuite {
     }
 
     'typedValues {
-      val len = LengthI(12, px)
+      val len = Length(12, LengthUnit.px)
       val pct = Percentage(25)
-      import Values._
-//      import Omfg._
 
       // ValueT[LenPct]
       verticalAlign(len)
@@ -75,18 +73,18 @@ object AttrTest extends TestSuite {
 
       // BrWidth
       borderLeftWidth(len)
-      borderLeftWidth(thin)
-      borderLeftWidth(thick)
+      borderLeftWidth(Literal.thin)
+      borderLeftWidth(Literal.thick)
       illTyped("borderLeftWidth(pct)")
-      illTyped("borderLeftWidth(rtl)")
+      illTyped("borderLeftWidth(Literal.rtl)")
 
       // BrWidth
-//      borderLeftStyle(none)
-//      borderLeftStyle(dashed)
+//      borderLeftStyle(Literal.none)
+//      borderLeftStyle(Literal.dashed)
       illTyped("borderLeftStyle(len)")
       illTyped("borderLeftStyle(pct)")
-      illTyped("borderLeftStyle(rtl)")
-      illTyped("borderLeftStyle(thin)")
+      illTyped("borderLeftStyle(Literal.rtl)")
+      illTyped("borderLeftStyle(Literal.thin)")
     }
   }
 }

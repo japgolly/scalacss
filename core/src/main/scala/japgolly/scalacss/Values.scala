@@ -1,232 +1,11 @@
 package japgolly.scalacss
 
-import scala.language.reflectiveCalls
-import shapeless.Witness
+import ValueT.{Color, Percentage}
 
-// @inline final etc to implicit defs etc
+// TODO Make Literal a tagged string
+case class Literal(value: String) //extends AnyVal
 
-sealed case class Literal(value: String) //extends AnyVal
-
-object ValueTypes {
-
-  // These are (mostly) to make TypedAttrBase.av work.
-  // Keep?
-//  implicit def cssValueFromLiteral(s: Literal): Value = s.value
-  //  implicit def cssValueFromLen(x: Length): Value = x.value
-  //  implicit def cssValueFromPct(x: Percentage): Value = x.value
-//  implicit def cssValueFromValueT(v: ValueT[_]): Value = v.value
-
-
-  // -------------------------------------------------------------------------------------------------------------------
-  // Literals
-
-  final val w0   = Witness(0)
-  /*
-  final val w100 = Witness(100)
-  final val w200 = Witness(200)
-  final val w300 = Witness(300)
-  final val w400 = Witness(400)
-  final val w500 = Witness(500)
-  final val w600 = Witness(600)
-  final val w700 = Witness(700)
-  final val w800 = Witness(800)
-  final val w900 = Witness(900)
-  implicit def cssValueFromInt(w: Witness.Lt[Int]): Value = {val i: Int = w.value; i.toString}
-  implicit def cssValueFrom0(x: Int with AnyRef)(implicit ev: x.type =:= w0.T): Value = "0"
-  */
-
-
-  // -------------------------------------------------------------------------------------------------------------------
-  // Rules
-
-  sealed trait ValueClass
-
-  /**
-   * A CSS value that is valid for some context `T`.
-   */
-  final case class ValueT[T <: ValueClass](value: Value) /*extends AnyVal*/ {
-    @inline def retype[A <: ValueClass] = this.asInstanceOf[ValueT[A]]
-  }
-
-  /*
-  sealed trait ValueT[T]
-  def ValueT[T](v: Value) = v.asInstanceOf[ValueT[T]]
-  implicit class ValueTExt[T](val v: ValueT[T]) extends AnyVal {
-    def value     = v.asInstanceOf[Value]
-    def retype[A] = v.asInstanceOf[ValueT[A]]
-  }
-  */
-
-  abstract class Rule[A, B <: ValueClass] {
-//    type B <: ValueClass
-    def apply(a: A): ValueT[B]
-
-    final def >>[C <: ValueClass](f: B >=> C): A ==> C =
-      Rule.applyT(a => f(this(a)))
-  }
-
-  type ==>[From              , To   <: ValueClass] = Rule[From, To]// { type B = To }
-  type >=>[From <: ValueClass, To   <: ValueClass] = ValueT[From] ==> To
-  type <==[To   <: ValueClass, From              ] = From ==> To
-  type <=<[To   <: ValueClass, From <: ValueClass] = From >=> To
-
-  object Rule {
-    def apply[From, To <: ValueClass](f: From => Value): From ==> To =
-      applyT(x => ValueT(f(x)))
-
-    def applyT[From, To <: ValueClass](f: From => ValueT[To]): From ==> To =
-      new Rule[From, To] {
-//        override type B = To
-        override def apply(x: From): ValueT[To] = f(x)
-      }
-
-    def retype[FromT <: ValueClass, To <: ValueClass]: FromT >=> To =
-      applyT(_.retype)
-
-//    def literal[From] = new LiteralB
-//    def literal[To](l: Literal): l.type ==> To = apply(_.value)
-//    def literal[To <: ValueClass] =
-//      new {
-//        def apply[L <: Literal](l: L): L ==> To = Rule(_ => l.value)
-//      }
-    def literal[L <: Literal, To <: ValueClass]: L ==> To = apply(_.value)
-  }
-
-//  trait LowPri {
-    implicit def ruleApply[From, To <: ValueClass](f: From)(implicit r: From ==> To): ValueT[To] = r(f)
-//    implicit def ruleId[A <: ValueClass]: A >=> A = Rule.retype
-//  }
-
-//  object Omfg extends LowPri {
-//    implicit def ruleChain[A, B, C](implicit ab: A ==> B, bc: B >=> C): A ==> C =
-    implicit def ruleChain[A, B <: ValueClass, C <: ValueClass](implicit ab: A ==> B, bc: B >=> C): A ==> C =
-      ab >> bc
-//  }
-
-  // -------------------------------------------------------------------------------------------------------------------
-  // Data types
-
-  sealed abstract class LengthUnit(val value: String)
-  case object cm   extends LengthUnit("cm")
-  case object ch   extends LengthUnit("ch")
-  case object em   extends LengthUnit("em")
-  case object ex   extends LengthUnit("ex")
-  case object in   extends LengthUnit("in")
-  case object mm   extends LengthUnit("mm")
-  case object pc   extends LengthUnit("pc")
-  case object pt   extends LengthUnit("pt")
-  case object px   extends LengthUnit("px")
-  case object rem  extends LengthUnit("rem")
-  case object vh   extends LengthUnit("vh")
-  case object vmin extends LengthUnit("vmin")
-  case object vmax extends LengthUnit("vmax")
-  case object vw   extends LengthUnit("vw")
-
-  sealed trait Length extends ValueClass
-//  case object LengthZ extends Length {
-//    override def value = "0"
-//  }
-  case class LengthI(n: Int, u: LengthUnit) {
-    def value = n.toString + "." + u.value
-  }
-
-  case class Percentage(n: Int) {
-    def value: Value = n.toString + "%"
-  }
-
-  sealed trait Integer extends ValueClass
-  implicit val ruleInteger_I: Integer <== Int = Rule(_.toString)
-
-  sealed trait Number extends ValueClass
-  implicit val ruleNumber_I: Number <== Int    = Rule(_.toString)
-  implicit def ruleNumber_D: Number <== Double = Rule(_.toString)
-
-  sealed trait LenPct extends ValueClass
-  //implicit def ruleLenPct_Z: LenPct <== w0.T       = Rule(_ => "0")
-  implicit val ruleLenPct_L: LenPct <== LengthI    = Rule(_.value)
-  implicit val ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
-
-  sealed trait LenPctNum extends ValueClass
-  implicit val ruleLenPctNum_LP: LenPctNum <=< LenPct = Rule.retype
-  implicit val ruleLenPctNum_N : LenPctNum <=< Number = Rule.retype
-
-  sealed trait BrWidth extends ValueClass
-  implicit val ruleBrWidth_1: BrWidth <== LengthI = Rule(_.value)
-  implicit def ruleBrWidth_2[L <: Literal with Values.BrWidthLit]: BrWidth <== L = Rule.literal
-
-  sealed trait BrStyle extends ValueClass
-  implicit def ruleBrStyle_L[L <: Literal with Values.BrStyleLit]: BrWidth <== L = Rule.literal
-
-  sealed trait Color extends ValueClass
-
-  // -------------------------------------------------------------------------------------------------------------------
-
-  object TypedAttrBase {
-    implicit def `Be the attr you were born to be!`(t: TypedAttrBase): Attr = t.attr
-  }
-
-  abstract class TypedAttrBase {
-    val attr: Attr
-    protected def av(v: Value)   : AV = AV(attr, v)
-    protected def avl(v: Literal): AV = av(v.value)
-
-    /**
-     * The inherit CSS-value causes the element for which it is specified to take the computed value of the property from its parent element. It is allowed on every CSS property.
-     *
-     * For inherited properties, this reinforces the default behavior, and is only needed to override another rule.  For non-inherited properties, this specifies a behavior that typically makes relatively little sense and you may consider using initial instead, or unset on the all property.
-     */
-    def inherit = avl(Values.inherit)
-
-    /** The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property. */
-    def initial = avl(Values.initial)
-
-    /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
-    def unset = avl(Values.unset)
-  }
-
-  abstract class TypedAttrT[T <: ValueClass] extends TypedAttrBase {
-    final def apply(v: ValueT[T]): AV = av(v.value)
-//    final def apply[From](f: From)(implicit r: From ==> T): AV = av(r(f).value)
-  }
-
-  abstract class TypedAttrT0[T <: ValueClass] extends TypedAttrT[T] {
-    final def _0 = av("0")
-  }
-
-  abstract class TypedAttr_BrWidth extends TypedAttrT[BrWidth] {
-    final def thin   = avl(Values.thin)
-    final def medium = avl(Values.medium)
-    final def thick  = avl(Values.thick)
-  }
-
-  abstract class TypedAttr_BrStyle extends TypedAttrBase { //TypedAttrT[BrStyle] {
-    final def none   = avl(Values.none)
-    final def hidden = avl(Values.hidden)
-    final def dotted = avl(Values.dotted)
-    final def dashed = avl(Values.dashed)
-    final def solid  = avl(Values.solid)
-    final def double = avl(Values.double)
-    final def groove = avl(Values.groove)
-    final def ridge  = avl(Values.ridge)
-    final def inset  = avl(Values.inset)
-    final def outset = avl(Values.outset)
-  }
-
-  abstract class TypedAttr_Color extends TypedAttrT[Color] with ColorOps[AV] {
-    override protected final def mkColor(s: String): AV = av(s)
-    final def apply(literal: String) = av(literal)
-  }
-
-  abstract class TypedAttr_Shape extends TypedAttrBase {
-    final def rect(top: ValueT[Length], right: ValueT[Length], bottom: ValueT[Length], left: ValueT[Length]) =
-      av(s"rect(${top.value},${right.value},${bottom.value},${left.value})")
-  }
-
-}
-import ValueTypes._
-// =====================================================================================================================
-object Values {
-
+object Literal {
   @inline def absolute              = Literal("absolute")
   @inline def active                = Literal("active")
   @inline def alias                 = Literal("alias")
@@ -483,13 +262,15 @@ object Values {
   object outset extends Literal("outset") with BrStyleLit
 }
 
+// =====================================================================================================================
+
 object Color extends ColorOps[ValueT[Color]] {
   override protected def mkColor(s: String): ValueT[Color] =
     apply(s)
 
   // TODO A color macro would be good like #"639" or c"#dedede". It could verify that its valid hex x 3 or 6.
 
-  @inline def apply(v: String): ValueT[Color] =
+  @inline def apply(v: String): ValueT[ValueT.Color] =
     ValueT(v)
 }
 
@@ -511,8 +292,18 @@ trait ColorOps[Out] {
   final def hsla(h: Int, s: Percentage, l: Percentage, a: Double): Out =
     mkColor(s"hsla($h,${s.value},${l.value},$a)")
 
-  final def currentColor         = mkColor("currentColor")
-  final def transparent          = mkColor("transparent")
+  /**
+   * The currentColor keyword represents the calculated value of the element's color property. It allows to make the color properties inherited by properties or child's element properties that do not inherit it by default.
+   *
+   * It can also be used on properties that inherit the calculated value of the element's color property and will be equivalent to the inherit keyword on these elements, if any.
+   */
+  final def currentColor = mkColor("currentColor")
+
+  /**
+   * The transparent keyword represents a fully transparent color, i.e. the color seen will be the background color.
+   * Technically, it is a black with alpha channel at its minimum value and is a shortcut for `rgba(0,0,0,0)`.
+   */
+  final def transparent = mkColor("transparent")
 
   final def aliceblue            = mkColor("aliceblue")
   final def antiquewhite         = mkColor("antiquewhite")

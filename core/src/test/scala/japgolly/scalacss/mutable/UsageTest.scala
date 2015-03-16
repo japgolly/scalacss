@@ -4,7 +4,7 @@ import utest._
 import japgolly.scalacss._
 import TestUtil._
 import Register.{NameGen, ErrorHandler}
-
+/*
 object UsageTest extends TestSuite {
 
   def newRegister = new Register(NameGen.numbered("demo-"), ErrorHandler.noisy)
@@ -107,3 +107,4 @@ object UsageTest extends TestSuite {
     assertEq(SS.indent(3).className.value, "demo-0006")
   }
 }
+*/

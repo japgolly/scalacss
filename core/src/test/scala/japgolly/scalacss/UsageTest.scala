@@ -6,7 +6,7 @@ import TestUtil._
 import Attrs._
 import Dsl._
 import Pseudo._
-
+/*
 object UsageTest extends TestSuite {
   implicit def composition = Compose.safe
 
@@ -69,3 +69,4 @@ object UsageTest extends TestSuite {
     }
   }
 }
+*/
