@@ -1,0 +1,7 @@
+animation	<single_animation_name> || <time> || <timing_function> || <time> || <single_animation_iteration_count> || <single_animation_direction> || <single_animation_fill_mode> || <single_animation_play_state>
+border_bottom	<br_width> || <br_style> || <color>
+border	 <br_width> || <br_style> || <color>
+border_left	<br_width> || <br_style> || <color>
+border_right	<br_width> || <br_style> || <color>
+border_top	<br_width> || <br_style> || <color>
+shape_outside	none | <shape_box> || <basic_shape> | <image>
