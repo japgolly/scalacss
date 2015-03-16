@@ -15,7 +15,10 @@ object Values {
   final val w800 = Witness(800)
   final val w900 = Witness(900)
 
-  final case class Str(value: Value)
+  final case class Str(value: String)
+
+  implicit def cssValueFromStr(s: Str): Value = s.value
+  implicit def cssValueFromInt(w: Witness.Lt[Int]): Value = {val i: Int = w.value; i.toString}
 
   final val absolute              = Str("absolute")
   final val active                = Str("active")
@@ -204,6 +207,7 @@ object Values {
   final val space_between         = Str("space-between")
   final val s_resize              = Str("s-resize")
   final val start                 = Str("start")
+  final val start_end             = Str("start end")
   final val static                = Str("static")
   final val status_bar            = Str("status-bar")
   final val sticky                = Str("sticky")
@@ -211,7 +215,7 @@ object Values {
   final val strict                = Str("strict")
   final val style                 = Str("style")
   final val sub                   = Str("sub")
-  final val `super`               = Str("super")
+  final val super_                = Str("super")
   final val sw_resize             = Str("sw-resize")
   final val table                 = Str("table")
   final val table_cell            = Str("table-cell")
@@ -249,4 +253,24 @@ object Values {
   final val zoom_in               = Str("zoom-in")
   final val zoom_out              = Str("zoom-out")
 
+  object TypedAttrBase {
+    implicit def `Be the attr you want to be!`(t: TypedAttrBase): Attr = t.attr
+  }
+  abstract class TypedAttrBase {
+    val attr: Attr
+    protected def av[V <% Value](v: V): AV = AV(attr, v)
+
+    /**
+     * The inherit CSS-value causes the element for which it is specified to take the computed value of the property from its parent element. It is allowed on every CSS property.
+     *
+     * For inherited properties, this reinforces the default behavior, and is only needed to override another rule.  For non-inherited properties, this specifies a behavior that typically makes relatively little sense and you may consider using initial instead, or unset on the all property.
+     */
+    def inherit = av(Values.inherit)
+
+    /** The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property. */
+    def initial = av(Values.initial)
+
+    /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
+    def unset = av(Values.unset)
+  }
 }

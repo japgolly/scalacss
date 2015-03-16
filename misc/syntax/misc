@@ -8,7 +8,7 @@ cat syntax.tsv | perl -pe 's/^.+\t//g; s/["'"'"'‘’]//g; s/[\s|?+[\]]+/\n/g' 
 cat syntax.tsv | perl -pe 's/^.+\t//g; s/["'"'"'‘’]//g; s/[\s|?+[\]]+/\n/g' | sort -u | egrep --color=none '^[a-z0-9-]+$'
 
 
-Extract set 1
+* Extract set 1
 perl -pe 's/-/_/g' syntax.tsv | grep -P '^\S+\t[a-zA-Z0-9 |_]+$' > ext1
 
 
