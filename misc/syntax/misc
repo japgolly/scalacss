@@ -1,7 +1,7 @@
 * Simple seeming 129
 cat syntax.tsv | sed '/^[a-zA-Z0-9 \t|<>-]*$/!d' | perl -pe 's/.+\t\s*//' | sort | uniq -c
 
-* Tokens
+* Tokens and values
 cat syntax.tsv | perl -pe 's/^.+\t//g; s/["'"'"'‘’]//g; s/[\s|?+[\]]+/\n/g' | sort -u
 
 * Singleton values
@@ -10,5 +10,12 @@ cat syntax.tsv | perl -pe 's/^.+\t//g; s/["'"'"'‘’]//g; s/[\s|?+[\]]+/\n/g' 
 
 * Extract set 1
 perl -pe 's/-/_/g' syntax.tsv | grep -P '^\S+\t[a-zA-Z0-9 |_]+$' > ext1
+
+* Extract set 2
+perl -pe 's/-/_/g' syntax.tsv | grep -vP '^\S+\t[a-zA-Z0-9 |_]+$' | sort > ext2a
+cat ext2a | grep -P '^[\ta-zA-Z_|<> ]+$' | fgrep -v '||' > ext2b
+
+* Tokens
+cat ext2a | perl -pe 's/</\n</g; s/>/>\n/g' | egrep '^<[^‘"/'"'"']+>$' | sort | uniq -c
 
 

@@ -1,7 +1,7 @@
 package japgolly.scalacss
 
 import scalaz.{Need, NonEmptyList}
-import Values.TypedAttrBase
+import ValueTypes._
 
 object Attrs {
 
@@ -55,12 +55,12 @@ object Attrs {
    */
   object alignContent extends TypedAttrBase {
     override val attr = Attr.real("align-content", CanIUse.flexbox)
-    final def center        = av(Values.center)
-    final def flex_end      = av(Values.flex_end)
-    final def flex_start    = av(Values.flex_start)
-    final def space_around  = av(Values.space_around)
-    final def space_between = av(Values.space_between)
-    final def stretch       = av(Values.stretch)
+    def center        = avl(Values.center)
+    def flex_end      = avl(Values.flex_end)
+    def flex_start    = avl(Values.flex_start)
+    def space_around  = avl(Values.space_around)
+    def space_between = avl(Values.space_between)
+    def stretch       = avl(Values.stretch)
   }
 
   /**
@@ -70,11 +70,11 @@ object Attrs {
    */
   object alignItems extends TypedAttrBase {
     override val attr = Attr.real("align-items", CanIUse.flexbox)
-    final def baseline   = av(Values.baseline)
-    final def center     = av(Values.center)
-    final def flex_end   = av(Values.flex_end)
-    final def flex_start = av(Values.flex_start)
-    final def stretch    = av(Values.stretch)
+    def baseline   = avl(Values.baseline)
+    def center     = avl(Values.center)
+    def flex_end   = avl(Values.flex_end)
+    def flex_start = avl(Values.flex_start)
+    def stretch    = avl(Values.stretch)
   }
 
   /**
@@ -84,12 +84,12 @@ object Attrs {
    */
   object alignSelf extends TypedAttrBase {
     override val attr = Attr.real("align-self", CanIUse.flexbox)
-    final def auto       = av(Values.auto)
-    final def baseline   = av(Values.baseline)
-    final def center     = av(Values.center)
-    final def flex_end   = av(Values.flex_end)
-    final def flex_start = av(Values.flex_start)
-    final def stretch    = av(Values.stretch)
+    def auto       = avl(Values.auto)
+    def baseline   = avl(Values.baseline)
+    def center     = avl(Values.center)
+    def flex_end   = avl(Values.flex_end)
+    def flex_start = avl(Values.flex_start)
+    def stretch    = avl(Values.stretch)
   }
 
   /**
@@ -155,8 +155,8 @@ object Attrs {
    */
   object backfaceVisibility extends TypedAttrBase {
     override val attr = Attr.real("backface-visibility", CanIUse2.transforms)
-    final def hidden  = av(Values.hidden)
-    final def visible = av(Values.visible)
+    def hidden  = avl(Values.hidden)
+    def visible = avl(Values.visible)
   }
 
   /**
@@ -185,7 +185,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-color">MDN</a>
    */
-  final val backgroundColor = Attr.real("background-color")
+  object backgroundColor extends TypedAttr_Color {
+    override val attr = Attr.real("background-color")
+  }
 
   /**
    * The CSS background-image property sets one or several background images for an element. The images are drawn on stacking context layers on top of each other. The first layer specified is drawn as if it is closest to the user. The borders of the element are then drawn on top of them, and the background-color is drawn beneath them.
@@ -227,7 +229,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-color">MDN</a>
    */
-  final val borderBottomColor = Attr.real("border-bottom-color")
+  object borderBottomColor extends TypedAttr_Color {
+    override val attr = Attr.real("border-bottom-color")
+  }
 
   /**
    * The border-bottom-left-radius CSS property sets the rounding of the bottom-left corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0 no rounding is done and the corner is square.
@@ -248,14 +252,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-style">MDN</a>
    */
-  final val borderBottomStyle = Attr.real("border-bottom-style")
+  object borderBottomStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("border-bottom-style")
+  }
 
   /**
    * The border-bottom-width CSS property sets the width of the bottom border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-width">MDN</a>
    */
-  final val borderBottomWidth = Attr.real("border-bottom-width")
+  object borderBottomWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("border-bottom-width")
+  }
 
   /**
    * The border-collapse CSS property selects a table's border model. This has a big influence on the look and style of the table cells.
@@ -264,8 +272,8 @@ object Attrs {
    */
   object borderCollapse extends TypedAttrBase {
     override val attr = Attr.real("border-collapse")
-    final def collapse = av(Values.collapse)
-    final def separate = av(Values.separate)
+    def collapse = avl(Values.collapse)
+    def separate = avl(Values.separate)
   }
 
   /**
@@ -308,42 +316,54 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left-color">MDN</a>
    */
-  final val borderLeftColor = Attr.real("border-left-color")
+  object borderLeftColor extends TypedAttr_Color {
+    override val attr = Attr.real("border-left-color")
+  }
 
   /**
    * The border-left-style CSS property sets the line style of the left border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left-style">MDN</a>
    */
-  final val borderLeftStyle = Attr.real("border-left-style")
+  object borderLeftStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("border-left-style")
+  }
 
   /**
    * The border-left-width CSS property sets the width of the left border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left-width">MDN</a>
    */
-  final val borderLeftWidth = Attr.real("border-left-width")
+  object borderLeftWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("border-left-width")
+  }
 
   /**
    * The border-right-color CSS property sets the color of the right border of an element. Note that in many cases the shorthand CSS properties  border-color or border-right are more convenient and preferable.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right-color">MDN</a>
    */
-  final val borderRightColor = Attr.real("border-right-color")
+  object borderRightColor extends TypedAttr_Color {
+    override val attr = Attr.real("border-right-color")
+  }
 
   /**
    * The border-right-style CSS property sets the line style of the right border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right-style">MDN</a>
    */
-  final val borderRightStyle = Attr.real("border-right-style")
+  object borderRightStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("border-right-style")
+  }
 
   /**
    * The border-right-width CSS property sets the width of the right border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right-width">MDN</a>
    */
-  final val borderRightWidth = Attr.real("border-right-width")
+  object borderRightWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("border-right-width")
+  }
 
   /**
    * The border-spacing CSS property specifies the distance between the borders of adjacent cells (only for the separated borders model). This is equivalent to the cellspacing attribute in presentational HTML, but an optional second value can be used to set different horizontal and vertical spacing.
@@ -357,7 +377,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-color">MDN</a>
    */
-  final val borderTopColor = Attr.real("border-top-color")
+  object borderTopColor extends TypedAttr_Color {
+    override val attr = Attr.real("border-top-color")
+  }
 
   /**
    * The border-top-left-radius CSS property sets the rounding of the top-left corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0,no rounding is done and the corner is square.
@@ -378,21 +400,28 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-style">MDN</a>
    */
-  final val borderTopStyle = Attr.real("border-top-style")
+  object borderTopStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("border-top-style")
+  }
 
   /**
    * The border-top-width CSS property sets the width of the top border of a box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-width">MDN</a>
    */
-  final val borderTopWidth = Attr.real("border-top-width")
+  object borderTopWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("border-top-width")
+  }
 
   /**
    * The bottom CSS property participates in specifying the position of positioned elements.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/bottom">MDN</a>
    */
-  final val bottom = Attr.real("bottom")
+  object bottom extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("bottom")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The box-decoration-break CSS property specifies how the background, padding, border, border-image, box-shadow, margin and clip of an element is applied when the box for the element is fragmented.  Fragmentation occurs when an inline box wraps onto multiple lines, or when a block spans more than one column inside a column layout container, or spans a page break when printed.  Each piece of the rendering for the element is called a fragment.
@@ -401,8 +430,8 @@ object Attrs {
    */
   object boxDecorationBreak extends TypedAttrBase {
     override val attr = Attr.real("box-decoration-break", CanIUse.boxdecorationbreak)
-    final def clone_ = av(Values.clone_)
-    final def slice  = av(Values.slice)
+    def clone_ = avl(Values.clone_)
+    def slice  = avl(Values.slice)
   }
 
   /**
@@ -429,9 +458,9 @@ object Attrs {
    */
   object boxSizing extends TypedAttrBase {
     override val attr = Attr.real("box-sizing", CanIUse.css3Boxsizing)
-    final def border_box  = av(Values.border_box)
-    final def content_box = av(Values.content_box)
-    final def padding_box = av(Values.padding_box)
+    def border_box  = avl(Values.border_box)
+    def content_box = avl(Values.content_box)
+    def padding_box = avl(Values.padding_box)
   }
 
   /**
@@ -441,15 +470,15 @@ object Attrs {
    */
   object breakAfter extends TypedAttrBase {
     override val attr = Attr.real("break-after")
-    final def always       = av(Values.always)
-    final def auto         = av(Values.auto)
-    final def avoid        = av(Values.avoid)
-    final def avoid_column = av(Values.avoid_column)
-    final def avoid_page   = av(Values.avoid_page)
-    final def column       = av(Values.column)
-    final def left         = av(Values.left)
-    final def page         = av(Values.page)
-    final def right        = av(Values.right)
+    def always       = avl(Values.always)
+    def auto         = avl(Values.auto)
+    def avoid        = avl(Values.avoid)
+    def avoid_column = avl(Values.avoid_column)
+    def avoid_page   = avl(Values.avoid_page)
+    def column       = avl(Values.column)
+    def left         = avl(Values.left)
+    def page         = avl(Values.page)
+    def right        = avl(Values.right)
   }
 
   /**
@@ -459,15 +488,15 @@ object Attrs {
    */
   object breakBefore extends TypedAttrBase {
     override val attr = Attr.real("break-before")
-    final def always       = av(Values.always)
-    final def auto         = av(Values.auto)
-    final def avoid        = av(Values.avoid)
-    final def avoid_column = av(Values.avoid_column)
-    final def avoid_page   = av(Values.avoid_page)
-    final def column       = av(Values.column)
-    final def left         = av(Values.left)
-    final def page         = av(Values.page)
-    final def right        = av(Values.right)
+    def always       = avl(Values.always)
+    def auto         = avl(Values.auto)
+    def avoid        = avl(Values.avoid)
+    def avoid_column = avl(Values.avoid_column)
+    def avoid_page   = avl(Values.avoid_page)
+    def column       = avl(Values.column)
+    def left         = avl(Values.left)
+    def page         = avl(Values.page)
+    def right        = avl(Values.right)
   }
 
   /**
@@ -477,10 +506,10 @@ object Attrs {
    */
   object breakInside extends TypedAttrBase {
     override val attr = Attr.real("break-inside")
-    final def auto         = av(Values.auto)
-    final def avoid        = av(Values.avoid)
-    final def avoid_column = av(Values.avoid_column)
-    final def avoid_page   = av(Values.avoid_page)
+    def auto         = avl(Values.auto)
+    def avoid        = avl(Values.avoid)
+    def avoid_column = avl(Values.avoid_column)
+    def avoid_page   = avl(Values.avoid_page)
   }
 
   /**
@@ -490,12 +519,12 @@ object Attrs {
    */
   object captionSide extends TypedAttrBase {
     override val attr = Attr.real("caption-side")
-    final def block_end    = av(Values.block_end)
-    final def block_start  = av(Values.block_start)
-    final def bottom       = av(Values.bottom)
-    final def inline_end   = av(Values.inline_end)
-    final def inline_start = av(Values.inline_start)
-    final def top          = av(Values.top)
+    def block_end    = avl(Values.block_end)
+    def block_start  = avl(Values.block_start)
+    def bottom       = avl(Values.bottom)
+    def inline_end   = avl(Values.inline_end)
+    def inline_start = avl(Values.inline_start)
+    def top          = avl(Values.top)
   }
 
   /**
@@ -505,10 +534,10 @@ object Attrs {
    */
   object clear extends TypedAttrBase {
     override val attr = Attr.real("clear")
-    final def both  = av(Values.both)
-    final def left  = av(Values.left)
-    final def none  = av(Values.none)
-    final def right = av(Values.right)
+    def both  = avl(Values.both)
+    def left  = avl(Values.left)
+    def none  = avl(Values.none)
+    def right = avl(Values.right)
   }
 
   /**
@@ -516,7 +545,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clip">MDN</a>
    */
-  final val clip = Attr.real("clip")
+  object clip extends TypedAttr_Shape {
+    override val attr = Attr.real("clip")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The clip-path property prevents a portion of an element from drawing by defining a clipping region.
@@ -530,14 +562,19 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color">MDN</a>
    */
-  final val color = Attr.real("color")
+  object color extends TypedAttr_Color {
+    override val attr = Attr.real("color")
+  }
 
   /**
    * The column-count CSS property describes the number of columns of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-count">MDN</a>
    */
-  final val columnCount = Attr.real("column-count", CanIUse.multicolumn)
+  object columnCount extends TypedAttrT[Number] {
+    override val attr = Attr.real("column-count", CanIUse.multicolumn)
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The column-fill CSS property controls how contents are partitioned into columns. Contents are either balanced, which means that contents in all columns will have the same height or, when using auto, just take up the room the content needs.
@@ -546,8 +583,8 @@ object Attrs {
    */
   object columnFill extends TypedAttrBase {
     override val attr = Attr.real("column-fill", CanIUse.multicolumn)
-    final def auto    = av(Values.auto)
-    final def balance = av(Values.balance)
+    def auto    = avl(Values.auto)
+    def balance = avl(Values.balance)
   }
 
   /**
@@ -555,28 +592,37 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap">MDN</a>
    */
-  final val columnGap = Attr.real("column-gap", CanIUse.multicolumn)
+  object columnGap extends TypedAttrT0[Length] {
+    override val attr = Attr.real("column-gap", CanIUse.multicolumn)
+    def normal = avl(Values.normal)
+  }
 
   /**
    * The column-rule-color CSS property lets you set the color of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-color">MDN</a>
    */
-  final val columnRuleColor = Attr.real("column-rule-color", CanIUse.multicolumn)
+  object columnRuleColor extends TypedAttr_Color {
+    override val attr = Attr.real("column-rule-color", CanIUse.multicolumn)
+  }
 
   /**
    * The column-rule-style CSS property lets you set the style of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-style">MDN</a>
    */
-  final val columnRuleStyle = Attr.real("column-rule-style", CanIUse.multicolumn)
+  object columnRuleStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("column-rule-style", CanIUse.multicolumn)
+  }
 
   /**
    * The column-rule-width CSS property lets you set the width of the rule drawn between columns in multi-column layouts.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule-width">MDN</a>
    */
-  final val columnRuleWidth = Attr.real("column-rule-width", CanIUse.multicolumn)
+  object columnRuleWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("column-rule-width", CanIUse.multicolumn)
+  }
 
   /**
    * The column-span CSS property makes it possible for an element to span across all columns when its value is set to all. An element that spans more than one column is called a spanning element.
@@ -585,8 +631,8 @@ object Attrs {
    */
   object columnSpan extends TypedAttrBase {
     override val attr = Attr.real("column-span", CanIUse.multicolumn)
-    final def all  = av(Values.all)
-    final def none = av(Values.none)
+    def all  = avl(Values.all)
+    def none = avl(Values.none)
   }
 
   /**
@@ -594,7 +640,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-width">MDN</a>
    */
-  final val columnWidth = Attr.real("column-width", CanIUse.multicolumn)
+  object columnWidth extends TypedAttrT0[Length] {
+    override val attr = Attr.real("column-width", CanIUse.multicolumn)
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The content CSS property is used with the ::before and ::after pseudo-elements to generate content in an element. Objects inserted using the content property are anonymous replaced elements.
@@ -631,8 +680,8 @@ object Attrs {
    */
   object direction extends TypedAttrBase {
     override val attr = Attr.real("direction")
-    final def ltr = av(Values.ltr)
-    final def rtl = av(Values.rtl)
+    def ltr = avl(Values.ltr)
+    def rtl = avl(Values.rtl)
   }
 
   /**
@@ -642,31 +691,31 @@ object Attrs {
    */
   object display extends TypedAttrBase {
     override val attr = Attr.real("display")
-    final def block               = av(Values.block)
-    final def contents            = av(Values.contents)
-    final def flex                = av(Values.flex)
-    final def grid                = av(Values.grid)
-    final def inline              = av(Values.inline)
-    final def inline_block        = av(Values.inline_block)
-    final def inline_flex         = av(Values.inline_flex)
-    final def inline_grid         = av(Values.inline_grid)
-    final def inline_table        = av(Values.inline_table)
-    final def list_item           = av(Values.list_item)
-    final def none                = av(Values.none)
-    final def ruby                = av(Values.ruby)
-    final def ruby_base           = av(Values.ruby_base)
-    final def ruby_base_container = av(Values.ruby_base_container)
-    final def ruby_text           = av(Values.ruby_text)
-    final def ruby_text_container = av(Values.ruby_text_container)
-    final def run_in              = av(Values.run_in)
-    final def table               = av(Values.table)
-    final def table_cell          = av(Values.table_cell)
-    final def table_column        = av(Values.table_column)
-    final def table_column_group  = av(Values.table_column_group)
-    final def table_footer_group  = av(Values.table_footer_group)
-    final def table_header_group  = av(Values.table_header_group)
-    final def table_row           = av(Values.table_row)
-    final def table_row_group     = av(Values.table_row_group)
+    def block               = avl(Values.block)
+    def contents            = avl(Values.contents)
+    def flex                = avl(Values.flex)
+    def grid                = avl(Values.grid)
+    def inline              = avl(Values.inline)
+    def inline_block        = avl(Values.inline_block)
+    def inline_flex         = avl(Values.inline_flex)
+    def inline_grid         = avl(Values.inline_grid)
+    def inline_table        = avl(Values.inline_table)
+    def list_item           = avl(Values.list_item)
+    def none                = avl(Values.none)
+    def ruby                = avl(Values.ruby)
+    def ruby_base           = avl(Values.ruby_base)
+    def ruby_base_container = avl(Values.ruby_base_container)
+    def ruby_text           = avl(Values.ruby_text)
+    def ruby_text_container = avl(Values.ruby_text_container)
+    def run_in              = avl(Values.run_in)
+    def table               = avl(Values.table)
+    def table_cell          = avl(Values.table_cell)
+    def table_column        = avl(Values.table_column)
+    def table_column_group  = avl(Values.table_column_group)
+    def table_footer_group  = avl(Values.table_footer_group)
+    def table_header_group  = avl(Values.table_header_group)
+    def table_row           = avl(Values.table_row)
+    def table_row_group     = avl(Values.table_row_group)
   }
 
   /**
@@ -676,8 +725,8 @@ object Attrs {
    */
   object emptyCells extends TypedAttrBase {
     override val attr = Attr.real("empty-cells")
-    final def hide = av(Values.hide)
-    final def show = av(Values.show)
+    def hide = avl(Values.hide)
+    def show = avl(Values.show)
   }
 
   /**
@@ -701,10 +750,10 @@ object Attrs {
    */
   object flexDirection extends TypedAttrBase {
     override val attr = Attr.real("flex-direction", CanIUse.flexbox)
-    final def column         = av(Values.column)
-    final def column_reverse = av(Values.column_reverse)
-    final def row            = av(Values.row)
-    final def row_reverse    = av(Values.row_reverse)
+    def column         = avl(Values.column)
+    def column_reverse = avl(Values.column_reverse)
+    def row            = avl(Values.row)
+    def row_reverse    = avl(Values.row_reverse)
   }
 
   /**
@@ -712,14 +761,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow">MDN</a>
    */
-  final val flexGrow = Attr.real("flex-grow", CanIUse.flexbox)
+  object flexGrow extends TypedAttrT[Number] {
+    override val attr = Attr.real("flex-grow", CanIUse.flexbox)
+  }
 
   /**
    * The CSS flex-shrink property specifies the flex shrink factor of a flex item.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink">MDN</a>
    */
-  final val flexShrink = Attr.real("flex-shrink", CanIUse.flexbox)
+  object flexShrink extends TypedAttrT[Number] {
+    override val attr = Attr.real("flex-shrink", CanIUse.flexbox)
+  }
 
   /**
    * The CSS flex-wrap property specifies whether the children are forced into a single line or if the items can be flowed on multiple lines.
@@ -728,9 +781,9 @@ object Attrs {
    */
   object flexWrap extends TypedAttrBase {
     override val attr = Attr.real("flex-wrap", CanIUse.flexbox)
-    final def nowrap       = av(Values.nowrap)
-    final def wrap         = av(Values.wrap)
-    final def wrap_reverse = av(Values.wrap_reverse)
+    def nowrap       = avl(Values.nowrap)
+    def wrap         = avl(Values.wrap)
+    def wrap_reverse = avl(Values.wrap_reverse)
   }
 
   /**
@@ -740,9 +793,9 @@ object Attrs {
    */
   object float extends TypedAttrBase {
     override val attr = Attr.real("float")
-    final def left  = av(Values.left)
-    final def none  = av(Values.none)
-    final def right = av(Values.right)
+    def left  = avl(Values.left)
+    def none  = avl(Values.none)
+    def right = avl(Values.right)
   }
 
   /**
@@ -780,9 +833,9 @@ object Attrs {
    */
   object fontKerning extends TypedAttrBase {
     override val attr = Attr.real("font-kerning")
-    final def auto   = av(Values.auto)
-    final def none   = av(Values.none)
-    final def normal = av(Values.normal)
+    def auto   = avl(Values.auto)
+    def none   = avl(Values.none)
+    def normal = avl(Values.normal)
   }
 
   /**
@@ -797,14 +850,28 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size">MDN</a>
    */
-  final val fontSize = Attr.real("font-size")
+  object fontSize extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("font-size")
+    def large    = avl(Values.large)
+    def larger   = avl(Values.larger)
+    def medium   = avl(Values.medium)
+    def small    = avl(Values.small)
+    def smaller  = avl(Values.smaller)
+    def s_small  = avl(Values.s_small)
+    def x_large  = avl(Values.x_large)
+    def xx_small = avl(Values.xx_small)
+    def xx_large = avl(Values.xx_large)
+  }
 
   /**
    * The font-size-adjust CSS property specifies that font size should be chosen based on the height of lowercase letters rather than the height of capital letters.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size-adjust">MDN</a>
    */
-  final val fontSizeAdjust = Attr.real("font-size-adjust")
+  object fontSizeAdjust extends TypedAttrT[Number] {
+    override val attr = Attr.real("font-size-adjust")
+    def none = avl(Values.none)
+  }
 
   /**
    * The font-stretch CSS property selects a normal, condensed, or expanded face from a font.
@@ -813,15 +880,15 @@ object Attrs {
    */
   object fontStretch extends TypedAttrBase {
     override val attr = Attr.real("font-stretch", CanIUse.fontStretch)
-    final def condensed       = av(Values.condensed)
-    final def expanded        = av(Values.expanded)
-    final def extra_condensed = av(Values.extra_condensed)
-    final def extra_expanded  = av(Values.extra_expanded)
-    final def normal          = av(Values.normal)
-    final def semi_condensed  = av(Values.semi_condensed)
-    final def semi_expanded   = av(Values.semi_expanded)
-    final def ultra_condensed = av(Values.ultra_condensed)
-    final def ultra_expanded  = av(Values.ultra_expanded)
+    def condensed       = avl(Values.condensed)
+    def expanded        = avl(Values.expanded)
+    def extra_condensed = avl(Values.extra_condensed)
+    def extra_expanded  = avl(Values.extra_expanded)
+    def normal          = avl(Values.normal)
+    def semi_condensed  = avl(Values.semi_condensed)
+    def semi_expanded   = avl(Values.semi_expanded)
+    def ultra_condensed = avl(Values.ultra_condensed)
+    def ultra_expanded  = avl(Values.ultra_expanded)
   }
 
   /**
@@ -831,9 +898,9 @@ object Attrs {
    */
   object fontStyle extends TypedAttrBase {
     override val attr = Attr.real("font-style")
-    final def italic  = av(Values.italic)
-    final def normal  = av(Values.normal)
-    final def oblique = av(Values.oblique)
+    def italic  = avl(Values.italic)
+    def normal  = avl(Values.normal)
+    def oblique = avl(Values.oblique)
   }
 
   /**
@@ -857,13 +924,13 @@ object Attrs {
    */
   object fontVariantCaps extends TypedAttrBase {
     override val attr = Attr.real("font-variant-caps")
-    final def all_petite_caps = av(Values.all_petite_caps)
-    final def all_small_caps  = av(Values.all_small_caps)
-    final def normal          = av(Values.normal)
-    final def petite_caps     = av(Values.petite_caps)
-    final def small_caps      = av(Values.small_caps)
-    final def titling_caps    = av(Values.titling_caps)
-    final def unicase         = av(Values.unicase)
+    def all_petite_caps = avl(Values.all_petite_caps)
+    def all_small_caps  = avl(Values.all_small_caps)
+    def normal          = avl(Values.normal)
+    def petite_caps     = avl(Values.petite_caps)
+    def small_caps      = avl(Values.small_caps)
+    def titling_caps    = avl(Values.titling_caps)
+    def unicase         = avl(Values.unicase)
   }
 
   /**
@@ -894,9 +961,9 @@ object Attrs {
    */
   object fontVariantPosition extends TypedAttrBase {
     override val attr = Attr.real("font-variant-position")
-    final def normal = av(Values.normal)
-    final def sub    = av(Values.sub)
-    final def super_ = av(Values.super_)
+    def normal = avl(Values.normal)
+    def sub    = avl(Values.sub)
+    def super_ = avl(Values.super_)
   }
 
   /**
@@ -906,19 +973,19 @@ object Attrs {
    */
   object fontWeight extends TypedAttrBase {
     override val attr = Attr.real("font-weight")
-    final def _100    = av("100")
-    final def _200    = av("200")
-    final def _300    = av("300")
-    final def _400    = av("400")
-    final def _500    = av("500")
-    final def _600    = av("600")
-    final def _700    = av("700")
-    final def _800    = av("800")
-    final def _900    = av("900")
-    final def bold    = av(Values.bold)
-    final def bolder  = av(Values.bolder)
-    final def lighter = av(Values.lighter)
-    final def normal  = av(Values.normal)
+    def _100    = av("100")
+    def _200    = av("200")
+    def _300    = av("300")
+    def _400    = av("400")
+    def _500    = av("500")
+    def _600    = av("600")
+    def _700    = av("700")
+    def _800    = av("800")
+    def _900    = av("900")
+    def bold    = avl(Values.bold)
+    def bolder  = avl(Values.bolder)
+    def lighter = avl(Values.lighter)
+    def normal  = avl(Values.normal)
   }
 
   /**
@@ -1012,9 +1079,9 @@ object Attrs {
    */
   object hyphens extends TypedAttrBase {
     override val attr = Attr.real("hyphens", CanIUse.hyphens)
-    final def auto   = av(Values.auto)
-    final def manual = av(Values.manual)
-    final def none   = av(Values.none)
+    def auto   = avl(Values.auto)
+    def manual = avl(Values.manual)
+    def none   = avl(Values.none)
   }
 
   /**
@@ -1024,9 +1091,9 @@ object Attrs {
    */
   object imageRendering extends TypedAttrBase {
     override val attr = Attr.real("image-rendering")
-    final def auto        = av(Values.auto)
-    final def crisp_edges = av(Values.crisp_edges)
-    final def pixelated   = av(Values.pixelated)
+    def auto        = avl(Values.auto)
+    def crisp_edges = avl(Values.crisp_edges)
+    def pixelated   = avl(Values.pixelated)
   }
 
   /**
@@ -1050,11 +1117,11 @@ object Attrs {
    */
   object imeMode extends TypedAttrBase {
     override val attr = Attr.real("ime-mode")
-    final def active   = av(Values.active)
-    final def auto     = av(Values.auto)
-    final def disabled = av(Values.disabled)
-    final def inactive = av(Values.inactive)
-    final def normal   = av(Values.normal)
+    def active   = avl(Values.active)
+    def auto     = avl(Values.auto)
+    def disabled = avl(Values.disabled)
+    def inactive = avl(Values.inactive)
+    def normal   = avl(Values.normal)
   }
 
   /**
@@ -1078,8 +1145,8 @@ object Attrs {
    */
   object isolation extends TypedAttrBase {
     override val attr = Attr.real("isolation")
-    final def auto    = av(Values.auto)
-    final def isolate = av(Values.isolate)
+    def auto    = avl(Values.auto)
+    def isolate = avl(Values.isolate)
   }
 
   /**
@@ -1089,11 +1156,11 @@ object Attrs {
    */
   object justifyContent extends TypedAttrBase {
     override val attr = Attr.real("justify-content", CanIUse.flexbox)
-    final def center        = av(Values.center)
-    final def flex_end      = av(Values.flex_end)
-    final def flex_start    = av(Values.flex_start)
-    final def space_around  = av(Values.space_around)
-    final def space_between = av(Values.space_between)
+    def center        = avl(Values.center)
+    def flex_end      = avl(Values.flex_end)
+    def flex_start    = avl(Values.flex_start)
+    def space_around  = avl(Values.space_around)
+    def space_between = avl(Values.space_between)
   }
 
   /**
@@ -1101,14 +1168,20 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/left">MDN</a>
    */
-  final val left = Attr.real("left")
+  object left extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("left")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The letter-spacing CSS property specifies spacing behavior between text characters.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing">MDN</a>
    */
-  final val letterSpacing = Attr.real("letter-spacing")
+  object letterSpacing extends TypedAttrT0[Length] {
+    override val attr = Attr.real("letter-spacing")
+    def normal = avl(Values.normal)
+  }
 
   /**
    * The line-break CSS property is used to specify how (or if) to break lines.
@@ -1117,10 +1190,10 @@ object Attrs {
    */
   object lineBreak extends TypedAttrBase {
     override val attr = Attr.real("line-break")
-    final def auto   = av(Values.auto)
-    final def loose  = av(Values.loose)
-    final def normal = av(Values.normal)
-    final def strict = av(Values.strict)
+    def auto   = avl(Values.auto)
+    def loose  = avl(Values.loose)
+    def normal = avl(Values.normal)
+    def strict = avl(Values.strict)
   }
 
   /**
@@ -1128,7 +1201,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/line-height">MDN</a>
    */
-  final val lineHeight = Attr.real("line-height")
+  object lineHeight extends TypedAttrT0[LenPctNum] {
+    override val attr = Attr.real("line-height")
+    def normal = avl(Values.normal)
+  }
 
   /**
    * The list-style-image CSS property sets the image that will be used as the list item marker.
@@ -1144,8 +1220,8 @@ object Attrs {
    */
   object listStylePosition extends TypedAttrBase {
     override val attr = Attr.real("list-style-position")
-    final def inside  = av(Values.inside)
-    final def outside = av(Values.outside)
+    def inside  = avl(Values.inside)
+    def outside = avl(Values.outside)
   }
 
   /**
@@ -1160,28 +1236,40 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom">MDN</a>
    */
-  final val marginBottom = Attr.real("margin-bottom")
+  object marginBottom extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("margin-bottom")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The margin-left CSS property of an element sets the margin space required on the left side of a box associated with an element. A negative value is also allowed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left">MDN</a>
    */
-  final val marginLeft = Attr.real("margin-left")
+  object marginLeft extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("margin-left")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The margin-right CSS property of an element sets the margin space required on the right side of an element. A negative value is also allowed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right">MDN</a>
    */
-  final val marginRight = Attr.real("margin-right")
+  object marginRight extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("margin-right")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The margin-top CSS property of an element sets the margin space required on the top of an element. A negative value is also allowed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top">MDN</a>
    */
-  final val marginTop = Attr.real("margin-top")
+  object marginTop extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("margin-top")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The marks CSS property adds crop and/or cross marks to the presentation of the document. Crop marks indicate where the page should be cut. Cross marks are used to align sheets.
@@ -1210,28 +1298,56 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-height">MDN</a>
    */
-  final val maxHeight = Attr.real("max-height")
+  object maxHeight extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("max-height")
+    def fill_available = avl(Values.fill_available)
+    def fit_content    = avl(Values.fit_content)
+    def max_content    = avl(Values.max_content)
+    def min_content    = avl(Values.min_content)
+    def none           = avl(Values.none)
+  }
 
   /**
    * The max-width CSS property is used to set the maximum width of a given element. It prevents the used value of the width property from becoming larger than the value specified for max-width.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">MDN</a>
    */
-  final val maxWidth = Attr.real("max-width")
+  object maxWidth extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("max-width")
+    def fill_available = avl(Values.fill_available)
+    def fit_content    = avl(Values.fit_content)
+    def max_content    = avl(Values.max_content)
+    def min_content    = avl(Values.min_content)
+    def none           = avl(Values.none)
+  }
 
   /**
    * The min-height CSS property is used to set the minimum height of a given element. It prevents the used value of the height property from becoming smaller than the value specified for min-height.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-height">MDN</a>
    */
-  final val minHeight = Attr.real("min-height")
+  object minHeight extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("min-height")
+    def auto           = avl(Values.auto)
+    def fill_available = avl(Values.fill_available)
+    def fit_content    = avl(Values.fit_content)
+    def max_content    = avl(Values.max_content)
+    def min_content    = avl(Values.min_content)
+  }
 
   /**
    * The min-width CSS property is used to set the minimum width of a given element. It prevents the used value of the width property from becoming smaller than the value specified for min-width.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-width">MDN</a>
    */
-  final val minWidth = Attr.real("min-width")
+  object minWidth extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("min-width")
+    def auto           = avl(Values.auto)
+    def fill_available = avl(Values.fill_available)
+    def fit_content    = avl(Values.fit_content)
+    def max_content    = avl(Values.max_content)
+    def min_content    = avl(Values.min_content)
+  }
 
   /**
    * The mix-blend-mode CSS property describes how an element content should blend with the content of the element that is below it and the element's background.
@@ -1247,11 +1363,11 @@ object Attrs {
    */
   object objectFit extends TypedAttrBase {
     override val attr = Attr.real("object-fit", CanIUse.objectFit)
-    final def contain    = av(Values.contain)
-    final def cover      = av(Values.cover)
-    final def fill       = av(Values.fill)
-    final def none       = av(Values.none)
-    final def scale_down = av(Values.scale_down)
+    def contain    = avl(Values.contain)
+    def cover      = avl(Values.cover)
+    def fill       = avl(Values.fill)
+    def none       = avl(Values.none)
+    def scale_down = avl(Values.scale_down)
   }
 
   /**
@@ -1266,49 +1382,65 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/opacity">MDN</a>
    */
-  final val opacity = Attr.real("opacity", CanIUse.opacity)
+  object opacity extends TypedAttrT[Number] {
+    override val attr = Attr.real("opacity", CanIUse.opacity)
+  }
 
   /**
    * The CSS order property specifies the order used to lay out flex items in their flex container. Elements are laid out by ascending order of the order value. Elements with the same order value are laid out in the order they appear in the source code.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/order">MDN</a>
    */
-  final val order = Attr.real("order")
+  object order extends TypedAttrT[Integer] {
+    override val attr = Attr.real("order")
+  }
 
   /**
    * The orphans CSS property refers to the minimum number of lines in a block container that must be left at the bottom of the page. This property is normally used to control how page breaks occur.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/orphans">MDN</a>
    */
-  final val orphans = Attr.real("orphans")
+  object orphans extends TypedAttrT[Integer] {
+    override val attr = Attr.real("orphans")
+  }
 
   /**
    * The outline-color CSS property sets the color of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-color">MDN</a>
    */
-  final val outlineColor = Attr.real("outline-color", CanIUse.outline)
+  object outlineColor extends TypedAttr_Color {
+    override val attr = Attr.real("outline-color", CanIUse.outline)
+    def invert = avl(Values.invert)
+  }
 
   /**
    * The outline-offset CSS property is used to set space between an outline and the edge or border of an element. An outline is a line that is drawn around elements, outside the border edge.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-offset">MDN</a>
    */
-  final val outlineOffset = Attr.real("outline-offset", CanIUse.outline)
+  object outlineOffset extends TypedAttrT0[Length] {
+    override val attr = Attr.real("outline-offset", CanIUse.outline)
+  }
 
   /**
    * The outline-style CSS property is used to set the style of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-style">MDN</a>
    */
-  final val outlineStyle = Attr.real("outline-style", CanIUse.outline)
+  object outlineStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.real("outline-style", CanIUse.outline)
+    final def auto = avl(Values.auto)
+  }
 
   /**
    * The outline-width CSS property is used to set the width of the outline of an element. An outline is a line that is drawn around elements, outside the border edge, to make the element stand out:
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-width">MDN</a>
    */
-  final val outlineWidth = Attr.real("outline-width", CanIUse.outline)
+  object outlineWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("outline-width", CanIUse.outline)
+  }
 
   /**
    * The overflow CSS property specifies whether to clip content, render scrollbars or just display content when it overflows its block level container.
@@ -1317,10 +1449,10 @@ object Attrs {
    */
   object overflow extends TypedAttrBase {
     override val attr = Attr.real("overflow")
-    final def auto    = av(Values.auto)
-    final def hidden  = av(Values.hidden)
-    final def scroll  = av(Values.scroll)
-    final def visible = av(Values.visible)
+    def auto    = avl(Values.auto)
+    def hidden  = avl(Values.hidden)
+    def scroll  = avl(Values.scroll)
+    def visible = avl(Values.visible)
   }
 
   /**
@@ -1337,10 +1469,10 @@ object Attrs {
    */
   object overflowX extends TypedAttrBase {
     override val attr = Attr.real("overflow-x")
-    final def auto    = av(Values.auto)
-    final def hidden  = av(Values.hidden)
-    final def scroll  = av(Values.scroll)
-    final def visible = av(Values.visible)
+    def auto    = avl(Values.auto)
+    def hidden  = avl(Values.hidden)
+    def scroll  = avl(Values.scroll)
+    def visible = avl(Values.visible)
   }
 
   /**
@@ -1350,10 +1482,10 @@ object Attrs {
    */
   object overflowY extends TypedAttrBase {
     override val attr = Attr.real("overflow-y")
-    final def auto    = av(Values.auto)
-    final def hidden  = av(Values.hidden)
-    final def scroll  = av(Values.scroll)
-    final def visible = av(Values.visible)
+    def auto    = avl(Values.auto)
+    def hidden  = avl(Values.hidden)
+    def scroll  = avl(Values.scroll)
+    def visible = avl(Values.visible)
   }
 
   /**
@@ -1361,28 +1493,36 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-bottom">MDN</a>
    */
-  final val paddingBottom = Attr.real("padding-bottom")
+  object paddingBottom extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("padding-bottom")
+  }
 
   /**
    * The padding-left CSS property of an element sets the padding space required on the left side of an element. The padding area is the space between the content of the element and it's border. A negative value is not allowed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-left">MDN</a>
    */
-  final val paddingLeft = Attr.real("padding-left")
+  object paddingLeft extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("padding-left")
+  }
 
   /**
    * The padding-right CSS property of an element sets the padding space required on the right side of an element. The padding area is the space between the content of the element and its border. Negative values are not allowed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-right">MDN</a>
    */
-  final val paddingRight = Attr.real("padding-right")
+  object paddingRight extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("padding-right")
+  }
 
   /**
    * The padding-top CSS property of an element sets the padding space required on the top of an element. The padding area is the space between the content of the element and its border. Contrary to margin-top values, negative values of padding-top are invalid.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-top">MDN</a>
    */
-  final val paddingTop = Attr.real("padding-top")
+  object paddingTop extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("padding-top")
+  }
 
   /**
    * The page-break-after CSS property adjusts page breaks after the current element.
@@ -1391,11 +1531,11 @@ object Attrs {
    */
   object pageBreakAfter extends TypedAttrBase {
     override val attr = Attr.real("page-break-after")
-    final def always = av(Values.always)
-    final def auto   = av(Values.auto)
-    final def avoid  = av(Values.avoid)
-    final def left   = av(Values.left)
-    final def right  = av(Values.right)
+    def always = avl(Values.always)
+    def auto   = avl(Values.auto)
+    def avoid  = avl(Values.avoid)
+    def left   = avl(Values.left)
+    def right  = avl(Values.right)
   }
 
   /**
@@ -1405,11 +1545,11 @@ object Attrs {
    */
   object pageBreakBefore extends TypedAttrBase {
     override val attr = Attr.real("page-break-before")
-    final def always = av(Values.always)
-    final def auto   = av(Values.auto)
-    final def avoid  = av(Values.avoid)
-    final def left   = av(Values.left)
-    final def right  = av(Values.right)
+    def always = avl(Values.always)
+    def auto   = avl(Values.auto)
+    def avoid  = avl(Values.avoid)
+    def left   = avl(Values.left)
+    def right  = avl(Values.right)
   }
 
   /**
@@ -1419,8 +1559,8 @@ object Attrs {
    */
   object pageBreakInside extends TypedAttrBase {
     override val attr = Attr.real("page-break-inside")
-    final def auto  = av(Values.auto)
-    final def avoid = av(Values.avoid)
+    def auto  = avl(Values.auto)
+    def avoid = avl(Values.avoid)
   }
 
   /**
@@ -1428,7 +1568,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective">MDN</a>
    */
-  final val perspective = Attr.real("perspective", CanIUse2.transforms)
+  object perspective extends TypedAttrT0[Length] {
+    override val attr = Attr.real("perspective", CanIUse2.transforms)
+    def none = avl(Values.none)
+  }
 
   /**
    * The perspective-origin CSS property determines the position the viewer is looking at. It is used as the vanishing point by the perspective property.
@@ -1451,11 +1594,11 @@ object Attrs {
    */
   object position extends TypedAttrBase {
     override val attr = Attr.real("position")
-    final def absolute = av(Values.absolute)
-    final def fixed    = av(Values.fixed)
-    final def relative = av(Values.relative)
-    final def static   = av(Values.static)
-    final def sticky   = av(Values.sticky)
+    def absolute = avl(Values.absolute)
+    def fixed    = avl(Values.fixed)
+    def relative = avl(Values.relative)
+    def static   = avl(Values.static)
+    def sticky   = avl(Values.sticky)
   }
 
   /**
@@ -1479,10 +1622,10 @@ object Attrs {
    */
   object resize extends TypedAttrBase {
     override val attr = Attr.real("resize", CanIUse.resize)
-    final def both       = av(Values.both)
-    final def horizontal = av(Values.horizontal)
-    final def none       = av(Values.none)
-    final def vertical   = av(Values.vertical)
+    def both       = avl(Values.both)
+    def horizontal = avl(Values.horizontal)
+    def none       = avl(Values.none)
+    def vertical   = avl(Values.vertical)
   }
 
   /**
@@ -1490,7 +1633,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/right">MDN</a>
    */
-  final val right = Attr.real("right")
+  object right extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("right")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The ruby-align CSS property defines the distribution of the different ruby elements over the base.
@@ -1499,10 +1645,10 @@ object Attrs {
    */
   object rubyAlign extends TypedAttrBase {
     override val attr = Attr.real("ruby-align")
-    final def center        = av(Values.center)
-    final def space_around  = av(Values.space_around)
-    final def space_between = av(Values.space_between)
-    final def start         = av(Values.start)
+    def center        = avl(Values.center)
+    def space_around  = avl(Values.space_around)
+    def space_between = avl(Values.space_between)
+    def start         = avl(Values.start)
   }
 
   /**
@@ -1519,9 +1665,9 @@ object Attrs {
    */
   object rubyPosition extends TypedAttrBase {
     override val attr = Attr.real("ruby-position")
-    final def inter_character = av(Values.inter_character)
-    final def over            = av(Values.over)
-    final def under           = av(Values.under)
+    def inter_character = avl(Values.inter_character)
+    def over            = avl(Values.over)
+    def under           = avl(Values.under)
   }
 
   /**
@@ -1531,8 +1677,8 @@ object Attrs {
    */
   object scrollBehavior extends TypedAttrBase {
     override val attr = Attr.real("scroll-behavior")
-    final def auto   = av(Values.auto)
-    final def smooth = av(Values.smooth)
+    def auto   = avl(Values.auto)
+    def smooth = avl(Values.smooth)
   }
 
   /**
@@ -1540,14 +1686,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-image-threshold">MDN</a>
    */
-  final val shapeImageThreshold = Attr.real("shape-image-threshold", CanIUse.shapes)
+  object shapeImageThreshold extends TypedAttrT[Number] {
+    override val attr = Attr.real("shape-image-threshold", CanIUse.shapes)
+  }
 
   /**
    * The shape-margin CSS property adds a margin to shape-outside.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-margin">MDN</a>
    */
-  final val shapeMargin = Attr.real("shape-margin", CanIUse.shapes)
+  object shapeMargin extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("shape-margin", CanIUse.shapes)
+  }
 
   /**
    * The shape-outside CSS property uses shape values to define the float area for a float and will cause inline content to wrap around the shape instead of the float's bounding box.
@@ -1563,8 +1713,8 @@ object Attrs {
    */
   object tableLayout extends TypedAttrBase {
     override val attr = Attr.real("table-layout")
-    final def auto  = av(Values.auto)
-    final def fixed = av(Values.fixed)
+    def auto  = avl(Values.auto)
+    def fixed = avl(Values.fixed)
   }
 
   /**
@@ -1581,14 +1731,14 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align")
-    final def center       = av(Values.center)
-    final def end          = av(Values.end)
-    final def justify      = av(Values.justify)
-    final def left         = av(Values.left)
-    final def match_parent = av(Values.match_parent)
-    final def right        = av(Values.right)
-    final def start        = av(Values.start)
-    final def start_end    = av(Values.start_end)
+    def center       = avl(Values.center)
+    def end          = avl(Values.end)
+    def justify      = avl(Values.justify)
+    def left         = avl(Values.left)
+    def match_parent = avl(Values.match_parent)
+    def right        = avl(Values.right)
+    def start        = avl(Values.start)
+    def start_end    = avl(Values.start_end)
   }
 
   /**
@@ -1598,13 +1748,13 @@ object Attrs {
    */
   object textAlignLast extends TypedAttrBase {
     override val attr = Attr.real("text-align-last", CanIUse.textAlignLast)
-    final def auto    = av(Values.auto)
-    final def center  = av(Values.center)
-    final def end     = av(Values.end)
-    final def justify = av(Values.justify)
-    final def left    = av(Values.left)
-    final def right   = av(Values.right)
-    final def start   = av(Values.start)
+    def auto    = avl(Values.auto)
+    def center  = avl(Values.center)
+    def end     = avl(Values.end)
+    def justify = avl(Values.justify)
+    def left    = avl(Values.left)
+    def right   = avl(Values.right)
+    def start   = avl(Values.start)
   }
 
   /**
@@ -1619,7 +1769,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-color">MDN</a>
    */
-  final val textDecorationColor = Attr.real("text-decoration-color", CanIUse.textDecoration)
+  object textDecorationColor extends TypedAttr_Color {
+    override val attr = Attr.real("text-decoration-color", CanIUse.textDecoration)
+  }
 
   /**
    * The text-decoration-line CSS property sets what kind of line decorations are added to an element.
@@ -1635,11 +1787,11 @@ object Attrs {
    */
   object textDecorationStyle extends TypedAttrBase {
     override val attr = Attr.real("text-decoration-style", CanIUse.textDecoration)
-    final def dashed = av(Values.dashed)
-    final def dotted = av(Values.dotted)
-    final def double = av(Values.double)
-    final def solid  = av(Values.solid)
-    final def wavy   = av(Values.wavy)
+    def dashed = avl(Values.dashed)
+    def dotted = avl(Values.dotted)
+    def double = avl(Values.double)
+    def solid  = avl(Values.solid)
+    def wavy   = avl(Values.wavy)
   }
 
   /**
@@ -1677,12 +1829,12 @@ object Attrs {
    */
   object textOrientation extends TypedAttrBase {
     override val attr = Attr.real("text-orientation")
-    final def mixed                 = av(Values.mixed)
-    final def sideways              = av(Values.sideways)
-    final def sideways_left         = av(Values.sideways_left)
-    final def sideways_right        = av(Values.sideways_right)
-    final def upright               = av(Values.upright)
-    final def use_glyph_orientation = av(Values.use_glyph_orientation)
+    def mixed                 = avl(Values.mixed)
+    def sideways              = avl(Values.sideways)
+    def sideways_left         = avl(Values.sideways_left)
+    def sideways_right        = avl(Values.sideways_right)
+    def upright               = avl(Values.upright)
+    def use_glyph_orientation = avl(Values.use_glyph_orientation)
   }
 
   /**
@@ -1734,11 +1886,11 @@ object Attrs {
    */
   object textTransform extends TypedAttrBase {
     override val attr = Attr.real("text-transform")
-    final def capitalize = av(Values.capitalize)
-    final def full_width = av(Values.full_width)
-    final def lowercase  = av(Values.lowercase)
-    final def none       = av(Values.none)
-    final def uppercase  = av(Values.uppercase)
+    def capitalize = avl(Values.capitalize)
+    def full_width = avl(Values.full_width)
+    def lowercase  = avl(Values.lowercase)
+    def none       = avl(Values.none)
+    def uppercase  = avl(Values.uppercase)
   }
 
   /**
@@ -1753,7 +1905,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/top">MDN</a>
    */
-  final val top = Attr.real("top")
+  object top extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("top")
+    def auto = avl(Values.auto)
+  }
 
   /**
    * The touch-action CSS property specifies whether and how a given region can be manipulated by the user (for instance, by panning or zooming).
@@ -1783,8 +1938,8 @@ object Attrs {
    */
   object transformStyle extends TypedAttrBase {
     override val attr = Attr.real("transform-style", CanIUse2.transforms)
-    final def flat        = av(Values.flat)
-    final def preserve_3d = av(Values.preserve_3d)
+    def flat        = avl(Values.flat)
+    def preserve_3d = avl(Values.preserve_3d)
   }
 
   /**
@@ -1822,12 +1977,12 @@ object Attrs {
    */
   object unicodeBidi extends TypedAttrBase {
     override val attr = Attr.real("unicode-bidi")
-    final def bidi_override    = av(Values.bidi_override)
-    final def embed            = av(Values.embed)
-    final def isolate          = av(Values.isolate)
-    final def isolate_override = av(Values.isolate_override)
-    final def normal           = av(Values.normal)
-    final def plaintext        = av(Values.plaintext)
+    def bidi_override    = avl(Values.bidi_override)
+    def embed            = avl(Values.embed)
+    def isolate          = avl(Values.isolate)
+    def isolate_override = avl(Values.isolate_override)
+    def normal           = avl(Values.normal)
+    def plaintext        = avl(Values.plaintext)
   }
 
   /**
@@ -1849,7 +2004,17 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align">MDN</a>
    */
-  final val verticalAlign = Attr.real("vertical-align")
+  object verticalAlign extends TypedAttrT0[LenPct] {
+    override val attr = Attr.real("vertical-align")
+    def baseline    = avl(Values.baseline)
+    def bottom      = avl(Values.bottom)
+    def middle      = avl(Values.middle)
+    def sub         = avl(Values.sub)
+    def super_      = avl(Values.super_)
+    def text_bottom = avl(Values.text_bottom)
+    def text_top    = avl(Values.text_top)
+    def top         = avl(Values.top)
+  }
 
   /**
    * The visibility CSS property has two purposes:
@@ -1858,9 +2023,9 @@ object Attrs {
    */
   object visibility extends TypedAttrBase {
     override val attr = Attr.real("visibility")
-    final def collapse = av(Values.collapse)
-    final def hidden   = av(Values.hidden)
-    final def visible  = av(Values.visible)
+    def collapse = avl(Values.collapse)
+    def hidden   = avl(Values.hidden)
+    def visible  = avl(Values.visible)
   }
 
   /**
@@ -1870,11 +2035,11 @@ object Attrs {
    */
   object whiteSpace extends TypedAttrBase {
     override val attr = Attr.real("white-space")
-    final def normal   = av(Values.normal)
-    final def nowrap   = av(Values.nowrap)
-    final def pre      = av(Values.pre)
-    final def pre_line = av(Values.pre_line)
-    final def pre_wrap = av(Values.pre_wrap)
+    def normal   = avl(Values.normal)
+    def nowrap   = avl(Values.nowrap)
+    def pre      = avl(Values.pre)
+    def pre_line = avl(Values.pre_line)
+    def pre_wrap = avl(Values.pre_wrap)
   }
 
   /**
@@ -1882,7 +2047,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/widows">MDN</a>
    */
-  final val widows = Attr.real("widows")
+  object widows extends TypedAttrT[Integer] {
+    override val attr = Attr.real("widows")
+  }
 
   /**
    * The width CSS property specifies the width of the content area of an element. The content area is inside the padding, border, and margin of the element.
@@ -1905,9 +2072,9 @@ object Attrs {
    */
   object wordBreak extends TypedAttrBase {
     override val attr = Attr.real("word-break", CanIUse.wordBreak)
-    final def break_all = av(Values.break_all)
-    final def keep_all  = av(Values.keep_all)
-    final def normal    = av(Values.normal)
+    def break_all = avl(Values.break_all)
+    def keep_all  = avl(Values.keep_all)
+    def normal    = avl(Values.normal)
   }
 
   /**
@@ -1915,7 +2082,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing">MDN</a>
    */
-  final val wordSpacing = Attr.real("word-spacing")
+  object wordSpacing extends TypedAttrT0[Length] {
+    override val attr = Attr.real("word-spacing")
+    def normal = avl(Values.normal)
+  }
 
   /**
    * The word-wrap CSS property is used to specify whether or not the browser may break lines within words in order to prevent overflow (in other words, force wrapping) when an otherwise unbreakable string is too long to fit in its containing box.
@@ -1924,8 +2094,8 @@ object Attrs {
    */
   object wordWrap extends TypedAttrBase {
     override val attr = Attr.real("word-wrap", CanIUse.wordwrap)
-    final def break_word = av(Values.break_word)
-    final def normal     = av(Values.normal)
+    def break_word = avl(Values.break_word)
+    def normal     = avl(Values.normal)
   }
 
   /**
@@ -1935,9 +2105,9 @@ object Attrs {
    */
   object writingMode extends TypedAttrBase {
     override val attr = Attr.real("writing-mode")
-    final def horizontal_tb = av(Values.horizontal_tb)
-    final def vertical_lr   = av(Values.vertical_lr)
-    final def vertical_rl   = av(Values.vertical_rl)
+    def horizontal_tb = avl(Values.horizontal_tb)
+    def vertical_lr   = avl(Values.vertical_lr)
+    def vertical_rl   = avl(Values.vertical_rl)
   }
 
   /**
@@ -1945,7 +2115,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/z-index">MDN</a>
    */
-  final val zIndex = Attr.real("z-index")
+  object zIndex extends TypedAttrT[Integer] {
+    override val attr = Attr.real("z-index")
+    def auto = avl(Values.auto)
+  }
 
   // -------------------------------------------------------------------------------------------------------------------
   // Alias Attributes

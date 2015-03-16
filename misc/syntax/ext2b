@@ -1,0 +1,63 @@
+background_color	<color>
+border_bottom_color	<color>
+border_bottom_style	<br_style>
+border_bottom_width	<br_width>
+border_image_source	none | <image> 
+border_left_color	<color>
+border_left_style	<br_style>
+border_left_width	<br_width>
+border_right_color	<color>
+border_right_style	<br_style>
+border_right_width	<br_width>
+border_top_color	<color>
+border_top_style	<br_style>
+border_top_width	<br_width>
+bottom	<length> | <percentage> | auto
+clip	<shape> | auto
+color	<color>
+column_count	<number> | auto
+column_gap	<length> | normal
+column_rule_color	<color>
+column_rule_style	<br_style>
+column_rule_width	<br_width>
+column_width	<length> | auto
+flex_grow	<number>
+flex_shrink	<number>
+font_language_override	normal | <string>
+font_size	<absolute_size> | <relative_size> | <length> | <percentage>
+font_size_adjust	none | <number>
+left	<length> | <percentage> | auto
+letter_spacing	normal | <length>
+line_height	normal | <number> | <length> | <percentage>
+list_style_image	<uri> | none
+margin_bottom	<length> | <percentage> | auto
+margin_left	<length> | <percentage> | auto
+margin_right	<length> | <percentage> | auto
+margin_top	<length> | <percentage> | auto
+max_height	<length> | <percentage> | none | max_content | min_content | fit_content | fill_available
+max_width	<length> | <percentage> | none | max_content | min_content | fit_content | fill_available
+min_height	<length> | <percentage> | auto | max_content | min_content | fit_content | fill_available
+min_width	<length> | <percentage> | auto | max_content | min_content | fit_content | fill_available
+mix_blend_mode	 <blend_mode>
+object_position	 <position>
+opacity	<number>
+order	<integer>
+orphans	<integer>
+outline_color	<color> | invert
+outline_offset	<length>
+outline_style	auto | <br_style>
+outline_width	<br_width>
+padding_bottom	<length> | <percentage>
+padding_left	<length> | <percentage>
+padding_right	<length> | <percentage>
+padding_top	<length> | <percentage>
+perspective	none | <length>
+right	<length> | <percentage> | auto
+shape_image_threshold	<number>
+shape_margin	<length> | <percentage>
+text_decoration_color	<color>
+top	<length> | <percentage> | auto
+vertical_align	baseline | sub | super | text_top | text_bottom | middle | top | bottom | <percentage> | <length>
+widows	<integer>
+word_spacing	normal | <length>
+z_index	auto | <integer>
