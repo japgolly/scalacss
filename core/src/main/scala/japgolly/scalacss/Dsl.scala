@@ -74,6 +74,9 @@ object DslBase {
 
     /** Size as a percentage. */
     @inline def %% = Percentage(self)
+
+    @inline def *(l: Length): Length = l.copy(n = l.n * self)
+    @inline def /(l: Length): Length = l.copy(n = l.n / self)
   }
   
   final class DslAttr(val self: Attr) extends AnyVal {

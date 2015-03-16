@@ -44,7 +44,7 @@ object UsageTest extends TestSuite {
 
     val indent: Int => StyleA =
       styleF(Domain.ofRange(1 to 3))(i =>
-        styleS(paddingLeft((i * 4).ex)))
+        styleS(paddingLeft(i * 4.ex)))
   }
 
   def norm(css: String) = css.trim

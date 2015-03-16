@@ -38,6 +38,8 @@ object ValueT {
 
   final case class Length(n: Int, u: LengthUnit) {
     def value = n.toString + u.value
+    @inline def *(m: Int): Length = copy(n = this.n * m)
+    @inline def /(m: Int): Length = copy(n = this.n / m)
   }
 
   final case class Percentage(n: Int) {
