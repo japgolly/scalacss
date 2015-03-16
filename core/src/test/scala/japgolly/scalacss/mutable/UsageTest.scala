@@ -29,7 +29,7 @@ object UsageTest extends TestSuite {
 
         unsafeChild("nav.debug")(
           backgroundColor("#f88"),
-          color.black,
+          color.black.important,
 
           unsafeChild("h1")(
             fontSize(150.%%)
@@ -71,7 +71,7 @@ object UsageTest extends TestSuite {
         |
         |.demo-0001 nav.debug {
         |  background-color: #f88;
-        |  color: black;
+        |  color: black !important;
         |}
         |
         |.demo-0001 nav.debug h1 {

@@ -13,7 +13,15 @@ package object scalacss {
    */
   type Value = String
 
-  final case class AV(attr: Attr, value: Value)
+  private final val _important = " !important"
+
+  final case class AV(attr: Attr, value: Value) {
+    def important: AV =
+      if (value endsWith _important)
+        this
+      else
+        copy(value = this.value + _important)
+  }
 
   type AVs = NonEmptyVector[AV]
 
