@@ -7,6 +7,7 @@ import utest._
 import TestUtil._
 import AttrCmp.{Overlap, Unrelated}
 import Attrs._
+import ValueT.Rules._
 
 object AttrTest extends TestSuite {
 
@@ -27,6 +28,10 @@ object AttrTest extends TestSuite {
 
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
     Gen.oneofL(Attrs.values).triple
+
+  val length = ValueT.Length(3, ValueT.LengthUnit.px)
+  val style = Literal.dashed
+  val colour = Color.green
 
   override val tests = TestSuite {
     'laws1 - laws1.mustBeProvedBy(builtInAttrs)
@@ -57,6 +62,12 @@ object AttrTest extends TestSuite {
       test(textAlign,    "text-align")
       test(borderRadius, "border-radius", "-moz-border-radius", "-webkit-border-radius")
       test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
+    }
+
+    'border {
+      assertEq(border(length).value, "3px")
+      assertEq(border(length, style).value, "3px dashed")
+      assertEq(border(length, style, colour).value, "3px dashed green")
     }
   }
 }

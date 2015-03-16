@@ -418,7 +418,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/bottom">MDN</a>
    */
-  object bottom extends TypedAttrT0[LenPct] {
+  object bottom extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("bottom")
     def auto = avl(Literal.auto)
   }
@@ -571,7 +571,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-count">MDN</a>
    */
-  object columnCount extends TypedAttrT[Number] {
+  object columnCount extends TypedAttrT1[Number] {
     override val attr = Attr.real("column-count", CanIUse.multicolumn)
     def auto = avl(Literal.auto)
   }
@@ -592,7 +592,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap">MDN</a>
    */
-  object columnGap extends TypedAttrT0[Len] {
+  object columnGap extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("column-gap", CanIUse.multicolumn)
     def normal = avl(Literal.normal)
   }
@@ -640,7 +640,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-width">MDN</a>
    */
-  object columnWidth extends TypedAttrT0[Len] {
+  object columnWidth extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("column-width", CanIUse.multicolumn)
     def auto = avl(Literal.auto)
   }
@@ -761,7 +761,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow">MDN</a>
    */
-  object flexGrow extends TypedAttrT[Number] {
+  object flexGrow extends TypedAttrT1[Number] {
     override val attr = Attr.real("flex-grow", CanIUse.flexbox)
   }
 
@@ -770,7 +770,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink">MDN</a>
    */
-  object flexShrink extends TypedAttrT[Number] {
+  object flexShrink extends TypedAttrT1[Number] {
     override val attr = Attr.real("flex-shrink", CanIUse.flexbox)
   }
 
@@ -850,7 +850,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size">MDN</a>
    */
-  object fontSize extends TypedAttrT0[LenPct] {
+  object fontSize extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("font-size")
     def large    = avl(Literal.large)
     def larger   = avl(Literal.larger)
@@ -868,7 +868,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size-adjust">MDN</a>
    */
-  object fontSizeAdjust extends TypedAttrT[Number] {
+  object fontSizeAdjust extends TypedAttrT1[Number] {
     override val attr = Attr.real("font-size-adjust")
     def none = avl(Literal.none)
   }
@@ -1168,7 +1168,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/left">MDN</a>
    */
-  object left extends TypedAttrT0[LenPct] {
+  object left extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("left")
     def auto = avl(Literal.auto)
   }
@@ -1178,7 +1178,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing">MDN</a>
    */
-  object letterSpacing extends TypedAttrT0[Len] {
+  object letterSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("letter-spacing")
     def normal = avl(Literal.normal)
   }
@@ -1201,7 +1201,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/line-height">MDN</a>
    */
-  object lineHeight extends TypedAttrT0[LenPctNum] {
+  object lineHeight extends TypedAttrT1[LenPctNum] with ZeroLit {
     override val attr = Attr.real("line-height")
     def normal = avl(Literal.normal)
   }
@@ -1236,7 +1236,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom">MDN</a>
    */
-  object marginBottom extends TypedAttrT0[LenPct] {
+  object marginBottom extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("margin-bottom")
     def auto = avl(Literal.auto)
   }
@@ -1246,7 +1246,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left">MDN</a>
    */
-  object marginLeft extends TypedAttrT0[LenPct] {
+  object marginLeft extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("margin-left")
     def auto = avl(Literal.auto)
   }
@@ -1256,7 +1256,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right">MDN</a>
    */
-  object marginRight extends TypedAttrT0[LenPct] {
+  object marginRight extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("margin-right")
     def auto = avl(Literal.auto)
   }
@@ -1266,7 +1266,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top">MDN</a>
    */
-  object marginTop extends TypedAttrT0[LenPct] {
+  object marginTop extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("margin-top")
     def auto = avl(Literal.auto)
   }
@@ -1298,7 +1298,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-height">MDN</a>
    */
-  object maxHeight extends TypedAttrT0[LenPct] {
+  object maxHeight extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("max-height")
     def fill_available = avl(Literal.fill_available)
     def fit_content    = avl(Literal.fit_content)
@@ -1312,7 +1312,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">MDN</a>
    */
-  object maxWidth extends TypedAttrT0[LenPct] {
+  object maxWidth extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("max-width")
     def fill_available = avl(Literal.fill_available)
     def fit_content    = avl(Literal.fit_content)
@@ -1326,7 +1326,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-height">MDN</a>
    */
-  object minHeight extends TypedAttrT0[LenPct] {
+  object minHeight extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("min-height")
     def auto           = avl(Literal.auto)
     def fill_available = avl(Literal.fill_available)
@@ -1340,7 +1340,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-width">MDN</a>
    */
-  object minWidth extends TypedAttrT0[LenPct] {
+  object minWidth extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("min-width")
     def auto           = avl(Literal.auto)
     def fill_available = avl(Literal.fill_available)
@@ -1382,7 +1382,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/opacity">MDN</a>
    */
-  object opacity extends TypedAttrT[Number] {
+  object opacity extends TypedAttrT1[Number] {
     override val attr = Attr.real("opacity", CanIUse.opacity)
   }
 
@@ -1391,7 +1391,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/order">MDN</a>
    */
-  object order extends TypedAttrT[Integer] {
+  object order extends TypedAttrT1[Integer] {
     override val attr = Attr.real("order")
   }
 
@@ -1400,7 +1400,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/orphans">MDN</a>
    */
-  object orphans extends TypedAttrT[Integer] {
+  object orphans extends TypedAttrT1[Integer] {
     override val attr = Attr.real("orphans")
   }
 
@@ -1419,7 +1419,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-offset">MDN</a>
    */
-  object outlineOffset extends TypedAttrT0[Len] {
+  object outlineOffset extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("outline-offset", CanIUse.outline)
   }
 
@@ -1493,7 +1493,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-bottom">MDN</a>
    */
-  object paddingBottom extends TypedAttrT0[LenPct] {
+  object paddingBottom extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("padding-bottom")
   }
 
@@ -1502,7 +1502,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-left">MDN</a>
    */
-  object paddingLeft extends TypedAttrT0[LenPct] {
+  object paddingLeft extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("padding-left")
   }
 
@@ -1511,7 +1511,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-right">MDN</a>
    */
-  object paddingRight extends TypedAttrT0[LenPct] {
+  object paddingRight extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("padding-right")
   }
 
@@ -1520,7 +1520,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-top">MDN</a>
    */
-  object paddingTop extends TypedAttrT0[LenPct] {
+  object paddingTop extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("padding-top")
   }
 
@@ -1568,7 +1568,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective">MDN</a>
    */
-  object perspective extends TypedAttrT0[Len] {
+  object perspective extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("perspective", CanIUse2.transforms)
     def none = avl(Literal.none)
   }
@@ -1633,7 +1633,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/right">MDN</a>
    */
-  object right extends TypedAttrT0[LenPct] {
+  object right extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("right")
     def auto = avl(Literal.auto)
   }
@@ -1686,7 +1686,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-image-threshold">MDN</a>
    */
-  object shapeImageThreshold extends TypedAttrT[Number] {
+  object shapeImageThreshold extends TypedAttrT1[Number] {
     override val attr = Attr.real("shape-image-threshold", CanIUse.shapes)
   }
 
@@ -1695,7 +1695,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-margin">MDN</a>
    */
-  object shapeMargin extends TypedAttrT0[LenPct] {
+  object shapeMargin extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("shape-margin", CanIUse.shapes)
   }
 
@@ -1905,7 +1905,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/top">MDN</a>
    */
-  object top extends TypedAttrT0[LenPct] {
+  object top extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("top")
     def auto = avl(Literal.auto)
   }
@@ -2004,7 +2004,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/vertical-align">MDN</a>
    */
-  object verticalAlign extends TypedAttrT0[LenPct] {
+  object verticalAlign extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("vertical-align")
     def baseline    = avl(Literal.baseline)
     def bottom      = avl(Literal.bottom)
@@ -2047,7 +2047,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/widows">MDN</a>
    */
-  object widows extends TypedAttrT[Integer] {
+  object widows extends TypedAttrT1[Integer] {
     override val attr = Attr.real("widows")
   }
 
@@ -2082,7 +2082,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-spacing">MDN</a>
    */
-  object wordSpacing extends TypedAttrT0[Len] {
+  object wordSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("word-spacing")
     def normal = avl(Literal.normal)
   }
@@ -2115,7 +2115,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/z-index">MDN</a>
    */
-  object zIndex extends TypedAttrT[Integer] {
+  object zIndex extends TypedAttrT1[Integer] {
     override val attr = Attr.real("z-index")
     def auto = avl(Literal.auto)
   }
@@ -2163,8 +2163,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border">MDN</a>
    */
-  final val border = Attr.alias("border")(_(
-    borderWidth, borderStyle, borderColor))
+  object border extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border")(_(
+      borderWidth, borderStyle, borderColor))
+  }
 
   /**
    * The border-block-end CSS property is a shorthand property for setting the individual logical block end border property values in a single place in the style sheet. border-block-end can be used to set the values for one or more of: border-block-end-width, border-block-end-style, border-block-end-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.

@@ -46,9 +46,6 @@ object ValueT {
     def value: Value = n.toString + "%"
   }
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Classes
-
   /**
    * Represented a context in which a finite set of types are valid.
    *
@@ -67,9 +64,12 @@ object ValueT {
   sealed trait BrWidth   extends ValueClass
   sealed trait BrStyle   extends ValueClass
   sealed trait Color     extends ValueClass
+  sealed trait WidStyCol extends ValueClass
 
-  // -------------------------------------------------------------------------------------------------------------------
-  // Rules
+
+  // =========
+  //   Rules
+  // =========
 
   type ==>[From              , To   <: ValueClass] = Rule[From, To]
   type >=>[From <: ValueClass, To   <: ValueClass] = ValueT[From] ==> To
@@ -116,20 +116,30 @@ object ValueT {
     @inline implicit def ruleLenPct_L: LenPct <=< Len        = Rule.retype
     @inline implicit def ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
 
-    @inline implicit def ruleLenPctNum_LP: LenPctNum <=< LenPct = Rule.retype
-    @inline implicit def ruleLenPctNum_N : LenPctNum <=< Number = Rule.retype
-    // diverging @inline implicit expansion requires these ↙ :(
-    @inline implicit def ruleLenPctNum_L : LenPctNum <=< Len = Rule.retype
-    @inline implicit def ruleLenPctNum_I : LenPctNum <== Int = Rule(_.toString)
+    @inline implicit def ruleLenPctNum_LP: LenPctNum <=< LenPct     = Rule.retype
+    @inline implicit def ruleLenPctNum_N : LenPctNum <=< Number     = Rule.retype
+    // diverging implicit expansion requires these ↙ :(
+    @inline implicit def ruleLenPctNum_L : LenPctNum <=< Len        = Rule.retype
+    @inline implicit def ruleLenPctNum_I : LenPctNum <== Int        = Rule(_.toString)
+    @inline implicit def ruleLenPctNum_P : LenPctNum <== Percentage = Rule(_.value)
 
     @inline implicit def ruleBrWidth_1                                      : BrWidth <=< Len = Rule.retype
     @inline implicit def ruleBrWidth_2[L <: Literal with Literal.BrWidthLit]: BrWidth <== L   = Rule.literal
 
     @inline implicit def ruleBrStyle_L[L <: Literal with Literal.BrStyleLit]: BrStyle <== L = Rule.literal
+
+    @inline implicit def ruleWidStyCol_W: WidStyCol <=< BrWidth    = Rule.retype
+    @inline implicit def ruleWidStyCol_S: WidStyCol <=< BrStyle    = Rule.retype
+    @inline implicit def ruleWidStyCol_C: WidStyCol <=< Color      = Rule.retype
+    // diverging implicit expansion requires these ↙ :(
+    @inline implicit def ruleWidStyCol_L: WidStyCol <=< Len        = Rule.retype
+    @inline implicit def ruleWidStyCol_P: WidStyCol <== Percentage = Rule(_.value)
   }
 
-  // -------------------------------------------------------------------------------------------------------------------
+
+  // ================================
   // Attributes with type-safe values
+  // ================================
 
   object TypedAttrBase {
     implicit def `Be the attr you were born to be!`(t: TypedAttrBase): Attr = t.attr
@@ -154,23 +164,59 @@ object ValueT {
     def unset = avl(Literal.unset)
   }
 
-  abstract class TypedAttrT[T <: ValueClass] extends TypedAttrBase {
+  abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {
     final def apply(v: ValueT[T]): AV = av(v.value)
 //        final def apply[From](f: From)(implicit r: From ==> T): AV = av(r(f).value)
   }
 
-  abstract class TypedAttrT0[T <: ValueClass] extends TypedAttrT[T] {
-    /** The digit zero. `"0"`. */
-    final def _0 = av("0")
+  abstract class TypedAttrT3[T <: ValueClass](sep: String) extends TypedAttrBase {
+    final def apply(a: ValueT[T])                            : AV = av(a.value)
+    final def apply(a: ValueT[T], b: ValueT[T])              : AV = av(a.value + sep + b.value)
+    final def apply(a: ValueT[T], b: ValueT[T], c: ValueT[T]): AV = av(a.value + sep + b.value + sep + c.value)
   }
 
-  abstract class TypedAttr_BrWidth extends TypedAttrT[BrWidth] {
+  abstract class TypedAttr_BrWidth extends TypedAttrT1[BrWidth]
+    with BrWidthOps
+
+  abstract class TypedAttr_BrStyle extends TypedAttrBase //TypedAttrT[BrStyle]
+    with BrStyleOps
+
+  abstract class TypedAttr_Color extends TypedAttrT1[Color] with ColourOps {
+    final def apply(literal: String) = av(literal)
+  }
+
+  abstract class TypedAttr_Shape extends TypedAttrBase {
+    final def rect(top: ValueT[Len], right: ValueT[Len], bottom: ValueT[Len], left: ValueT[Len]) =
+      av(s"rect(${top.value},${right.value},${bottom.value},${left.value})")
+  }
+
+  abstract class TypedAttr_BrWidthStyleColour extends TypedAttrT3[WidStyCol](" ")
+    with BrWidthOps with BrStyleOps with ColourOps
+
+
+  // ================
+  // Operation mixins
+  // ================
+
+  trait ZeroLit {
+    this: TypedAttrBase =>
+
+    /** The digit zero. `"0"`. */
+    final def `0` = av("0")
+
+    // final def apply(i: zeroType.T) = av("0")
+    // "overloaded method value apply with alternatives"
+  }
+
+  trait BrWidthOps {
+    this: TypedAttrBase =>
     final def thin   = avl(Literal.thin)
     final def medium = avl(Literal.medium)
     final def thick  = avl(Literal.thick)
   }
 
-  abstract class TypedAttr_BrStyle extends TypedAttrBase { //TypedAttrT[BrStyle] {
+  trait BrStyleOps {
+    this: TypedAttrBase =>
     final def none   = avl(Literal.none)
     final def hidden = avl(Literal.hidden)
     final def dotted = avl(Literal.dotted)
@@ -183,13 +229,8 @@ object ValueT {
     final def outset = avl(Literal.outset)
   }
 
-  abstract class TypedAttr_Color extends TypedAttrT[Color] with ColorOps[AV] {
+  trait ColourOps extends ColorOps[AV] {
+    this: TypedAttrBase =>
     override protected final def mkColor(s: String): AV = av(s)
-    final def apply(literal: String) = av(literal)
-  }
-
-  abstract class TypedAttr_Shape extends TypedAttrBase {
-    final def rect(top: ValueT[Len], right: ValueT[Len], bottom: ValueT[Len], left: ValueT[Len]) =
-      av(s"rect(${top.value},${right.value},${bottom.value},${left.value})")
   }
 }

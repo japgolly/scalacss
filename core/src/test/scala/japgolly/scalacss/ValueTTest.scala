@@ -32,6 +32,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Len](%%)")
         illTyped("test[Len](Literal.thick)")
         illTyped("test[Len](Literal.dashed)")
+        illTyped("test[Len](Color.black)")
+        illTyped("test[Len](Literal.rtl)")
       }
 
       'Integer {
@@ -41,6 +43,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Integer](%%)")
         illTyped("test[Integer](Literal.thick)")
         illTyped("test[Integer](Literal.dashed)")
+        illTyped("test[Integer](Color.black)")
+        illTyped("test[Integer](Literal.rtl)")
       }
 
       'Number {
@@ -50,6 +54,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Number](%%)")
         illTyped("test[Number](Literal.thick)")
         illTyped("test[Number](Literal.dashed)")
+        illTyped("test[Number](Color.black)")
+        illTyped("test[Number](Literal.rtl)")
       }
 
       'LenPct {
@@ -59,6 +65,8 @@ object ValueTTest extends TestSuite {
                   test[LenPct](%%)
         illTyped("test[LenPct](Literal.thick)")
         illTyped("test[LenPct](Literal.dashed)")
+        illTyped("test[LenPct](Color.black)")
+        illTyped("test[LenPct](Literal.rtl)")
       }
 
       'LenPctNum {
@@ -68,6 +76,8 @@ object ValueTTest extends TestSuite {
                   test[LenPctNum](%%)
         illTyped("test[LenPctNum](Literal.thick)")
         illTyped("test[LenPctNum](Literal.dashed)")
+        illTyped("test[LenPctNum](Color.black)")
+        illTyped("test[LenPctNum](Literal.rtl)")
       }
       
       'BrWidth {
@@ -77,6 +87,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[BrWidth](%%)")
                   test[BrWidth](Literal.thick)
         illTyped("test[BrWidth](Literal.dashed)")
+        illTyped("test[BrWidth](Color.black)")
+        illTyped("test[BrWidth](Literal.rtl)")
       }
 
       'BrStyle {
@@ -86,7 +98,21 @@ object ValueTTest extends TestSuite {
         illTyped("test[BrStyle](%%)")
         illTyped("test[BrStyle](Literal.thick)")
         test[BrStyle](Literal.dashed)
+        illTyped("test[BrStyle](Color.black)")
+        illTyped("test[BrStyle](Literal.rtl)")
       }
+
+      'WidStyCol {
+        illTyped("test[WidStyCol](1)")
+        illTyped("test[WidStyCol](1.5)")
+                  test[WidStyCol](len)
+                  test[WidStyCol](%%)
+                  test[WidStyCol](Literal.thick)
+                  test[WidStyCol](Literal.dashed)
+                  test[WidStyCol](Color.black)
+        illTyped("test[WidStyCol](Literal.rtl)")
+      }
+
     }
   }
 }

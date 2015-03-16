@@ -28,7 +28,6 @@ border_block_start_width	<'border_width'>
 border_bottom	<br_width> || <br_style> || <color>
 border_bottom_left_radius	[ <length> | <percentage> ]{1,2}
 border_bottom_right_radius	[ <length> | <percentage> ]{1,2}
-border	 <br_width> || <br_style> || <color>
 border_color	<color>{1,4}
 border_image	<'border_image_source'> || <'border_image_slice'> [ / <'border_image_width'> | / <'border_image_width'>? / <'border_image_outset'> ]? || <'border_image_repeat'>
 border_image_outset	[ <length> | <number> ]{1,4}
