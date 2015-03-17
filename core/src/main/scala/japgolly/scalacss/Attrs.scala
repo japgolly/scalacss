@@ -2173,72 +2173,90 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end">MDN</a>
    */
-  final val borderBlockEnd = Attr.alias("border-block-end")(_(
-    borderBlockEndWidth, borderBlockEndStyle, borderBlockEndColor))
+  object borderBlockEnd extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-block-end")(_(
+      borderBlockEndWidth, borderBlockEndStyle, borderBlockEndColor))
+  }
 
   /**
    * The border-block-end-color CSS property defines the color of the logical block end border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end-color">MDN</a>
    */
-  final val borderBlockEndColor = Attr.alias("border-block-end-color")(_(
-    borderLeftColor, borderTopColor, borderRightColor, borderBottomColor))
+  object borderBlockEndColor extends TypedAttr_Color {
+    override val attr = Attr.alias("border-block-end-color")(_(
+      borderLeftColor, borderTopColor, borderRightColor, borderBottomColor))
+  }
 
   /**
    * The border-block-end-style CSS property defines the style of the logical block end border of an element, which maps to a physical border style depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-style, border-right-style, border-bottom-style, or border-left-style property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end-style">MDN</a>
    */
-  final val borderBlockEndStyle = Attr.alias("border-block-end-style")(_(
-    borderLeftStyle, borderTopStyle, borderRightStyle, borderBottomStyle))
+  object borderBlockEndStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.alias("border-block-end-style")(_(
+      borderLeftStyle, borderTopStyle, borderRightStyle, borderBottomStyle))
+  }
 
   /**
    * The border-block-end-width CSS property defines the width of the logical block end border of an element, which maps to a physical border width depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-width, border-right-width, border-bottom-width, or border-left-width property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-end-width">MDN</a>
    */
-  final val borderBlockEndWidth = Attr.alias("border-block-end-width")(_(
-    borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth))
+  object borderBlockEndWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.alias("border-block-end-width")(_(
+      borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth))
+  }
 
   /**
    * The border-block-start CSS property is a shorthand property for setting the individual logical block start border property values in a single place in the style sheet. border-block-start can be used to set the values for one or more of: border-block-start-width, border-block-start-style, border-block-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start">MDN</a>
    */
-  final val borderBlockStart = Attr.alias("border-block-start")(_(
-    borderBlockStartWidth, borderBlockStartStyle, borderBlockStartColor))
+  object borderBlockStart extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-block-start")(_(
+      borderBlockStartWidth, borderBlockStartStyle, borderBlockStartColor))
+  }
 
   /**
    * The border-block-start-color CSS property defines the color of the logical block start border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start-color">MDN</a>
    */
-  final val borderBlockStartColor = Attr.alias("border-block-start-color")(_(
-    borderLeftColor, borderTopColor, borderRightColor, borderBottomColor))
+  object borderBlockStartColor extends TypedAttr_Color {
+    override val attr = Attr.alias("border-block-start-color")(_(
+      borderLeftColor, borderTopColor, borderRightColor, borderBottomColor))
+  }
 
   /**
    * The border-block-start-style CSS property defines the style of the logical block start border of an element, which maps to a physical border style depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-style, border-right-style, border-bottom-style, or border-left-style property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start-style">MDN</a>
    */
-  final val borderBlockStartStyle = Attr.alias("border-block-start-style")(_(
-    borderLeftStyle, borderTopStyle, borderRightStyle, borderBottomStyle))
+  object borderBlockStartStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.alias("border-block-start-style")(_(
+      borderLeftStyle, borderTopStyle, borderRightStyle, borderBottomStyle))
+  }
 
   /**
    * The border-block-start-width CSS property defines the width of the logical block start border of an element, which maps to a physical border width depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-width, border-right-width, border-bottom-width, or border-left-width property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-block-start-width">MDN</a>
    */
-  final val borderBlockStartWidth = Attr.alias("border-block-start-width")(_(
-    borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth))
+  object borderBlockStartWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.alias("border-block-start-width")(_(
+      borderLeftWidth, borderTopWidth, borderRightWidth, borderBottomWidth))
+  }
 
   /**
    * The border-bottom CSS property is a shorthand that sets the values of border-bottom-color, border-bottom-style, and border-bottom-width. These properties describe the bottom border of elements.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom">MDN</a>
    */
-  final val borderBottom = Attr.alias("border-bottom")(_(
-    borderBottomColor, borderBottomStyle, borderBottomWidth))
+  object borderBottom extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-bottom")(_(
+      borderBottomColor, borderBottomStyle, borderBottomWidth))
+  }
 
   /**
    * The border-color CSS property is a shorthand for setting the color of the four sides of an element's border: border-top-color, border-right-color, border-bottom-color, border-left-color
@@ -2261,72 +2279,90 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end">MDN</a>
    */
-  final val borderInlineEnd = Attr.alias("border-inline-end")(_(
-    borderInlineEndWidth, borderInlineEndStyle, borderInlineEndColor))
+  object borderInlineEnd extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-inline-end")(_(
+      borderInlineEndWidth, borderInlineEndStyle, borderInlineEndColor))
+  }
 
   /**
    * The border-inline-end-color CSS property defines the color of the logical inline end border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end-color">MDN</a>
    */
-  final val borderInlineEndColor = Attr.alias("border-inline-end-color")(_(
-    borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  object borderInlineEndColor extends TypedAttr_Color {
+    override val attr = Attr.alias("border-inline-end-color")(_(
+      borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  }
 
   /**
    * The border-inline-end-style CSS property defines the style of the logical inline end border of an element, which maps to a physical border style depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-style, border-right-style, border-bottom-style, or border-left-style property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end-style">MDN</a>
    */
-  final val borderInlineEndStyle = Attr.alias("border-inline-end-style")(_(
-    borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  object borderInlineEndStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.alias("border-inline-end-style")(_(
+      borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  }
 
   /**
    * The border-inline-end-width CSS property defines the width of the logical inline end border of an element, which maps to a physical border width depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-width, border-right-width, border-bottom-width, or border-left-width property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-end-width">MDN</a>
    */
-  final val borderInlineEndWidth = Attr.alias("border-inline-end-width")(_(
-    borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  object borderInlineEndWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.alias("border-inline-end-width")(_(
+      borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  }
 
   /**
    * The border-inline-start CSS property is a shorthand property for setting the individual logical inline start border property values in a single place in the style sheet. border-inline-start can be used to set the values for one or more of: border-inline-start-width, border-inline-start-style, border-inline-start-color. It maps to a physical border depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top, border-right, border-bottom, or border-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start">MDN</a>
    */
-  final val borderInlineStart = Attr.alias("border-inline-start")(_(
-    borderInlineStartWidth, borderInlineStartStyle, borderInlineStartColor))
+  object borderInlineStart extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-inline-start")(_(
+      borderInlineStartWidth, borderInlineStartStyle, borderInlineStartColor))
+  }
 
   /**
    * The border-inline-start-color CSS property defines the color of the logical inline start border of an element, which maps to a physical border color depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-color, border-right-color, border-bottom-color, or border-left-color property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start-color">MDN</a>
    */
-  final val borderInlineStartColor = Attr.alias("border-inline-start-color")(_(
-    borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  object borderInlineStartColor extends TypedAttr_Color {
+    override val attr = Attr.alias("border-inline-start-color")(_(
+      borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  }
 
   /**
    * The border-inline-start-style CSS property defines the style of the logical inline start border of an element, which maps to a physical border style depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-style, border-right-style, border-bottom-style, or border-left-style property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start-style">MDN</a>
    */
-  final val borderInlineStartStyle = Attr.alias("border-inline-start-style")(_(
-    borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  object borderInlineStartStyle extends TypedAttr_BrStyle {
+    override val attr = Attr.alias("border-inline-start-style")(_(
+      borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  }
 
   /**
    * The border-inline-start-width CSS property defines the width of the logical inline start border of an element, which maps to a physical border width depending on the element's writing mode, directionality, and text orientation. It corresponds to the border-top-width, border-right-width, border-bottom-width, or border-left-width property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-inline-start-width">MDN</a>
    */
-  final val borderInlineStartWidth = Attr.alias("border-inline-start-width")(_(
-    borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  object borderInlineStartWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.alias("border-inline-start-width")(_(
+      borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  }
 
   /**
    * The border-left CSS property is a shorthand that sets the values of border-left-color, border-left-style, and border-left-width. These properties describe the left border of elements.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-left">MDN</a>
    */
-  final val borderLeft = Attr.alias("border-left")(_(
-    borderLeftColor, borderLeftStyle, borderLeftWidth))
+  object borderLeft extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-left")(_(
+      borderLeftColor, borderLeftStyle, borderLeftWidth))
+  }
 
   /**
    * The border-radius CSS property allows Web authors to define how rounded border corners are. The curve of each corner is defined using one or two radii, defining its shape: circle or ellipse.
@@ -2341,8 +2377,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-right">MDN</a>
    */
-  final val borderRight = Attr.alias("border-right")(_(
-    borderRightColor, borderRightStyle, borderRightWidth))
+  object borderRight extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-right")(_(
+      borderRightColor, borderRightStyle, borderRightWidth))
+  }
 
   /**
    * The border-style CSS property is a shorthand property for setting the line style for all four sides of the elements border.
@@ -2357,8 +2395,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top">MDN</a>
    */
-  final val borderTop = Attr.alias("border-top")(_(
-    borderTopColor, borderTopStyle, borderTopWidth))
+  object borderTop extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("border-top")(_(
+      borderTopColor, borderTopStyle, borderTopWidth))
+  }
 
   /**
    * The border-width CSS property sets the width of the border of a box. Using the shorthand property border is often more convenient.

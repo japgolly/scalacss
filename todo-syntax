@@ -17,15 +17,6 @@ background_position	 <position>#
 background_repeat	<repeat_style>#
 background_size	<bg_size>#
 block_size	<'width'>
-border_block_end	<'border_width'> || <'border_style'> || <'color'>
-border_block_end_color	<'color'>
-border_block_end_style	<'border_style'>
-border_block_end_width	<'border_width'>
-border_block_start	<'border_width'> || <'border_style'> || <'color'>
-border_block_start_color	<'color'>
-border_block_start_style	<'border_style'>
-border_block_start_width	<'border_width'>
-border_bottom	<br_width> || <br_style> || <color>
 border_bottom_left_radius	[ <length> | <percentage> ]{1,2}
 border_bottom_right_radius	[ <length> | <percentage> ]{1,2}
 border_color	<color>{1,4}
@@ -34,20 +25,9 @@ border_image_outset	[ <length> | <number> ]{1,4}
 border_image_repeat	[ stretch | repeat | round ]{1,2}
 border_image_slice	[<number> | <percentage>]{1,4} && fill?
 border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
-border_inline_end	<'border_width'> || <'border_style'> || <'color'>
-border_inline_end_color	<'color'>
-border_inline_end_style	<'border_style'>
-border_inline_end_width	<'border_width'>
-border_inline_start	<'border_width'> || <'border_style'> || <'color'>
-border_inline_start_color	<'color'>
-border_inline_start_style	<'border_style'>
-border_inline_start_width	<'border_width'>
-border_left	<br_width> || <br_style> || <color>
 border_radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
-border_right	<br_width> || <br_style> || <color>
 border_spacing	<length> <length>?
 border_style	<br_style>{1,4}
-border_top	<br_width> || <br_style> || <color>
 border_top_left_radius	[ <length> | <percentage> ]{1,2}
 border_top_right_radius	[ <length> | <percentage> ]{1,2}
 border_width	<br_width>{1,4}
