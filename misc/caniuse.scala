@@ -218,7 +218,9 @@ object $obj {
     case object FullX       extends Support
   }
 
-  sealed abstract class Prefix(val value: String)
+  sealed abstract class Prefix(val name: String) {
+    val prefix = "-" + name + "-"
+  }
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
     val values = NonEmptyList[Prefix](${prefixes mkString ", "})

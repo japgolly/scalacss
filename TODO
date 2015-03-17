@@ -16,9 +16,7 @@ CanIUse subjects pending action:
 
 CanIUse subjects affecting CSS values:
 * calc
-* gradients
 * imageSet
-* repeatingGradients
 * sticky
 * viewportUnits
 

@@ -195,7 +195,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-image">MDN</a>
    */
-  final val backgroundImage = Attr.real("background-image")
+  final val backgroundImage = Attr.real("background-image", CanIUse2.backgroundImageTransforms)
 
   /**
    * The background-origin CSS property determines the background positioning area, that is the position of the origin of an image specified using the background-image CSS property.
@@ -2240,7 +2240,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">MDN</a>
    */
-  final val background = Attr.alias("background")(_(
+  final val background = Attr.alias("background", CanIUse2.backgroundImageTransforms)(_(
     backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat,
     backgroundSize, backgroundAttachment))
 

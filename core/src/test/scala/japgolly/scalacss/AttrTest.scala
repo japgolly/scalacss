@@ -78,5 +78,28 @@ object AttrTest extends TestSuite {
       assertEq(border(length, style).value, "3px dashed")
       assertEq(border(length, style, colour).value, "3px dashed green")
     }
+
+    'PrefixApplyWords {
+      val pa = CanIUse2.PrefixApply.keywords("abc", "def")
+      def test(i: String, eo: String = null): Unit = {
+        val o = pa(i).fold(i)(_(CanIUse.Prefix.o))
+        assertEq(o, Option(eo) getOrElse i)
+      }
+      test("abc", "-o-abc")
+      test("def", "-o-def")
+      test("abc-")
+      test("abc0")
+      test("abcd")
+      test("-abc")
+      test("0abc")
+      test("aabc")
+      test(" abc", " -o-abc")
+      test("abc ", "-o-abc ")
+      test("abc 123", "-o-abc 123")
+      test("qwe abc", "qwe -o-abc")
+      test("abc abc 123 def", "-o-abc -o-abc 123 -o-def")
+      test("-o-abc")
+      test("def(12)", "-o-def(12)")
+    }
   }
 }

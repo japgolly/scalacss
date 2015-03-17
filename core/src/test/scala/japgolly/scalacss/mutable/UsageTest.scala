@@ -25,6 +25,7 @@ object UsageTest extends TestSuite {
         margin(12.px),
         padding(2.ex),
         cursor.pointer,
+        backgroundImage := "radial-gradient(5em circle at top left, yellow, blue)",
 
         Hover(
           fontWeight.normal,
@@ -66,9 +67,13 @@ object UsageTest extends TestSuite {
     assertEq(norm(css), norm(
       """
         |.demo-0001 {
-        |  padding: 2ex;
-        |  margin: 12px;
         |  cursor: pointer;
+        |  margin: 12px;
+        |  padding: 2ex;
+        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
         |.demo-0001:hover {

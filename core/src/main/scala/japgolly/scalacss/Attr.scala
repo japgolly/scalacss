@@ -110,6 +110,7 @@ class Transform(val run: Env => CssKV => Vector[CssKV]) {
 }
 
 object Transform {
+  import CanIUse2.PrefixApply
 
   def apply(run: Env => CssKV => Vector[CssKV]): Transform =
     new Transform(run)
@@ -119,19 +120,23 @@ object Transform {
   def keys(subject: CanIUse.Subject): Transform = {
     import CanIUse2._
     val pp = prefixPlan(subject)
-    Transform(_ => prefixKeys(pp, _))
+    Transform(_ => prefixKeys(pp, PrefixApply.prepend, _))
   }
 
   def values(subject: CanIUse.Subject)(v1: Literal, vn: Literal*): Transform = {
     val whitelist: Set[Value] = vn.foldLeft(Set(v1.value))(_ + _.value)
-    values(subject, whitelist contains _.value)
+    values(subject,  PrefixApply maybePrepend whitelist.contains)
   }
 
-  def values(subject: CanIUse.Subject, cond: CssKV => Boolean): Transform = {
+  def values(subject: CanIUse.Subject, pa: PrefixApply): Transform = {
     import CanIUse2._
     val pp = prefixPlan(subject)
-    Transform(_ => kv => if (cond(kv)) prefixValues(pp, kv) else Vector1(kv))
+    Transform(_ => kv => prefixValues(pp, pa, kv))
   }
+
+  /** @see [[CanIUse2.PrefixApply.keywords]] */
+  def valueKeywords(subject: CanIUse.Subject)(w1: String, wn: String*): Transform =
+    values(subject, CanIUse2.PrefixApply.keywords(w1, wn: _*))
 }
 
 // =====================================================================================================================

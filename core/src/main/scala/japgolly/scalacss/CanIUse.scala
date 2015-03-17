@@ -24,7 +24,9 @@ object CanIUse {
     case object FullX       extends Support
   }
 
-  sealed abstract class Prefix(val value: String)
+  sealed abstract class Prefix(val name: String) {
+    val prefix = "-" + name + "-"
+  }
   object Prefix {
     case object moz    extends Prefix("moz")
     case object ms     extends Prefix("ms")
