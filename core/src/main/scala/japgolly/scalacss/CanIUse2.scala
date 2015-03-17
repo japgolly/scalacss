@@ -18,29 +18,6 @@ object CanIUse2 {
 
   val transforms = transforms2d |+| transforms3d
 
-  /*
-  sealed trait Browser
-  case object Chrome  extends Browser
-  case object Firefox extends Browser
-  case object IE      extends Browser
-  case object Safari  extends Browser
-  case object Opera   extends Browser
-  case object Other   extends Browser
-
-//  val browserToAgent: Browser => List[Agent] = {
-//    case Chrome => Agent.AndroidChrome :: Agent.Chrome :: Nil
-//  }
-//  val agentToBrowser: Agent => Browser = {
-//    case Agent.AndroidBrowser => Other
-//    case Agent.AndroidChrome  => Chrome
-//    case Agent.AndroidFirefox => Firefox
-//  }
-
-  sealed trait Platform
-  case object Desktop extends Platform
-  case object Mobile  extends Platform
-  */
-
   val needsPrefix: Support => Boolean = {
     case Unsupported | Full | Partial => false
     case FullX | PartialX             => true
@@ -64,10 +41,28 @@ object CanIUse2 {
       if (np) ps :+ None else ps
     }
 
-  @inline def applyPrefix(op: Option[Prefix], key: String, value: String): CssKV =
-    CssKV(op.fold(key)(p => s"-${p.value}-$key"), value)
+  val prefixed: String => Boolean = {
+    val p = Prefix.values.list.map(_.value).mkString("^-(?:", "|", ")-.*").r.pattern
+    in => p.matcher(in).matches
+  }
 
-  def applyPrefixes(ps: PrefixPlan, key: String, value: String): Vector[CssKV] =
-    ps.foldLeft(Vector.empty[CssKV])(
-      _ :+ applyPrefix(_, key, value))
+  def prefixStr(p: Prefix, to: String): String =
+    s"-${p.value}-$to"
+
+  def runPlan(pp: PrefixPlan, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
+    val tgt = l.get(kv)
+    if (prefixed(tgt))
+      Vector1(kv)
+    else
+      pp.map(op =>
+        op.fold(kv)(p =>
+          l.set(kv)(prefixStr(p, tgt))))
+
+  }
+
+  @inline def prefixKeys(pp: PrefixPlan, kv: CssKV): Vector[CssKV] =
+    runPlan(pp, CssKV.key, kv)
+
+  @inline def prefixValues(pp: PrefixPlan, kv: CssKV): Vector[CssKV] =
+    runPlan(pp, CssKV.value, kv)
 }

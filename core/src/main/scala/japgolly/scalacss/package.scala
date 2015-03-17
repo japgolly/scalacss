@@ -3,6 +3,7 @@ package japgolly
 import scala.collection.GenTraversableOnce
 import scalaz.{Equal, Foldable1, OneAnd}
 import scalaz.std.AllInstances._
+import shapeless.lens
 
 package object scalacss {
 
@@ -42,6 +43,10 @@ package object scalacss {
   final case class CssKV(key: String, value: String)
   object CssKV {
     implicit val equality: Equal[CssKV] = Equal.equalA
+
+    type Lens = shapeless.Lens[CssKV, String]
+    val key  : Lens = lens[CssKV].key
+    val value: Lens = lens[CssKV].value
   }
 
   /**

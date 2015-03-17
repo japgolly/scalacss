@@ -56,14 +56,14 @@ object Attr {
   def real(css: String): Attr =
     new RealAttr(css, genSimple(css))
 
-  def real(css: String, subject: CanIUse.Subject): Attr =
-    new RealAttr(css, canIGen(css, subject))
+  def real(css: String, t: Transform): Attr =
+    new RealAttr(css, t attrGen css)
 
   def alias(css: String) =
     _alias(css, genSimple(css))
 
-  def alias(css: String, subject: CanIUse.Subject) =
-    _alias(css, canIGen(css, subject))
+  def alias(css: String, t: Transform) =
+    _alias(css, t attrGen css)
 
   private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyList[Attr]) => Attr =
     f => new AliasAttr(id, g, Need(f(AliasB)))
@@ -75,11 +75,62 @@ object Attr {
   object AliasB {
     @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
   }
+}
 
-  def canIGen(key: String, subject: CanIUse.Subject): Gen = {
+// =====================================================================================================================
+
+/**
+ * Transforms key-values into different and/or more key-values.
+ *
+ * Generally used to apply browser prefixes.
+ * For example, to turn `border-radius: 1em/5em;` into
+ * {{{
+ *   -moz-border-radius: 1em/5em;
+ *   -webkit-border-radius: 1em/5em;
+ *   border-radius: 1em/5em;
+ * }}}
+ */
+class Transform(val run: Env => CssKV => Vector[CssKV]) {
+
+  /**
+   * Applicative product of two transforms.
+   */
+  def *(next: Transform): Transform =
+    new Transform(e => {
+      val a = run(e)
+      val b = next.run(e)
+      a(_) flatMap b
+    })
+
+  def attrGen(key: String): Attr.Gen =
+    e => {
+      val x = run(e)
+      v => x(CssKV(key, v))
+    }
+}
+
+object Transform {
+
+  def apply(run: Env => CssKV => Vector[CssKV]): Transform =
+    new Transform(run)
+
+  // TODO Use env to control prefixes
+
+  def keys(subject: CanIUse.Subject): Transform = {
     import CanIUse2._
-    val prefixes = prefixPlan(subject)
-    _ => v => applyPrefixes(prefixes, key, v) // TODO Use env to control prefixes
+    val pp = prefixPlan(subject)
+    Transform(_ => prefixKeys(pp, _))
+  }
+
+  def values(subject: CanIUse.Subject)(v1: Literal, vn: Literal*): Transform = {
+    val whitelist: Set[Value] = vn.foldLeft(Set(v1.value))(_ + _.value)
+    values(subject, whitelist contains _.value)
+  }
+
+  def values(subject: CanIUse.Subject, cond: CssKV => Boolean): Transform = {
+    import CanIUse2._
+    val pp = prefixPlan(subject)
+    Transform(_ => kv => if (cond(kv)) prefixValues(pp, kv) else Vector1(kv))
   }
 }
 
