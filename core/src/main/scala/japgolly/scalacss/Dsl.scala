@@ -1,11 +1,9 @@
 package japgolly.scalacss
 
-import shapeless.Witness
 import Style.{UnsafeExt, UnsafeExts}
 import ValueT._
 
 object DslBase {
-  val zeroType = Witness(0)
 
   final class DslInt(val self: Int) extends AnyVal {
     
@@ -78,21 +76,23 @@ object DslBase {
     @inline def *(l: Length): Length = l.copy(n = l.n * self)
     @inline def /(l: Length): Length = l.copy(n = l.n / self)
   }
-  
+
+  /** Untyped attributes */
   final class DslAttr(val self: Attr) extends AnyVal {
-    /** Untyped assignment */
-    @inline def :=(value: Value): AV = AV(self, value)
+    @inline def :=(value: Value)    : AV = AV(self, value)
+    @inline def :=(value: ValueT[_]): AV = AV(self, value.value)
   }
 
-  final class DslTypedAttrBase(val self: TypedAttrBase) extends AnyVal {
-    /** Untyped assignment */
-    @inline def :=!(value: Value): AV = AV(self, value)
-  }
+  /** Typed attributes */
+  final class DslAttrT(val self: TypedAttrBase) extends AnyVal {
+    @inline def :=!(value: Value)    : AV = AV(self, value)
+    @inline def :=!(value: ValueT[_]): AV = AV(self, value.value)
 
-//  final class DslTypedAttrT[T <: ValueClass](val self: TypedAttrT[T]) extends AnyVal {
-//    /** Typed assignment */
-//    @inline def :=(value: ValueT[T]): AV = self(value)
-//  }
+    @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
+    @inline def :=(value: Value)    : AV = AV(self, value)
+    @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
+    @inline def :=(value: ValueT[_]): AV = AV(self, value.value)
+  }
 
   final class DslAV(val self: AV) extends AnyVal {
     @inline def &(b: AV) : AVs = NonEmptyVector(self, b)
@@ -118,17 +118,11 @@ import DslBase._
 // =====================================================================================================================
 abstract class DslBase extends ValueT.Rules {
 
-  @inline implicit final def untypedCssValueFromZero   (z: zeroType.T): Value = "0"
-  @inline implicit final def untypedCssValueFromLength (x: Length)    : Value = x.value
-  @inline implicit final def untypedCssValueFromPercent(x: Percentage): Value = x.value
-
-  @inline implicit final def autoDslInt (a: Int) : DslInt  = new DslInt(a)
-  @inline implicit final def autoDslAttr(a: Attr): DslAttr = new DslAttr(a)
-  @inline implicit final def autoDslAV  (a: AV)  : DslAV   = new DslAV(a)
-  @inline implicit final def autoDslAVs (a: AVs) : DslAVs  = new DslAVs(a)
-
-  @inline implicit final def autoDslTypedAttrBase(a: TypedAttrBase): DslTypedAttrBase = new DslTypedAttrBase(a)
-  // @inline implicit final def autoDslTypedAttrT[T <: ValueClass](a: TypedAttrT[T]): DslTypedAttrT[T] = new DslTypedAttrT(a)
+  @inline implicit final def autoDslInt  (a: Int)          : DslInt   = new DslInt(a)
+  @inline implicit final def autoDslAttr (a: Attr)         : DslAttr  = new DslAttr(a)
+  @inline implicit final def autoDslAttrT(a: TypedAttrBase): DslAttrT = new DslAttrT(a)
+  @inline implicit final def autoDslAV   (a: AV)           : DslAV    = new DslAV(a)
+  @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs   = new DslAVs(a)
 
   @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
 

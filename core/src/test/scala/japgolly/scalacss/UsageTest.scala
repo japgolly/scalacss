@@ -1,6 +1,5 @@
 package japgolly.scalacss
 
-import shapeless.test.illTyped
 import utest._
 import TestUtil._
 import Attrs._
@@ -64,10 +63,5 @@ object UsageTest extends TestSuite {
           |}
         """.stripMargin.trim)
     }
-
-//    'zeroLiteral {
-//      padding := 0
-//      illTyped("padding := 1")
-//    }
   }
 }
