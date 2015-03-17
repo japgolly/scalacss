@@ -194,6 +194,7 @@ object Caniuse {
     def fmtData(d: Data) = {
       import d._
       val stats2 = stats.mapValues(m => m.toList.map{case(a,b) => (b,a)}.toMap)
+      def statss(s: MSS) = s.keySet.map(fmtsup).mkString("Set(",", ",")")
       val defval = if (valAttrs contains scalaval) "val" else "def"
       s"""/**
    * ${htmlsafe(title)}
@@ -202,7 +203,7 @@ object Caniuse {
    *
    * $spec
    */
-  $defval $scalaval: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
+  $defval $scalaval: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), statss)(stats2)}
 """}
 
     val prefixes = agents.map(_.allPrefixes).reduce(_ ++ _).toList.sorted
@@ -221,7 +222,7 @@ import scalaz.NonEmptyList
 
 object $obj {
   type VerStr  = String
-  type Subject = Map[Agent, Map[Support, VerStr]]
+  type Subject = Map[Agent, Set[Support]]
 
   sealed trait Support
   object Support {

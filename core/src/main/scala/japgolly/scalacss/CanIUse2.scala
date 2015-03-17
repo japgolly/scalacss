@@ -1,7 +1,8 @@
 package japgolly.scalacss
 
-import scalaz.{Memo, Semigroup}
+import scalaz.Memo
 import scalaz.std.map._
+import scalaz.std.set._
 import scalaz.syntax.semigroup._
 import japgolly.scalacss.{Literal => L}
 import CanIUse._
@@ -11,11 +12,6 @@ import Support._
  * Derivations of the raw data in [[CanIUse]].
  */
 object CanIUse2 {
-
-  implicit val verStrSemigroup: Semigroup[VerStr] =
-    new Semigroup[VerStr] {
-      override def append(a: VerStr, b: => VerStr): VerStr = a + "," + b
-    }
 
   val transforms = transforms2d |+| transforms3d
 
@@ -40,7 +36,7 @@ object CanIUse2 {
 
   def subjectPrefixes(s: Subject): Set[Prefix] =
     s.toStream
-      .filter{ case (a, d) => d.keys exists needsPrefix }
+      .filter{ case (a, d) => d exists needsPrefix }
       .map(ad => agentPrefixes(ad._1))
       .foldLeft(Set.empty[Prefix])(_ ++ _)
 
@@ -48,7 +44,7 @@ object CanIUse2 {
   val prefixPlan: Subject => PrefixPlan =
     Memo.mutableHashMapMemo {s =>
       val ps = subjectPrefixes(s).toVector.map(Some.apply)
-      val np = s.exists(_._2.exists(t => !needsPrefix(t._1)))
+      val np = s.exists(_._2.exists(d => !needsPrefix(d)))
       if (np) ps :+ None else ps
     }
 
