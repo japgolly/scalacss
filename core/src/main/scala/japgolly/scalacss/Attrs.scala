@@ -98,7 +98,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-delay">MDN</a>
    */
-  final val animationDelay = Attr.real("animation-delay", Transform keys CanIUse.animation)
+  object animationDelay extends TypedAttrTN[Time](",") {
+    override val attr = Attr.real("animation-delay", Transform keys CanIUse.animation)
+  }
 
   /**
    * The animation-direction CSS property indicates whether the animation should play in reverse on alternate cycles.
@@ -112,7 +114,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-duration">MDN</a>
    */
-  final val animationDuration = Attr.real("animation-duration", Transform keys CanIUse.animation)
+  object animationDuration extends TypedAttrTN[Time](",") {
+    override val attr = Attr.real("animation-duration", Transform keys CanIUse.animation)
+  }
 
   /**
    * The animation-fill-mode CSS property specifies how a CSS animation should apply styles to its target before and after it is executing.
@@ -2040,14 +2044,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-delay">MDN</a>
    */
-  final val transitionDelay = Attr.real("transition-delay", Transform keys CanIUse.transitions)
+  object transitionDelay extends TypedAttrTN[Time](",") {
+    override val attr = Attr.real("transition-delay", Transform keys CanIUse.transitions)
+  }
 
   /**
    * The transition-duration CSS property specifies the number of seconds or milliseconds a transition animation should take to complete. By default, the value is 0s, meaning that no animation will occur.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-duration">MDN</a>
    */
-  final val transitionDuration = Attr.real("transition-duration", Transform keys CanIUse.transitions)
+  object transitionDuration extends TypedAttrTN[Time](",") {
+    override val attr = Attr.real("transition-duration", Transform keys CanIUse.transitions)
+  }
 
   /**
    * The transition-property CSS property is used to specify the names of CSS properties to which a transition effect should be applied.

@@ -1,5 +1,8 @@
 package japgolly.scalacss
 
+import scala.concurrent.duration.FiniteDuration
+import java.util.concurrent.TimeUnit
+
 /**
  * A CSS value that is valid for some context `T`.
  */
@@ -58,6 +61,7 @@ object ValueT {
 
   sealed trait Integer    extends ValueClass
   sealed trait Number     extends ValueClass
+  sealed trait Time       extends ValueClass
   sealed trait Len        extends ValueClass
   sealed trait LenPct     extends ValueClass
   sealed trait LenPctAuto extends ValueClass
@@ -113,6 +117,14 @@ object ValueT {
 
     @inline implicit def ruleNumber_I: Number <== Int    = Rule(_.toString)
     @inline implicit def ruleNumber_D: Number <== Double = Rule(_.toString)
+
+    @inline implicit def ruleTime_FD: Time <== FiniteDuration =
+      Rule(d => d.unit match {
+        case TimeUnit.MICROSECONDS
+           | TimeUnit.MILLISECONDS
+           | TimeUnit.NANOSECONDS => d.toMillis + "ms"
+        case _                    => d.toSeconds + "s"
+      })
 
     @inline implicit def ruleLenPct_L: LenPct <=< Len        = Rule.retype
     @inline implicit def ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
@@ -203,6 +215,11 @@ object ValueT {
       av(concat(sep, top, vertical, bottom))
     final def apply(top: ValueT[T], right: ValueT[T], bottom: ValueT[T], left: ValueT[T]): AV =
       av(concat(sep, top, right, bottom, left))
+  }
+
+  abstract class TypedAttrTN[T <: ValueClass](sep: String) extends TypedAttrBase {
+    final def apply(v1: ValueT[T], vn: ValueT[T]*): AV =
+      av(vn.foldLeft(v1.value)(_ + sep + _.value))
   }
 
   abstract class TypedAttr_BrWidth extends TypedAttrT1[BrWidth]

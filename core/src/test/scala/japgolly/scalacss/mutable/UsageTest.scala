@@ -1,5 +1,6 @@
 package japgolly.scalacss.mutable
 
+import scala.concurrent.duration._
 import utest._
 import japgolly.scalacss._
 import TestUtil._
@@ -35,6 +36,7 @@ object UsageTest extends TestSuite {
         ),
 
         Visited.not(FirstChild)(
+          animationDelay(1 minute, 50 millis),
           fontWeight.bold
         ),
 
@@ -87,6 +89,10 @@ object UsageTest extends TestSuite {
         |}
         |
         |.demo-0001:not(:first-child):visited {
+        |  -o-animation-delay: 60s,50ms;
+        |  -webkit-animation-delay: 60s,50ms;
+        |  -moz-animation-delay: 60s,50ms;
+        |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |}
         |

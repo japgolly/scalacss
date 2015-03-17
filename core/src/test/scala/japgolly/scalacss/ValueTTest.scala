@@ -1,5 +1,6 @@
 package japgolly.scalacss
 
+import scala.concurrent.duration._
 import scala.language.reflectiveCalls
 import shapeless.test.illTyped
 import utest._
@@ -9,7 +10,9 @@ import ValueT.Rules._
 object ValueTTest extends TestSuite {
 
   val len = Length(12, LengthUnit.px)
-  val %% = Percentage(25)
+  val %%  = Percentage(25)
+  val sec = 3 seconds
+  val ms  = 3 milliseconds
 
   override val tests = TestSuite {
 
@@ -35,6 +38,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Len](Color.black)")
         illTyped("test[Len](Literal.auto)")
         illTyped("test[Len](Literal.rtl)")
+        illTyped("test[Len](sec)")
+        illTyped("test[Len](ms)")
       }
 
       'Integer {
@@ -47,6 +52,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Integer](Color.black)")
         illTyped("test[Integer](Literal.auto)")
         illTyped("test[Integer](Literal.rtl)")
+        illTyped("test[Integer](sec)")
+        illTyped("test[Integer](ms)")
       }
 
       'Number {
@@ -59,6 +66,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[Number](Color.black)")
         illTyped("test[Number](Literal.auto)")
         illTyped("test[Number](Literal.rtl)")
+        illTyped("test[Number](sec)")
+        illTyped("test[Number](ms)")
       }
 
       'LenPct {
@@ -71,6 +80,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPct](Color.black)")
         illTyped("test[LenPct](Literal.auto)")
         illTyped("test[LenPct](Literal.rtl)")
+        illTyped("test[LenPct](sec)")
+        illTyped("test[LenPct](ms)")
       }
 
       'LenPctAuto {
@@ -83,6 +94,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPctAuto](Color.black)")
                   test[LenPctAuto](Literal.auto)
         illTyped("test[LenPctAuto](Literal.rtl)")
+        illTyped("test[LenPctAuto](sec)")
+        illTyped("test[LenPctAuto](ms)")
       }
 
       'LenPctNum {
@@ -95,6 +108,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPctNum](Color.black)")
         illTyped("test[LenPctNum](Literal.auto)")
         illTyped("test[LenPctNum](Literal.rtl)")
+        illTyped("test[LenPctNum](sec)")
+        illTyped("test[LenPctNum](ms)")
       }
       
       'BrWidth {
@@ -107,6 +122,8 @@ object ValueTTest extends TestSuite {
         illTyped("test[BrWidth](Color.black)")
         illTyped("test[BrWidth](Literal.auto)")
         illTyped("test[BrWidth](Literal.rtl)")
+        illTyped("test[BrWidth](sec)")
+        illTyped("test[BrWidth](ms)")
       }
 
       'BrStyle {
@@ -115,10 +132,12 @@ object ValueTTest extends TestSuite {
         illTyped("test[BrStyle](len)")
         illTyped("test[BrStyle](%%)")
         illTyped("test[BrStyle](Literal.thick)")
-        test[BrStyle](Literal.dashed)
+                  test[BrStyle](Literal.dashed)
         illTyped("test[BrStyle](Color.black)")
         illTyped("test[BrStyle](Literal.auto)")
         illTyped("test[BrStyle](Literal.rtl)")
+        illTyped("test[BrStyle](sec)")
+        illTyped("test[BrStyle](ms)")
       }
 
       'WidStyCol {
@@ -131,6 +150,22 @@ object ValueTTest extends TestSuite {
                   test[WidStyCol](Color.black)
         illTyped("test[WidStyCol](Literal.auto)")
         illTyped("test[WidStyCol](Literal.rtl)")
+        illTyped("test[WidStyCol](sec)")
+        illTyped("test[WidStyCol](ms)")
+      }
+
+      'Time {
+        illTyped("test[Time](1)")
+        illTyped("test[Time](1.5)")
+        illTyped("test[Time](len)")
+        illTyped("test[Time](%%)")
+        illTyped("test[Time](Literal.thick)")
+        illTyped("test[Time](Literal.dashed)")
+        illTyped("test[Time](Color.black)")
+        illTyped("test[Time](Literal.auto)")
+        illTyped("test[Time](Literal.rtl)")
+                  test[Time](sec)
+                  test[Time](ms)
       }
 
     }
