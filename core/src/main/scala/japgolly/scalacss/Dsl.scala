@@ -152,6 +152,9 @@ abstract class DslBase extends ValueT.Rules {
 
   def unsafeChild(n: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
     unsafeExt(_ + " " + n)(t: _*)
+
+  def unsafeRoot(sel: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
+    unsafeExt(_ => sel)(t: _*)
 }
 
 // =====================================================================================================================

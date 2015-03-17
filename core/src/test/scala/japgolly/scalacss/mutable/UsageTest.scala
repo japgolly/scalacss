@@ -49,6 +49,10 @@ object UsageTest extends TestSuite {
             lineHeight(97.5 %%),
             fontSize(150 %%)
           )
+        ),
+
+        unsafeRoot(".DEBUG")(
+          borderColor.red
         )
       )
 
@@ -116,6 +120,10 @@ object UsageTest extends TestSuite {
         |.demo-0001 nav.debug h1 {
         |  line-height: 97.5%;
         |  font-size: 150%;
+        |}
+        |
+        |.DEBUG {
+        |  border-color: red;
         |}
         |
         |.demo-0002 {
