@@ -5,9 +5,8 @@ import ValueT._
 
 object DslBase {
 
-  final class DslInt(val self: Int) extends AnyVal {
-    
-    @inline private def mkUnit(u: LengthUnit): Length =
+  final class DslNum[N](val self: N) extends AnyVal {
+    @inline private def mkUnit(u: LengthUnit): Length[N] =
       Length(self, u)
 
     /** Centimeters. */
@@ -73,8 +72,7 @@ object DslBase {
     /** Size as a percentage. */
     @inline def %% = Percentage(self)
 
-    @inline def *(l: Length): Length = l.copy(n = l.n * self)
-    @inline def /(l: Length): Length = l.copy(n = l.n / self)
+    @inline def *(l: Length[N])(implicit N: Numeric[N]) = l * self
   }
 
   /** Untyped attributes */
@@ -118,11 +116,12 @@ import DslBase._
 // =====================================================================================================================
 abstract class DslBase extends ValueT.Rules {
 
-  @inline implicit final def autoDslInt  (a: Int)          : DslInt   = new DslInt(a)
-  @inline implicit final def autoDslAttr (a: Attr)         : DslAttr  = new DslAttr(a)
-  @inline implicit final def autoDslAttrT(a: TypedAttrBase): DslAttrT = new DslAttrT(a)
-  @inline implicit final def autoDslAV   (a: AV)           : DslAV    = new DslAV(a)
-  @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs   = new DslAVs(a)
+  @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
+  @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)
+  @inline implicit final def autoDslAttr (a: Attr)         : DslAttr        = new DslAttr(a)
+  @inline implicit final def autoDslAttrT(a: TypedAttrBase): DslAttrT       = new DslAttrT(a)
+  @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
+  @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
   @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
 

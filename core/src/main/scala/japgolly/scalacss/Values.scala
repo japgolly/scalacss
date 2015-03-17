@@ -283,16 +283,16 @@ trait ColorOps[Out] {
   final def rgb(r: Int, g: Int, b: Int): Out =
     mkColor(s"rgb($r,$g,$b)")
 
-  final def rgb(r: Percentage, g: Percentage, b: Percentage): Out =
+  final def rgb(r: Percentage[_], g: Percentage[_], b: Percentage[_]): Out =
     mkColor(s"rgb(${r.value},${g.value},${b.value})")
 
-  final def hsl(h: Int, s: Percentage, l: Percentage): Out =
+  final def hsl(h: Int, s: Percentage[_], l: Percentage[_]): Out =
     mkColor(s"hsl($h,${s.value},${l.value})")
 
   final def rgba(r: Int, g: Int, b: Int, a: Double): Out =
     mkColor(s"rgba($r,$g,$b,$a)")
 
-  final def hsla(h: Int, s: Percentage, l: Percentage, a: Double): Out =
+  final def hsla(h: Int, s: Percentage[_], l: Percentage[_], a: Double): Out =
     mkColor(s"hsla($h,${s.value},${l.value},$a)")
 
   /**

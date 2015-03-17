@@ -23,8 +23,8 @@ object UsageTest extends TestSuite {
 
     val s1: StyleA =
       style(
-        margin(12.px),
-        padding(2.ex),
+        margin(12 px),
+        padding(0.5 ex),
         cursor.pointer,
         backgroundImage := "radial-gradient(5em circle at top left, yellow, blue)",
 
@@ -45,7 +45,8 @@ object UsageTest extends TestSuite {
           color.black.important,
 
           unsafeChild("h1")(
-            fontSize(150.%%)
+            lineHeight(97.5 %%),
+            fontSize(150 %%)
           )
         )
       )
@@ -80,7 +81,7 @@ object UsageTest extends TestSuite {
         |.demo-0001 {
         |  cursor: pointer;
         |  margin: 12px;
-        |  padding: 2ex;
+        |  padding: 0.5ex;
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
@@ -111,6 +112,7 @@ object UsageTest extends TestSuite {
         |}
         |
         |.demo-0001 nav.debug h1 {
+        |  line-height: 97.5%;
         |  font-size: 150%;
         |}
         |

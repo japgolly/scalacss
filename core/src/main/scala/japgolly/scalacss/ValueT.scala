@@ -1,7 +1,8 @@
 package japgolly.scalacss
 
-import scala.concurrent.duration.FiniteDuration
 import java.util.concurrent.TimeUnit
+import scala.concurrent.duration.FiniteDuration
+import japgolly.scalacss.{Literal => L}
 
 /**
  * A CSS value that is valid for some context `T`.
@@ -39,13 +40,17 @@ object ValueT {
     case object vw   extends LengthUnit("vw")
   }
 
-  final case class Length(n: Int, u: LengthUnit) {
-    def value = if (n == 0) "0" else n.toString + u.value
-    @inline def *(m: Int): Length = copy(n = this.n * m)
-    @inline def /(m: Int): Length = copy(n = this.n / m)
+  final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: LengthUnit) {
+    def value = {
+      val s = n.toString
+      if (s == "0") "0" else s + u.value
+    }
+
+    @inline def *(m: N)(implicit N: Numeric[N]): Length[N] =
+      copy(n = N.times(this.n, m))
   }
 
-  final case class Percentage(n: Int) {
+  final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
     def value: Value = n.toString + "%"
   }
 
@@ -98,30 +103,27 @@ object ValueT {
         override def apply(x: From): ValueT[To] = f(x)
       }
 
-    def retype[FromT <: ValueClass, To <: ValueClass]: FromT >=> To =
+    @inline def retype[FromT <: ValueClass, To <: ValueClass]: FromT >=> To =
       applyT(_.retype)
 
-    def literal[L <: Literal, To <: ValueClass]: L ==> To =
+    @inline def literal[L <: Literal, To <: ValueClass]: L ==> To =
       apply(_.value)
   }
 
   object Rules extends Rules
   abstract class Rules {
-    @inline implicit def ruleApply[From, To <: ValueClass](f: From)(implicit r: From ==> To): ValueT[To] = r(f)
+    @inline implicit def ruleApply[From, To <: ValueClass](f: From)(implicit r: From ==> To): ValueT[To] =
+      r(f)
 
     @inline implicit def ruleChain[A, B <: ValueClass, C <: ValueClass](implicit ab: A ==> B, bc: B >=> C): A ==> C =
       ab >> bc
 
-    @inline implicit def ruleLen_L: Len <== Length = Rule(_.value)
-
-    @inline implicit def rulePct_P: Pct <== Percentage = Rule(_.value)
-
-    @inline implicit def ruleInteger_I: Integer <== Int = Rule(_.toString)
-
-    @inline implicit def ruleNumber_I: Number <== Int    = Rule(_.toString)
-    @inline implicit def ruleNumber_D: Number <== Double = Rule(_.toString)
-
-    @inline implicit def ruleTime_FD: Time <== FiniteDuration =
+    @inline implicit def ruleLen_L[N] : Len     <== Length[N]      = Rule(_.value)
+    @inline implicit def rulePct_P[N] : Pct     <== Percentage[N]  = Rule(_.value)
+    @inline implicit def ruleInteger_I: Integer <== Int            = Rule(_.toString)
+    @inline implicit def ruleNumber_I : Number  <== Int            = Rule(_.toString)
+    @inline implicit def ruleNumber_D : Number  <== Double         = Rule(_.toString)
+    @inline implicit def ruleTime_FD  : Time    <== FiniteDuration =
       Rule(d => d.unit match {
         case TimeUnit.MICROSECONDS
            | TimeUnit.MILLISECONDS
@@ -129,33 +131,27 @@ object ValueT {
         case _                    => d.toSeconds + "s"
       })
 
-    @inline implicit def ruleLenPct_L: LenPct <=< Len        = Rule.retype
-    @inline implicit def ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
-
-    @inline implicit def ruleLenPctAuto_LP: LenPctAuto <=< LenPct            = Rule.retype
-    @inline implicit def ruleLenPctAuto_A : LenPctAuto <== Literal.auto.type = Rule.literal
+    @inline implicit def ruleLenPct_L                                 : LenPct     <=< Len         = Rule.retype
+    @inline implicit def ruleLenPct_P                                 : LenPct     <=< Pct         = Rule.retype
+    @inline implicit def ruleLenPctAuto_LP                            : LenPctAuto <=< LenPct      = Rule.retype
+    @inline implicit def ruleLenPctAuto_A                             : LenPctAuto <== L.auto.type = Rule.literal
+    @inline implicit def ruleLenPctNum_LP                             : LenPctNum  <=< LenPct      = Rule.retype
+    @inline implicit def ruleLenPctNum_N                              : LenPctNum  <=< Number      = Rule.retype
+    @inline implicit def ruleBrWidth_1                                : BrWidth    <=< Len         = Rule.retype
+    @inline implicit def ruleBrWidth_2[L <: Literal with L.BrWidthLit]: BrWidth    <== L           = Rule.literal
+    @inline implicit def ruleBrStyle_L[L <: Literal with L.BrStyleLit]: BrStyle    <== L           = Rule.literal
+    @inline implicit def ruleWidStyCol_W                              : WidStyCol  <=< BrWidth     = Rule.retype
+    @inline implicit def ruleWidStyCol_S                              : WidStyCol  <=< BrStyle     = Rule.retype
+    @inline implicit def ruleWidStyCol_C                              : WidStyCol  <=< Color       = Rule.retype
+    
     // diverging implicit expansion requires these ↙ :(
-    @inline implicit def ruleLenPctAuto_L : LenPctAuto <=< Len               = Rule.retype
-    @inline implicit def ruleLenPctAuto_P : LenPctAuto <== Percentage        = Rule(_.value)
-
-    @inline implicit def ruleLenPctNum_LP: LenPctNum <=< LenPct     = Rule.retype
-    @inline implicit def ruleLenPctNum_N : LenPctNum <=< Number     = Rule.retype
-    // diverging implicit expansion requires these ↙ :(
-    @inline implicit def ruleLenPctNum_L : LenPctNum <=< Len        = Rule.retype
-    @inline implicit def ruleLenPctNum_I : LenPctNum <== Int        = Rule(_.toString)
-    @inline implicit def ruleLenPctNum_P : LenPctNum <== Percentage = Rule(_.value)
-
-    @inline implicit def ruleBrWidth_1                                      : BrWidth <=< Len = Rule.retype
-    @inline implicit def ruleBrWidth_2[L <: Literal with Literal.BrWidthLit]: BrWidth <== L   = Rule.literal
-
-    @inline implicit def ruleBrStyle_L[L <: Literal with Literal.BrStyleLit]: BrStyle <== L = Rule.literal
-
-    @inline implicit def ruleWidStyCol_W: WidStyCol <=< BrWidth    = Rule.retype
-    @inline implicit def ruleWidStyCol_S: WidStyCol <=< BrStyle    = Rule.retype
-    @inline implicit def ruleWidStyCol_C: WidStyCol <=< Color      = Rule.retype
-    // diverging implicit expansion requires these ↙ :(
-    @inline implicit def ruleWidStyCol_L: WidStyCol <=< Len        = Rule.retype
-    @inline implicit def ruleWidStyCol_P: WidStyCol <== Percentage = Rule(_.value)
+    @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
+    @inline implicit def ruleWidStyCol_P : WidStyCol  <=< Pct = Rule.retype
+    @inline implicit def ruleLenPctNum_I : LenPctNum  <== Int = Rule(_.toString)
+    @inline implicit def ruleLenPctNum_L : LenPctNum  <=< Len = Rule.retype
+    @inline implicit def ruleLenPctNum_P : LenPctNum  <=< Pct = Rule.retype
+    @inline implicit def ruleLenPctAuto_L: LenPctAuto <=< Len = Rule.retype
+    @inline implicit def ruleLenPctAuto_P: LenPctAuto <=< Pct = Rule.retype
   }
 
 
@@ -177,13 +173,13 @@ object ValueT {
      *
      * For inherited properties, this reinforces the default behavior, and is only needed to override another rule.  For non-inherited properties, this specifies a behavior that typically makes relatively little sense and you may consider using initial instead, or unset on the all property.
      */
-    def inherit = avl(Literal.inherit)
+    def inherit = avl(L.inherit)
 
     /** The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property. */
-    def initial = avl(Literal.initial)
+    def initial = avl(L.initial)
 
     /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
-    def unset = avl(Literal.unset)
+    def unset = avl(L.unset)
   }
 
   abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {
@@ -244,41 +240,41 @@ object ValueT {
     with BrWidthOps with BrStyleOps with ColourOps
 
   abstract class TypedAttr_LenPctAuto extends TypedAttrT1[LenPctAuto] with ZeroLit {
-    final def auto = avl(Literal.auto)
+    final def auto = avl(L.auto)
   }
 
   abstract class TypedAttr_Length extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto        = avl(Literal.auto)
-    final def available   = avl(Literal.available)
-    final def border_box  = avl(Literal.border_box)
-    final def content_box = avl(Literal.content_box)
-    final def fit_content = avl(Literal.fit_content)
-    final def max_content = avl(Literal.max_content)
-    final def min_content = avl(Literal.min_content)
+    final def auto        = avl(L.auto)
+    final def available   = avl(L.available)
+    final def border_box  = avl(L.border_box)
+    final def content_box = avl(L.content_box)
+    final def fit_content = avl(L.fit_content)
+    final def max_content = avl(L.max_content)
+    final def min_content = avl(L.min_content)
   }
 
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def fill_available = avl(Literal.fill_available)
-    final def fit_content    = avl(Literal.fit_content)
-    final def max_content    = avl(Literal.max_content)
-    final def min_content    = avl(Literal.min_content)
-    final def none           = avl(Literal.none)
-    final def contain_floats = avl(Literal.contain_floats)
+    final def fill_available = avl(L.fill_available)
+    final def fit_content    = avl(L.fit_content)
+    final def max_content    = avl(L.max_content)
+    final def min_content    = avl(L.min_content)
+    final def none           = avl(L.none)
+    final def contain_floats = avl(L.contain_floats)
   }
 
   abstract class TypedAttr_MinLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto           = avl(Literal.auto)
-    final def fill_available = avl(Literal.fill_available)
-    final def fit_content    = avl(Literal.fit_content)
-    final def max_content    = avl(Literal.max_content)
-    final def min_content    = avl(Literal.min_content)
-    final def contain_floats = avl(Literal.contain_floats)
+    final def auto           = avl(L.auto)
+    final def fill_available = avl(L.fill_available)
+    final def fit_content    = avl(L.fit_content)
+    final def max_content    = avl(L.max_content)
+    final def min_content    = avl(L.min_content)
+    final def contain_floats = avl(L.contain_floats)
   }
 
 
@@ -298,23 +294,23 @@ object ValueT {
 
   trait BrWidthOps extends ZeroLit {
     this: TypedAttrBase =>
-    final def thin   = avl(Literal.thin)
-    final def medium = avl(Literal.medium)
-    final def thick  = avl(Literal.thick)
+    final def thin   = avl(L.thin)
+    final def medium = avl(L.medium)
+    final def thick  = avl(L.thick)
   }
 
   trait BrStyleOps {
     this: TypedAttrBase =>
-    final def none   = avl(Literal.none)
-    final def hidden = avl(Literal.hidden)
-    final def dotted = avl(Literal.dotted)
-    final def dashed = avl(Literal.dashed)
-    final def solid  = avl(Literal.solid)
-    final def double = avl(Literal.double)
-    final def groove = avl(Literal.groove)
-    final def ridge  = avl(Literal.ridge)
-    final def inset  = avl(Literal.inset)
-    final def outset = avl(Literal.outset)
+    final def none   = avl(L.none)
+    final def hidden = avl(L.hidden)
+    final def dotted = avl(L.dotted)
+    final def dashed = avl(L.dashed)
+    final def solid  = avl(L.solid)
+    final def double = avl(L.double)
+    final def groove = avl(L.groove)
+    final def ridge  = avl(L.ridge)
+    final def inset  = avl(L.inset)
+    final def outset = avl(L.outset)
   }
 
   trait ColourOps extends ColorOps[AV] {
