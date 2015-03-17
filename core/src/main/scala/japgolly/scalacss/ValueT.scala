@@ -183,6 +183,11 @@ object ValueT {
   @inline private def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_], d: ValueT[_]): Value =
     concat(sep, a, b, c) + sep + d.value
 
+  abstract class TypedAttrT2Radius[T <: ValueClass] extends TypedAttrBase {
+    final def apply(radius: ValueT[T])                         : AV = av(radius.value)
+    final def apply(horizontal: ValueT[T], vertical: ValueT[T]): AV = av(concat(" ", horizontal, vertical))
+  }
+
   abstract class TypedAttrT3[T <: ValueClass](sep: String) extends TypedAttrBase {
     final def apply(a: ValueT[T])                            : AV = av(a.value)
     final def apply(a: ValueT[T], b: ValueT[T])              : AV = av(concat(sep, a, b))

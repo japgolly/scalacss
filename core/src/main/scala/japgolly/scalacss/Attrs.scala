@@ -238,14 +238,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-left-radius">MDN</a>
    */
-  final val borderBottomLeftRadius = Attr.real("border-bottom-left-radius", CanIUse.borderRadius)
+  object borderBottomLeftRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+    override val attr = Attr.real("border-bottom-left-radius", CanIUse.borderRadius)
+  }
 
   /**
    * The border-bottom-right-radius CSS property sets the rounding of the bottom-right corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0 no rounding is done and the corner is square.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-right-radius">MDN</a>
    */
-  final val borderBottomRightRadius = Attr.real("border-bottom-right-radius", CanIUse.borderRadius)
+  object borderBottomRightRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+    override val attr = Attr.real("border-bottom-right-radius", CanIUse.borderRadius)
+  }
 
   /**
    * The border-bottom-style CSS property sets the line style of the bottom border of a box.
@@ -386,14 +390,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-left-radius">MDN</a>
    */
-  final val borderTopLeftRadius = Attr.real("border-top-left-radius", CanIUse.borderRadius)
+  object borderTopLeftRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+    override val attr = Attr.real("border-top-left-radius", CanIUse.borderRadius)
+  }
 
   /**
    * The border-top-right-radius CSS property sets the rounding of the top-right corner of the element. The rounding can be a circle or an ellipse, or if one of the value is 0 no rounding is done and the corner is square.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-right-radius">MDN</a>
    */
-  final val borderTopRightRadius = Attr.real("border-top-right-radius", CanIUse.borderRadius)
+  object borderTopRightRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+    override val attr = Attr.real("border-top-right-radius", CanIUse.borderRadius)
+  }
 
   /**
    * The border-top-style CSS property sets the line style of the top border of a box.
