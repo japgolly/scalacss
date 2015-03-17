@@ -18,7 +18,6 @@ CanIUse subjects affecting CSS values:
 * calc
 * gradients
 * imageSet
-* intrinsicWidth
 * repeatingGradients
 * sticky
 * viewportUnits

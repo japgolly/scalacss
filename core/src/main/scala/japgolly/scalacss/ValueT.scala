@@ -228,19 +228,25 @@ object ValueT {
   }
 
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
+    protected def attr2: Transform => Attr
     final def fill_available = avl(Literal.fill_available)
     final def fit_content    = avl(Literal.fit_content)
     final def max_content    = avl(Literal.max_content)
     final def min_content    = avl(Literal.min_content)
     final def none           = avl(Literal.none)
+    final def contain_floats = avl(Literal.contain_floats)
   }
 
   abstract class TypedAttr_MinLength extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
+    protected def attr2: Transform => Attr
     final def auto           = avl(Literal.auto)
     final def fill_available = avl(Literal.fill_available)
     final def fit_content    = avl(Literal.fit_content)
     final def max_content    = avl(Literal.max_content)
     final def min_content    = avl(Literal.min_content)
+    final def contain_floats = avl(Literal.contain_floats)
   }
 
 

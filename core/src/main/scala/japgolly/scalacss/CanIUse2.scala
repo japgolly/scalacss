@@ -3,6 +3,7 @@ package japgolly.scalacss
 import scalaz.{Memo, Semigroup}
 import scalaz.std.map._
 import scalaz.syntax.semigroup._
+import japgolly.scalacss.{Literal => L}
 import CanIUse._
 import Support._
 
@@ -17,6 +18,10 @@ object CanIUse2 {
     }
 
   val transforms = transforms2d |+| transforms3d
+
+  val intrinsicWidthTransforms =
+    Transform.values(intrinsicWidth)(
+      L.fill_available, L.max_content, L.min_content, L.fit_content, L.contain_floats)
 
   val needsPrefix: Support => Boolean = {
     case Unsupported | Full | Partial => false

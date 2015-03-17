@@ -1414,7 +1414,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-height">MDN</a>
    */
   object maxHeight extends TypedAttr_MaxLength {
-    override val attr = Attr.real("max-height")
+    override protected def attr2 = Attr.real("max-height", _)
   }
 
   /**
@@ -1423,7 +1423,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">MDN</a>
    */
   object maxWidth extends TypedAttr_MaxLength {
-    override val attr = Attr.real("max-width")
+    override protected def attr2 = Attr.real("max-width", _)
   }
 
   /**
@@ -1432,7 +1432,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-height">MDN</a>
    */
   object minHeight extends TypedAttr_MinLength {
-    override val attr = Attr.real("min-height")
+    override protected def attr2 = Attr.real("min-height", _)
   }
 
   /**
@@ -1441,7 +1441,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-width">MDN</a>
    */
   object minWidth extends TypedAttr_MinLength {
-    override val attr = Attr.real("min-width")
+    override protected def attr2 = Attr.real("min-width", _)
   }
 
   /**
@@ -2647,7 +2647,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-block-size">MDN</a>
    */
   object maxBlockSize extends TypedAttr_MaxLength {
-    override val attr = Attr.alias("max-block-size")(_(maxHeight, maxWidth))
+    override protected def attr2 = Attr.alias("max-block-size", _)(_(maxHeight, maxWidth))
   }
 
   /**
@@ -2656,7 +2656,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-inline-size">MDN</a>
    */
   object maxInlineSize extends TypedAttr_MaxLength {
-    override val attr = Attr.alias("max-inline-size")(_(maxHeight, maxWidth))
+    override protected def attr2 = Attr.alias("max-inline-size", _)(_(maxHeight, maxWidth))
   }
 
   /**
@@ -2665,7 +2665,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-block-size">MDN</a>
    */
   object minBlockSize extends TypedAttr_MinLength {
-    override val attr = Attr.alias("min-block-size")(_(minHeight, minWidth))
+    override protected def attr2 = Attr.alias("min-block-size", _)(_(minHeight, minWidth))
   }
 
   /**
@@ -2674,7 +2674,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-inline-size">MDN</a>
    */
   object minInlineSize extends TypedAttr_MinLength {
-    override val attr = Attr.alias("min-inline-size")(_(minHeight, minWidth))
+    override protected def attr2 = Attr.alias("min-inline-size", _)(_(minHeight, minWidth))
   }
 
   /**

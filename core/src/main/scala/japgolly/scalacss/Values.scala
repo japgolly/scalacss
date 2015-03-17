@@ -46,6 +46,7 @@ object Literal {
   @inline def complex               = Literal("complex")
   @inline def condensed             = Literal("condensed")
   @inline def contain               = Literal("contain")
+  @inline def contain_floats        = Literal("contain-floats")
   @inline def content               = Literal("content")
   @inline def content_box           = Literal("content-box")
   @inline def contents              = Literal("contents")
