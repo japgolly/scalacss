@@ -1956,7 +1956,11 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-size-adjust">MDN</a>
    */
-  final val textSizeAdjust = Attr.real("text-size-adjust", Transform keys CanIUse.textSizeAdjust)
+  object textSizeAdjust extends TypedAttrT1[Pct] {
+    override val attr = Attr.real("text-size-adjust", Transform keys CanIUse.textSizeAdjust)
+    def auto = avl(L.auto)
+    def none = avl(L.none)
+  }
 
   /**
    * Apple extension. Specifies the color of the outline (stroke) of text.

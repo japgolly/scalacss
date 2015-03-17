@@ -42,6 +42,20 @@ object ValueTTest extends TestSuite {
         illTyped("test[Len](ms)")
       }
 
+      'Pct {
+        illTyped("test[Pct](1)")
+        illTyped("test[Pct](1.5)")
+        illTyped("test[Pct](len)")
+                  test[Pct](%%)
+        illTyped("test[Pct](Literal.thick)")
+        illTyped("test[Pct](Literal.dashed)")
+        illTyped("test[Pct](Color.black)")
+        illTyped("test[Pct](Literal.auto)")
+        illTyped("test[Pct](Literal.rtl)")
+        illTyped("test[Pct](sec)")
+        illTyped("test[Pct](ms)")
+      }
+
       'Integer {
                   test[Integer](1)
         illTyped("test[Integer](1.5)")

@@ -50,7 +50,6 @@ text_decoration_line	none | [ underline || overline || line_through || blink ]
 text_decoration	<'text_decoration_line'> || <'text_decoration_style'> || <'text_decoration_color'>
 text_indent	<length> | <percentage> && [ hanging || each_line ]
 text_overflow	[ clip | ellipsis | <string> ]{1,2}
-text_size_adjust	none | auto | <var><percentage></var>
 text_underline_position	auto | [ under || [ left | right ] ]
 touch_action	 auto | none | [ pan_x || pan_y ] | manipulation
 transform	none | <transform_function>+

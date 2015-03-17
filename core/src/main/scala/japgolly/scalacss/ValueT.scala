@@ -63,6 +63,7 @@ object ValueT {
   sealed trait Number     extends ValueClass
   sealed trait Time       extends ValueClass
   sealed trait Len        extends ValueClass
+  sealed trait Pct        extends ValueClass
   sealed trait LenPct     extends ValueClass
   sealed trait LenPctAuto extends ValueClass
   sealed trait LenPctNum  extends ValueClass
@@ -112,6 +113,8 @@ object ValueT {
       ab >> bc
 
     @inline implicit def ruleLen_L: Len <== Length = Rule(_.value)
+
+    @inline implicit def rulePct_P: Pct <== Percentage = Rule(_.value)
 
     @inline implicit def ruleInteger_I: Integer <== Int = Rule(_.toString)
 
