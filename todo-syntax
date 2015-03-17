@@ -20,7 +20,6 @@ border_image_repeat	[ stretch | repeat | round ]{1,2}
 border_image_slice	[<number> | <percentage>]{1,4} && fill?
 border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
 border_radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
-border_spacing	<length> <length>?
 box_shadow	none | [inset? && [ <offset_x> <offset_y> <blur_radius>? <spread_radius>? <color>? ] ]#
 column_rule	<'column_rule_width'> || <'column_rule_style'> || <'column_rule_color'>
 columns	<'column_width'> || <'column_count'>

@@ -243,7 +243,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-left-radius">MDN</a>
    */
-  object borderBottomLeftRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+  object borderBottomLeftRadius extends TypedAttrT2[LenPct] with ZeroLit {
     override val attr = Attr.real("border-bottom-left-radius", Transform keys CanIUse.borderRadius)
   }
 
@@ -252,7 +252,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-bottom-right-radius">MDN</a>
    */
-  object borderBottomRightRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+  object borderBottomRightRadius extends TypedAttrT2[LenPct] with ZeroLit {
     override val attr = Attr.real("border-bottom-right-radius", Transform keys CanIUse.borderRadius)
   }
 
@@ -379,7 +379,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-spacing">MDN</a>
    */
-  final val borderSpacing = Attr.real("border-spacing")
+  object borderSpacing extends TypedAttrT2[Len] with ZeroLit {
+    override val attr = Attr.real("border-spacing")
+  }
 
   /**
    * The border-top-color CSS property sets the color of the top border of an element. Note that in many cases the shorthand CSS properties border-color or border-top are more convenient and preferable.
@@ -395,7 +397,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-left-radius">MDN</a>
    */
-  object borderTopLeftRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+  object borderTopLeftRadius extends TypedAttrT2[LenPct] with ZeroLit {
     override val attr = Attr.real("border-top-left-radius", Transform keys CanIUse.borderRadius)
   }
 
@@ -404,7 +406,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-top-right-radius">MDN</a>
    */
-  object borderTopRightRadius extends TypedAttrT2Radius[LenPct] with ZeroLit {
+  object borderTopRightRadius extends TypedAttrT2[LenPct] with ZeroLit {
     override val attr = Attr.real("border-top-right-radius", Transform keys CanIUse.borderRadius)
   }
 
