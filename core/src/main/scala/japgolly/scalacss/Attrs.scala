@@ -2730,8 +2730,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline">MDN</a>
    */
-  final val outline = Attr.alias("outline", Transform keys CanIUse.outline)(_(
-    outlineStyle, outlineWidth, outlineColor)) // not outlineOffset
+  object outline extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("outline", Transform keys CanIUse.outline)(_(
+      outlineStyle, outlineWidth, outlineColor)) // not outlineOffset
+  }
 
   /**
    * The padding CSS property sets the required padding space on all sides of an element. The padding area is the space between the content of the element and its border. Negative values are not allowed.

@@ -40,7 +40,7 @@ object ValueT {
   }
 
   final case class Length(n: Int, u: LengthUnit) {
-    def value = n.toString + u.value
+    def value = if (n == 0) "0" else n.toString + u.value
     @inline def *(m: Int): Length = copy(n = this.n * m)
     @inline def /(m: Int): Length = copy(n = this.n / m)
   }
@@ -281,7 +281,7 @@ object ValueT {
     // "overloaded method value apply with alternatives"
   }
 
-  trait BrWidthOps {
+  trait BrWidthOps extends ZeroLit {
     this: TypedAttrBase =>
     final def thin   = avl(Literal.thin)
     final def medium = avl(Literal.medium)

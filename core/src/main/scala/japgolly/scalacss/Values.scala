@@ -6,6 +6,8 @@ import ValueT.{Color, Percentage}
 case class Literal(value: String) //extends AnyVal
 
 object Literal {
+  final val `0` = ValueT.Length(0, ValueT.LengthUnit.px)
+
   @inline def absolute              = Literal("absolute")
   @inline def active                = Literal("active")
   @inline def alias                 = Literal("alias")
