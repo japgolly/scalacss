@@ -33,6 +33,12 @@ object AttrTest extends TestSuite {
   val style = Literal.dashed
   val colour = Color.green
 
+  def testGen(l: CssKV.Lens)(a: Attr, v: Value, exp: String*): Unit = {
+    val x = a.gen(Env.empty)(v).map(l.get).sorted
+    val y = exp.toVector.sorted
+    assertEq(x, y)
+  }
+
   override val tests = TestSuite {
     'laws1 - laws1.mustBeProvedBy(builtInAttrs)
     'laws2 - laws2.mustBeProvedBy(builtInAttrPairs)
@@ -53,15 +59,18 @@ object AttrTest extends TestSuite {
       test(Unrelated, borderLeft,  borderRight)
     }
 
-    'prefixes {
-      def test(a: Attr, exp: String*): Unit = {
-        val x = a.gen(Env.empty)("x").map(_.key).sorted
-        val y = exp.toVector.sorted
-        assertEq(x, y)
-      }
+    'keyPrefixes {
+      def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
       test(textAlign,    "text-align")
       test(borderRadius, "border-radius", "-moz-border-radius", "-webkit-border-radius")
       test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
+    }
+
+    'valuePrefixes {
+      def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
+      test(textAlign.left, "left")
+      test(cursor.pointer, "pointer")
+      test(cursor.zoom_in, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
     }
 
     'border {

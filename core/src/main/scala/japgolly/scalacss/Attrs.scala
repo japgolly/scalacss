@@ -680,7 +680,8 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor">MDN</a>
    */
   object cursor extends TypedAttrBase {
-    override val attr = Attr.real("cursor")
+    override val attr = Attr.real("cursor",
+      Transform.values(CanIUse.css3CursorsNewer)(L.grab, L.grabbing, L.zoom_in, L.zoom_out))
 
     /** Indicating an alias or shortcut is to be created. */
     def alias         = avl(L.alias)

@@ -24,14 +24,18 @@ object UsageTest extends TestSuite {
       style(
         margin(12.px),
         padding(2.ex),
+        cursor.pointer,
 
         Hover(
           fontWeight.normal,
           lineHeight(1.em),
-          padding.`0`),
+          padding.`0`,
+          cursor.zoom_in
+        ),
 
         Visited.not(FirstChild)(
-          fontWeight.bold),
+          fontWeight.bold
+        ),
 
         unsafeChild("nav.debug")(
           backgroundColor("#f88"),
@@ -39,7 +43,8 @@ object UsageTest extends TestSuite {
 
           unsafeChild("h1")(
             fontSize(150.%%)
-          ))
+          )
+        )
       )
 
     val everythingOk: Boolean => StyleA =
@@ -61,14 +66,19 @@ object UsageTest extends TestSuite {
     assertEq(norm(css), norm(
       """
         |.demo-0001 {
-        |  margin: 12px;
         |  padding: 2ex;
+        |  margin: 12px;
+        |  cursor: pointer;
         |}
         |
         |.demo-0001:hover {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
         |}
         |
         |.demo-0001:not(:first-child):visited {
