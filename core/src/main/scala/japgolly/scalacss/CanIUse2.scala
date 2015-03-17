@@ -19,7 +19,7 @@ object CanIUse2 {
 
   val transforms = transforms2d |+| transforms3d
 
-  val intrinsicWidthTransforms =
+  lazy val intrinsicWidthTransforms =
     Transform.values(intrinsicWidth)(
       L.fill_available, L.max_content, L.min_content, L.fit_content, L.contain_floats)
 
