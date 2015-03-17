@@ -32,7 +32,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
   @inline def register[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out = registerC(s)(m, u)
 
   def registerS(s: StyleS): StyleA = {
-    val cn = s.className.fold(nextName())(ClassName)
+    val cn = s.className getOrElse nextName()
 
     // Optional side-effects for warnings
     // TODO Warn about reregistration
@@ -42,7 +42,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     } wf(cn, warning)
 
     // Register
-    val a = StyleA(cn, s)
+    val a = StyleA(cn, s.addClassNames, s)
     mutex { _styles :+= a }
     a
   }
@@ -148,7 +148,7 @@ object Register { // ===========================================================
     val fallbackStyle: StyleA = {
       import Attrs._, Dsl._
       val s = style(backgroundColor("#ffbaba"), color("#d8000c"))(Compose.safe)
-      StyleA(ClassName("_SCSS_ERROR_"), s)
+      StyleA(ClassName("_SCSS_ERROR_"), Vector.empty, s)
     }
   }
 }

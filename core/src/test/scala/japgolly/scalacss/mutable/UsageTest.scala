@@ -50,15 +50,24 @@ object UsageTest extends TestSuite {
         )
       )
 
+    /** Style requiring boolean */
     val everythingOk: Boolean => StyleA =
       boolStyle(ok => styleS(
         backgroundColor(if (ok) green else red),
         maxWidth(80.ex)
       ))
 
+    /** Style requiring int */
     val indent: Int => StyleA =
       styleF(Domain.ofRange(1 to 3))(i =>
         styleS(paddingLeft(i * 4.ex)))
+
+
+    /** Style hooking into Bootstrap */
+    val sb = style(
+      addClassNames("btn", "btn-default"),
+      marginTop.inherit
+    )
   }
 
   def norm(css: String) = css.trim
@@ -126,13 +135,19 @@ object UsageTest extends TestSuite {
         |.demo-0006 {
         |  padding-left: 12ex;
         |}
+        |
+        |.demo-0007 {
+        |  margin-top: inherit;
+        |}
       """.stripMargin))
 
-    assertEq(SS.everythingOk(true) .className.value, "demo-0002")
-    assertEq(SS.everythingOk(false).className.value, "demo-0003")
+    assertEq(SS.everythingOk(true) .htmlClass, "demo-0002")
+    assertEq(SS.everythingOk(false).htmlClass, "demo-0003")
 
-    assertEq(SS.indent(1).className.value, "demo-0004")
-    assertEq(SS.indent(2).className.value, "demo-0005")
-    assertEq(SS.indent(3).className.value, "demo-0006")
+    assertEq(SS.indent(1).htmlClass, "demo-0004")
+    assertEq(SS.indent(2).htmlClass, "demo-0005")
+    assertEq(SS.indent(3).htmlClass, "demo-0006")
+
+    assertEq(SS.sb.htmlClass, "demo-0007 btn btn-default")
   }
 }

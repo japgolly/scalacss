@@ -38,7 +38,7 @@ final case class Compose(rules: Compose.Rules) {
 
     val exts = a.unsafeExts ++ b.unsafeExts
 
-    val cn: Option[String] =
+    val cn: Option[ClassName] =
       (a.className, b.className) match {
         case (None,       None) => None
         case (r@ Some(_), None) => r // Should this also warn
@@ -46,7 +46,9 @@ final case class Compose(rules: Compose.Rules) {
         case (Some(l), Some(r)) => absorbWarning(Cond.empty, rules.mergeClassNames(l, r))
       }
 
-    new StyleS(newData, exts, cn, warnings)
+    val cns = a.addClassNames ++ b.addClassNames
+
+    new StyleS(newData, exts, cn, cns, warnings)
   }
 
   def apply[B](a: StyleS, b: StyleF[B]): StyleF[B] =
@@ -80,8 +82,8 @@ object Compose {
     new Compose(Rules.warn(Rules.append))
 
   trait Rules {
-    def mergeClassNames(lo: String, hi: String): (Option[String], Vector[WarningMsg])
-    def mergeAttrs     (lo: AV,     hi: AVs)   : (AVs           , Vector[WarningMsg])
+    def mergeClassNames(lo: ClassName, hi: ClassName): (Option[ClassName], Vector[WarningMsg])
+    def mergeAttrs     (lo: AV,        hi: AVs)      : (AVs              , Vector[WarningMsg])
   }
 
   object Rules {
@@ -95,13 +97,13 @@ object Compose {
 
     def silent(merge: AttrMerge): Rules =
       new Rules {
-        override def mergeClassNames(lo: String, hi: String) = (Some(hi)     , Vector.empty)
-        override def mergeAttrs(lo: AV, hi: AVs)             = (merge(lo, hi), Vector.empty)
+        override def mergeClassNames(lo: ClassName, hi: ClassName) = (Some(hi)     , Vector.empty)
+        override def mergeAttrs(lo: AV, hi: AVs)                   = (merge(lo, hi), Vector.empty)
       }
 
     def warn(merge: AttrMerge): Rules =
       new Rules {
-        override def mergeClassNames(lo: String, hi: String) =
+        override def mergeClassNames(lo: ClassName, hi: ClassName) =
           (Some(hi), Vector1(s"Overriding explicit className '$lo' with '$hi'."))
 
         override def mergeAttrs(lo: AV, hi: AVs) = {

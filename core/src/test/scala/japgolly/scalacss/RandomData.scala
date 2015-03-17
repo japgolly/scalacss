@@ -77,19 +77,20 @@ object RandomData {
   val warning: Gen[Warning] =
     Gen.apply2(Warning)(cond, str)
 
-  val classNameStr: Gen[String] =
-    str1
+  val className: Gen[ClassName] =
+    str1 map ClassName
 
   val styleS: Gen[StyleS] = {
     def level(next: Option[Gen[StyleS]]): Gen[StyleS] =
       for {
         data <- mapBy2(cond, avs.lim(limbig)).lim(8 `JVM|JS` 3)
         exts <- unsafeExts(next)
-        cn   <- classNameStr.option
+        cn   <- className.option
+        cns  <- className.vector
         ws   <- warning.vector.lim(limbig)
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
-        new StyleS(data, exts, cn, ws)
+        new StyleS(data, exts, cn, cns, ws)
       }
     level(Some(level(Some(level(None)))))
   }

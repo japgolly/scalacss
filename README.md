@@ -56,6 +56,7 @@ In progress.
 * Add more attrs discovered by caniuse.com data.
 * Type-safe CSS values (not all but most oft used are done)
 * Automatic browser prefixes for _values_ (using caniuse.com data).
+* Styles can add class names, for example to apply Bootstrap classes like `btn btn-default`.
 
 * Media query AST.
 * CSS Reset.

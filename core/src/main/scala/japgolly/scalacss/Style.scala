@@ -49,11 +49,14 @@ object Style {
  * A static style.
  *
  * @param className Manually specifies this style's class name. By default it is automatically generated.
+ * @param addClassNames Additional class names to be appended to the resulting [[StyleA]].
+ *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
-final case class StyleS(data      : Map[Cond, AVs],
-                        unsafeExts: Style.UnsafeExts,
-                        className : Option[String],
-                        warnings  : Vector[Warning]) extends Style1 {
+final case class StyleS(data         : Map[Cond, AVs],
+                        unsafeExts   : Style.UnsafeExts,
+                        className    : Option[ClassName],
+                        addClassNames: Vector[ClassName],
+                        warnings     : Vector[Warning]) extends Style1 {
 
   def named(w: Witness): StyleC.Named[w.T, StyleS] = StyleC.Named(this)
 
@@ -64,7 +67,7 @@ final case class StyleS(data      : Map[Cond, AVs],
   override def toString = inspect
 
   def inspectCss: Css =
-    Css.styleA(StyleA(ClassName(className getOrElse "???"), this))(Env.empty)
+    Css.styleA(StyleA(className getOrElse ClassName("???"), addClassNames, this))(Env.empty)
 
   def inspect: String =
     StringRenderer.defaultPretty(inspectCss)
@@ -80,7 +83,7 @@ final case class StyleS(data      : Map[Cond, AVs],
 object StyleS {
   /** Helper method for common case where only data is specified. */
   @inline def data(d: Map[Cond, AVs]): StyleS =
-    new StyleS(d, Vector.empty, None, Vector.empty)
+    new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
 
   /** Helper method for common case where only one condition is specified. */
   @inline def data1(c: Cond, avs: AVs): StyleS =

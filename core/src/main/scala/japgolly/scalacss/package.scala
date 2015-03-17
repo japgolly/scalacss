@@ -63,8 +63,15 @@ package object scalacss {
    * Applicable style.
    *
    * A style that needs no more processing and can be applied to some target.
+   *
+   * @param addClassNames Additional class names that the style has requested be appended.
+   *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
    */
-  final case class StyleA(className: ClassName, style: StyleS)
+  final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], style: StyleS) {
+    /** Value to be applied to a HTML element's `class` attribute. */
+    val htmlClass: String =
+      (className.value /: addClassNames)(_ + " " + _.value)
+  }
 
   // ===================================================================================================================
   type NonEmptyVector[A] = OneAnd[Vector, A]

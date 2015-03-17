@@ -138,6 +138,12 @@ abstract class DslBase extends ValueT.Rules {
 
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 
+  def addClassName(cn: String): StyleS =
+    StyleS.empty.copy(addClassNames = Vector1(ClassName(cn)))
+
+  def addClassNames(cn: String*): StyleS =
+    StyleS.empty.copy(addClassNames = cn.foldLeft(Vector.empty[ClassName])(_ :+ ClassName(_)))
+
   def unsafeExt(f: String => String)(t: ToStyle*)(implicit c: Compose): UnsafeExt =
     UnsafeExt(f, styleS(t: _*))
 
@@ -152,7 +158,7 @@ object Dsl extends DslBase {
     style(t: _*)
 
   def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleS =
-    style(t: _*).copy(className = Option(className))
+    style(t: _*).copy(className = Option(className) map ClassName)
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =
     if (t.isEmpty) StyleS.empty
