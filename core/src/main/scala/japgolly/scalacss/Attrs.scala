@@ -1209,7 +1209,8 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering">MDN</a>
    */
   object imageRendering extends TypedAttrBase {
-    override val attr = Attr.real("image-rendering")
+    override val attr = Attr.real("image-rendering",
+      Transform.values(CanIUse.crispEdges)(L.crisp_edges, L.pixelated))
     def auto        = avl(L.auto)
     def crisp_edges = avl(L.crisp_edges)
     def pixelated   = avl(L.pixelated)

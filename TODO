@@ -16,7 +16,6 @@ CanIUse subjects pending action:
 
 CanIUse subjects affecting CSS values:
 * calc
-* crispEdges
 * gradients
 * imageSet
 * intrinsicWidth
