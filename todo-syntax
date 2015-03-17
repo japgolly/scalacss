@@ -55,24 +55,8 @@ image_orientation	from_image | <angle> | [<angle>? flip]
 inline_size	<'width'>
 list_style	<'list_style_type'> || <'list_style_position'> || <'list_style_image'>
 list_style_type	<custom_ident> | symbols)
-margin_block_end	<'margin_left'>
-margin_block_start	<'margin_left'>
-margin_inline_end	<'margin_left'>
-margin_inline_start	<'margin_left'>
 margin	[ <length> | <percentage> | auto ]{1,4}
-max_block_size	<'max_width'>
-max_inline_size	<'max_width'>
-min_block_size	<'min_width'>
-min_inline_size	<'min_width'>
-offset_block_end	<'left'>
-offset_block_start	<'left'>
-offset_inline_end	<'left'>
-offset_inline_start	<'left'>
 outline	<'outline_color'> || <'outline_style'> || <'outline_width'>
-padding_block_end	<'padding_left'>
-padding_block_start	<'padding_left'>
-padding_inline_end	<'padding_left'>
-padding_inline_start	<'padding_left'>
 padding	[ <length> | <percentage> ]{1,4}
 perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
 quotes	[<string> <string>]+ | none

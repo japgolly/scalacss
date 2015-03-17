@@ -418,9 +418,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/bottom">MDN</a>
    */
-  object bottom extends TypedAttrT1[LenPct] with ZeroLit {
+  object bottom extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("bottom")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1168,9 +1167,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/left">MDN</a>
    */
-  object left extends TypedAttrT1[LenPct] with ZeroLit {
+  object left extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("left")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1236,9 +1234,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-bottom">MDN</a>
    */
-  object marginBottom extends TypedAttrT1[LenPct] with ZeroLit {
+  object marginBottom extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("margin-bottom")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1246,9 +1243,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-left">MDN</a>
    */
-  object marginLeft extends TypedAttrT1[LenPct] with ZeroLit {
+  object marginLeft extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("margin-left")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1256,9 +1252,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-right">MDN</a>
    */
-  object marginRight extends TypedAttrT1[LenPct] with ZeroLit {
+  object marginRight extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("margin-right")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1266,9 +1261,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-top">MDN</a>
    */
-  object marginTop extends TypedAttrT1[LenPct] with ZeroLit {
+  object marginTop extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("margin-top")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1298,13 +1292,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-height">MDN</a>
    */
-  object maxHeight extends TypedAttrT1[LenPct] with ZeroLit {
+  object maxHeight extends TypedAttr_MaxLength {
     override val attr = Attr.real("max-height")
-    def fill_available = avl(Literal.fill_available)
-    def fit_content    = avl(Literal.fit_content)
-    def max_content    = avl(Literal.max_content)
-    def min_content    = avl(Literal.min_content)
-    def none           = avl(Literal.none)
   }
 
   /**
@@ -1312,13 +1301,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">MDN</a>
    */
-  object maxWidth extends TypedAttrT1[LenPct] with ZeroLit {
+  object maxWidth extends TypedAttr_MaxLength {
     override val attr = Attr.real("max-width")
-    def fill_available = avl(Literal.fill_available)
-    def fit_content    = avl(Literal.fit_content)
-    def max_content    = avl(Literal.max_content)
-    def min_content    = avl(Literal.min_content)
-    def none           = avl(Literal.none)
   }
 
   /**
@@ -1326,13 +1310,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-height">MDN</a>
    */
-  object minHeight extends TypedAttrT1[LenPct] with ZeroLit {
+  object minHeight extends TypedAttr_MinLength {
     override val attr = Attr.real("min-height")
-    def auto           = avl(Literal.auto)
-    def fill_available = avl(Literal.fill_available)
-    def fit_content    = avl(Literal.fit_content)
-    def max_content    = avl(Literal.max_content)
-    def min_content    = avl(Literal.min_content)
   }
 
   /**
@@ -1340,13 +1319,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-width">MDN</a>
    */
-  object minWidth extends TypedAttrT1[LenPct] with ZeroLit {
+  object minWidth extends TypedAttr_MinLength {
     override val attr = Attr.real("min-width")
-    def auto           = avl(Literal.auto)
-    def fill_available = avl(Literal.fill_available)
-    def fit_content    = avl(Literal.fit_content)
-    def max_content    = avl(Literal.max_content)
-    def min_content    = avl(Literal.min_content)
   }
 
   /**
@@ -1633,9 +1607,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/right">MDN</a>
    */
-  object right extends TypedAttrT1[LenPct] with ZeroLit {
+  object right extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("right")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -1905,9 +1878,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/top">MDN</a>
    */
-  object top extends TypedAttrT1[LenPct] with ZeroLit {
+  object top extends TypedAttr_LenPctAuto {
     override val attr = Attr.real("top")
-    def auto = avl(Literal.auto)
   }
 
   /**
@@ -2508,88 +2480,112 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-end">MDN</a>
    */
-  final val marginBlockEnd = Attr.alias("margin-block-end")(_(margin))
+  object marginBlockEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("margin-block-end")(_(margin))
+  }
 
   /**
    * The margin-block-start CSS property defines the logical block start margin of an element, which maps to a physical margin depending on the element's writing mode, directionality, and text orientation. It corresponds to the margin-top, margin-right, margin-bottom, or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-block-start">MDN</a>
    */
-  final val marginBlockStart = Attr.alias("margin-block-start")(_(margin))
+  object marginBlockStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("margin-block-start")(_(margin))
+  }
 
   /**
    * The margin-inline-end CSS property defines the logical inline end margin of an element, which maps to a physical margin depending on the element's writing mode, directionality, and text orientation. In other words, it corresponds to the margin-top, margin-right, margin-bottom or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-end">MDN</a>
    */
-  final val marginInlineEnd = Attr.alias("margin-inline-end")(_(margin))
+  object marginInlineEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("margin-inline-end")(_(margin))
+  }
 
   /**
    * The margin-inline-start CSS property defines the logical inline end margin of an element, which maps to a physical margin depending on the element's writing mode, directionality, and text orientation. It corresponds to the margin-top, margin-right, margin-bottom, or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin-inline-start">MDN</a>
    */
-  final val marginInlineStart = Attr.alias("margin-inline-start")(_(margin))
+  object marginInlineStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("margin-inline-start")(_(margin))
+  }
 
   /**
    * The max-block-size CSS property defines the horizontal or vertical maximal size of an element's block depending on its writing mode. It corresponds to the max-width or the max-height property, depending on the value defined for writing-mode. If the writing mode is vertically oriented, the value of max-block-size relates to the maximal width of the element, otherwise it relates to the maximal height of the element. It relates to max-inline-size, which defines the other dimension of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-block-size">MDN</a>
    */
-  final val maxBlockSize = Attr.alias("max-block-size")(_(maxHeight, maxWidth))
+  object maxBlockSize extends TypedAttr_MaxLength {
+    override val attr = Attr.alias("max-block-size")(_(maxHeight, maxWidth))
+  }
 
   /**
    * The max-inline-size CSS property defines the horizontal or vertical maximal size of an element's block depending on its writing mode. It corresponds to the max-width or the max-height property depending on the value defined for writing-mode. If the writing mode is vertically oriented, the value of max-inline-size relates to the maximal height of the element, otherwise it relates to the maximal width of the element. It relates to max-block-size, which defines the other dimension of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-inline-size">MDN</a>
    */
-  final val maxInlineSize = Attr.alias("max-inline-size")(_(maxHeight, maxWidth))
+  object maxInlineSize extends TypedAttr_MaxLength {
+    override val attr = Attr.alias("max-inline-size")(_(maxHeight, maxWidth))
+  }
 
   /**
    * The min-block-size CSS property defines the horizontal or vertical minimal size of an element's block depending on its writing mode. It corresponds to the min-width or the min-height property, depending on the value defined for writing-mode. If the writing mode is vertically oriented, the value of min-block-size relates to the minimal width of the element, otherwise it relates to the minimal height of the element. It relates to min-inline-size, which defines the other dimension of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-block-size">MDN</a>
    */
-  final val minBlockSize = Attr.alias("min-block-size")(_(minHeight, minWidth))
+  object minBlockSize extends TypedAttr_MinLength {
+    override val attr = Attr.alias("min-block-size")(_(minHeight, minWidth))
+  }
 
   /**
    * The min-inline-size CSS property defines the horizontal or vertical minimal size of an element's block depending on its writing mode. It corresponds to the min-width or the min-height property, depending on the value defined for writing-mode. If the writing mode is vertically oriented, the value of min-inline-size relates to the minimal height of the element, otherwise it relates to the minimal width of the element. It relates to min-block-size, which defines the other dimension of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-inline-size">MDN</a>
    */
-  final val minInlineSize = Attr.alias("min-inline-size")(_(minHeight, minWidth))
+  object minInlineSize extends TypedAttr_MinLength {
+    override val attr = Attr.alias("min-inline-size")(_(minHeight, minWidth))
+  }
 
   /**
    * The offset-block-end CSS property defines the logical block end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-end">MDN</a>
    */
-  final val offsetBlockEnd = Attr.alias("offset-block-end")(_(
-    top, left, right, bottom))
+  object offsetBlockEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("offset-block-end")(_(
+      top, left, right, bottom))
+  }
 
   /**
    * The offset-block-start CSS property defines the logical block start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-start">MDN</a>
    */
-  final val offsetBlockStart = Attr.alias("offset-block-start")(_(
-    top, left, right, bottom))
+  object offsetBlockStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("offset-block-start")(_(
+      top, left, right, bottom))
+  }
 
   /**
    * The offset-inline-end CSS property defines the logical inline end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-end">MDN</a>
    */
-  final val offsetInlineEnd = Attr.alias("offset-inline-end")(_(
-    top, left, right, bottom))
+  object offsetInlineEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("offset-inline-end")(_(
+      top, left, right, bottom))
+  }
 
   /**
    * The offset-inline-start CSS property defines the logical inline start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-start">MDN</a>
    */
-  final val offsetInlineStart = Attr.alias("offset-inline-start")(_(
-    top, left, right, bottom))
+  object offsetInlineStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("offset-inline-start")(_(
+      top, left, right, bottom))
+  }
 
   /**
    * The CSS outline property is a shorthand property for setting one or more of the individual outline properties outline-style, outline-width and outline-color in a single declaration. In most cases the use of this shortcut is preferable and more convenient.
@@ -2612,28 +2608,36 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-end">MDN</a>
    */
-  final val paddingBlockEnd = Attr.alias("padding-block-end")(_(padding))
+  object paddingBlockEnd extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = Attr.alias("padding-block-end")(_(padding))
+  }
 
   /**
    * The padding-block-start CSS property defines the logical block start padding of an element, which maps to a physical padding depending on the element's writing mode, directionality, and text orientation. It corresponds to the padding-top, padding-right, padding-bottom, or padding-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-block-start">MDN</a>
    */
-  final val paddingBlockStart = Attr.alias("padding-block-start")(_(padding))
+  object paddingBlockStart extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = Attr.alias("padding-block-start")(_(padding))
+  }
 
   /**
    * The padding-inline-end CSS property defines the logical inline end padding of an element, which maps to a physical padding depending on the element's writing mode, directionality, and text orientation. It corresponds to the padding-top, padding-right, padding-bottom, or padding-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-end">MDN</a>
    */
-  final val paddingInlineEnd = Attr.alias("padding-inline-end")(_(padding))
+  object paddingInlineEnd extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = Attr.alias("padding-inline-end")(_(padding))
+  }
 
   /**
    * The padding-inline-start CSS property defines the logical inline start padding of an element, which maps to a physical padding depending on the element's writing mode, directionality, and text orientation. It corresponds to the padding-top, padding-right, padding-bottom, or padding-left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding-inline-start">MDN</a>
    */
-  final val paddingInlineStart = Attr.alias("padding-inline-start")(_(padding))
+  object paddingInlineStart extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = Attr.alias("padding-inline-start")(_(padding))
+  }
 
   /**
    * The text-decoration CSS property is used to set the text formatting to underline, overline, line-through or blink. Underline and overline decorations are positioned under the text, line-through over it.

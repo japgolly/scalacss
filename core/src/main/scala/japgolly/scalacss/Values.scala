@@ -14,7 +14,6 @@ object Literal {
   @inline def all_scroll            = Literal("all-scroll")
   @inline def all_small_caps        = Literal("all-small-caps")
   @inline def always                = Literal("always")
-  @inline def auto                  = Literal("auto")
   @inline def available             = Literal("available")
   @inline def avoid                 = Literal("avoid")
   @inline def avoid_column          = Literal("avoid-column")
@@ -241,6 +240,8 @@ object Literal {
 
   @inline def larger                = Literal("larger")
   @inline def smaller               = Literal("smaller")
+
+  object auto extends Literal("auto")
 
   // <br-width>
   sealed trait BrWidthLit

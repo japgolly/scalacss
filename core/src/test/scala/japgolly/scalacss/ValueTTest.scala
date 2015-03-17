@@ -33,6 +33,7 @@ object ValueTTest extends TestSuite {
         illTyped("test[Len](Literal.thick)")
         illTyped("test[Len](Literal.dashed)")
         illTyped("test[Len](Color.black)")
+        illTyped("test[Len](Literal.auto)")
         illTyped("test[Len](Literal.rtl)")
       }
 
@@ -44,6 +45,7 @@ object ValueTTest extends TestSuite {
         illTyped("test[Integer](Literal.thick)")
         illTyped("test[Integer](Literal.dashed)")
         illTyped("test[Integer](Color.black)")
+        illTyped("test[Integer](Literal.auto)")
         illTyped("test[Integer](Literal.rtl)")
       }
 
@@ -55,6 +57,7 @@ object ValueTTest extends TestSuite {
         illTyped("test[Number](Literal.thick)")
         illTyped("test[Number](Literal.dashed)")
         illTyped("test[Number](Color.black)")
+        illTyped("test[Number](Literal.auto)")
         illTyped("test[Number](Literal.rtl)")
       }
 
@@ -66,7 +69,20 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPct](Literal.thick)")
         illTyped("test[LenPct](Literal.dashed)")
         illTyped("test[LenPct](Color.black)")
+        illTyped("test[LenPct](Literal.auto)")
         illTyped("test[LenPct](Literal.rtl)")
+      }
+
+      'LenPctAuto {
+        illTyped("test[LenPctAuto](1)")
+        illTyped("test[LenPctAuto](1.5)")
+                  test[LenPctAuto](len)
+                  test[LenPctAuto](%%)
+        illTyped("test[LenPctAuto](Literal.thick)")
+        illTyped("test[LenPctAuto](Literal.dashed)")
+        illTyped("test[LenPctAuto](Color.black)")
+                  test[LenPctAuto](Literal.auto)
+        illTyped("test[LenPctAuto](Literal.rtl)")
       }
 
       'LenPctNum {
@@ -77,6 +93,7 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPctNum](Literal.thick)")
         illTyped("test[LenPctNum](Literal.dashed)")
         illTyped("test[LenPctNum](Color.black)")
+        illTyped("test[LenPctNum](Literal.auto)")
         illTyped("test[LenPctNum](Literal.rtl)")
       }
       
@@ -88,6 +105,7 @@ object ValueTTest extends TestSuite {
                   test[BrWidth](Literal.thick)
         illTyped("test[BrWidth](Literal.dashed)")
         illTyped("test[BrWidth](Color.black)")
+        illTyped("test[BrWidth](Literal.auto)")
         illTyped("test[BrWidth](Literal.rtl)")
       }
 
@@ -99,6 +117,7 @@ object ValueTTest extends TestSuite {
         illTyped("test[BrStyle](Literal.thick)")
         test[BrStyle](Literal.dashed)
         illTyped("test[BrStyle](Color.black)")
+        illTyped("test[BrStyle](Literal.auto)")
         illTyped("test[BrStyle](Literal.rtl)")
       }
 
@@ -110,6 +129,7 @@ object ValueTTest extends TestSuite {
                   test[WidStyCol](Literal.thick)
                   test[WidStyCol](Literal.dashed)
                   test[WidStyCol](Color.black)
+        illTyped("test[WidStyCol](Literal.auto)")
         illTyped("test[WidStyCol](Literal.rtl)")
       }
 

@@ -1,0 +1,16 @@
+margin_block_end	<'margin_left'>
+margin_block_start	<'margin_left'>
+margin_inline_end	<'margin_left'>
+margin_inline_start	<'margin_left'>
+max_block_size	<'max_width'>
+max_inline_size	<'max_width'>
+min_block_size	<'min_width'>
+min_inline_size	<'min_width'>
+offset_block_end	<'left'>
+offset_block_start	<'left'>
+offset_inline_end	<'left'>
+offset_inline_start	<'left'>
+padding_block_end	<'padding_left'>
+padding_block_start	<'padding_left'>
+padding_inline_end	<'padding_left'>
+padding_inline_start	<'padding_left'>

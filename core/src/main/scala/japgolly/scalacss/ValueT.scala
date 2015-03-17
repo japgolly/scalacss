@@ -56,15 +56,16 @@ object ValueT {
    */
   sealed trait ValueClass
 
-  sealed trait Integer   extends ValueClass
-  sealed trait Number    extends ValueClass
-  sealed trait Len       extends ValueClass
-  sealed trait LenPct    extends ValueClass
-  sealed trait LenPctNum extends ValueClass
-  sealed trait BrWidth   extends ValueClass
-  sealed trait BrStyle   extends ValueClass
-  sealed trait Color     extends ValueClass
-  sealed trait WidStyCol extends ValueClass
+  sealed trait Integer    extends ValueClass
+  sealed trait Number     extends ValueClass
+  sealed trait Len        extends ValueClass
+  sealed trait LenPct     extends ValueClass
+  sealed trait LenPctAuto extends ValueClass
+  sealed trait LenPctNum  extends ValueClass
+  sealed trait BrWidth    extends ValueClass
+  sealed trait BrStyle    extends ValueClass
+  sealed trait Color      extends ValueClass
+  sealed trait WidStyCol  extends ValueClass
 
 
   // =========
@@ -115,6 +116,12 @@ object ValueT {
 
     @inline implicit def ruleLenPct_L: LenPct <=< Len        = Rule.retype
     @inline implicit def ruleLenPct_P: LenPct <== Percentage = Rule(_.value)
+
+    @inline implicit def ruleLenPctAuto_LP: LenPctAuto <=< LenPct            = Rule.retype
+    @inline implicit def ruleLenPctAuto_A : LenPctAuto <== Literal.auto.type = Rule.literal
+    // diverging implicit expansion requires these ↙ :(
+    @inline implicit def ruleLenPctAuto_L : LenPctAuto <=< Len               = Rule.retype
+    @inline implicit def ruleLenPctAuto_P : LenPctAuto <== Percentage        = Rule(_.value)
 
     @inline implicit def ruleLenPctNum_LP: LenPctNum <=< LenPct     = Rule.retype
     @inline implicit def ruleLenPctNum_N : LenPctNum <=< Number     = Rule.retype
@@ -192,6 +199,26 @@ object ValueT {
 
   abstract class TypedAttr_BrWidthStyleColour extends TypedAttrT3[WidStyCol](" ")
     with BrWidthOps with BrStyleOps with ColourOps
+
+  abstract class TypedAttr_LenPctAuto extends TypedAttrT1[LenPctAuto] with ZeroLit {
+    final def auto = avl(Literal.auto)
+  }
+
+  abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
+    final def fill_available = avl(Literal.fill_available)
+    final def fit_content    = avl(Literal.fit_content)
+    final def max_content    = avl(Literal.max_content)
+    final def min_content    = avl(Literal.min_content)
+    final def none           = avl(Literal.none)
+  }
+
+  abstract class TypedAttr_MinLength extends TypedAttrT1[LenPct] with ZeroLit {
+    final def auto           = avl(Literal.auto)
+    final def fill_available = avl(Literal.fill_available)
+    final def fit_content    = avl(Literal.fit_content)
+    final def max_content    = avl(Literal.max_content)
+    final def min_content    = avl(Literal.min_content)
+  }
 
 
   // ================
