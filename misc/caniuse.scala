@@ -160,6 +160,20 @@ object Caniuse {
 
     def fmtpref2(p: String) = String.format("%-6s", p)
 
+    val valAttrs = Set(
+      "animation",
+      "borderImage",
+      "borderRadius",
+      "counters",
+      "flexbox",
+      "grid",
+      "masks",
+      "multicolumn",
+      "outline",
+      "shapes",
+      "textDecoration",
+      "transitions")
+
     def fmtpref(p: String): String = {
       val p2 = fmtpref2(p)
       s"""case object $p2 extends Prefix("$p")"""
@@ -180,6 +194,7 @@ object Caniuse {
     def fmtData(d: Data) = {
       import d._
       val stats2 = stats.mapValues(m => m.toList.map{case(a,b) => (b,a)}.toMap)
+      val defval = if (valAttrs contains scalaval) "val" else "def"
       s"""/**
    * ${htmlsafe(title)}
    *
@@ -187,7 +202,7 @@ object Caniuse {
    *
    * $spec
    */
-  def $scalaval: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
+  $defval $scalaval: Subject = ${fmtmap((s: String) => "\n    "+agentkey(s), fmtmap(fmtsup, fmtstr))(stats2)}
 """}
 
     val prefixes = agents.map(_.allPrefixes).reduce(_ ++ _).toList.sorted
