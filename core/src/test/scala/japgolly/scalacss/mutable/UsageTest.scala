@@ -37,7 +37,8 @@ object UsageTest extends TestSuite {
 
         Visited.not(FirstChild)(
           animationDelay(1 minute, 50 millis),
-          fontWeight.bold
+          fontWeight.bold,
+          font := inherit
         ),
 
         unsafeChild("nav.debug")(
@@ -104,6 +105,7 @@ object UsageTest extends TestSuite {
         |  -moz-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
+        |  font: inherit;
         |}
         |
         |.demo-0001 nav.debug {

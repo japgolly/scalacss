@@ -79,17 +79,21 @@ object DslBase {
   final class DslAttr(val self: Attr) extends AnyVal {
     @inline def :=(value: Value)    : AV = AV(self, value)
     @inline def :=(value: ValueT[_]): AV = AV(self, value.value)
+    @inline def :=(value: Literal)  : AV = AV(self, value.value)
   }
 
   /** Typed attributes */
   final class DslAttrT(val self: TypedAttrBase) extends AnyVal {
     @inline def :=!(value: Value)    : AV = AV(self, value)
     @inline def :=!(value: ValueT[_]): AV = AV(self, value.value)
+    @inline def :=!(value: Literal)  : AV = AV(self, value.value)
 
     @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
     @inline def :=(value: Value)    : AV = AV(self, value)
     @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
     @inline def :=(value: ValueT[_]): AV = AV(self, value.value)
+    @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
+    @inline def :=(value: Literal)  : AV = AV(self, value.value)
   }
 
   final class DslAV(val self: AV) extends AnyVal {
