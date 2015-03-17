@@ -14,15 +14,21 @@ object UsageTest extends TestSuite {
     import Pseudo._
     implicit def composition = Compose.safe
 
+    // TODO TODO TODO TODO TODO TODO
+    import Literal._ // Conflicts with some attrs! DSL should correct in trait Literals
+    import Color._
+    // TODO TODO TODO TODO TODO TODO
+
+
     val s1: StyleA =
       style(
-        margin := 12.px,
-        padding := 2.ex,
+        margin(12.px),
+        padding(2.ex),
 
         Hover(
           fontWeight.normal,
           lineHeight(1.em),
-          padding := 0),
+          padding.`0`),
 
         Visited.not(FirstChild)(
           fontWeight.bold),
@@ -38,7 +44,7 @@ object UsageTest extends TestSuite {
 
     val everythingOk: Boolean => StyleA =
       boolStyle(ok => styleS(
-        backgroundColor(if (ok) Color.green else Color.red),
+        backgroundColor(if (ok) green else red),
         maxWidth(80.ex)
       ))
 

@@ -19,7 +19,6 @@ background_size	<bg_size>#
 block_size	<'width'>
 border_bottom_left_radius	[ <length> | <percentage> ]{1,2}
 border_bottom_right_radius	[ <length> | <percentage> ]{1,2}
-border_color	<color>{1,4}
 border_image	<'border_image_source'> || <'border_image_slice'> [ / <'border_image_width'> | / <'border_image_width'>? / <'border_image_outset'> ]? || <'border_image_repeat'>
 border_image_outset	[ <length> | <number> ]{1,4}
 border_image_repeat	[ stretch | repeat | round ]{1,2}
@@ -27,10 +26,8 @@ border_image_slice	[<number> | <percentage>]{1,4} && fill?
 border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
 border_radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
 border_spacing	<length> <length>?
-border_style	<br_style>{1,4}
 border_top_left_radius	[ <length> | <percentage> ]{1,2}
 border_top_right_radius	[ <length> | <percentage> ]{1,2}
-border_width	<br_width>{1,4}
 box_shadow	none | [inset? && [ <offset_x> <offset_y> <blur_radius>? <spread_radius>? <color>? ] ]#
 column_rule	<'column_rule_width'> || <'column_rule_style'> || <'column_rule_color'>
 columns	<'column_width'> || <'column_count'>
@@ -55,9 +52,7 @@ image_orientation	from_image | <angle> | [<angle>? flip]
 inline_size	<'width'>
 list_style	<'list_style_type'> || <'list_style_position'> || <'list_style_image'>
 list_style_type	<custom_ident> | symbols)
-margin	[ <length> | <percentage> | auto ]{1,4}
 outline	<'outline_color'> || <'outline_style'> || <'outline_width'>
-padding	[ <length> | <percentage> ]{1,4}
 perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
 quotes	[<string> <string>]+ | none
 shape_outside	none | <shape_box> || <basic_shape> | <image>

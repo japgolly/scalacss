@@ -2235,8 +2235,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-color">MDN</a>
    */
-  final val borderColor = Attr.alias("border-color")(_(
-    borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  object borderColor extends TypedAttrT4Edges[Color](" ") with ColourOps {
+    override val attr = Attr.alias("border-color")(_(
+      borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+  }
 
   /**
    * The border-image CSS property allows drawing an image on the borders of elements. This makes drawing complex looking widgets much simpler than it has been and removes the need for nine boxes in some cases.
@@ -2359,8 +2361,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-style">MDN</a>
    */
-  final val borderStyle = Attr.alias("border-style")(_(
-    borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  object borderStyle extends TypedAttrT4Edges[BrStyle](" ") with BrStyleOps {
+    override val attr = Attr.alias("border-style")(_(
+      borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+  }
 
   /**
    * The border-top CSS property is a shorthand that sets the values of border-top-color, border-top-style, and border-top-width. These properties describe the top border of elements.
@@ -2377,8 +2381,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-width">MDN</a>
    */
-  final val borderWidth = Attr.alias("border-width")(_(
-    borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  object borderWidth extends TypedAttrT4Edges[BrWidth](" ") with BrWidthOps {
+    override val attr = Attr.alias("border-width")(_(
+      borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+  }
 
   /**
    * The columns CSS property is a shorthand property allowing to set both the column-width and the column-count properties at the same time.
@@ -2472,8 +2478,11 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">MDN</a>
    */
-  final val margin = Attr.alias("margin")(_(
-    marginTop, marginRight, marginBottom, marginLeft))
+  object margin extends TypedAttrT4Edges[LenPctAuto](" ") with ZeroLit {
+    override val attr = Attr.alias("margin")(_(
+      marginTop, marginRight, marginBottom, marginLeft))
+    def auto = avl(Literal.auto)
+  }
 
   /**
    * The margin-block-end CSS property defines the logical block end margin of an element, which maps to a physical margin depending on the element's writing mode, directionality, and text orientation. It corresponds to the margin-top, margin-right, margin-bottom, or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
@@ -2600,8 +2609,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding">MDN</a>
    */
-  final val padding = Attr.alias("padding")(_(
-    paddingLeft, paddingRight, paddingTop, paddingBottom))
+  object padding extends TypedAttrT4Edges[LenPct](" ") with ZeroLit {
+    override val attr = Attr.alias("padding")(_(
+      paddingLeft, paddingRight, paddingTop, paddingBottom))
+  }
 
   /**
    * The padding-block-end CSS property defines the logical block end padding of an element, which maps to a physical padding depending on the element's writing mode, directionality, and text orientation. It corresponds to the padding-top, padding-right, padding-bottom, or padding-left property depending on the values defined for writing-mode, direction, and text-orientation.

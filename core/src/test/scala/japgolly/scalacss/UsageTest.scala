@@ -12,13 +12,13 @@ object UsageTest extends TestSuite {
 
   val s1 =
     style(
-      margin  := 12.px,
-      padding :=  2.ex,
+      margin(12.px),
+      padding(2.ex),
 
       Hover(
         fontWeight.normal,
         lineHeight(1.em),
-        padding    := 0),
+        padding.`0`),
 
       Visited.not(FirstChild)(
         fontWeight.bold),
@@ -65,9 +65,9 @@ object UsageTest extends TestSuite {
         """.stripMargin.trim)
     }
 
-    'zeroLiteral {
-      padding := 0
-      illTyped("padding ~ 1")
-    }
+//    'zeroLiteral {
+//      padding := 0
+//      illTyped("padding := 1")
+//    }
   }
 }
