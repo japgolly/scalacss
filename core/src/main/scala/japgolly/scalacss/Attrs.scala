@@ -1,6 +1,7 @@
 package japgolly.scalacss
 
 import scalaz.{Need, NonEmptyList}
+import japgolly.scalacss.{Literal => L}
 import ValueT._
 
 object Attrs {
@@ -55,12 +56,12 @@ object Attrs {
    */
   object alignContent extends TypedAttrBase {
     override val attr = Attr.real("align-content", Transform keys CanIUse.flexbox)
-    def center        = avl(Literal.center)
-    def flex_end      = avl(Literal.flex_end)
-    def flex_start    = avl(Literal.flex_start)
-    def space_around  = avl(Literal.space_around)
-    def space_between = avl(Literal.space_between)
-    def stretch       = avl(Literal.stretch)
+    def center        = avl(L.center)
+    def flex_end      = avl(L.flex_end)
+    def flex_start    = avl(L.flex_start)
+    def space_around  = avl(L.space_around)
+    def space_between = avl(L.space_between)
+    def stretch       = avl(L.stretch)
   }
 
   /**
@@ -70,11 +71,11 @@ object Attrs {
    */
   object alignItems extends TypedAttrBase {
     override val attr = Attr.real("align-items", Transform keys CanIUse.flexbox)
-    def baseline   = avl(Literal.baseline)
-    def center     = avl(Literal.center)
-    def flex_end   = avl(Literal.flex_end)
-    def flex_start = avl(Literal.flex_start)
-    def stretch    = avl(Literal.stretch)
+    def baseline   = avl(L.baseline)
+    def center     = avl(L.center)
+    def flex_end   = avl(L.flex_end)
+    def flex_start = avl(L.flex_start)
+    def stretch    = avl(L.stretch)
   }
 
   /**
@@ -84,12 +85,12 @@ object Attrs {
    */
   object alignSelf extends TypedAttrBase {
     override val attr = Attr.real("align-self", Transform keys CanIUse.flexbox)
-    def auto       = avl(Literal.auto)
-    def baseline   = avl(Literal.baseline)
-    def center     = avl(Literal.center)
-    def flex_end   = avl(Literal.flex_end)
-    def flex_start = avl(Literal.flex_start)
-    def stretch    = avl(Literal.stretch)
+    def auto       = avl(L.auto)
+    def baseline   = avl(L.baseline)
+    def center     = avl(L.center)
+    def flex_end   = avl(L.flex_end)
+    def flex_start = avl(L.flex_start)
+    def stretch    = avl(L.stretch)
   }
 
   /**
@@ -155,8 +156,8 @@ object Attrs {
    */
   object backfaceVisibility extends TypedAttrBase {
     override val attr = Attr.real("backface-visibility", Transform keys CanIUse2.transforms)
-    def hidden  = avl(Literal.hidden)
-    def visible = avl(Literal.visible)
+    def hidden  = avl(L.hidden)
+    def visible = avl(L.visible)
   }
 
   /**
@@ -276,8 +277,8 @@ object Attrs {
    */
   object borderCollapse extends TypedAttrBase {
     override val attr = Attr.real("border-collapse")
-    def collapse = avl(Literal.collapse)
-    def separate = avl(Literal.separate)
+    def collapse = avl(L.collapse)
+    def separate = avl(L.separate)
   }
 
   /**
@@ -437,8 +438,8 @@ object Attrs {
    */
   object boxDecorationBreak extends TypedAttrBase {
     override val attr = Attr.real("box-decoration-break", Transform keys CanIUse.boxdecorationbreak)
-    def clone_ = avl(Literal.clone_)
-    def slice  = avl(Literal.slice)
+    def clone_ = avl(L.clone_)
+    def slice  = avl(L.slice)
   }
 
   /**
@@ -465,9 +466,9 @@ object Attrs {
    */
   object boxSizing extends TypedAttrBase {
     override val attr = Attr.real("box-sizing", Transform keys CanIUse.css3Boxsizing)
-    def border_box  = avl(Literal.border_box)
-    def content_box = avl(Literal.content_box)
-    def padding_box = avl(Literal.padding_box)
+    def border_box  = avl(L.border_box)
+    def content_box = avl(L.content_box)
+    def padding_box = avl(L.padding_box)
   }
 
   /**
@@ -477,15 +478,15 @@ object Attrs {
    */
   object breakAfter extends TypedAttrBase {
     override val attr = Attr.real("break-after")
-    def always       = avl(Literal.always)
-    def auto         = avl(Literal.auto)
-    def avoid        = avl(Literal.avoid)
-    def avoid_column = avl(Literal.avoid_column)
-    def avoid_page   = avl(Literal.avoid_page)
-    def column       = avl(Literal.column)
-    def left         = avl(Literal.left)
-    def page         = avl(Literal.page)
-    def right        = avl(Literal.right)
+    def always       = avl(L.always)
+    def auto         = avl(L.auto)
+    def avoid        = avl(L.avoid)
+    def avoid_column = avl(L.avoid_column)
+    def avoid_page   = avl(L.avoid_page)
+    def column       = avl(L.column)
+    def left         = avl(L.left)
+    def page         = avl(L.page)
+    def right        = avl(L.right)
   }
 
   /**
@@ -495,15 +496,15 @@ object Attrs {
    */
   object breakBefore extends TypedAttrBase {
     override val attr = Attr.real("break-before")
-    def always       = avl(Literal.always)
-    def auto         = avl(Literal.auto)
-    def avoid        = avl(Literal.avoid)
-    def avoid_column = avl(Literal.avoid_column)
-    def avoid_page   = avl(Literal.avoid_page)
-    def column       = avl(Literal.column)
-    def left         = avl(Literal.left)
-    def page         = avl(Literal.page)
-    def right        = avl(Literal.right)
+    def always       = avl(L.always)
+    def auto         = avl(L.auto)
+    def avoid        = avl(L.avoid)
+    def avoid_column = avl(L.avoid_column)
+    def avoid_page   = avl(L.avoid_page)
+    def column       = avl(L.column)
+    def left         = avl(L.left)
+    def page         = avl(L.page)
+    def right        = avl(L.right)
   }
 
   /**
@@ -513,10 +514,10 @@ object Attrs {
    */
   object breakInside extends TypedAttrBase {
     override val attr = Attr.real("break-inside")
-    def auto         = avl(Literal.auto)
-    def avoid        = avl(Literal.avoid)
-    def avoid_column = avl(Literal.avoid_column)
-    def avoid_page   = avl(Literal.avoid_page)
+    def auto         = avl(L.auto)
+    def avoid        = avl(L.avoid)
+    def avoid_column = avl(L.avoid_column)
+    def avoid_page   = avl(L.avoid_page)
   }
 
   /**
@@ -526,12 +527,12 @@ object Attrs {
    */
   object captionSide extends TypedAttrBase {
     override val attr = Attr.real("caption-side")
-    def block_end    = avl(Literal.block_end)
-    def block_start  = avl(Literal.block_start)
-    def bottom       = avl(Literal.bottom)
-    def inline_end   = avl(Literal.inline_end)
-    def inline_start = avl(Literal.inline_start)
-    def top          = avl(Literal.top)
+    def block_end    = avl(L.block_end)
+    def block_start  = avl(L.block_start)
+    def bottom       = avl(L.bottom)
+    def inline_end   = avl(L.inline_end)
+    def inline_start = avl(L.inline_start)
+    def top          = avl(L.top)
   }
 
   /**
@@ -541,10 +542,10 @@ object Attrs {
    */
   object clear extends TypedAttrBase {
     override val attr = Attr.real("clear")
-    def both  = avl(Literal.both)
-    def left  = avl(Literal.left)
-    def none  = avl(Literal.none)
-    def right = avl(Literal.right)
+    def both  = avl(L.both)
+    def left  = avl(L.left)
+    def none  = avl(L.none)
+    def right = avl(L.right)
   }
 
   /**
@@ -554,7 +555,7 @@ object Attrs {
    */
   object clip extends TypedAttr_Shape {
     override val attr = Attr.real("clip")
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   /**
@@ -580,7 +581,7 @@ object Attrs {
    */
   object columnCount extends TypedAttrT1[Number] {
     override val attr = Attr.real("column-count", Transform keys CanIUse.multicolumn)
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   /**
@@ -590,8 +591,8 @@ object Attrs {
    */
   object columnFill extends TypedAttrBase {
     override val attr = Attr.real("column-fill", Transform keys CanIUse.multicolumn)
-    def auto    = avl(Literal.auto)
-    def balance = avl(Literal.balance)
+    def auto    = avl(L.auto)
+    def balance = avl(L.balance)
   }
 
   /**
@@ -601,7 +602,7 @@ object Attrs {
    */
   object columnGap extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("column-gap", Transform keys CanIUse.multicolumn)
-    def normal = avl(Literal.normal)
+    def normal = avl(L.normal)
   }
 
   /**
@@ -638,8 +639,8 @@ object Attrs {
    */
   object columnSpan extends TypedAttrBase {
     override val attr = Attr.real("column-span", Transform keys CanIUse.multicolumn)
-    def all  = avl(Literal.all)
-    def none = avl(Literal.none)
+    def all  = avl(L.all)
+    def none = avl(L.none)
   }
 
   /**
@@ -649,7 +650,7 @@ object Attrs {
    */
   object columnWidth extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("column-width", Transform keys CanIUse.multicolumn)
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   /**
@@ -682,112 +683,112 @@ object Attrs {
     override val attr = Attr.real("cursor")
 
     /** Indicating an alias or shortcut is to be created. */
-    def alias         = avl(Literal.alias)
+    def alias         = avl(L.alias)
 
     /** Cursor showing that something can be scrolled in any direction (panned). */
-    def all_scroll    = avl(Literal.all_scroll)
+    def all_scroll    = avl(L.all_scroll)
 
     /** The browser determines the cursor to display based on the current context. */
-    def auto          = avl(Literal.auto)
+    def auto          = avl(L.auto)
 
     /** Indicating that cells can be selected. */
-    def cell          = avl(Literal.cell)
+    def cell          = avl(L.cell)
 
     /** The item/column can be resized horizontally. Often rendered as arrows pointing left and right with a vertical bar separating. */
-    def col_resize    = avl(Literal.col_resize)
+    def col_resize    = avl(L.col_resize)
 
     /** A context menu is available under the cursor. Only IE 10 and up have implemented this on Windows */
-    def context_menu  = avl(Literal.context_menu)
+    def context_menu  = avl(L.context_menu)
 
     /** Indicating that something can be copied. */
-    def copy          = avl(Literal.copy)
+    def copy          = avl(L.copy)
 
     /** Cross cursor, often used to indicate selection in a bitmap. */
-    def crosshair     = avl(Literal.crosshair)
+    def crosshair     = avl(L.crosshair)
 
     /** Default cursor, typically an arrow. */
-    def default       = avl(Literal.default)
+    def default       = avl(L.default)
 
     /** The east edge is to be moved. */
-    def e_resize      = avl(Literal.e_resize)
+    def e_resize      = avl(L.e_resize)
 
     /** Indicates a bidirectional resize cursor. */
-    def ew_resize     = avl(Literal.ew_resize)
+    def ew_resize     = avl(L.ew_resize)
 
     /** Indicates that something can be grabbed (dragged to be moved). */
-    def grab          = avl(Literal.grab)
+    def grab          = avl(L.grab)
 
     /** Indicates that something can be grabbed (dragged to be moved). */
-    def grabbing      = avl(Literal.grabbing)
+    def grabbing      = avl(L.grabbing)
 
     /** Indicating help is available. */
-    def help          = avl(Literal.help)
+    def help          = avl(L.help)
 
     /** The hovered object may be moved. */
-    def move          = avl(Literal.move)
+    def move          = avl(L.move)
 
     /** The north-east edge is to be moved. */
-    def ne_resize     = avl(Literal.ne_resize)
+    def ne_resize     = avl(L.ne_resize)
 
     /** Indicates a bidirectional resize cursor. */
-    def nesw_resize   = avl(Literal.nesw_resize)
+    def nesw_resize   = avl(L.nesw_resize)
 
     /** Cursor showing that a drop is not allowed at the current location. */
-    def no_drop       = avl(Literal.no_drop)
+    def no_drop       = avl(L.no_drop)
 
     /** No cursor is rendered. */
-    def none          = avl(Literal.none)
+    def none          = avl(L.none)
 
     /** Cursor showing that something cannot be done. */
-    def not_allowed   = avl(Literal.not_allowed)
+    def not_allowed   = avl(L.not_allowed)
 
     /** The north edge is to be moved. */
-    def n_resize      = avl(Literal.n_resize)
+    def n_resize      = avl(L.n_resize)
 
     /** Indicates a bidirectional resize cursor. */
-    def ns_resize     = avl(Literal.ns_resize)
+    def ns_resize     = avl(L.ns_resize)
 
     /** The north-west edge is to be moved. */
-    def nw_resize     = avl(Literal.nw_resize)
+    def nw_resize     = avl(L.nw_resize)
 
     /** Indicates a bidirectional resize cursor. */
-    def nwse_resize   = avl(Literal.nwse_resize)
+    def nwse_resize   = avl(L.nwse_resize)
 
     /** Used when hovering over links, typically a hand. */
-    def pointer       = avl(Literal.pointer)
+    def pointer       = avl(L.pointer)
 
     /** The program is busy in the background but the user can still interact with the interface (unlike for wait). */
-    def progress      = avl(Literal.progress)
+    def progress      = avl(L.progress)
 
     /** The item/row can be resized vertically. Often rendered as arrows pointing up and down with a horizontal bar separating them. */
-    def row_resize    = avl(Literal.row_resize)
+    def row_resize    = avl(L.row_resize)
 
     /** The south-east edge is to be moved. */
-    def se_resize     = avl(Literal.se_resize)
+    def se_resize     = avl(L.se_resize)
 
     /** The south edge is to be moved. */
-    def s_resize      = avl(Literal.s_resize)
+    def s_resize      = avl(L.s_resize)
 
     /** The south-west edge is to be moved. */
-    def sw_resize     = avl(Literal.sw_resize)
+    def sw_resize     = avl(L.sw_resize)
 
     /** Indicating text can be selected, typically an I-beam. */
-    def text          = avl(Literal.text)
+    def text          = avl(L.text)
 
     /** Indicating that vertical text can be selected, typically a sideways I-beam. */
-    def vertical_text = avl(Literal.vertical_text)
+    def vertical_text = avl(L.vertical_text)
 
     /** The program is busy (sometimes an hourglass or a watch). */
-    def wait_         = avl(Literal.wait_)
+    def wait_         = avl(L.wait_)
 
     /** The west edge is to be moved. */
-    def w_resize      = avl(Literal.w_resize)
+    def w_resize      = avl(L.w_resize)
 
     /** Indicates that something can be zoomed (magnified) in. */
-    def zoom_in       = avl(Literal.zoom_in)
+    def zoom_in       = avl(L.zoom_in)
 
     /** Indicates that something can be zoomed (magnified) out. */
-    def zoom_out      = avl(Literal.zoom_out)
+    def zoom_out      = avl(L.zoom_out)
   }
 
   /**
@@ -797,8 +798,8 @@ object Attrs {
    */
   object direction extends TypedAttrBase {
     override val attr = Attr.real("direction")
-    def ltr = avl(Literal.ltr)
-    def rtl = avl(Literal.rtl)
+    def ltr = avl(L.ltr)
+    def rtl = avl(L.rtl)
   }
 
   /**
@@ -808,31 +809,31 @@ object Attrs {
    */
   object display extends TypedAttrBase {
     override val attr = Attr.real("display")
-    def block               = avl(Literal.block)
-    def contents            = avl(Literal.contents)
-    def flex                = avl(Literal.flex)
-    def grid                = avl(Literal.grid)
-    def inline              = avl(Literal.inline)
-    def inline_block        = avl(Literal.inline_block)
-    def inline_flex         = avl(Literal.inline_flex)
-    def inline_grid         = avl(Literal.inline_grid)
-    def inline_table        = avl(Literal.inline_table)
-    def list_item           = avl(Literal.list_item)
-    def none                = avl(Literal.none)
-    def ruby                = avl(Literal.ruby)
-    def ruby_base           = avl(Literal.ruby_base)
-    def ruby_base_container = avl(Literal.ruby_base_container)
-    def ruby_text           = avl(Literal.ruby_text)
-    def ruby_text_container = avl(Literal.ruby_text_container)
-    def run_in              = avl(Literal.run_in)
-    def table               = avl(Literal.table)
-    def table_cell          = avl(Literal.table_cell)
-    def table_column        = avl(Literal.table_column)
-    def table_column_group  = avl(Literal.table_column_group)
-    def table_footer_group  = avl(Literal.table_footer_group)
-    def table_header_group  = avl(Literal.table_header_group)
-    def table_row           = avl(Literal.table_row)
-    def table_row_group     = avl(Literal.table_row_group)
+    def block               = avl(L.block)
+    def contents            = avl(L.contents)
+    def flex                = avl(L.flex)
+    def grid                = avl(L.grid)
+    def inline              = avl(L.inline)
+    def inline_block        = avl(L.inline_block)
+    def inline_flex         = avl(L.inline_flex)
+    def inline_grid         = avl(L.inline_grid)
+    def inline_table        = avl(L.inline_table)
+    def list_item           = avl(L.list_item)
+    def none                = avl(L.none)
+    def ruby                = avl(L.ruby)
+    def ruby_base           = avl(L.ruby_base)
+    def ruby_base_container = avl(L.ruby_base_container)
+    def ruby_text           = avl(L.ruby_text)
+    def ruby_text_container = avl(L.ruby_text_container)
+    def run_in              = avl(L.run_in)
+    def table               = avl(L.table)
+    def table_cell          = avl(L.table_cell)
+    def table_column        = avl(L.table_column)
+    def table_column_group  = avl(L.table_column_group)
+    def table_footer_group  = avl(L.table_footer_group)
+    def table_header_group  = avl(L.table_header_group)
+    def table_row           = avl(L.table_row)
+    def table_row_group     = avl(L.table_row_group)
   }
 
   /**
@@ -842,8 +843,8 @@ object Attrs {
    */
   object emptyCells extends TypedAttrBase {
     override val attr = Attr.real("empty-cells")
-    def hide = avl(Literal.hide)
-    def show = avl(Literal.show)
+    def hide = avl(L.hide)
+    def show = avl(L.show)
   }
 
   /**
@@ -867,10 +868,10 @@ object Attrs {
    */
   object flexDirection extends TypedAttrBase {
     override val attr = Attr.real("flex-direction", Transform keys CanIUse.flexbox)
-    def column         = avl(Literal.column)
-    def column_reverse = avl(Literal.column_reverse)
-    def row            = avl(Literal.row)
-    def row_reverse    = avl(Literal.row_reverse)
+    def column         = avl(L.column)
+    def column_reverse = avl(L.column_reverse)
+    def row            = avl(L.row)
+    def row_reverse    = avl(L.row_reverse)
   }
 
   /**
@@ -898,9 +899,9 @@ object Attrs {
    */
   object flexWrap extends TypedAttrBase {
     override val attr = Attr.real("flex-wrap", Transform keys CanIUse.flexbox)
-    def nowrap       = avl(Literal.nowrap)
-    def wrap         = avl(Literal.wrap)
-    def wrap_reverse = avl(Literal.wrap_reverse)
+    def nowrap       = avl(L.nowrap)
+    def wrap         = avl(L.wrap)
+    def wrap_reverse = avl(L.wrap_reverse)
   }
 
   /**
@@ -910,9 +911,9 @@ object Attrs {
    */
   object float extends TypedAttrBase {
     override val attr = Attr.real("float")
-    def left  = avl(Literal.left)
-    def none  = avl(Literal.none)
-    def right = avl(Literal.right)
+    def left  = avl(L.left)
+    def none  = avl(L.none)
+    def right = avl(L.right)
   }
 
   /**
@@ -950,9 +951,9 @@ object Attrs {
    */
   object fontKerning extends TypedAttrBase {
     override val attr = Attr.real("font-kerning")
-    def auto   = avl(Literal.auto)
-    def none   = avl(Literal.none)
-    def normal = avl(Literal.normal)
+    def auto   = avl(L.auto)
+    def none   = avl(L.none)
+    def normal = avl(L.normal)
   }
 
   /**
@@ -969,15 +970,15 @@ object Attrs {
    */
   object fontSize extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("font-size")
-    def large    = avl(Literal.large)
-    def larger   = avl(Literal.larger)
-    def medium   = avl(Literal.medium)
-    def small    = avl(Literal.small)
-    def smaller  = avl(Literal.smaller)
-    def s_small  = avl(Literal.s_small)
-    def x_large  = avl(Literal.x_large)
-    def xx_small = avl(Literal.xx_small)
-    def xx_large = avl(Literal.xx_large)
+    def large    = avl(L.large)
+    def larger   = avl(L.larger)
+    def medium   = avl(L.medium)
+    def small    = avl(L.small)
+    def smaller  = avl(L.smaller)
+    def s_small  = avl(L.s_small)
+    def x_large  = avl(L.x_large)
+    def xx_small = avl(L.xx_small)
+    def xx_large = avl(L.xx_large)
   }
 
   /**
@@ -987,7 +988,7 @@ object Attrs {
    */
   object fontSizeAdjust extends TypedAttrT1[Number] {
     override val attr = Attr.real("font-size-adjust")
-    def none = avl(Literal.none)
+    def none = avl(L.none)
   }
 
   /**
@@ -997,15 +998,15 @@ object Attrs {
    */
   object fontStretch extends TypedAttrBase {
     override val attr = Attr.real("font-stretch", Transform keys CanIUse.fontStretch)
-    def condensed       = avl(Literal.condensed)
-    def expanded        = avl(Literal.expanded)
-    def extra_condensed = avl(Literal.extra_condensed)
-    def extra_expanded  = avl(Literal.extra_expanded)
-    def normal          = avl(Literal.normal)
-    def semi_condensed  = avl(Literal.semi_condensed)
-    def semi_expanded   = avl(Literal.semi_expanded)
-    def ultra_condensed = avl(Literal.ultra_condensed)
-    def ultra_expanded  = avl(Literal.ultra_expanded)
+    def condensed       = avl(L.condensed)
+    def expanded        = avl(L.expanded)
+    def extra_condensed = avl(L.extra_condensed)
+    def extra_expanded  = avl(L.extra_expanded)
+    def normal          = avl(L.normal)
+    def semi_condensed  = avl(L.semi_condensed)
+    def semi_expanded   = avl(L.semi_expanded)
+    def ultra_condensed = avl(L.ultra_condensed)
+    def ultra_expanded  = avl(L.ultra_expanded)
   }
 
   /**
@@ -1015,9 +1016,9 @@ object Attrs {
    */
   object fontStyle extends TypedAttrBase {
     override val attr = Attr.real("font-style")
-    def italic  = avl(Literal.italic)
-    def normal  = avl(Literal.normal)
-    def oblique = avl(Literal.oblique)
+    def italic  = avl(L.italic)
+    def normal  = avl(L.normal)
+    def oblique = avl(L.oblique)
   }
 
   /**
@@ -1041,13 +1042,13 @@ object Attrs {
    */
   object fontVariantCaps extends TypedAttrBase {
     override val attr = Attr.real("font-variant-caps")
-    def all_petite_caps = avl(Literal.all_petite_caps)
-    def all_small_caps  = avl(Literal.all_small_caps)
-    def normal          = avl(Literal.normal)
-    def petite_caps     = avl(Literal.petite_caps)
-    def small_caps      = avl(Literal.small_caps)
-    def titling_caps    = avl(Literal.titling_caps)
-    def unicase         = avl(Literal.unicase)
+    def all_petite_caps = avl(L.all_petite_caps)
+    def all_small_caps  = avl(L.all_small_caps)
+    def normal          = avl(L.normal)
+    def petite_caps     = avl(L.petite_caps)
+    def small_caps      = avl(L.small_caps)
+    def titling_caps    = avl(L.titling_caps)
+    def unicase         = avl(L.unicase)
   }
 
   /**
@@ -1078,9 +1079,9 @@ object Attrs {
    */
   object fontVariantPosition extends TypedAttrBase {
     override val attr = Attr.real("font-variant-position")
-    def normal = avl(Literal.normal)
-    def sub    = avl(Literal.sub)
-    def super_ = avl(Literal.super_)
+    def normal = avl(L.normal)
+    def sub    = avl(L.sub)
+    def super_ = avl(L.super_)
   }
 
   /**
@@ -1099,10 +1100,10 @@ object Attrs {
     def _700    = av("700")
     def _800    = av("800")
     def _900    = av("900")
-    def bold    = avl(Literal.bold)
-    def bolder  = avl(Literal.bolder)
-    def lighter = avl(Literal.lighter)
-    def normal  = avl(Literal.normal)
+    def bold    = avl(L.bold)
+    def bolder  = avl(L.bolder)
+    def lighter = avl(L.lighter)
+    def normal  = avl(L.normal)
   }
 
   /**
@@ -1196,9 +1197,9 @@ object Attrs {
    */
   object hyphens extends TypedAttrBase {
     override val attr = Attr.real("hyphens", Transform keys CanIUse.hyphens)
-    def auto   = avl(Literal.auto)
-    def manual = avl(Literal.manual)
-    def none   = avl(Literal.none)
+    def auto   = avl(L.auto)
+    def manual = avl(L.manual)
+    def none   = avl(L.none)
   }
 
   /**
@@ -1208,9 +1209,9 @@ object Attrs {
    */
   object imageRendering extends TypedAttrBase {
     override val attr = Attr.real("image-rendering")
-    def auto        = avl(Literal.auto)
-    def crisp_edges = avl(Literal.crisp_edges)
-    def pixelated   = avl(Literal.pixelated)
+    def auto        = avl(L.auto)
+    def crisp_edges = avl(L.crisp_edges)
+    def pixelated   = avl(L.pixelated)
   }
 
   /**
@@ -1234,11 +1235,11 @@ object Attrs {
    */
   object imeMode extends TypedAttrBase {
     override val attr = Attr.real("ime-mode")
-    def active   = avl(Literal.active)
-    def auto     = avl(Literal.auto)
-    def disabled = avl(Literal.disabled)
-    def inactive = avl(Literal.inactive)
-    def normal   = avl(Literal.normal)
+    def active   = avl(L.active)
+    def auto     = avl(L.auto)
+    def disabled = avl(L.disabled)
+    def inactive = avl(L.inactive)
+    def normal   = avl(L.normal)
   }
 
   /**
@@ -1262,8 +1263,8 @@ object Attrs {
    */
   object isolation extends TypedAttrBase {
     override val attr = Attr.real("isolation")
-    def auto    = avl(Literal.auto)
-    def isolate = avl(Literal.isolate)
+    def auto    = avl(L.auto)
+    def isolate = avl(L.isolate)
   }
 
   /**
@@ -1273,11 +1274,11 @@ object Attrs {
    */
   object justifyContent extends TypedAttrBase {
     override val attr = Attr.real("justify-content", Transform keys CanIUse.flexbox)
-    def center        = avl(Literal.center)
-    def flex_end      = avl(Literal.flex_end)
-    def flex_start    = avl(Literal.flex_start)
-    def space_around  = avl(Literal.space_around)
-    def space_between = avl(Literal.space_between)
+    def center        = avl(L.center)
+    def flex_end      = avl(L.flex_end)
+    def flex_start    = avl(L.flex_start)
+    def space_around  = avl(L.space_around)
+    def space_between = avl(L.space_between)
   }
 
   /**
@@ -1296,7 +1297,7 @@ object Attrs {
    */
   object letterSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("letter-spacing")
-    def normal = avl(Literal.normal)
+    def normal = avl(L.normal)
   }
 
   /**
@@ -1306,10 +1307,10 @@ object Attrs {
    */
   object lineBreak extends TypedAttrBase {
     override val attr = Attr.real("line-break")
-    def auto   = avl(Literal.auto)
-    def loose  = avl(Literal.loose)
-    def normal = avl(Literal.normal)
-    def strict = avl(Literal.strict)
+    def auto   = avl(L.auto)
+    def loose  = avl(L.loose)
+    def normal = avl(L.normal)
+    def strict = avl(L.strict)
   }
 
   /**
@@ -1319,7 +1320,7 @@ object Attrs {
    */
   object lineHeight extends TypedAttrT1[LenPctNum] with ZeroLit {
     override val attr = Attr.real("line-height")
-    def normal = avl(Literal.normal)
+    def normal = avl(L.normal)
   }
 
   /**
@@ -1336,8 +1337,8 @@ object Attrs {
    */
   object listStylePosition extends TypedAttrBase {
     override val attr = Attr.real("list-style-position")
-    def inside  = avl(Literal.inside)
-    def outside = avl(Literal.outside)
+    def inside  = avl(L.inside)
+    def outside = avl(L.outside)
   }
 
   /**
@@ -1455,11 +1456,11 @@ object Attrs {
    */
   object objectFit extends TypedAttrBase {
     override val attr = Attr.real("object-fit", Transform keys CanIUse.objectFit)
-    def contain    = avl(Literal.contain)
-    def cover      = avl(Literal.cover)
-    def fill       = avl(Literal.fill)
-    def none       = avl(Literal.none)
-    def scale_down = avl(Literal.scale_down)
+    def contain    = avl(L.contain)
+    def cover      = avl(L.cover)
+    def fill       = avl(L.fill)
+    def none       = avl(L.none)
+    def scale_down = avl(L.scale_down)
   }
 
   /**
@@ -1503,7 +1504,7 @@ object Attrs {
    */
   object outlineColor extends TypedAttr_Color {
     override val attr = Attr.real("outline-color", Transform keys CanIUse.outline)
-    def invert = avl(Literal.invert)
+    def invert = avl(L.invert)
   }
 
   /**
@@ -1522,7 +1523,7 @@ object Attrs {
    */
   object outlineStyle extends TypedAttr_BrStyle {
     override val attr = Attr.real("outline-style", Transform keys CanIUse.outline)
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   /**
@@ -1541,10 +1542,10 @@ object Attrs {
    */
   object overflow extends TypedAttrBase {
     override val attr = Attr.real("overflow")
-    def auto    = avl(Literal.auto)
-    def hidden  = avl(Literal.hidden)
-    def scroll  = avl(Literal.scroll)
-    def visible = avl(Literal.visible)
+    def auto    = avl(L.auto)
+    def hidden  = avl(L.hidden)
+    def scroll  = avl(L.scroll)
+    def visible = avl(L.visible)
   }
 
   /**
@@ -1561,10 +1562,10 @@ object Attrs {
    */
   object overflowX extends TypedAttrBase {
     override val attr = Attr.real("overflow-x")
-    def auto    = avl(Literal.auto)
-    def hidden  = avl(Literal.hidden)
-    def scroll  = avl(Literal.scroll)
-    def visible = avl(Literal.visible)
+    def auto    = avl(L.auto)
+    def hidden  = avl(L.hidden)
+    def scroll  = avl(L.scroll)
+    def visible = avl(L.visible)
   }
 
   /**
@@ -1574,10 +1575,10 @@ object Attrs {
    */
   object overflowY extends TypedAttrBase {
     override val attr = Attr.real("overflow-y")
-    def auto    = avl(Literal.auto)
-    def hidden  = avl(Literal.hidden)
-    def scroll  = avl(Literal.scroll)
-    def visible = avl(Literal.visible)
+    def auto    = avl(L.auto)
+    def hidden  = avl(L.hidden)
+    def scroll  = avl(L.scroll)
+    def visible = avl(L.visible)
   }
 
   /**
@@ -1623,11 +1624,11 @@ object Attrs {
    */
   object pageBreakAfter extends TypedAttrBase {
     override val attr = Attr.real("page-break-after")
-    def always = avl(Literal.always)
-    def auto   = avl(Literal.auto)
-    def avoid  = avl(Literal.avoid)
-    def left   = avl(Literal.left)
-    def right  = avl(Literal.right)
+    def always = avl(L.always)
+    def auto   = avl(L.auto)
+    def avoid  = avl(L.avoid)
+    def left   = avl(L.left)
+    def right  = avl(L.right)
   }
 
   /**
@@ -1637,11 +1638,11 @@ object Attrs {
    */
   object pageBreakBefore extends TypedAttrBase {
     override val attr = Attr.real("page-break-before")
-    def always = avl(Literal.always)
-    def auto   = avl(Literal.auto)
-    def avoid  = avl(Literal.avoid)
-    def left   = avl(Literal.left)
-    def right  = avl(Literal.right)
+    def always = avl(L.always)
+    def auto   = avl(L.auto)
+    def avoid  = avl(L.avoid)
+    def left   = avl(L.left)
+    def right  = avl(L.right)
   }
 
   /**
@@ -1651,8 +1652,8 @@ object Attrs {
    */
   object pageBreakInside extends TypedAttrBase {
     override val attr = Attr.real("page-break-inside")
-    def auto  = avl(Literal.auto)
-    def avoid = avl(Literal.avoid)
+    def auto  = avl(L.auto)
+    def avoid = avl(L.avoid)
   }
 
   /**
@@ -1662,7 +1663,7 @@ object Attrs {
    */
   object perspective extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("perspective", Transform keys CanIUse2.transforms)
-    def none = avl(Literal.none)
+    def none = avl(L.none)
   }
 
   /**
@@ -1686,11 +1687,11 @@ object Attrs {
    */
   object position extends TypedAttrBase {
     override val attr = Attr.real("position")
-    def absolute = avl(Literal.absolute)
-    def fixed    = avl(Literal.fixed)
-    def relative = avl(Literal.relative)
-    def static   = avl(Literal.static)
-    def sticky   = avl(Literal.sticky)
+    def absolute = avl(L.absolute)
+    def fixed    = avl(L.fixed)
+    def relative = avl(L.relative)
+    def static   = avl(L.static)
+    def sticky   = avl(L.sticky)
   }
 
   /**
@@ -1714,10 +1715,10 @@ object Attrs {
    */
   object resize extends TypedAttrBase {
     override val attr = Attr.real("resize", Transform keys CanIUse.resize)
-    def both       = avl(Literal.both)
-    def horizontal = avl(Literal.horizontal)
-    def none       = avl(Literal.none)
-    def vertical   = avl(Literal.vertical)
+    def both       = avl(L.both)
+    def horizontal = avl(L.horizontal)
+    def none       = avl(L.none)
+    def vertical   = avl(L.vertical)
   }
 
   /**
@@ -1736,10 +1737,10 @@ object Attrs {
    */
   object rubyAlign extends TypedAttrBase {
     override val attr = Attr.real("ruby-align")
-    def center        = avl(Literal.center)
-    def space_around  = avl(Literal.space_around)
-    def space_between = avl(Literal.space_between)
-    def start         = avl(Literal.start)
+    def center        = avl(L.center)
+    def space_around  = avl(L.space_around)
+    def space_between = avl(L.space_between)
+    def start         = avl(L.start)
   }
 
   /**
@@ -1756,9 +1757,9 @@ object Attrs {
    */
   object rubyPosition extends TypedAttrBase {
     override val attr = Attr.real("ruby-position")
-    def inter_character = avl(Literal.inter_character)
-    def over            = avl(Literal.over)
-    def under           = avl(Literal.under)
+    def inter_character = avl(L.inter_character)
+    def over            = avl(L.over)
+    def under           = avl(L.under)
   }
 
   /**
@@ -1768,8 +1769,8 @@ object Attrs {
    */
   object scrollBehavior extends TypedAttrBase {
     override val attr = Attr.real("scroll-behavior")
-    def auto   = avl(Literal.auto)
-    def smooth = avl(Literal.smooth)
+    def auto   = avl(L.auto)
+    def smooth = avl(L.smooth)
   }
 
   /**
@@ -1804,8 +1805,8 @@ object Attrs {
    */
   object tableLayout extends TypedAttrBase {
     override val attr = Attr.real("table-layout")
-    def auto  = avl(Literal.auto)
-    def fixed = avl(Literal.fixed)
+    def auto  = avl(L.auto)
+    def fixed = avl(L.fixed)
   }
 
   /**
@@ -1822,14 +1823,14 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align")
-    def center       = avl(Literal.center)
-    def end          = avl(Literal.end)
-    def justify      = avl(Literal.justify)
-    def left         = avl(Literal.left)
-    def match_parent = avl(Literal.match_parent)
-    def right        = avl(Literal.right)
-    def start        = avl(Literal.start)
-    def start_end    = avl(Literal.start_end)
+    def center       = avl(L.center)
+    def end          = avl(L.end)
+    def justify      = avl(L.justify)
+    def left         = avl(L.left)
+    def match_parent = avl(L.match_parent)
+    def right        = avl(L.right)
+    def start        = avl(L.start)
+    def start_end    = avl(L.start_end)
   }
 
   /**
@@ -1839,13 +1840,13 @@ object Attrs {
    */
   object textAlignLast extends TypedAttrBase {
     override val attr = Attr.real("text-align-last", Transform keys CanIUse.textAlignLast)
-    def auto    = avl(Literal.auto)
-    def center  = avl(Literal.center)
-    def end     = avl(Literal.end)
-    def justify = avl(Literal.justify)
-    def left    = avl(Literal.left)
-    def right   = avl(Literal.right)
-    def start   = avl(Literal.start)
+    def auto    = avl(L.auto)
+    def center  = avl(L.center)
+    def end     = avl(L.end)
+    def justify = avl(L.justify)
+    def left    = avl(L.left)
+    def right   = avl(L.right)
+    def start   = avl(L.start)
   }
 
   /**
@@ -1878,11 +1879,11 @@ object Attrs {
    */
   object textDecorationStyle extends TypedAttrBase {
     override val attr = Attr.real("text-decoration-style", Transform keys CanIUse.textDecoration)
-    def dashed = avl(Literal.dashed)
-    def dotted = avl(Literal.dotted)
-    def double = avl(Literal.double)
-    def solid  = avl(Literal.solid)
-    def wavy   = avl(Literal.wavy)
+    def dashed = avl(L.dashed)
+    def dotted = avl(L.dotted)
+    def double = avl(L.double)
+    def solid  = avl(L.solid)
+    def wavy   = avl(L.wavy)
   }
 
   /**
@@ -1920,12 +1921,12 @@ object Attrs {
    */
   object textOrientation extends TypedAttrBase {
     override val attr = Attr.real("text-orientation")
-    def mixed                 = avl(Literal.mixed)
-    def sideways              = avl(Literal.sideways)
-    def sideways_left         = avl(Literal.sideways_left)
-    def sideways_right        = avl(Literal.sideways_right)
-    def upright               = avl(Literal.upright)
-    def use_glyph_orientation = avl(Literal.use_glyph_orientation)
+    def mixed                 = avl(L.mixed)
+    def sideways              = avl(L.sideways)
+    def sideways_left         = avl(L.sideways_left)
+    def sideways_right        = avl(L.sideways_right)
+    def upright               = avl(L.upright)
+    def use_glyph_orientation = avl(L.use_glyph_orientation)
   }
 
   /**
@@ -1977,11 +1978,11 @@ object Attrs {
    */
   object textTransform extends TypedAttrBase {
     override val attr = Attr.real("text-transform")
-    def capitalize = avl(Literal.capitalize)
-    def full_width = avl(Literal.full_width)
-    def lowercase  = avl(Literal.lowercase)
-    def none       = avl(Literal.none)
-    def uppercase  = avl(Literal.uppercase)
+    def capitalize = avl(L.capitalize)
+    def full_width = avl(L.full_width)
+    def lowercase  = avl(L.lowercase)
+    def none       = avl(L.none)
+    def uppercase  = avl(L.uppercase)
   }
 
   /**
@@ -2028,8 +2029,8 @@ object Attrs {
    */
   object transformStyle extends TypedAttrBase {
     override val attr = Attr.real("transform-style", Transform keys CanIUse2.transforms)
-    def flat        = avl(Literal.flat)
-    def preserve_3d = avl(Literal.preserve_3d)
+    def flat        = avl(L.flat)
+    def preserve_3d = avl(L.preserve_3d)
   }
 
   /**
@@ -2067,12 +2068,12 @@ object Attrs {
    */
   object unicodeBidi extends TypedAttrBase {
     override val attr = Attr.real("unicode-bidi")
-    def bidi_override    = avl(Literal.bidi_override)
-    def embed            = avl(Literal.embed)
-    def isolate          = avl(Literal.isolate)
-    def isolate_override = avl(Literal.isolate_override)
-    def normal           = avl(Literal.normal)
-    def plaintext        = avl(Literal.plaintext)
+    def bidi_override    = avl(L.bidi_override)
+    def embed            = avl(L.embed)
+    def isolate          = avl(L.isolate)
+    def isolate_override = avl(L.isolate_override)
+    def normal           = avl(L.normal)
+    def plaintext        = avl(L.plaintext)
   }
 
   /**
@@ -2096,14 +2097,14 @@ object Attrs {
    */
   object verticalAlign extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.real("vertical-align")
-    def baseline    = avl(Literal.baseline)
-    def bottom      = avl(Literal.bottom)
-    def middle      = avl(Literal.middle)
-    def sub         = avl(Literal.sub)
-    def super_      = avl(Literal.super_)
-    def text_bottom = avl(Literal.text_bottom)
-    def text_top    = avl(Literal.text_top)
-    def top         = avl(Literal.top)
+    def baseline    = avl(L.baseline)
+    def bottom      = avl(L.bottom)
+    def middle      = avl(L.middle)
+    def sub         = avl(L.sub)
+    def super_      = avl(L.super_)
+    def text_bottom = avl(L.text_bottom)
+    def text_top    = avl(L.text_top)
+    def top         = avl(L.top)
   }
 
   /**
@@ -2113,9 +2114,9 @@ object Attrs {
    */
   object visibility extends TypedAttrBase {
     override val attr = Attr.real("visibility")
-    def collapse = avl(Literal.collapse)
-    def hidden   = avl(Literal.hidden)
-    def visible  = avl(Literal.visible)
+    def collapse = avl(L.collapse)
+    def hidden   = avl(L.hidden)
+    def visible  = avl(L.visible)
   }
 
   /**
@@ -2125,11 +2126,11 @@ object Attrs {
    */
   object whiteSpace extends TypedAttrBase {
     override val attr = Attr.real("white-space")
-    def normal   = avl(Literal.normal)
-    def nowrap   = avl(Literal.nowrap)
-    def pre      = avl(Literal.pre)
-    def pre_line = avl(Literal.pre_line)
-    def pre_wrap = avl(Literal.pre_wrap)
+    def normal   = avl(L.normal)
+    def nowrap   = avl(L.nowrap)
+    def pre      = avl(L.pre)
+    def pre_line = avl(L.pre_line)
+    def pre_wrap = avl(L.pre_wrap)
   }
 
   /**
@@ -2162,9 +2163,9 @@ object Attrs {
    */
   object wordBreak extends TypedAttrBase {
     override val attr = Attr.real("word-break", Transform keys CanIUse.wordBreak)
-    def break_all = avl(Literal.break_all)
-    def keep_all  = avl(Literal.keep_all)
-    def normal    = avl(Literal.normal)
+    def break_all = avl(L.break_all)
+    def keep_all  = avl(L.keep_all)
+    def normal    = avl(L.normal)
   }
 
   /**
@@ -2174,7 +2175,7 @@ object Attrs {
    */
   object wordSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("word-spacing")
-    def normal = avl(Literal.normal)
+    def normal = avl(L.normal)
   }
 
   /**
@@ -2184,8 +2185,8 @@ object Attrs {
    */
   object wordWrap extends TypedAttrBase {
     override val attr = Attr.real("word-wrap", Transform keys CanIUse.wordwrap)
-    def break_word = avl(Literal.break_word)
-    def normal     = avl(Literal.normal)
+    def break_word = avl(L.break_word)
+    def normal     = avl(L.normal)
   }
 
   /**
@@ -2195,9 +2196,9 @@ object Attrs {
    */
   object writingMode extends TypedAttrBase {
     override val attr = Attr.real("writing-mode")
-    def horizontal_tb = avl(Literal.horizontal_tb)
-    def vertical_lr   = avl(Literal.vertical_lr)
-    def vertical_rl   = avl(Literal.vertical_rl)
+    def horizontal_tb = avl(L.horizontal_tb)
+    def vertical_lr   = avl(L.vertical_lr)
+    def vertical_rl   = avl(L.vertical_rl)
   }
 
   /**
@@ -2207,7 +2208,7 @@ object Attrs {
    */
   object zIndex extends TypedAttrT1[Integer] {
     override val attr = Attr.real("z-index")
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -2599,7 +2600,7 @@ object Attrs {
   object margin extends TypedAttrT4Edges[LenPctAuto](" ") with ZeroLit {
     override val attr = Attr.alias("margin")(_(
       marginTop, marginRight, marginBottom, marginLeft))
-    def auto = avl(Literal.auto)
+    def auto = avl(L.auto)
   }
 
   /**
