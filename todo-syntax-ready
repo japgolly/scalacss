@@ -1,0 +1,24 @@
+
+  object borderImageSource extends TypedAttrT[Image] {
+    override val attr = Attr.real("border-image-source", CanIUse.borderImage)
+    def none = avl(Values.none)
+  }
+
+  object fontLanguageOverride extends TypedAttrT[String] {
+    override val attr = Attr.real("font-language-override")
+    def normal = avl(Values.normal)
+  }
+
+  object listStyleImage extends TypedAttrT[Uri] {
+    override val attr = Attr.real("list-style-image")
+    def none = avl(Values.none)
+  }
+
+  object mixBlendMode extends TypedAttrT[BlendMode] {
+    override val attr = Attr.real("mix-blend-mode")
+  }
+
+  object objectPosition extends TypedAttrT[Position] {
+    override val attr = Attr.real("object-position")
+  }
+
