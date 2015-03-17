@@ -195,8 +195,8 @@ object ValueT {
   }
 
   abstract class TypedAttrT4Edges[T <: ValueClass](sep: String) extends TypedAttrBase {
-    final def apply(v: ValueT[T]): AV =
-      av(v.value)
+    final def apply(allEdges: ValueT[T]): AV =
+      av(allEdges.value)
     final def apply(horizontal: ValueT[T], vertical: ValueT[T]): AV =
       av(concat(sep, horizontal, vertical))
     final def apply(top: ValueT[T], vertical: ValueT[T], bottom: ValueT[T]): AV =

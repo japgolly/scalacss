@@ -1,0 +1,9 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
+
+grep -v '^ *//' core/src/main/scala/japgolly/scalacss/Attrs.scala \
+  | grep -P '^ *final val .*Attr[^\]]' \
+  | perl -pe 's/ *=.+//; s/ *final +val +//' \
+  | sort
+
+
