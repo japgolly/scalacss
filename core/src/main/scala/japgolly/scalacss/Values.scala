@@ -45,7 +45,6 @@ object Literal {
   @inline def col_resize            = Literal("col-resize")
   @inline def column                = Literal("column")
   @inline def column_reverse        = Literal("column-reverse")
-  @inline def complex               = Literal("complex")
   @inline def condensed             = Literal("condensed")
   @inline def contain               = Literal("contain")
   @inline def contain_floats        = Literal("contain-floats")

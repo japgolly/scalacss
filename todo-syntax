@@ -14,7 +14,6 @@ background_origin	<box>#
 background_position	 <position>#
 background_repeat	<repeat_style>#
 background_size	<bg_size>#
-block_size	<'width'>
 border_image	<'border_image_source'> || <'border_image_slice'> [ / <'border_image_width'> | / <'border_image_width'>? / <'border_image_outset'> ]? || <'border_image_repeat'>
 border_image_outset	[ <length> | <number> ]{1,4}
 border_image_repeat	[ stretch | repeat | round ]{1,2}
@@ -40,9 +39,7 @@ font_variant_east_asian	normal | [ <east_asian_variant_values> || <east_asian_wi
 font_variant_ligatures	normal | none | [ <common_lig_values> || <discretionary_lig_values> || <historical_lig_values> || <contextual_alt_values> ]
 font_variant	normal | none | [ <common_lig_values> || <discretionary_lig_values> || <historical_lig_values> || <contextual_alt_values> || stylistic(<feature_value_name>) || historical_forms || styleset(<feature_value_name> #) || character_variant(<feature_value_name> #) || swash(<feature_value_name>) || ornaments(<feature_value_name>) || annotation(<feature_value_name>) || [ small_caps | all_small_caps | petite_caps | all_petite_caps | unicase | titling_caps ] || <numeric_figure_values> || <numeric_spacing_values> || <numeric_fraction_values> || ordinal || slashed_zero || <east_asian_variant_values> || <east_asian_width_values> || ruby ]
 font_variant_numeric	normal | [ <numeric_figure_values> || <numeric_spacing_values> || <numeric_fraction_values> || ordinal || slashed_zero ]
-height	[<length> | <percentage>] && [border_box | content_box]? | available | min_content | max_content | fit_content | complex | auto
 image_orientation	from_image | <angle> | [<angle>? flip]
-inline_size	<'width'>
 list_style	<'list_style_type'> || <'list_style_position'> || <'list_style_image'>
 list_style_type	<custom_ident> | symbols)
 perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
@@ -62,5 +59,4 @@ transition	[ none | <single_transition_property> ] || <time> || <timing_function
 transition_property	none | <single_transition_property>#  [ ‘,’ <single_transition_property># ]*<br/>
 transition_timing_function	<timing_function>#
 unicode_range	<urange>#
-width	[<length> | <percentage>] && [border_box | content_box]? | available | min_content | max_content | fit_content | auto
 will_change	auto | <animateable_feature>#

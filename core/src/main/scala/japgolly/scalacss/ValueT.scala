@@ -244,6 +244,18 @@ object ValueT {
     final def auto = avl(Literal.auto)
   }
 
+  abstract class TypedAttr_Length extends TypedAttrT1[LenPct] with ZeroLit {
+    override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
+    protected def attr2: Transform => Attr
+    final def auto        = avl(Literal.auto)
+    final def available   = avl(Literal.available)
+    final def border_box  = avl(Literal.border_box)
+    final def content_box = avl(Literal.content_box)
+    final def fit_content = avl(Literal.fit_content)
+    final def max_content = avl(Literal.max_content)
+    final def min_content = avl(Literal.min_content)
+  }
+
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr

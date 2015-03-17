@@ -1193,7 +1193,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/height">MDN</a>
    */
-  final val height = Attr.real("height")
+  object height extends TypedAttr_Length {
+    override protected def attr2 = Attr.real("height", _)
+  }
 
   /**
    * The hyphens CSS property tells the browser how to go about splitting words to improve the layout of text when line-wrapping. On HTML, the language is determined by the lang attribute: browsers will hyphenate only if this attribute is present and if an appropriate hyphenation dictionary is available. On XML, the xml:lang attribute must be used.
@@ -1254,13 +1256,6 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/initial">MDN</a>
    */
   final val initial = Attr.real("initial")
-
-  /**
-   * The inline-size CSS property defines the horizontal or vertical size of an element's block depending on it's writing mode. It corresponds to the width or the height property depending on the value defined for writing-mode.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inline-size">MDN</a>
-   */
-  final val inlineSize = Attr.real("inline-size")
 
   /**
    * The isolation CSS property defines if the element must create a new stacking context.
@@ -2157,7 +2152,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/width">MDN</a>
    */
-  final val width = Attr.real("width")
+  object width extends TypedAttr_Length {
+    override protected def attr2 = Attr.real("width", _)
+  }
 
   /**
    * The will-change CSS property provides a way for authors to hint browsers about the kind of changes to be expected on an element, so that the browser can setup appropriate optimizations ahead of time before the element is actually changed.
@@ -2257,7 +2254,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/block-size">MDN</a>
    */
-  final val blockSize = Attr.alias("block-size")(_(height, width))
+  object blockSize extends TypedAttr_Length {
+    override protected def attr2 = Attr.alias("block-size", _)(_(height, width))
+  }
 
   /**
    * The border CSS property is a shorthand property for setting the individual border property values in a single place in the style sheet. border can be used to set the values for one or more of: border-width, border-style, border-color.
@@ -2593,6 +2592,15 @@ object Attrs {
    */
   final val gridTemplate = Attr.alias("grid-template", Transform keys CanIUse.grid)(_(
     gridTemplateAreas, gridTemplateColumns, gridTemplateRows))
+
+  /**
+   * The inline-size CSS property defines the horizontal or vertical size of an element's block depending on it's writing mode. It corresponds to the width or the height property depending on the value defined for writing-mode.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inline-size">MDN</a>
+   */
+  object inlineSize extends TypedAttr_Length {
+    override protected def attr2 = Attr.alias("inline-size", _)(_(height, width))
+  }
 
   /**
    * The list-style CSS property is a shorthand property for setting list-style-type, list-style-image and list-style-position.
