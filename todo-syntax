@@ -30,7 +30,6 @@ columns	<'column_width'> || <'column_count'>
 content	normal | none | [ <string> | <uri> | <counter> | attr() | open_quote | close_quote | no_open_quote | no_close_quote ]+
 counter_increment	[<custom_ident> <integer>?]+ | none
 counter_reset	[<custom_ident> <integer>?]+ | none
-cursor	[ [ <uri> [<x> <y>]?,]* [ auto | default | none | context_menu | help | pointer | progress | wait | cell | crosshair | text | vertical_text | alias | copy | move | no_drop | not_allowed | e_resize | n_resize | ne_resize | nw_resize | s_resize | se_resize | sw_resize | w_resize | ew_resize | ns_resize | nesw_resize | nwse_resize | col_resize | row_resize | all_scroll | zoom_in | zoom_out | grab | grabbing ] ]
 flex_basis	content | <'width'>
 flex_flow	<'flex_direction'> || <'flex_wrap'>
 flex	none | [ <'flex_grow'> <'flex_shrink'>? || <'flex_basis'> ]

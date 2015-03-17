@@ -678,7 +678,117 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/cursor">MDN</a>
    */
-  final val cursor = Attr.real("cursor")
+  object cursor extends TypedAttrBase {
+    override val attr = Attr.real("cursor")
+
+    /** Indicating an alias or shortcut is to be created. */
+    def alias         = avl(Literal.alias)
+
+    /** Cursor showing that something can be scrolled in any direction (panned). */
+    def all_scroll    = avl(Literal.all_scroll)
+
+    /** The browser determines the cursor to display based on the current context. */
+    def auto          = avl(Literal.auto)
+
+    /** Indicating that cells can be selected. */
+    def cell          = avl(Literal.cell)
+
+    /** The item/column can be resized horizontally. Often rendered as arrows pointing left and right with a vertical bar separating. */
+    def col_resize    = avl(Literal.col_resize)
+
+    /** A context menu is available under the cursor. Only IE 10 and up have implemented this on Windows */
+    def context_menu  = avl(Literal.context_menu)
+
+    /** Indicating that something can be copied. */
+    def copy          = avl(Literal.copy)
+
+    /** Cross cursor, often used to indicate selection in a bitmap. */
+    def crosshair     = avl(Literal.crosshair)
+
+    /** Default cursor, typically an arrow. */
+    def default       = avl(Literal.default)
+
+    /** The east edge is to be moved. */
+    def e_resize      = avl(Literal.e_resize)
+
+    /** Indicates a bidirectional resize cursor. */
+    def ew_resize     = avl(Literal.ew_resize)
+
+    /** Indicates that something can be grabbed (dragged to be moved). */
+    def grab          = avl(Literal.grab)
+
+    /** Indicates that something can be grabbed (dragged to be moved). */
+    def grabbing      = avl(Literal.grabbing)
+
+    /** Indicating help is available. */
+    def help          = avl(Literal.help)
+
+    /** The hovered object may be moved. */
+    def move          = avl(Literal.move)
+
+    /** The north-east edge is to be moved. */
+    def ne_resize     = avl(Literal.ne_resize)
+
+    /** Indicates a bidirectional resize cursor. */
+    def nesw_resize   = avl(Literal.nesw_resize)
+
+    /** Cursor showing that a drop is not allowed at the current location. */
+    def no_drop       = avl(Literal.no_drop)
+
+    /** No cursor is rendered. */
+    def none          = avl(Literal.none)
+
+    /** Cursor showing that something cannot be done. */
+    def not_allowed   = avl(Literal.not_allowed)
+
+    /** The north edge is to be moved. */
+    def n_resize      = avl(Literal.n_resize)
+
+    /** Indicates a bidirectional resize cursor. */
+    def ns_resize     = avl(Literal.ns_resize)
+
+    /** The north-west edge is to be moved. */
+    def nw_resize     = avl(Literal.nw_resize)
+
+    /** Indicates a bidirectional resize cursor. */
+    def nwse_resize   = avl(Literal.nwse_resize)
+
+    /** Used when hovering over links, typically a hand. */
+    def pointer       = avl(Literal.pointer)
+
+    /** The program is busy in the background but the user can still interact with the interface (unlike for wait). */
+    def progress      = avl(Literal.progress)
+
+    /** The item/row can be resized vertically. Often rendered as arrows pointing up and down with a horizontal bar separating them. */
+    def row_resize    = avl(Literal.row_resize)
+
+    /** The south-east edge is to be moved. */
+    def se_resize     = avl(Literal.se_resize)
+
+    /** The south edge is to be moved. */
+    def s_resize      = avl(Literal.s_resize)
+
+    /** The south-west edge is to be moved. */
+    def sw_resize     = avl(Literal.sw_resize)
+
+    /** Indicating text can be selected, typically an I-beam. */
+    def text          = avl(Literal.text)
+
+    /** Indicating that vertical text can be selected, typically a sideways I-beam. */
+    def vertical_text = avl(Literal.vertical_text)
+
+    /** The program is busy (sometimes an hourglass or a watch). */
+    def wait_         = avl(Literal.wait_)
+
+    /** The west edge is to be moved. */
+    def w_resize      = avl(Literal.w_resize)
+
+    /** Indicates that something can be zoomed (magnified) in. */
+    def zoom_in       = avl(Literal.zoom_in)
+
+    /** Indicates that something can be zoomed (magnified) out. */
+    def zoom_out      = avl(Literal.zoom_out)
+  }
 
   /**
    * Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS.
