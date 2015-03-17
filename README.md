@@ -54,10 +54,10 @@ In progress.
 ##### Upcoming...
 
 * Add more attrs discovered by caniuse.com data.
+* Type-safe CSS values (not all but most oft used are done)
+* Automatic browser prefixes for _values_ (using caniuse.com data).
 
 * Media query AST.
-* Type-safe CSS values.
-* Automatic browser prefixes for _values_ (using caniuse.com data).
 * CSS Reset.
 * Add more psuedo selectors discovered by caniuse.com data.
 * In Scala.JS, omit unnecessary browser prefixes.
