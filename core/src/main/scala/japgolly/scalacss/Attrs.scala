@@ -1946,7 +1946,13 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-indent">MDN</a>
    */
-  final val textIndent = Attr.real("text-indent")
+  object textIndent extends TypedAttrBase with ZeroLit {
+    override val attr = Attr.real("text-indent") // TODO There should be a CanIUse for hanging|each-line
+    def apply(v: ValueT[LenPct])                                          : AV = av(v.value)
+    def apply(v: ValueT[LenPct], h: LT.hanging.type)                      : AV = av(s"${v.value} ${h.value}")
+    def apply(v: ValueT[LenPct], h: LT.each_line.type)                    : AV = av(s"${v.value} ${h.value}")
+    def apply(v: ValueT[LenPct], h: LT.hanging.type, e: LT.each_line.type): AV = av(s"${v.value} ${h.value} ${e.value}")
+  }
 
   /**
    * The text-orientation CSS property defines the orientation of the text in a line. This property only has an effect in vertical mode, that is when writing-mode is not horizontal-tb. It is useful to control the display of writing in languages using vertical script, but also to deal with vertical table headers.

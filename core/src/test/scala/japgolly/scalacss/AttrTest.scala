@@ -79,6 +79,15 @@ object AttrTest extends TestSuite {
       assertEq(border(length, style, colour).value, "3px dashed green")
     }
 
+    'textIndent {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      import Literal.Typed._
+      test(textIndent(length)                    , "3px")
+      test(textIndent(length, hanging)           , "3px hanging")
+      test(textIndent(length, each_line)         , "3px each-line")
+      test(textIndent(length, hanging, each_line), "3px hanging each-line")
+    }
+
     'PrefixApplyWords {
       val pa = CanIUse2.PrefixApply.keywords("abc", "def")
       def test(i: String, eo: String = null): Unit = {
