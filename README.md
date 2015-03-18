@@ -59,14 +59,16 @@ In progress.
 * Styles can add class names, for example to apply Bootstrap classes like `btn btn-default`.
 * CSS Reset.
 * More DSL for composite styles.
+* Standalone styles (as opposed to Inline styles).
 * Default settings for JVM ⊗ {Dev,Prod}.
 
 Upcoming...
 
 * Media query AST.
-* Add more psuedo selectors discovered by caniuse.com data.
 * In Scala.JS, omit unnecessary browser prefixes.
 * Default `Env` for JS.
+
+* Add more psuedo selectors discovered by caniuse.com data.
 * Detect more problems, add more warnings.
 * Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
 
