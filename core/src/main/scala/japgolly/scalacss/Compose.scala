@@ -81,6 +81,9 @@ object Compose {
   val safe: Compose =
     new Compose(Rules.warn(Rules.append))
 
+  val trust: Compose =
+    new Compose(Rules.silent(Rules.append))
+
   trait Rules {
     def mergeClassNames(lo: ClassName, hi: ClassName): (Option[ClassName], Vector[WarningMsg])
     def mergeAttrs     (lo: AV,        hi: AVs)      : (AVs              , Vector[WarningMsg])

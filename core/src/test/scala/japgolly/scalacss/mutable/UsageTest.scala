@@ -45,6 +45,10 @@ object UsageTest extends TestSuite {
           )
         ),
 
+        unsafeRoot("blockquote:before, blockquote:after")(
+          content := "''",
+          content := none
+        ),
         unsafeRoot(".DEBUG")(
           borderColor.red
         )
@@ -114,6 +118,11 @@ object UsageTest extends TestSuite {
         |.demo-0001 nav.debug h1 {
         |  line-height: 97.5%;
         |  font-size: 150%;
+        |}
+        |
+        |blockquote:before, blockquote:after {
+        |  content: '';
+        |  content: none;
         |}
         |
         |.DEBUG {
