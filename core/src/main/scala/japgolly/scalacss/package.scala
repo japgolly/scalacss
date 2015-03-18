@@ -22,6 +22,9 @@ package object scalacss {
         this
       else
         copy(value = this.value + _important)
+
+    @inline def apply(env: Env) =
+      attr.gen(env)(value)
   }
 
   type AVs = NonEmptyVector[AV]

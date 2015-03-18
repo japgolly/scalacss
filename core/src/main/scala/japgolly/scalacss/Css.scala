@@ -17,9 +17,6 @@ object Css {
   def selector(cn: ClassName, c: Cond): CssSelector =
     cond(className(cn), c)
 
-  def av(av: AV)(implicit env: Env): Vector[CssKV] =
-    av.attr.gen(env)(av.value)
-
   def styleA(s: StyleA)(implicit env: Env): Css =
     style(className(s.className), s.style)
 
@@ -27,7 +24,7 @@ object Css {
     def main: Css =
       s.data.toStream.flatMap {
         case (cond, avs1) =>
-          val r = avs1.foldMapLeft1(av)(_ ++ av(_))
+          val r = avs1.foldMapLeft1(_(env))(_ ++ _(env))
           if (r.isEmpty)
             Stream.empty
           else

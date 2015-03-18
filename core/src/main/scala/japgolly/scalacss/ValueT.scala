@@ -183,6 +183,8 @@ object ValueT {
     protected def av(v: Value)   : AV = AV(attr, v)
     protected def avl(v: Literal): AV = av(v.value)
 
+    override def toString = attr.toString
+
     /**
      * The inherit CSS-value causes the element for which it is specified to take the computed value of the property from its parent element. It is allowed on every CSS property.
      *
