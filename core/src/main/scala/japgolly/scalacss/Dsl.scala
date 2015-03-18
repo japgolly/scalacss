@@ -134,6 +134,8 @@ abstract class DslBase
 
   @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
 
+  @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
+
   @inline implicit final def CondPseudo(x: Pseudo): Cond = Cond(Some(x))
 
   @inline implicit final def ToStyleToAV           (x: ToAV)      : ToStyle = ToStyleAV(x.av)

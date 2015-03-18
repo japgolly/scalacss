@@ -20,6 +20,7 @@ object UsageTest extends TestSuite {
         margin(12 px),
         padding(0.5 ex),
         cursor.pointer,
+        textDecorationLine.underline.overline,
         backgroundImage := "radial-gradient(5em circle at top left, yellow, blue)",
 
         Hover(
@@ -82,9 +83,12 @@ object UsageTest extends TestSuite {
     assertEq(norm(css), norm(
       """
         |.demo-0001 {
-        |  cursor: pointer;
-        |  margin: 12px;
+        |  -webkit-text-decoration-line: underline overline;
+        |  -moz-text-decoration-line: underline overline;
+        |  text-decoration-line: underline overline;
         |  padding: 0.5ex;
+        |  margin: 12px;
+        |  cursor: pointer;
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);

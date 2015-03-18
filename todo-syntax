@@ -44,7 +44,6 @@ list_style_type	<custom_ident> | symbols)
 perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
 shape_outside	none | <shape_box> || <basic_shape> | <image>
 tab_size	| <length"><integer> | <length>
-text_decoration_line	none | [ underline || overline || line_through || blink ]
 text_decoration	<'text_decoration_line'> || <'text_decoration_style'> || <'text_decoration_color'>
 text_indent	<length> | <percentage> && [ hanging || each_line ]
 text_overflow	[ clip | ellipsis | <string> ]{1,2}

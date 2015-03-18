@@ -1703,18 +1703,20 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/quotes">MDN</a>
    */
-  object quotes extends TypedAttrBase {
+  object quotes extends TypedAttrBase with QuotesOps {
     override val attr = Attr.real("quotes")
     def none = avl(LT.none)
 
-    def apply(openQuote: String, closeQuote: String) =
-      new Accum(mkStrings(openQuote, " ", closeQuote))
-
-    final class Accum(v: Value) extends ToAV {
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with QuotesOps {
       override def av: AV = AV(attr, v)
-      def apply(openQuote: String, closeQuote: String) =
-        new Accum(v + " " + mkStrings(openQuote, " ", closeQuote))
+      override protected def next(v: Value): Accum = new Accum(this.v + " " + v)
     }
+  }
+  trait QuotesOps {
+    protected def next(v: Value): quotes.Accum
+    final def apply(openQuote: String, closeQuote: String) =
+      next(mkStrings(openQuote, " ", closeQuote))
   }
 
   /**
@@ -1886,7 +1888,23 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration-line">MDN</a>
    */
-  final val textDecorationLine = Attr.real("text-decoration-line", Transform keys CanIUse.textDecoration)
+  object textDecorationLine extends TypedAttrBase with TextDecorationLineOps {
+    override val attr = Attr.real("text-decoration-line", Transform keys CanIUse.textDecoration)
+    def none = avl(LT.none)
+
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with TextDecorationLineOps {
+      override def av: AV = AV(attr, v)
+      override protected def next(v: Value): Accum = new Accum(this.v + " " + v)
+    }
+  }
+  trait TextDecorationLineOps {
+    protected def next(v: Value): textDecorationLine.Accum
+    final def underline    = next(L.underline)
+    final def overline     = next(L.overline)
+    final def line_through = next(L.line_through)
+    final def blink        = next(L.blink)
+  }
 
   /**
    * The text-decoration-style CSS property defines the style of the lines specified by text-decoration-line. The style applies to all lines, there is no way to define different style for each of the line defined by text-decoration-line.
