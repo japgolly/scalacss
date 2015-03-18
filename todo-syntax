@@ -42,7 +42,6 @@ image_orientation	from_image | <angle> | [<angle>? flip]
 list_style	<'list_style_type'> || <'list_style_position'> || <'list_style_image'>
 list_style_type	<custom_ident> | symbols)
 perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
-quotes	[<string> <string>]+ | none
 shape_outside	none | <shape_box> || <basic_shape> | <image>
 tab_size	| <length"><integer> | <length>
 text_decoration_line	none | [ underline || overline || line_through || blink ]

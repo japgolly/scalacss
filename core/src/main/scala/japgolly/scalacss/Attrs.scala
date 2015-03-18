@@ -1703,7 +1703,19 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/quotes">MDN</a>
    */
-  final val quotes = Attr.real("quotes")
+  object quotes extends TypedAttrBase {
+    override val attr = Attr.real("quotes")
+    def none = avl(LT.none)
+
+    def apply(openQuote: String, closeQuote: String) =
+      new Accum(mkStrings(openQuote, " ", closeQuote))
+
+    final class Accum(v: Value) extends ToAV {
+      override def av: AV = AV(attr, v)
+      def apply(openQuote: String, closeQuote: String) =
+        new Accum(v + " " + mkStrings(openQuote, " ", closeQuote))
+    }
+  }
 
   /**
    * Controls whether the last region in a chain displays additional 'overset' content according its default overflow property, or	if it displays a fragment of content as if it were flowing into a subsequent region.

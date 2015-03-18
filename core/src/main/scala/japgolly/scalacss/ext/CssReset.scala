@@ -248,7 +248,7 @@ object CssReset {
     ),
 
     $("blockquote, q")(
-      quotes := none // TODO
+      quotes.none
     ),
 
     $("blockquote:before, blockquote:after, q:before, q:after")(

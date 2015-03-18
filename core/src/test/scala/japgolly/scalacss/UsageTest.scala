@@ -26,8 +26,9 @@ object UsageTest extends TestSuite {
         backgroundColor("#f88"),
         color.black,
 
-        unsafeChild("h1")(
-          fontSize(150.%%)
+        unsafeChild("q")(
+          quotes("'", "'"),
+          quotes("<", ">")("\"", "\"")
         )
       )
     )
@@ -58,8 +59,9 @@ object UsageTest extends TestSuite {
           |  color: black;
           |}
           |
-          |.a1 nav.debug h1 {
-          |  font-size: 150%;
+          |.a1 nav.debug q {
+          |  quotes: "'" "'";
+          |  quotes: '<' '>' '"' '"';
           |}
         """.stripMargin.trim)
     }

@@ -5,6 +5,10 @@ import scala.concurrent.duration.FiniteDuration
 import japgolly.scalacss.{Literal => L}
 import L.{Typed => LT}
 
+trait ToAV {
+  def av: AV
+}
+
 /**
  * A CSS value that is valid for some context `T`.
  */
@@ -13,6 +17,16 @@ final case class ValueT[T <: ValueT.ValueClass](value: Value) {
 }
 
 object ValueT {
+
+  // TODO ValueT.mkString won't handle strings with both ' and "
+  def mkString(s: String): Value =
+    if (s contains "'")
+      s""""$s""""
+    else
+      s"'$s'"
+
+  @inline def mkStrings(a: String, sep: String, b: String): Value =
+    mkString(a) + sep + mkString(b)
 
   /*
   sealed trait ValueT[T]
