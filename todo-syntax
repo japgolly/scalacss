@@ -19,7 +19,6 @@ border_image_outset	[ <length> | <number> ]{1,4}
 border_image_repeat	[ stretch | repeat | round ]{1,2}
 border_image_slice	[<number> | <percentage>]{1,4} && fill?
 border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
-border_radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
 box_shadow	none | [inset? && [ <offset_x> <offset_y> <blur_radius>? <spread_radius>? <color>? ] ]#
 columns	<'column_width'> || <'column_count'>
 content	normal | none | [ <string> | <uri> | <counter> | attr() | open_quote | close_quote | no_open_quote | no_close_quote ]+

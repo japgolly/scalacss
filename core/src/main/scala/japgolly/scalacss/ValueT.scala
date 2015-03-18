@@ -202,11 +202,11 @@ object ValueT {
 //        final def apply[From](f: From)(implicit r: From ==> T): AV = av(r(f).value)
   }
 
-  @inline private def concat(sep: String, a: ValueT[_], b: ValueT[_]): Value =
+  @inline private[scalacss] def concat(sep: String, a: ValueT[_], b: ValueT[_]): Value =
     a.value + sep + b.value
-  @inline private def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_]): Value =
+  @inline private[scalacss] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_]): Value =
     concat(sep, a, b) + sep + c.value
-  @inline private def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_], d: ValueT[_]): Value =
+  @inline private[scalacss] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_], d: ValueT[_]): Value =
     concat(sep, a, b, c) + sep + d.value
 
   abstract class TypedAttrT2[T <: ValueClass] extends TypedAttrBase {
@@ -221,14 +221,11 @@ object ValueT {
   }
 
   abstract class TypedAttrT4Edges[T <: ValueClass](sep: String) extends TypedAttrBase {
-    final def apply(allEdges: ValueT[T]): AV =
-      av(allEdges.value)
-    final def apply(horizontal: ValueT[T], vertical: ValueT[T]): AV =
-      av(concat(sep, horizontal, vertical))
-    final def apply(top: ValueT[T], vertical: ValueT[T], bottom: ValueT[T]): AV =
-      av(concat(sep, top, vertical, bottom))
-    final def apply(top: ValueT[T], right: ValueT[T], bottom: ValueT[T], left: ValueT[T]): AV =
-      av(concat(sep, top, right, bottom, left))
+    final type V = ValueT[T]
+    final def apply(allEdges  : V)                       : AV = av(allEdges.value)
+    final def apply(horizontal: V, vertical: V)          : AV = av(concat(sep, horizontal, vertical))
+    final def apply(top: V, vertical: V, bottom: V)      : AV = av(concat(sep, top, vertical, bottom))
+    final def apply(top: V, right: V, bottom: V, left: V): AV = av(concat(sep, top, right, bottom, left))
   }
 
   abstract class TypedAttrTN[T <: ValueClass](sep: String) extends TypedAttrBase {

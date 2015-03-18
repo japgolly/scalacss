@@ -2522,8 +2522,23 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius">MDN</a>
    */
-  final val borderRadius = Attr.alias("border-radius", Transform keys CanIUse.borderRadius)(_(
-    borderTopLeftRadius, borderTopRightRadius, borderBottomRightRadius, borderBottomLeftRadius))
+  object borderRadius extends TypedAttrBase with RorderRadiusOps[BorderRadiusNext] with ZeroLit {
+    override val attr = Attr.alias("border-radius", Transform keys CanIUse.borderRadius)(_(
+      borderTopLeftRadius, borderTopRightRadius, borderBottomRightRadius, borderBottomLeftRadius))
+    override protected def n(v: Value) = new BorderRadiusNext(v)
+  }
+  final class BorderRadiusNext(a: Value) extends RorderRadiusOps[AV] with ToAV {
+    override def av: AV = AV(borderRadius.attr, a)
+    override protected def n(b: Value) = AV(borderRadius.attr, s"$a / $b")
+  }
+  sealed trait RorderRadiusOps[Next] {
+    protected def n(v: Value): Next
+    final type V = ValueT[LenPct]
+    final def apply(radius: V)                        : Next = n(radius.value)
+    final def apply(tl_br : V, tr_bl: V)              : Next = n(concat(" ", tl_br, tr_bl))
+    final def apply(tl    : V, tr_bl: V, br: V)       : Next = n(concat(" ", tl, tr_bl, br))
+    final def apply(tl    : V, tr   : V, br: V, bl: V): Next = n(concat(" ", tl,tr,br,bl))
+  }
 
   /**
    * The border-right CSS property is a shorthand that sets the values of border-right-color, border-right-style, and border-right-width. These properties describe the right border of elements.

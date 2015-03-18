@@ -29,7 +29,8 @@ object AttrTest extends TestSuite {
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
     Gen.oneofL(Attrs.values).triple
 
-  val length = ValueT.Length(3, ValueT.LengthUnit.px)
+  def px(n: Int) = ValueT.Length(n, ValueT.LengthUnit.px)
+  val length = px(3)
   val style = Literal.Typed.dashed
   val colour = Color.green
 
@@ -86,6 +87,14 @@ object AttrTest extends TestSuite {
       test(textIndent(length, hanging)           , "3px hanging")
       test(textIndent(length, each_line)         , "3px each-line")
       test(textIndent(length, hanging, each_line), "3px hanging each-line")
+    }
+
+    'borderRadius{
+      @inline implicit def ToAVToAV(x: ToAV): AV = x.av
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      test(borderRadius(px(3)), "3px")
+      test(borderRadius(px(3))(px(5)), "3px / 5px")
+      test(borderRadius(px(1), px(2), px(3), px(4))(px(9), px(8), px(7), px(6)), "1px 2px 3px 4px / 9px 8px 7px 6px")
     }
 
     'PrefixApplyWords {
