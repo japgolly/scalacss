@@ -118,7 +118,12 @@ object DslBase {
 import DslBase._
 
 // =====================================================================================================================
-abstract class DslBase extends ValueT.Rules with Literal.TypedAliases {
+abstract class DslBase
+  extends ValueT.Rules
+     with Literal.TypedAliases
+     with ColorOps[ValueT[Color]] {
+
+  @inline override protected final def mkColor(s: String) = Color(s)
 
   @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
   @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)

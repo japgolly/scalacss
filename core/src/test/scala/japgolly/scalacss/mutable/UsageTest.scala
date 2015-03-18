@@ -15,11 +15,6 @@ object UsageTest extends TestSuite {
     import Pseudo._
     implicit def composition = Compose.safe
 
-    // TODO TODO TODO TODO TODO TODO
-    import Color._
-    // TODO TODO TODO TODO TODO TODO
-
-
     val s1: StyleA =
       style(
         margin(12 px),
@@ -29,7 +24,7 @@ object UsageTest extends TestSuite {
 
         Hover(
           fontWeight.normal,
-          lineHeight(1.em),
+          lineHeight(1 em),
           padding.`0`,
           cursor.zoom_in
         ),
