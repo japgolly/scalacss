@@ -46,10 +46,15 @@ trait Defaults {
     else
       Compose.trust
 
+
+  // ↓ These aren't defaults... hmmm...
+
   object StyleSheet {
     type Inline     = mutable.StyleSheet.Inline
     type Standalone = mutable.StyleSheet.Standalone
   }
+
+  final type StyleA = japgolly.scalacss.StyleA
 }
 
 object Defaults extends Defaults

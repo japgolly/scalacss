@@ -19,6 +19,8 @@ object StyleSheet {
   abstract class Base extends DslBase {
     protected def register: Register
 
+    @inline final protected def ^ = Literal
+
     override final protected def styleS(t: ToStyle*)(implicit c: Compose) =
       Dsl.style(t: _*)
 
@@ -85,12 +87,10 @@ object StyleSheet {
     }
 
     /** Created a nested conditional style. */
-    @inline final protected def & : Cond =
-      Cond.empty
+    @inline final protected def & = Cond.empty
 
     /** Created a child style. */
-    @inline final protected def &(sel: CssSelector): NestedStringOps =
-      new NestedStringOps(sel)
+    @inline final protected def &(sel: CssSelector) = new NestedStringOps(sel)
   }
 
 
@@ -104,6 +104,9 @@ object StyleSheet {
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
   abstract class Inline(protected implicit val register: Register) extends Base {
+
+            final protected type Domain[A] = japgolly.scalacss.Domain[A]
+    @inline final protected def  Domain    = japgolly.scalacss.Domain
 
     protected def style(t: ToStyle*)(implicit c: Compose): StyleA =
       register registerS Dsl.style(t: _*)
@@ -119,5 +122,8 @@ object StyleSheet {
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
       register.registerC(s)(m, u)
+
+    /** Created a nested conditional style. */
+    @inline final protected def & = Cond.empty
   }
 }
