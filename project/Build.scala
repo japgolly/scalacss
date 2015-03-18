@@ -89,7 +89,7 @@ object ScalaCSS extends Build {
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
-      .configure(utestSettings(), generateAttrAliases)
+      .configure(utestSettings()) //, generateAttrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
     )
