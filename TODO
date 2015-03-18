@@ -30,3 +30,20 @@ CanIUse subjects affecting media queries:
 * deviceadaptation
 * mediaResolution
 
+================================================================================
+
+Doc
+===
+
+* StyleS
+  * Basics
+  * Conditions
+  * Unsafe children
+  * Composition implicit
+* StyleF
+* StyleC
+* Distinction between Dsl & mutable.StyleSheet
+* Reusable modules (class Module(implicit register))
+* Browser prefixes
+* Custom keys
+* KV Transform rules
