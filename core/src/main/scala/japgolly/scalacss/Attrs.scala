@@ -2564,8 +2564,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-rule">MDN</a>
    */
-  final val columnRule = Attr.alias("column-rule", Transform keys CanIUse.multicolumn)(_(
-    columnRuleWidth, columnRuleStyle, columnRuleColor))
+  object columnRule extends TypedAttr_BrWidthStyleColour {
+    override val attr = Attr.alias("column-rule", Transform keys CanIUse.multicolumn)(_(
+      columnRuleWidth, columnRuleStyle, columnRuleColor))
+  }
 
   /**
    * The flex CSS property is a shorthand property specifying the ability of a flex item to alter its dimensions to fill available space. Flex items can be stretched to use available space proportional to their flex grow factor or their flex shrink factor to prevent overflow.

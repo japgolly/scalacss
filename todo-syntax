@@ -21,7 +21,6 @@ border_image_slice	[<number> | <percentage>]{1,4} && fill?
 border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
 border_radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
 box_shadow	none | [inset? && [ <offset_x> <offset_y> <blur_radius>? <spread_radius>? <color>? ] ]#
-column_rule	<'column_rule_width'> || <'column_rule_style'> || <'column_rule_color'>
 columns	<'column_width'> || <'column_count'>
 content	normal | none | [ <string> | <uri> | <counter> | attr() | open_quote | close_quote | no_open_quote | no_close_quote ]+
 counter_increment	[<custom_ident> <integer>?]+ | none
