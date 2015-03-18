@@ -10,7 +10,7 @@ object UsageTest extends TestSuite {
 
   def newRegister = new Register(NameGen.numbered("demo-"), ErrorHandler.noisy)
 
-  object SS extends StyleSheet()(newRegister) {
+  object SS extends StyleSheet.Inline()(newRegister) {
     import Pseudo._
     implicit def composition = Compose.safe
 

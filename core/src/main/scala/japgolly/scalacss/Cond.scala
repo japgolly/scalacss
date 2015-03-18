@@ -39,6 +39,10 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 
   val cssValue: String
 
+  // apply() is used by Dsl
+  final def modSelector(sel: CssSelector): CssSelector =
+    sel + cssValue
+
   protected final def addPseudo(that: Pseudo): Pseudo =
     (this, that) match {
       // Avoid

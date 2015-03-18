@@ -12,7 +12,7 @@ object Css {
     "." + cn.value
 
   def cond(cs: CssSelector, c: Cond): CssSelector =
-    c.pseudo.fold(cs)(cs + _.cssValue)
+    c.pseudo.fold(cs)(_ modSelector cs)
 
   def selector(cn: ClassName, c: Cond): CssSelector =
     cond(className(cn), c)

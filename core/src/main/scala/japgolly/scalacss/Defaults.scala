@@ -46,7 +46,10 @@ trait Defaults {
     else
       Compose.trust
 
-  type StyleSheet = mutable.StyleSheet
+  object StyleSheet {
+    type Inline     = mutable.StyleSheet.Inline
+    type Standalone = mutable.StyleSheet.Standalone
+  }
 }
 
 object Defaults extends Defaults
