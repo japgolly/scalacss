@@ -2028,7 +2028,15 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-underline-position">MDN</a>
    */
-  final val textUnderlinePosition = Attr.real("text-underline-position")
+  object textUnderlinePosition extends TypedAttrBase {
+    override val attr = Attr.real("text-underline-position")
+    def auto        = avl(LT.auto)
+    def under       = av(L.under)
+    def left        = av(L.left)
+    def right       = av(L.right)
+    def under_left  = av("under left")
+    def under_right = av("under right")
+  }
 
   /**
    * The top CSS property specifies part of the position of positioned elements. It has no effect on non-positioned elements.
