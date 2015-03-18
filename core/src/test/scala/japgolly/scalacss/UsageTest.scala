@@ -2,7 +2,6 @@ package japgolly.scalacss
 
 import utest._
 import TestUtil._
-import Attrs._
 import Dsl._
 import Pseudo._
 

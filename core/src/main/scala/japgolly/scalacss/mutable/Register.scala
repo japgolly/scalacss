@@ -150,7 +150,7 @@ object Register { // ===========================================================
       }
 
     val fallbackStyle: StyleA = {
-      import Attrs._, Dsl._
+      import Dsl._
       val s = style(backgroundColor("#ffbaba"), color("#d8000c"))(Compose.safe)
       StyleA(ClassName("_SCSS_ERROR_"), Vector.empty, s)
     }

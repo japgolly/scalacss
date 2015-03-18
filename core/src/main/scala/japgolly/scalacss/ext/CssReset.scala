@@ -2,7 +2,6 @@ package japgolly.scalacss.ext
 
 import japgolly.scalacss._
 import Dsl.{unsafeRoot => $, _}
-import Attrs._
 
 /**
  * A collection of HTML element and attribute style-normalizations.

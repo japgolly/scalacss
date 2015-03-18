@@ -119,7 +119,7 @@ import DslBase._
 
 // =====================================================================================================================
 abstract class DslBase
-  extends ValueT.Rules
+  extends AttrAliasesAndValueTRules
      with Literal.TypedAliases
      with ColorOps[ValueT[Color]] {
 

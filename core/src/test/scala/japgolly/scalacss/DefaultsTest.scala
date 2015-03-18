@@ -13,8 +13,6 @@ object DefaultsTest extends TestSuite {
     override def devMode = false
   }
 
-  import Attrs._ // TOOD Dsl should provide aliases
-
   override val tests = TestSuite {
     'dev  - Dev .test()
     'prod - Prod.test()
