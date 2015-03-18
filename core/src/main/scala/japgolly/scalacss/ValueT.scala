@@ -3,6 +3,7 @@ package japgolly.scalacss
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
 import japgolly.scalacss.{Literal => L}
+import L.{Typed => LT}
 
 /**
  * A CSS value that is valid for some context `T`.
@@ -131,19 +132,19 @@ object ValueT {
         case _                    => d.toSeconds + "s"
       })
 
-    @inline implicit def ruleLenPct_L                                 : LenPct     <=< Len         = Rule.retype
-    @inline implicit def ruleLenPct_P                                 : LenPct     <=< Pct         = Rule.retype
-    @inline implicit def ruleLenPctAuto_LP                            : LenPctAuto <=< LenPct      = Rule.retype
-    @inline implicit def ruleLenPctAuto_A                             : LenPctAuto <== L.auto.type = Rule.literal
-    @inline implicit def ruleLenPctNum_LP                             : LenPctNum  <=< LenPct      = Rule.retype
-    @inline implicit def ruleLenPctNum_N                              : LenPctNum  <=< Number      = Rule.retype
-    @inline implicit def ruleBrWidth_1                                : BrWidth    <=< Len         = Rule.retype
-    @inline implicit def ruleBrWidth_2[L <: Literal with L.BrWidthLit]: BrWidth    <== L           = Rule.literal
-    @inline implicit def ruleBrStyle_L[L <: Literal with L.BrStyleLit]: BrStyle    <== L           = Rule.literal
-    @inline implicit def ruleWidStyCol_W                              : WidStyCol  <=< BrWidth     = Rule.retype
-    @inline implicit def ruleWidStyCol_S                              : WidStyCol  <=< BrStyle     = Rule.retype
-    @inline implicit def ruleWidStyCol_C                              : WidStyCol  <=< Color       = Rule.retype
-    
+    @inline implicit def ruleLenPct_L                               : LenPct     <=< Len          = Rule.retype
+    @inline implicit def ruleLenPct_P                               : LenPct     <=< Pct          = Rule.retype
+    @inline implicit def ruleLenPctAuto_LP                          : LenPctAuto <=< LenPct       = Rule.retype
+    @inline implicit def ruleLenPctAuto_A                           : LenPctAuto <== LT.auto.type = Rule.literal
+    @inline implicit def ruleLenPctNum_LP                           : LenPctNum  <=< LenPct       = Rule.retype
+    @inline implicit def ruleLenPctNum_N                            : LenPctNum  <=< Number       = Rule.retype
+    @inline implicit def ruleBrWidth_1                              : BrWidth    <=< Len          = Rule.retype
+    @inline implicit def ruleBrWidth_2[L <: Literal with LT.BrWidth]: BrWidth    <== L            = Rule.literal
+    @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle    <== L            = Rule.literal
+    @inline implicit def ruleWidStyCol_W                            : WidStyCol  <=< BrWidth      = Rule.retype
+    @inline implicit def ruleWidStyCol_S                            : WidStyCol  <=< BrStyle      = Rule.retype
+    @inline implicit def ruleWidStyCol_C                            : WidStyCol  <=< Color        = Rule.retype
+
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
     @inline implicit def ruleWidStyCol_P : WidStyCol  <=< Pct = Rule.retype
@@ -173,13 +174,13 @@ object ValueT {
      *
      * For inherited properties, this reinforces the default behavior, and is only needed to override another rule.  For non-inherited properties, this specifies a behavior that typically makes relatively little sense and you may consider using initial instead, or unset on the all property.
      */
-    def inherit = avl(L.inherit)
+    def inherit = av(L.inherit)
 
     /** The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property. */
-    def initial = avl(L.initial)
+    def initial = av(L.initial)
 
     /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
-    def unset = avl(L.unset)
+    def unset = av(L.unset)
   }
 
   abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {
@@ -240,41 +241,41 @@ object ValueT {
     with BrWidthOps with BrStyleOps with ColourOps
 
   abstract class TypedAttr_LenPctAuto extends TypedAttrT1[LenPctAuto] with ZeroLit {
-    final def auto = avl(L.auto)
+    final def auto = avl(LT.auto)
   }
 
   abstract class TypedAttr_Length extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto        = avl(L.auto)
-    final def available   = avl(L.available)
-    final def border_box  = avl(L.border_box)
-    final def content_box = avl(L.content_box)
-    final def fit_content = avl(L.fit_content)
-    final def max_content = avl(L.max_content)
-    final def min_content = avl(L.min_content)
+    final def auto        = avl(LT.auto)
+    final def available   = av(L.available)
+    final def border_box  = av(L.border_box)
+    final def content_box = av(L.content_box)
+    final def fit_content = av(L.fit_content)
+    final def max_content = av(L.max_content)
+    final def min_content = av(L.min_content)
   }
 
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def fill_available = avl(L.fill_available)
-    final def fit_content    = avl(L.fit_content)
-    final def max_content    = avl(L.max_content)
-    final def min_content    = avl(L.min_content)
-    final def none           = avl(L.none)
-    final def contain_floats = avl(L.contain_floats)
+    final def fill_available = av(L.fill_available)
+    final def fit_content    = av(L.fit_content)
+    final def max_content    = av(L.max_content)
+    final def min_content    = av(L.min_content)
+    final def none           = avl(LT.none)
+    final def contain_floats = av(L.contain_floats)
   }
 
   abstract class TypedAttr_MinLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto           = avl(L.auto)
-    final def fill_available = avl(L.fill_available)
-    final def fit_content    = avl(L.fit_content)
-    final def max_content    = avl(L.max_content)
-    final def min_content    = avl(L.min_content)
-    final def contain_floats = avl(L.contain_floats)
+    final def auto           = avl(LT.auto)
+    final def fill_available = av(L.fill_available)
+    final def fit_content    = av(L.fit_content)
+    final def max_content    = av(L.max_content)
+    final def min_content    = av(L.min_content)
+    final def contain_floats = av(L.contain_floats)
   }
 
 
@@ -294,23 +295,23 @@ object ValueT {
 
   trait BrWidthOps extends ZeroLit {
     this: TypedAttrBase =>
-    final def thin   = avl(L.thin)
-    final def medium = avl(L.medium)
-    final def thick  = avl(L.thick)
+    final def thin   = avl(LT.thin)
+    final def medium = avl(LT.medium)
+    final def thick  = avl(LT.thick)
   }
 
   trait BrStyleOps {
     this: TypedAttrBase =>
-    final def none   = avl(L.none)
-    final def hidden = avl(L.hidden)
-    final def dotted = avl(L.dotted)
-    final def dashed = avl(L.dashed)
-    final def solid  = avl(L.solid)
-    final def double = avl(L.double)
-    final def groove = avl(L.groove)
-    final def ridge  = avl(L.ridge)
-    final def inset  = avl(L.inset)
-    final def outset = avl(L.outset)
+    final def none   = avl(LT.none)
+    final def hidden = avl(LT.hidden)
+    final def dotted = avl(LT.dotted)
+    final def dashed = avl(LT.dashed)
+    final def solid  = avl(LT.solid)
+    final def double = avl(LT.double)
+    final def groove = avl(LT.groove)
+    final def ridge  = avl(LT.ridge)
+    final def inset  = avl(LT.inset)
+    final def outset = avl(LT.outset)
   }
 
   trait ColourOps extends ColorOps[AV] {

@@ -123,8 +123,8 @@ object Transform {
     Transform(_ => prefixKeys(pp, PrefixApply.prepend, _))
   }
 
-  def values(subject: CanIUse.Subject)(v1: Literal, vn: Literal*): Transform = {
-    val whitelist: Set[Value] = vn.foldLeft(Set(v1.value))(_ + _.value)
+  def values(subject: CanIUse.Subject)(v1: Value, vn: Value*): Transform = {
+    val whitelist = vn.toSet + v1
     values(subject,  PrefixApply maybePrepend whitelist.contains)
   }
 

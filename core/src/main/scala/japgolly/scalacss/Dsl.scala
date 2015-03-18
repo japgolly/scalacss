@@ -118,7 +118,7 @@ object DslBase {
 import DslBase._
 
 // =====================================================================================================================
-abstract class DslBase extends ValueT.Rules {
+abstract class DslBase extends ValueT.Rules with Literal.TypedAliases {
 
   @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
   @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)

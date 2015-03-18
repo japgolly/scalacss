@@ -16,7 +16,6 @@ object UsageTest extends TestSuite {
     implicit def composition = Compose.safe
 
     // TODO TODO TODO TODO TODO TODO
-    import Literal._ // Conflicts with some attrs! DSL should correct in trait Literals
     import Color._
     // TODO TODO TODO TODO TODO TODO
 
@@ -38,7 +37,7 @@ object UsageTest extends TestSuite {
         Visited.not(FirstChild)(
           animationDelay(1 minute, 50 millis),
           fontWeight.bold,
-          font := inherit
+          font := Literal.inherit
         ),
 
         unsafeChild("nav.debug")(

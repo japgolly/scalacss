@@ -1,268 +1,302 @@
 package japgolly.scalacss
 
-import ValueT.{Color, Percentage}
+import ValueT._
 
-// TODO Make Literal a tagged string
-case class Literal(value: String) //extends AnyVal
+/** A ''typed'' literal. */
+abstract class Literal(final val value: Value) {
+  override def toString = s"Literal($value)"
+}
 
+/**
+ * Most literals here are just strings.
+ * Type-safety is usually provided by the TypedAttr methods.
+ *
+ * In some cases literals need to be typed to be part of a [[ValueClass]] so that they can be used as typed args.
+ * Eg. `auto` in `margin(12 px, auto)`.
+ *
+ * For that reason exists the dichotomy between [[Literal]] with its untyped [[Value]]s, and [[Literal.Typed]] with its
+ * subclassed [[Literal]]s.
+ */
 object Literal {
-  final val `0` = ValueT.Length(0, ValueT.LengthUnit.px)
 
-  @inline def absolute              = Literal("absolute")
-  @inline def active                = Literal("active")
-  @inline def alias                 = Literal("alias")
-  @inline def all                   = Literal("all")
-  @inline def all_petite_caps       = Literal("all-petite-caps")
-  @inline def all_scroll            = Literal("all-scroll")
-  @inline def all_small_caps        = Literal("all-small-caps")
-  @inline def always                = Literal("always")
-  @inline def available             = Literal("available")
-  @inline def avoid                 = Literal("avoid")
-  @inline def avoid_column          = Literal("avoid-column")
-  @inline def avoid_page            = Literal("avoid-page")
-  @inline def balance               = Literal("balance")
-  @inline def baseline              = Literal("baseline")
-  @inline def bidi_override         = Literal("bidi-override")
-  @inline def blink                 = Literal("blink")
-  @inline def block                 = Literal("block")
-  @inline def block_end             = Literal("block-end")
-  @inline def block_start           = Literal("block-start")
-  @inline def bold                  = Literal("bold")
-  @inline def bolder                = Literal("bolder")
-  @inline def border_box            = Literal("border-box")
-  @inline def both                  = Literal("both")
-  @inline def bottom                = Literal("bottom")
-  @inline def break_all             = Literal("break-all")
-  @inline def break_word            = Literal("break-word")
-  @inline def capitalize            = Literal("capitalize")
-  @inline def caption               = Literal("caption")
-  @inline def cell                  = Literal("cell")
-  @inline def center                = Literal("center")
-  @inline def clip                  = Literal("clip")
-  @inline def clone_                = Literal("clone")
-  @inline def close_quote           = Literal("close-quote")
-  @inline def collapse              = Literal("collapse")
-  @inline def col_resize            = Literal("col-resize")
-  @inline def column                = Literal("column")
-  @inline def column_reverse        = Literal("column-reverse")
-  @inline def condensed             = Literal("condensed")
-  @inline def contain               = Literal("contain")
-  @inline def contain_floats        = Literal("contain-floats")
-  @inline def content               = Literal("content")
-  @inline def content_box           = Literal("content-box")
-  @inline def contents              = Literal("contents")
-  @inline def context_menu          = Literal("context-menu")
-  @inline def copy                  = Literal("copy")
-  @inline def cover                 = Literal("cover")
-  @inline def crisp_edges           = Literal("crisp-edges")
-  @inline def crosshair             = Literal("crosshair")
-  @inline def default               = Literal("default")
-  @inline def disabled              = Literal("disabled")
-  @inline def each_line             = Literal("each-line")
-  @inline def ellipsis              = Literal("ellipsis")
-  @inline def embed                 = Literal("embed")
-  @inline def end                   = Literal("end")
-  @inline def e_resize              = Literal("e-resize")
-  @inline def ew_resize             = Literal("ew-resize")
-  @inline def expanded              = Literal("expanded")
-  @inline def extra_condensed       = Literal("extra-condensed")
-  @inline def extra_expanded        = Literal("extra-expanded")
-  @inline def fill                  = Literal("fill")
-  @inline def fill_available        = Literal("fill-available")
-  @inline def fit_content           = Literal("fit-content")
-  @inline def fixed                 = Literal("fixed")
-  @inline def flat                  = Literal("flat")
-  @inline def flex                  = Literal("flex")
-  @inline def flex_end              = Literal("flex-end")
-  @inline def flex_start            = Literal("flex-start")
-  @inline def flip                  = Literal("flip")
-  @inline def from_image            = Literal("from-image")
-  @inline def full_width            = Literal("full-width")
-  @inline def grab                  = Literal("grab")
-  @inline def grabbing              = Literal("grabbing")
-  @inline def grid                  = Literal("grid")
-  @inline def hanging               = Literal("hanging")
-  @inline def help                  = Literal("help")
-  @inline def hide                  = Literal("hide")
-  @inline def historical_forms      = Literal("historical-forms")
-  @inline def horizontal            = Literal("horizontal")
-  @inline def horizontal_tb         = Literal("horizontal-tb")
-  @inline def icon                  = Literal("icon")
-  @inline def inactive              = Literal("inactive")
-  @inline def inherit               = Literal("inherit")
-  @inline def initial               = Literal("initial")
-  @inline def inline                = Literal("inline")
-  @inline def inline_block          = Literal("inline-block")
-  @inline def inline_end            = Literal("inline-end")
-  @inline def inline_flex           = Literal("inline-flex")
-  @inline def inline_grid           = Literal("inline-grid")
-  @inline def inline_start          = Literal("inline-start")
-  @inline def inline_table          = Literal("inline-table")
-  @inline def inside                = Literal("inside")
-  @inline def inter_character       = Literal("inter-character")
-  @inline def invert                = Literal("invert")
-  @inline def isolate               = Literal("isolate")
-  @inline def isolate_override      = Literal("isolate-override")
-  @inline def italic                = Literal("italic")
-  @inline def justify               = Literal("justify")
-  @inline def keep_all              = Literal("keep-all")
-  @inline def left                  = Literal("left")
-  @inline def lighter               = Literal("lighter")
-  @inline def line_through          = Literal("line-through")
-  @inline def list_item             = Literal("list-item")
-  @inline def loose                 = Literal("loose")
-  @inline def lowercase             = Literal("lowercase")
-  @inline def ltr                   = Literal("ltr")
-  @inline def manipulation          = Literal("manipulation")
-  @inline def manual                = Literal("manual")
-  @inline def match_parent          = Literal("match-parent")
-  @inline def max_content           = Literal("max-content")
-  @inline def menu                  = Literal("menu")
-  @inline def message_box           = Literal("message-box")
-  @inline def middle                = Literal("middle")
-  @inline def min_content           = Literal("min-content")
-  @inline def mixed                 = Literal("mixed")
-  @inline def move                  = Literal("move")
-  @inline def ne_resize             = Literal("ne-resize")
-  @inline def nesw_resize           = Literal("nesw-resize")
-  @inline def no_close_quote        = Literal("no-close-quote")
-  @inline def no_drop               = Literal("no-drop")
-  @inline def no_open_quote         = Literal("no-open-quote")
-  @inline def normal                = Literal("normal")
-  @inline def not_allowed           = Literal("not-allowed")
-  @inline def nowrap                = Literal("nowrap")
-  @inline def n_resize              = Literal("n-resize")
-  @inline def ns_resize             = Literal("ns-resize")
-  @inline def nw_resize             = Literal("nw-resize")
-  @inline def nwse_resize           = Literal("nwse-resize")
-  @inline def oblique               = Literal("oblique")
-  @inline def open_quote            = Literal("open-quote")
-  @inline def ordinal               = Literal("ordinal")
-  @inline def outside               = Literal("outside")
-  @inline def over                  = Literal("over")
-  @inline def overline              = Literal("overline")
-  @inline def padding_box           = Literal("padding-box")
-  @inline def page                  = Literal("page")
-  @inline def pan_x                 = Literal("pan-x")
-  @inline def pan_y                 = Literal("pan-y")
-  @inline def petite_caps           = Literal("petite-caps")
-  @inline def pixelated             = Literal("pixelated")
-  @inline def plaintext             = Literal("plaintext")
-  @inline def pointer               = Literal("pointer")
-  @inline def pre                   = Literal("pre")
-  @inline def pre_line              = Literal("pre-line")
-  @inline def preserve_3d           = Literal("preserve-3d")
-  @inline def pre_wrap              = Literal("pre-wrap")
-  @inline def progress              = Literal("progress")
-  @inline def relative              = Literal("relative")
-  @inline def repeat                = Literal("repeat")
-  @inline def right                 = Literal("right")
-  @inline def round                 = Literal("round")
-  @inline def row                   = Literal("row")
-  @inline def row_resize            = Literal("row-resize")
-  @inline def row_reverse           = Literal("row-reverse")
-  @inline def rtl                   = Literal("rtl")
-  @inline def ruby                  = Literal("ruby")
-  @inline def ruby_base             = Literal("ruby-base")
-  @inline def ruby_base_container   = Literal("ruby-base-container")
-  @inline def ruby_text             = Literal("ruby-text")
-  @inline def ruby_text_container   = Literal("ruby-text-container")
-  @inline def run_in                = Literal("run-in")
-  @inline def scale_down            = Literal("scale-down")
-  @inline def scroll                = Literal("scroll")
-  @inline def semi_condensed        = Literal("semi-condensed")
-  @inline def semi_expanded         = Literal("semi-expanded")
-  @inline def separate              = Literal("separate")
-  @inline def se_resize             = Literal("se-resize")
-  @inline def show                  = Literal("show")
-  @inline def sideways              = Literal("sideways")
-  @inline def sideways_left         = Literal("sideways-left")
-  @inline def sideways_right        = Literal("sideways-right")
-  @inline def slashed_zero          = Literal("slashed-zero")
-  @inline def slice                 = Literal("slice")
-  @inline def small_caps            = Literal("small-caps")
-  @inline def small_caption         = Literal("small-caption")
-  @inline def smooth                = Literal("smooth")
-  @inline def space_around          = Literal("space-around")
-  @inline def space_between         = Literal("space-between")
-  @inline def s_resize              = Literal("s-resize")
-  @inline def start                 = Literal("start")
-  @inline def start_end             = Literal("start end")
-  @inline def static                = Literal("static")
-  @inline def status_bar            = Literal("status-bar")
-  @inline def sticky                = Literal("sticky")
-  @inline def stretch               = Literal("stretch")
-  @inline def strict                = Literal("strict")
-  @inline def style                 = Literal("style")
-  @inline def sub                   = Literal("sub")
-  @inline def super_                = Literal("super")
-  @inline def sw_resize             = Literal("sw-resize")
-  @inline def table                 = Literal("table")
-  @inline def table_cell            = Literal("table-cell")
-  @inline def table_column          = Literal("table-column")
-  @inline def table_column_group    = Literal("table-column-group")
-  @inline def table_footer_group    = Literal("table-footer-group")
-  @inline def table_header_group    = Literal("table-header-group")
-  @inline def table_row             = Literal("table-row")
-  @inline def table_row_group       = Literal("table-row-group")
-  @inline def text                  = Literal("text")
-  @inline def text_bottom           = Literal("text-bottom")
-  @inline def text_top              = Literal("text-top")
-  @inline def titling_caps          = Literal("titling-caps")
-  @inline def top                   = Literal("top")
-  @inline def ultra_condensed       = Literal("ultra-condensed")
-  @inline def ultra_expanded        = Literal("ultra-expanded")
-  @inline def under                 = Literal("under")
-  @inline def underline             = Literal("underline")
-  @inline def unicase               = Literal("unicase")
-  @inline def unset                 = Literal("unset")
-  @inline def uppercase             = Literal("uppercase")
-  @inline def upright               = Literal("upright")
-  @inline def use_glyph_orientation = Literal("use-glyph-orientation")
-  @inline def vertical              = Literal("vertical")
-  @inline def vertical_lr           = Literal("vertical-lr")
-  @inline def vertical_rl           = Literal("vertical-rl")
-  @inline def vertical_text         = Literal("vertical-text")
-  @inline def visible               = Literal("visible")
-  @inline def wait_                 = Literal("wait")
-  @inline def wavy                  = Literal("wavy")
-  @inline def weight                = Literal("weight")
-  @inline def wrap                  = Literal("wrap")
-  @inline def wrap_reverse          = Literal("wrap-reverse")
-  @inline def w_resize              = Literal("w-resize")
-  @inline def zoom_in               = Literal("zoom-in")
-  @inline def zoom_out              = Literal("zoom-out")
+  object Typed {
+    final val `0` = Length(0, LengthUnit.px)
 
-  @inline def xx_small              = Literal("xx-small")
-  @inline def s_small               = Literal("s-small")
-  @inline def small                 = Literal("small")
-  @inline def large                 = Literal("large")
-  @inline def x_large               = Literal("x-large")
-  @inline def xx_large              = Literal("xx-large")
+    object auto extends Literal("auto")
 
-  @inline def larger                = Literal("larger")
-  @inline def smaller               = Literal("smaller")
+    // <br-width>
+    sealed trait BrWidth
+    object thin   extends Literal("thin")   with BrWidth
+    object medium extends Literal("medium") with BrWidth
+    object thick  extends Literal("thick")  with BrWidth
 
-  object auto extends Literal("auto")
+    // <br-style>
+    sealed trait BrStyle
+    object none   extends Literal("none")   with BrStyle
+    object hidden extends Literal("hidden") with BrStyle
+    object dotted extends Literal("dotted") with BrStyle
+    object dashed extends Literal("dashed") with BrStyle
+    object solid  extends Literal("solid")  with BrStyle
+    object double extends Literal("double") with BrStyle
+    object groove extends Literal("groove") with BrStyle
+    object ridge  extends Literal("ridge")  with BrStyle
+    object inset  extends Literal("inset")  with BrStyle
+    object outset extends Literal("outset") with BrStyle
+  }
 
-  // <br-width>
-  sealed trait BrWidthLit
-  object thin   extends Literal("thin")   with BrWidthLit
-  object medium extends Literal("medium") with BrWidthLit
-  object thick  extends Literal("thick")  with BrWidthLit
+  /** Gets merged into [[Dsl]]. */
+  trait TypedAliases {
+    final def `0`    = Typed.`0`
+    final def auto   = Typed.auto
+    final def thin   = Typed.thin
+    final def medium = Typed.medium
+    final def thick  = Typed.thick
+    final def none   = Typed.none
+    final def hidden = Typed.hidden
+    final def dotted = Typed.dotted
+    final def dashed = Typed.dashed
+    final def solid  = Typed.solid
+    final def double = Typed.double
+    final def groove = Typed.groove
+    final def ridge  = Typed.ridge
+    final def inset  = Typed.inset
+    final def outset = Typed.outset
+  }
 
-  // <br-style>
-  sealed trait BrStyleLit
-  object none   extends Literal("none")   with BrStyleLit
-  object hidden extends Literal("hidden") with BrStyleLit
-  object dotted extends Literal("dotted") with BrStyleLit
-  object dashed extends Literal("dashed") with BrStyleLit
-  object solid  extends Literal("solid")  with BrStyleLit
-  object double extends Literal("double") with BrStyleLit
-  object groove extends Literal("groove") with BrStyleLit
-  object ridge  extends Literal("ridge")  with BrStyleLit
-  object inset  extends Literal("inset")  with BrStyleLit
-  object outset extends Literal("outset") with BrStyleLit
+  @inline def absolute              : Value = "absolute"
+  @inline def active                : Value = "active"
+  @inline def alias                 : Value = "alias"
+  @inline def all                   : Value = "all"
+  @inline def all_petite_caps       : Value = "all-petite-caps"
+  @inline def all_scroll            : Value = "all-scroll"
+  @inline def all_small_caps        : Value = "all-small-caps"
+  @inline def always                : Value = "always"
+  @inline def available             : Value = "available"
+  @inline def avoid                 : Value = "avoid"
+  @inline def avoid_column          : Value = "avoid-column"
+  @inline def avoid_page            : Value = "avoid-page"
+  @inline def balance               : Value = "balance"
+  @inline def baseline              : Value = "baseline"
+  @inline def bidi_override         : Value = "bidi-override"
+  @inline def blink                 : Value = "blink"
+  @inline def block                 : Value = "block"
+  @inline def block_end             : Value = "block-end"
+  @inline def block_start           : Value = "block-start"
+  @inline def bold                  : Value = "bold"
+  @inline def bolder                : Value = "bolder"
+  @inline def border_box            : Value = "border-box"
+  @inline def both                  : Value = "both"
+  @inline def bottom                : Value = "bottom"
+  @inline def break_all             : Value = "break-all"
+  @inline def break_word            : Value = "break-word"
+  @inline def capitalize            : Value = "capitalize"
+  @inline def caption               : Value = "caption"
+  @inline def cell                  : Value = "cell"
+  @inline def center                : Value = "center"
+  @inline def clip                  : Value = "clip"
+  @inline def clone_                : Value = "clone"
+  @inline def close_quote           : Value = "close-quote"
+  @inline def collapse              : Value = "collapse"
+  @inline def col_resize            : Value = "col-resize"
+  @inline def column                : Value = "column"
+  @inline def column_reverse        : Value = "column-reverse"
+  @inline def condensed             : Value = "condensed"
+  @inline def contain               : Value = "contain"
+  @inline def contain_floats        : Value = "contain-floats"
+  @inline def content               : Value = "content"
+  @inline def content_box           : Value = "content-box"
+  @inline def contents              : Value = "contents"
+  @inline def context_menu          : Value = "context-menu"
+  @inline def copy                  : Value = "copy"
+  @inline def cover                 : Value = "cover"
+  @inline def crisp_edges           : Value = "crisp-edges"
+  @inline def crosshair             : Value = "crosshair"
+  @inline def default               : Value = "default"
+  @inline def disabled              : Value = "disabled"
+  @inline def each_line             : Value = "each-line"
+  @inline def ellipsis              : Value = "ellipsis"
+  @inline def embed                 : Value = "embed"
+  @inline def end                   : Value = "end"
+  @inline def e_resize              : Value = "e-resize"
+  @inline def ew_resize             : Value = "ew-resize"
+  @inline def expanded              : Value = "expanded"
+  @inline def extra_condensed       : Value = "extra-condensed"
+  @inline def extra_expanded        : Value = "extra-expanded"
+  @inline def fill                  : Value = "fill"
+  @inline def fill_available        : Value = "fill-available"
+  @inline def fit_content           : Value = "fit-content"
+  @inline def fixed                 : Value = "fixed"
+  @inline def flat                  : Value = "flat"
+  @inline def flex                  : Value = "flex"
+  @inline def flex_end              : Value = "flex-end"
+  @inline def flex_start            : Value = "flex-start"
+  @inline def flip                  : Value = "flip"
+  @inline def from_image            : Value = "from-image"
+  @inline def full_width            : Value = "full-width"
+  @inline def grab                  : Value = "grab"
+  @inline def grabbing              : Value = "grabbing"
+  @inline def grid                  : Value = "grid"
+  @inline def hanging               : Value = "hanging"
+  @inline def help                  : Value = "help"
+  @inline def hide                  : Value = "hide"
+  @inline def historical_forms      : Value = "historical-forms"
+  @inline def horizontal            : Value = "horizontal"
+  @inline def horizontal_tb         : Value = "horizontal-tb"
+  @inline def icon                  : Value = "icon"
+  @inline def inactive              : Value = "inactive"
+  @inline def inherit               : Value = "inherit"
+  @inline def initial               : Value = "initial"
+  @inline def inline                : Value = "inline"
+  @inline def inline_block          : Value = "inline-block"
+  @inline def inline_end            : Value = "inline-end"
+  @inline def inline_flex           : Value = "inline-flex"
+  @inline def inline_grid           : Value = "inline-grid"
+  @inline def inline_start          : Value = "inline-start"
+  @inline def inline_table          : Value = "inline-table"
+  @inline def inside                : Value = "inside"
+  @inline def inter_character       : Value = "inter-character"
+  @inline def invert                : Value = "invert"
+  @inline def isolate               : Value = "isolate"
+  @inline def isolate_override      : Value = "isolate-override"
+  @inline def italic                : Value = "italic"
+  @inline def justify               : Value = "justify"
+  @inline def keep_all              : Value = "keep-all"
+  @inline def left                  : Value = "left"
+  @inline def lighter               : Value = "lighter"
+  @inline def line_through          : Value = "line-through"
+  @inline def list_item             : Value = "list-item"
+  @inline def loose                 : Value = "loose"
+  @inline def lowercase             : Value = "lowercase"
+  @inline def ltr                   : Value = "ltr"
+  @inline def manipulation          : Value = "manipulation"
+  @inline def manual                : Value = "manual"
+  @inline def match_parent          : Value = "match-parent"
+  @inline def max_content           : Value = "max-content"
+  @inline def menu                  : Value = "menu"
+  @inline def message_box           : Value = "message-box"
+  @inline def middle                : Value = "middle"
+  @inline def min_content           : Value = "min-content"
+  @inline def mixed                 : Value = "mixed"
+  @inline def move                  : Value = "move"
+  @inline def ne_resize             : Value = "ne-resize"
+  @inline def nesw_resize           : Value = "nesw-resize"
+  @inline def no_close_quote        : Value = "no-close-quote"
+  @inline def no_drop               : Value = "no-drop"
+  @inline def no_open_quote         : Value = "no-open-quote"
+  @inline def normal                : Value = "normal"
+  @inline def not_allowed           : Value = "not-allowed"
+  @inline def nowrap                : Value = "nowrap"
+  @inline def n_resize              : Value = "n-resize"
+  @inline def ns_resize             : Value = "ns-resize"
+  @inline def nw_resize             : Value = "nw-resize"
+  @inline def nwse_resize           : Value = "nwse-resize"
+  @inline def oblique               : Value = "oblique"
+  @inline def open_quote            : Value = "open-quote"
+  @inline def ordinal               : Value = "ordinal"
+  @inline def outside               : Value = "outside"
+  @inline def over                  : Value = "over"
+  @inline def overline              : Value = "overline"
+  @inline def padding_box           : Value = "padding-box"
+  @inline def page                  : Value = "page"
+  @inline def pan_x                 : Value = "pan-x"
+  @inline def pan_y                 : Value = "pan-y"
+  @inline def petite_caps           : Value = "petite-caps"
+  @inline def pixelated             : Value = "pixelated"
+  @inline def plaintext             : Value = "plaintext"
+  @inline def pointer               : Value = "pointer"
+  @inline def pre                   : Value = "pre"
+  @inline def pre_line              : Value = "pre-line"
+  @inline def preserve_3d           : Value = "preserve-3d"
+  @inline def pre_wrap              : Value = "pre-wrap"
+  @inline def progress              : Value = "progress"
+  @inline def relative              : Value = "relative"
+  @inline def repeat                : Value = "repeat"
+  @inline def right                 : Value = "right"
+  @inline def round                 : Value = "round"
+  @inline def row                   : Value = "row"
+  @inline def row_resize            : Value = "row-resize"
+  @inline def row_reverse           : Value = "row-reverse"
+  @inline def rtl                   : Value = "rtl"
+  @inline def ruby                  : Value = "ruby"
+  @inline def ruby_base             : Value = "ruby-base"
+  @inline def ruby_base_container   : Value = "ruby-base-container"
+  @inline def ruby_text             : Value = "ruby-text"
+  @inline def ruby_text_container   : Value = "ruby-text-container"
+  @inline def run_in                : Value = "run-in"
+  @inline def scale_down            : Value = "scale-down"
+  @inline def scroll                : Value = "scroll"
+  @inline def semi_condensed        : Value = "semi-condensed"
+  @inline def semi_expanded         : Value = "semi-expanded"
+  @inline def separate              : Value = "separate"
+  @inline def se_resize             : Value = "se-resize"
+  @inline def show                  : Value = "show"
+  @inline def sideways              : Value = "sideways"
+  @inline def sideways_left         : Value = "sideways-left"
+  @inline def sideways_right        : Value = "sideways-right"
+  @inline def slashed_zero          : Value = "slashed-zero"
+  @inline def slice                 : Value = "slice"
+  @inline def small_caps            : Value = "small-caps"
+  @inline def small_caption         : Value = "small-caption"
+  @inline def smooth                : Value = "smooth"
+  @inline def space_around          : Value = "space-around"
+  @inline def space_between         : Value = "space-between"
+  @inline def s_resize              : Value = "s-resize"
+  @inline def start                 : Value = "start"
+  @inline def start_end             : Value = "start end"
+  @inline def static                : Value = "static"
+  @inline def status_bar            : Value = "status-bar"
+  @inline def sticky                : Value = "sticky"
+  @inline def stretch               : Value = "stretch"
+  @inline def strict                : Value = "strict"
+  @inline def style                 : Value = "style"
+  @inline def sub                   : Value = "sub"
+  @inline def super_                : Value = "super"
+  @inline def sw_resize             : Value = "sw-resize"
+  @inline def table                 : Value = "table"
+  @inline def table_cell            : Value = "table-cell"
+  @inline def table_column          : Value = "table-column"
+  @inline def table_column_group    : Value = "table-column-group"
+  @inline def table_footer_group    : Value = "table-footer-group"
+  @inline def table_header_group    : Value = "table-header-group"
+  @inline def table_row             : Value = "table-row"
+  @inline def table_row_group       : Value = "table-row-group"
+  @inline def text                  : Value = "text"
+  @inline def text_bottom           : Value = "text-bottom"
+  @inline def text_top              : Value = "text-top"
+  @inline def titling_caps          : Value = "titling-caps"
+  @inline def top                   : Value = "top"
+  @inline def ultra_condensed       : Value = "ultra-condensed"
+  @inline def ultra_expanded        : Value = "ultra-expanded"
+  @inline def under                 : Value = "under"
+  @inline def underline             : Value = "underline"
+  @inline def unicase               : Value = "unicase"
+  @inline def unset                 : Value = "unset"
+  @inline def uppercase             : Value = "uppercase"
+  @inline def upright               : Value = "upright"
+  @inline def use_glyph_orientation : Value = "use-glyph-orientation"
+  @inline def vertical              : Value = "vertical"
+  @inline def vertical_lr           : Value = "vertical-lr"
+  @inline def vertical_rl           : Value = "vertical-rl"
+  @inline def vertical_text         : Value = "vertical-text"
+  @inline def visible               : Value = "visible"
+  @inline def wait_                 : Value = "wait"
+  @inline def wavy                  : Value = "wavy"
+  @inline def weight                : Value = "weight"
+  @inline def wrap                  : Value = "wrap"
+  @inline def wrap_reverse          : Value = "wrap-reverse"
+  @inline def w_resize              : Value = "w-resize"
+  @inline def zoom_in               : Value = "zoom-in"
+  @inline def zoom_out              : Value = "zoom-out"
+
+  @inline def xx_small              : Value = "xx-small"
+  @inline def s_small               : Value = "s-small"
+  @inline def small                 : Value = "small"
+  @inline def large                 : Value = "large"
+  @inline def x_large               : Value = "x-large"
+  @inline def xx_large              : Value = "xx-large"
+
+  @inline def larger                : Value = "larger"
+  @inline def smaller               : Value = "smaller"
 }
 
 // =====================================================================================================================

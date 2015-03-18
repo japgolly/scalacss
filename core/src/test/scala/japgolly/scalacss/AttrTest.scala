@@ -30,7 +30,7 @@ object AttrTest extends TestSuite {
     Gen.oneofL(Attrs.values).triple
 
   val length = ValueT.Length(3, ValueT.LengthUnit.px)
-  val style = Literal.dashed
+  val style = Literal.Typed.dashed
   val colour = Color.green
 
   def testGen(l: CssKV.Lens)(a: Attr, v: Value, exp: String*): Unit = {
