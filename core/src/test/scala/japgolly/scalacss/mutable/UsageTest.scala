@@ -73,6 +73,14 @@ object UsageTest extends TestSuite {
       addClassNames("btn", "btn-default"),
       marginTop.inherit
     )
+
+    /** Composite style */
+    val sc = styleC {
+      val o = styleS(border(1 px, solid, black), padding(1 ex))
+      val l = styleS(fontWeight.bold)
+      val c = styleS(margin(4 ex), backgroundColor("#eee"))
+      o.named('outer) :*: l.named('label) :*: c.named('checkbox)
+    }
   }
 
   def norm(css: String) = css.trim
@@ -158,6 +166,20 @@ object UsageTest extends TestSuite {
         |.demo-0007 {
         |  margin-top: inherit;
         |}
+        |
+        |.demo-0008 {
+        |  border: 1px solid black;
+        |  padding: 1ex;
+        |}
+        |
+        |.demo-0009 {
+        |  font-weight: bold;
+        |}
+        |
+        |.demo-0010 {
+        |  margin: 4ex;
+        |  background-color: #eee;
+        |}
       """.stripMargin))
 
     assertEq(SS.everythingOk(true) .htmlClass, "demo-0002")
@@ -168,5 +190,13 @@ object UsageTest extends TestSuite {
     assertEq(SS.indent(3).htmlClass, "demo-0006")
 
     assertEq(SS.sb.htmlClass, "demo-0007 btn btn-default")
+
+    import shapeless.syntax.singleton._ // TODO
+    val classNames =
+      SS.sc('outer)(o =>
+            _('label)(l =>
+              _('checkbox)(c =>
+                List(o, l, c).map(_.htmlClass))))
+    assertEq(classNames, List("demo-0008", "demo-0009", "demo-0010"))
   }
 }

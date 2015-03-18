@@ -51,19 +51,19 @@ In progress.
 * Ability to dynamically tailor CSS to environment. (Able but as yet, unused.)
 * Path-dependent children like in LESS/SASS.
 
-##### Upcoming...
+##### Week #2 Upcoming...
 
 * Add more attrs discovered by caniuse.com data.
 * Type-safe CSS values (not all but most oft used are done)
 * Automatic browser prefixes for _values_ (using caniuse.com data).
 * Styles can add class names, for example to apply Bootstrap classes like `btn btn-default`.
+* CSS Reset.
+* More DSL for composite styles.
 
 * Media query AST.
-* CSS Reset.
 * Add more psuedo selectors discovered by caniuse.com data.
 * In Scala.JS, omit unnecessary browser prefixes.
 * Detect more problems, add more warnings.
-* More DSL for composite styles.
 * Default settings for {JVM,JS} ⊗ {Dev,Prod}.
 * Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
 

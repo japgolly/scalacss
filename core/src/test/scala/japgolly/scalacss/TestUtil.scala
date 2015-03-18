@@ -2,6 +2,7 @@ package japgolly.scalacss
 
 import scalaz.Equal
 import scalaz.syntax.equal._
+import scala.io.AnsiColor._
 
 object TestUtil extends TestUtil
 
@@ -26,12 +27,15 @@ trait TestUtil
     if (actual ≠ expect) {
       println()
       name.foreach(n => println(s">>>>>>> $n"))
-      val as = actual.toString
-      val es = expect.toString
-      if ((as + es) contains "\n")
-        println(s"actual: ↙[\n$as]\nexpect: ↙[\n$es]")
-      else
-        println(s"actual: [$as]\nexpect: [$es]")
+      var as = actual.toString
+      var es = expect.toString
+      var pre = "["
+      var post = "]"
+      if ((as + es) contains "\n") {
+        pre = "↙[\n"
+      }
+      println(s"expect: $pre$BOLD$BLUE$es$RESET$post")
+      println(s"actual: $pre$BOLD$RED$as$RESET$post")
       println()
       assert(false)
     }

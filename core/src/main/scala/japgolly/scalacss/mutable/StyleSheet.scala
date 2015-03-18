@@ -1,7 +1,10 @@
 package japgolly.scalacss.mutable
 
+import shapeless.HList
+import shapeless.ops.hlist.Mapper
 import japgolly.scalacss._
 import DslBase.ToStyle
+import StyleC.MkUsage
 
 /**
  * TODO Doc
@@ -22,6 +25,9 @@ abstract class StyleSheet(protected val reg: Register) extends DslBase {
 
   protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
     reg registerF StyleF(f)(d)
+
+  protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[reg._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
+    reg.registerC(s)(m, u)
 
   def render[Out](implicit render: Renderer[Out], env: Env): Out =
     reg.render

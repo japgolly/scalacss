@@ -1,4 +1,3 @@
-* DSLs with styleC
 * Browser prefixes (Env + Attr instances)
 * Env provision in JS.
 * Defaults for {Jvm,Js} ⊗ {Dev,Prod}
