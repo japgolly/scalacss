@@ -28,11 +28,8 @@ trait Defaults {
     else
       ErrorHandler.silent
 
-  def newRegister: Register =
+  implicit def register: Register =
     new Register(registerNameGen, registerErrorHandler)
-
-  implicit lazy val register: Register =
-    newRegister
 
   implicit def stringRenderer: Renderer[String] =
     if (devMode)

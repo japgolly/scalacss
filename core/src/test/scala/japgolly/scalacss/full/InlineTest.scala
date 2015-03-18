@@ -3,6 +3,9 @@ package japgolly.scalacss.full
 import scala.concurrent.duration._
 import japgolly.scalacss.Defaults._
 
+//object CopyDefaultsForInline extends Defaults
+//import CopyDefaultsForInline._
+
 object MyInline extends StyleSheet.Inline {
 
   val s1 =
@@ -79,7 +82,7 @@ object InlineTest extends utest.TestSuite {
   def norm(css: String) = css.trim
 
   override val tests = TestSuite {
-    assertEq(norm(MyInline.renderA), norm(
+    'css - assertEq(norm(MyInline.renderA), norm(
       """
         |.scalacss-0001 {
         |  -webkit-text-decoration-line: underline overline;
@@ -173,21 +176,23 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    assertEq(MyInline.everythingOk(true) .htmlClass, "scalacss-0002")
-    assertEq(MyInline.everythingOk(false).htmlClass, "scalacss-0003")
+    'classnames {
+      assertEq(MyInline.everythingOk(true) .htmlClass, "scalacss-0002")
+      assertEq(MyInline.everythingOk(false).htmlClass, "scalacss-0003")
 
-    assertEq(MyInline.indent(1).htmlClass, "scalacss-0004")
-    assertEq(MyInline.indent(2).htmlClass, "scalacss-0005")
-    assertEq(MyInline.indent(3).htmlClass, "scalacss-0006")
+      assertEq(MyInline.indent(1).htmlClass, "scalacss-0004")
+      assertEq(MyInline.indent(2).htmlClass, "scalacss-0005")
+      assertEq(MyInline.indent(3).htmlClass, "scalacss-0006")
 
-    assertEq(MyInline.sb.htmlClass, "scalacss-0007 btn btn-default")
+      assertEq(MyInline.sb.htmlClass, "scalacss-0007 btn btn-default")
 
-    import shapeless.syntax.singleton._ // TODO
-    val classNames =
-      MyInline.sc('outer)(o =>
-                  _('label)(l =>
-                    _('checkbox)(c =>
-                      List(o, l, c).map(_.htmlClass))))
-    assertEq(classNames, List("scalacss-0008", "scalacss-0009", "scalacss-0010"))
+      import shapeless.syntax.singleton._ // TODO
+      val classNames =
+        MyInline.sc('outer)(o =>
+                    _('label)(l =>
+                      _('checkbox)(c =>
+                        List(o, l, c).map(_.htmlClass))))
+      assertEq(classNames, List("scalacss-0008", "scalacss-0009", "scalacss-0010"))
+    }
   }
 }

@@ -2,6 +2,9 @@ package japgolly.scalacss.full
 
 import japgolly.scalacss.Defaults._
 
+//object CopyDefaultsForStandalone extends Defaults
+//import CopyDefaultsForStandalone._
+
 object MyStandalone extends StyleSheet.Standalone {
 
   "div.std" - (
