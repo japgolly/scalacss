@@ -1,5 +1,7 @@
+Get started with:
+
 ```
-npm install gitbook-cli
+bin/init
 ``
 
 
