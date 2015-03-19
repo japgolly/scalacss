@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="1.2" data-basepath=".." data-revision="Thu Mar 19 2015 15:55:42 GMT+1100 (AEDT)">
+    <div class="book" data-level="1.2" data-basepath=".." data-revision="Thu Mar 19 2015 16:31:59 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -229,13 +229,73 @@
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
 
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">myStyle1</span> =</span> style(
+    margin(<span class="hljs-number">12</span> px, auto),
+    textAlign.left,
+    cursor.pointer,
+
+    &amp;.hover(
+      cursor.zoom_in
+    )
+  )
+
+  <span class="hljs-comment">/** Style requiring an Int when applied. */</span>
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">indent</span> =</span>
+    intStyle(<span class="hljs-number">0</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
+      paddingLeft(i * <span class="hljs-number">2.</span>ex)
+    ))
+
+  <span class="hljs-comment">/** Style hooking into Bootstrap. */</span>
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(
+    addClassNames(<span class="hljs-string">&quot;btn&quot;</span>, <span class="hljs-string">&quot;btn-default&quot;</span>),
+    textAlign.center
+  )
 }
 </code></pre>
-<p>To see the generated CSS:</p>
+<p>To apply a style, you apply the style&apos;s class names to some inline HTML.</p>
+<p>You can see styles&apos; class names like this:</p>
+<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.myStyle1.htmlClass  <span class="hljs-comment">// Returns &quot;scalacss-0001&quot;</span>
+<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">1</span>).htmlClass <span class="hljs-comment">// Returns &quot;scalacss-0003&quot;</span>
+<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">2</span>).htmlClass <span class="hljs-comment">// Returns &quot;scalacss-0004&quot;</span>
+<span class="hljs-type">MyStyles</span>.button.htmlClass    <span class="hljs-comment">// Returns &quot;scalacss-0006 btn btn-default&quot;</span>
+</code></pre>
+<p>And to see the generated CSS:</p>
 <pre><code class="lang-scala">println( <span class="hljs-type">MyStyles</span>.renderA )
 </code></pre>
-<p>prints:
-<code>css</code></p>
+<p>Which prints:</p>
+<pre><code class="lang-css"><span class="hljs-class">.scalacss-0001</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> left</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">12px</span> auto</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0001</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -webkit-zoom-in</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -moz-zoom-in</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -o-zoom-in</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> zoom-in</span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0002</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0003</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">2ex</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0004</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">4ex</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0005</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">6ex</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.scalacss-0006</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> center</span></span>;
+<span class="hljs-rule">}</span></span>
+</code></pre>
 
                     
                     </section>
