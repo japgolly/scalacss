@@ -247,6 +247,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
+    val values = NonEmptyList[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 
   import Agent._

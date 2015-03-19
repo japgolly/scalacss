@@ -115,23 +115,21 @@ object Transform {
   def apply(run: Env => CssKV => Vector[CssKV]): Transform =
     new Transform(run)
 
-  // TODO Use env to control prefixes
-
   def keys(subject: CanIUse.Subject): Transform = {
     import CanIUse2._
-    val pp = prefixPlan(subject)
-    Transform(_ => prefixKeys(pp, PrefixApply.prepend, _))
+    val pp = prefixPlanE(subject)
+    Transform(e => prefixKeys(pp(e), PrefixApply.prepend, _))
+  }
+
+  def values(subject: CanIUse.Subject, pa: PrefixApply): Transform = {
+    import CanIUse2._
+    val pp = prefixPlanE(subject)
+    Transform(e => kv => prefixValues(pp(e), pa, kv))
   }
 
   def values(subject: CanIUse.Subject)(v1: Value, vn: Value*): Transform = {
     val whitelist = vn.toSet + v1
     values(subject,  PrefixApply maybePrepend whitelist.contains)
-  }
-
-  def values(subject: CanIUse.Subject, pa: PrefixApply): Transform = {
-    import CanIUse2._
-    val pp = prefixPlan(subject)
-    Transform(_ => kv => prefixValues(pp, pa, kv))
   }
 
   /** @see [[CanIUse2.PrefixApply.keywords]] */

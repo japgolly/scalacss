@@ -1,6 +1,6 @@
 package japgolly.scalacss
 
-object EnvF {
+object Env {
 
   sealed trait Orientation
   case object Landscape extends Orientation
@@ -93,10 +93,15 @@ object EnvF {
 
   }
 
-  def empty[F[+_]](e: F[Nothing]): EnvF[F] =
-    EnvF[F](Platform empty e, Media empty e)
+  final val empty: Env =
+    Env(Platform empty None, Media empty None)
 }
 
-import EnvF._
+import Env._
 
-final case class EnvF[F[_]](platform: Platform[F], media: Media[F])
+final case class Env(platform: Platform[Option],
+                     media   : Media[Option]) {
+
+  val prefixWhitelist: Set[CanIUse.Prefix] =
+    CanIUse2.prefixesForPlatform(platform)
+}

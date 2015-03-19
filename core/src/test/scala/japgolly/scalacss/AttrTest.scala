@@ -119,5 +119,31 @@ object AttrTest extends TestSuite {
       test("-o-abc")
       test("def(12)", "-o-def(12)")
     }
+
+    'envDepPrefixes1 {
+      def test(name: String)(exp: String*): Unit = {
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
+        val a = cursor.zoom_in(env).map(_.value).sorted
+        assertEq(a, exp.toVector.sorted)
+      }
+      'chrome  - test("Chrome") ("-webkit-zoom-in",               "zoom-in")
+      'firefox - test("Firefox")("-moz-zoom-in",                  "zoom-in")
+      'opera   - test("Opera")  ("-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      'ie      - test("IE")     (/*"-ms-zoom-in", Unsupported */  "zoom-in")
+      'safari  - test("Safari") ("-webkit-zoom-in",               "zoom-in")
+    }
+
+    'envDepPrefixes2 {
+      def test(name: String)(exp: String*): Unit = {
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
+        val a = AV(flex, "")(env).map(_.key).sorted
+        assertEq(a, exp.toVector.sorted)
+      }
+      'chrome  - test("Chrome") ("-webkit-flex",            "flex")
+      'firefox - test("Firefox")("-moz-flex",               "flex")
+      'opera   - test("Opera")  ("-o-flex", "-webkit-flex", "flex")
+      'ie      - test("IE")     ("-ms-flex",                "flex")
+      'safari  - test("Safari") ("-webkit-flex",            "flex")
+    }
   }
 }

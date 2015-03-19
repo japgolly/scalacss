@@ -7,11 +7,6 @@ import shapeless.lens
 
 package object scalacss {
 
-  type Env = EnvF[Option]
-  object Env {
-    final val empty: Env = EnvF.empty(None)
-  }
-
   /**
    * A CSS value, like `"none"`, `"solid 3px black"`.
    */

@@ -61,11 +61,11 @@ In progress.
 * More DSL for composite styles.
 * Standalone styles (as opposed to Inline styles).
 * Default settings for JVM ⊗ {Dev,Prod}.
+* In Scala.JS, omit unnecessary browser prefixes.
 
 Upcoming...
 
 * Media query AST.
-* In Scala.JS, omit unnecessary browser prefixes.
 * Default `Env` for JS.
 
 * Add more psuedo selectors discovered by caniuse.com data.

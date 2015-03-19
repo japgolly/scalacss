@@ -53,6 +53,7 @@ object CanIUse {
     val OperaMini         = Agent(o     , Map.empty)
     val OperaMobile       = Agent(o     , Map("24" -> webkit))
     val Safari            = Agent(webkit, Map.empty)
+    val values = NonEmptyList[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
   }
 
   import Agent._

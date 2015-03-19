@@ -1,8 +1,8 @@
 package japgolly.scalacss.js
 
 import scalajs.js.UndefOr
-import japgolly.scalacss.{EnvF, Env}
-import EnvF._
+import japgolly.scalacss.Env
+import Env._
 
 /**
  * Uses [[PlatformJs]] to derive an [[Env]] instance.
@@ -17,7 +17,7 @@ object JsEnv {
 
   def value: Env =
     PlatformJs.value.fold(Env.empty)(p =>
-      EnvF(platform(p), Media.empty(None)))
+      Env(platform(p), Media.empty(None)))
 
   @inline private implicit def undefToOption[A](a: UndefOr[A]): Option[A] =
     a.toOption.flatMap(Option(_))
