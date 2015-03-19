@@ -82,3 +82,8 @@ Which prints:
   text-align: center;
 }
 ```
+
+Or if you're running in production-mode, you'll see:
+```css
+.¢ð{text-align:left;margin:12px auto;cursor:pointer}.¢ð:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}.¢¡{padding-left:0}.¢¢{padding-left:2ex}.¢£{padding-left:4ex}.¢¤{padding-left:6ex}.¢¥{text-align:center}
+```
