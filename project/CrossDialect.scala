@@ -130,7 +130,9 @@ object Typical {
   val clearScreenTask = TaskKey[Unit]("clear", "Clears the screen.")
 
   def addSourceDialect(name: String): PE =
-    _.settings(unmanagedSourceDirectories in Compile += baseDirectory.value / s"src/main/scala-$name")
+    _.settings(
+      unmanagedSourceDirectories in Compile += baseDirectory.value / s"src/main/scala-$name",
+      unmanagedSourceDirectories in Test    += baseDirectory.value / s"src/test/scala-$name")
 
   def preventPublication: PE =
     _.settings(
@@ -206,6 +208,8 @@ object Typical {
   def utestSettings(scope: String = "test"): CDS =
     CDS.addLibs(Library("com.lihaoyi", "utest", "0.3.1") % scope)
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
-      .js(scalaJSStage in Test := FastOptStage)
+      .js(_.settings(
+        scalaJSStage in Test := FastOptStage,
+        jsEnv in Test        := PhantomJSEnv().value))
 }
 

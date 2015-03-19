@@ -1,6 +1,6 @@
 package japgolly.scalacss
 
-object Env {
+object EnvF {
 
   sealed trait Orientation
   case object Landscape extends Orientation
@@ -83,17 +83,20 @@ object Env {
   object OS {
     def empty[F[+_]](e: F[Nothing]): OS[F] =
       OS[F](e, e, e)
+
+    def archFromInt(i: Int): Option[Architecture] =
+      i match {
+        case 64 => Some(Bits64)
+        case 32 => Some(Bits32)
+        case _  => None
+      }
+
   }
 
-  val empty: Env =
-    EnvF.empty(None)
-}
-
-import Env._
-
-final case class EnvF[F[_]](platform: Platform[F], media: Media[F])
-
-object EnvF {
   def empty[F[+_]](e: F[Nothing]): EnvF[F] =
     EnvF[F](Platform empty e, Media empty e)
 }
+
+import EnvF._
+
+final case class EnvF[F[_]](platform: Platform[F], media: Media[F])
