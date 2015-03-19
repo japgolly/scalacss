@@ -57,7 +57,7 @@ object MyInline extends StyleSheet.Inline {
 
   /** Style requiring int */
   val indent: Int => StyleA =
-    styleF(Domain.ofRange(1 to 3))(i =>
+    intStyle(1 to 3)(i =>
       styleS(paddingLeft(i * 4.ex)))
 
   /** Style hooking into Bootstrap */

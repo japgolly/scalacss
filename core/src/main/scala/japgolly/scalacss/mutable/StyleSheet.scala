@@ -115,7 +115,10 @@ object StyleSheet {
       register registerS Dsl.style(className)(t: _*)
 
     protected def boolStyle(f: Boolean => StyleS): Boolean => StyleA =
-      register registerF StyleF.bool(f)
+      styleF(Domain.boolean)(f)
+
+    protected def intStyle(r: Range)(f: Int => StyleS): Int => StyleA =
+      styleF(Domain ofRange r)(f)
 
     protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
       register registerF StyleF(f)(d)

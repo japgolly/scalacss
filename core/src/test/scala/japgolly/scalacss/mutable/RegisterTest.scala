@@ -20,7 +20,7 @@ object RegisterTest extends TestSuite {
 
   val sfid = Domain.ofRange(0 until 4)
   val sfi = StyleF[Int](i => styleS(AV(paddingLeft, s"${i * 4}ex")))(sfid)
-  val sfb = StyleF.bool(b => styleS(AV(fontWeight, if (b) "bold" else "normal")))
+  val sfb = StyleF[Boolean](b => styleS(AV(fontWeight, if (b) "bold" else "normal")))(Domain.boolean)
 
   val sc1 = ss1.named('a) :*: ss2.named('b)
   val sc2 = ss1.named('a) :*: ss2.named('b) :*: ss3.named('c) :*: ss4.named('d)
