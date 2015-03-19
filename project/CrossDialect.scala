@@ -210,6 +210,6 @@ object Typical {
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
       .js(_.settings(
         scalaJSStage in Test := FastOptStage,
-        jsEnv in Test        := PhantomJSEnv().value))
+        jsEnv in Test        := NodeJSEnv().value))
 }
 
