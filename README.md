@@ -62,11 +62,11 @@ In progress.
 * Standalone styles (as opposed to Inline styles).
 * Default settings for JVM ⊗ {Dev,Prod}.
 * In Scala.JS, omit unnecessary browser prefixes.
+* Default `Env` for JS.
 
 Upcoming...
 
 * Media query AST.
-* Default `Env` for JS.
 
 * Add more psuedo selectors discovered by caniuse.com data.
 * Detect more problems, add more warnings.

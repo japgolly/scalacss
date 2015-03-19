@@ -30,7 +30,7 @@ object MyStyles extends StyleSheet.Standalone {
 
 To see the generated CSS:
 ```scala
-println( MyStyles.renderA )
+println( MyStyles.render )
 ```
 
 prints:

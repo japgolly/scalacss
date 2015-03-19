@@ -9,7 +9,7 @@ import Register.{ErrorHandler, NameGen}
  *
  * Use the scalac `-Xelide-below` flag to switch from development- to production-mode.
  */
-trait Defaults {
+trait Defaults extends PlatformDefaults {
 
   @elidable(elidable.ASSERTION)
   private def _devMode = true

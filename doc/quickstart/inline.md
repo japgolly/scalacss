@@ -44,7 +44,7 @@ MyStyles.button.htmlClass    // Returns "scalacss-0006 btn btn-default"
 
 And to see the generated CSS:
 ```scala
-println( MyStyles.renderA )
+println( MyStyles.render )
 ```
 
 Which prints:

@@ -82,7 +82,7 @@ object InlineTest extends utest.TestSuite {
   def norm(css: String) = css.trim
 
   override val tests = TestSuite {
-    'css - assertEq(norm(MyInline.renderA), norm(
+    'css - assertEq(norm(MyInline.render), norm(
       """
         |.scalacss-0001 {
         |  -webkit-text-decoration-line: underline overline;

@@ -33,7 +33,7 @@ object StandaloneTest extends utest.TestSuite {
 
   override val tests = TestSuite {
     def norm(css: String) = css.trim
-    assertEq(norm(MyStandalone.renderA), norm(
+    assertEq(norm(MyStandalone.render), norm(
       """
         |div.std {
         |  text-align: left;
