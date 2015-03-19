@@ -135,9 +135,6 @@ object StyleF {
   }
   def P[I](f: Domain[I] => StyleF[I]): P[I] =
     new P[I] { override def apply(d: Domain[I]) = f(d) }
-
-  def bool(f: Boolean => StyleS): StyleF[Boolean] =
-    StyleF(f)(Domain.boolean)
 }
 
 /**
