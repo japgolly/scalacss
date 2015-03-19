@@ -1,4 +1,4 @@
-# StyleSheet.Standalone
+# Quick Start: Standalone stylesheets
 
 Create styles as follows:
 

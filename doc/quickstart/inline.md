@@ -1,4 +1,4 @@
-# StyleSheet.Inline
+# Quick Start: Inline stylesheets
 
 Create styles as follows:
 
