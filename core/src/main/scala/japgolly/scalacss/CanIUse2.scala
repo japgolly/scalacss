@@ -128,9 +128,4 @@ object CanIUse2 {
 
   def filteredPrefixPlan(whitelist: Set[Prefix], pp: PrefixPlan): PrefixPlan =
     pp.filter(_ forall whitelist.contains)
-
-  def prefixPlanE(subject: Subject): Env => PrefixPlan = {
-    val pp = prefixPlan(subject)
-    e => filteredPrefixPlan(e.prefixWhitelist, pp)
-  }
 }
