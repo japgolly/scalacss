@@ -12,3 +12,5 @@ projectFilesBackup*
 target
 
 misc/caniuse
+node_modules
+src/_book
