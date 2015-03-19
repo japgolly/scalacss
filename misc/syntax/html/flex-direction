@@ -1,0 +1,29 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/">Formal syntax</a>: <code>row <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> row-reverse <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> column <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> column-reverse</code>
+</pre>
+<pre>flex-direction: row
+flex-direction: row-reverse
+flex-direction: column
+flex-direction: column-reverse
+
+flex-direction: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<p>The following values are accepted:</p>
+<dl><dt>
+  <code>row</code></dt>
+ <dd>
+  The flex container's main-axis is defined to be the same as the text direction. The <strong>main-start</strong> and <strong>main-end</strong> points are the same as the content direction.</dd>
+ <dt>
+  <code>row-reverse</code></dt>
+ <dd>
+  Behaves the same as <code>row</code> but the <strong>main-start</strong> and <strong>main-end</strong> points are permuted.</dd>
+ <dt>
+  <code>column</code></dt>
+ <dd>
+  The flex container's main-axis is the same as the block-axis. The <strong>main-start</strong> and <strong>main-end</strong> points are the same as the <strong>before</strong> and <strong>after</strong> points of the writing-mode.</dd>
+ <dt>
+  <code>column-reverse</code></dt>
+ <dd>
+  Behaves the same as <code>column</code> but the <strong>main-start</strong> and <strong>main-end</strong> are permuted.</dd>
+</dl>

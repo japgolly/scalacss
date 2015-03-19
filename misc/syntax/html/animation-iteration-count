@@ -1,0 +1,19 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-single-animation-iteration-count" title="infinite | &lt;number&gt;">&lt;single-animation-iteration-count&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>animation-iteration-count: infinite
+animation-iteration-count: 3
+animation-iteration-count: 2.3
+
+animation-iteration-count: 2, 0, infinite
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>infinite</code></dt>
+ <dd>
+  The animation will repeat forever.</dd>
+ <dt>
+  <code>&lt;number&gt;</code></dt>
+ <dd>
+  The number of times the animation should repeat; this is <code>1</code> by default. Negative values are invalid. You may specify non-integer values to play part of an animation cycle (for example <code>0.5</code> will play half of the animation cycle).</dd>
+</dl>

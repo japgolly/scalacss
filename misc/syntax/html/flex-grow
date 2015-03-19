@@ -1,0 +1,13 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/number" title="">&lt;number&gt;</a></code>
+</pre>
+<pre>flex-grow: 3
+
+flex-grow: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;number&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a>. Negative values are invalid.</dd>
+</dl>

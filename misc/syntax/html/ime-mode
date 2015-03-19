@@ -1,0 +1,32 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> active <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> inactive <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> disabled</code></pre>
+<pre>ime-mode: auto
+ime-mode: normal
+ime-mode: active
+ime-mode: inactive
+ime-mode: disabled
+
+ime-mode: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  No change is made to the current input method editor state. This is the default.</dd>
+ <dt>
+  <code>normal</code></dt>
+ <dd>
+  The IME state should be normal; this value can be used in a user style sheet to override the page setting. <em>This value is not supported by Internet Explorer.</em></dd>
+ <dt>
+  <code>active</code></dt>
+ <dd>
+  The input method editor is initially active; text entry is performed using it unless the user specifically dismisses it. <em>Not supported on Linux.</em></dd>
+ <dt>
+  <code>inactive</code></dt>
+ <dd>
+  The input method editor is initially inactive, but the user may activate it if they wish. <em>Not supported on Linux.</em></dd>
+ <dt>
+  <code>disabled</code></dt>
+ <dd>
+  The input method editor is disabled and may not be activated by the user.</dd>
+</dl>

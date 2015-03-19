@@ -1,0 +1,54 @@
+animation_direction	 <single_animation_direction>#
+animation_fill_mode	<single_animation_fill_mode>#
+animation_iteration_count	<single_animation_iteration_count>#
+animation_name	<single_animation_name>#
+animation_play_state	<single_animation_play_state>#
+animation	<single_animation_name> || <time> || <timing_function> || <time> || <single_animation_iteration_count> || <single_animation_direction> || <single_animation_fill_mode> || <single_animation_play_state>
+animation_timing_function	 <timing_function>#
+background_attachment	  <attachment>#
+background	[ <bg_layer> , ]* <final_bg_layer>
+background_blend_mode	 <blend_mode>#
+background_clip	<box>#
+background_image	<bg_image>#
+background_origin	<box>#
+background_position	 <position>#
+background_repeat	<repeat_style>#
+background_size	<bg_size>#
+border_image	<'border_image_source'> || <'border_image_slice'> [ / <'border_image_width'> | / <'border_image_width'>? / <'border_image_outset'> ]? || <'border_image_repeat'>
+border_image_outset	[ <length> | <number> ]{1,4}
+border_image_repeat	[ stretch | repeat | round ]{1,2}
+border_image_slice	[<number> | <percentage>]{1,4} && fill?
+border_image_width	[ <length> | <percentage> | <number> | auto ]{1,4}
+box_shadow	none | [inset? && [ <offset_x> <offset_y> <blur_radius>? <spread_radius>? <color>? ] ]#
+columns	<'column_width'> || <'column_count'>
+content	normal | none | [ <string> | <uri> | <counter> | attr() | open_quote | close_quote | no_open_quote | no_close_quote ]+
+counter_increment	[<custom_ident> <integer>?]+ | none
+counter_reset	[<custom_ident> <integer>?]+ | none
+flex_basis	content | <'width'>
+flex_flow	<'flex_direction'> || <'flex_wrap'>
+flex	none | [ <'flex_grow'> <'flex_shrink'>? || <'flex_basis'> ]
+font_family	[ <family_name> | <generic_family> ]#
+font_feature_settings	normal | <feature_tag_value>#
+font	[ [ <‘font_style’> || <font_variant_css21> || <‘font_weight’> || <‘font_stretch’> ]? <‘font_size’> [ / <‘line_height’> ]? <‘font_family’> ] | caption | icon | menu | message_box | small_caption | status_bar
+font_synthesis	none | [ weight || style ]
+font_variant_alternates	normal | [ stylistic(<feature_value_name>) || historical_forms || styleset(<feature_value_name> #) || character_variant(<feature_value_name> #) || swash(<feature_value_name>) || ornaments(<feature_value_name>) || annotation(<feature_value_name>) ]
+font_variant_east_asian	normal | [ <east_asian_variant_values> || <east_asian_width_values> || ruby ]
+font_variant_ligatures	normal | none | [ <common_lig_values> || <discretionary_lig_values> || <historical_lig_values> || <contextual_alt_values> ]
+font_variant	normal | none | [ <common_lig_values> || <discretionary_lig_values> || <historical_lig_values> || <contextual_alt_values> || stylistic(<feature_value_name>) || historical_forms || styleset(<feature_value_name> #) || character_variant(<feature_value_name> #) || swash(<feature_value_name>) || ornaments(<feature_value_name>) || annotation(<feature_value_name>) || [ small_caps | all_small_caps | petite_caps | all_petite_caps | unicase | titling_caps ] || <numeric_figure_values> || <numeric_spacing_values> || <numeric_fraction_values> || ordinal || slashed_zero || <east_asian_variant_values> || <east_asian_width_values> || ruby ]
+font_variant_numeric	normal | [ <numeric_figure_values> || <numeric_spacing_values> || <numeric_fraction_values> || ordinal || slashed_zero ]
+image_orientation	from_image | <angle> | [<angle>? flip]
+list_style	<'list_style_type'> || <'list_style_position'> || <'list_style_image'>
+list_style_type	<custom_ident> | symbols)
+perspective_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
+shape_outside	none | <shape_box> || <basic_shape> | <image>
+tab_size	| <length"><integer> | <length>
+text_decoration	<'text_decoration_line'> || <'text_decoration_style'> || <'text_decoration_color'>
+text_overflow	[ clip | ellipsis | <string> ]{1,2}
+touch_action	 auto | none | [ pan_x || pan_y ] | manipulation
+transform	none | <transform_function>+
+transform_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ] <length>?
+transition	[ none | <single_transition_property> ] || <time> || <timing_function> || <time>
+transition_property	none | <single_transition_property>#  [ ‘,’ <single_transition_property># ]*<br/>
+transition_timing_function	<timing_function>#
+unicode_range	<urange>#
+will_change	auto | <animateable_feature>#

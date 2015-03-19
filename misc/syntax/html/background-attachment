@@ -1,0 +1,23 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:   <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-attachment" title="scroll | fixed | local">&lt;attachment&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>background-attachment: scroll
+background-attachment: fixed
+background-attachment: local
+
+background-attachment: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>fixed</code></dt>
+ <dd>
+  This keyword means that the background is fixed with regard to the viewport. Even if an element has a scrolling mechanism, a ‘fixed’ background doesn't move with the element.</dd>
+ <dt>
+  <code>local</code></dt>
+ <dd>
+  This keyword means that the background is fixed with regard to the element's contents: if the element has a scrolling mechanism, the background scrolls with the element's contents, and the background painting area and background positioning area are relative to the scrollable area of the element rather than to the border framing them.</dd>
+ <dt>
+  <code>scroll</code></dt>
+ <dd>
+  This keyword means that the background is fixed with regard to the element itself and does not scroll with its contents. (It is effectively attached to the element's border.)</dd>
+</dl>

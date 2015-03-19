@@ -1,0 +1,16 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-style" title="none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset">&lt;br-style&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/color" title="">&lt;color&gt;</a></code></pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;br-width&gt; </code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/border-left-width" title=""><code>border-left-width</code></a>.</dd>
+ <dt>
+  <code>&lt;br-style&gt; </code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/border-left-style" title=""><code>border-left-style</code></a>.</dd>
+ <dt>
+  <code>&lt;color&gt; </code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/border-left-color" title=""><code>border-left-color</code></a>.</dd>
+</dl>

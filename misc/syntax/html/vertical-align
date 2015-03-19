@@ -1,0 +1,61 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>baseline <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> sub <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> super <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> text-top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> text-bottom <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> middle <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bottom <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a></code></pre>
+
+<pre>vertical-align: baseline     /* keyword values */
+vertical-align: sub
+vertical-align: super
+vertical-align: text-top
+vertical-align: text-bottom
+vertical-align: middle
+vertical-align: top
+vertical-align: bottom
+vertical-align: 10em          /* &lt;length&gt; values */
+vertical-align: 4px
+vertical-align: 20%           /* &lt;percentage&gt; values */
+
+vertical-align: inherit</pre>
+
+<h3 id="Values_(for_inline_elements)">Values (for inline elements)</h3>
+
+<p><em>Most of the values vertically align the element relative to its parent element:</em></p>
+
+<dl><dt><code>baseline</code></dt>
+ <dd>Aligns the baseline of the element with the baseline of its parent. The baseline of some <a href="/en-US/docs/CSS/Replaced_element" title="CSS/Replaced_element">replaced elements</a>, like <a href="/en-US/docs/Web/HTML/Element/textarea" title="The HTML &lt;textarea&gt; element represents a multi-line plain-text editing control."><code>&lt;textarea&gt;</code></a>, is not specified by the HTML specification, meaning that their behavior with this keyword may change from one browser to the other.</dd>
+ <dt><code>sub</code></dt>
+ <dd>Aligns the baseline of the element with the subscript-baseline of its parent.</dd>
+ <dt><code>super</code></dt>
+ <dd>Aligns the baseline of the element with the superscript-baseline of its parent.</dd>
+ <dt><code>text-top</code></dt>
+ <dd>Aligns the top of the element with the top of the parent element's font.</dd>
+ <dt><code>text-bottom</code></dt>
+ <dd>Aligns the bottom of the element with the bottom of the parent element's font.</dd>
+ <dt><code>middle</code></dt>
+ <dd>Aligns the middle of the element with the baseline of its parent.</dd>
+ <dt><code><a href="/en-US/docs/CSS/length" title="CSS/length">&lt;length&gt;</a></code></dt>
+ <dd>Aligns the baseline of the element at the given length above the baseline of its parent.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>Like &lt;length&gt; values, with the percentage being a percent of the <a href="/en-US/docs/Web/CSS/line-height" title="On block level elements, the line-height CSS property specifies the minimal height of line boxes within the element."><code>line-height</code></a> property.</dd>
+</dl><p><span style="line-height: 1.572;">(Negative values are allowed for &lt;length&gt; and &lt;percentage&gt;.)</span></p>
+
+<p><em><span style="line-height: 1.572;">The following two values vertically align the element relative to the entire line rather than relative to its parent:</span></em></p>
+
+<dl><dt><code>top</code></dt>
+ <dd>Align the top of the element and its descendants with the top of the entire line.</dd>
+ <dt><code>bottom</code></dt>
+ <dd>Align the bottom of the element and its descendants with the bottom of the entire line.</dd>
+</dl><p>For elements that do not have a baseline, the bottom margin edge is used instead.</p>
+
+<p> </p>
+
+<h3 id="Values_(for_table_cells)">Values (for table cells)</h3>
+
+<dl><dt><code>baseline</code> (and <code>sub</code>, <code>super</code>, <code>text-top</code>, <code>text-bottom</code>, <code>&lt;length&gt;</code>, and <code>&lt;percentage&gt;</code>)</dt>
+ <dd>Align the baseline of the cell with the baseline of all other cells in the row that are baseline-aligned.</dd>
+ <dt><code>top</code></dt>
+ <dd>Align the top padding edge of the cell with the top of the row.</dd>
+ <dt><code>middle</code></dt>
+ <dd>Center the padding box of the cell within the row.</dd>
+ <dt><code>bottom</code></dt>
+ <dd>Align the bottom padding edge of the cell with the bottom of the row.</dd>
+</dl><p>Negative values are allowed.</p>

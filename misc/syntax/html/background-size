@@ -1,0 +1,62 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-bg-size" title="[ &lt;length&gt; | &lt;percentage&gt; | auto ]{1,2} | cover | contain">&lt;bg-size&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code>
+</pre>
+
+<pre><strong>/* Keywords syntax */</strong>
+background-size: cover
+background-size: contain
+
+<strong>/* One-value syntax: the value defines the width of the image, the height is implicitly set to 'auto' */</strong>
+background-size: 50%
+background-size: 3em
+background-size: 12px
+background-size: auto
+
+<strong>/* Two-value syntax: the first value defines the width of the image, the second its height */</strong>
+background-size: 50% auto
+background-size: 3em 25%
+background-size: auto 6px
+background-size: auto auto
+
+<strong>/* Values for the multiple backgrounds, defined by background-image, may be listed separated by commas */</strong>
+background-size: auto, auto     /* Do not confuse this with background-size: auto auto */
+background-size: 50%, 25%, 25%
+background-size: 6px, auto, contain
+
+background-size: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>A <code><a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a></code> value that scales the background image to the specified length in the corresponding dimension. Negative lengths are not allowed.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>A <code><a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a></code> value that scales the background image in the corresponding dimension to the specified percentage of the background positioning area, which is determined by the value of <a href="/en-US/docs/Web/CSS/background-origin" title="The background-origin CSS property determines the background positioning area, that is the position of the origin of an image specified using the background-image CSS property."><code>background-origin</code></a>. The background positioning area is, by default, the area containing the content of the box and its padding; the area may also be changed to just the content or to the area containing borders, padding, and content. If the background's <a href="/en-US/docs/Web/CSS/background-attachment" title="The documentation about this has not yet been written; please consider contributing!"><code>attachment</code></a> is <code>fixed</code>, the background positioning area is instead the entire area of the browser window, not including the area covered by scrollbars if they are present. Negative percentages are not allowed.</dd>
+ <dt><code>auto</code></dt>
+ <dd>The <code>auto</code> keyword that scales the background image in the corresponding direction such that its intrinsic proportion is maintained.</dd>
+ <dt><code>cover</code></dt>
+ <dd>This keyword specifies that the background image should be scaled to be as small as possible while ensuring both its dimensions are greater than or equal to the corresponding dimensions of the background positioning area.</dd>
+ <dt><code>contain</code></dt>
+ <dd>This keyword specifies that the background image should be scaled to be as large as possible while ensuring both its dimensions are less than or equal to the corresponding dimensions of the background positioning area.</dd>
+</dl><p>The interpretation of possible values depends on the image's intrinsic dimensions (width and height) and intrinsic proportion (ratio of width and height).  A bitmap image always has intrinsic dimensions and an intrinsic proportion.  A vector image may have both intrinsic dimensions (and thus must have an intrinsic proportion).  It also may have one or no intrinsic dimensions, and in either case it might or might not have an intrinsic proportion.  Gradients are treated as images with no intrinsic dimensions or intrinsic proportion.</p>
+
+<div class="note">
+<p><strong>Note: </strong>This behavior changed in Gecko 8.0 (Firefox 8.0 / Thunderbird 8.0 / SeaMonkey 2.5). Before this, gradients were treated as images with no intrinsic dimensions, with an intrinsic proportion identical to that of the background positioning area.</p>
+</div>
+
+<p>Background images generated from elements using <a href="/en-US/docs/Web/CSS/-moz-element" title="The documentation about this has not yet been written; please consider contributing!"><code>-moz-element</code></a> (which actually match an element) are currently treated as images with the dimensions of the element, or of the background positioning area if the element is SVG, with the corresponding intrinsic proportion.</p>
+
+<div class="note"><strong>Note:</strong> This is not the currently-specified behavior, which is that the intrinsic dimensions and proportion should be those of the element in all cases.</div>
+
+<p>The rendered size of the background image is then computed as follows:</p>
+
+<dl><dt>If both components of <code>background-size</code> are specified and are not <code>auto</code>:</dt>
+ <dd>The background image renders at the specified size.</dd>
+ <dt>If the <code>background-size</code> is <code>contain</code> or <code>cover</code>:</dt>
+ <dd>The image is rendered, preserving its intrinsic proportion, at the largest size contained within, or covering, the background positioning area.  If the image has no intrinsic proportion, then it is rendered at the size of the background positioning area.</dd>
+ <dt>If the <code>background-size</code> is <code>auto</code> or <code>auto auto</code>:</dt>
+ <dd>If the image has both intrinsic dimensions, it is rendered at that size.  If it has no intrinsic dimensions and no intrinsic proportion, it is rendered at the size of the background positioning area.  If it has no dimensions but has a proportion, it's rendered as if <code>contain</code> had been specified instead.  If the image has one intrinsic dimension and a proportion, it's rendered at the size determined by that one dimension and the proportion.  If the image has one intrinsic dimension but no proportion, it's rendered using the intrinsic dimension and the corresponding dimension of the background positioning area.</dd>
+ <dt>If the background-size has one <code>auto</code> component and one non-<code>auto</code> component:</dt>
+ <dd>If the image has an intrinsic proportion, then render it using the specified dimension, and compute the other dimension from the specified dimension and the intrinsic proportion.  If the image has no intrinsic proportion, use the specified dimension for that dimension.  For the other dimension, use the image's corresponding intrinsic dimension if there is one.  If there is no such intrinsic dimension, use the corresponding dimension of the background positioning area.</dd>
+</dl><p>Note that background sizing for vector images that lack intrinsic dimensions or proportion is not yet fully implemented in all browsers.  Be careful about relying on the behavior described above, and test in multiple browsers (specifically including versions of Firefox 7 or earlier and Firefox 8 or greater) to be sure different renderings are acceptable.</p>

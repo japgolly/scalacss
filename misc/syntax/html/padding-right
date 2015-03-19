@@ -1,0 +1,20 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a></code>
+</pre>
+<pre>padding-right: 0.5em;
+padding-right: 0;
+padding-right: 2cm;
+padding-right: 10%
+
+padding-right: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  &lt;length&gt;</dt>
+ <dd>
+  Specifies a positive fixed width. See <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> for details.</dd>
+ <dt>
+  &lt;percentage&gt;</dt>
+ <dd>
+  A percentage with respect to the width of the containing block.</dd>
+</dl>

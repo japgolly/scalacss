@@ -1,0 +1,23 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-custom-ident" title="Tooltip not found in DB.">&lt;custom-ident&gt;</a> <a href="/en-US/docs/Web/CSS/integer" title="">&lt;integer&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a>]<a href="/en-US/docs/CSS/Value_definition_syntax#Plus_(.2B)" title="Plus multiplier: The previous entity may appear 1 or several times.">+</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none</code>
+</pre>
+
+<pre>counter-increment: counter-name        /* Increment counter-name by 1 */
+counter-increment: counter-name -1     /* Decrement counter-name by 1 */
+counter-increment: counter1 counter2 -4 /* Increment counter1 by 1, and decrement counter2 by 4 */
+
+counter-increment: none                /* Do not increment/decrement anything: used to hide less specific values */ 
+
+counter-increment: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><a href="/en-US/docs/Web/CSS/custom-ident" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;custom-ident&gt;</code></a></dt>
+ <dd>The name of the counter to increment. This identifier is composed by a combination of case-insensitive letters <code>a</code> to <code>z</code>, numbers <code>0</code> to <code>9</code>, underscores (<code>_</code>), and/or dashes (<code>-</code>). The first non-dash character must be a letter (that is, no number at the beginning of it, even if preceded by a dash.) Also, two dashes are forbidden at the beginning of the identifier. It can't be <code>none</code>, <code>unset</code>, <code>initial</code>, or <code>inherit</code> in any combination of cases.</dd>
+ <dt><a href="/en-US/docs/Web/CSS/integer" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;integer&gt;</code></a></dt>
+ <dd>The value to add to the counter. Defaults to 1 if not given.</dd>
+ <dt><code>none</code></dt>
+ <dd>No counter must be incremented. This is used as the default value, or to cancel an increment in more specific rules.</dd>
+</dl><p>You may specify as many counters to increment as you want, each separated by a space.</p>

@@ -1,0 +1,16 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/time" title="Possible values: a number followed by 's' or 'ms' like 3s, -2.5ms, or 0s.">&lt;time&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code>
+</pre>
+<pre>transition-duration: 6s
+transition-duration: 120ms
+transition-duration: 1s, 15s
+transition-duration: 10s, 30s, 230ms
+
+transition-duration: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;time&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/time" title=""><code>&lt;time&gt;</code></a> denoting the amount of time the transition from the old value of a property to the new value should take. A time of <code>0s</code> indicates that no transition will happen, that is the switch between the two states will be instantaneous. A negative value for the time renders the declaration invalid.</dd>
+</dl>

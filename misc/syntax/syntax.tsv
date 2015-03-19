@@ -1,0 +1,240 @@
+align-content	flex-start | flex-end | center | space-between | space-around | stretch
+align-items	flex-start | flex-end | center | baseline | stretch
+align-self	auto | flex-start | flex-end | center | baseline | stretch
+all	initial | inherit | unset
+animation	<single-animation-name> || <time> || <timing-function> || <time> || <single-animation-iteration-count> || <single-animation-direction> || <single-animation-fill-mode> || <single-animation-play-state>
+animation-delay	<time>#
+animation-direction	 <single-animation-direction>#
+animation-duration	<time>#
+animation-fill-mode	<single-animation-fill-mode>#
+animation-iteration-count	<single-animation-iteration-count>#
+animation-name	<single-animation-name>#
+animation-play-state	<single-animation-play-state>#
+animation-timing-function	 <timing-function>#
+backface-visibility	 visible | hidden 
+background	[ <bg-layer> , ]* <final-bg-layer>
+background-attachment	  <attachment>#
+background-blend-mode	 <blend-mode>#
+background-clip	<box>#
+background-color	<color>
+background-image	<bg-image>#
+background-origin	<box>#
+background-position	 <position>#
+background-repeat	<repeat-style>#
+background-size	<bg-size>#
+block-size	<'width'>
+border	 <br-width> || <br-style> || <color>
+border-block-end	<'border-width'> || <'border-style'> || <'color'>
+border-block-end-color	<'color'>
+border-block-end-style	<'border-style'>
+border-block-end-width	<'border-width'>
+border-block-start	<'border-width'> || <'border-style'> || <'color'>
+border-block-start-color	<'color'>
+border-block-start-style	<'border-style'>
+border-block-start-width	<'border-width'>
+border-bottom	<br-width> || <br-style> || <color>
+border-bottom-color	<color>
+border-bottom-left-radius	[ <length> | <percentage> ]{1,2} 
+border-bottom-right-radius	[ <length> | <percentage> ]{1,2} 
+border-bottom-style	<br-style>
+border-bottom-width	<br-width>
+border-collapse	collapse | separate
+border-color	<color>{1,4}
+border-image	<'border-image-source'> || <'border-image-slice'> [ / <'border-image-width'> | / <'border-image-width'>? / <'border-image-outset'> ]? || <'border-image-repeat'>
+border-image-outset	[ <length> | <number> ]{1,4}
+border-image-repeat	[ stretch | repeat | round ]{1,2}  
+border-image-slice	[<number> | <percentage>]{1,4} && fill?  
+border-image-source	none | <image> 
+border-image-width	[ <length> | <percentage> | <number> | auto ]{1,4} 
+border-inline-end	<'border-width'> || <'border-style'> || <'color'>
+border-inline-end-color	<'color'>
+border-inline-end-style	<'border-style'>
+border-inline-end-width	<'border-width'>
+border-inline-start	<'border-width'> || <'border-style'> || <'color'>
+border-inline-start-color	<'color'>
+border-inline-start-style	<'border-style'>
+border-inline-start-width	<'border-width'>
+border-left	<br-width> || <br-style> || <color>
+border-left-color	<color>
+border-left-style	<br-style>
+border-left-width	<br-width>
+border-radius	[ <length> | <percentage> ]{1,4} [ / [ <length> | <percentage> ]{1,4} ]?
+border-right	<br-width> || <br-style> || <color>
+border-right-color	<color>
+border-right-style	<br-style>
+border-right-width	<br-width>
+border-spacing	<length> <length>?
+border-style	<br-style>{1,4}
+border-top	<br-width> || <br-style> || <color>
+border-top-color	<color>
+border-top-left-radius	[ <length> | <percentage> ]{1,2}  
+border-top-right-radius	[ <length> | <percentage> ]{1,2}  
+border-top-style	<br-style>
+border-top-width	<br-width>
+border-width	<br-width>{1,4}
+bottom	<length> | <percentage> | auto
+box-decoration-break	 slice | clone
+box-shadow	none | [inset? && [ <offset-x> <offset-y> <blur-radius>? <spread-radius>? <color>? ] ]#
+box-sizing	content-box | padding-box | border-box
+break-after	auto | always | avoid | left | right | page | column | avoid-page | avoid-colum
+break-before	auto | always | avoid | left | right | page | column | avoid-page | avoid-colum
+break-inside	auto | avoid | avoid-page | avoid-column
+caption-side	top | bottom | block-start | block-end | inline-start | inline-end
+clear	none | left | right | both
+clip	<shape> | auto
+color	<color>
+column-count	<number> | auto
+column-fill	auto | balance
+column-gap	<length> | normal
+column-rule	<'column-rule-width'> || <'column-rule-style'> || <'column-rule-color'>
+column-rule-color	<color>
+column-rule-style	<br-style>
+column-rule-width	<br-width>
+columns	<'column-width'> || <'column-count'>
+column-span	none | all
+column-width	<length> | auto
+content	normal | none | [ <string> | <uri> | <counter> | attr() | open-quote | close-quote | no-open-quote | no-close-quote ]+
+counter-increment	[<custom-ident> <integer>?]+ | none
+counter-reset	[<custom-ident> <integer>?]+ | none
+cursor	[ [ <uri> [<x> <y>]?,]* [ auto | default | none | context-menu | help | pointer | progress | wait | cell | crosshair | text | vertical-text | alias | copy | move | no-drop | not-allowed | e-resize | n-resize | ne-resize | nw-resize | s-resize | se-resize | sw-resize | w-resize | ew-resize | ns-resize | nesw-resize | nwse-resize | col-resize | row-resize | all-scroll | zoom-in | zoom-out | grab | grabbing ] ]
+direction	ltr | rtl
+display	none | inline | block | list-item | inline-block | inline-table | table | table-cell | table-column | table-column-group | table-footer-group | table-header-group | table-row | table-row-group | flex | inline-flex | grid | inline-grid | run-in | ruby | ruby-base | ruby-text | ruby-base-container | ruby-text-container | contents
+empty-cells	show | hide
+flex	none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]
+flex-basis	content | <'width'>
+flex-direction	row | row-reverse | column | column-reverse
+flex-flow	<'flex-direction'> || <'flex-wrap'>
+flex-grow	<number>
+flex-shrink	<number>
+flex-wrap	nowrap | wrap | wrap-reverse
+float	left | right | none
+font	[ [ <‘font-style’> || <font-variant-css21> || <‘font-weight’> || <‘font-stretch’> ]? <‘font-size’> [ / <‘line-height’> ]? <‘font-family’> ] | caption | icon | menu | message-box | small-caption | status-bar
+font-family	[ <family-name> | <generic-family> ]# 
+font-feature-settings	normal | <feature-tag-value>#
+font-kerning	auto | normal | none
+font-language-override	normal | <string>
+font-size	<absolute-size> | <relative-size> | <length> | <percentage>
+font-size-adjust	none | <number>
+font-stretch	normal | ultra-condensed | extra-condensed | condensed | semi-condensed | semi-expanded | expanded | extra-expanded | ultra-expanded
+font-style	normal | italic | oblique
+font-synthesis	none | [ weight || style ]
+font-variant	normal | none | [ <common-lig-values> || <discretionary-lig-values> || <historical-lig-values> || <contextual-alt-values> || stylistic(<feature-value-name>) || historical-forms || styleset(<feature-value-name> #) || character-variant(<feature-value-name> #) || swash(<feature-value-name>) || ornaments(<feature-value-name>) || annotation(<feature-value-name>) || [ small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps ] || <numeric-figure-values> || <numeric-spacing-values> || <numeric-fraction-values> || ordinal || slashed-zero || <east-asian-variant-values> || <east-asian-width-values> || ruby ] 
+font-variant-alternates	normal | [ stylistic(<feature-value-name>) || historical-forms || styleset(<feature-value-name> #) || character-variant(<feature-value-name> #) || swash(<feature-value-name>) || ornaments(<feature-value-name>) || annotation(<feature-value-name>) ] 
+font-variant-caps	normal | small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps
+font-variant-east-asian	normal | [ <east-asian-variant-values> || <east-asian-width-values> || ruby ] 
+font-variant-ligatures	normal | none | [ <common-lig-values> || <discretionary-lig-values> || <historical-lig-values> || <contextual-alt-values> ]
+font-variant-numeric	normal | [ <numeric-figure-values> || <numeric-spacing-values> || <numeric-fraction-values> || ordinal || slashed-zero ]
+font-variant-position	normal | sub | super
+font-weight	normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
+height	[<length> | <percentage>] && [border-box | content-box]? | available | min-content | max-content | fit-content | complex | auto
+hyphens	none | manual | auto
+image-orientation	from-image | <angle> | [<angle>? flip]
+image-rendering	auto | crisp-edges | pixelated
+ime-mode	auto | normal | active | inactive | disabled
+inline-size	<'width'>
+isolation	 auto | isolate
+justify-content	flex-start | flex-end | center | space-between | space-around
+left	<length> | <percentage> | auto
+letter-spacing	normal | <length>
+line-break	auto | loose | normal | strict
+line-height	normal | <number> | <length> | <percentage>
+list-style	<'list-style-type'> || <'list-style-position'> || <'list-style-image'>
+list-style-image	<uri> | none
+list-style-position	inside | outside
+list-style-type	<custom-ident> | symbols)
+margin	[ <length> | <percentage> | auto ]{1,4}
+margin-block-end	<'margin-left'>
+margin-block-start	<'margin-left'>
+margin-bottom	<length> | <percentage> | auto
+margin-inline-end	<'margin-left'>
+margin-inline-start	<'margin-left'>
+margin-left	<length> | <percentage> | auto
+margin-right	<length> | <percentage> | auto
+margin-top	<length> | <percentage> | auto
+max-block-size	<'max-width'>
+max-height	<length> | <percentage> | none | max-content | min-content | fit-content | fill-available
+max-inline-size	<'max-width'>
+max-width	<length> | <percentage> | none | max-content | min-content | fit-content | fill-available
+min-block-size	<'min-width'>
+min-height	<length> | <percentage> | auto | max-content | min-content | fit-content | fill-available
+min-inline-size	<'min-width'>
+min-width	<length> | <percentage> | auto | max-content | min-content | fit-content | fill-available
+mix-blend-mode	 <blend-mode>
+object-fit	 fill | contain | cover | none | scale-down
+object-position	 <position>
+offset-block-end	<'left'>
+offset-block-start	<'left'>
+offset-inline-end	<'left'>
+offset-inline-start	<'left'>
+opacity	<number>
+order	<integer>
+orphans	<integer>
+outline	<'outline-color'> || <'outline-style'> || <'outline-width'>
+outline-color	<color> | invert
+outline-offset	<length>
+outline-style	auto | <br-style>
+outline-width	<br-width>
+overflow	visible | hidden | scroll | auto
+overflow-x	visible | hidden | scroll | auto
+overflow-y	visible | hidden | scroll | auto
+padding	[ <length> | <percentage> ]{1,4}
+padding-block-end	<'padding-left'>
+padding-block-start	<'padding-left'>
+padding-bottom	<length> | <percentage>
+padding-inline-end	<'padding-left'>
+padding-inline-start	<'padding-left'>
+padding-left	<length> | <percentage>
+padding-right	<length> | <percentage>
+padding-top	<length> | <percentage>
+page-break-after	auto | always | avoid | left | right
+page-break-before	auto | always | avoid | left | right
+page-break-inside	auto | avoid
+perspective	none | <length>
+perspective-origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ]
+position	static | relative | absolute | sticky | fixed
+quotes	[<string> <string>]+ | none
+resize	none | both | horizontal | vertical
+right	<length> | <percentage> | auto
+ruby-align	start | center | space-between | space-around
+ruby-position	over | under | inter-character
+scroll-behavior	 auto | smooth
+shape-image-threshold	<number>
+shape-margin	<length> | <percentage>
+shape-outside	none | <shape-box> || <basic-shape> | <image>
+table-layout	auto | fixed
+tab-size	| <length"><integer> | <length>
+text-align	start | end | left | right | center | justify | match-parent | start end
+text-align-last	auto | start | end | left | right | center | justify
+text-decoration	<'text-decoration-line'> || <'text-decoration-style'> || <'text-decoration-color'>  
+text-decoration-color	<color>
+text-decoration-line	none | [ underline || overline || line-through || blink ]
+text-decoration-style	solid | double | dotted | dashed | wavy
+text-indent	<length> | <percentage> && [ hanging || each-line ]
+text-orientation	mixed | upright | sideways-right | sideways-left | sideways | use-glyph-orientation
+text-overflow	[ clip | ellipsis | <string> ]{1,2}
+text-size-adjust	none | auto | <var><percentage></var>
+text-transform	none | capitalize | uppercase | lowercase | full-width
+text-underline-position	auto | [ under || [ left | right ] ]
+top	<length> | <percentage> | auto
+touch-action	 auto | none | [ pan-x || pan-y ] | manipulation
+transform	none | <transform-function>+
+transform-origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ] <length>?
+transform-style	flat | preserve-3d
+transition	[ none | <single-transition-property> ] || <time> || <timing-function> || <time>
+transition-delay	<time>#
+transition-duration	<time>#
+transition-property	none | <single-transition-property>#  [ ‘,’ <single-transition-property># ]*<br/>
+transition-timing-function	<timing-function>#
+unicode-bidi	normal | embed | isolate | bidi-override | isolate-override | plaintext
+unicode-range	<urange>#
+vertical-align	baseline | sub | super | text-top | text-bottom | middle | top | bottom | <percentage> | <length>
+visibility	visible | hidden | collapse
+white-space	normal | pre | nowrap | pre-wrap | pre-line
+widows	<integer>
+width	[<length> | <percentage>] && [border-box | content-box]? | available | min-content | max-content | fit-content | auto
+will-change	auto | <animateable-feature>#
+word-break	normal | break-all | keep-all
+word-spacing	normal | <length>
+word-wrap	normal | break-word
+writing-mode	horizontal-tb | vertical-rl | vertical-lr
+z-index	auto | <integer>

@@ -1,0 +1,53 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> [ <a href="/en-US/docs/Web/CSS/string" title="">&lt;string&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-uri" title="Tooltip not found in DB.">&lt;uri&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-counter" title="Tooltip not found in DB.">&lt;counter&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> attr() <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> open-quote <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> close-quote <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> no-open-quote <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> no-close-quote ]<a href="/en-US/docs/CSS/Value_definition_syntax#Plus_(.2B)" title="Plus multiplier: The previous entity may appear 1 or several times.">+</a></code>
+</pre>
+<pre>content: normal                                /* Keywords that cannot be combined with other values */
+content: none
+
+content: 'prefix'                              /* &lt;string&gt; value, non-latin characters must be encoded e.g. \00A0 for &amp;nbsp; */
+content: url(http://www.example.com/test.html) /* &lt;uri&gt; value */
+content: chapter_counter                       /* &lt;counter&gt; values */
+content: attr(value string)                    /* attr() value linked to the HTML attribute value */
+content: open-quote                            /* Language- and position-dependant keywords */
+content: close-quote
+content: no-open-quote
+content: no-close-quote
+
+content: open-quote chapter_counter            /* Except for normal and none, several values can be used simultaneously */
+
+content: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  The pseudo-element is not generated.</dd>
+ <dt>
+  <code>normal</code></dt>
+ <dd>
+  Computes to <code>none</code> for the <code>:before</code> and <code>:after</code> pseudo-elements.</dd>
+ <dt>
+  <code>&lt;string&gt;</code></dt>
+ <dd>
+  Text content.</dd>
+ <dt>
+  <code>&lt;uri&gt;</code> or <code>url()</code></dt>
+ <dd>
+  The value is a URI that designates an external resource (such as an image). If the resource or image can't be displayed, it is either ignored or some placeholder shows up.</dd>
+ <dt>
+  <code>&lt;counter&gt;</code></dt>
+ <dd>
+  Counters may be specified with two different functions: 'counter()' or 'counters()'. The former has two forms: 'counter(<var>name</var>)' or 'counter(<var>name</var>, <var>style</var>)'. The generated text is the value of the innermost counter of the given name in scope at this pseudo-element; it is formatted in the indicated style ('decimal' by default). The latter function also has two forms: 'counters(<var>name</var>, <var>string</var>)' or 'counters(<var>name</var>, <var>string</var>, <var>style</var>)'. The generated text is the value of all counters with the given name in scope at this pseudo-element, from outermost to innermost separated by the specified string. The counters are rendered in the indicated style ('decimal' by default). See the section on automatic counters and numbering for more information. The name must not be 'none', 'inherit' or 'initial'. Such a name causes the declaration to be ignored.</dd>
+ <dt>
+  <code>attr(X)</code></dt>
+ <dd>
+  Returns the value of the element's attribute X as a string. If there is no attribute X, an empty string is returned. The case-sensitivity of attribute names depends on the document language.</dd>
+ <dt>
+  <code>open-quote</code> | <code>close-quote</code></dt>
+ <dd>
+  These values are replaced by the appropriate string from the <a href="/en-US/docs/Web/CSS/quotes" title="The quotes CSS property indicates how user agents should render quotation marks."><code>quotes</code></a> property.</dd>
+ <dt>
+  <code>no-open-quote</code> | <code>no-close-quote</code></dt>
+ <dd>
+  Introduces no content, but increments (decrements) the level of nesting for quotes.</dd>
+</dl>

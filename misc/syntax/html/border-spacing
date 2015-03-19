@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a></code>
+</pre>
+
+<pre>border-spacing: <em>length</em>              <em>/* one-value syntax */</em>
+border-spacing: <em>horizontal vertical</em> <em>/* two-value syntax */</em>
+
+border-spacing: inherit 
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><em>length</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value that describes both the horizontal and vertical spacings between cells. It is used only in the one-value syntax.</dd>
+ <dt><em>horizontal</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value that describes the horizontal spacing between cells, that is the space between cells in adjacent columns. It is used only in the two-value syntax.</dd>
+ <dt><em>vertical</em></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value that describes the vertical spacing between cells, that is the space between cells in adjacent rows. It is used only in the two-value syntax.</dd>
+ <dt><code>inherit</code></dt>
+ <dd>Is a keyword indicating that the calculated value of <code>border-spacing</code> of the parent's element must be used.</dd>
+</dl>

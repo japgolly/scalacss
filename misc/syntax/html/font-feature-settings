@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-tag-value" title="&lt;string&gt; [ &lt;integer&gt; | on | off ]?">&lt;feature-tag-value&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code>
+</pre>
+
+<pre>font-feature-settings: normal
+font-feature-settings: "smcp"
+font-feature-settings: "smcp" on
+font-feature-settings: "swsh" 2
+font-feature-settings: "smcp", "swsh" 2
+
+font-feature-settings: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>Text is laid out using default settings.</dd>
+ <dt><code>&lt;feature-tag-value&gt;</code></dt>
+ <dd>When rendering text, the list of OpenType feature tag value is passed to the text layout engine to enable or disable font features. The tag is always a <a href="/en-US/docs/Web/CSS/string" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;string&gt;</code></a> of 4 ASCII characters. If it has more or less characters or contains characters outside the U+20 - U+7E codepoint range, the whole property is invalid.<br/>
+ The value is an positive integer. The two keywords <code>on</code> and <code>off</code> are synonyms for <code>1</code> and <code>0</code> respectively. If no value is set, the default is <code>1</code>. For non-Boolean OpenType features (e.g. <a href="http://www.microsoft.com/typography/otspec/features_pt.htm#salt" title="http://www.microsoft.com/typography/otspec/features_pt.htm#salt">stylistic alternates</a>), the value implies a particular glyph to be selected; for Boolean values, it is a switch.</dd>
+</dl>

@@ -1,0 +1,19 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><code>Formal syntax:  <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> isolate</code></code></pre>
+
+<pre>isolation: auto;
+isolation: isolate;
+
+isolation: initial;
+isolation: inherit;
+isolation: unset;
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>auto</code></dt>
+ <dd>Is a keyword indicating that a new stacking context has to be created only if one properties applied to the element requires it.</dd>
+ <dt><code>isolate</code></dt>
+ <dd>Is a keyword indicating that a new stacking context must be created.</dd>
+</dl>

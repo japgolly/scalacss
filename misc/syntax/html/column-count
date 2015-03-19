@@ -1,0 +1,15 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/number" title="">&lt;number&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> auto</code>
+</pre>
+<pre>column-count: 3
+column-count: auto</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  Is a keyword indicating that the number of columns should be determined by other CSS properties, like <a href="/en-US/docs/Web/CSS/column-width" title="The column-width CSS property suggests an optimal column width. This is not a absolute value but a mere hint. Browser will adjust the width of the column around that suggested value, allowing to achieve scalable designs that fit different screen size. Especially in presence of the column-count CSS property which has precedence, to set an exact column width, all length values must be specified. In horizontal text these are width, column-width, column-gap, and column-rule-width."><code>column-width</code></a>.</dd>
+ <dt>
+  <code>&lt;number&gt;</code></dt>
+ <dd>
+  Is a strictly positive <a href="/en-US/docs/Web/CSS/integer" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;integer&gt;</code></a> describing the ideal number of columns into which the content of the element will be flowed. If the <a href="/en-US/docs/Web/CSS/column-width" title="The column-width CSS property suggests an optimal column width. This is not a absolute value but a mere hint. Browser will adjust the width of the column around that suggested value, allowing to achieve scalable designs that fit different screen size. Especially in presence of the column-count CSS property which has precedence, to set an exact column width, all length values must be specified. In horizontal text these are width, column-width, column-gap, and column-rule-width."><code>column-width</code></a> is also set to a non-<strong>auto</strong> value, it merely indicates the maximum allowed number of columns.</dd>
+</dl>

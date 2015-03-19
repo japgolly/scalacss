@@ -1,0 +1,38 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-absolute-size" title="xx-small | s-small | small | medium | large | x-large | xx-large">&lt;absolute-size&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-relative-size" title="larger | smaller">&lt;relative-size&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a></code></pre>
+<pre>font-size: xx-small  /* &lt;absolute-size&gt; values */
+font-size: x-small
+font-size: small
+font-size: medium
+font-size: large
+font-size: x-large
+font-size: xx-large
+
+font-size: larger    /* &lt;relative-size&gt; values */
+font-size: smaller
+
+font-size: 12px      /* &lt;length&gt; values */
+font-size: 0.8em
+
+font-size: 80%       /* &lt;percentage&gt; values */
+
+font-size: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>xx-small, x-small, small, medium, large, x-large, xx-large</code></dt>
+ <dd>
+  A set of absolute size keywords based on the user's default font size (which is <code>medium</code>). Similar to presentational HTML's <code>&lt;font size="1"&gt;</code> through <code>&lt;font size="7"&gt;</code> where the user's default font size is <code>&lt;font size="3"&gt;</code>.</dd>
+ <dt>
+  <code>larger, smaller</code></dt>
+ <dd>
+  Larger or smaller than the parent element's font size, by roughly the ratio used to separate the absolute size keywords above.</dd>
+ <dt>
+  <code>&lt;length&gt;</code><em> </em></dt>
+ <dd>
+  A positive <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a>. When the units are specified in <code>em</code> or <code>ex</code>, the size is defined relative to the size of the font on the parent element of the element in question. For example, 0.5em is half the font size of the parent of the current element.</dd>
+ <dt>
+  <code>&lt;percentage&gt;</code></dt>
+ <dd>
+  A positive <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> of the parent element's font size.</dd>
+</dl><p>It is best to use values that are relative to the user's default font size, and avoid absolute values such as lengths with units other than <code>em</code> or <code>ex</code>. However, if such absolute values must be used, <code>px</code> are preferred over other units because their meaning does not vary depending on what the operating system thinks (generally incorrectly) the resolution of the monitor is.</p>

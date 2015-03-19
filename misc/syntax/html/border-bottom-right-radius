@@ -1,0 +1,32 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> ]{1,2}</code> </pre>
+<pre>border-bottom-right-radius: <em>radius</em>               /* the corner is a circle    */  E.g. border-bottom-right-radius: 3px
+border-bottom-right-radius: <em>horizontal</em> <em>vertical</em>  /* the corner is an ellipsis */  E.g. border-bottom-right-radius: 0.5em 1em
+
+border-bottom-right-radius: inherit
+</pre>
+<div style="font-size: 0.9em;">
+ <p style="">where:</p>
+ <dl style="padding-left: 6em;"><dt style="float: left; width: 7.5em;">
+   <em>radius</em></dt>
+  <dd style="padding-left: 7.5em;">
+   Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> denoting the radius of the circle to use for the border in that corner.</dd>
+  <dt style="float: left; width: 7.5em;">
+   <em>horizontal</em></dt>
+  <dd style="padding-left: 7.5em;">
+   Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> denoting the horizontal semi-major axis of the ellipsis to use for the border in that corner.</dd>
+  <dt style="float: left; width: 7.5em;">
+   <em>vertical</em></dt>
+  <dd style="padding-left: 7.5em;">
+   Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> denoting the vertical semi-major axis of the ellipsis to use for the border in that corner.</dd>
+ </dl></div>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  Denotes the size of the circle radius or the semi-major and semi-minor axes of the ellipsis. It can be expressed in any unit allowed by the CSS <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> data types. Negative values are invalid.</dd>
+ <dt>
+  <code>&lt;percentage&gt;</code></dt>
+ <dd>
+  Denotes the size of the circle radius, or the semi-major and semi-minor axes of the ellipsis, using percentage values. Percentages for the horizontal axe refer to the width of the box, percentages for the vertical axe refer to the height of the box. Negative values are invalid.</dd>
+</dl>

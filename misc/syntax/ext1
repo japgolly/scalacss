@@ -1,0 +1,59 @@
+align_content	flex_start | flex_end | center | space_between | space_around | stretch
+align_items	flex_start | flex_end | center | baseline | stretch
+align_self	auto | flex_start | flex_end | center | baseline | stretch
+all	initial | inherit | unset
+backface_visibility	 visible | hidden 
+border_collapse	collapse | separate
+box_decoration_break	 slice | clone
+box_sizing	content_box | padding_box | border_box
+break_after	auto | always | avoid | left | right | page | column | avoid_page | avoid_colum
+break_before	auto | always | avoid | left | right | page | column | avoid_page | avoid_colum
+break_inside	auto | avoid | avoid_page | avoid_column
+caption_side	top | bottom | block_start | block_end | inline_start | inline_end
+clear	none | left | right | both
+column_fill	auto | balance
+column_span	none | all
+direction	ltr | rtl
+display	none | inline | block | list_item | inline_block | inline_table | table | table_cell | table_column | table_column_group | table_footer_group | table_header_group | table_row | table_row_group | flex | inline_flex | grid | inline_grid | run_in | ruby | ruby_base | ruby_text | ruby_base_container | ruby_text_container | contents
+empty_cells	show | hide
+flex_direction	row | row_reverse | column | column_reverse
+flex_wrap	nowrap | wrap | wrap_reverse
+float	left | right | none
+font_kerning	auto | normal | none
+font_stretch	normal | ultra_condensed | extra_condensed | condensed | semi_condensed | semi_expanded | expanded | extra_expanded | ultra_expanded
+font_style	normal | italic | oblique
+font_variant_caps	normal | small_caps | all_small_caps | petite_caps | all_petite_caps | unicase | titling_caps
+font_variant_position	normal | sub | super
+font_weight	normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900
+hyphens	none | manual | auto
+image_rendering	auto | crisp_edges | pixelated
+ime_mode	auto | normal | active | inactive | disabled
+isolation	 auto | isolate
+justify_content	flex_start | flex_end | center | space_between | space_around
+line_break	auto | loose | normal | strict
+list_style_position	inside | outside
+object_fit	 fill | contain | cover | none | scale_down
+overflow	visible | hidden | scroll | auto
+overflow_x	visible | hidden | scroll | auto
+overflow_y	visible | hidden | scroll | auto
+page_break_after	auto | always | avoid | left | right
+page_break_before	auto | always | avoid | left | right
+page_break_inside	auto | avoid
+position	static | relative | absolute | sticky | fixed
+resize	none | both | horizontal | vertical
+ruby_align	start | center | space_between | space_around
+ruby_position	over | under | inter_character
+scroll_behavior	 auto | smooth
+table_layout	auto | fixed
+text_align	start | end | left | right | center | justify | match_parent | start end
+text_align_last	auto | start | end | left | right | center | justify
+text_decoration_style	solid | double | dotted | dashed | wavy
+text_orientation	mixed | upright | sideways_right | sideways_left | sideways | use_glyph_orientation
+text_transform	none | capitalize | uppercase | lowercase | full_width
+transform_style	flat | preserve_3d
+unicode_bidi	normal | embed | isolate | bidi_override | isolate_override | plaintext
+visibility	visible | hidden | collapse
+white_space	normal | pre | nowrap | pre_wrap | pre_line
+word_break	normal | break_all | keep_all
+word_wrap	normal | break_word
+writing_mode	horizontal_tb | vertical_rl | vertical_lr

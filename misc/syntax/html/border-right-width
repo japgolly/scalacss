@@ -1,0 +1,43 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a></code>
+</pre>
+<pre>border-right-width: 10em    /* Any &lt;length&gt; value */
+border-right-width: 3vmax
+border-right-width: 6px
+
+border-right-width: thin    /* A keyword */
+border-right-width: medium
+border-right-width: thick
+
+border-right-width: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;br-width&gt;</code></dt>
+ <dd>
+  Is either a non-negative explicit <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> value or a keyword denoting the thickness of the right border. The keyword must be one of the following values:
+  <table class="standard-table"><tbody><tr><td style="vertical-align: middle;"><code>thin</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-right-style: solid; border-right-width: thin; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A thin border</td>
+    </tr><tr><td style="vertical-align: middle;"><code>medium</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-right-style: solid; border-right-width: medium; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A medium border</td>
+    </tr><tr><td style="vertical-align: middle;"><code>thick</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-right-style: solid; border-right-width: thick; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A thick border</td>
+    </tr></tbody></table>
+  The specification doesn't define precisely the thickness of each fo the keywords, which is therefore implementation specific. Nevertheless, it requests that the thickness does follow the rule <code>thin ≤ medium ≤ thick</code>, and is constant on a single document.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Represents the calculated value of the <code>border-right-width</code> of the parent's element.</dd>
+</dl>

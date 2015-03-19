@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code>nowrap <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> wrap <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> wrap-reverse</code>
+</pre>
+<pre>flex-wrap: nowrap
+flex-wrap: wrap
+flex-wrap: wrap-reverse
+
+flex-wrap: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<p>The following values are accepted:</p>
+<dl><dt>
+  <code>nowrap</code></dt>
+ <dd>
+  The flex items are laid out in a single line which may cause the flex container to overflow. The <strong>cross-start</strong> is either equivalent to <strong>start</strong> or <strong>before</strong> depending <a href="/en-US/docs/Web/CSS/flex-direction" title=""><code>flex-direction</code></a> value.</dd>
+ <dt>
+  <code>wrap</code></dt>
+ <dd>
+  The flex items break into multiple lines. The <strong>cross-start</strong> is either equivalent to <strong>start</strong> or <strong>before</strong> depending <code>flex-direction</code> value and the <strong>cross-end</strong> is the opposite of the specified <strong>cross-start</strong>.</dd>
+ <dt>
+  <code>wrap-reverse</code></dt>
+ <dd>
+  Behaves the same as <code>wrap</code> but <strong>cross-start</strong> and <strong>cross-end</strong> are permuted.</dd>
+</dl>

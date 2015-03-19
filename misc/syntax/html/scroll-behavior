@@ -1,0 +1,19 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:  <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> smooth</code></pre>
+
+<pre>scroll-behavior: auto
+scroll-behavior: smooth
+
+scroll-behavior: initial
+scroll-behavior: inherit
+scroll-behavior: unset
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>auto</code></dt>
+ <dd>The scrolling box is scrolled in an instant fashion.</dd>
+ <dt><code>smooth</code></dt>
+ <dd>The scrolling box is scrolled in a smooth fashion using a user-agent-defined timing function over a user-agent-defined period of time. User agents should follow platform conventions, if any.</dd>
+</dl>

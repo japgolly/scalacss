@@ -1,0 +1,20 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> crisp-edges <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> pixelated</code></pre>
+
+<pre>image-rendering: auto
+image-rendering: crisp-edges
+image-rendering: pixelated
+
+image-rendering: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code><strong>auto</strong></code></dt>
+ <dd>Default value, the image should be scaled with an algorithm that maximizes the appearance of the image. In particular, scaling algorithms that "smooth" colors are acceptable, such as bilinear interpolation. This is intended for images such as photos. Since version 1.9 (Firefox 3.0), Gecko uses<em> bilinear </em>resampling (high quality).</dd>
+</dl><dl/><dl><dt><code><strong>crisp-edges</strong></code></dt>
+ <dd>The image must be scaled with an algorithm that preserves contrast and edges in the image, and which does not smooth colors or introduce blur to the image in the process. This is intended for images such as pixel art.</dd>
+ <dt><code><strong>pixelated</strong></code></dt>
+ <dd>When scaling the image up, the "nearest neighbor" or similar algorithm must be used, so that the image appears to be composed of large pixels. When scaling down, this is the same as 'auto'.</dd>
+</dl><div class="note">The values <span id="cke_bm_145S" style="display: none;"> </span><code>optimizeQuality</code> and <code>optimizeSpeed</code> present in early draft (and coming from its SVG counterpart) are defined as synonyms for the <code>auto</code> value.</div>

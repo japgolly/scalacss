@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/Web/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-shape" title="rect(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)">&lt;shape&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto</code>
+</pre>
+
+<pre>clip: rect(1px, 10em, 3rem, 2ch)
+clip: auto
+
+clip: inherit</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;shape&gt;</code></dt>
+ <dd>A rectangular <a href="/en-US/docs/Web/CSS/shape" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;shape&gt;</code></a> of the form
+ <pre style="margin: 0;">rect(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)   /* standard syntax */
+</pre>
+ or
+
+ <pre style="margin: 0;">rect(&lt;top&gt; &lt;right&gt; &lt;bottom&gt; &lt;left&gt;)      /* backwards compatible syntax */</pre>
+ where <code>&lt;top&gt;</code> and <code>&lt;bottom&gt;</code> specify offsets from the <em>inside top border edge</em> of the box, and <code>&lt;right&gt;</code>, and <code>&lt;left&gt;</code> specify offsets from the <em>inside left border edge</em> of the box — that is, the extent of the padding box.</dd>
+ <dd><code>&lt;top&gt;</code>, <code>&lt;right&gt;</code>, <code>&lt;bottom&gt;</code>, and <code>&lt;left&gt;</code> may either have a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value or<code> auto</code>. If any side's value is <code>auto</code>, the element is clipped to that side's <em>inside border edge</em>.</dd>
+ <dt><code>auto</code></dt>
+ <dd>The element does not clip (default value). Note that this is distinct from <code>rect(auto, auto, auto, auto)</code>, which does clip to the inside border edges of the element.</dd>
+</dl>

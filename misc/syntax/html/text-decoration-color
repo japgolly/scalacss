@@ -1,0 +1,19 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/color_value" title="">&lt;color&gt;</a></code>
+</pre>
+
+<pre>text-decoration-color: currentColor
+text-decoration-color: red
+text-decoration-color: #00ff00
+text-decoration-color: rgba(255, 128, 128, 0.5)
+text-decoration-color: transparent
+
+text-decoration-color: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;color&gt;</code></dt>
+ <dd>The <code>color</code> property accepts various keywords and numeric notations. See <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> values for more details.</dd>
+</dl>

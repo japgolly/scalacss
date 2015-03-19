@@ -1,0 +1,12 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/text-decoration-line" title="none | [ underline || overline || line-through || blink ]">&lt;'text-decoration-line'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/text-decoration-style" title="solid | double | dotted | dashed | wavy">&lt;'text-decoration-style'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/text-decoration-color" title="&lt;color&gt;">&lt;'text-decoration-color'&gt;</a></code>  </pre>
+<pre>text-decoration: none
+text-decoration: underline red
+text-decoration: underline wavy red
+
+text-decoration: inherit
+text-decoration: initial
+text-decoration: unset
+</pre>
+<h3 id="Examples" name="Examples">Values</h3>
+<p>The <code>text-decoration</code> property is a shorthand and can use the values of each of the three longhand properties: <a href="/en-US/docs/Web/CSS/text-decoration-line" title="The text-decoration-line CSS property sets what kind of line decorations are added to an element."><code>text-decoration-line</code></a>, <a href="/en-US/docs/Web/CSS/text-decoration-color" title="The text-decoration-color CSS property sets the color used when drawing underlines, overlines, or strike-throughs specified by text-decoration-line. This is the preferred way to color these text decorations, rather than using combinations of other HTML elements."><code>text-decoration-color</code></a>, and <a href="/en-US/docs/Web/CSS/text-decoration-style" title="The text-decoration-style CSS property defines the style of the lines specified by text-decoration-line. The style applies to all lines, there is no way to define different style for each of the line defined by text-decoration-line."><code>text-decoration-style</code></a></p>

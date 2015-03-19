@@ -1,0 +1,29 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> flex-start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> flex-end <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> baseline <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> stretch</code></pre>
+
+<pre>align-self: auto
+align-self: flex-start
+align-self: flex-end
+align-self: center
+align-self: baseline
+align-self: stretch
+
+align-self: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>auto</code></dt>
+ <dd>Computes to parent's <a href="/en-US/docs/Web/CSS/align-items" title="The CSS align-items property aligns flex items of the current flex line the same way as justify-content but in the perpendicular direction."><code>align-items</code></a> value or <code>stretch</code> if the element has no parent.</dd>
+ <dt><code>flex-start</code></dt>
+ <dd>The cross-start margin edge of the flex item is flushed with the cross-start edge of the line.</dd>
+ <dt><code>flex-end</code></dt>
+ <dd>The cross-end margin edge of the flex item is flushed with the cross-end edge of the line.</dd>
+ <dt><code>center</code></dt>
+ <dd>The flex item's margin box is centered within the line on the cross-axis. If the cross-size of the item is larger than the flex container, it will overflow equally in both directions.</dd>
+ <dt><code>baseline</code></dt>
+ <dd>All flex items are aligned such that their baselines align. The item with the largest distance between its cross-start margin edge and its baseline is flushed with the cross-start edge of the line.</dd>
+ <dt><code>stretch</code></dt>
+ <dd>Flex items are stretched such as the cross-size of the item's margin box is the same as the line while respecting width and height constraints.</dd>
+</dl>

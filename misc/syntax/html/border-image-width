@@ -1,0 +1,70 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/number" title="">&lt;number&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto ]{1,4}</code> 
+</pre>
+
+<pre>border-image-width: <em>all</em>                    <em>    /* One-value syntax */</em>       E.g. border-image-width: 3;
+border-image-width: <em>vertical horizontal</em>        <em>/* Two-value syntax */       </em>E.g. border-image-width: 2em 3em;
+border-image-width: <em>top horizontal bottom   </em><em>   /* Three-value syntax */     </em>E.g. border-image-width: 5% 15% 10%;
+border-image-width: <em>top</em> <em>right</em> <em>bottom</em> <em>left </em><em>     /* Four-value syntax */      </em>E.g. border-image-width: 5% 2em 10% auto;
+
+border-image-width: inherit
+</pre>
+
+<div style="font-size: 0.9em;">
+<p style="">where:</p>
+
+<dl style="padding-left: 6em;"><dt style="float: left; width: 7.5em;"><em>width</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to all four edges. It is used only in the one-value syntax.</dd>
+ <dt style="float: left; width: 7.5em;"><em>vertical</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to all vertical edges, that is the top and bottom edges. It is used only in the two-value syntax.</dd>
+ <dt style="float: left; width: 7.5em;"><em>horizontal</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to all horizontal edges, that is the right and left edges. It is used only in the two- and three-value syntaxes.</dd>
+ <dt style="float: left; width: 7.5em;"><em>top</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to the top edge. It is used only in the three- and four-value syntaxes.</dd>
+ <dt style="float: left; width: 7.5em;"><em>bottom</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to the bottom edge. It is used only in the three- and four-value syntaxes.</dd>
+ <dt style="float: left; width: 7.5em;"><em>right</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to the right edge. It is used only in the four-value syntax.</dd>
+ <dt style="float: left; width: 7.5em;"><em>left</em></dt>
+ <dd style="padding-left: 7.5em;">Is a value denoting the width of the image used as a border to apply to the left edge. It is used only in the four-value syntax.</dd>
+ <dt style="float: left; width: 7.5em;"><code>inherit</code></dt>
+ <dd style="padding-left: 7.5em;">Is a keyword indicating that all four values are inherited from their parent's element calculated value.</dd>
+</dl><h3 id="Values">Values</h3>
+
+<p> </p>
+
+<h2 id="Action">Action</h2>
+
+<pre class="brush: css">&lt;!DOCTYPE html&gt;
+
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;body&gt;
+         &lt;p&gt;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
+         eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+         At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, 
+         no sea takimata sanctus est Lorem ipsum dolor sit amet.&lt;/p&gt;
+      &lt;/body&gt;
+   &lt;/head&gt;
+&lt;/html&gt;
+</pre>
+
+<p> </p>
+
+<pre class="brush: css">p{
+   border-image-source: url ("datei.png);
+   border-image-slice:20px;
+   border-image-width:20px;
+   border-image-repeat: repeat;
+   padding:10px
+}</pre>
+
+<dl><dt><code>&lt;length&gt;</code></dt>
+ <dd>Represents the width of the border. It can be an absolute or relative length. This length must not be negative.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>Represents the width of the border as a percentage of the element. The percentage must not be negative.</dd>
+ <dt><code>&lt;number&gt;</code></dt>
+ <dd>Represents a multiple of the computed value of the element's <a href="/en-US/docs/Web/CSS/border-width" title="Technical review completed."><code>border-width</code></a> property to be used as the border width. The number must not be negative.</dd>
+ <dt><code>auto</code></dt>
+</dl></div>

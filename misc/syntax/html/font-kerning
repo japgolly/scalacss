@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> none</code></pre>
+<pre>font-kerning: auto
+font-kerning: normal
+font-kerning: none
+
+font-kerning: initial
+font-kerning: inherit
+font-kerning: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  This keyword defers to the browser regarding whether to use kerning. When the font size is big, font kerning may look strange and browsers will disable it. This is the default value.</dd>
+ <dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword requires kerning to be applied.</dd>
+ <dt>
+  <code>none</code></dt>
+ <dd>
+  This keyword prevents the browser from using the kerning information stored in the font.</dd>
+</dl>

@@ -1,0 +1,11 @@
+<h2 id="Syntax">Syntax</h2>
+
+<p>With a function, use the following:</p>
+
+<pre>filter: &lt;filter-function&gt; [&lt;filter-function&gt;]* | none
+</pre>
+
+<p>For a reference to an SVG <a href="/en-US/docs/Web/SVG/Element/filter" title="The filter element serves as container for atomic filter operations. It is never rendered directly. A filter is referenced by using the filter attribute on the target SVG element."><code>&lt;filter&gt;</code></a> element, use the following:</p>
+
+<pre class="eval">filter: url(svg-url#element-id) 
+</pre>

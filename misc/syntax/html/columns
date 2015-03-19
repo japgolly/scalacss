@@ -1,0 +1,12 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/column-width" title="&lt;length&gt; | auto">&lt;'column-width'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/column-count" title="&lt;number&gt; | auto">&lt;'column-count'&gt;</a></code>
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;'column-width'&gt;</code></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value giving a hint of the optimal width of the column. The actual column width may be wider (to fill the available space), or narrower (only if the available space is smaller than the specified column width). The length must be strictly positive or the declaration is invalid.</dd>
+ <dt><code>&lt;'column-count'&gt;</code></dt>
+ <dd>Is a strictly positive <a href="/en-US/docs/Web/CSS/integer" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;integer&gt;</code></a> describing the ideal number of columns into which the content of the element will be flowed. If the <a href="/en-US/docs/Web/CSS/column-width" title="The column-width CSS property suggests an optimal column width. This is not a absolute value but a mere hint. Browser will adjust the width of the column around that suggested value, allowing to achieve scalable designs that fit different screen size. Especially in presence of the column-count CSS property which has precedence, to set an exact column width, all length values must be specified. In horizontal text these are width, column-width, column-gap, and column-rule-width."><code>column-width</code></a> is also set to a non-<strong>auto</strong> value, it merely indicates the maximum allowed number of columns.</dd>
+</dl>

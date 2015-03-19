@@ -1,0 +1,26 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>from-image <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/angle" title="Possible values: a number followed by 'deg', 'grad', 'rad' or 'turn' like 2turn, 1.3rad, -60deg, or 0grad.">&lt;angle&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [<a href="/en-US/docs/Web/CSS/angle" title="Possible values: a number followed by 'deg', 'grad', 'rad' or 'turn' like 2turn, 1.3rad, -60deg, or 0grad.">&lt;angle&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: the previous entity is optional (it may be used once, or not at all).">?</a> flip]</code>
+</pre>
+<pre>image-orientation: 0deg
+image-orientation: 6.4deg     /* Rounded to 0deg */
+image-orientation: -90deg     /* Equivalent to 270deg, its normalized computed value */
+image-orientation: from-image /* Use EXIF data from the image */
+image-orientation: 90deg flip /* Rotate 90deg, and flip it horizontally */
+image-orientation: flip       /* No rotation, only applies a horizontal flip */
+
+image-orientation: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>from-image</code></dt>
+ <dd>
+  The EXIF information contained in the image will be used to rotate the image appropriately.</dd>
+ <dt>
+  <code>&lt;angle&gt;</code></dt>
+ <dd>
+  The <a href="/en-US/docs/Web/CSS/angle" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;angle&gt;</code></a> of rotation to apply to the image. It is rounded to the nearest <code>90deg</code> (<code>0.25turn</code>).</dd>
+ <dt>
+  <code>flip</code></dt>
+ <dd>
+  The image is flipped horizontally, that is reflected, after the rotation given by the <a href="/en-US/docs/Web/CSS/angle" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;angle&gt;</code></a> value. If no <a href="/en-US/docs/Web/CSS/angle" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;angle&gt;</code></a> is given, <code>0deg</code> is used.</dd>
+</dl>

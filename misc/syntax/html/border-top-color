@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/color" title="">&lt;color&gt;</a></code>
+</pre>
+<pre>border-top-color: red
+border-top-color: rgb(255, 128, 0)
+border-top-color: hsla(100%, 50%, 25%, 0.75)
+border-top-color: #ffbb00
+border-top-color: currentColor
+border-top-color: transparent
+
+border-top-color: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  &lt;<code>color&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/color_value" title=""><code>&lt;color&gt;</code></a> CSS value describing the color of the top border.</dd>
+ <dt>
+  inherit</dt>
+ <dd>
+  Is a keyword denoting the color of the top border of the parent's element (which may be different from the <code>border-top-color</code> default value)</dd>
+</dl>

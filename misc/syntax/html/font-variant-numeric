@@ -1,0 +1,52 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-numeric-figure-values" title="[ lining-nums | oldstyle-nums ]">&lt;numeric-figure-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-numeric-spacing-values" title="[ proportional-nums | tabular-nums ]">&lt;numeric-spacing-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-numeric-fraction-values" title="[ diagonal-fractions | stacked-fractions ]">&lt;numeric-fraction-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> ordinal <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> slashed-zero ]</code></pre>
+<pre>font-variant-numeric: normal
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: ordinal</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: slashed-zero</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: lining-nums         /* &lt;numeric-figure-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: oldstyle-nums       /* &lt;numeric-figure-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: proportional-nums   /* &lt;numeric-spacing-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: tabular-nums        /* &lt;numeric-spacing-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: diagonal-fractions  /* &lt;numeric-fraction-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: stacked-fractions   /* &lt;numeric-fraction-values&gt; */</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: oldstyle-nums stacked-fractions</span>
+
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: initial</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: inherit</span>
+font-variant-<span style="font-size: 1rem;">numeric</span><span style="font-size: 1rem;">: unset</span>
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword leads to the deactivation of the use of such alternate glyphs.</dd>
+ <dt>
+  <code>ordinal</code></dt>
+ <dd>
+  This keyword forces the use of special glyphs for the ordinal markers, like 1<sup>st</sup>, 2<sup>nd</sup>, 3<sup>rd</sup>, 4<sup>th</sup> in English or a 1<sup>a</sup> in Italian. It corresponds to the OpenType values <code>ordn</code>.</dd>
+ <dt>
+  <code>slashed-zero</code></dt>
+ <dd>
+  This keyword forces the use of a 0 with a slash; this is useful when a clear distinction between O and 0 is needed. It corresponds to the OpenType values <code>zero</code>.</dd>
+ <dt>
+  <em>&lt;numeric-figure-values</em>&gt;</dt>
+ <dd>
+  These values controls the figures used for numbers. Two values are possible:
+  <ul><li><code>lining-nums</code> activating the set of figures where numbers are all lying on the baseline. It corresponds to the OpenType values <code>lnum</code>.</li>
+   <li><code>oldstyle-nums</code> activating the set of figures where some numbers, like 3, 4, 7, 9 have descenders. It corresponds to the OpenType values <code>onum</code>.</li>
+  </ul></dd>
+ <dt>
+  <em>&lt;numeric-spacing-values</em>&gt;</dt>
+ <dd>
+  These values controls the sizing of figures used for numbers. Two values are possible:
+  <ul><li><code>proportional-nums</code> activating the set of figures where numbers are not all of the same size. It corresponds to the OpenType values <code>pnum</code>.</li>
+   <li><code>tabular-nums</code> activating the set of figures where numbers are all of the same size, allowing them to be easily aligned like in tables. It corresponds to the OpenType values <code>tnum</code>.</li>
+  </ul></dd>
+ <dt>
+  <em>&lt;numeric-figure-values</em>&gt;</dt>
+ <dd>
+  These values controls the glyphs used to display fractions. Two values are possible:
+  <ul><li><code>diagonal-fractions</code> activating the set of figures where the numerator and denominator are made smaller and separated by a slash. It corresponds to the OpenType values <code>frac</code>.</li>
+   <li><code>stacked-fractions</code> activating the set of figures where the numerator and denominator are made smaller, stacked and separated by a horizontal line. It corresponds to the OpenType values <code>afrc</code>.</li>
+  </ul></dd>
+</dl>

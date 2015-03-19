@@ -1,0 +1,21 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")" || exit 1
+
+f=../core/src/main/scala/japgolly/scalacss/Attrs.scala
+
+function count { wc -l | awk '{print $1}' ;}
+
+_list="$(grep -v '^ *//' $f)"
+function list { echo "$_list" ;}
+
+total=$(list | grep -P 'Attr[ .](real|alias)|new AliasAttr' | count)
+typed=$(list | grep -P 'extends +TypedAttr' | count)
+untyped=$(list | grep -P '^ *final val .*Attr[^\]]' | count)
+
+echo "
+CSS Attributes
+==============
+  Total: $total
+  Typed: $typed ($((typed * 100 / total))%)
+Untyped: $untyped
+"

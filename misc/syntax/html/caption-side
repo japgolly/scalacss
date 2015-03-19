@@ -1,0 +1,38 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>top <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bottom <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> block-start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> block-end <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> inline-end</code>
+</pre>
+
+<pre>caption-side: top
+caption-side: bottom
+caption-side: left     /* Warning: non-standard value */
+caption-side: right    /* Warning: non-standard value */
+caption-side: block-start
+caption-side: block-end
+caption-side: inline-start
+caption-side: inline-end
+ 
+caption-side: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>top</code></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned above the table.</dd>
+ <dt><code>bottom</code></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned below the table.</dd>
+ <dt><code>left</code> <span class="inlineIndicator nonStandard nonStandardInline">Non-standard</span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned on the left side of the table.<br/><div class="note"><strong>Note:</strong> This value was proposed for CSS 2, but removed from the final CSS 2.1 specification. It is non-standard.</div></dd>
+ <dt><code>right</code> <span class="inlineIndicator nonStandard nonStandardInline">Non-standard</span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned on the right side of the table.<br/><div class="note"><strong>Note:</strong> This value was proposed for CSS 2, but removed from the final CSS 2.1 specification. It is non-standard.</div></dd>
+ <dt>block-start <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned at the start of the block, which reflects either the top or the bottom of the table depending on the writing mode.</dd>
+ <dt>block-end <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned at the end of the block, which reflects either the top or the bottom of the table depending on the writing mode.</dd>
+ <dt>inline-start <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned at the inline start, which reflects either the left or the right side of the table depending on the writing mode.</dd>
+ <dt>inline-end <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>Is a keyword indicating that the caption box should be positioned at the inline end, which reflects either the left or the right side of the table depending on the writing mode.</dd>
+ <dt><code>inherit</code></dt>
+ <dd>Is a keyword indicating that the <code>caption-side</code> value defined on the parent's element must be used.</dd>
+</dl>

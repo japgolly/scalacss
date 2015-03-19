@@ -1,0 +1,12 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox">mask-type: luminance | alpha</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>luminance</code></dt>
+ <dd>
+  Is a keyword indicating that the associated <a href="/en-US/docs/Web/SVG/Element/mask" title="In SVG, you can specify that any other graphics object or &lt;g&gt; element can be used as an alpha mask for compositing the current object into the background. A mask is defined with the mask element. A mask is used/referenced using the mask property."><code>&lt;mask&gt;</code></a> is a luminance mask, that is that its <a href="http://en.wikipedia.org/wiki/Luminance_%28relative%29" title="http://en.wikipedia.org/wiki/Luminance_%28relative%29">relative luminance</a> values must be used when applying it.</dd>
+ <dt>
+  <code>alpha</code></dt>
+ <dd>
+  Is a keyword indicating that the associated <a href="/en-US/docs/Web/SVG/Element/mask" title="In SVG, you can specify that any other graphics object or &lt;g&gt; element can be used as an alpha mask for compositing the current object into the background. A mask is defined with the mask element. A mask is used/referenced using the mask property."><code>&lt;mask&gt;</code></a> is an alpha mask, that is that its <a href="http://en.wikipedia.org/wiki/Alpha_compositing" title="http://en.wikipedia.org/wiki/Alpha_compositing"><em>alpha channel</em></a> values must be used when applying it.</dd>
+</dl>

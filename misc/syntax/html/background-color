@@ -1,0 +1,19 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/color_value" title="">&lt;color&gt;</a></code></pre>
+
+<pre>background-color: red
+background-color: rgb(255, 255, 128)
+background-color: hsla(50, 33%, 25%, 0.75)
+background-color: currentColor
+background-color: transparent
+background-color: #bbff00
+
+background-color: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>&lt;color&gt;</code></dt>
+ <dd>Is a CSS <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> that describes the uniform color of the background. Even if one or several <a href="/en-US/docs/Web/CSS/background-image" title="Technical review completed."><code>background-image</code></a> are defined, this color can be affect the rendering, by transparency if the images aren't opaque. In CSS, <code>transparent</code> is a color.</dd>
+</dl>

@@ -1,0 +1,25 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> [ <a href="/en-US/docs/CSS/flex-grow" title="&lt;number&gt;">&lt;'flex-grow'&gt;</a> <a href="/en-US/docs/CSS/flex-shrink" title="&lt;number&gt;">&lt;'flex-shrink'&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/flex-basis" title="content | &lt;'width'&gt;">&lt;'flex-basis'&gt;</a> ]</code>
+</pre>
+
+<pre>flex: none                                            <em>/* value 'none' case */</em>
+flex: &lt;'flex-grow'&gt;                                   <em>/* One value syntax, variation 1 */</em>
+flex: &lt;'flex-basis'&gt;                                  <em>/* One value syntax, variation 2 */</em>
+flex: &lt;'flex-grow'&gt; &lt;'flex-basis'&gt;                    <em>/* Two values syntax, variation 1 */</em>
+flex: &lt;'flex-grow'&gt; &lt;'flex-shrink'&gt;                   <em>/* Two values syntax, variation 2 */</em>
+flex: &lt;'flex-grow'&gt; &lt;'flex-shrink'&gt; &lt;'flex-basis'&gt;    <em>/* Three values syntax */</em>
+
+flex: inherit</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>&lt;'flex-grow'&gt;</code></dt>
+ <dd>Defines the <code><a href="/en-US/docs/Web/CSS/flex-grow">flex-grow</a></code> of the flex item. See <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a> for more details. Negative values are considered invalid. Defaults to <code>1</code> when omitted.</dd>
+ <dt><code>&lt;'flex-shrink'&gt;</code></dt>
+ <dd>Defines the <code><a href="/en-US/docs/Web/CSS/flex-shrink">flex-shrink</a></code> of the flex item. See <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a> for more details. Negative values are considered invalid. Defaults to <code>1</code> when omitted.</dd>
+ <dt><code>&lt;'flex-basis'&gt;</code></dt>
+ <dd>Defines the <a href="/en-US/docs/CSS/flex-basis" title="CSS/flex-basis"><code>flex-basis</code></a> of the flex item. Any value valid for <code>width</code> and <code>height</code> properties are accepted. A preferred size of <code>0</code> must have a unit to avoid being interpreted as a flexibility. Defaults to <code>0%</code> when omitted.</dd>
+ <dt><code>none</code></dt>
+ <dd>This keyword computes to <code>0 0 auto</code>.</dd>
+</dl>

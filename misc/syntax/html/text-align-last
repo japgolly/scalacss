@@ -1,0 +1,42 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> end <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> justify</code></pre>
+<pre>text-align-last: auto
+text-align-last: start
+text-align-last: end
+text-align-last: left
+text-align-last: right
+text-align-last: center
+text-align-last: justify
+
+text-align-last: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  The affected line is aligned per the value of <a href="/en-US/docs/Web/CSS/text-align" title="The text-align CSS property describes how inline content like text is aligned in its parent block element. text-align does not control the alignment of block elements itself, only their inline content."><code>text-align</code></a>, unless <a href="/en-US/docs/Web/CSS/text-align" title="The text-align CSS property describes how inline content like text is aligned in its parent block element. text-align does not control the alignment of block elements itself, only their inline content."><code>text-align</code></a> is <code>justify</code>, in which case the effect is the same as setting <code>text-align-last</code> to <code>left</code>.</dd>
+ <dt>
+  <code>start</code></dt>
+ <dd>
+  The same as <code>left</code> if direction is left-to-right and <code>right</code> if direction is right-to-left.</dd>
+ <dt>
+  <code>end</code></dt>
+ <dd>
+  The same as <code>right</code> if direction is left-to-right and <code>left</code> if direction is right-to-left.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  The inline contents are aligned to the left edge of the line box.</dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  The inline contents are aligned to the right edge of the line box.</dd>
+ <dt>
+  <code>center</code></dt>
+ <dd>
+  The inline contents are centered within the line box.</dd>
+ <dt>
+  <code>justify</code></dt>
+ <dd>
+  The text is justified. Text should line up their left and right edges to the left and right content edges of the paragraph.</dd>
+</dl>

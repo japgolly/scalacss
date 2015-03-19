@@ -1,0 +1,28 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ clip <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> ellipsis <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/string" title="">&lt;string&gt;</a> ]{1,2}</code></pre>
+<pre>/* One-value syntax: the value describes the overflow performed at the end of the line (right end if ltr, left end if rtl) */
+text-overflow: clip
+text-overflow: ellipsis
+text-overflow: "…"
+
+/* Two-value syntax: the first value describes the overflow at the left end of the line, 
+                     the second at the right end. Directionality has no influence */
+
+text-overflow: clip ellipsis
+text-overflow: "…" "…"
+
+text-overflow: inherit</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>clip</code></dt>
+ <dd>
+  This keyword value indicates to truncate the text at the limit of the <a href="/en/CSS/box_model" title="en/CSS/Box_model">content area</a>, therefore the truncation can happen in the middle of a character. To truncate at the transition between two characters, the empty string value (<code>''</code>) must be used. The value <code>clip</code> is the default for this property.</dd>
+ <dt>
+  <code>ellipsis</code></dt>
+ <dd>
+  This keyword value indicates to display an ellipsis (<code>'…'</code>, <code style="text-transform: uppercase;">U+2026 Horizontal Ellipsis</code>) to represent clipped text. The ellipsis is displayed inside the <a href="/en/CSS/box_model" title="en/CSS/Box_model">content area</a>, decreasing the amount of text displayed. If there is not enough space to display the ellipsis, it is clipped.</dd>
+ <dt>
+  <code>&lt;string&gt;</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The <a href="/en-US/docs/Web/CSS/string" title=""><code>&lt;string&gt;</code></a> to be used to represent clipped text. The string is displayed inside the <a href="/en/CSS/box_model" title="en/CSS/Box_model">content area</a>, shortening more the size of the displayed text. If there is not enough place to display the string itself, it is clipped.</dd>
+</dl>

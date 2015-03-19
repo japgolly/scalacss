@@ -1,0 +1,44 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>visible <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> hidden <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> scroll <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> auto</code></pre>
+<pre>overflow: visible
+overflow: hidden
+overflow: scroll
+overflow: auto
+
+overflow: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>visible</code></dt>
+ <dd>
+  Default value. Content is not clipped, it may be rendered outside the content box.</dd>
+ <dt>
+  <code>hidden</code></dt>
+ <dd>
+  The content is clipped and no scrollbars are provided.</dd>
+ <dt>
+  <code>scroll</code></dt>
+ <dd>
+  The content is clipped and desktop browsers use scrollbars, whether or not any content is clipped. This avoids any problem with scrollbars appearing and disappearing in a dynamic environment. Printers may print overflowing content.</dd>
+ <dt>
+  <code>auto</code></dt>
+ <dd>
+  Depends on the user agent. Desktop browsers like Firefox provide scrollbars if content overflows.</dd>
+</dl><h4 id="Mozilla_Extensions" name="Mozilla_Extensions">Mozilla Extensions</h4>
+<dl><dt>
+  <code>-moz-scrollbars-none </code><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></dt>
+ <dd>
+  Use <code>overflow:hidden</code> instead.</dd>
+ <dt>
+  <code>-moz-scrollbars-horizontal </code><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>
+  Use of <a href="/en-US/docs/Web/CSS/overflow-x" title="The overflow-x CSS property specifies whether to clip content, render a scroll bar or display overflow content of a block-level element, when it overflows at the left and right edges."><code>overflow-x</code></a> and <a href="/en-US/docs/Web/CSS/overflow-y" title="The overflow-y CSS property specifies whether to clip content, render a scroll bar, or display overflow content of a block-level element, when it overflows at the top and bottom edges."><code>overflow-y</code></a> is preferred.</dd>
+ <dt>
+  <code>-moz-scrollbars-vertical </code><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></dt>
+ <dd>
+  Use of <a href="/en-US/docs/Web/CSS/overflow-x" title="The overflow-x CSS property specifies whether to clip content, render a scroll bar or display overflow content of a block-level element, when it overflows at the left and right edges."><code>overflow-x</code></a> and <a href="/en-US/docs/Web/CSS/overflow-y" title="The overflow-y CSS property specifies whether to clip content, render a scroll bar, or display overflow content of a block-level element, when it overflows at the top and bottom edges."><code>overflow-y</code></a> is preferred.</dd>
+ <dt>
+  -moz-hidden-unscrollable <span class="inlineIndicator nonStandard nonStandardInline">Non-standard</span></dt>
+ <dd>
+  Is intended mainly for internal use and by themes. Disables scrolling of XML root elements and <code>&lt;html&gt;</code>, <code> &lt;body&gt;</code> by arrow keys and mouse wheel.</dd>
+</dl>

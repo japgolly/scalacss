@@ -1,0 +1,30 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> ultra-condensed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> extra-condensed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> condensed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> semi-condensed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> semi-expanded <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> expanded <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> extra-expanded <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> ultra-expanded</code>
+</pre>
+<pre>font-stretch: ultra-condensed
+font-stretch: extra-condensed
+font-stretch: condensed
+font-stretch: semi-condensed
+font-stretch: normal
+font-stretch: semi-expanded
+font-stretch: expanded
+font-stretch: extra-expanded
+font-stretch: ultra-expanded
+
+font-stretch: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  Specifies a normal font face.</dd>
+ <dt>
+  <code>semi-condensed</code>, <code>condensed</code>, <code>extra-condensed</code>, <code>ultra-condensed</code></dt>
+ <dd>
+  Specifies a font face more condensed than normal, with ultra-condensed as the most condensed.</dd>
+ <dt>
+  <code>semi-expanded</code>, <code>expanded</code>, <code>extra-expanded</code>, <code>ultra-expanded</code></dt>
+ <dd>
+  Specifies a font face more expanded than normal, with ultra-expanded as the most expanded.</dd>
+</dl><h3 id="Interpolation">Interpolation</h3>
+<p>Font stretch values are interpolated in discrete steps. The interpolation happens as though the ordered values are equally spaced real numbers; the result is rounded to the nearest value, with values exactly halfway between two values rounded towards the later value, that is the most expanded one.</p>

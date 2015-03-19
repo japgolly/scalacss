@@ -1,0 +1,39 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> embed <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> isolate <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> bidi-override <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> isolate-override <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> plaintext</code>
+</pre>
+<pre>unicode-bidi: normal
+unicode-bidi: embed
+unicode-bidi: isolate
+unicode-bidi: bidi-override
+unicode-bidi: isolate-override
+unicode-bidi: plaintext
+
+unicode-bidi: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  The element does not offer a additional level of embedding with respect to the bidirectional algorithm. For inline elements implicit reordering works across element boundaries.</dd>
+ <dt>
+  <code>embed</code></dt>
+ <dd>
+  If the element is inline, this value opens an additional level of embedding with respect to the bidirectional algorithm. The direction of this embedding level is given by the <a href="/en-US/docs/Web/CSS/direction" title="Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS."><code>direction</code></a> property.</dd>
+ <dt>
+  <code>bidi-override</code></dt>
+ <dd>
+  For inline elements this creates an override. For block container elements this creates an override for inline-level descendants not within another block container element. This means that inside the element, reordering is strictly in sequence according to the <a href="/en-US/docs/Web/CSS/direction" title="Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS."><code>direction</code></a> property; the implicit part of the bidirectional algorithm is ignored.</dd>
+ <dt>
+  <code>isolate</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  This keyword indicates that the element's container directionality should be calculated without considering the content of this element. The element is therefore <em>isolated</em> from its siblings. When applying its bidirectional-resolution algorithm, its container element treats it as one or several <code>U+FFFC Object Replacement Character</code>, i.e. like an image.</dd>
+ <dt>
+  <code>isolate-override</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  This keyword applies the isolation behavior of the <code>isolate</code> keyword to the surrounding content and the override behavior of the <code>bidi-override</code> keyword to the inner content.</dd>
+ <dt>
+  <code>plaintext</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  This keyword makes the elements directionality calculated without considering its parent bidirectional state or the value of the <a href="/en-US/docs/Web/CSS/direction" title="Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS."><code>direction</code></a> property. The directionality is calculated using the P2 and P3 rules of the Unicode Bidirectional Algorithm.<br/>
+  This value allows to display data which has already formatted using a tool following the Unicode Bidirectional Algorithm.</dd>
+</dl>

@@ -1,0 +1,24 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> sub <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> super</code></pre>
+<pre>font-variant-position: normal
+font-variant-position: sub
+font-variant-position: super
+
+font-variant-position: initial
+font-variant-position: inherit
+font-variant-position: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword leads to the deactivation of the use of such alternate glyphs.</dd>
+ <dt>
+  <code>sub</code></dt>
+ <dd>
+  This keyword forces the use of subscript alternate glyphs. If, in a given run, one such glyph is not available for a character, the whole characters in the run is rendered using synthesized appropriate glyphs.</dd>
+ <dt>
+  <code>super</code></dt>
+ <dd>
+  This keyword forces the use of superscript alternate glyphs. If, in a given run, one such glyph is not available for a character, the whole characters in the run is rendered using synthesized appropriate glyphs.</dd>
+</dl>

@@ -1,0 +1,28 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> both <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> horizontal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> vertical</code></pre>
+<pre>resize: none
+resize: both
+resize: horizontal
+resize: vertical
+
+resize: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  The element offers no user-controllable method for resizing the element.</dd>
+ <dt>
+  <code>both</code></dt>
+ <dd>
+  The element displays a mechanism for allowing the user to resize the element, which may be resized both horizontally and vertically.</dd>
+ <dt>
+  <code>horizontal</code></dt>
+ <dd>
+  The element displays a mechanism for allowing the user to resize the element, which may only be resized horizontally.</dd>
+ <dt>
+  <code>vertical</code></dt>
+ <dd>
+  The element displays a mechanism for allowing the user to resize the element, which may only be resized vertically.</dd>
+</dl><div class="note">
+ <strong>Note:</strong> <code>resize</code> does not apply to blocks for which the <a href="/en-US/docs/Web/CSS/overflow" title=""><code>overflow</code></a> property is set to <code>visible</code>.</div>

@@ -1,0 +1,15 @@
+~*
+.~*
+*.bak
+*.log
+*.tmp
+.*.swp
+.*.swo
+.*.swn
+.metadata
+.idea*
+projectFilesBackup*
+target
+
+doc/_book
+

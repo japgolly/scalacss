@@ -1,0 +1,20 @@
+border_block_end	<'border_width'> || <'border_style'> || <'color'>
+border_block_end_color	<'color'>
+border_block_end_style	<'border_style'>
+border_block_end_width	<'border_width'>
+border_block_start	<'border_width'> || <'border_style'> || <'color'>
+border_block_start_color	<'color'>
+border_block_start_style	<'border_style'>
+border_block_start_width	<'border_width'>
+border_bottom	<br_width> || <br_style> || <color>
+border_inline_end	<'border_width'> || <'border_style'> || <'color'>
+border_inline_end_color	<'color'>
+border_inline_end_style	<'border_style'>
+border_inline_end_width	<'border_width'>
+border_inline_start	<'border_width'> || <'border_style'> || <'color'>
+border_inline_start_color	<'color'>
+border_inline_start_style	<'border_style'>
+border_inline_start_width	<'border_width'>
+border_left	<br_width> || <br_style> || <color>
+border_right	<br_width> || <br_style> || <color>
+border_top	<br_width> || <br_style> || <color>

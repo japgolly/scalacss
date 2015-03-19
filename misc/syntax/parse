@@ -1,0 +1,9 @@
+#!/bin/bash
+perl -pe 'undef $/; $_=<>; s!<a .+?>(.+?)</a>!\1!g; s!<pre .+?>(.+?)</pre>!\1!msg' | fgrep 'Formal syntax' \
+  | perl -pe '
+    s!</?(?:code|span)(?: .+?)?>!!g;
+    s!&lt;!<!g;
+    s!&gt;!>!g;
+    s!&amp;!&!g;
+'
+

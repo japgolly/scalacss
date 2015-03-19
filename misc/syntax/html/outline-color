@@ -1,0 +1,18 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/color_value" title="">&lt;color&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> invert</code>
+</pre>
+
+<pre>outline-color: invert
+outline-color: red
+
+outline-color: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;color&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> for the various color keywords and notations.</dd>
+ <dt><code>invert</code></dt>
+ <dd>To ensure the outline is visible, performs a color inversion of the background. This makes the focus border more salient, regardless of the color in the background. Note that browsers are not required to support it. If not, they just consider the statement as invalid</dd>
+</dl>

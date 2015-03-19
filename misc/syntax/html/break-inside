@@ -1,0 +1,27 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid-page <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid-column</code>
+</pre>
+<pre>break-inside: auto
+break-inside: avoid
+break-inside: avoid-page
+break-inside: avoid-column
+break-inside: avoid-region
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  Allows, meaning neither forbid nor force, any break (either page, column or region) to be be inserted within the principle box.</dd>
+ <dt>
+  <code>avoid-page</code></dt>
+ <dd>
+  Avoid any page break within the principle box.</dd>
+ <dt>
+  <code>avoid-column</code></dt>
+ <dd>
+  Avoid any column break within the principle box.</dd>
+ <dt>
+  <code>avoid-region </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Avoid any region break within the principle box.</dd>
+</dl>

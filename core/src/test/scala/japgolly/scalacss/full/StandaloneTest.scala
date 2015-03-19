@@ -1,0 +1,76 @@
+package japgolly.scalacss.full
+
+import japgolly.scalacss.Defaults._
+
+//object CopyDefaultsForStandalone extends Defaults
+//import CopyDefaultsForStandalone._
+
+object MyStandalone extends StyleSheet.Standalone {
+
+  "div.std" - (
+    margin(12 px, auto),
+    textAlign.left,
+    cursor.pointer,
+
+    &.hover -
+      cursor.zoom_in,
+
+    &("span") -
+      color.red
+  )
+
+  "h1".firstChild -
+    fontWeight.bold
+
+  for (i <- 0 to 3)
+    s".indent-$i" -
+      paddingLeft(i * 2.ex)
+}
+
+object StandaloneTest extends utest.TestSuite {
+  import japgolly.scalacss.TestUtil._
+  import utest._
+
+  override val tests = TestSuite {
+    def norm(css: String) = css.trim
+    assertEq(norm(MyStandalone.renderA), norm(
+      """
+        |div.std {
+        |  text-align: left;
+        |  margin: 12px auto;
+        |  cursor: pointer;
+        |}
+        |
+        |div.std:hover {
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |div.std span {
+        |  color: red;
+        |}
+        |
+        |h1:first-child {
+        |  font-weight: bold;
+        |}
+        |
+        |.indent-0 {
+        |  padding-left: 0;
+        |}
+        |
+        |.indent-1 {
+        |  padding-left: 2ex;
+        |}
+        |
+        |.indent-2 {
+        |  padding-left: 4ex;
+        |}
+        |
+        |.indent-3 {
+        |  padding-left: 6ex;
+        |}
+      """.stripMargin))
+  }
+}

@@ -1,0 +1,43 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a></code>
+</pre>
+<pre>border-bottom-width: 10em    /* Any &lt;length&gt; value */
+border-bottom-width: 3vmax
+border-bottom-width: 6px
+
+border-bottom-width: thin    /* A keyword */
+border-bottom-width: medium
+border-bottom-width: thick
+
+border-right-width: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  &lt;<code>br-width&gt;</code></dt>
+ <dd>
+  Is either a non-negative explicit <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value or a keyword denoting the thickness of the bottom border. The keyword must be one of the following values:
+  <table class="standard-table"><tbody><tr><td style="vertical-align: middle;"><code>thin</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-bottom-style: solid; border-bottom-width: thin; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A thin border</td>
+    </tr><tr><td style="vertical-align: middle;"><code>medium</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-bottom-style: solid; border-bottom-width: medium; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A medium border</td>
+    </tr><tr><td style="vertical-align: middle;"><code>thick</code></td>
+     <td style="vertical-align: middle;">
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-bottom-style: solid; border-bottom-width: thick; background-color: palegreen;">
+        </div>
+     </td>
+     <td style="vertical-align: middle;">A thick border</td>
+    </tr></tbody></table>
+  The specification doesn't precisely define the thickness of each of the keywords, which is therefore implementation specific. Nevertheless, it requests that the thickness does follow the <code>thin ≤ medium ≤ thick</code> inequality and that the values are constant on a single document.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Represents the calculated value of the <code>border-bottom-width</code> of the parent's element.</dd>
+</dl>

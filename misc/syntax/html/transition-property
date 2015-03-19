@@ -1,0 +1,30 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/Web/CSS/Value_definition_syntax">Formal syntax</a>: <code>none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-single-transition-property" title="all | IDENT">&lt;single-transition-property&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a>  [ ‘,’ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-single-transition-property" title="all | IDENT">&lt;single-transition-property&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a> ]<a href="/en-US/docs/CSS/Value_definition_syntax#Asterisk_(*)" title="Asterisk multiplier: the previous entity may appear 0, 1 or several times.">*</a><br/></code>
+</pre>
+<pre>transition-property: none
+transition-property: all
+transition-property: test_05
+transition-property: -specific
+transition-property: sliding-vertically
+
+transition-property: test1
+transition-property: test1, animation4
+transition-property: all, height, all
+transition-property: all, -moz-specific, sliding
+
+transition-property: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>none</code></dt>
+ <dd>
+  No properties will transition.</dd>
+ <dt>
+  <code>all</code></dt>
+ <dd>
+  All properties that can have an animated transition will do so.</dd>
+ <dt>
+  <code>IDENT</code></dt>
+ <dd>
+  A string identifying the property to which a transition effect should be applied when its value changes. This identifier is composed by case-insensitive letter <code>a</code> to <code>z</code>, numbers <code>0</code> to <code>9</code>, an underscore (<code>_</code>) or a dash(<code>-</code>). The first non-dash character must be a letter (that is no number at the beginning of it, even preceded by a dash). Also two dashes are forbidden at the beginning of the identifier.</dd>
+</dl>

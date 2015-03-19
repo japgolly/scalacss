@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>ltr <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> rtl</code></pre>
+<pre>direction: ltr
+direction: rtl
+
+direction: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>ltr</code></dt>
+ <dd>
+  The initial value of <code>direction</code> (that is, if not otherwise specified). Text and other elements go from left to right.</dd>
+ <dt>
+  <code>rtl</code></dt>
+ <dd>
+  Text and other elements go from right to left</dd>
+</dl><p>For the <code>direction</code> property to have any effect on inline-level elements, the <a href="/en-US/docs/Web/CSS/unicode-bidi" title="The unicode-bidi CSS property together with the direction property relates to the handling of bidirectional text in a document. For example, if a block of text contains both left-to-right and right-to-left text then the user-agent uses a complex Unicode algorithm to decide how to display the text. This property overrides this algorithm and allows the developer to control the text embedding."><code>unicode-bidi</code></a> property's value must be <code>embed</code> or <code>override</code>.</p>

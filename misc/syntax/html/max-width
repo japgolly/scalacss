@@ -1,0 +1,33 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> max-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> min-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> fit-content <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> fill-available</code>
+</pre>
+
+<pre>max-width: 3.5em
+max-width: 75%
+max-width: none
+max-width: max-content
+max-width: min-content
+max-width: fit-content
+max-width: fill-available
+
+max-width: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>none</code></dt>
+ <dd>The width has no maximum value.</dd>
+ <dt><code>&lt;length&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for possible units.</dd>
+ <dt><code>&lt;percentage&gt;</code></dt>
+ <dd>Specified as a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> of containing block's width.</dd>
+ <dt><code>max-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The intrinsic preferred width.</dd>
+ <dt><code>min-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The intrinsic minimum width.</dd>
+ <dt><code>fill-available</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The containing block width minus horizontal margin, border, and padding. Some browsers implement an ancient name for this keyword, <code>available</code>.</dd>
+ <dt><code>fit-content</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>The same as <code>max-content.</code></dd>
+</dl>

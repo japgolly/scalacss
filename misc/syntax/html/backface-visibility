@@ -1,0 +1,19 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:  <code>visible <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> hidden</code> 
+</pre>
+
+<pre>backface-visibility: <em>visibility</em>
+
+backface-visibility: visible
+backface-visibility: hidden
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><em>visibility</em></dt>
+ <dd>Is a keyword indicating if the backface must be visible or not. It can have the following values:
+ <ul><li><code>visible</code> meaning that the back face is visible, allowing the front face to be displayed mirrored;</li>
+  <li><code>hidden</code> meaning that the back face is not visible, hiding the front face.</li>
+ </ul></dd>
+</dl>

@@ -1,0 +1,16 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/padding-left" title="&lt;length&gt; | &lt;percentage&gt;">&lt;'padding-left'&gt;</a></code>
+</pre>
+
+<pre>padding-block-start: 10px;      /* An absolute length */
+padding-block-start: 1em;       /* A length relative to the text size */
+padding-block-start: 5%;        /* A padding relative to the block container's width */
+padding-block-start: auto;
+
+padding-block-start: inherit;
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>The <code>padding-block-start</code> property takes the same values as the <a href="/en-US/docs/Web/CSS/padding-left" title="The padding-left CSS property of an element sets the padding space required on the left side of an element. The padding area is the space between the content of the element and it's border. A negative value is not allowed."><code>padding-left</code></a> property.</p>

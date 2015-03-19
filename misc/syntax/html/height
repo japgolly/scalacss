@@ -1,0 +1,53 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code class="language-html">[<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>length</span><span class="token punctuation">&gt;</span></span> | <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>percentage</span><span class="token punctuation">&gt;</span></span>] &amp;&amp; [border-box | content-box]? | available | min-content | max-content | fit-content | complex | auto</code>
+</pre>
+<pre>height: auto     /* auto keyword */
+
+height: 120px    /* &lt;length&gt; values */
+height: 10em
+
+height: 75%      /* &lt;percentage&gt; values */
+
+height: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code style="font-size: 14px;">&lt;length&gt;</code></dt>
+ <dd>
+  See <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> for possible units.</dd>
+ <dt>
+  <code style="font-size: 14px;">&lt;percentage&gt;</code></dt>
+ <dd>
+  Specified as a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> of containing block's <span style="line-height: 21px;">height</span>.</dd>
+ <dt>
+  <code style="font-size: 14px;">border-box </code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  If present, the preceding <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> is applied to the element's border box.</dd>
+ <dt>
+  <code style="font-size: 14px;">content-box</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  If present, the preceding <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> is applied to the element's content box.</dd>
+ <dt>
+  <code style="font-size: 14px;">auto</code></dt>
+ <dd>
+  The browser will calculate and select a height for the specified element.</dd>
+ <dt>
+  <code style="font-size: 14px;">max-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The intrinsic preferred <span style="line-height: 21px;">height</span>.</dd>
+ <dt>
+  <code style="font-size: 14px;">min-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The intrinsic minimum <span style="line-height: 21px;">height</span>.</dd>
+ <dt>
+  <code style="font-size: 14px;">available</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The containing block height minus vertical margin, border and padding.</dd>
+ <dt>
+  <code style="font-size: 14px;">fit-content</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The larger of:
+  <ul><li>the intrinsic minimum height</li>
+   <li>the smaller of the intrinsic preferred height and the available height</li>
+  </ul></dd>
+</dl>

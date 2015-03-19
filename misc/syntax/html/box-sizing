@@ -1,0 +1,23 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>content-box <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> padding-box <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> border-box</code>
+</pre>
+<pre>box-sizing: content-box
+box-sizing: padding-box
+box-sizing: border-box
+
+box-sizing: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>content-box</code></dt>
+ <dd>
+  This is the default style as specified by the CSS standard. The <a href="/en-US/docs/Web/CSS/width" title="The width CSS property specifies the width of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>width</code></a> and <a href="/en-US/docs/Web/CSS/height" title="The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>height</code></a> properties are measured including only the content, but not the padding, border or margin. Note: Padding, border &amp; margin will be outside of the box e.g. IF .box {width: 350px}; THEN you apply {border: 10px solid black;} RESULT {rendered in the browser} .box {width: 370px;}</dd>
+ <dt>
+  <code>padding-box</code><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The <a href="/en-US/docs/Web/CSS/width" title="The width CSS property specifies the width of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>width</code></a> and <a href="/en-US/docs/Web/CSS/height" title="The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>height</code></a> properties include the padding size, and do not include the border or margin. </dd>
+ <dt>
+  <code>border-box</code></dt>
+ <dd>
+  The <a href="/en-US/docs/Web/CSS/width" title="The width CSS property specifies the width of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>width</code></a> and <a href="/en-US/docs/Web/CSS/height" title="The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element."><code>height</code></a> properties include the padding and border, but not the margin. This is the <a href="/en-US/docs/CSS/Box_model" title="CSS/Box_model">box model</a> used by Internet Explorer when the document is in Quirks mode. Note: Padding &amp; border will be inside of the box e.g. IF .box {width: 350px}; THEN you apply {border: 10px solid black;} RESULT {rendered in the browser} .box {width: 350px;}</dd>
+</dl>

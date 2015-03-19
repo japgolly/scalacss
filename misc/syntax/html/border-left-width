@@ -1,0 +1,43 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a></code>
+</pre>
+<pre>border-left-width: 10em    /* Any &lt;length&gt; value */
+border-left-width: 3vmax
+border-left-width: 6px
+
+border-left-width: thin    /* A keyword */
+border-left-width: medium
+border-left-width: thick
+
+border-left-width: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;br-width&gt;</code></dt>
+ <dd>
+  Is either a non-negative explicit <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> value or a keyword denoting the thickness of the left border. The keyword must be one of the following values:
+  <table><tbody><tr><td><code>thin</code></td>
+     <td>
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-left-style: solid; border-left-width: thin; background-color: palegreen;">
+        </div>
+     </td>
+     <td>A thin border</td>
+    </tr><tr><td><code>medium</code></td>
+     <td>
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-left-style: solid; border-left-width: medium; background-color: palegreen;">
+        </div>
+     </td>
+     <td>A medium border</td>
+    </tr><tr><td><code>thick</code></td>
+     <td>
+      <div style="margin: 0.5em; width: 3em; height: 3em; border-left-style: solid; border-left-width: thick; background-color: palegreen;">
+        </div>
+     </td>
+     <td>A thick border</td>
+    </tr></tbody></table>
+  The specification doesn't define precisely the thickness of each fo the keywords, which is therefore implementation specific. Nevertheless, it requests that the thickness does follow the <code>thin ≤ medium ≤ thick</code> pattern and is constant on a single document.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Represents the calculated value of the <code>border-left-width</code> of the parent's element.</dd>
+</dl>

@@ -1,0 +1,20 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:  <code>slice <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> clone</code>
+</pre>
+<pre>box-decoration-break: slice;
+box-decoration-break: clone;
+
+box-decoration-break: initial;
+box-decoration-break: inherit;
+box-decoration-break: unset;
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>slice</code></dt>
+ <dd>
+  The element is rendered as if its box were not fragmented, and then the rendering for this hypothetical box is sliced into pieces for each line/column/page. Note that the hypothetical box can be different for each fragment since it uses its own height if the break occurs in the inline direction, and its own width if the break occurs in the block direction. See the CSS specification for details.</dd>
+ <dt>
+  <code>clone</code></dt>
+ <dd>
+  Each box fragment is rendered independently with the specified border, padding and margin wrapping each fragment. The <a href="/en-US/docs/Web/CSS/border-radius" title="The border-radius CSS property allows Web authors to define how rounded border corners are. The curve of each corner is defined using one or two radii, defining its shape: circle or ellipse."><code>border-radius</code></a>, <a href="/en-US/docs/Web/CSS/border-image" title="The border-image CSS property allows drawing an image on the borders of elements. This makes drawing complex looking widgets much simpler than it has been and removes the need for nine boxes in some cases."><code>border-image</code></a> and <a href="/en-US/docs/Web/CSS/box-shadow" title="Technical review completed."><code>box-shadow</code></a>, are applied to each fragment independently. The background is drawn independently in each fragment which means that a background image with <a href="/en-US/docs/Web/CSS/background-repeat" title="The background-repeat CSS property defines how background images are repeated. A background image can be repeated along the horizontal axis, the vertical axis, both axes, or not repeated at all."><code>background-repeat</code></a>: <code>no-repeat</code> may be repeated multiple times.</dd>
+</dl>

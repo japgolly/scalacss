@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><code>Formal syntax:  <code><a href="/en-US/docs/Web/CSS/blend-mode" title="Possible values: normal, multiply, screen, overlay, darken, lighten, color-dodge, color-burn, hard-light, soft-light, difference, exclusion, hue, saturation, color, luminosity">&lt;blend-mode&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: The previous entity may appear 0, 1 or several times, each occurrence being separated from the previous one by a comma.">#</a></code></code></pre>
+
+<pre>background-blend-mode: normal;               /* One value */
+background-blend-mode: darken, luminosity;   /* Two values, one per background */
+
+background-blend-mode: initial;
+background-blend-mode: inherit;
+background-blend-mode: unset;
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>&lt;blend-mode&gt;</code></dt>
+ <dd>Is a <a href="/en-US/docs/Web/CSS/blend-mode" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;blend-mode&gt;</code></a> denoting the blending mode to be applied. There can be several values, separated by commas.</dd>
+</dl>

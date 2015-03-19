@@ -1,0 +1,16 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/border-width" title="&lt;br-width&gt;{1,4}">&lt;'border-width'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/border-style" title="&lt;br-style&gt;{1,4}">&lt;'border-style'&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/color" title="&lt;color&gt;">&lt;'color'&gt;</a></code>
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<p>One or more of the following, in any order:</p>
+
+<dl><dt><code>&lt;'border-width'&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/border-width" title="Technical review completed."><code>border-width</code></a></dd>
+ <dt><code>&lt;'border-style'&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/border-style" title="Technical review completed."><code>border-style</code></a></dd>
+ <dt><code>&lt;'color'&gt;</code></dt>
+ <dd>See <a href="/en-US/docs/Web/CSS/color" title="The CSS color property sets the foreground color of an element's text content, and its decorations. It doesn't affect any other characteristic of the element; it should really be called text-color and would have been named so, save for historical reasons and its appearance in CSS Level 1."><code>color</code></a></dd>
+</dl>

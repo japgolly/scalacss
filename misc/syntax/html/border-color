@@ -1,0 +1,42 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/color" title="">&lt;color&gt;</a>{1,4}</code></pre>
+<pre>border-color:  <em>color</em>     <em>             /* one-value syntax */ 
+</em>border-color:  <em>horizontal vertical    /* two-value syntax */
+</em>border-color:  <em>top</em> <em>vertical </em><em>bottom    /* three-value syntax */</em>
+border-color: <em> top right bottom left  /* four-value syntax */</em>
+border-color:  inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <em>color</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to all four edges. It is used only in the one-value syntax.</dd>
+ <dt>
+  <em>horizontal</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to all horizontal edges, that is the top and bottom edges. It is used only in the two-value syntax.</dd>
+ <dt>
+  <em>vertical</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to all vertical edges, that is the right and left edges. It is used only in the two- and three-value syntaxes.</dd>
+ <dt>
+  <em>top</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to the top edge. It is used only in the three- and four-value syntaxes.</dd>
+ <dt>
+  <em>bottom</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to the bottom edge. It is used only in the three- and four-value syntaxes.</dd>
+ <dt>
+  <em>right</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to the top edge. It is used only in the four-value syntax.</dd>
+ <dt>
+  <em>left</em></dt>
+ <dd>
+  Is a  <a href="/en-US/docs/Web/CSS/color_value" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;color&gt;</code></a> denoting the color to apply to the top edge. It is used only in the four-value syntax.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Is a keyword indicating that all four values are inherited from their parent's element calculated value.</dd>
+</dl>

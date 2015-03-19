@@ -1,0 +1,67 @@
+<h2 id="Syntax"><nobr>Syntax</nobr></h2>
+
+<div>
+<pre class="twopartsyntaxbox"><nobr>Formal grammar: [ above | below | right | left ]? &lt;length&gt;? &lt;image&gt;?
+</nobr></pre>
+
+<div class="where">
+<h3 id="Values"><nobr>Values</nobr></h3>
+
+<dl><dt><nobr><code>above</code><em>, </em><code>below</code><em>, </em><code>right</code><em>, </em><code>left</code></nobr></dt>
+ <dd><nobr>Are keywords indicating in which direction the reflection is to happen.</nobr></dd>
+ <dt><nobr><code>&lt;length&gt;</code></nobr></dt>
+ <dd><nobr>Indicates the size of the reflection.</nobr></dd>
+ <dt><nobr><code>&lt;image&gt;</code></nobr></dt>
+ <dd><nobr>Describes the mask to be applied to the reflection.</nobr></dd>
+</dl></div>
+
+<dl/><h2 id="Specifications" name="Specifications"><nobr>Specifications</nobr></h2>
+
+<p><nobr>This property is not on the standard track and will not be part of CSS. The standard way to do reflection in CSS is to use the CSS <a href="/en-US/docs/Web/CSS/element" title="The documentation about this has not yet been written; please consider contributing!"><code>element()</code></a> function.</nobr></p>
+
+<h2 id="Browser_compatibility"><nobr>Browser compatibility</nobr></h2>
+
+<p><nobr/></p><div class="htab"><nobr><a id="AutoCompatibilityTable" name="AutoCompatibilityTable"/> 
+    <ul><li class="selected"><a>Desktop</a></li> 
+        <li><a>Mobile</a></li> 
+    </ul></nobr></div><p/>
+
+<div id="compat-desktop">
+<table class="compat-table"><tbody><tr><th>Feature</th>
+   <th>Firefox (Gecko)</th>
+   <th>Chrome</th>
+   <th>Internet Explorer</th>
+   <th>Opera</th>
+   <th>Safari</th>
+  </tr><tr><td>Basic support</td>
+   <td><span style="color: #f00;">Not supported</span></td>
+   <td>4.0</td>
+   <td><span style="color: #f00;">Not supported</span></td>
+   <td>15.0</td>
+   <td>4.0</td>
+  </tr></tbody></table></div>
+
+<div id="compat-mobile">
+<table class="compat-table"><tbody><tr><th>Feature</th>
+   <th>Firefox Mobile (Gecko)</th>
+   <th>Android</th>
+   <th>IE Phone</th>
+   <th>Opera Mobile</th>
+   <th>Safari Mobile</th>
+  </tr><tr><td>Basic support</td>
+   <td><span style="color: #f00;">Not supported</span></td>
+   <td>2.1</td>
+   <td><span style="color: #f00;">Not supported</span></td>
+   <td>22.0 <span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+   <td>3.2 <span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+  </tr></tbody></table></div>
+
+<h2 id="See_also"><nobr>See also</nobr></h2>
+
+<ul><li><nobr>The Apple <a class="external" href="http://developer.apple.com/library/safari/documentation/appleapplications/reference/safaricssref/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266-SW16" title="http://developer.apple.com/library/safari/documentation/appleapplications/reference/safaricssref/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266-SW16">documentation</a>.</nobr></li>
+ <li>The Webkit <a href="https://www.webkit.org/blog/182/css-reflections/">specification</a>.</li>
+ <li><nobr>Lea Verou's article on reflection using <a class="external" href="http://lea.verou.me/2011/06/css-reflections-for-firefox-with-moz-element-and-svg-masks/" title="http://lea.verou.me/2011/06/css-reflections-for-firefox-with-moz-element-and-svg-masks/">CSS features on the standard track</a>.</nobr></li>
+</ul><p><nobr/></p>
+</div>
+
+<p> </p>

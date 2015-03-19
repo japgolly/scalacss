@@ -1,0 +1,25 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/Web/CSS/number" title="">&lt;number&gt;</a></code></pre>
+<pre>opacity: 1
+opacity: 1.0
+opacity: 0.6
+opacity: 0.0
+opacity: 0
+
+opacity: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;number&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a> in the range <code>0.0</code> to <code>1.0</code>, both included, representing the opacity of the channel, that is the value of its alpha channel. Any value outside the interval, though valid, is clamped to the nearest limit in the range.
+  <table class="standard-table"><tbody><tr><th>Value</th>
+     <th>Meaning</th>
+    </tr><tr><td><code>0</code></td>
+     <td>The element is fully transparent (that is, invisible).</td>
+    </tr><tr><td>Any <a href="/en-US/docs/Web/CSS/number" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;number&gt;</code></a> strictly between <code>0</code> and <code>1</code></td>
+     <td>The element is translucent (that is, background can be seen).</td>
+    </tr><tr><td><code>1</code></td>
+     <td>The element is fully opaque (solid).</td>
+    </tr></tbody></table></dd>
+</dl>

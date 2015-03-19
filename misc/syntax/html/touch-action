@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:  <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> [ pan-x <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> pan-y ] <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> manipulation</code></pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>auto</code></dt>
+ <dd>The user agent may determine any permitted touch behaviors, such as panning and zooming manipulations of the viewport, for touches that begin on the element.</dd>
+ <dt><code>none</code></dt>
+ <dd>Touches that begin on the element must not trigger default touch behaviors.</dd>
+ <dt><code>pan-x</code></dt>
+ <dd>The user agent may consider touches that begin on the element only for the purposes of horizontally scrolling the element's nearest ancestor with horizontally scrollable content.</dd>
+ <dt><code>pan-y</code></dt>
+ <dd>The user agent may consider touches that begin on the element only for the purposes of vertically scrolling the element's nearest ancestor with vertically scrollable content.</dd>
+ <dt><code>manipulation</code></dt>
+ <dd>The user agent may consider touches that begin on the element only for the purposes of scrolling and continuous zooming. Any additional behaviors supported by auto are out of scope for this specification.</dd>
+</dl>

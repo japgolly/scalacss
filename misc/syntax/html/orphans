@@ -1,0 +1,18 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/integer" title="">&lt;integer&gt;</a></code>
+</pre>
+<pre>orphans: 2
+orphans: 3
+
+orphans: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;integer&gt;</code></dt>
+ <dd>
+  Only positive values are allowed.</dd>
+ <dt>
+  <code>inherit</code></dt>
+ <dd>
+  Takes the same specified value as the property for the element's parent.</dd>
+</dl>

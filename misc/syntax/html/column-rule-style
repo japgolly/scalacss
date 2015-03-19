@@ -1,0 +1,22 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-style" title="none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset">&lt;br-style&gt;</a></code>
+</pre>
+<pre>column-rule-style: none
+column-rule-style: hidden
+column-rule-style: dotted
+column-rule-style: dashed
+column-rule-style: solid
+column-rule-style: double
+column-rule-style: groove
+column-rule-style: ridge
+column-rule-style: inset
+column-rule-style: outset
+
+column-rule-style: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  &lt;br-style&gt; </dt>
+ <dd>
+  Is a keyword defined by <a href="/en-US/docs/Web/CSS/border-style" title=""><code>border-style</code></a> describing the style of the rule. The styling must be interpreted as in the collapsing border model.</dd>
+</dl>

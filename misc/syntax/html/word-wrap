@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> break-word</code></pre>
+
+<pre>word-wrap: normal
+word-wrap: break-word
+
+word-wrap: inherit
+</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>Indicates that lines may only break at normal word break points.</dd>
+ <dt><code>break-word</code></dt>
+ <dd>Indicates that normally unbreakable words may be broken at arbitrary points if there are no otherwise acceptable break points in the line.</dd>
+</dl>

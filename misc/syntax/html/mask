@@ -1,0 +1,7 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="syntaxbox">mask: &lt;uri&gt; | none | inherit</pre>
+
+<h3 id="Values" name="Values">Values</h3>
+
+<p>If the value is a URI value, the element pointed to by the URI is used as an SVG mask.</p>

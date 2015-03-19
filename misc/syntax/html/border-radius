@@ -1,0 +1,72 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>[ <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> ]{1,4} [ / [ <a href="/en-US/docs/Web/CSS/length" title="Possible values: a number followed by'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc' or 'px', like 3px, 1.5cm, -0.5em or 0">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/Web/CSS/percentage" title="">&lt;percentage&gt;</a> ]{1,4} ]<a href="/en-US/docs/CSS/Value_definition_syntax#Question_mark_(.3F)" title="Question mark multiplier: The previous entity is optional (it may be used once, or not at all).">?</a></code></pre>
+
+<pre><strong>The syntax of the first radius allows one to four values:</strong>
+border-radius: <em>radius</em>             
+border-radius: <em>top-left-and-bottom-right</em> <em>top-right-and-bottom-left</em> 
+border-radius: <em>top-left</em> <em>top-right-and-bottom-left</em> <em>bottom-right</em> 
+border-radius: <em>top-left</em> <em>top-right</em> <em>bottom-right</em> <em>bottom-left</em> 
+
+<strong>The syntax of the second radius also allows one to four values</strong>
+border-radius: (first radius values) / <em>radius</em>             
+border-radius: (first radius values) / <em>top-left-and-bottom-right</em> <em>top-right-and-bottom-left</em> 
+border-radius: (first radius values) / <em>top-left</em> <em>top-right-and-bottom-left</em> <em>bottom-right</em> 
+border-radius: (first radius values) / <em>top-left</em> <em>top-right</em> <em>bottom-right</em> <em>bottom-left</em> 
+
+border-radius: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<table><tbody><tr><td style="vertical-align: top;"><em>radius</em></td>
+   <td><img alt="all-corner.png" class="internal default" src="/@api/deki/files/6138/=all-corner.png"/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in each corner of the border. It is used only in the one-value syntax.</td>
+  </tr><tr><td style="vertical-align: top;"><em>top-left-and-bottom-right</em></td>
+   <td><img alt="top-left-bottom-right.png" class="internal default" src="/@api/deki/files/6141/=top-left-bottom-right.png"/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the top-left and bottom-right corners of the element's box. It is used only in the two-value syntax.</td>
+  </tr><tr><td style="vertical-align: top;"><em>top-right-and-bottom-left</em></td>
+   <td><img alt="top-right-bottom-left.png" class="internal default" src="/@api/deki/files/6143/=top-right-bottom-left.png" style=""/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the top-right and bottom-left corners of the element's box. It is used only in the two- and three-value syntaxes.</td>
+  </tr><tr><td style="vertical-align: top;"><em>top-left</em></td>
+   <td><img alt="top-left.png" class="internal default" src="/@api/deki/files/6142/=top-left.png" style=""/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the top-left corner of the element's box. It is used only in the three- and four-value syntaxes.</td>
+  </tr><tr><td style="vertical-align: top;"><em>top-right</em></td>
+   <td style="margin-left: 2px;"><img alt="top-right.png" class="internal default" src="/@api/deki/files/6144/=top-right.png" style=""/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the top-right corner of the element's box. It is used only in the four-value syntax.</td>
+  </tr><tr><td style="vertical-align: top;"><em>bottom-right</em></td>
+   <td style="margin-left: 2px;"><img alt="bottom-rigth.png" class="internal default" src="/@api/deki/files/6140/=bottom-rigth.png"/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the bottom-right corner of the element's box. It is used only in the three- and four-value syntaxes.</td>
+  </tr><tr><td style="vertical-align: top;"><em>bottom-left</em></td>
+   <td><img alt="bottom-left.png" class="internal default" src="/@api/deki/files/6139/=bottom-left.png"/></td>
+   <td style="vertical-align: top;">Is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> or a <a href="/en-US/docs/Web/CSS/percentage" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;percentage&gt;</code></a> denoting a radius to use for the border in the bottom-left corner of the element's box. It is used only in the four-value syntax.</td>
+  </tr><tr><td style="vertical-align: top;"><code>inherit</code></td>
+   <td> </td>
+   <td style="vertical-align: top;">Is a keyword indicating that all four values are inherited from their parent's element calculated value.</td>
+  </tr></tbody></table><h3 id="Values_2">Values</h3>
+
+<dl><dt>&lt;length&gt;</dt>
+ <dd>Denotes the size of the circle radius or the semi-major and semi-minor axes of the ellipsis. It can be expressed in any unit allowed by the CSS <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> data types. Negative values are invalid.</dd>
+ <dt>&lt;percentage&gt;</dt>
+ <dd>Denotes the size of the circle radius, or the semi-major and semi-minor axes of the ellipsis, using percentage values. Percentages for the horizontal axis refer to the width of the box, percentages for the vertical axis refer to the height of the box. Negative values are invalid.</dd>
+</dl><p>For example:</p>
+
+<pre class="brush: css">border-radius: 1em/5em;
+
+/* is equivalent to */
+
+border-top-left-radius:     1em 5em;
+border-top-right-radius:    1em 5em;
+border-bottom-right-radius: 1em 5em;
+border-bottom-left-radius:  1em 5em;
+</pre>
+
+<pre class="brush: css">border-radius: 4px 3px 6px / 2px 4px;
+
+/* is equivalent to: */
+
+border-top-left-radius:     4px 2px;
+border-top-right-radius:    3px 4px;
+border-bottom-right-radius: 6px 2px;
+border-bottom-left-radius:  3px 4px;
+</pre>

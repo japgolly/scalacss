@@ -1,0 +1,53 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> [ stylistic(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a>) <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> historical-forms <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> styleset(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a>) <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> character-variant(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a>) <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> swash(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a>) <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> ornaments(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a>) <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> annotation(<a href="/en-US/docs/CSS/CSS_values_syntax#syntax-feature-value-name" title="Tooltip not found in DB.">&lt;feature-value-name&gt;</a>) ] </code></pre>
+<pre>font-variant-alternates: normal
+font-variant-alternates: historical-forms
+font-variant-alternates: stylistic(user-defined-ident)
+font-variant-alternates: styleset(user-defined-ident)
+font-variant-alternates: character-variant(user-defined-ident)
+font-variant-alternates: swash(user-defined-ident)
+font-variant-alternates: ornaments(user-defined-ident)
+font-variant-alternates: annotation(user-defined-ident)
+font-variant-alternates: swash(ident1) annotation(ident2)
+
+font-variant-alternates: initial
+font-variant-alternates: inherit
+font-variant-alternates: unset
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  This keyword leads to the deactivation of the use of such alternate glyphs.</dd>
+ <dt>
+  <code>historical-forms</code></dt>
+ <dd>
+  This keyword enables the display of historical forms, that is glyphs that were common in the past but no more today. It corresponds to the OpentType value <code>hist</code>.</dd>
+ <dt>
+  <code><a name="stylistic()"/>stylistic()</code></dt>
+ <dd>
+  This function enables the display of a stylistic alternates. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>salt</code> like <code>salt 2</code>.</dd>
+ <dt>
+  <code><a name="styleset()"/>styleset()</code></dt>
+ <dd>
+  This function enables the usage of a set of stylistic alternatives for characters. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>ssXY</code> like <code>ss02</code>.</dd>
+ <dt>
+  <code><a name="character-variant()"/>character-variant()</code></dt>
+ <dd>
+  This function enables the usage of a set of stylistic alternatives for characters. It is very similar to <code>styleset()</code> though the variant here doesn't create coherent glyphs for a set of characters; individual characters will have independant and not necessary coherent styles. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>cvXY</code> like <code>cv02</code>.</dd>
+ <dt>
+  <code><a name="swash()"/>swash()</code></dt>
+ <dd>
+  This function enables the display of <a href="http://en.wikipedia.org/wiki/Swash_%28typography%29">swash</a> glyphs. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>swsh</code> and <code>cswh</code> like <code>swsh 2</code> and <code>cswh 2</code>.</dd>
+ <dt>
+  <code><a name="ornaments()"/>ornaments()</code></dt>
+ <dd>
+  This function enables the display of ornaments, that are <a href="http://en.wikipedia.org/wiki/Fleuron_%28typography%29">fleurons</a> and other dingbats-like glyphs. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>ornm</code> like <code>ornm 2</code>.
+  <div class="note">
+   <strong>Note: </strong>in order to preserve the semantic of the font, font designer are invited to include ornaments that doesn't match a Unicode zingbat character as ornaments variant of the bullet character (U+2022). Well-formed fonts will do that, though a lot of other fonts won't.</div>
+ </dd>
+ <dt>
+  <code><a name="annotation()"/>annotation()</code></dt>
+ <dd>
+  This function enables the display of annotations, like circled digits or inverterd characters. The parameter is a font-specific names mapped to a number. It corresponds to the OpenType value <code>nalt</code> like <code>nalt 2</code>.</dd>
+</dl>

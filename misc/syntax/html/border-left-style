@@ -1,0 +1,79 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-style" title="none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset">&lt;br-style&gt;</a></code>
+</pre>
+
+<pre>border-left-style: none
+border-left-style: hidden
+border-left-style: dotted
+border-left-style: dashed
+border-left-style: solid
+border-left-style: double
+border-left-style: groove
+border-left-style: ridge
+border-left-style: inset
+border-left-style: outset
+<em>
+</em>border-left-style: inherit
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>&lt;br-style&gt;</code></dt>
+ <dd>Is a keyword describing the style of the left border. It can have the following values:
+ <table><tbody><tr><td><code>none</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: none; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Like for the <code>hidden</code> keyword, displays no border. In that case, except if a background image is set, the calculated values of <a href="/en-US/docs/Web/CSS/border-left-width" title="The border-left-width CSS property sets the width of the left border of a box."><code>border-left-width</code></a> will be <code>0</code>, even if specified otherwise through the property. In case of table cell and border collapsing, the <code>none</code> value has the lowest priority: it means that if any other conflicting border is set, it will be displayed.</td>
+   </tr><tr><td><code>hidden</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: hidden; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Like for the <code>none</code> keyword, displays no border. In that case, except if a background image is set, the calculated values of <a href="/en-US/docs/Web/CSS/border-left-width" title="The border-left-width CSS property sets the width of the left border of a box."><code>border-left-width</code></a> will be <code>0</code>, even if specified otherwise through the property. In case of table cell and border collapsing, the <code>hidden</code> value has the highest priority: it means that if any other conflicting border is set, it won't be displayed.</td>
+   </tr><tr><td><code>dotted</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: dotted; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a series of rounded dots. The spacing of the dots are not defined by the specification and are implementation-specific. The radius of the dots is half the calculated <a href="/en-US/docs/Web/CSS/border-left-width" title="The border-left-width CSS property sets the width of the left border of a box."><code>border-left-width</code></a>.</td>
+   </tr><tr><td><code>dashed</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: dashed; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a series of short square-ended dashes or line segments. The exact size and length of the segments are not defined by the specification and are implementation-specific.</td>
+   </tr><tr><td><code>solid</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: solid; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a single, straight, solid line.</td>
+   </tr><tr><td><code>double</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: double; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays two straight lines that add up to the pixel amount defined as <a href="/en-US/docs/Web/CSS/border-width" title="Technical review completed."><code>border-width</code></a> or <a href="/en-US/docs/Web/CSS/border-left-width" title="The border-left-width CSS property sets the width of the left border of a box."><code>border-left-width</code></a>.</td>
+   </tr><tr><td><code>groove</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: groove; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a border leading to a carved effect. It is the opposite of <code>ridge</code>.</td>
+   </tr><tr><td><code>ridge</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: ridge; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a border with a 3D effect, like if it is coming out of the page. It is the opposite of <code>groove</code>.</td>
+   </tr><tr><td><code>inset</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: inset; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>Displays a border that makes the box appear embedded. It is the opposite of <code>outset</code>. When applied to a table cell with <a href="/en-US/docs/Web/CSS/border-collapse" title="The border-collapse CSS property selects a table's border model. This has a big influence on the look and style of the table cells."><code>border-collapse</code></a> set to <code>collapsed</code>, this value behaves like <code>groove</code>.</td>
+   </tr><tr><td><code>outset</code></td>
+    <td>
+     <div style="margin: 0.5em; width: 3em; height: 3em; border-width: 3px; border-left-style: outset; background-color: palegreen;"><span style="display: none;">fake</span></div>
+    </td>
+    <td>
+     <p>Displays a border that makes the box appear in 3D, embossed. It is the opposite of <code>inset</code>. When applied to a table cell with <a href="/en-US/docs/Web/CSS/border-collapse" title="The border-collapse CSS property selects a table's border model. This has a big influence on the look and style of the table cells."><code>border-collapse</code></a> set to <code>collapsed</code>, this value behaves like <code>ridge</code>.</p>
+    </td>
+   </tr></tbody></table></dd>
+ <dt>inherit</dt>
+ <dd>Represents the border style used by the parent of the current element.</dd>
+</dl>

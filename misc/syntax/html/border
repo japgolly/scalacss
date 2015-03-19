@@ -1,0 +1,16 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="/en-US/docs/CSS/Value_definition_syntax">Formal syntax</a>:<code>  <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-style" title="none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset">&lt;br-style&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: the two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/color" title="">&lt;color&gt;</a></code></code></pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;br-width&gt;</code></dt>
+ <dd>
+  Default value <code>medium</code> is used if absent. See <a href="/en-US/docs/Web/CSS/border-width" title=""><code>border-width</code></a>.</dd>
+ <dt>
+  <code>&lt;br-style&gt;</code></dt>
+ <dd>
+  Default value <code>none</code> is used if absent. See <a href="/en-US/docs/Web/CSS/border-style" title=""><code>border-style</code></a>.</dd>
+ <dt>
+  <code>&lt;color&gt;</code></dt>
+ <dd>
+  A <a href="/en-US/docs/Web/CSS/color_value" title=""><code>&lt;color&gt;</code></a> denoting the color of the border. If not set, its default value is the value of the element's <a href="/en-US/docs/Web/CSS/color" title=""><code>color</code></a> property (the text color, not the background color). See <a href="/en-US/docs/Web/CSS/border-color" title=""><code>border-color</code></a>.</dd>
+</dl>

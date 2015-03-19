@@ -1,0 +1,18 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/Web/CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/color" title="">&lt;color&gt;</a></code></pre>
+<pre>color: red;                     // A CSS Level 1 color.
+color: <code>orange;</code>                  // The only color added in CSS Level 2 (Revision 1).
+color: <code>antiquewhite;</code>            // A CSS Level 3 color, sometimes called a SVG or X11 color.
+color: #0f0;                    // The color 'lime' defined using the 3-character <em>dash</em> notation.
+color: #00ff00;                 // The color 'lime' defined using the 6-character <em>dash</em> notation.
+color: rgba( 34, 12, 64, 0.3);  // A color defined using the available functional notations.
+color: currentcolor;            // The special keyword representing the color's value of its direct ancestor.
+
+color: inherit;
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>&lt;color&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/color_value" title=""><code>&lt;color&gt;</code></a> value giving the color of the textual elements of the element.</dd>
+</dl>

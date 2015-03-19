@@ -1,0 +1,19 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> fixed</code>
+</pre>
+<pre>table-layout: auto
+table-layout: fixed
+
+table-layout: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <a href="/en-US/docs/Web/CSS/auto" title=""><code>auto</code></a></dt>
+ <dd>
+  An automatic table layout algorithm is commonly used by most browsers for table layout. The width of the table and its cells depends on the content thereof.</dd>
+ <dt>
+  <code>fixed</code></dt>
+ <dd>
+  Table and column widths are set by the widths of <code>table</code> and <code>col </code>elements or by the width of the first row of cells. Cells in subsequent rows do not affect column widths.<br/><br/>
+  Under the "fixed" layout method, the entire table can be rendered once the first table row has been downloaded and analyzed. This can speed up rendering time over the "automatic" layout method, but subsequent cell content may not fit in the column widths provided. Any cell that has content that overflows uses the <a href="/en-US/docs/Web/CSS/overflow" title=""><code>overflow</code></a> property to determine whether to clip the overflow content.</dd>
+</dl>

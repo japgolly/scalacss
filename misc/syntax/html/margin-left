@@ -1,0 +1,58 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/length" title="Possible value: a number followed by 'em', 'ex', 'ch', 'rem', 'px', 'cm', 'mm', 'in', 'vh', 'vw', 'vmin', 'vmax', 'pt', 'pc', 'px', like 3px, 1.5cm, -0.5em, 0.">&lt;length&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> <a href="/en-US/docs/CSS/percentage" title="">&lt;percentage&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> auto</code></pre>
+<pre>margin-left: 10px;        /* An absolute length */
+margin-left: 1em;         /* A length relative to the text size */
+margin-left: 5%;          /* A margin relative to the nearest block container's width */
+margin-left: auto;
+
+margin-left: inherit;
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>&lt;length&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> specifying a fixed width: it can be absolute width, e.g. in <code>px</code>, or a width relative to the text size, e.g. in <code>em</code>, or relative to the viewport size, e.g. in <code>vh</code>.</dd>
+ <dt>
+  <code>&lt;percentage&gt;</code></dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/percentage" title=""><code>&lt;percentage&gt;</code></a> relative to the <em>width</em> of the nearest containing block.</dd>
+ <dt>
+  <code>auto</code></dt>
+ <dd>
+  Is a keyword indicating that the left margin receives a share of the remaining space, defined mainly by the current layout mode.. If there several <code>auto</code> values for <code>margin-left</code> or <code>margin-right</code>, the calculated space is evenly distributed between all the <code>auto</code> values. This table summarizes the different cases:<br/><table class="standard-table"><thead><tr><th scope="col">Value of <a href="/en-US/docs/Web/CSS/display" title=""><code>display</code></a></th>
+     <th scope="col">Value of <a href="/en-US/docs/Web/CSS/float" title=""><code>float</code></a></th>
+     <th scope="col">Value of <a href="/en-US/docs/Web/CSS/position" title=""><code>position</code></a></th>
+     <th scope="col">Computed value of <code>auto</code></th>
+     <th scope="col">Comment</th>
+    </tr></thead><tbody><tr><th><code>inline</code>, <code>inline-block</code>, <code>inline-table</code></th>
+     <th><em>any</em></th>
+     <th><code>static</code> or <code>relative</code></th>
+     <td><code>0</code></td>
+     <td>Inline layout mode</td>
+    </tr><tr><th><code>block</code>, <code>inline</code>, <code>inline-block</code>, <code>block</code>, <code>table</code>, <code>inline-table</code>, <code>list-item</code>, <code>table-caption</code></th>
+     <th><em>any</em></th>
+     <th><code>static</code> or <code>relative</code></th>
+     <td><code>0</code>, except if both <code>margin-left</code> and <code>margin-right</code> are set to <code>auto</code>. In this case, it is set to the value centering the element inside its parent.</td>
+     <td>Block layout mode</td>
+    </tr><tr><th><code>block</code>, <code>inline</code>, <code>inline-block</code>, <code>block</code>, <code>table</code>, <code>inline-table</code>, <code>list-item</code>, <code>table-caption</code></th>
+     <th><code>left</code> or <code>right</code></th>
+     <th><code>static</code> or <code>relative</code></th>
+     <td><code>0</code></td>
+     <td>Block layout mode (floating element)</td>
+    </tr><tr><th><em>any </em><code>table-*</code><em>, except </em><code>table-caption</code></th>
+     <th><em>any</em></th>
+     <th><em>any</em></th>
+     <td><code>0</code></td>
+     <td>Internal <code>table-*</code> elements don't have margins, use <a href="/en-US/docs/Web/CSS/border-spacing" title=""><code>border-spacing</code></a> instead</td>
+    </tr><tr><th><em>any, except <code>flex</code>,</em> <code>inline-flex</code><em>, or </em><code>table-*</code></th>
+     <th><em>any</em></th>
+     <th><em><code>fixed</code></em> or <code>absolute</code></th>
+     <td><code>0</code>, except if both <code>margin-left</code> and <code>margin-right</code> are set to <code>auto</code>. In this case, it is set to the value centering the border area inside the available <code>width</code>, if fixed.</td>
+     <td>Absolutely positioned layout mode</td>
+    </tr><tr><th><code>flex</code>, <code>inline-flex</code></th>
+     <th><em>any</em></th>
+     <th><em>any</em></th>
+     <td><code>0</code>, except if there is any positive horizontal free space. In this case, it is evenly distributed to all horizontal <code>auto</code> margins.</td>
+     <td>Flexbox layout mode</td>
+    </tr></tbody></table></dd>
+</dl>

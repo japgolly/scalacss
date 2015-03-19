@@ -1,0 +1,20 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="syntaxbox">Formal grammar: none | [&lt;shadow&gt;,]* &lt;shadow&gt;
+
+                where &lt;shadow&gt; is: [ &lt;color&gt;? &lt;offset-x&gt; &lt;offset-y&gt; &lt;blur-radius&gt;? | &lt;offset-x&gt; &lt;offset-y&gt; &lt;blur-radius&gt;? &lt;color&gt;? ]</pre>
+<p style="margin: 0px;"> </p>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  &lt;color&gt;</dt>
+ <dd>
+  Optional. Can be specified either before or after the offset values. If the color is not specified, a UA-chosen color will be used. <div class="note"><strong>Note:</strong> If you want to ensure consistency across browsers, explicitly specify a color.</div></dd>
+ <dt>
+  &lt;offset-x&gt; &lt;offset-y&gt;</dt>
+ <dd>
+  Required. These <code>&lt;length&gt;</code> values specify the shadow's offset from the text. <code>&lt;offset-x&gt;</code> specifies the horizontal distance; a negative value places the shadow to the left of the text. <code>&lt;offset-y&gt;</code> specifies the vertical distance; a negative value places the shadow above the text. If both values are <code>0</code>, then the shadow is placed behind the text (and may generate a blur effect when <code>&lt;blur-radius&gt;</code> is set).<br/>
+  To find out what units you can use, see <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a>.</dd>
+ <dt>
+  &lt;blur-radius&gt;</dt>
+ <dd>
+  Optional. This is a <a href="/en-US/docs/Web/CSS/length" title="The documentation about this has not yet been written; please consider contributing!"><code>&lt;length&gt;</code></a> value. If not specified, it defaults to <code>0</code>. The higher this value, the bigger the blur; the shadow becomes wider and lighter.</dd>
+</dl>

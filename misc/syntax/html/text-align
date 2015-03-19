@@ -1,0 +1,51 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>start <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> end <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> right <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> center <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> justify <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> match-parent <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> start end</code>
+</pre>
+<pre>text-align: left
+text-align: right
+text-align: center
+text-align: justify
+text-align: start
+text-align: end
+text-align: match-parent
+text-align: start end
+text-align: "."
+text-align: start "."
+text-align: "." end
+
+text-align: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>start</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The same as <code>left</code> if direction is left-to-right and <code>right</code> if direction is right-to-left.</dd>
+ <dt>
+  <code>end</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The same as <code>right</code> if direction is left-to-right and <code>left</code> if direction is right-to-left.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  The inline contents are aligned to the left edge of the line box.</dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  The inline contents are aligned to the right edge of the line box.</dd>
+ <dt>
+  <code>center</code></dt>
+ <dd>
+  The inline contents are centered within the line box.</dd>
+ <dt>
+  <code>&lt;string&gt;</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  The first occurrence of the one-char string is the element used for alignment. the keyword that follows or precedes it indicates how it is aligned. This allows to align numeric values on the decimal point, for instance.</dd>
+ <dt>
+  <code>justify</code></dt>
+ <dd>
+  The text is justified. Text should line up their left and right edges to the left and right content edges of the paragraph.</dd>
+ <dt>
+  <code>match-parent</code> <span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></dt>
+ <dd>
+  Similar to <code>inherit</code> with the difference that the value <code>start</code> and <code>end</code> are calculated according the parent's <a href="/en-US/docs/Web/CSS/direction" title="Set the direction CSS property to match the direction of the text: rtl for languages written from right-to-left (like Hebrew or Arabic) text and ltr for other scripts. This is typically done as part of the document (e.g., using the dir attribute in HTML) rather than through direct use of CSS."><code>direction</code></a> and are replaced by the adequate <code>left</code> or <code>right</code> value.</dd>
+</dl>

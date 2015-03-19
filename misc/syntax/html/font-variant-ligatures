@@ -1,0 +1,48 @@
+<h2 id="Syntax">Syntax</h2>
+
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> none <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> [ <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-common-lig-values" title="[ common-ligatures | no-common-ligatures ]">&lt;common-lig-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-discretionary-lig-values" title="[ discretionary-ligatures | no-discretionary-ligatures ]">&lt;discretionary-lig-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-historical-lig-values" title="[ historical-ligatures | no-historical-ligatures ]">&lt;historical-lig-values&gt;</a> <a href="/en-US/docs/CSS/Value_definition_syntax#Double_bar" title="Double bar: The two entities are optional, and may appear in any order.">||</a> <a href="/en-US/docs/CSS/CSS_values_syntax#syntax-contextual-alt-values" title="[ contextual | no-contextual ]">&lt;contextual-alt-values&gt;</a> ]</code></pre>
+
+<pre>font-variant-ligatures: normal
+font-variant-ligatures: none
+font-variant-ligatures: common-ligatures           /* &lt;common-lig-values&gt; */
+font-variant-ligatures: no-common-ligatures        /* &lt;common-lig-values&gt; */
+font-variant-ligatures: <dfn><var>discretionary-ligatures    /* &lt;discretionary-lig-values&gt;</var></dfn> */
+font-variant-ligatures: no-<dfn><var>discretionary-ligatures /* &lt;discretionary-lig-values&gt;</var></dfn> */
+font-variant-ligatures: historical-ligatures       /* &lt;historical-lig-values&gt; */
+font-variant-ligatures: no-historical-ligatures    /* &lt;historical-lig-values&gt; */
+font-variant-ligatures: contextual                 /* &lt;contextual-alt-values&gt; */
+font-variant-ligatures: no-contextual              /* &lt;contextual-alt-values&gt; */
+font-variant-ligatures: contextual no-historical-ligatures common-ligatures
+
+font-variant-ligatures: initial
+font-variant-ligatures: inherit
+font-variant-ligatures: unset
+</pre>
+
+<h3 id="Values">Values</h3>
+
+<dl><dt><code>normal</code></dt>
+ <dd>This keyword leads to the activation of the usual ligatures and contextual forms needed for correct rendering. The ligatures and forms activated depend on the font, language and kind of script. This is the default value.</dd>
+ <dt><code>none</code></dt>
+ <dd>This keyword specifies that all ligatures and contextual forms are disabled, even common ones.</dd>
+ <dt>&lt;<em>common-lig-values&gt;</em></dt>
+ <dd>These values control the most common ligatures, like for <code>fi</code>, <code>ffi</code>, <code>th</code> or similar. They correspond to the OpenType values <code>liga</code> and <code>clig</code>. Two values are possible:
+ <ul><li><code>common-ligatures</code> activating these ligatures. Note that the keyword <code>normal</code> activates these ligatures.</li>
+  <li><code>no-common-ligatures</code> deactivating these ligatures.</li>
+ </ul></dd>
+ <dt>&lt;<em>discretionary-lig-values</em>&gt;</dt>
+ <dd>These values control specific ligatures, specific to the font and defined by the type designer. They correspond to the OpenType values <code>dlig</code>. Two values are possible:
+ <ul><li><code>discretionary-ligatures</code> activating these ligatures.</li>
+  <li><code>no-<code>discretionary-ligatures</code></code> deactivating the ligatures. Note that the keyword <code>normal</code> usually deactivates these ligatures.</li>
+ </ul></dd>
+ <dt><em>&lt;historical-lig-values&gt;</em></dt>
+ <dd>These values control the ligatures used historically, in old books, like the German tz digraph being displayed ß. They correspond to the OpenType values <code>hlig</code>. Two values are possible:
+ <ul><li><code>historical-ligatures</code> activating these ligatures.</li>
+  <li><code>no-<code>historical-ligatures</code></code> deactivating the ligatures. Note that the keyword <code>normal</code> usually deactivates these ligatures.</li>
+ </ul></dd>
+ <dt><em>&lt;contextual-alt-values&gt;</em></dt>
+ <dd>These values control whether letters adapt to their context—that is, whether they adapt to the surrounding letters. These values correspond to the OpenType values <code>calt</code>. Two values are possible:
+ <ul><li><code>contextual</code> specifies that the contextual alternates are to be used. Note that the keyword <code>normal</code> usually activates these ligatures too.</li>
+  <li><code>no-contextual</code> prevents their use.</li>
+ </ul></dd>
+</dl>

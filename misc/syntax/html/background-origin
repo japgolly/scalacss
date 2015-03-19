@@ -1,0 +1,22 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-box" title="border-box | padding-box | content-box">&lt;box&gt;</a><a href="/en-US/docs/CSS/Value_definition_syntax#Hash_mark_(.23)" title="Hash mark multiplier: the previous entity may appear 0, 1 or several times, each occurence being separated from the previous one by a comma">#</a></code></pre>
+<pre>background-origin: border-box
+background-origin: padding-box
+background-origin: content-box
+
+background-origin: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>border-box</code></dt>
+ <dd>
+  The background extends to the outside edge of the border (but underneath the border in z-ordering).</dd>
+ <dt>
+  <code>padding-box</code></dt>
+ <dd>
+  No background is drawn below the border (background extends to the outside edge of the padding).</dd>
+ <dt>
+  <code>content-box</code></dt>
+ <dd>
+  The background is painted within (clipped to) the content box.</dd>
+</dl>

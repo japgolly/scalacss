@@ -1,0 +1,33 @@
+<h2 id="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>auto <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> always <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> avoid <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> left <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: The two entities are optional, but exactly one must be present.">|</a> right</code>
+</pre>
+<pre>page-break-before: auto
+page-break-before: always
+page-break-before: avoid
+page-break-before: left
+page-break-before: right
+
+page-break-before: inherit
+</pre>
+<h3 id="Values">Values</h3>
+<dl><dt>
+  <code>auto</code></dt>
+ <dd>
+  Initial value. Automatic page breaks (neither forced nor forbidden).</dd>
+ <dt>
+  <code>always</code></dt>
+ <dd>
+  Always force page breaks before the element.</dd>
+ <dt>
+  <code>avoid</code></dt>
+ <dd>
+  Avoid page breaks before the element.</dd>
+ <dt>
+  <code>left</code></dt>
+ <dd>
+  Force page breaks before the element so that the next page is formatted as a left page.</dd>
+ <dt>
+  <code>right</code></dt>
+ <dd>
+  Force page breaks before the element so that the next page is formatted as a right page.</dd>
+</dl>

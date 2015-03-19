@@ -1,0 +1,17 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code><a href="/en-US/docs/CSS/CSS_values_syntax#syntax-br-width" title="&lt;length&gt; | thin | medium | thick">&lt;br-width&gt;</a></code>
+</pre>
+<pre>column-rule-width: thin    /* Keyword values */
+column-rule-width: medium
+column-rule-width: thick
+column-rule-width: 1px     /* Length values */
+column-rule-width: 2.5em
+
+column-rule-width: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  &lt;br-width&gt; </dt>
+ <dd>
+  Is a <a href="/en-US/docs/Web/CSS/length" title=""><code>&lt;length&gt;</code></a> or one of the <code>thin</code>, <code>medium</code> or <code>thick</code> keyword describing the width of the rule separating two columns.</dd>
+</dl>

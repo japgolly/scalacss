@@ -1,0 +1,57 @@
+<h2 id="Syntax" name="Syntax">Syntax</h2>
+<pre class="twopartsyntaxbox"><a href="/en-US/docs/CSS/Value_definition_syntax" title="CSS/Value_definition_syntax">Formal syntax</a>: <code>normal <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> pre <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> nowrap <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> pre-wrap <a href="/en-US/docs/CSS/Value_definition_syntax#Single_bar" title="Single bar: the two entities are optional, but exactly one must be present.">|</a> pre-line</code></pre>
+<pre>white-space: normal
+white-space: nowrap
+white-space: pre
+white-space: pre-wrap
+white-space: pre-line
+
+white-space: inherit
+</pre>
+<h3 id="Values" name="Values">Values</h3>
+<dl><dt>
+  <code>normal</code></dt>
+ <dd>
+  Sequences of whitespace are collapsed. Newline characters in the source are handled as other whitespace. Breaks lines as necessary to fill line boxes.</dd>
+ <dt>
+  <code>nowrap</code></dt>
+ <dd>
+  Collapses whitespace as for <code>normal</code>, but suppresses line breaks (text wrapping) within text.</dd>
+ <dt>
+  <code>pre</code></dt>
+ <dd>
+  Sequences of whitespace are preserved, lines are only broken at newline characters in the source and at <a href="/en-US/docs/Web/HTML/Element/br" title="The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant."><code>&lt;br&gt;</code></a> elements.</dd>
+ <dt>
+  <code>pre-wrap</code></dt>
+ <dd>
+  Sequences of whitespace are preserved. Lines are broken at newline characters, at <a href="/en-US/docs/Web/HTML/Element/br" title="The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant."><code>&lt;br&gt;</code></a>, and as necessary to fill line boxes.</dd>
+ <dt>
+  <code>pre-line</code></dt>
+ <dd>
+  Sequences of whitespace are collapsed. Lines are broken at newline characters, at <a href="/en-US/docs/Web/HTML/Element/br" title="The HTML &lt;br&gt; Element (or HTML Line Break Element) produces a line break in text (carriage-return). It is useful for writing a poem or an address, where the division of lines is significant."><code>&lt;br&gt;</code></a>, and as necessary to fill line boxes.</dd>
+</dl><p>The following table summarizes the behavior of various <code>white-space</code> values:</p>
+<table class="standard-table"><thead><tr><th> </th>
+   <th>New lines</th>
+   <th>Spaces and tabs</th>
+   <th>Text wrapping</th>
+  </tr></thead><tbody><tr><th><code>normal</code></th>
+   <td>Collapse</td>
+   <td>Collapse</td>
+   <td>Wrap</td>
+  </tr><tr><th><code>nowrap</code></th>
+   <td>Collapse</td>
+   <td>Collapse</td>
+   <td>No wrap</td>
+  </tr><tr><th><code>pre</code></th>
+   <td>Preserve</td>
+   <td>Preserve</td>
+   <td>No wrap</td>
+  </tr><tr><th><code>pre-wrap</code></th>
+   <td>Preserve</td>
+   <td>Preserve</td>
+   <td>Wrap</td>
+  </tr><tr><th><code>pre-line</code></th>
+   <td>Preserve</td>
+   <td>Collapse</td>
+   <td>Wrap</td>
+  </tr></tbody></table>
