@@ -1,7 +1,7 @@
 package japgolly
 
 import scala.collection.GenTraversableOnce
-import scalaz.{Equal, Foldable1, OneAnd}
+import scalaz.{Equal, OneAnd, Traverse1}
 import scalaz.std.AllInstances._
 import shapeless.lens
 
@@ -91,8 +91,8 @@ package object scalacss {
       if (v.isEmpty) empty else f(OneAnd(v.head, v.tail))
   }
 
-  implicit val nonEmptyVectorFoldable1: Foldable1[NonEmptyVector] =
-    OneAnd.oneAndFoldable[Vector]
+  implicit val nonEmptyVectorTraverse1: Traverse1[NonEmptyVector] =
+    OneAnd.oneAndTraverse[Vector]
 
   implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
     OneAnd.oneAndEqual[Vector, A]

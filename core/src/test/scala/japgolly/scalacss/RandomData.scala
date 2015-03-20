@@ -60,7 +60,7 @@ object RandomData {
   }
 
   val cond: Gen[Cond] =
-    pseduo.option map Cond.apply
+    pseduo.option map (Cond(_, Vector.empty)) // TODO no media queries in random data
 
   val unsafeCssSelEndo: Gen[CssSelector => CssSelector] =
     str.lim(8).pair.map {

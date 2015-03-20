@@ -8,7 +8,7 @@ import scalaz.syntax.monoid._
 /**
  * Condition under which CSS is applicable.
  */
-final case class Cond(pseudo: Option[Pseudo]) extends Pseudo.ChainOps[Cond] {
+final case class Cond(pseudo: Option[Pseudo], mediaQuery: Vector[Media.Query]) extends Pseudo.ChainOps[Cond] {
 
   protected def addPseudo(p: Pseudo): Cond =
     copy(pseudo = Some(this.pseudo.fold(p)(_ & p)))
@@ -18,14 +18,15 @@ final case class Cond(pseudo: Option[Pseudo]) extends Pseudo.ChainOps[Cond] {
 }
 
 object Cond {
-  val empty: Cond = Cond(None)
+  val empty: Cond =
+    Cond(None, Vector.empty)
 
   implicit val condTypeclass: Monoid[Cond] with Equal[Cond] =
     new Monoid[Cond] with Equal[Cond] {
       override def equalIsNatural              = true
       override def equal(a: Cond, b: Cond)     = a == b
       override def zero                        = empty
-      override def append(a: Cond, b: => Cond) = Cond(a.pseudo |+| b.pseudo)
+      override def append(a: Cond, b: => Cond) = Cond(a.pseudo |+| b.pseudo, a.mediaQuery ++ b.mediaQuery)
     }
 }
 
@@ -254,9 +255,3 @@ object Pseudo {
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Pseudo1("::selection")
 }
-
-// =====================================================================================================================
-
-// TODO MediaQuery
-// final case class MediaQuery(q: String) extends Cond // like @media (max-width: 600px)
-// Later, this can be turned into an AST and run to omit unnecessary CSS.

@@ -29,7 +29,7 @@ object AttrTest extends TestSuite {
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
     Gen.oneofL(Attrs.values).triple
 
-  def px(n: Int) = ValueT.Length(n, ValueT.LengthUnit.px)
+  def px(n: Int) = Length(n, LengthUnit.px)
   val length = px(3)
   val style = Literal.Typed.dashed
   val colour = Color.green
