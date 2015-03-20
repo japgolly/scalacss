@@ -64,10 +64,3 @@ In progress.
 * In Scala.JS, omit unnecessary browser prefixes.
 * Default `Env` for JS.
 * Media query AST.
-
-Upcoming...
-
-* Detect more problems, add more warnings.
-* Add more psuedo selectors discovered by caniuse.com data.
-* Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
-

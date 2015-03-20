@@ -9,12 +9,6 @@ CanIUse subjects affecting CSS values:
 * sticky
 * viewportUnits
 
-CanIUse subjects affecting pseudo selectors:
-* placeholder
-* sel2
-* sel3
-* selection
-
 CanIUse subjects affecting media queries:
 * deviceadaptation
 * mediaResolution
