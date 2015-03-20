@@ -8,5 +8,5 @@ git merge master \
   && bin/gitbook build doc book \
   && git add -A book \
   && git st \
-  && echo "git commit -m 'Updated book.'"
+  && echo "git commit -m 'Updated book.' && git push" && echo
 
