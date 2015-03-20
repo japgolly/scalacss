@@ -54,7 +54,7 @@ println( MyStyles.render )
 Which prints:
 ```css
 @media not handheld and (orientation:landscape) and (max-width:640px) {
-  div.std {
+  .scalacss-0001 {
     width: 400px;
   }
 }
