@@ -15,6 +15,9 @@ object MyStyles extends StyleSheet.Standalone {
     &.hover -
       cursor.zoom_in,
 
+    &(media.not.handheld.landscape.maxWidth(640 px)) -
+      width(400 px),
+
     &("span") -
       color.red
   )
@@ -35,6 +38,12 @@ println( MyStyles.render )
 
 prints:
 ```css
+@media not handheld and (orientation:landscape) and (max-width:640px) {
+  div.std {
+    width: 400px;
+  }
+}
+
 div.std {
   text-align: left;
   margin: 12px auto;
@@ -75,5 +84,5 @@ h1:first-child {
 
 Or if you're running in production-mode, you'll see:
 ```css
-div.std{text-align:left;margin:12px auto;cursor:pointer}div.std:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}div.std span{color:red}h1:first-child{font-weight:bold}.indent-0{padding-left:0}.indent-1{padding-left:2ex}.indent-2{padding-left:4ex}.indent-3{padding-left:6ex}
+@media not handheld and (orientation:landscape) and (max-width:640px){div.std{width:400px}}div.std{text-align:left;margin:12px auto;cursor:pointer}div.std:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}div.std span{color:red}h1:first-child{font-weight:bold}.indent-0{padding-left:0}.indent-1{padding-left:2ex}.indent-2{padding-left:4ex}.indent-3{padding-left:6ex}
 ```
