@@ -85,13 +85,14 @@ object Media {
 
   case class Query(head: TypeExpr \/ Feature, tail: Vector[Feature])
 
-  private final val `:` = Cord(":")
-  private final val and = Cord(" and ")
-  private final val `,` = Cord(", ")
-  private final val `(` = Cord("(")
-  private final val `)` = Cord(")")
-  private final val min = Cord("min-")
-  private final val max = Cord("max-")
+  private final val media = Cord("@media ")
+  private final val `:`   = Cord(":")
+  private final val and   = Cord(" and ")
+  private final val `,`   = Cord(", ")
+  private final val `(`   = Cord("(")
+  private final val `)`   = Cord(")")
+  private final val min   = Cord("min-")
+  private final val max   = Cord("max-")
 
   private def paren(c: Cord): Cord =
     `(` ++ c ++ `)`
@@ -147,4 +148,7 @@ object Media {
 
   def cssQueries(qs: NonEmptyVector[Query]): Cord =
     qs.foldMapLeft1(cssQuery)(_ ++ `,` ++ cssQuery(_))
+
+  def css(qs: NonEmptyVector[Query]): CssMediaQuery =
+    (media ++ cssQueries(qs)).toString
 }

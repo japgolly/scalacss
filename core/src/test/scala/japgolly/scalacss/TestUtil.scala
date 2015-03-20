@@ -11,6 +11,7 @@ trait TestUtil
      with scalaz.std.StreamInstances
      with scalaz.std.VectorInstances
      with scalaz.std.TupleInstances
+     with scalaz.std.OptionInstances
      with scalaz.std.AnyValInstances
      with scalaz.std.ListInstances {
 
