@@ -34,9 +34,13 @@ object RegisterTest extends TestSuite {
     assertEq(l, l.distinct)
   }
 
+  implicit def env = Env.empty
+
+  def stylesToCssMap(s: Vector[StyleA]) =
+    Css(s).map(e => (e.sel, e.content)).toMap
+
   override val tests = TestSuite {
     val reg = new Register(NameGen.short(), ErrorHandler.noisy)
-    implicit def env = Env.empty
 
     'registerS {
       val a1 = reg register ss1
@@ -44,7 +48,7 @@ object RegisterTest extends TestSuite {
       val a3 = reg register ss3
       val a4 = reg register ss4
       assertDistinctClasses(a1, a2, a3, a4)
-      val css = Css(reg.styles).toMap
+      val css = stylesToCssMap(reg.styles)
       assertEq(css(Css className a1.className), NonEmptyVector(CssKV("margin-top", "1px")))
       assertEq(css(Css className a2.className), NonEmptyVector(CssKV("margin-bottom", "2px")))
       assertEq(css(Css className a3.className), NonEmptyVector(CssKV("margin-right", "3px")))
@@ -62,7 +66,7 @@ object RegisterTest extends TestSuite {
 
       val fb: Boolean => StyleA = reg register sfb
       val fi: Int     => StyleA = reg register sfi
-      val css = Css(reg.styles).toMap
+      val css = stylesToCssMap(reg.styles)
       assertEq(css.size, 2 + 4)
       test(fb, Domain.boolean.toStream)
       test(fi, sfid.toStream)

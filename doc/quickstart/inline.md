@@ -14,6 +14,10 @@ object MyStyles extends StyleSheet.Inline {
 
     &.hover(
       cursor.zoom_in
+    ),
+
+    &(media.not.handheld.landscape.maxWidth(640 px))(
+      width(400 px)
     )
   )
 
@@ -44,11 +48,17 @@ MyStyles.button.htmlClass    // Returns "scalacss-0006 btn btn-default"
 
 And to see the generated CSS:
 ```scala
-println( MyStyles.renderA )
+println( MyStyles.render )
 ```
 
 Which prints:
 ```css
+@media not handheld and (orientation:landscape) and (max-width:640px) {
+  div.std {
+    width: 400px;
+  }
+}
+
 .scalacss-0001 {
   text-align: left;
   margin: 12px auto;
@@ -85,5 +95,5 @@ Which prints:
 
 Or if you're running in production-mode, you'll see:
 ```css
-.¢ð{text-align:left;margin:12px auto;cursor:pointer}.¢ð:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}.¢¡{padding-left:0}.¢¢{padding-left:2ex}.¢£{padding-left:4ex}.¢¤{padding-left:6ex}.¢¥{text-align:center}
+@media not handheld and (orientation:landscape) and (max-width:640px){.¢ð{width:400px}}.¢ð{text-align:left;margin:12px auto;cursor:pointer}.¢ð:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}.¢¡{padding-left:0}.¢¢{padding-left:2ex}.¢£{padding-left:4ex}.¢¤{padding-left:6ex}.¢¥{text-align:center}
 ```

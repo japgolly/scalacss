@@ -29,7 +29,7 @@ object AttrTest extends TestSuite {
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
     Gen.oneofL(Attrs.values).triple
 
-  def px(n: Int) = ValueT.Length(n, ValueT.LengthUnit.px)
+  def px(n: Int) = Length(n, LengthUnit.px)
   val length = px(3)
   val style = Literal.Typed.dashed
   val colour = Color.green
@@ -118,6 +118,32 @@ object AttrTest extends TestSuite {
       test("abc abc 123 def", "-o-abc -o-abc 123 -o-def")
       test("-o-abc")
       test("def(12)", "-o-def(12)")
+    }
+
+    'envDepPrefixes1 {
+      def test(name: String)(exp: String*): Unit = {
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
+        val a = cursor.zoom_in(env).map(_.value).sorted
+        assertEq(a, exp.toVector.sorted)
+      }
+      'chrome  - test("Chrome") ("-webkit-zoom-in",               "zoom-in")
+      'firefox - test("Firefox")("-moz-zoom-in",                  "zoom-in")
+      'opera   - test("Opera")  ("-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      'ie      - test("IE")     (/*"-ms-zoom-in", Unsupported */  "zoom-in")
+      'safari  - test("Safari") ("-webkit-zoom-in",               "zoom-in")
+    }
+
+    'envDepPrefixes2 {
+      def test(name: String)(exp: String*): Unit = {
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
+        val a = AV(flex, "")(env).map(_.key).sorted
+        assertEq(a, exp.toVector.sorted)
+      }
+      'chrome  - test("Chrome") ("-webkit-flex",            "flex")
+      'firefox - test("Firefox")("-moz-flex",               "flex")
+      'opera   - test("Opera")  ("-o-flex", "-webkit-flex", "flex")
+      'ie      - test("IE")     ("-ms-flex",                "flex")
+      'safari  - test("Safari") ("-webkit-flex",            "flex")
     }
   }
 }

@@ -1,6 +1,8 @@
 package japgolly.scalacss
 
-import scalaz.OneAnd
+import scalaz.{==>>, OneAnd}
+import scalaz.std.option._
+import scalaz.std.string._
 import scalaz.syntax.foldable1._
 
 object Css {
@@ -11,11 +13,14 @@ object Css {
   def className(cn: ClassName): CssSelector =
     "." + cn.value
 
-  def cond(cs: CssSelector, c: Cond): CssSelector =
+  def selector(cn: ClassName, c: Cond): CssSelector =
+    selector(className(cn), c)
+
+  def selector(cs: CssSelector, c: Cond): CssSelector =
     c.pseudo.fold(cs)(_ modSelector cs)
 
-  def selector(cn: ClassName, c: Cond): CssSelector =
-    cond(className(cn), c)
+  def mediaQuery(c: Cond): CssMediaQueryO =
+    NonEmptyVector.option(c.mediaQueries) map Media.css
 
   def styleA(s: StyleA)(implicit env: Env): Css =
     style(className(s.className), s.style)
@@ -24,12 +29,17 @@ object Css {
     def main: Css =
       s.data.toStream.flatMap {
         case (cond, avs1) =>
-          val r = avs1.foldMapLeft1(_(env))(_ ++ _(env))
+          val r: Vector[CssKV] =
+            avs1.foldMapLeft1(_(env))(_ ++ _(env))
           if (r.isEmpty)
             Stream.empty
-          else
-            Stream((Css.cond(sel, cond), OneAnd(r.head, r.tail)))
+          else {
+            val mq = mediaQuery(cond)
+            val s  = selector(sel, cond)
+            val c  = OneAnd(r.head, r.tail)
+            Stream(CssEntry(mq, s, c))
           }
+        }
 
     def exts: Css =
       s.unsafeExts.toStream.flatMap(unsafeExt(sel, _))
@@ -42,14 +52,25 @@ object Css {
     style(sel, u.style)
   }
 
-  def flatten(css: Css): Stream[(CssSelector, CssKV)] =
-    css.flatMap { case (sel, kvs) =>
-      kvs.vector.toStream.map(kv => (sel, kv))
+  type ValuesByMediaQuery = Vector[(CssSelector, NonEmptyVector[CssKV])]
+  type ByMediaQuery       = CssMediaQueryO ==>> ValuesByMediaQuery
+
+  def mapByMediaQuery(c: Css): ByMediaQuery = {
+    val z: ByMediaQuery = ==>>.empty
+    c.foldLeft(z){(q, e) =>
+      val add = (e.sel, e.content)
+      q.alter(e.mq, cur => Some(cur.getOrElse(Vector.empty) :+ add))
+    }
+  }
+
+  def flatten(css: Css): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
+    css.flatMap { case CssEntry(mq, sel, kvs) =>
+      kvs.vector.toStream.map(kv => (mq, sel, kv))
     }
 
-  type Flat3 = (CssSelector, String, String)
-  def flatten3(css: Css): Stream[Flat3] =
-    css.flatMap { case (sel, kvs) =>
-      kvs.vector.toStream.map(kv => (sel, kv.key, kv.value))
+  type Flat4 = (CssMediaQueryO, CssSelector, String, String)
+  def flatten4(css: Css): Stream[Flat4] =
+    css.flatMap { case CssEntry(mq, sel, kvs) =>
+      kvs.vector.toStream.map(kv => (mq, sel, kv.key, kv.value))
     }
 }

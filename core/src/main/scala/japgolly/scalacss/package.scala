@@ -1,13 +1,11 @@
 package japgolly
 
 import scala.collection.GenTraversableOnce
-import scalaz.{Equal, Foldable1, OneAnd}
+import scalaz.{Equal, OneAnd, Traverse1}
 import scalaz.std.AllInstances._
 import shapeless.lens
 
 package object scalacss {
-
-  type Env = EnvF[Option]
 
   /**
    * A CSS value, like `"none"`, `"solid 3px black"`.
@@ -53,11 +51,37 @@ package object scalacss {
   }
 
   /**
+   * A media query in CSS.
+   *
+   * Examples: `"@media screen and (device-aspect-ratio: 16/9)"`.
+   */
+  type CssMediaQuery  = String
+  type CssMediaQueryO = Option[CssMediaQuery]
+
+  case class CssEntry(mq     : CssMediaQueryO,
+                      sel    : CssSelector,
+                      content: NonEmptyVector[CssKV])
+  object CssEntry {
+    implicit val equality: Equal[CssEntry] = {
+      val A = Equal[CssMediaQueryO]
+      val B = Equal[CssSelector]
+      val C = Equal[NonEmptyVector[CssKV]]
+      new Equal[CssEntry] {
+        override val equalIsNatural =
+          A.equalIsNatural
+        override def equal(a: CssEntry, b: CssEntry): Boolean =
+          B.equal(a.sel, b.sel) &&
+          A.equal(a.mq, b.mq) &&
+          C.equal(a.content, b.content)
+      }
+    }
+  }
+
+  /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
-  type Css = Stream[(CssSelector, NonEmptyVector[CssKV])]
-  implicit val cssEquality: Equal[Css] =
-    streamEqual(tuple2Equal(stringInstance, nonEmptyVectorEquality(CssKV.equality)))
+  type Css = Stream[CssEntry]
+  implicit val cssEquality: Equal[Css] = streamEqual
 
   type WarningMsg = String
   final case class Warning(cond: Cond, msg: WarningMsg)
@@ -91,10 +115,13 @@ package object scalacss {
 
     @inline def maybe[A, B](v: Vector[A], empty: => B)(f: NonEmptyVector[A] => B): B =
       if (v.isEmpty) empty else f(OneAnd(v.head, v.tail))
+
+    @inline def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
+      maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
   }
 
-  implicit val nonEmptyVectorFoldable1: Foldable1[NonEmptyVector] =
-    OneAnd.oneAndFoldable[Vector]
+  implicit val nonEmptyVectorTraverse1: Traverse1[NonEmptyVector] =
+    OneAnd.oneAndTraverse[Vector]
 
   implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
     OneAnd.oneAndEqual[Vector, A]

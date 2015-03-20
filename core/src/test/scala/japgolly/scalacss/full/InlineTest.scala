@@ -29,6 +29,14 @@ object MyInline extends StyleSheet.Inline {
         font := ^.inherit
       ),
 
+      &(media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
+        width(600 px)
+      ),
+
+      &(media.not.handheld.landscape.color)(
+        width(500 px)
+      ),
+
       unsafeChild("nav.debug")(
         backgroundColor("#f88"),
         color.black.important,
@@ -82,19 +90,27 @@ object InlineTest extends utest.TestSuite {
   def norm(css: String) = css.trim
 
   override val tests = TestSuite {
-    'css - assertEq(norm(MyInline.renderA), norm(
+    'css - assertEq(norm(MyInline.render), norm(
       """
-        |.scalacss-0001 {
-        |  -webkit-text-decoration-line: underline overline;
-        |  -moz-text-decoration-line: underline overline;
-        |  text-decoration-line: underline overline;
-        |  padding: 0.5ex;
-        |  margin: 12px;
-        |  cursor: pointer;
-        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: radial-gradient(5em circle at top left, yellow, blue);
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  .scalacss-0001 {
+        |    width: 600px;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  .scalacss-0001 {
+        |    width: 500px;
+        |  }
+        |}
+        |
+        |.scalacss-0001:not(:first-child):visited {
+        |  -o-animation-delay: 60s,50ms;
+        |  -webkit-animation-delay: 60s,50ms;
+        |  -moz-animation-delay: 60s,50ms;
+        |  animation-delay: 60s,50ms;
+        |  font-weight: bold;
+        |  font: inherit;
         |}
         |
         |.scalacss-0001:hover {
@@ -107,13 +123,17 @@ object InlineTest extends utest.TestSuite {
         |  cursor: zoom-in;
         |}
         |
-        |.scalacss-0001:not(:first-child):visited {
-        |  -o-animation-delay: 60s,50ms;
-        |  -webkit-animation-delay: 60s,50ms;
-        |  -moz-animation-delay: 60s,50ms;
-        |  animation-delay: 60s,50ms;
-        |  font-weight: bold;
-        |  font: inherit;
+        |.scalacss-0001 {
+        |  -webkit-text-decoration-line: underline overline;
+        |  -moz-text-decoration-line: underline overline;
+        |  text-decoration-line: underline overline;
+        |  padding: 0.5ex;
+        |  margin: 12px;
+        |  cursor: pointer;
+        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
         |.scalacss-0001 nav.debug {

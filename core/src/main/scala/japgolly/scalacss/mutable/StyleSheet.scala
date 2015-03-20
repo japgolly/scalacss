@@ -87,10 +87,16 @@ object StyleSheet {
     }
 
     /** Created a nested conditional style. */
-    @inline final protected def & = Cond.empty
+    @inline final protected def & : Cond = Cond.empty
+
+    /** Created a nested conditional style. */
+    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
+
+    /** Created a nested conditional style. */
+    @inline final protected def &(c: Cond): Cond = c
 
     /** Created a child style. */
-    @inline final protected def &(sel: CssSelector) = new NestedStringOps(sel)
+    @inline final protected def &(sel: CssSelector): NestedStringOps = new NestedStringOps(sel)
   }
 
 
@@ -127,6 +133,12 @@ object StyleSheet {
       register.registerC(s)(m, u)
 
     /** Created a nested conditional style. */
-    @inline final protected def & = Cond.empty
+    @inline final protected def & : Cond = Cond.empty
+
+    /** Created a nested conditional style. */
+    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
+
+    /** Created a nested conditional style. */
+    @inline final protected def &(c: Cond): Cond = c
   }
 }

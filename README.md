@@ -61,14 +61,13 @@ In progress.
 * More DSL for composite styles.
 * Standalone styles (as opposed to Inline styles).
 * Default settings for JVM ⊗ {Dev,Prod}.
+* In Scala.JS, omit unnecessary browser prefixes.
+* Default `Env` for JS.
+* Media query AST.
 
 Upcoming...
 
-* Media query AST.
-* In Scala.JS, omit unnecessary browser prefixes.
-* Default `Env` for JS.
-
-* Add more psuedo selectors discovered by caniuse.com data.
 * Detect more problems, add more warnings.
+* Add more psuedo selectors discovered by caniuse.com data.
 * Incorporate known CSS hacks like [this](https://github.com/postcss/autoprefixer-core/blob/master/lib/hacks/border-radius.coffee).
 

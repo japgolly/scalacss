@@ -1,0 +1,16 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
+
+echo "Downloading licence..."
+curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/LICENSE.txt -o LICENSE-platform.js.txt
+
+echo "Downloading JS..."
+tmp=/tmp/platformjs-$(date +%Y%m%d-%H%M%S)-$$
+curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/platform.js \
+  | node_modules/.bin/uglifyjs --compress --mangle -o $tmp \
+  && perl -pi -e '
+      undef $/;
+      $r = `cat "'$tmp'"`;
+      s/(def sourceCode\s*=\s*""").+?(""")/"$1".$r."$2"/se;
+    ' core/src/main/scala-js/japgolly/scalacss/js/PlatformJs.scala \
+  && rm -f $tmp

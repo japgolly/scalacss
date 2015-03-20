@@ -11,13 +11,19 @@ final class StringRenderer(format: StringRenderer.Format) extends Renderer[Strin
   override def apply(css: Css): String = {
     val sb = new StringBuilder
     val fmt = format(sb)
-    for ((sel, kvs) <- css) {
-      fmt selStart sel
-      fmt kv1 kvs.head
-      kvs.tail foreach fmt.kvn
-      fmt selEnd sel
+    
+    Css.mapByMediaQuery(css).fold(()) { (omq, data, _) =>
+      omq foreach fmt.mqStart
+      for ((sel, kvs) <- data) {
+        fmt.selStart(omq, sel)
+        fmt.kv1(omq, kvs.head)
+        kvs.tail.foreach(fmt.kvn(omq, _))
+        fmt.selEnd(omq, sel)
+      }
+      omq foreach fmt.mqEnd
     }
     fmt.done()
+
     sb.toString()
   }
 }
@@ -28,53 +34,65 @@ object StringRenderer {
   implicit def autoFormatToRenderer(f: Format): StringRenderer =
     new StringRenderer(f)
 
-  case class FormatSB(selStart: CssSelector => Unit,
-                      kv1     : CssKV => Unit,
-                      kvn     : CssKV => Unit,
-                      selEnd  : CssSelector => Unit,
-                      done    : () => Unit)
+  case class FormatSB(mqStart : CssMediaQuery                 => Unit,
+                      selStart: (CssMediaQueryO, CssSelector) => Unit,
+                      kv1     : (CssMediaQueryO, CssKV)       => Unit,
+                      kvn     : (CssMediaQueryO, CssKV)       => Unit,
+                      selEnd  : (CssMediaQueryO, CssSelector) => Unit,
+                      mqEnd   : CssMediaQuery                 => Unit,
+                      done    : ()                            => Unit)
 
   /**
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.
    */
   val formatTiny: Format = sb => {
-    val kv: CssKV => Unit = c => {
+    def kv(c: CssKV): Unit = {
       sb append c.key
       sb append ':'
       sb append c.value
     }
     FormatSB(
-      sel => {
-        sb append sel
-        sb append '{'
-      },
-      kv,
-      c => {
-        sb append ';'
-        kv(c)
-      },
-      _ => sb append '}',
-      () => ())
+      m      => { sb append m; sb append '{' },
+      (_, s) => { sb append s; sb append '{' },
+      (_, c) => kv(c),
+      (_, c) => { sb append ';'; kv (c) },
+      (_, _) => sb append '}',
+      _      => sb append '}',
+      ()     => ())
   }
 
   /**
    * Generates CSS intended for humans.
    */
   def formatPretty(indent: String = "  ", postColon: String = " "): Format = sb => {
-    val kv: CssKV => Unit = c => {
-      sb append indent
-      sb append c.key
-      sb append ':'
-      sb append postColon
-      sb append c.value
-      sb append ";\n"
-    }
+    def mqIndent(mq: CssMediaQueryO): Unit =
+      if (mq.isDefined) sb append indent
+    val kv: (CssMediaQueryO, CssKV) => Unit =
+      (mq, c) => {
+        mqIndent(mq)
+        sb append indent
+        sb append c.key
+        sb append ':'
+        sb append postColon
+        sb append c.value
+        sb append ";\n"
+      }
     FormatSB(
-      sel => {
+      mq => {
+        sb append mq
+        sb append " {\n"
+      },
+      (mq, sel) => {
+        mqIndent(mq)
         sb append sel
         sb append " {\n"
       },
       kv, kv,
+      (mq, _) => {
+        mqIndent(mq)
+        sb append "}\n"
+        if (mq.isEmpty) sb append '\n'
+      },
       _ => sb append "}\n\n",
       () => ())
   }

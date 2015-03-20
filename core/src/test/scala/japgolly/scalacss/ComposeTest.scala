@@ -15,7 +15,7 @@ object ComposeTest extends TestSuite {
 //      { case (a,b,c) => x(a compose (b compose c)) })
 
   def flat(s: StyleS) =
-    Css.flatten3(s.copy(className = None).inspectCss)
+    Css.flatten4(s.copy(className = None).inspectCss)
 
   val appendTest = {
     implicit val impc = new Compose(Compose.Rules.silent(Compose.Rules.append))

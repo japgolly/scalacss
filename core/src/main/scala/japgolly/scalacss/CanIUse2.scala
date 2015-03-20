@@ -1,8 +1,9 @@
 package japgolly.scalacss
 
-import scalaz.Memo
+import scalaz.{NonEmptyList, Memo}
 import scalaz.std.map._
 import scalaz.std.set._
+import scalaz.syntax.foldable1._
 import scalaz.syntax.semigroup._
 import japgolly.scalacss.{Literal => L}
 import CanIUse._
@@ -101,4 +102,30 @@ object CanIUse2 {
 
   @inline def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
     runPlan(pp, pa, CssKV.value, kv)
+
+  def prefixesForPlatform(p: Env.Platform[Option]): Set[Prefix] =
+    agentsForPlatform(p) foldMap1 agentPrefixes
+
+  def agentsForPlatform(p: Env.Platform[Option]): NonEmptyList[Agent] = {
+    import Agent._
+    @inline def dunno = Agent.values
+    if (p.toString.toLowerCase contains "android")
+      p.name.fold(dunno)({
+        case "Chrome"  => NonEmptyList(AndroidChrome)
+        case "Firefox" => NonEmptyList(AndroidFirefox)
+        case _         => NonEmptyList(AndroidBrowser, AndroidUC)
+      })
+    else
+      p.name.fold(dunno)({
+        case "Chrome"  => NonEmptyList(Chrome)
+        case "Firefox" => NonEmptyList(Firefox)
+        case "IE"      => NonEmptyList(IE, IEMobile)
+        case "Opera"   => NonEmptyList(Opera, OperaMini, OperaMobile)
+        case "Safari"  => NonEmptyList(IOSSafari, Safari)
+        case _         => dunno
+      })
+  }
+
+  def filteredPrefixPlan(whitelist: Set[Prefix], pp: PrefixPlan): PrefixPlan =
+    pp.filter(_ forall whitelist.contains)
 }

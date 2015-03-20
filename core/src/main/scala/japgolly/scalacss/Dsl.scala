@@ -1,9 +1,28 @@
 package japgolly.scalacss
 
+import scalaz.{\/, -\/, \/-}
 import Style.{UnsafeExt, UnsafeExts}
 import ValueT._
 
 object DslBase {
+  import Media.{Resolution => _, _}
+
+  // media.
+  object MediaQueryEmpty extends TypeAOps[Query] with FeatureOps[Query] {
+    override protected def F = f => new Query(\/-(f), Vector.empty)
+    override protected def T = t => new Query(-\/(Just(t)), Vector.empty)
+    def not  = new MediaQueryNeedType(Not)
+    def only = new MediaQueryNeedType(Only)
+  }
+
+  // media.{not,only}
+  final class MediaQueryNeedType(f: TypeA => TypeExpr) extends TypeAOps[Query] {
+    override protected def T = t => new Query(-\/(f(t)), Vector.empty)
+  }
+
+  final class DslInt(val self: Int) extends AnyVal {
+    def :/:(y: Int) = Ratio(self, y)
+  }
 
   final class DslNum[N](val self: N) extends AnyVal {
     @inline private def mkUnit(u: LengthUnit): Length[N] =
@@ -72,7 +91,14 @@ object DslBase {
     /** Size as a percentage. */
     @inline def %% = Percentage(self)
 
-    @inline def *(l: Length[N])(implicit N: Numeric[N]) = l * self
+    /** Dots per inch */
+    @inline def dpi  = Resolution(self, ResolutionUnit.dpi)
+
+    /** Dots per centimeter */
+    @inline def dpcm = Resolution(self, ResolutionUnit.dpcm)
+
+    @inline def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
+    @inline def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
   }
 
   /** Untyped attributes */
@@ -125,6 +151,7 @@ abstract class DslBase
 
   @inline override protected final def mkColor(s: String) = Color(s)
 
+  @inline implicit final def autoDslInt  (a: Int)          : DslInt         = new DslInt(a)
   @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
   @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)
   @inline implicit final def autoDslAttr (a: Attr)         : DslAttr        = new DslAttr(a)
@@ -136,7 +163,8 @@ abstract class DslBase
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
-  @inline implicit final def CondPseudo(x: Pseudo): Cond = Cond(Some(x))
+  @inline implicit final def CondPseudo    (x: Pseudo)     : Cond = Cond(Some(x), Vector.empty)
+  @inline implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, Vector1(x))
 
   @inline implicit final def ToStyleToAV           (x: ToAV)      : ToStyle = ToStyleAV(x.av)
   @inline implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(NonEmptyVector(x))
@@ -154,6 +182,8 @@ abstract class DslBase
 
   def addClassNames(cn: String*): StyleS =
     StyleS.empty.copy(addClassNames = cn.foldLeft(Vector.empty[ClassName])(_ :+ ClassName(_)))
+
+  def media = MediaQueryEmpty
 
   def unsafeExt(f: String => String)(t: ToStyle*)(implicit c: Compose): UnsafeExt =
     UnsafeExt(f, styleS(t: _*))

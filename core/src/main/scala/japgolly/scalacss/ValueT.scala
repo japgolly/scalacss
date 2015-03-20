@@ -37,38 +37,6 @@ object ValueT {
   }
   */
 
-  sealed abstract class LengthUnit(val value: String)
-  object LengthUnit {
-    case object cm   extends LengthUnit("cm")
-    case object ch   extends LengthUnit("ch")
-    case object em   extends LengthUnit("em")
-    case object ex   extends LengthUnit("ex")
-    case object in   extends LengthUnit("in")
-    case object mm   extends LengthUnit("mm")
-    case object pc   extends LengthUnit("pc")
-    case object pt   extends LengthUnit("pt")
-    case object px   extends LengthUnit("px")
-    case object rem  extends LengthUnit("rem")
-    case object vh   extends LengthUnit("vh")
-    case object vmin extends LengthUnit("vmin")
-    case object vmax extends LengthUnit("vmax")
-    case object vw   extends LengthUnit("vw")
-  }
-
-  final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: LengthUnit) {
-    def value = {
-      val s = n.toString
-      if (s == "0") "0" else s + u.value
-    }
-
-    @inline def *(m: N)(implicit N: Numeric[N]): Length[N] =
-      copy(n = N.times(this.n, m))
-  }
-
-  final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
-    def value: Value = n.toString + "%"
-  }
-
   /**
    * Represented a context in which a finite set of types are valid.
    *

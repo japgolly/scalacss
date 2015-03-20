@@ -1,31 +1,8 @@
 package japgolly.scalacss
 
+import Media.{Orientation, Scan}
+
 object Env {
-
-  sealed trait Orientation
-  case object Landscape extends Orientation
-  case object Portrait  extends Orientation
-
-  sealed trait Scan
-  case object Progressive extends Scan
-  case object Interface   extends Scan
-
-  sealed trait Resolution
-  /** Dots per inch */
-  case class DPI(value: Int) extends Orientation
-  /** Dots per centimeter */
-  case class DPCM(value: Int) extends Orientation
-
-  sealed trait MediaType
-  case object Aural      extends MediaType
-  case object Braille    extends MediaType
-  case object Embossed   extends MediaType
-  case object Handheld   extends MediaType
-  case object Print      extends MediaType
-  case object Projection extends MediaType
-  case object Screen     extends MediaType
-  case object TTY        extends MediaType
-  case object TV         extends MediaType
 
   /**
    * @param monochrome The number of bits per pixel on a monochrome (greyscale) device.
@@ -37,17 +14,17 @@ object Env {
    *             If the device is grid-based (such as a TTY terminal or a phone display with only one font),
    *             the value is true, otherwise it is false.
    */
-  final case class Media[F[_]](width            : F[Int],
-                               height           : F[Int],
+  final case class Media[F[_]](width            : F[Length[Int]],
+                               height           : F[Length[Int]],
                                aspectRatio      : F[Double],
-                               deviceWidth      : F[Int],
-                               deviceHeight     : F[Int],
+                               deviceWidth      : F[Length[Int]],
+                               deviceHeight     : F[Length[Int]],
                                deviceAspectRatio: F[Double],
                                monochrome       : F[Int],
                                color            : F[Int],
                                colorIndex       : F[Int],
                                orientation      : F[Orientation],
-                               resolution       : F[Resolution],
+                               resolution       : F[Resolution[Double]],
                                scan             : F[Scan],
                                grid             : F[Boolean])
   object Media {
@@ -83,17 +60,25 @@ object Env {
   object OS {
     def empty[F[+_]](e: F[Nothing]): OS[F] =
       OS[F](e, e, e)
+
+    def archFromInt(i: Int): Option[Architecture] =
+      i match {
+        case 64 => Some(Bits64)
+        case 32 => Some(Bits32)
+        case _  => None
+      }
+
   }
 
-  val empty: Env =
-    EnvF.empty(None)
+  final val empty: Env =
+    Env(Platform empty None, Media empty None)
 }
 
 import Env._
 
-final case class EnvF[F[_]](platform: Platform[F], media: Media[F])
+final case class Env(platform: Platform[Option],
+                     media   : Media[Option]) {
 
-object EnvF {
-  def empty[F[+_]](e: F[Nothing]): EnvF[F] =
-    EnvF[F](Platform empty e, Media empty e)
+  val prefixWhitelist: Set[CanIUse.Prefix] =
+    CanIUse2.prefixesForPlatform(platform)
 }
