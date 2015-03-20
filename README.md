@@ -12,25 +12,13 @@ The first thoughts about the conception of this project are gathered in two plac
 
 # Status
 
-##### Requirements
+First version **done**.
 
-Analysis and the Requirements first draft are done.
-See [doc/reqs.md](https://github.com/japgolly/scalacss/blob/master/doc/reqs.md).
+Next will be documentation and integration with libs like [scalajs-react](https://github.com/japgolly/scalajs-react).
 
-Please feel free to review and discuss in Gitter chat.
+In the meantime you can get a taste here:
 
-##### Types & Design
-
-Low-level types are done in [experiment/main.scala](https://github.com/japgolly/scalacss/blob/master/experiment/main.scala).
-(Be prepared for ugliness - it's experimentation.)
-
-It's been decided that compile-time key conflict resolution will be defered. Resolution will be performed at runtime for now.
-
-There will be a high-level interface on top to make usage as nice, easy and concise as LESS/SASS.
-
-##### Implementation
-
-In progress.
+http://japgolly.github.io/scalacss/book/quickstart/index.html
 
 # Features / Progress
 
