@@ -90,7 +90,8 @@ object StringRenderer {
       kv, kv,
       (mq, _) => {
         mqIndent(mq)
-        sb append "}\n\n"
+        sb append "}\n"
+        if (mq.isEmpty) sb append '\n'
       },
       _ => sb append "}\n\n",
       () => ())

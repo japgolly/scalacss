@@ -16,7 +16,13 @@ object MyStandalone extends StyleSheet.Standalone {
       cursor.zoom_in,
 
     &("span") -
-      color.red
+      color.red,
+
+    &(media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi)) -
+      width(600 px),
+
+    &(media.not.handheld.landscape.color) -
+      width(500 px)
   )
 
   "h1".firstChild -
@@ -35,6 +41,18 @@ object StandaloneTest extends utest.TestSuite {
     def norm(css: String) = css.trim
     assertEq(norm(MyStandalone.render), norm(
       """
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  div.std {
+        |    width: 600px;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  div.std {
+        |    width: 500px;
+        |  }
+        |}
+        |
         |div.std {
         |  text-align: left;
         |  margin: 12px auto;

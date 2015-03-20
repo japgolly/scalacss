@@ -35,9 +35,9 @@ final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
 sealed abstract class ResolutionUnit(val value: String)
 object ResolutionUnit {
   /** Dots per inch */
-  case object dpi  extends LengthUnit("dpi")
+  case object dpi  extends ResolutionUnit("dpi")
   /** Dots per centimeter */
-  case object dpcm extends LengthUnit("dpcm")
+  case object dpcm extends ResolutionUnit("dpcm")
 }
 
 final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: ResolutionUnit) {
