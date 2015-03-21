@@ -1,4 +1,4 @@
-### Defaults
+# Defaults
 
 The first thing you'll want to do is import the default settings.
 
