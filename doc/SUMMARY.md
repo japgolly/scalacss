@@ -13,5 +13,4 @@
   * [Conflict Detection](features/conflict.md)
   * [Reusable Styles](features/reuse.md)
   * [External CSS Libraries](features/extern.md)
-  * [CSS Reset](features/reset.md)
 * [Requirements](reqs.md)
