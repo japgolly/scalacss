@@ -1,6 +1,7 @@
 package japgolly.scalacss.mutable
 
 import scala.annotation.tailrec
+import scalaz.syntax.equal._
 import shapeless._
 import shapeless.ops.hlist.Mapper
 import japgolly.scalacss._
@@ -35,11 +36,11 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     val cn = s.className getOrElse nextName()
 
     // Optional side-effects for warnings
-    // TODO Warn about reregistration
-    for {
-      wf      <- errHandler.warn
-      warning <- s.warnings
-    } wf(cn, warning)
+    errHandler.warn.foreach { f =>
+      if (_styles.exists(_.className === cn))
+        f(cn, Warning(Cond.empty, "Another style in the register has the same classname."))
+      s.warnings foreach (f(cn, _))
+    }
 
     // Register
     val a = StyleA(cn, s.addClassNames, s)
