@@ -48,46 +48,12 @@ object ScalaCSS extends Build {
   }
   val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
 
-  def generateAttrAliases: CDS = {
-    val r1 = """.*(?: val .*Attr[ \.]| extends ).*""".r.pattern
-    val r2 = """^\s*(?://|\*).*""".r.pattern
-    val r3 = """.*(?:override|private| val +values).*""".r.pattern
-    val r4 = """^.* (?:object|val) +| *=.+| +extends.*""".r
-    val r5 = """^[a-z].*""".r.pattern
-    CDS.jj(_ =>
-      sourceGenerators in Compile <+= (sourceDirectory in Compile, sourceManaged in Compile) map { (src, tgt) =>
-        val attrs =
-          IO.readLines(src / "scala/japgolly/scalacss/Attrs.scala").toStream
-            .filter   (r1.matcher(_).matches)
-            .filterNot(r2.matcher(_).matches)
-            .filterNot(r3.matcher(_).matches)
-            .map      (r4.replaceAllIn(_, ""))
-            .filter   (r5.matcher(_).matches)
-            .sorted
-            .map(a => s"  @inline final def $a = Attrs.$a")
-        val attrAliases =
-        s"""
-          |package japgolly.scalacss
-          |
-          |abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
-          |${attrs mkString "\n"}
-          |}
-        """.stripMargin
-
-        val genFile = tgt / "Generated.scala"
-        IO.write(genFile, attrAliases)
-
-        genFile :: Nil
-      }
-    )
-  }
-
   // ==============================================================================================
   override def rootProject = Some(core)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
-      .configure(utestSettings()) //, generateAttrAliases)
+      .configure(utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
     )
