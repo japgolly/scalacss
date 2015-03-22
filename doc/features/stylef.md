@@ -5,6 +5,7 @@ Sometimes you want a style that depends on input.
 For standalone stylesheets, it's not an issue.
 ```scala
 object MyStyles extends StyleSheet.Standalone {
+  import dsl._
 
   for (i <- 0 to 3)
     s".indent-$i" -
@@ -36,6 +37,7 @@ Examples:
 
 ```scala
 object MyInline extends StyleSheet.Inline {
+  import dsl._
 
   // Convenience method: boolStyle
   val everythingOk =

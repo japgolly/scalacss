@@ -6,6 +6,7 @@ Create styles as follows:
 import japgolly.scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Inline {
+  import dsl._
 
   val myStyle1 = style(
     margin(12 px, auto),
@@ -13,7 +14,7 @@ object MyStyles extends StyleSheet.Inline {
     cursor.pointer,
 
     &.hover(
-      cursor.zoom_in
+      cursor.zoomIn
     ),
 
     &(media.not.handheld.landscape.maxWidth(640 px))(
@@ -95,5 +96,5 @@ Which prints:
 
 Or if you're running in production-mode, you'll see:
 ```css
-@media not handheld and (orientation:landscape) and (max-width:640px){.¢ð{width:400px}}.¢ð{text-align:left;margin:12px auto;cursor:pointer}.¢ð:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}.¢¡{padding-left:0}.¢¢{padding-left:2ex}.¢£{padding-left:4ex}.¢¤{padding-left:6ex}.¢¥{text-align:center}
+@media not handheld and (orientation:landscape) and (max-width:640px){._0{width:400px}}._0{text-align:left;margin:12px auto;cursor:pointer}._0:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}._1{padding-left:0}._2{padding-left:2ex}._3{padding-left:4ex}._4{padding-left:6ex}._5{text-align:center}
 ```

@@ -174,6 +174,7 @@ abstract class DslBase
   @inline implicit final def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts     (x: UnsafeExts): ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS         (x: StyleS)    : ToStyle = new ToStyle(x)
+  @inline implicit final def ToStyleStyleA         (x: StyleA)    : ToStyle = new ToStyle(x.style)
 
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 

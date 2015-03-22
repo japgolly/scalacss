@@ -20,6 +20,8 @@
 ## Editing the documentation
 
 * It's all under `doc/` in markdown format.
-* Run `bin/book-serve` to have it generate HTML with live-refresh.
-* The sidebar is in `SUMMARY.md`
-
+  The sidebar is in `SUMMARY.md`
+* Run `bin/book-dev`. It will split your terminal into with the bottom half
+  running `bin/book-serve` which generates HTML with live-refresh.
+* Open your browser to `localhost:4000`.
+* Edit markdown.

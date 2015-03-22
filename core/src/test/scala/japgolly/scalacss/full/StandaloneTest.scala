@@ -6,6 +6,7 @@ import japgolly.scalacss.Defaults._
 //import CopyDefaultsForStandalone._
 
 object MyStandalone extends StyleSheet.Standalone {
+  import dsl._
 
   "div.std" - (
     margin(12 px, auto),
@@ -13,7 +14,7 @@ object MyStandalone extends StyleSheet.Standalone {
     cursor.pointer,
 
     &.hover -
-      cursor.zoom_in,
+      cursor.zoomIn,
 
     &("span") -
       color.red,

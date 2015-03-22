@@ -9,12 +9,12 @@ ScalaCSS aims to bring type-safety and clarity to
 * maintaining CSS
 
 The goals and vision of the project are documented in
-[its requirements](https://japgolly.github.io/scalacss/book/reqs.md).
+[its requirements](https://japgolly.github.io/scalacss/book/reqs.html).
 Most requirements are satisfied; some will be addressed a little later.
 
 # Documentation
 [Documentation is here](https://japgolly.github.io/scalacss/book/).
 
 * [Quick Start](https://japgolly.github.io/scalacss/book/quickstart/index.html)
-* [Feature list](https://japgolly.github.io/scalacss/book/features/index.html)
+* [Features](https://japgolly.github.io/scalacss/book/features/index.html)
 

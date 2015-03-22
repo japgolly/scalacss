@@ -16,13 +16,15 @@ import StyleC.MkUsage
  */
 object StyleSheet {
 
-  abstract class Base extends DslBase {
+  abstract class Base {
     protected def register: Register
 
-    @inline final protected def ^ = Literal
+    protected object dsl extends DslBase {
+      override def styleS(t: ToStyle*)(implicit c: Compose) =
+        Dsl.style(t: _*)
+    }
 
-    override final protected def styleS(t: ToStyle*)(implicit c: Compose) =
-      Dsl.style(t: _*)
+    @inline final protected def ^ = Literal
 
     /**
      * Render registered styles into some format, usually a String of plain CSS.
@@ -54,6 +56,7 @@ object StyleSheet {
    *   - Only static styles ([[StyleS]]) are usable.
    */
   abstract class Standalone(protected implicit val register: Register) extends Base {
+    import dsl._
 
     @inline protected final implicit class RootStringOps(val sel: CssSelector) extends Pseudo.ChainOps[RootStringOps] {
       override protected def addPseudo(p: Pseudo): RootStringOps =
@@ -110,6 +113,7 @@ object StyleSheet {
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
   abstract class Inline(protected implicit val register: Register) extends Base {
+    import dsl._
 
             final protected type Domain[A] = japgolly.scalacss.Domain[A]
     @inline final protected def  Domain    = japgolly.scalacss.Domain

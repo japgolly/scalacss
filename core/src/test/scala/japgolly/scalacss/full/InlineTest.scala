@@ -7,6 +7,7 @@ import japgolly.scalacss.Defaults._
 //import CopyDefaultsForInline._
 
 object MyInline extends StyleSheet.Inline {
+  import dsl._
 
   val s1 =
     style(
@@ -20,7 +21,7 @@ object MyInline extends StyleSheet.Inline {
         fontWeight.normal,
         lineHeight(1 em),
         padding.`0`,
-        cursor.zoom_in
+        cursor.zoomIn
       ),
 
       &.visited.not(_.FirstChild)(

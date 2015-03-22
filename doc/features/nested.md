@@ -44,6 +44,7 @@ error prevention.
 Definition:
 ```scala
 object Demo extends StyleSheet.Inline {
+  import dsl._
 
   // This is a style for a container
   // with a <label> and an <input type=checkbox> in it
@@ -92,6 +93,7 @@ using SASS or LESS.
 
 ```scala
 object YOLO extends StyleSheet.Inline {
+  import dsl._
 
   val example = style(
     ...,

@@ -6,6 +6,7 @@ Create styles as follows:
 import japgolly.scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Standalone {
+  import dsl._
 
   "div.std" - (
     margin(12 px, auto),
@@ -13,7 +14,7 @@ object MyStyles extends StyleSheet.Standalone {
     cursor.pointer,
 
     &.hover -
-      cursor.zoom_in,
+      cursor.zoomIn,
 
     &(media.not.handheld.landscape.maxWidth(640 px)) -
       width(400 px),

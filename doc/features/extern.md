@@ -21,6 +21,7 @@ you have a new property at your fingertips: `addClassNames`.
 Example:
 ```scala
 object MyStyles extends StyleSheet.Inline {
+  import dsl._
 
   val button = style(
     addClassNames("btn", "btn-default"), // Bootstrap classes

@@ -19,6 +19,7 @@ object DefaultsTest extends TestSuite {
   }
 
   class SharedStyleModule(implicit reg: mutable.Register) extends mutable.StyleSheet.Inline {
+    import dsl._
     implicit def compose = Compose.trust
     val header = style(backgroundColor("#333"))
     val footer = style(backgroundColor("#666"))
@@ -29,13 +30,14 @@ object DefaultsTest extends TestSuite {
     import DevDefaults._
 
     object SS extends StyleSheet.Inline {
+      import dsl._
       val style1 = style(
         margin(12 px),
         marginLeft(6 px)
       )
       val style2 = style(
         cursor.pointer,
-        cursor.zoom_in
+        cursor.zoomIn
       )
       val shared = new SharedStyleModule
     }
@@ -76,13 +78,14 @@ object DefaultsTest extends TestSuite {
     import ProdDefaults._
 
     object SS extends StyleSheet.Inline {
+      import dsl._
       val style1 = style(
         margin(12 px),
         marginLeft(6 px)
       )
       val style2 = style(
         cursor.pointer,
-        cursor.zoom_in
+        cursor.zoomIn
       )
       val shared = new SharedStyleModule
     }
@@ -92,10 +95,10 @@ object DefaultsTest extends TestSuite {
 
     def test(): Unit =
       assertEq(css,
-        ".\u00a2\u00a0{margin:12px;margin-left:6px}" +
-        ".\u00a2\u00a1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
-        ".\u00a2\u00a2{background-color:#333}" +
-        ".\u00a2\u00a3{background-color:#666}"
+        "._0{margin:12px;margin-left:6px}" +
+        "._1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
+        "._2{background-color:#333}" +
+        "._3{background-color:#666}"
       )
   }
 }
