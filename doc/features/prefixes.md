@@ -4,7 +4,7 @@ For some CSS properties, browsers require an engine-specific prefix.
 
 Prefixes can be required on CSS attributes:
 ```css
-   -moz-animation-delay: 60s,50ms;
+    -ms-animation-delay: 60s,50ms;
    -moz-animation-delay: 60s,50ms;
      -o-animation-delay: 60s,50ms;
 -webkit-animation-delay: 60s,50ms;
