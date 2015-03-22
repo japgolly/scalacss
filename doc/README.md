@@ -1,6 +1,6 @@
-# ScalaCSS
+# [ScalaCSS](https://github.com/japgolly/scalacss/)
 
-ScalaCSS aims to bring type-safety and clarity to
+[ScalaCSS](https://github.com/japgolly/scalacss/) aims to bring type-safety and clarity to
 * creating CSS
 * using CSS
 * maintaining CSS

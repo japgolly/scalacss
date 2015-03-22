@@ -1,6 +1,6 @@
 # Quick Start
 
-Add ScalaCSS to your project by adding this dependency to your SBT build:
+Add [ScalaCSS](https://github.com/japgolly/scalacss/) to your project by adding this dependency to your SBT build:
 ```scala
 libraryDependencies += "com.github.japgolly.scalacss" %%% "core" % "0.1.0"
 ```
