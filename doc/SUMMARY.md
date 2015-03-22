@@ -13,4 +13,6 @@
   * [Conflict Detection](features/conflict.md)
   * [Reusable Styles](features/reuse.md)
   * [External CSS Libraries](features/extern.md)
+* [Digging Deeper](deeper.md)
 * [Requirements](reqs.md)
+* [Developing](dev.md)

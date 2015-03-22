@@ -12,38 +12,3 @@ CanIUse subjects affecting CSS values:
 CanIUse subjects affecting media queries:
 * deviceadaptation
 * mediaResolution
-
-================================================================================
-
-Doc
-===
-
-Intro & Purpose
-
-Features
-  Basic stylesheets.
-    * Attributes.
-    * Pseudo selectors.
-    * Media query AST.
-    * Static styles.
-    * Unsafe children
-  * Automatic browser prefixes for properties (using caniuse.com data).
-    * Ability to dynamically tailor CSS to environment. (Able but as yet, unused.)
-    * Automatic browser prefixes for _values_ (using caniuse.com data).
-  * Attribute conflict detection. (Transitive using reachability of underlying properties. Eg. `grid-area` affects `grid-row` which affects `grid-row-start`.)
-  * StyleF
-  * StyleC
-  * Defaults
-  * Reusable styles (modules).
-  * Styles can add class names, for example to apply Bootstrap classes like `btn btn-default`.
-  * CSS Reset.
-
-Digging Deepter
-  Building Blocks
-  Dynamic CSS
-
-Developing
-  Book
-  CanIUse
-  PhantomJS
-  bin/generate-aliases
