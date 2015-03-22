@@ -42,7 +42,7 @@ object ScalaCSS extends Build {
     val concurrent = m("concurrent") > effect
   }
   object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.8")
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.9")
     val core = m("core")
     val test = m("test")
   }
@@ -84,8 +84,6 @@ object ScalaCSS extends Build {
 
   // ==============================================================================================
   override def rootProject = Some(core)
-
-  core.settings(libraryDependencies += "org.apache.derby" % "derby" % "10.4.1.3" % Test)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings

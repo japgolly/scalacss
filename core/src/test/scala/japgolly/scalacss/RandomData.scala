@@ -7,14 +7,6 @@ import Style.{UnsafeExts, UnsafeExt}
 
 object RandomData {
 
-  // TODO Add to Nyaya
-  def lazily[A, B](f: => Gen[A]): Gen[A] =
-    Gen.insert(Need(f)).flatMap(_.value)
-
-  // TODO Add to Nyaya
-  def mapBy2[K, A](k: Gen[K], ga: Gen[A]): GenS[Map[K, A]] =
-    GenS(sz => Gen.pair(k, ga).list.lim(sz.value).map(_.toMap))
-
   val limbig = 20 `JVM|JS` 6
 
   val (str, str1) = (Gen.alphanumericstring lim 32, Gen.alphanumericstring1 lim 32)
@@ -53,8 +45,8 @@ object RandomData {
         objects.size -> Gen.oneofL(objects),
         needInt.size -> Gen.oneofL(needInt).flatMap(Gen.positiveint.map),
         needStr.size -> Gen.oneofL(needStr).flatMap(str1.lim(20).map),
-        2            -> lazily(self.map(Not(_))),
-        1            -> lazily(self.list1.lim(4).map(_.list.reduce(_ & _)))
+        2            -> Gen.lazily(self.map(Not(_))),
+        1            -> Gen.lazily(self.list1.lim(4).map(_.list.reduce(_ & _)))
       )
     self
   }
@@ -83,7 +75,7 @@ object RandomData {
   val styleS: Gen[StyleS] = {
     def level(next: Option[Gen[StyleS]]): Gen[StyleS] =
       for {
-        data <- mapBy2(cond, avs.lim(limbig)).lim(8 `JVM|JS` 3)
+        data <- cond.mapTo(avs lim limbig).lim(8 `JVM|JS` 3)
         exts <- unsafeExts(next)
         cn   <- className.option
         cns  <- className.vector
