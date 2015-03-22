@@ -105,14 +105,23 @@ object Register { // ===========================================================
     }
 
     // http://www.w3.org/TR/CSS21/grammar.html#scanner
-    val nmchar: Array[Char] =
-      ((0xA0 to 0xFF).map(_.toChar) ++ ('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
+    // nonascii   [\240-\377]
+    // unicode    \\{h}{1,6}(\r\n|[ \t\r\n\f])?
+    // escape     {unicode}|\\[^\r\n\f0-9a-f]
+    // nmstart    [_a-z]|{nonascii}|{escape}
+    // nmchar     [_a-z0-9-]|{nonascii}|{escape}
 
-    def short(prefix: String = "\u00a2"): NameGen = {
-      if (prefix.isEmpty)
-        System.err.println("Don't use an empty prefix with NameGen.short. CSS won't allow classnames starting with numbers.")
-      new NameGen.Alphabet(nmchar, prefix + _)
+    def nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
+    def nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
+
+    def short(prefix: String = "_", alphabet: Array[Char] = nmchar7): NameGen = {
+      if (!prefix.matches("^[_a-zA-Z]"))
+        System.err.println(s"[NameGen.short] CSS class names must begin with a-z or an underscore, not '$prefix'.")
+      new NameGen.Alphabet(alphabet, prefix + _)
     }
+
+    def short8: NameGen =
+      short("\u00a2", nmchar8)
 
     def numbered(prefix: String = "scalacss-"): NameGen =
       new NameGen.IncFmt(prefix + "%04d")

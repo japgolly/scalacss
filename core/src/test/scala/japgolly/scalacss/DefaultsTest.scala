@@ -92,10 +92,10 @@ object DefaultsTest extends TestSuite {
 
     def test(): Unit =
       assertEq(css,
-        ".\u00a2\u00a0{margin:12px;margin-left:6px}" +
-        ".\u00a2\u00a1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
-        ".\u00a2\u00a2{background-color:#333}" +
-        ".\u00a2\u00a3{background-color:#666}"
+        "._0{margin:12px;margin-left:6px}" +
+        "._1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
+        "._2{background-color:#333}" +
+        "._3{background-color:#666}"
       )
   }
 }
