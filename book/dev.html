@@ -5,9 +5,9 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title> | ScalaCSS</title>
+        <title>Developing | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <meta name="description" content="ScalaCSS aims to bring type-safety and clarity to">
+        <meta name="description" content="">
         <meta name="generator" content="GitBook 2.0.0-beta.5">
         
         
@@ -20,8 +20,8 @@
         
     
     
-    <link rel="next" href="./quickstart/index.html" />
     
+    <link rel="prev" href="./reqs.html" />
     
 
         
@@ -34,7 +34,7 @@
     
 
         
-    <div class="book" data-level="0" data-basepath="." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="5" data-basepath="." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -51,7 +51,7 @@
 
         
     
-        <li class="chapter active" data-level="0" data-path="index.html">
+        <li class="chapter " data-level="0" data-path="index.html">
             
                 
                     <a href="./index.html">
@@ -293,7 +293,7 @@
             
         </li>
     
-        <li class="chapter " data-level="5" data-path="dev.html">
+        <li class="chapter active" data-level="5" data-path="dev.html">
             
                 
                     <a href="./dev.html">
@@ -399,22 +399,31 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="scalacss">ScalaCSS</h1>
-<p>ScalaCSS aims to bring type-safety and clarity to</p>
+                        <h2 id="adding-attributes">Adding attributes</h2>
+<ol>
+<li>Add to <a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Attrs.scala" target="_blank">Attrs.scala</a></li>
+<li>Copy some ScalaDoc from MDN or similar.</li>
+<li>Add it to <code>Attrs.valuesForAllAttr</code></li>
+<li>Run <code>bin/generate-aliases</code></li>
+</ol>
+<h2 id="updaing-caniuse-data">Updaing CanIUse data</h2>
+<ol>
+<li><code>cd misc</code></li>
+<li>Update caniuse (how? lol)</li>
+<li><code>sbt run</code></li>
+<li>Check-in changes.</li>
+</ol>
+<h2 id="updaing-platform-js">Updaing platform.js</h2>
+<ol>
+<li><code>bin/generate-platformjs</code></li>
+<li>Check-in changes.</li>
+</ol>
+<h2 id="editing-the-documentation">Editing the documentation</h2>
 <ul>
-<li>creating CSS</li>
-<li>using CSS</li>
-<li>maintaining CSS</li>
+<li>It&apos;s all under <code>doc/</code> in markdown format.</li>
+<li>Run <code>bin/book-serve</code> to have it generate HTML with live-refresh.</li>
+<li>The sidebar is in <code>SUMMARY.md</code></li>
 </ul>
-<p>You can create standalone CSS like SCSS/LESS,
-or you can create inline styles to be applied to directly without the need
-to manually manage class names.</p>
-<p>Being 100% Scala, you benefit from all the normal type-aware advantages like
-jump-to-definition of a style, type-safe keys and values, worry-free refactoring,
-etc.</p>
-<p>The goals and vision of the project are documented in
-<a href="reqs.html">its requirements</a>.
-Most requirements are satisfied; some will be addressed a little later.</p>
 
                     
                     </section>
@@ -425,8 +434,8 @@ Most requirements are satisfied; some will be addressed a little later.</p>
         </div>
 
         
+        <a href="./reqs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Requirements"><i class="fa fa-angle-left"></i></a>
         
-        <a href="./quickstart/index.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Quick Start"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
