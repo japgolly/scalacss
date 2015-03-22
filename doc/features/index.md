@@ -1,35 +1,32 @@
-# Features
+## Features
 
 
-cond
-Conditional CSS
-  * Pseudo selectors.
-  * Media query AST.
+These are the noteworthy features of ScalaCSS.
 
-nesting
-Nested styles
-* Unsafe children
-* StyleC
 
-stroingngly-typed attributes
+* **[Getting Started](basics.md)** —
+The basics: default settings and simple stylesheets.
 
-prefixes
-Browser prefixes
-* Automatic browser prefixes for properties (using caniuse.com data).
-  * Ability to dynamically tailor CSS to environment. (Able but as yet, unused.)
-  * Automatic browser prefixes for _values_ (using caniuse.com data).
-  * JsEnv
+* **[Conditional CSS](cond.md)** —
+Styles that are only active under certain conditions.
 
-conflict
-Conflict detection
-* Attribute conflict detection. (Transitive using reachability of underlying properties. Eg. `grid-area` affects `grid-row` which affects `grid-row-start`.)
+* **[Functions](stylef.md)** —
+Styles based on input.
 
-reuse
-* Reusable styles (modules).
+* **[Nested Styles](nested.md)** —
+Multiple styles applied to multiple subjects.
 
-classnames
-Taming Bootstrap and other CSS libraries
-* Styles can add class names, for example to apply Bootstrap classes like `btn btn-default`.
+* **[Typed CSS Values](typed-values.md)** —
+Encoding legal values of CSS attributes.
 
-reset
-* CSS Reset.
+* **[Browser Prefixes](prefixes.md)** —
+Certain CSS keys and values need special prefixes.
+
+* **[Conflict Detection](conflict.md)** —
+Detect and handle conflict within styles.
+
+* **[Reusable Styles](reuse.md)** —
+Sharing styles with style modules.
+
+* **[External CSS Libraries](extern.md)** —
+Make CSS libraries non-invasive.
