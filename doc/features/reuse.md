@@ -3,7 +3,10 @@
 Everything is immutable in ScalaCSS
 (except for [`mutable.Register`](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/mutable/Register.scala)
 which collects and remembers styles as you define them),
-so any `StyleS`, `StyleF`, `StyleC` can safely be used anywhere else.
+so any `StyleS`,
+[`StyleF`](stylef.md),
+[`StyleC`](nested.md)
+can safely be used anywhere else.
 
 `StyleA` (_applicable_ inline style) is immutable too but one of its properties
 is a generated class name. If you're using inline stylesheet, class names are

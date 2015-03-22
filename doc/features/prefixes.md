@@ -20,8 +20,8 @@ cursor:         zoom-in;
 
 ```
 
-ScalaCSS uses data from [caniuse.com](http://caniuse.com/) to automatically
-add necessary prefixes for you.
+ScalaCSS uses (offline) data from [caniuse.com](http://caniuse.com/) to
+automatically add necessary prefixes for you.
 
 It's taken care of under-the-hood.
 
@@ -37,5 +37,5 @@ When you're generating CSS in the browser (ie. a Scala.JS project)
 you don't need to generate different prefixes because you know what
 rendering engine to target.
 The Scala.JS version of `Defaults` provides an implicit `Env` that uses
-[platform.js](https://github.com/bestiejs/platform.js/)
+[platform.js](https://github.com/bestiejs/platform.js/) (embedded)
 to determine which prefixes you need according to [caniuse.com](http://caniuse.com/) data.

@@ -1,11 +1,13 @@
-CSS allows styling that is applicable under specific under conditions.
+## Conditional CSS
+
+CSS allows styling that is applicable only under specific under conditions.
 Conditions can be:
 * Pseudo selectors
 * Media queries
 
 In ScalaCSS, conditions are…
 * defined using a DSL starting with `&` for pseudo selectors and `media` for media queries.
-* applied by nested inside the style that it affects.
+* applied by nesting the declaration inside the style that it affects.
 * composable with any other conditions and styles. (In fact `Cond` is a monoid.)
 
 

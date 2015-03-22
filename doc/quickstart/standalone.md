@@ -1,4 +1,4 @@
-# Quick Start: Standalone stylesheets
+## Quick Start: Standalone stylesheets
 
 Create styles as follows:
 

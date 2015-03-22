@@ -1,4 +1,4 @@
-# Functional Styles
+## Functional Styles
 
 Sometimes you want a style that depends on input.
 
@@ -31,6 +31,8 @@ Domain.ofRange(0 to 4).option *** Domain.boolean // Domain[(Option[Int], Boolean
 
 The most common domains are `Int` and `Boolean` and so convenience methods
 `intStyle` and `boolStyle` exist. Otherwise, call `styleF`.
+
+Examples:
 
 ```scala
 object MyInline extends StyleSheet.Inline {

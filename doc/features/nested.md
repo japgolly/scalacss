@@ -1,7 +1,7 @@
 ## A common problem, rarely discussed
 
 Styles are not always individual properties pertaining to an individual subject.
-Often there are times that what the user perceives as a style or feature,
+Often there are times when what the user perceives as a style or feature,
 must be implemented as multiple styles applied to multiple subjects.
 
 <p style="color:#811">
@@ -15,10 +15,10 @@ ScalaCSS has a feature to address this.
 It's called a composite style, `StyleC`.
 It is a composite of sub-styles, each given unique names.
 
-In order to apply the total style, ScalaCSS with the help of the compiler,
-will enforce that developers…
+In order to apply the total style, ScalaCSS uses the compiler to enforce
+that developers…
 
-##### 1. Receive all substyles.
+##### 1. Receive all sub-styles.
 
 If a total style has 3 sub-styles, the developer must receive all 3 styles.
 
@@ -36,7 +36,7 @@ This problem is addressed by the style definition attaching names
 (like tags/labels) to each substyle, then the developer providing the same names
 in order to use it.
 
-This adds a bit of tedium but it provides an unprecedented level of safety and
+This adds a little tedium but it provides an unprecedented level of safety and
 error prevention.
 
 ##### Example
