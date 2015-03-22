@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="2.1" data-basepath=".." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.1" data-basepath=".." data-revision="Sun Mar 22 2015 22:52:37 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -490,11 +490,12 @@ CSS at once.</p>
 </tr>
 </tbody>
 </table>
-<p>To create a style module, create an <code>object</code> that extends
-<code>StyleSheet.Standalone</code> or <code>StyleSheet.Inline</code>.
-A DSL will be available inside. Following the example, just start typing and
-if you&apos;re using an IDE with auto-complete, you&apos;ll be guided towards type-safe
-styles.</p>
+<p>To create a style module,</p>
+<ol>
+<li>Create an <code>object</code> that extends <code>StyleSheet.Standalone</code> or <code>StyleSheet.Inline</code>.</li>
+<li>Inside the object, import the DSL by typing <code>import dsl._</code>.</li>
+<li>Following the examples, just start typing and if you&apos;re using an IDE with auto-complete, you&apos;ll be guided towards type-safe styles.</li>
+</ol>
 <h5 id="full-examples">Full examples:</h5>
 <ul>
 <li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/StandaloneTest.scala" target="_blank">StandaloneTest.scala</a></li>

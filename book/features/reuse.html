@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="2.8" data-basepath=".." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.8" data-basepath=".." data-revision="Sun Mar 22 2015 22:52:37 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -420,14 +420,57 @@ in that instead of defining an <code>object</code></p>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
 </code></pre>
 <p>you create a class with an implicit register</p>
-<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStyleModule</span>(</span><span class="hljs-keyword">implicit</span> r: mutable.<span class="hljs-type">Register</span>) <span class="hljs-keyword">extends</span> <span class="hljs-type">StyleSheet</span>.<span class="hljs-type">Inline</span> {
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyStyleModule</span>(</span><span class="hljs-keyword">implicit</span> r: mutable.<span class="hljs-type">Register</span>) <span class="hljs-keyword">extends</span> <span class="hljs-type">StyleSheet</span>.<span class="hljs-type">Inline</span>()(r) {
 </code></pre>
-<p>Then you use it, you simply create an instance of it inside another stylesheet.</p>
+<p><em>Note: The <code>()(r)</code> syntax is weird because Scala has a rule that implicit arguments
+always come second, even when there are no non-implicit arguments. That is the case
+here which is why it forces us to specify an empty argument list before setting the
+implicit one.</em></p>
+<p>To use shared styles, you simply create an instance of them inside another stylesheet.</p>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">shared</span> =</span> <span class="hljs-keyword">new</span> <span class="hljs-type">MyStyleModule</span>
 }
 </code></pre>
 <p>That&apos;s all there is to it.</p>
+<h2 id="example">Example</h2>
+<p>A shared module:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SharedTheme</span>(</span><span class="hljs-keyword">implicit</span> r: mutable.<span class="hljs-type">Register</span>) <span class="hljs-keyword">extends</span> <span class="hljs-type">StyleSheet</span>.<span class="hljs-type">Inline</span>()(r) {
+  <span class="hljs-keyword">import</span> dsl._
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(
+    padding(<span class="hljs-number">0.5</span> ex, <span class="hljs-number">2</span> ex),
+    backgroundColor(<span class="hljs-string">&quot;#eee&quot;</span>),
+    border(<span class="hljs-number">1</span> px, solid, black)
+  )
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">title</span> =</span> style(
+    fontSize(<span class="hljs-number">32</span> px)
+  )
+}
+</code></pre>
+<p>Concrete styles in the app:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyAppStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+  <span class="hljs-keyword">import</span> dsl._
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">theme</span> =</span> <span class="hljs-keyword">new</span> <span class="hljs-type">SharedTheme</span> <span class="hljs-comment">// Instantiate shared styles</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">headingTitle</span> =</span> style(
+    theme.title,              <span class="hljs-comment">// Extend shared style</span>
+    color(red)
+  )
+}
+</code></pre>
+<p>Example usage in <a href="https://github.com/japgolly/scalajs-react" target="_blank">scalajs-react</a>:</p>
+<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">render</span> =</span>
+  &lt;.div(
+    &lt;.h1(
+      <span class="hljs-type">MyAppStyles</span>.headingTitle,
+      <span class="hljs-string">&quot;Your Login Details&quot;</span>),
+    &lt;.button(
+      <span class="hljs-type">MyAppStyles</span>.theme.button,
+      ^.onClick ~~&gt; showLoginDetails(user),
+      <span class="hljs-string">&quot;Show Details&quot;</span>))
+</code></pre>
 
                     
                     </section>

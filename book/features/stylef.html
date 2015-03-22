@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="2.3" data-basepath=".." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.3" data-basepath=".." data-revision="Sun Mar 22 2015 22:52:37 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -405,6 +405,7 @@
 <p>Sometimes you want a style that depends on input.</p>
 <p>For standalone stylesheets, it&apos;s not an issue.</p>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Standalone</span> {</span>
+  <span class="hljs-keyword">import</span> dsl._
 
   <span class="hljs-keyword">for</span> (i &lt;- <span class="hljs-number">0</span> to <span class="hljs-number">3</span>)
     s<span class="hljs-string">&quot;.indent-$i&quot;</span> -
@@ -429,6 +430,7 @@ CSS is generated ahead-of-time, before styles are used so its inputs must also b
 <code>intStyle</code> and <code>boolStyle</code> exist. Otherwise, call <code>styleF</code>.</p>
 <p>Examples:</p>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyInline</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+  <span class="hljs-keyword">import</span> dsl._
 
   <span class="hljs-comment">// Convenience method: boolStyle</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">everythingOk</span> =</span>

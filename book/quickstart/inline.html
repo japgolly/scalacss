@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="1.2" data-basepath=".." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="1.2" data-basepath=".." data-revision="Sun Mar 22 2015 22:52:37 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -406,6 +406,7 @@
 <pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+  <span class="hljs-keyword">import</span> dsl._
 
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">myStyle1</span> =</span> style(
     margin(<span class="hljs-number">12</span> px, auto),
@@ -413,7 +414,7 @@
     cursor.pointer,
 
     &amp;.hover(
-      cursor.zoom_in
+      cursor.zoomIn
     ),
 
     &amp;(media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px))(
@@ -485,7 +486,7 @@
 <span class="hljs-rule">}</span></span>
 </code></pre>
 <p>Or if you&apos;re running in production-mode, you&apos;ll see:</p>
-<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{.&#xA2;&#xF0;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}.&#xA2;&#xF0;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}.&#xA2;&#xF0;<span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}.&#xA2;&#xA1;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}.&#xA2;&#xA2;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}.&#xA2;&#xA3;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}.&#xA2;&#xA4;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}.&#xA2;&#xA5;<span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">center</span></span></span>}
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{<span class="hljs-class">._0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}<span class="hljs-class">._0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}<span class="hljs-class">._0</span><span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}<span class="hljs-class">._1</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}<span class="hljs-class">._2</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}<span class="hljs-class">._3</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}<span class="hljs-class">._4</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}<span class="hljs-class">._5</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">center</span></span></span>}
 </code></pre>
 
                     

@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="1.1" data-basepath=".." data-revision="Sun Mar 22 2015 17:14:31 GMT+1100 (AEDT)">
+    <div class="book" data-level="1.1" data-basepath=".." data-revision="Sun Mar 22 2015 22:52:37 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -406,6 +406,7 @@
 <pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Standalone</span> {</span>
+  <span class="hljs-keyword">import</span> dsl._
 
   <span class="hljs-string">&quot;div.std&quot;</span> - (
     margin(<span class="hljs-number">12</span> px, auto),
@@ -413,7 +414,7 @@
     cursor.pointer,
 
     &amp;.hover -
-      cursor.zoom_in,
+      cursor.zoomIn,
 
     &amp;(media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px)) -
       width(<span class="hljs-number">400</span> px),
