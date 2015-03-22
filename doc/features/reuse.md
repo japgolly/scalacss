@@ -24,10 +24,15 @@ object MyStyles extends StyleSheet.Inline {
 ```
 you create a class with an implicit register
 ```scala
-class MyStyleModule(implicit r: mutable.Register) extends StyleSheet.Inline {
+class MyStyleModule(implicit r: mutable.Register) extends StyleSheet.Inline()(r) {
 ```
 
-Then you use it, you simply create an instance of it inside another stylesheet.
+_Note: The `()(r)` syntax is weird because Scala has a rule that implicit arguments
+always come second, even when there are no non-implicit arguments. That is the case
+here which is why it forces us to specify an empty argument list before setting the
+implicit one._
+
+To use shared styles, you simply create an instance of them inside another stylesheet.
 
 ```scala
 object MyStyles extends StyleSheet.Inline {
@@ -36,3 +41,49 @@ object MyStyles extends StyleSheet.Inline {
 ```
 
 That's all there is to it.
+
+## Example
+
+A shared module:
+```scala
+class SharedTheme(implicit r: mutable.Register) extends StyleSheet.Inline()(r) {
+  import dsl._
+
+  val button = style(
+    padding(0.5 ex, 2 ex),
+    backgroundColor("#eee"),
+    border(1 px, solid, black)
+  )
+
+  val title = style(
+    fontSize(32 px)
+  )
+}
+```
+
+Concrete styles in the app:
+```scala
+object MyAppStyles extends StyleSheet.Inline {
+  import dsl._
+
+  val theme = new SharedTheme // Instantiate shared styles
+
+  val headingTitle = style(
+    theme.title,              // Extend shared style
+    color(red)
+  )
+}
+```
+
+Example usage in [scalajs-react](https://github.com/japgolly/scalajs-react):
+```scala
+def render =
+  <.div(
+    <.h1(
+      MyAppStyles.headingTitle,
+      "Your Login Details"),
+    <.button(
+      MyAppStyles.theme.button,
+      ^.onClick ~~> showLoginDetails(user),
+      "Show Details"))
+```
