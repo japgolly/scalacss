@@ -19,6 +19,7 @@ object DefaultsTest extends TestSuite {
   }
 
   class SharedStyleModule(implicit reg: mutable.Register) extends mutable.StyleSheet.Inline {
+    import dsl._
     implicit def compose = Compose.trust
     val header = style(backgroundColor("#333"))
     val footer = style(backgroundColor("#666"))
@@ -29,6 +30,7 @@ object DefaultsTest extends TestSuite {
     import DevDefaults._
 
     object SS extends StyleSheet.Inline {
+      import dsl._
       val style1 = style(
         margin(12 px),
         marginLeft(6 px)
@@ -76,6 +78,7 @@ object DefaultsTest extends TestSuite {
     import ProdDefaults._
 
     object SS extends StyleSheet.Inline {
+      import dsl._
       val style1 = style(
         margin(12 px),
         marginLeft(6 px)

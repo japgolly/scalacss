@@ -6,6 +6,7 @@ Create styles as follows:
 import japgolly.scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Inline {
+  import dsl._
 
   val myStyle1 = style(
     margin(12 px, auto),

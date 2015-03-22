@@ -6,6 +6,7 @@ import japgolly.scalacss.Defaults._
 //import CopyDefaultsForStandalone._
 
 object MyStandalone extends StyleSheet.Standalone {
+  import dsl._
 
   "div.std" - (
     margin(12 px, auto),

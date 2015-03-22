@@ -6,6 +6,7 @@ Create styles as follows:
 import japgolly.scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Standalone {
+  import dsl._
 
   "div.std" - (
     margin(12 px, auto),

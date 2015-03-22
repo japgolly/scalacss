@@ -48,11 +48,10 @@ Usable style types                | Static only: `StyleS` | All types: `StyleS`,
 Return type after creation        | Unit | `StyleA` (`A` = Applicable)
 Declaration style                 | `"div.box" - ...` | `val box = style(...)`
 
-To create a style module, create an `object` that extends
-`StyleSheet.Standalone` or `StyleSheet.Inline`.
-A DSL will be available inside. Following the example, just start typing and
-if you're using an IDE with auto-complete, you'll be guided towards type-safe
-styles.
+To create a style module,
+1. Create an `object` that extends `StyleSheet.Standalone` or `StyleSheet.Inline`.
+1. Inside the object, import the DSL by typing `import dsl._`.
+1. Following the examples, just start typing and if you're using an IDE with auto-complete, you'll be guided towards type-safe styles.
 
 ##### Full examples:
 

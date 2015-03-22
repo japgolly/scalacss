@@ -7,6 +7,7 @@ import japgolly.scalacss.Defaults._
 //import CopyDefaultsForInline._
 
 object MyInline extends StyleSheet.Inline {
+  import dsl._
 
   val s1 =
     style(
