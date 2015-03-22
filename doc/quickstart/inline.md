@@ -1,4 +1,4 @@
-# Quick Start: Inline stylesheets
+## Quick Start: Inline stylesheets
 
 Create styles as follows:
 

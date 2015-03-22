@@ -1,12 +1,17 @@
 #!/bin/bash
-cd "$(dirname "$(readlink -e "$0")")" || exit 1
+cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
 
-f=../core/src/main/scala/japgolly/scalacss/Attrs.scala
 
-function count { wc -l | awk '{print $1}' ;}
+cloc=cloc
+$cloc core/src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
+  && $cloc core/src/test | sed -n '/^Scala/s/Scala/test /p; $p' \
+  && $cloc core/src | sed -n '/^Scala/s/Scala/Total/p; $p'
 
+
+f=core/src/main/scala/japgolly/scalacss/Attrs.scala
 _list="$(grep -v '^ *//' $f)"
 function list { echo "$_list" ;}
+function count { wc -l | awk '{print $1}' ;}
 
 total=$(list | grep -P 'Attr[ .](real|alias)|new AliasAttr' | count)
 typed=$(list | grep -P 'extends +TypedAttr' | count)
