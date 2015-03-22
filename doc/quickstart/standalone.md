@@ -13,7 +13,7 @@ object MyStyles extends StyleSheet.Standalone {
     cursor.pointer,
 
     &.hover -
-      cursor.zoom_in,
+      cursor.zoomIn,
 
     &(media.not.handheld.landscape.maxWidth(640 px)) -
       width(400 px),

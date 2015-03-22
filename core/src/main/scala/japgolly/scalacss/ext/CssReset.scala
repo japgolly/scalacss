@@ -34,7 +34,7 @@ object CssReset {
     ),
 
     $("audio,canvas,progress,video")(
-      display.inline_block,
+      display.inlineBlock,
       verticalAlign.baseline
     ),
 
@@ -109,7 +109,7 @@ object CssReset {
     ),
 
     $("hr")(
-      boxSizing.content_box,
+      boxSizing.contentBox,
       height.`0`
     ),
 
@@ -157,7 +157,7 @@ object CssReset {
     ),
 
     $("""input[type="checkbox"],input[type="radio"]""")(
-      boxSizing.border_box,
+      boxSizing.borderBox,
       padding.`0`
     ),
 
@@ -167,7 +167,7 @@ object CssReset {
 
     $("""input[type="search"]""")(
       webkitAppearance := "textfield",
-      boxSizing.content_box
+      boxSizing.contentBox
     ),
 
     $("""input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration""")(

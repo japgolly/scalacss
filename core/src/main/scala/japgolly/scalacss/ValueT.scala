@@ -228,35 +228,35 @@ object ValueT {
   abstract class TypedAttr_Length extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto        = avl(LT.auto)
-    final def available   = av(L.available)
-    final def border_box  = av(L.border_box)
-    final def content_box = av(L.content_box)
-    final def fit_content = av(L.fit_content)
-    final def max_content = av(L.max_content)
-    final def min_content = av(L.min_content)
+    final def auto       = avl(LT.auto)
+    final def available  = av(L.available)
+    final def borderBox  = av(L.borderBox)
+    final def contentBox = av(L.contentBox)
+    final def fitContent = av(L.fitContent)
+    final def maxContent = av(L.maxContent)
+    final def minContent = av(L.minContent)
   }
 
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def fill_available = av(L.fill_available)
-    final def fit_content    = av(L.fit_content)
-    final def max_content    = av(L.max_content)
-    final def min_content    = av(L.min_content)
-    final def none           = avl(LT.none)
-    final def contain_floats = av(L.contain_floats)
+    final def fillAvailable = av(L.fillAvailable)
+    final def fitContent    = av(L.fitContent)
+    final def maxContent    = av(L.maxContent)
+    final def minContent    = av(L.minContent)
+    final def none          = avl(LT.none)
+    final def containFloats = av(L.containFloats)
   }
 
   abstract class TypedAttr_MinLength extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto           = avl(LT.auto)
-    final def fill_available = av(L.fill_available)
-    final def fit_content    = av(L.fit_content)
-    final def max_content    = av(L.max_content)
-    final def min_content    = av(L.min_content)
-    final def contain_floats = av(L.contain_floats)
+    final def auto          = avl(LT.auto)
+    final def fillAvailable = av(L.fillAvailable)
+    final def fitContent    = av(L.fitContent)
+    final def maxContent    = av(L.maxContent)
+    final def minContent    = av(L.minContent)
+    final def containFloats = av(L.containFloats)
   }
 
 

@@ -20,7 +20,7 @@ object MyInline extends StyleSheet.Inline {
         fontWeight.normal,
         lineHeight(1 em),
         padding.`0`,
-        cursor.zoom_in
+        cursor.zoomIn
       ),
 
       &.visited.not(_.FirstChild)(

@@ -71,7 +71,7 @@ object AttrTest extends TestSuite {
       def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
       test(textAlign.left, "left")
       test(cursor.pointer, "pointer")
-      test(cursor.zoom_in, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      test(cursor.zoomIn, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
     }
 
     'border {
@@ -123,7 +123,7 @@ object AttrTest extends TestSuite {
     'envDepPrefixes1 {
       def test(name: String)(exp: String*): Unit = {
         val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
-        val a = cursor.zoom_in(env).map(_.value).sorted
+        val a = cursor.zoomIn(env).map(_.value).sorted
         assertEq(a, exp.toVector.sorted)
       }
       'chrome  - test("Chrome") ("-webkit-zoom-in",               "zoom-in")

@@ -76,11 +76,11 @@ This is what a typed attribute looks like:
 ```scala
 object alignItems extends TypedAttrBase {
   override val attr = Attr.real("align-items", Transform keys CanIUse.flexbox)
-  def baseline   = av(L.baseline)
-  def center     = av(L.center)
-  def flex_end   = av(L.flex_end)
-  def flex_start = av(L.flex_start)
-  def stretch    = av(L.stretch)
+  def baseline  = av(L.baseline)
+  def center    = av(L.center)
+  def flexEnd   = av(L.flexEnd)
+  def flexStart = av(L.flexStart)
+  def stretch   = av(L.stretch)
 }
 ```
 

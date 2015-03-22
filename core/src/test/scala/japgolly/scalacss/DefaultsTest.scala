@@ -35,7 +35,7 @@ object DefaultsTest extends TestSuite {
       )
       val style2 = style(
         cursor.pointer,
-        cursor.zoom_in
+        cursor.zoomIn
       )
       val shared = new SharedStyleModule
     }
@@ -82,7 +82,7 @@ object DefaultsTest extends TestSuite {
       )
       val style2 = style(
         cursor.pointer,
-        cursor.zoom_in
+        cursor.zoomIn
       )
       val shared = new SharedStyleModule
     }

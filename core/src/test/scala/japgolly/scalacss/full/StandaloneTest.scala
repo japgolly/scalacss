@@ -13,7 +13,7 @@ object MyStandalone extends StyleSheet.Standalone {
     cursor.pointer,
 
     &.hover -
-      cursor.zoom_in,
+      cursor.zoomIn,
 
     &("span") -
       color.red,
