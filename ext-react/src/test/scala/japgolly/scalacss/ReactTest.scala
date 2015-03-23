@@ -1,5 +1,6 @@
 package japgolly.scalacss
 
+import org.scalajs.dom.raw.HTMLStyleElement
 import utest._
 import japgolly.scalacss.TestUtil._
 import japgolly.scalajs.react._, vdom.prefix_<^._
@@ -19,16 +20,26 @@ object ReactTest extends TestSuite {
     val bootstrappy = style(addClassName("btn btn-default"))
   }
 
+  val expectedStyleTag =
+    """
+      |<style type="text/css">.scalacss-0001 {
+      |  font-weight: bold;
+      |  padding: 0.3ex 2ex;
+      |}
+      |
+      |</style>
+    """.stripMargin.trim
+
   override val tests = TestSuite {
 
-    'styleTag {
+    'styleReactElement {
       val html = React.renderToStaticMarkup(MyStyles.render[ReactElement])
-      assertEq(html, """<style type="text/css">.scalacss-0001 {
-                       |  font-weight: bold;
-                       |  padding: 0.3ex 2ex;
-                       |}
-                       |
-                       |</style>""".stripMargin)
+      assertEq(html, expectedStyleTag)
+    }
+
+    'styleHtmlElement {
+      val html = MyStyles.render[HTMLStyleElement].outerHTML
+      assertEq(html, expectedStyleTag)
     }
 
     'simple {
