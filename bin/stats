@@ -3,9 +3,9 @@ cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
 
 
 cloc=cloc
-$cloc core/src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
-  && $cloc core/src/test | sed -n '/^Scala/s/Scala/test /p; $p' \
-  && $cloc core/src | sed -n '/^Scala/s/Scala/Total/p; $p'
+$cloc */src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
+  && $cloc */src/test | sed -n '/^Scala/s/Scala/test /p; $p' \
+  && $cloc */src | sed -n '/^Scala/s/Scala/Total/p; $p'
 
 
 f=core/src/main/scala/japgolly/scalacss/Attrs.scala
