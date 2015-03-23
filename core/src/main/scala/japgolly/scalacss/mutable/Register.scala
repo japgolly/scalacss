@@ -1,6 +1,7 @@
 package japgolly.scalacss.mutable
 
 import scala.annotation.tailrec
+import scalaz.syntax.equal._
 import shapeless._
 import shapeless.ops.hlist.Mapper
 import japgolly.scalacss._
@@ -35,11 +36,11 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     val cn = s.className getOrElse nextName()
 
     // Optional side-effects for warnings
-    // TODO Warn about reregistration
-    for {
-      wf      <- errHandler.warn
-      warning <- s.warnings
-    } wf(cn, warning)
+    errHandler.warn.foreach { f =>
+      if (_styles.exists(_.className === cn))
+        f(cn, Warning(Cond.empty, "Another style in the register has the same classname."))
+      s.warnings foreach (f(cn, _))
+    }
 
     // Register
     val a = StyleA(cn, s.addClassNames, s)
@@ -115,8 +116,8 @@ object Register { // ===========================================================
     def nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
     def short(prefix: String = "_", alphabet: Array[Char] = nmchar7): NameGen = {
-      if (!prefix.matches("^[_a-zA-Z]"))
-        System.err.println(s"[NameGen.short] CSS class names must begin with a-z or an underscore, not '$prefix'.")
+      if (!prefix.matches("^[_a-zA-Z\u00a0-\u00ff]"))
+        System.err.println(s"[NameGen.short] CSS class names must begin with a-z, an underscore, or A0-FF. Not: '$prefix'.")
       new NameGen.Alphabet(alphabet, prefix + _)
     }
 

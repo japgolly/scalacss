@@ -22,9 +22,8 @@ object AttrTest extends TestSuite {
   val builtInAttrs: NDomain[Attr] =
     NDomain.ofValues(Attrs.values.list: _*)
 
-  // TODO Add to Nyaya: Domain.pair
   val builtInAttrPairs: NDomain[(Attr, Attr)] =
-    builtInAttrs *** builtInAttrs
+    builtInAttrs.pair
 
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
     Gen.oneofL(Attrs.values).triple

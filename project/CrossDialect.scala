@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 import com.typesafe.sbt.pgp.PgpKeys._
+import org.scalajs.jsenv.JSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import ScalaJSPlugin._
 import ScalaJSPlugin.autoImport._
@@ -205,11 +206,11 @@ object Typical {
           </developer>
         </developers>)
 
-  def utestSettings(scope: String = "test"): CDS =
+  def utestSettings(scope: String = "test", phantom: Boolean = false): CDS =
     CDS.addLibs(Library("com.lihaoyi", "utest", "0.3.1") % scope)
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
       .js(_.settings(
         scalaJSStage in Test := FastOptStage,
-        jsEnv in Test        := NodeJSEnv().value))
+        jsEnv in Test        := (if (phantom) PhantomJSEnv().value else NodeJSEnv().value)))
 }
 

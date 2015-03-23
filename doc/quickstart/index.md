@@ -1,9 +1,8 @@
 # Quick Start
 
 Add [ScalaCSS](https://github.com/japgolly/scalacss/) to your project by adding this dependency to your SBT build:
-```scala
-libraryDependencies += "com.github.japgolly.scalacss" %%% "core" % "0.1.0"
-```
+
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;core&quot;</span> % <span class="hljs-string">&quot;{{ book.ver }}&quot;</span></code></pre>
 
 Then to start using it, decide which of the following best suits your needs.
 

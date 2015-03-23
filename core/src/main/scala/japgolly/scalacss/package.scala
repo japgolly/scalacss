@@ -28,6 +28,7 @@ package object scalacss {
   type AVs = NonEmptyVector[AV]
 
   final case class ClassName(value: String)
+  implicit def classNameEquality: Equal[ClassName] = Equal.equalA
 
   /**
    * Describes the context of a number of CSS attribute-value pairs.
