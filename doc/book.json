@@ -1,6 +1,6 @@
 {
   "gitbook": "2.x.x",
   "variables": {
-    "ver": "0.1.0"
+    "ver": "0.1.0-SNAPSHOT"
   }
 }
