@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>External CSS Libraries | ScalaCSS</title>
+        <title>scalajs-react | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.0.0-beta.5">
@@ -20,10 +20,10 @@
         
     
     
-    <link rel="next" href="../ext/react.html" />
+    <link rel="next" href="../ext/scalatags.html" />
     
     
-    <link rel="prev" href="../features/reuse.html" />
+    <link rel="prev" href="../features/extern.html" />
     
 
         
@@ -36,7 +36,7 @@
     
 
         
-    <div class="book" data-level="2.9" data-basepath=".." data-revision="Mon Mar 23 2015 13:58:46 GMT+1100 (AEDT)">
+    <div class="book" data-level="3.1" data-basepath=".." data-revision="Mon Mar 23 2015 13:58:46 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -253,7 +253,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.9" data-path="features/extern.html">
+        <li class="chapter " data-level="2.9" data-path="features/extern.html">
             
                 
                     <a href="../features/extern.html">
@@ -281,7 +281,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="3.1" data-path="ext/react.html">
+        <li class="chapter active" data-level="3.1" data-path="ext/react.html">
             
                 
                     <a href="../ext/react.html">
@@ -444,39 +444,67 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="status-quo">Status Quo</h2>
-<p>CSS libraries, like <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>,
-often require that you add special class names to everything in your code.</p>
-<p>That is</p>
+                        <h2 id="-scalajs-react-https-github-com-japgolly-scalajs-react"><a href="https://github.com/japgolly/scalajs-react" target="_blank">scalajs-react</a></h2>
 <ol>
-<li>Tedious to do.</li>
-<li>Error-prone; mistakes are easy.</li>
-<li>Hard to switch from, to a different CSS library.</li>
-<li>Invasive and disruptive. It makes code very hard to read when it&apos;s littered with foreign class names.</li>
+<li><p>Add this to your SBT build:</p>
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-react&quot;</span> % <span class="hljs-string">&quot;0.1.0-SNAPSHOT&quot;</span></code></pre>
+</li>
+<li><p>Add this to Scala where you want ScalaCSS to integrate with your React code.</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">ScalaCssReact</span>._
+</code></pre>
+</li>
+<li><p>Create your <a href="../quickstart/inline.html">inline styles</a> as normal.</p>
+</li>
+<li><p>At the beginning of your Scala.JS app, before using any React components,
+create the inline styles by calling <code>.addToDocument()</code> on your stylesheet.</p>
+<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.addToDocument()
+</code></pre>
+</li>
+<li><p>Finally, to apply styles, just reference them in your tags.</p>
+<pre><code class="lang-scala">&lt;.h1( <span class="hljs-type">MyStyles</span>.heading, <span class="hljs-string">&quot;This is a heading&quot;</span> )
+</code></pre>
+</li>
 </ol>
-<h2 id="tame-it">Tame it!</h2>
-<p>ScalaCSS isn&apos;t magic that makes everything taste like rainbows but
-<em>it can</em> mitigate much of the problem-space dealing with external CSS
-and the issues mentioned above.</p>
-<p>When writing <a href="../quickstart/inline.html">inline stylesheets</a>,
-you have a new property at your fingertips: <code>addClassNames</code>.</p>
-<p>Example:</p>
-<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+<h2 id="example">Example</h2>
+<p>MyStyles.scala</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
 
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(
-    addClassNames(<span class="hljs-string">&quot;btn&quot;</span>, <span class="hljs-string">&quot;btn-default&quot;</span>), <span class="hljs-comment">// Bootstrap classes</span>
-    textAlign.center                     <span class="hljs-comment">// Optional customisation</span>
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">bootstrapButton</span> =</span> style(
+    addClassName(<span class="hljs-string">&quot;btn btn-default&quot;</span>),
+    fontSize(<span class="hljs-number">200</span> %%)
   )
 }
 </code></pre>
-<p>You can declare that when your style is applied, additional class names
-will also be applied. This means that you can put all of your Bootstrap
-(for example) class names in a single file with all your other style
-properties and have it be inivisble to the rest of your app.
-If you later decide to drop Bootstrap for
-<a href="http://materializecss.com/" target="_blank">Materialize</a> or <a href="https://groundworkcss.github.io/" target="_blank">Groundwork</a>,
-then you change the <code>addClassNames</code> attributes in a single file and you&apos;re about done.</p>
+<p>MyApp.scala</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scala.scalajs.js.annotation.<span class="hljs-type">JSExport</span>
+<span class="hljs-keyword">import</span> org.scalajs.dom.{alert, document}
+<span class="hljs-keyword">import</span> japgolly.scalajs.react._
+<span class="hljs-keyword">import</span> japgolly.scalajs.react.vdom.prefix_&lt;^._
+<span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
+<span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">ScalaCssReact</span>._
+
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyApp</span> {</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">MyComponent</span> =</span>
+    <span class="hljs-type">ReactComponentB</span>[<span class="hljs-type">Unit</span>](<span class="hljs-string">&quot;blah&quot;</span>)
+      .render(_ =&gt;
+        &lt;.button(
+          ^.onClick --&gt; alert(<span class="hljs-string">&quot;Hey! I didn&apos;t say you could click me!&quot;</span>),
+          <span class="hljs-type">MyStyles</span>.bootstrapButton,
+          <span class="hljs-string">&quot;I am a button!&quot;</span>))
+      .buildU
+
+
+  <span class="hljs-annotation">@JSExport</span>(<span class="hljs-string">&quot;app&quot;</span>)
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>(</span>): <span class="hljs-type">Unit</span> = {
+    <span class="hljs-type">MyStyles</span>.addToDocument()
+    <span class="hljs-type">MyComponent</span>() render document.getElementById(<span class="hljs-string">&quot;demo&quot;</span>)
+  }
+}
+</code></pre>
 
                     
                     </section>
@@ -487,10 +515,10 @@ then you change the <code>addClassNames</code> attributes in a single file and y
         </div>
 
         
-        <a href="../features/reuse.html" class="navigation navigation-prev " aria-label="Previous page: Reusable Styles"><i class="fa fa-angle-left"></i></a>
+        <a href="../features/extern.html" class="navigation navigation-prev " aria-label="Previous page: External CSS Libraries"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../ext/react.html" class="navigation navigation-next " aria-label="Next page: scalajs-react"><i class="fa fa-angle-right"></i></a>
+        <a href="../ext/scalatags.html" class="navigation navigation-next " aria-label="Next page: Scalatags"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
