@@ -13,6 +13,9 @@
   * [Conflict Detection](features/conflict.md)
   * [Reusable Styles](features/reuse.md)
   * [External CSS Libraries](features/extern.md)
+* Extensions
+  * [scalajs-react](ext/react.md)
+  * [Scalatags](ext/scalatags.md)
 * [Digging Deeper](deeper.md)
 * [Requirements](reqs.md)
 * [Developing](dev.md)
