@@ -54,13 +54,20 @@ object ScalaCSS extends Build {
   lazy val root =
     Project("root", file("."))
       .configure(commonSettings.rootS, preventPublication)
-      .aggregate(core, extReact)
+      .aggregate(core, extReact, extScalatags)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
       .configure(utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
+    )
+
+  lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =
+    crossDialectProject("ext-scalatags", commonSettings
+      .configure(utestSettings())
+      .dependsOn(coreJvm, coreJs)
+      .addLibs(Library("com.lihaoyi", "scalatags", "0.5.0"))
     )
 
   lazy val extReact =
