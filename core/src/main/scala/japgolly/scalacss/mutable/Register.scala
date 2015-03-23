@@ -116,8 +116,8 @@ object Register { // ===========================================================
     def nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
     def short(prefix: String = "_", alphabet: Array[Char] = nmchar7): NameGen = {
-      if (!prefix.matches("^[_a-zA-Z]"))
-        System.err.println(s"[NameGen.short] CSS class names must begin with a-z or an underscore, not '$prefix'.")
+      if (!prefix.matches("^[_a-zA-Z\u00a0-\u00ff]"))
+        System.err.println(s"[NameGen.short] CSS class names must begin with a-z, an underscore, or A0-FF. Not: '$prefix'.")
       new NameGen.Alphabet(alphabet, prefix + _)
     }
 
