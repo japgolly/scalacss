@@ -49,7 +49,12 @@ object ScalaCSS extends Build {
   val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
 
   // ==============================================================================================
-  override def rootProject = Some(core)
+  override def rootProject = Some(root)
+
+  lazy val root =
+    Project("root", file("."))
+      .configure(commonSettings.rootS, preventPublication)
+      .aggregate(core, extReact)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
@@ -57,4 +62,16 @@ object ScalaCSS extends Build {
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
     )
+
+  lazy val extReact =
+    Project("ext-react", file("ext-react"))
+      .enablePlugins(ScalaJSPlugin)
+      .configure(commonSettings.jsS, utestSettings(phantom = true).jsS)
+      .dependsOn(coreJs)
+      .settings(
+        libraryDependencies ++= Seq(
+          "com.github.japgolly.scalajs-react" %%%! "core" % "0.8.2",
+          "com.github.japgolly.scalajs-react" %%%! "test" % "0.8.2" % "test"),
+        jsDependencies +=
+          "org.webjars" % "react" % "0.12.2" % "test" / "react-with-addons.js" commonJSName "React")
 }
