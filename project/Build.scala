@@ -46,6 +46,12 @@ object ScalaCSS extends Build {
     val core = m("core")
     val test = m("test")
   }
+  object react {
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.8.2"
+    val core  = m("core")
+    val test  = m("test")
+    val extra = m("extra")
+  }
   val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
 
   // ==============================================================================================
@@ -54,7 +60,7 @@ object ScalaCSS extends Build {
   lazy val root =
     Project("root", file("."))
       .configure(commonSettings.rootS, preventPublication)
-      .aggregate(core, extReact, extScalatags)
+      .aggregate(core, extReact, extScalatags, bench)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
@@ -76,9 +82,59 @@ object ScalaCSS extends Build {
       .configure(commonSettings.jsS, utestSettings(phantom = true).jsS)
       .dependsOn(coreJs)
       .settings(
-        libraryDependencies ++= Seq(
-          "com.github.japgolly.scalajs-react" %%%! "core" % "0.8.2",
-          "com.github.japgolly.scalajs-react" %%%! "test" % "0.8.2" % "test"),
+        libraryDependencies ++= Seq(react.core, react.test % "test"),
         jsDependencies +=
           "org.webjars" % "react" % "0.12.2" % "test" / "react-with-addons.js" commonJSName "React")
+
+  // ==============================================================================================
+  private def benchModule(name: String, dir: File => File) =
+    Project(name, dir(file("bench")))
+      .configure(commonSettings.rootS, preventPublication)
+
+  private def benchReactModule(name: String, dir: File => File) =
+    benchModule("bench-" + name, dir)
+      .enablePlugins(ScalaJSPlugin)
+      .settings(
+        scalaSource in Compile := baseDirectory.value / "src",
+        libraryDependencies += react.extra)
+
+  val intfmt = java.text.NumberFormat.getIntegerInstance
+
+  val cmpJsSizeFast = TaskKey[Unit]("cmpJsSizeFast", "Compare JS sizes (using fastOptJS).")
+  val cmpJsSizeFull = TaskKey[Unit]("cmpJsSizeFull", "Compare JS sizes (using fullOptJS).")
+  def cmpJsSize(js: TaskKey[Attributed[sbt.File]]) = Def.task {
+    val a = (js in Compile in benchReactWithout).value.data
+    val b = (js in Compile in benchReactWith   ).value.data
+    val x = a.length()
+    val y = b.length()
+    val d = y - x
+    printf(
+      """
+        | Without: %10s
+        |    With: %10s
+        |Increase: %10s (+%.0f%%)
+        |
+        |""".stripMargin,
+      intfmt format x,
+      intfmt format y,
+      intfmt format d, d.toDouble / x * 100)
+  }
+
+  lazy val bench =
+    benchModule("bench", identity)
+      .aggregate(benchReactWith, benchReactWithout)
+      .settings(
+        cmpJsSizeFast := cmpJsSize(fastOptJS).value,
+        cmpJsSizeFull := cmpJsSize(fullOptJS).value
+      )
+      .configure(addCommandAliases(
+        "cmpJsSize" -> ";clear ;cmpJsSizeFast ;cmpJsSizeFull"
+      ))
+
+  lazy val benchReactWithout =
+    benchReactModule("react-without", _ / "react-without")
+
+  lazy val benchReactWith =
+    benchReactModule("react-with", _ / "react-with")
+      .dependsOn(extReact)
 }
