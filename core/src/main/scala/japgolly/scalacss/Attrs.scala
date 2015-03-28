@@ -160,7 +160,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility">MDN</a>
    */
   object backfaceVisibility extends TypedAttrBase {
-    override val attr = Attr.real("backface-visibility", Transform keys CanIUse2.transforms)
+    override val attr = Attr.real("backface-visibility", Transform keys CanIUse.transforms)
     @inline def hidden  = avl(LT.hidden)
     @inline def visible = av(L.visible)
   }
@@ -1662,7 +1662,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective">MDN</a>
    */
   object perspective extends TypedAttrT1[Len] with ZeroLit {
-    override val attr = Attr.real("perspective", Transform keys CanIUse2.transforms)
+    override val attr = Attr.real("perspective", Transform keys CanIUse.transforms)
     @inline def none = avl(LT.none)
   }
 
@@ -1671,7 +1671,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective-origin">MDN</a>
    */
-  final val perspectiveOrigin = Attr.real("perspective-origin", Transform keys CanIUse2.transforms)
+  final val perspectiveOrigin = Attr.real("perspective-origin", Transform keys CanIUse.transforms)
 
   /**
    * The CSS property pointer-events allows authors to control under what circumstances (if any) a particular graphic element can become the target of mouse events. When this property is unspecified, the same characteristics of the visiblePainted value apply to SVG content.
@@ -2061,14 +2061,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN</a>
    */
-  final val transform = Attr.real("transform", Transform keys CanIUse2.transforms)
+  final val transform = Attr.real("transform", Transform keys CanIUse.transforms)
 
   /**
    * The transform-origin CSS property lets you modify the origin for transformations of an element. For example, the transform-origin of the rotate() function is the centre of rotation. (This property is applied by first translating the element by the negated value of the property, then applying the element's transform, then translating by the property value.)
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-origin">MDN</a>
    */
-  final val transformOrigin = Attr.real("transform-origin", Transform keys CanIUse2.transforms)
+  final val transformOrigin = Attr.real("transform-origin", Transform keys CanIUse.transforms)
 
   /**
    * The transform-style CSS property determines if the children of the element are positioned in the 3D-space or are flattened in the plane of the element.
@@ -2076,7 +2076,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-style">MDN</a>
    */
   object transformStyle extends TypedAttrBase {
-    override val attr = Attr.real("transform-style", Transform keys CanIUse2.transforms)
+    override val attr = Attr.real("transform-style", Transform keys CanIUse.transforms)
     @inline def flat        = av(L.flat)
     @inline def preserve3D = av(L.preserve3D)
   }

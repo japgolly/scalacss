@@ -1348,6 +1348,29 @@ object CanIUse {
     Safari            -> Set(Unsupported))
 
   /**
+   * Combination of transforms2d & transforms3d.
+   *
+   *
+   *
+   *
+   */
+  def transforms: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, FullX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(FullX),
+    BlackberryBrowser -> Set(FullX),
+    Chrome            -> Set(Unsupported, FullX, Full),
+    Firefox           -> Set(FullX, Full, Unsupported),
+    IE                -> Set(Unsupported, Full, Partial, FullX),
+    IEMobile          -> Set(Full),
+    IOSSafari         -> Set(FullX),
+    Opera             -> Set(Unsupported, FullX, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    Safari            -> Set(Unsupported, FullX))
+
+  /**
    * CSS3 Transforms
    *
    * Method of transforming an element including rotating, scaling, etc.

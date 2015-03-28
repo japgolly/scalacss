@@ -1,10 +1,8 @@
 package japgolly.scalacss
 
 import scalaz.{NonEmptyList, Memo}
-import scalaz.std.map._
 import scalaz.std.set._
 import scalaz.syntax.foldable1._
-import scalaz.syntax.semigroup._
 import japgolly.scalacss.{Literal => L}
 import CanIUse._
 import Support._
@@ -13,8 +11,6 @@ import Support._
  * Derivations of the raw data in [[CanIUse]].
  */
 object CanIUse2 {
-
-  val transforms = transforms2d |+| transforms3d
 
   lazy val intrinsicWidthTransforms: Transform =
     Transform.values(intrinsicWidth)(
