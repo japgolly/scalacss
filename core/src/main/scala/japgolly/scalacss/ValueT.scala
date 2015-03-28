@@ -193,8 +193,8 @@ object ValueT {
   abstract class TypedAttrT4Edges[T <: ValueClass](sep: String) extends TypedAttrBase {
     final type V = ValueT[T]
     final def apply(allEdges  : V)                       : AV = av(allEdges.value)
-    final def apply(horizontal: V, vertical: V)          : AV = av(concat(sep, horizontal, vertical))
-    final def apply(top: V, vertical: V, bottom: V)      : AV = av(concat(sep, top, vertical, bottom))
+    final def apply(vertical: V, horizontal: V)          : AV = av(concat(sep, horizontal, vertical))
+    final def apply(top: V, horizontal: V, bottom: V)      : AV = av(concat(sep, top, horizontal, bottom))
     final def apply(top: V, right: V, bottom: V, left: V): AV = av(concat(sep, top, right, bottom, left))
   }
 
