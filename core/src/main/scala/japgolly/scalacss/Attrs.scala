@@ -816,8 +816,10 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/display">MDN</a>
    */
   object display extends TypedAttrBase {
-    override val attr = Attr.real("display", 
-      Transform.values(CanIUse.flexbox)(L.flex, L.inlineFlex))
+    override val attr = Attr.real("display",
+      Transform.values(CanIUse.flexbox)(L.flex, L.inlineFlex) *
+      Transform.values(CanIUse.grid   )(L.grid, L.inlineGrid))
+
     @inline def block             = av(L.block)
     @inline def contents          = av(L.contents)
     @inline def flex              = av(L.flex)
