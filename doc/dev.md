@@ -7,9 +7,8 @@
 
 ## Updaing CanIUse data
 
-1. `cd misc`
-1. Update caniuse (how? lol)
-1. `sbt run`
+1. `bin/generate-caniuse`
+1. `git diff` to inspect changes.
 1. Check-in changes.
 
 ## Updaing platform.js
