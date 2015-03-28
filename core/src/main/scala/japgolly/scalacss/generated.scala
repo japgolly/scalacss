@@ -159,7 +159,6 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
   @inline final def imageRendering = Attrs.imageRendering
   @inline final def imageResolution = Attrs.imageResolution
   @inline final def imeMode = Attrs.imeMode
-  @inline final def initial = Attrs.initial
   @inline final def inlineSize = Attrs.inlineSize
   @inline final def isolation = Attrs.isolation
   @inline final def justifyContent = Attrs.justifyContent

@@ -13,6 +13,7 @@ object ValueTTest extends TestSuite {
   val %%  = Percentage(25)
   val sec = 3 seconds
   val ms  = 3 milliseconds
+  import Dsl.inherit
 
   override val tests = TestSuite {
 
@@ -29,6 +30,7 @@ object ValueTTest extends TestSuite {
 //      }
 
       'Len {
+                  test[Len](inherit)
         illTyped("test[Len](1)")
         illTyped("test[Len](1.5)")
                   test[Len](len)
@@ -43,6 +45,7 @@ object ValueTTest extends TestSuite {
       }
 
       'Pct {
+                  test[Pct](inherit)
         illTyped("test[Pct](1)")
         illTyped("test[Pct](1.5)")
         illTyped("test[Pct](len)")
@@ -57,6 +60,7 @@ object ValueTTest extends TestSuite {
       }
 
       'Integer {
+                  test[Integer](inherit)
                   test[Integer](1)
         illTyped("test[Integer](1.5)")
         illTyped("test[Integer](len)")
@@ -71,6 +75,7 @@ object ValueTTest extends TestSuite {
       }
 
       'Number {
+                  test[Number](inherit)
                   test[Number](1)
                   test[Number](1.5)
         illTyped("test[Number](len)")
@@ -85,6 +90,7 @@ object ValueTTest extends TestSuite {
       }
 
       'LenPct {
+                  test[LenPct](inherit)
         illTyped("test[LenPct](1)")
         illTyped("test[LenPct](1.5)")
                   test[LenPct](len)
@@ -99,6 +105,7 @@ object ValueTTest extends TestSuite {
       }
 
       'LenPctAuto {
+                  test[LenPctAuto](inherit)
         illTyped("test[LenPctAuto](1)")
         illTyped("test[LenPctAuto](1.5)")
                   test[LenPctAuto](len)
@@ -113,6 +120,7 @@ object ValueTTest extends TestSuite {
       }
 
       'LenPctNum {
+                  test[LenPctNum](inherit)
                   test[LenPctNum](1)
                   test[LenPctNum](1.5)
                   test[LenPctNum](len)
@@ -125,8 +133,9 @@ object ValueTTest extends TestSuite {
         illTyped("test[LenPctNum](sec)")
         illTyped("test[LenPctNum](ms)")
       }
-      
+
       'BrWidth {
+                  test[BrWidth](inherit)
         illTyped("test[BrWidth](1)")
         illTyped("test[BrWidth](1.5)")
                   test[BrWidth](len)
@@ -141,6 +150,7 @@ object ValueTTest extends TestSuite {
       }
 
       'BrStyle {
+                  test[BrStyle](inherit)
         illTyped("test[BrStyle](1)")
         illTyped("test[BrStyle](1.5)")
         illTyped("test[BrStyle](len)")
@@ -155,6 +165,7 @@ object ValueTTest extends TestSuite {
       }
 
       'WidStyCol {
+                  test[WidStyCol](inherit)
         illTyped("test[WidStyCol](1)")
         illTyped("test[WidStyCol](1.5)")
                   test[WidStyCol](len)
@@ -169,6 +180,7 @@ object ValueTTest extends TestSuite {
       }
 
       'Time {
+                  test[Time](inherit)
         illTyped("test[Time](1)")
         illTyped("test[Time](1.5)")
         illTyped("test[Time](len)")

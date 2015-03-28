@@ -146,7 +146,7 @@ import DslBase._
 // =====================================================================================================================
 abstract class DslBase
   extends AttrAliasesAndValueTRules
-     with Literal.TypedAliases
+     with TypedLiteralAliases
      with ColorOps[ValueT[Color]] {
 
   @inline override protected final def mkColor(s: String) = Color(s)

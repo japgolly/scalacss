@@ -7,6 +7,31 @@ abstract class Literal(final val value: Value) {
   override def toString = s"Literal($value)"
 }
 
+/** Gets merged into [[Dsl]]. */
+trait TypedLiteralAliases {
+  import Literal.Typed
+  final def inherit  = Typed.inherit
+  final def initial  = Typed.initial
+  final def unset    = Typed.unset
+  final def `0`      = Typed.`0`
+  final def auto     = Typed.auto
+  final def hanging  = Typed.hanging
+  final def eachLine = Typed.eachLine
+  final def thin     = Typed.thin
+  final def medium   = Typed.medium
+  final def thick    = Typed.thick
+  final def none     = Typed.none
+  final def hidden   = Typed.hidden
+  final def dotted   = Typed.dotted
+  final def dashed   = Typed.dashed
+  final def solid    = Typed.solid
+  final def double   = Typed.double
+  final def groove   = Typed.groove
+  final def ridge    = Typed.ridge
+  final def inset    = Typed.inset
+  final def outset   = Typed.outset
+}
+
 /**
  * Most literals here are just strings.
  * Type-safety is usually provided by the TypedAttr methods.
@@ -17,7 +42,7 @@ abstract class Literal(final val value: Value) {
  * For that reason exists the dichotomy between [[Literal]] with its untyped [[Value]]s, and [[Literal.Typed]] with its
  * subclassed [[Literal]]s.
  */
-object Literal {
+object Literal extends TypedLiteralAliases {
 
   object Typed {
     final val `0` = Length(0, LengthUnit.px)
@@ -25,6 +50,12 @@ object Literal {
     object auto     extends Literal("auto")
     object hanging  extends Literal("hanging")
     object eachLine extends Literal("each-line")
+
+    // any
+    sealed trait Anywhere
+    object inherit extends Literal("inherit") with Anywhere
+    object initial extends Literal("initial") with Anywhere
+    object unset   extends Literal("unset")   with Anywhere
 
     // <br-width>
     sealed trait BrWidth
@@ -44,27 +75,6 @@ object Literal {
     object ridge  extends Literal("ridge")  with BrStyle
     object inset  extends Literal("inset")  with BrStyle
     object outset extends Literal("outset") with BrStyle
-  }
-
-  /** Gets merged into [[Dsl]]. */
-  trait TypedAliases {
-    final def `0`      = Typed.`0`
-    final def auto     = Typed.auto
-    final def hanging  = Typed.hanging
-    final def eachLine = Typed.eachLine
-    final def thin     = Typed.thin
-    final def medium   = Typed.medium
-    final def thick    = Typed.thick
-    final def none     = Typed.none
-    final def hidden   = Typed.hidden
-    final def dotted   = Typed.dotted
-    final def dashed   = Typed.dashed
-    final def solid    = Typed.solid
-    final def double   = Typed.double
-    final def groove   = Typed.groove
-    final def ridge    = Typed.ridge
-    final def inset    = Typed.inset
-    final def outset   = Typed.outset
   }
 
   @inline def absolute           : Value = "absolute"
@@ -146,8 +156,6 @@ object Literal {
   @inline def horizontalTB       : Value = "horizontal-tb"
   @inline def icon               : Value = "icon"
   @inline def inactive           : Value = "inactive"
-  @inline def inherit            : Value = "inherit"
-  @inline def initial            : Value = "initial"
   @inline def inline             : Value = "inline"
   @inline def inlineBlock        : Value = "inline-block"
   @inline def inlineEnd          : Value = "inline-end"
@@ -272,7 +280,6 @@ object Literal {
   @inline def under              : Value = "under"
   @inline def underline          : Value = "underline"
   @inline def unicase            : Value = "unicase"
-  @inline def unset              : Value = "unset"
   @inline def uppercase          : Value = "uppercase"
   @inline def upright            : Value = "upright"
   @inline def useGlyphOrientation: Value = "use-glyph-orientation"

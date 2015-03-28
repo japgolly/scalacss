@@ -101,6 +101,9 @@ object ValueT {
     @inline implicit def ruleChain[A, B <: ValueClass, C <: ValueClass](implicit ab: A ==> B, bc: B >=> C): A ==> C =
       ab >> bc
 
+    @inline implicit def ruleAnywhere[L <: Literal with LT.Anywhere, To <: ValueClass]: L ==> To =
+      Rule.literal
+
     @inline implicit def ruleLen_L[N] : Len     <== Length[N]      = Rule(_.value)
     @inline implicit def rulePct_P[N] : Pct     <== Percentage[N]  = Rule(_.value)
     @inline implicit def ruleInteger_I: Integer <== Int            = Rule(_.toString)
@@ -158,13 +161,13 @@ object ValueT {
      *
      * For inherited properties, this reinforces the default behavior, and is only needed to override another rule.  For non-inherited properties, this specifies a behavior that typically makes relatively little sense and you may consider using initial instead, or unset on the all property.
      */
-    def inherit = av(L.inherit)
+    def inherit = avl(L.inherit)
 
     /** The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property. */
-    def initial = av(L.initial)
+    def initial = avl(L.initial)
 
     /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
-    def unset = av(L.unset)
+    def unset = avl(L.unset)
   }
 
   abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {

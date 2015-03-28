@@ -29,7 +29,7 @@ object Attrs {
     fontVariantLigatures, fontVariantNumeric, fontVariantPosition, fontWeight, grid, gridArea, gridAutoColumns,
     gridAutoFlow, gridAutoPosition, gridAutoRows, gridColumn, gridColumnEnd, gridColumnStart, gridRow, gridRowEnd,
     gridRowStart, gridTemplate, gridTemplateAreas, gridTemplateColumns, gridTemplateRows, height, hyphens,
-    imageOrientation, imageRendering, imageResolution, imeMode, initial, inlineSize, isolation, justifyContent, left,
+    imageOrientation, imageRendering, imageResolution, imeMode, inlineSize, isolation, justifyContent, left,
     letterSpacing, lineBreak, lineHeight, listStyle, listStyleImage, listStylePosition, listStyleType, margin,
     marginBlockEnd, marginBlockStart, marginBottom, marginInlineEnd, marginInlineStart, marginLeft, marginRight,
     marginTop, marks, mask, maskType, maxBlockSize, maxHeight, maxInlineSize, maxWidth, minBlockSize, minHeight,
@@ -1255,13 +1255,6 @@ object Attrs {
     @inline def inactive = av(L.inactive)
     @inline def normal   = av(L.normal)
   }
-
-  /**
-   * The initial CSS keyword applies the initial value of a property to an element. It is allowed on every CSS property and causes the element for which it is specified to use the initial value of the property.
-   *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/initial">MDN</a>
-   */
-  final val initial = Attr.real("initial")
 
   /**
    * The isolation CSS property defines if the element must create a new stacking context.
