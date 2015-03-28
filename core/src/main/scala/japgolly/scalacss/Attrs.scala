@@ -1492,7 +1492,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/order">MDN</a>
    */
   object order extends TypedAttrT1[Integer] {
-    override val attr = Attr.real("order")
+    override val attr = Attr.real("order", Transform keys CanIUse.flexbox)
   }
 
   /**
