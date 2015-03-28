@@ -1,11 +1,14 @@
 package japgolly
 
 import scala.collection.GenTraversableOnce
-import scalaz.{Equal, OneAnd, Traverse1}
-import scalaz.std.AllInstances._
+import scalaz.{Equal, OneAnd}
+import scalaz.std.stream.streamEqual
+import scalaz.std.option.optionEqual
+import scalaz.std.vector._
 import shapeless.lens
 
 package object scalacss {
+  private[this] implicit def stringEqual: Equal[String] = Equal.equalA
 
   /**
    * A CSS value, like `"none"`, `"solid 3px black"`.
@@ -121,8 +124,18 @@ package object scalacss {
       maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
   }
 
-  implicit val nonEmptyVectorTraverse1: Traverse1[NonEmptyVector] =
-    OneAnd.oneAndTraverse[Vector]
+  // Using these & traverse1 syntax pulls in too much other stuff. Size matters for JS.
+  //
+  //  private[this] implicit val vectorTypeclass: Traverse[Vector] =
+  //    new Traverse[Vector] {
+  //      override def traverseImpl[G[_], A, B](fa: Vector[A])(f: A => G[B])(implicit G: Applicative[G]): G[Vector[B]] = {
+  //        val gba = G pure new scala.collection.immutable.VectorBuilder[B]
+  //        val gbb = fa.foldLeft(gba)((buf, a) => G.apply2(buf, f(a))(_ += _))
+  //        G.map(gbb)(_.result)
+  //      }
+  //    }
+  //  implicit val nonEmptyVectorTraverse1: Traverse1[NonEmptyVector] =
+  //    OneAnd.oneAndTraverse[Vector]
 
   implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
     OneAnd.oneAndEqual[Vector, A]
@@ -148,6 +161,15 @@ package object scalacss {
 
     @inline def vector: Vector[A] =
       self.head +: self.tail
+
+    def foldLeft[B](z: B)(f: (B, A) => B): B =
+      self.tail.foldLeft(f(z, self.head))(f)
+
+    def foldMapLeft1[B](g: A => B)(f: (B, A) => B): B =
+      self.tail.foldLeft(g(self.head))(f)
+
+    def reduceMapLeft1[B](f: A => B)(g: (B, B) => B): B =
+      foldMapLeft1(f)((b, a) => g(b, f(a)))
   }
 
   /** Faster than Vector(a) */

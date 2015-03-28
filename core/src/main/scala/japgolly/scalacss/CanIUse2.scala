@@ -1,8 +1,6 @@
 package japgolly.scalacss
 
 import scalaz.Memo
-import scalaz.std.set._
-import scalaz.syntax.foldable1._
 import japgolly.scalacss.{Literal => L}
 import CanIUse._
 import Support._
@@ -100,7 +98,7 @@ object CanIUse2 {
     runPlan(pp, pa, CssKV.value, kv)
 
   def prefixesForPlatform(p: Env.Platform[Option]): Set[Prefix] =
-    agentsForPlatform(p) foldMap1 agentPrefixes
+    agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)
 
   def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
     import Agent._

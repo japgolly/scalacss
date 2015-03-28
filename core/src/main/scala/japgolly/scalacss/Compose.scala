@@ -1,7 +1,6 @@
 package japgolly.scalacss
 
 import scalaz.OneAnd
-import scalaz.syntax.foldable1._
 
 /**
  * TODO Doc this file

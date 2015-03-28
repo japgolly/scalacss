@@ -1,7 +1,6 @@
 package japgolly.scalacss
 
 import scalaz.\/
-import scalaz.syntax.traverse1._
 import japgolly.scalacss.{Resolution => Res}
 
 object Media {
@@ -227,7 +226,7 @@ object Media {
   }
 
   def cssQueries(qs: NonEmptyVector[Query]): String =
-    qs.foldMapLeft1(cssQuery)(_ ~ `,` ~ cssQuery(_))
+    qs.reduceMapLeft1(cssQuery)(_ ~ `,` ~ _)
 
   def css(qs: NonEmptyVector[Query]): CssMediaQuery =
     media ~ cssQueries(qs)

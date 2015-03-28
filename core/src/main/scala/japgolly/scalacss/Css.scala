@@ -3,7 +3,6 @@ package japgolly.scalacss
 import scalaz.{==>>, OneAnd}
 import scalaz.std.option._
 import scalaz.std.string._
-import scalaz.syntax.foldable1._
 
 object Css {
 
@@ -29,8 +28,7 @@ object Css {
     def main: Css =
       s.data.toStream.flatMap {
         case (cond, avs1) =>
-          val r: Vector[CssKV] =
-            avs1.foldMapLeft1(_(env))(_ ++ _(env))
+          val r: Vector[CssKV] = avs1.reduceMapLeft1(_(env))(_ ++ _)
           if (r.isEmpty)
             Stream.empty
           else {
