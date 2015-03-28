@@ -93,15 +93,15 @@ object InlineTest extends utest.TestSuite {
   override val tests = TestSuite {
     'css - assertEq(norm(MyInline.render), norm(
       """
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .scalacss-0001 {
-        |    width: 600px;
-        |  }
-        |}
-        |
         |@media not handheld and (orientation:landscape) and (color) {
         |  .scalacss-0001 {
         |    width: 500px;
+        |  }
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  .scalacss-0001 {
+        |    width: 600px;
         |  }
         |}
         |

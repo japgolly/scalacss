@@ -11,8 +11,8 @@ final class StringRenderer(format: StringRenderer.Format) extends Renderer[Strin
   override def apply(css: Css): String = {
     val sb = new StringBuilder
     val fmt = format(sb)
-    
-    Css.mapByMediaQuery(css).fold(()) { (omq, data, _) =>
+
+    def doit(omq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
       omq foreach fmt.mqStart
       for ((sel, kvs) <- data) {
         fmt.selStart(omq, sel)
@@ -22,6 +22,10 @@ final class StringRenderer(format: StringRenderer.Format) extends Renderer[Strin
       }
       omq foreach fmt.mqEnd
     }
+
+    val m = Css.mapByMediaQuery(css)
+    m.foreach(t => if (t._1.isDefined) doit(t._1, t._2))
+    m.foreach(t => if (t._1.isEmpty)   doit(None, t._2))
     fmt.done()
 
     sb.toString()

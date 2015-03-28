@@ -1,8 +1,6 @@
 package japgolly.scalacss
 
-import scalaz.{==>>, OneAnd}
-import scalaz.std.option._
-import scalaz.std.string._
+import scalaz.OneAnd
 
 object Css {
 
@@ -51,13 +49,14 @@ object Css {
   }
 
   type ValuesByMediaQuery = Vector[(CssSelector, NonEmptyVector[CssKV])]
-  type ByMediaQuery       = CssMediaQueryO ==>> ValuesByMediaQuery
+  type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
   def mapByMediaQuery(c: Css): ByMediaQuery = {
-    val z: ByMediaQuery = ==>>.empty
+    val z: ByMediaQuery = Map.empty
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
-      q.alter(e.mq, cur => Some(cur.getOrElse(Vector.empty) :+ add))
+      val k = e.mq
+      q.updated(k, q.getOrElse(k, Vector.empty) :+ add)
     }
   }
 
