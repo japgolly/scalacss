@@ -1,6 +1,6 @@
 package japgolly.scalacss
 
-import scalaz.{Cord, \/}
+import scalaz.\/
 import scalaz.syntax.traverse1._
 import japgolly.scalacss.{Resolution => Res}
 
@@ -160,38 +160,43 @@ object Media {
     final def grid(v: Int): Out = F(Grid(Some(v)))
   }
 
-  private final val media = Cord("@media ")
-  private final val `:`   = Cord(":")
-  private final val and   = Cord(" and ")
-  private final val `,`   = Cord(", ")
-  private final val `(`   = Cord("(")
-  private final val `)`   = Cord(")")
-  private final val min   = Cord("min-")
-  private final val max   = Cord("max-")
+  // Ensure string concat doesn't accidentally call toString on something stupid.
+  @inline private implicit class StringExt(val _s: String) extends AnyVal {
+    @inline def ~(b: String) = _s + b
+  }
 
-  private def paren(c: Cord): Cord =
-    `(` ++ c ++ `)`
+  @inline private final def media = "@media "
+  @inline private final def `:`   = ":"
+  @inline private final def and   = " and "
+  @inline private final def `,`   = ", "
+  @inline private final def `(`   = "("
+  @inline private final def `)`   = ")"
+  @inline private final def min   = "min-"
+  @inline private final def max   = "max-"
 
-  private def opt[T](ov: Option[T], name: Cord)(implicit tc: T => Cord): Cord =
-    ov.fold(name)(name ++ `:` ++ _)
+  private def paren(c: String): String =
+    `(` ~ c ~ `)`
 
-  private def cssValueExpr[T](e: ValueExpr[T], name: Cord)(implicit tc: T => Cord): Cord =
+  private def opt[T](ov: Option[T], name: String)(implicit tc: T => String): String =
+    ov.fold(name)(name ~ `:` ~ _)
+
+  private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String =
     e match {
-      case Eql(t) =>        name ++ `:` ++ t
-      case Min(t) => min ++ name ++ `:` ++ t
-      case Max(t) => max ++ name ++ `:` ++ t
+      case Eql(t) =>       name ~ `:` ~ t
+      case Min(t) => min ~ name ~ `:` ~ t
+      case Max(t) => max ~ name ~ `:` ~ t
     }
 
-  private def cssValueExprO[T](o: Option[ValueExpr[T]], name: Cord)(implicit tc: T => Cord): Cord =
+  private def cssValueExprO[T](o: Option[ValueExpr[T]], name: String)(implicit tc: T => String): String =
     o.fold(name)(cssValueExpr(_, name))
 
-  private implicit def cssInt   (i: Int)      : Cord = i.toString
-  private implicit def cssRes   (r: Res[_])   : Cord = r.value
-  private implicit def cssLength(l: Length[_]): Cord = l.value
-  private implicit def cssRatio (r: Ratio)    : Cord = r.value
+  private implicit def cssInt   (i: Int)      : String = i.toString
+  private implicit def cssRes   (r: Res[_])   : String = r.value
+  private implicit def cssLength(l: Length[_]): String = l.value
+  private implicit def cssRatio (r: Ratio)    : String = r.value
 
-  val cssFeature: Feature => Cord = {
-    val x: Feature => Cord = {
+  val cssFeature: Feature => String = {
+    val x: Feature => String = {
       case AspectRatio(v)       => cssValueExpr (v, "aspect-ratio")
       case Height(v)            => cssValueExpr (v, "height")
       case Width(v)             => cssValueExpr (v, "width")
@@ -202,28 +207,28 @@ object Media {
       case ColorIndex(v)        => cssValueExprO(v, "color-index")
       case Resolution(v)        => cssValueExpr (v, "resolution")
       case Monochrome(v)        => cssValueExprO(v, "monochrome")
-      case Orientation(v)       => Cord("orientation:", v.value)
-      case Scan(v)              => Cord("scan:", v.value)
+      case Orientation(v)       => "orientation:" ~ v.value
+      case Scan(v)              => "scan:"        ~ v.value
       case Grid(v)              => opt(v, "grid")
     }
     // Parentheses are required around expressions; failing to use them is an error.
     f => paren(x(f))
   }
 
-  val cssTypeExpr: TypeExpr => Cord = {
+  val cssTypeExpr: TypeExpr => String = {
     case Just(t) => t.value
-    case Not(t)  => Cord("not ") ++ t.value  // Applies to whole Query. Don't wrap in parenthesis.
-    case Only(t) => Cord("only ") ++ t.value // Applies to whole Query. Don't wrap in parenthesis.
+    case Not(t)  => "not "  ~ t.value // Applies to whole Query. Don't wrap in parenthesis.
+    case Only(t) => "only " ~ t.value // Applies to whole Query. Don't wrap in parenthesis.
   }
 
-  def cssQuery(q: Query): Cord = {
+  def cssQuery(q: Query): String = {
     val z = q.head.fold(cssTypeExpr, cssFeature)
-    q.tail.foldLeft(z)(_ ++ and ++ cssFeature(_))
+    q.tail.foldLeft(z)(_ ~ and ~ cssFeature(_))
   }
 
-  def cssQueries(qs: NonEmptyVector[Query]): Cord =
-    qs.foldMapLeft1(cssQuery)(_ ++ `,` ++ cssQuery(_))
+  def cssQueries(qs: NonEmptyVector[Query]): String =
+    qs.foldMapLeft1(cssQuery)(_ ~ `,` ~ cssQuery(_))
 
   def css(qs: NonEmptyVector[Query]): CssMediaQuery =
-    (media ++ cssQueries(qs)).toString
+    media ~ cssQueries(qs)
 }
