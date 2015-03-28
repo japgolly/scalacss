@@ -1,23 +1,33 @@
 #!/bin/env scala
 
+val infile  = "core/src/main/scala/japgolly/scalacss/Attrs.scala"
+val outfile = "core/src/main/scala/japgolly/scalacss/generated.scala"
+
 val r1 = """.*(?: val .*Attr[ \.]| extends ).*""".r.pattern
 val r2 = """^\s*(?://|\*).*""".r.pattern
 val r3 = """.*(?:override|private| val +values).*""".r.pattern
 val r4 = """^.* (?:object|val) +| *=.+| +extends.*""".r
 val r5 = """^[a-z].*""".r.pattern
 
-val infile  = "core/src/main/scala/japgolly/scalacss/Attrs.scala"
-val outfile = "core/src/main/scala/japgolly/scalacss/generated.scala"
-
-val attrs =
-  io.Source.fromFile(infile).mkString.split("\n").toStream
+def findMethod(lines: Stream[String]) = lines
     .filter   (r1.matcher(_).matches)
     .filterNot(r2.matcher(_).matches)
     .filterNot(r3.matcher(_).matches)
     .map      (r4.replaceAllIn(_, ""))
     .filter   (r5.matcher(_).matches)
-    .sorted
-    .map(a => s"  @inline final def $a = Attrs.$a")
+
+val commentr = """(?s)^(.+\n *\*/) *\n""".r
+def comment(d: String): Option[String] =
+  commentr.findFirstMatchIn(d).map(_ group 1)
+
+val attrs =
+  scala.io.Source.fromFile(infile).mkString
+    .split("\n[ \t]*\n+").toStream
+    .map(l => comment(l).fold((None: Option[String], l))(c => (Some(c), l.replace(c,""))))
+    .flatMap{case (c,l) => findMethod(l.split("\n").toStream).headOption.map((c,_)).toStream }
+    .sortBy(_._2)
+    // .map{case (c, a) => (None, a) }
+    .map{case (c, a) => c.fold("")(_+"\n") + s"  @inline final def $a = Attrs.$a" }
 
 val attrAliases =
 s"""
