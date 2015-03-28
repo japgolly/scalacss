@@ -56,6 +56,7 @@ object Caniuse {
       ,"multibackgrounds"
       ,"pointerEvents"
       ,"rem"
+      ,"snappoints"
       ,"styleScoped"
       ,"svgCss"
       ,"table"
