@@ -1951,10 +1951,10 @@ object Attrs {
    */
   object textIndent extends TypedAttrBase with ZeroLit {
     override val attr = Attr.real("text-indent") // TODO There should be a CanIUse for hanging|each-line
-    @inline def apply(v: ValueT[LenPct])                                          : AV = av(v.value)
-    @inline def apply(v: ValueT[LenPct], h: LT.hanging.type)                      : AV = av(s"${v.value} ${h.value}")
-    @inline def apply(v: ValueT[LenPct], h: LT.each_line.type)                    : AV = av(s"${v.value} ${h.value}")
-    @inline def apply(v: ValueT[LenPct], h: LT.hanging.type, e: LT.each_line.type): AV = av(s"${v.value} ${h.value} ${e.value}")
+    @inline def apply(v: ValueT[LenPct])                                         : AV = av(v.value)
+    @inline def apply(v: ValueT[LenPct], h: LT.hanging.type)                     : AV = av(s"${v.value} ${h.value}")
+    @inline def apply(v: ValueT[LenPct], h: LT.eachLine.type)                    : AV = av(s"${v.value} ${h.value}")
+    @inline def apply(v: ValueT[LenPct], h: LT.hanging.type, e: LT.eachLine.type): AV = av(s"${v.value} ${h.value} ${e.value}")
   }
 
   /**

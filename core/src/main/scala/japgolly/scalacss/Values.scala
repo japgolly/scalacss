@@ -22,9 +22,9 @@ object Literal {
   object Typed {
     final val `0` = Length(0, LengthUnit.px)
 
-    object auto      extends Literal("auto")
-    object hanging   extends Literal("hanging")
-    object each_line extends Literal("each-line")
+    object auto     extends Literal("auto")
+    object hanging  extends Literal("hanging")
+    object eachLine extends Literal("each-line")
 
     // <br-width>
     sealed trait BrWidth
@@ -48,23 +48,23 @@ object Literal {
 
   /** Gets merged into [[Dsl]]. */
   trait TypedAliases {
-    final def `0`       = Typed.`0`
-    final def auto      = Typed.auto
-    final def hanging   = Typed.hanging
-    final def eachLine = Typed.each_line
-    final def thin      = Typed.thin
-    final def medium    = Typed.medium
-    final def thick     = Typed.thick
-    final def none      = Typed.none
-    final def hidden    = Typed.hidden
-    final def dotted    = Typed.dotted
-    final def dashed    = Typed.dashed
-    final def solid     = Typed.solid
-    final def double    = Typed.double
-    final def groove    = Typed.groove
-    final def ridge     = Typed.ridge
-    final def inset     = Typed.inset
-    final def outset    = Typed.outset
+    final def `0`      = Typed.`0`
+    final def auto     = Typed.auto
+    final def hanging  = Typed.hanging
+    final def eachLine = Typed.eachLine
+    final def thin     = Typed.thin
+    final def medium   = Typed.medium
+    final def thick    = Typed.thick
+    final def none     = Typed.none
+    final def hidden   = Typed.hidden
+    final def dotted   = Typed.dotted
+    final def dashed   = Typed.dashed
+    final def solid    = Typed.solid
+    final def double   = Typed.double
+    final def groove   = Typed.groove
+    final def ridge    = Typed.ridge
+    final def inset    = Typed.inset
+    final def outset   = Typed.outset
   }
 
   @inline def absolute           : Value = "absolute"
