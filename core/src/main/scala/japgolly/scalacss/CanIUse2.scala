@@ -1,6 +1,6 @@
 package japgolly.scalacss
 
-import scalaz.{NonEmptyList, Memo}
+import scalaz.Memo
 import scalaz.std.set._
 import scalaz.syntax.foldable1._
 import japgolly.scalacss.{Literal => L}
@@ -46,7 +46,7 @@ object CanIUse2 {
     }
 
   val prefixed: String => Boolean = {
-    val p = Prefix.values.list.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
+    val p = Prefix.values.vector.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
     in => p.matcher(in).matches
   }
 
@@ -102,22 +102,22 @@ object CanIUse2 {
   def prefixesForPlatform(p: Env.Platform[Option]): Set[Prefix] =
     agentsForPlatform(p) foldMap1 agentPrefixes
 
-  def agentsForPlatform(p: Env.Platform[Option]): NonEmptyList[Agent] = {
+  def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
     import Agent._
     @inline def dunno = Agent.values
     if (p.toString.toLowerCase contains "android")
       p.name.fold(dunno)({
-        case "Chrome"  => NonEmptyList(AndroidChrome)
-        case "Firefox" => NonEmptyList(AndroidFirefox)
-        case _         => NonEmptyList(AndroidBrowser, AndroidUC)
+        case "Chrome"  => NonEmptyVector(AndroidChrome)
+        case "Firefox" => NonEmptyVector(AndroidFirefox)
+        case _         => NonEmptyVector(AndroidBrowser, AndroidUC)
       })
     else
       p.name.fold(dunno)({
-        case "Chrome"  => NonEmptyList(Chrome)
-        case "Firefox" => NonEmptyList(Firefox)
-        case "IE"      => NonEmptyList(IE, IEMobile)
-        case "Opera"   => NonEmptyList(Opera, OperaMini, OperaMobile)
-        case "Safari"  => NonEmptyList(IOSSafari, Safari)
+        case "Chrome"  => NonEmptyVector(Chrome)
+        case "Firefox" => NonEmptyVector(Firefox)
+        case "IE"      => NonEmptyVector(IE, IEMobile)
+        case "Opera"   => NonEmptyVector(Opera, OperaMini, OperaMobile)
+        case "Safari"  => NonEmptyVector(IOSSafari, Safari)
         case _         => dunno
       })
   }

@@ -20,13 +20,13 @@ object AttrTest extends TestSuite {
     Prop.equal("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
 
   val builtInAttrs: NDomain[Attr] =
-    NDomain.ofValues(Attrs.values.list: _*)
+    NDomain.ofValues(Attrs.values.vector: _*)
 
   val builtInAttrPairs: NDomain[(Attr, Attr)] =
     builtInAttrs.pair
 
   val builtInAttrTriplets: Gen[(Attr, Attr, Attr)] =
-    Gen.oneofL(Attrs.values).triple
+    RandomData.attr.triple
 
   def px(n: Int) = Length(n, LengthUnit.px)
   val length = px(3)

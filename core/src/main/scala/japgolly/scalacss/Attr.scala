@@ -1,7 +1,7 @@
 package japgolly.scalacss
 
 import scala.annotation.tailrec
-import scalaz.{Equal, Need, NonEmptyList, Order}
+import scalaz.{Equal, Need, Order}
 import scalaz.std.string.stringInstance
 
 /**
@@ -31,17 +31,21 @@ final class RealAttr(id: String, gen: Attr.Gen) extends Attr(id, gen) {
   override val real = Set[RealAttr](this)
 }
 
-final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyList[Attr]]) extends Attr(id, gen) {
+final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyVector[Attr]]) extends Attr(id, gen) {
   override lazy val real = {
-    @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: List[Attr]): Set[RealAttr] =
-      queue match {
-        case Nil                       => found
-        case a :: t if seen contains a => go(seen, found, t)
-        case (a: RealAttr)  :: t       => go(seen + a, found + a, t)
-        case (a: AliasAttr) :: t       => go(seen + a, found, a.targets.value.list ::: t)
-        // ↗ Using a.targets instead of a.realAttrs to avoid potential deadlock
+    @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: Vector[Attr]): Set[RealAttr] =
+      if (queue.isEmpty)
+        found
+      else {
+        val t = queue.tail
+        queue.head match {
+          case a if seen contains a => go(seen, found, t)
+          case (a: RealAttr)        => go(seen + a, found + a, t)
+          case (a: AliasAttr)       => go(seen + a, found, a.targets.value.vector ++ t)
+          // ↗ Using a.targets instead of a.realAttrs to avoid potential deadlock
+        }
       }
-    go(Set.empty, Set.empty, targets.value.list)
+    go(Set.empty, Set.empty, targets.value.vector)
   }
 }
 
@@ -65,15 +69,15 @@ object Attr {
   def alias(css: String, t: Transform) =
     _alias(css, t attrGen css)
 
-  private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyList[Attr]) => Attr =
+  private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyVector[Attr]) => Attr =
     f => new AliasAttr(id, g, Need(f(AliasB)))
 
   /**
-   * Helper for creating a lazy NonEmptyList[Attr] so that initialisation order doesn't matter,
+   * Helper for creating a lazy NonEmptyVector[Attr] so that initialisation order doesn't matter,
    * and attributes can have recursive definitions.
    */
   object AliasB {
-    @inline def apply(h: Attr, t: Attr*) = NonEmptyList.nel(h, t.toList)
+    @inline def apply(h: Attr, t: Attr*) = NonEmptyVector(h, t: _*)
   }
 }
 

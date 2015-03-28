@@ -1,13 +1,13 @@
 package japgolly.scalacss
 
-import scalaz.{Need, NonEmptyList}
+import scalaz.Need
 import japgolly.scalacss.{Literal => L}
 import L.{Typed => LT}
 import ValueT._
 
 object Attrs {
 
-  private[scalacss] lazy val valuesForAllAttr = NonEmptyList[Attr](
+  private[scalacss] lazy val valuesForAllAttr = NonEmptyVector[Attr](
     alignContent, alignItems, alignSelf, animation, animationDelay, animationDirection, animationDuration,
     animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction,
     backfaceVisibility, background, backgroundAttachment, backgroundBlendMode, backgroundClip, backgroundColor,
@@ -47,8 +47,8 @@ object Attrs {
     boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
     textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect)
 
-  lazy val values: NonEmptyList[Attr] =
-    List[Attr](all, unicodeBidi, direction) <::: valuesForAllAttr
+  lazy val values: NonEmptyVector[Attr] =
+    Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
 
   /**
    * The CSS align-content property aligns a flex container's lines within the flex container when there is extra space on the cross-axis. This property has no effect on single line flexible boxes.

@@ -26,7 +26,7 @@ object ScalaCSS extends Build {
                                 "-language:higherKinds", "-language:existentials"),
         updateOptions      := updateOptions.value.withCachedResolution(true))
       .configure(addCommandAliases(
-        "/"   -> "project core",
+        "/"   -> "project root",
         "cj"  -> "project core-jvm",
         "cjs" -> "project core-js",
         "qc"  -> "~ ;clear ;core-jvm/compile",

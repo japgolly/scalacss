@@ -15,7 +15,7 @@ object RandomData {
     g.vector.flatMap(as => g.map(OneAnd(_, as)))
 
   val attr: Gen[Attr] =
-    Gen oneofL Attrs.values
+    Gen.oneof(Attrs.values.head, Attrs.values.tail: _*)
 
   val value: Gen[Value] =
     str1

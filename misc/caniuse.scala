@@ -232,8 +232,6 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-import scalaz.NonEmptyList
-
 object $obj {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -253,7 +251,7 @@ object $obj {
   }
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
-    val values = NonEmptyList[Prefix](${prefixes mkString ", "})
+    val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
   }
 
   import Prefix._
@@ -261,7 +259,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
-    val values = NonEmptyList[Agent](${agents.map(_.key.trim).sorted mkString ", "})
+    val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 
   import Agent._

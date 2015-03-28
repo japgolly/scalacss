@@ -8,8 +8,6 @@ package japgolly.scalacss
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-import scalaz.NonEmptyList
-
 object CanIUse {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -32,7 +30,7 @@ object CanIUse {
     case object ms     extends Prefix("ms")
     case object o      extends Prefix("o")
     case object webkit extends Prefix("webkit")
-    val values = NonEmptyList[Prefix](moz, ms, o, webkit)
+    val values = NonEmptyVector[Prefix](moz, ms, o, webkit)
   }
 
   import Prefix._
@@ -53,7 +51,7 @@ object CanIUse {
     val OperaMini         = Agent(o     , Map.empty)
     val OperaMobile       = Agent(o     , Map("24" -> webkit))
     val Safari            = Agent(webkit, Map.empty)
-    val values = NonEmptyList[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
+    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
   }
 
   import Agent._
