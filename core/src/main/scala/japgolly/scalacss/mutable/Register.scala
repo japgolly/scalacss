@@ -17,8 +17,9 @@ import Register.{ErrorHandler, NameGen}
  */
 final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
-  var _nameGen = initNameGen
-  var _styles = Vector.empty[StyleA]
+  var _nameGen  = initNameGen
+  var _styles   = Vector.empty[StyleA]
+  var _rendered = false
 
   private def nextName(): ClassName =
     mutex {
@@ -32,19 +33,27 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
   @inline def register[I](s: StyleF[I])(implicit l: StyleLookup[I]): I => StyleA = registerF(s)
   @inline def register[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out = registerC(s)(m, u)
 
-  def registerS(s: StyleS): StyleA = {
+  def registerS(s: StyleS): StyleA = mutex {
     val cn = s.className getOrElse nextName()
 
     // Optional side-effects for warnings
     errHandler.warn.foreach { f =>
+
+      @inline def warn(s: String): Unit =
+        f(cn, Warning(Cond.empty, s))
+
+      if (_rendered)
+        warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
+
       if (_styles.exists(_.className === cn))
-        f(cn, Warning(Cond.empty, "Another style in the register has the same classname."))
+        warn("Another style in the register has the same classname.")
+
       s.warnings foreach (f(cn, _))
     }
 
     // Register
     val a = StyleA(cn, s.addClassNames, s)
-    mutex { _styles :+= a }
+    _styles :+= a
     a
   }
 
@@ -65,8 +74,10 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     implicit def cf[W, I: StyleLookup]: Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
-  def styles: Vector[StyleA] =
-    mutex(_styles)
+  def styles: Vector[StyleA] = mutex {
+    _rendered = true
+    _styles
+  }
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(Css(styles))
