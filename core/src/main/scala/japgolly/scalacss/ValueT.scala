@@ -196,6 +196,11 @@ object ValueT {
   abstract class TypedAttrT4Edges[T <: ValueClass](sep: String) extends TypedAttrBase {
     final type V = ValueT[T]
 
+    protected def attrT: Attr
+    protected def attrR: Attr
+    protected def attrB: Attr
+    protected def attrL: Attr
+
     /** Applies the same setting to all four edges. */
     final def apply(all: V): AV =
       av(all.value)
@@ -223,6 +228,12 @@ object ValueT {
      */
     final def apply(t: V, r: V, b: V, l: V): AV =
       av(concat(sep, t, r, b, l))
+
+    final def horizontal(h: V): AVs =
+      NonEmptyVector(AV(attrL, h.value), AV(attrR, h.value))
+
+    final def vertical(v: V): AVs =
+      NonEmptyVector(AV(attrT, v.value), AV(attrB, v.value))
   }
 
   abstract class TypedAttrTN[T <: ValueClass](sep: String) extends TypedAttrBase {

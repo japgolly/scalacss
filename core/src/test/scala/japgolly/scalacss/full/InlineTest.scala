@@ -31,11 +31,11 @@ object MyInline extends StyleSheet.Inline {
       ),
 
       &(media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
-        width(600 px)
+        margin.vertical(10 em)
       ),
 
       &(media.not.handheld.landscape.color)(
-        width(500 px)
+        padding.horizontal(500 px)
       ),
 
       unsafeChild("nav.debug")(
@@ -95,13 +95,15 @@ object InlineTest extends utest.TestSuite {
       """
         |@media not handheld and (orientation:landscape) and (color) {
         |  .scalacss-0001 {
-        |    width: 500px;
+        |    padding-left: 500px;
+        |    padding-right: 500px;
         |  }
         |}
         |
         |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
         |  .scalacss-0001 {
-        |    width: 600px;
+        |    margin-top: 10em;
+        |    margin-bottom: 10em;
         |  }
         |}
         |

@@ -2413,6 +2413,10 @@ object Attrs {
   object borderColor extends TypedAttrT4Edges[Color](" ") with ColourOps {
     override val attr = Attr.alias("border-color")(_(
       borderTopColor, borderRightColor, borderBottomColor, borderLeftColor))
+    override protected def attrT = borderTopColor
+    override protected def attrR = borderRightColor
+    override protected def attrB = borderBottomColor
+    override protected def attrL = borderLeftColor
   }
 
   /**
@@ -2554,6 +2558,10 @@ object Attrs {
   object borderStyle extends TypedAttrT4Edges[BrStyle](" ") with BrStyleOps {
     override val attr = Attr.alias("border-style")(_(
       borderTopStyle, borderRightStyle, borderBottomStyle, borderLeftStyle))
+    override protected def attrT = borderTopStyle
+    override protected def attrR = borderRightStyle
+    override protected def attrB = borderBottomStyle
+    override protected def attrL = borderLeftStyle
   }
 
   /**
@@ -2574,6 +2582,10 @@ object Attrs {
   object borderWidth extends TypedAttrT4Edges[BrWidth](" ") with BrWidthOps {
     override val attr = Attr.alias("border-width")(_(
       borderTopWidth, borderRightWidth, borderBottomWidth, borderLeftWidth))
+    override protected def attrT = borderTopWidth
+    override protected def attrR = borderRightWidth
+    override protected def attrB = borderBottomWidth
+    override protected def attrL = borderLeftWidth
   }
 
   /**
@@ -2682,6 +2694,10 @@ object Attrs {
   object margin extends TypedAttrT4Edges[LenPctAuto](" ") with ZeroLit {
     override val attr = Attr.alias("margin")(_(
       marginTop, marginRight, marginBottom, marginLeft))
+    override protected def attrT = marginTop
+    override protected def attrR = marginRight
+    override protected def attrB = marginBottom
+    override protected def attrL = marginLeft
     @inline def auto = avl(LT.auto)
   }
 
@@ -2815,6 +2831,10 @@ object Attrs {
   object padding extends TypedAttrT4Edges[LenPct](" ") with ZeroLit {
     override val attr = Attr.alias("padding")(_(
       paddingLeft, paddingRight, paddingTop, paddingBottom))
+    override protected def attrT = paddingTop
+    override protected def attrR = paddingRight
+    override protected def attrB = paddingBottom
+    override protected def attrL = paddingLeft
   }
 
   /**
