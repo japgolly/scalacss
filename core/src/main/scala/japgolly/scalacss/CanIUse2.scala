@@ -88,7 +88,7 @@ object CanIUse2 {
       pa(tgt).fold(nop)(apply =>
         pp.map(op =>
           op.fold(kv)(p =>
-            l.set(kv)(apply(p)))))
+            l.set(kv, apply(p)))))
   }
 
   @inline def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =

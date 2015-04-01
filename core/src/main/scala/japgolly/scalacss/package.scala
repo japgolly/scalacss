@@ -5,7 +5,6 @@ import scalaz.{Equal, OneAnd}
 import scalaz.std.stream.streamEqual
 import scalaz.std.option.optionEqual
 import scalaz.std.vector._
-import shapeless.lens
 
 package object scalacss {
   private[this] implicit def stringEqual: Equal[String] = Equal.equalA
@@ -49,9 +48,9 @@ package object scalacss {
   object CssKV {
     implicit val equality: Equal[CssKV] = Equal.equalA
 
-    type Lens = shapeless.Lens[CssKV, String]
-    val key  : Lens = lens[CssKV].key
-    val value: Lens = lens[CssKV].value
+    final class Lens(val get: CssKV => String, val set: (CssKV, String) => CssKV)
+    val key   = new Lens(_.key  , (a, b) => CssKV(b, a.value))
+    val value = new Lens(_.value, (a, b) => CssKV(a.key, b))
   }
 
   /**
