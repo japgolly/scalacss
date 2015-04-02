@@ -77,7 +77,7 @@ object DefaultsTest extends TestSuite {
   object Prod {
     import ProdDefaults._
 
-    object SS extends StyleSheet.Inline {
+    object SS1 extends StyleSheet.Inline {
       import dsl._
       val style1 = style(
         margin(12 px),
@@ -90,15 +90,22 @@ object DefaultsTest extends TestSuite {
       val shared = new SharedStyles
     }
 
+    object SS2 extends StyleSheet.Inline {
+      import dsl._
+      val blah = style(width.inherit)
+    }
+
     implicit def env = Env.empty
-    val css = SS.render
+    val css1 = SS1.render
+    val css2 = SS2.render
 
     def test(): Unit =
-      assertEq(css,
+      assertEq(css1 +  css2,
         "._a0{margin:12px;margin-left:6px}" +
         "._a1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
         "._a2{background-color:#333}" +
-        "._a3{background-color:#666}"
+        "._a3{background-color:#666}" +
+        "._b0{width:inherit}"
       )
   }
 }
