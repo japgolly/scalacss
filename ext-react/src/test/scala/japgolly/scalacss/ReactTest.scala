@@ -22,7 +22,7 @@ object ReactTest extends TestSuite {
 
   val expectedStyleTag =
     """
-      |<style type="text/css">.scalacss-0001 {
+      |<style type="text/css">.ReactTest_MyStyles-0001 {
       |  font-weight: bold;
       |  padding: 0.3ex 2ex;
       |}
@@ -45,13 +45,13 @@ object ReactTest extends TestSuite {
     'simple {
       val el = <.input(^.`type` := "text", MyStyles.input, ^.defaultValue := "ah")
       val html = React.renderToStaticMarkup(el)
-      assertEq(html, """<input type="text" class="scalacss-0001" value="ah">""")
+      assertEq(html, """<input type="text" class="ReactTest_MyStyles-0001" value="ah">""")
     }
 
     'addClassName {
       val el = <.button(MyStyles.bootstrappy)
       val html = React.renderToStaticMarkup(el)
-      assertEq(html, """<button class="scalacss-0002 btn btn-default"></button>""")
+      assertEq(html, """<button class="ReactTest_MyStyles-0002 btn btn-default"></button>""")
     }
 
   }

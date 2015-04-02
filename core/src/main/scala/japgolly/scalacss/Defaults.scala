@@ -15,7 +15,7 @@ trait DefaultImports {
 }
 
 trait IDefaults extends PlatformDefaults with DefaultImports {
-           val registerNameGen     : NameGen
+           def registerNameGen     : NameGen
            val registerErrorHandler: ErrorHandler
   implicit def stringRenderer      : Renderer[String]
   implicit def composition         : Compose
@@ -40,7 +40,7 @@ trait DevDefaults extends IDefaults {
  */
 object ProdDefaults extends ProdDefaults
 trait ProdDefaults extends IDefaults {
-  override          val registerNameGen     : NameGen          = NameGen.short()
+  override          def registerNameGen     : NameGen          = NameGen.short()
   override          val registerErrorHandler: ErrorHandler     = ErrorHandler.silent
   override implicit def stringRenderer      : Renderer[String] = StringRenderer.formatTiny
   override implicit def composition         : Compose          = Compose.trust
@@ -65,7 +65,7 @@ trait Defaults extends IDefaults {
     else
       ProdDefaults
 
-  override          val registerNameGen     : NameGen          = defaults.registerNameGen
+  override          def registerNameGen     : NameGen          = defaults.registerNameGen
   override          val registerErrorHandler: ErrorHandler     = defaults.registerErrorHandler
   override implicit def stringRenderer      : Renderer[String] = defaults.stringRenderer
   override implicit def composition         : Compose          = defaults.composition

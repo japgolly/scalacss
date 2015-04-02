@@ -18,7 +18,7 @@ object DefaultsTest extends TestSuite {
     'prod - Prod.test()
   }
 
-  class SharedStyleModule(implicit reg: mutable.Register) extends mutable.StyleSheet.Inline {
+  class SharedStyles(implicit reg: mutable.Register) extends mutable.StyleSheet.Inline {
     import dsl._
     implicit def compose = Compose.trust
     val header = style(backgroundColor("#333"))
@@ -39,7 +39,7 @@ object DefaultsTest extends TestSuite {
         cursor.pointer,
         cursor.zoomIn
       )
-      val shared = new SharedStyleModule
+      val shared = new SharedStyles
     }
 
     implicit def env = Env.empty
@@ -50,12 +50,12 @@ object DefaultsTest extends TestSuite {
     def test(): Unit =
       assertEq(norm(css), norm(
         """
-          |.scalacss-0001 {
+          |.DefaultsTest_Dev_SS-0001 {
           |  margin: 12px;
           |  margin-left: 6px;
           |}
           |
-          |.scalacss-0002 {
+          |.DefaultsTest_Dev_SS-0002 {
           |  cursor: pointer;
           |  cursor: -webkit-zoom-in;
           |  cursor: -moz-zoom-in;
@@ -63,11 +63,11 @@ object DefaultsTest extends TestSuite {
           |  cursor: zoom-in;
           |}
           |
-          |.scalacss-0003 {
+          |.DefaultsTest_SharedStyles-0003 {
           |  background-color: #333;
           |}
           |
-          |.scalacss-0004 {
+          |.DefaultsTest_SharedStyles-0004 {
           |  background-color: #666;
           |}
         """.stripMargin))
@@ -87,7 +87,7 @@ object DefaultsTest extends TestSuite {
         cursor.pointer,
         cursor.zoomIn
       )
-      val shared = new SharedStyleModule
+      val shared = new SharedStyles
     }
 
     implicit def env = Env.empty
@@ -95,10 +95,10 @@ object DefaultsTest extends TestSuite {
 
     def test(): Unit =
       assertEq(css,
-        "._0{margin:12px;margin-left:6px}" +
-        "._1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
-        "._2{background-color:#333}" +
-        "._3{background-color:#666}"
+        "._a0{margin:12px;margin-left:6px}" +
+        "._a1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
+        "._a2{background-color:#333}" +
+        "._a3{background-color:#666}"
       )
   }
 }

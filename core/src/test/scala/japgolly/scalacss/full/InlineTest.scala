@@ -94,20 +94,20 @@ object InlineTest extends utest.TestSuite {
     'css - assertEq(norm(MyInline.render), norm(
       """
         |@media not handheld and (orientation:landscape) and (color) {
-        |  .scalacss-0001 {
+        |  .MyInline-0001 {
         |    padding-left: 500px;
         |    padding-right: 500px;
         |  }
         |}
         |
         |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .scalacss-0001 {
+        |  .MyInline-0001 {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
         |  }
         |}
         |
-        |.scalacss-0001:not(:first-child):visited {
+        |.MyInline-0001:not(:first-child):visited {
         |  -o-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
         |  -moz-animation-delay: 60s,50ms;
@@ -116,7 +116,7 @@ object InlineTest extends utest.TestSuite {
         |  font: inherit;
         |}
         |
-        |.scalacss-0001:hover {
+        |.MyInline-0001:hover {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
@@ -126,7 +126,7 @@ object InlineTest extends utest.TestSuite {
         |  cursor: zoom-in;
         |}
         |
-        |.scalacss-0001 {
+        |.MyInline-0001 {
         |  -webkit-text-decoration-line: underline overline;
         |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
@@ -139,12 +139,12 @@ object InlineTest extends utest.TestSuite {
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
-        |.scalacss-0001 nav.debug {
+        |.MyInline-0001 nav.debug {
         |  background-color: #f88;
         |  color: black !important;
         |}
         |
-        |.scalacss-0001 nav.debug h1 {
+        |.MyInline-0001 nav.debug h1 {
         |  line-height: 97.5%;
         |  font-size: 150%;
         |}
@@ -158,56 +158,56 @@ object InlineTest extends utest.TestSuite {
         |  border-color: red;
         |}
         |
-        |.scalacss-0002 {
+        |.MyInline-0002 {
         |  background-color: green;
         |  max-width: 80ex;
         |}
         |
-        |.scalacss-0003 {
+        |.MyInline-0003 {
         |  background-color: red;
         |  max-width: 80ex;
         |}
         |
-        |.scalacss-0004 {
+        |.MyInline-0004 {
         |  padding-left: 4ex;
         |}
         |
-        |.scalacss-0005 {
+        |.MyInline-0005 {
         |  padding-left: 8ex;
         |}
         |
-        |.scalacss-0006 {
+        |.MyInline-0006 {
         |  padding-left: 12ex;
         |}
         |
-        |.scalacss-0007 {
+        |.MyInline-0007 {
         |  margin-top: inherit;
         |}
         |
-        |.scalacss-0008 {
+        |.MyInline-0008 {
         |  border: 1px solid black;
         |  padding: 1ex;
         |}
         |
-        |.scalacss-0009 {
+        |.MyInline-0009 {
         |  font-weight: bold;
         |}
         |
-        |.scalacss-0010 {
+        |.MyInline-0010 {
         |  margin: 4ex;
         |  background-color: #eee;
         |}
       """.stripMargin))
 
     'classnames {
-      assertEq(MyInline.everythingOk(true) .htmlClass, "scalacss-0002")
-      assertEq(MyInline.everythingOk(false).htmlClass, "scalacss-0003")
+      assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-0002")
+      assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-0003")
 
-      assertEq(MyInline.indent(1).htmlClass, "scalacss-0004")
-      assertEq(MyInline.indent(2).htmlClass, "scalacss-0005")
-      assertEq(MyInline.indent(3).htmlClass, "scalacss-0006")
+      assertEq(MyInline.indent(1).htmlClass, "MyInline-0004")
+      assertEq(MyInline.indent(2).htmlClass, "MyInline-0005")
+      assertEq(MyInline.indent(3).htmlClass, "MyInline-0006")
 
-      assertEq(MyInline.sb.htmlClass, "scalacss-0007 btn btn-default")
+      assertEq(MyInline.sb.htmlClass, "MyInline-0007 btn btn-default")
 
       import shapeless.syntax.singleton._ // TODO
       val classNames =
@@ -215,7 +215,7 @@ object InlineTest extends utest.TestSuite {
                     _('label)(l =>
                       _('checkbox)(c =>
                         List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("scalacss-0008", "scalacss-0009", "scalacss-0010"))
+      assertEq(classNames, List("MyInline-0008", "MyInline-0009", "MyInline-0010"))
     }
   }
 }

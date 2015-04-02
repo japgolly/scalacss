@@ -19,6 +19,11 @@ object StyleSheet {
   abstract class Base {
     protected def register: Register
 
+    protected implicit val classNameHint: ClassNameHint =
+      ClassNameHint(getClass.getName
+        .replaceFirst("""^(?:.+\.)(.+?)\$?$""", "$1")
+        .replaceAll("\\$+", "_"))
+
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) =
         Dsl.style(t: _*)
@@ -134,7 +139,7 @@ object StyleSheet {
       register registerF StyleF(f)(d)
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
-      register.registerC(s)(m, u)
+      register.registerC(s)(implicitly, m, u)
 
     /** Created a nested conditional style. */
     @inline final protected def & : Cond = Cond.empty

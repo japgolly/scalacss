@@ -25,7 +25,7 @@ object ScalatagsTest extends TestSuite {
 
     'styleTag {
       val html = MyStyles.render[T].toString()
-      assertEq(html, """<style type="text/css">.scalacss-0001 {
+      assertEq(html, """<style type="text/css">.ScalatagsTest_MyStyles-0001 {
                        |  font-weight: bold;
                        |  padding: 0.3ex 2ex;
                        |}
@@ -36,13 +36,13 @@ object ScalatagsTest extends TestSuite {
     'simple {
       val el = input(`type` := "text", MyStyles.input, value := "ah")
       val html = el.toString()
-      assertEq(html, """<input type="text" class="scalacss-0001" value="ah" />""")
+      assertEq(html, """<input type="text" class="ScalatagsTest_MyStyles-0001" value="ah" />""")
     }
 
     'addClassName {
       val el = button(MyStyles.bootstrappy)
       val html = el.toString()
-      assertEq(html, """<button class="scalacss-0002 btn btn-default"></button>""")
+      assertEq(html, """<button class="ScalatagsTest_MyStyles-0002 btn btn-default"></button>""")
     }
 
   }

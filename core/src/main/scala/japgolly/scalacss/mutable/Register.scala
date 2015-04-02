@@ -21,20 +21,15 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
   var _styles   = Vector.empty[StyleA]
   var _rendered = false
 
-  private def nextName(): ClassName =
+  private def nextName(implicit cnh: ClassNameHint): ClassName =
     mutex {
-      val (cn, ng) = _nameGen.next
+      val (cn, ng) = _nameGen.next(cnh)
       _nameGen = ng
       cn
     }
 
-  // Convenience methods
-  @inline def register(s: StyleS): StyleA = registerS(s)
-  @inline def register[I](s: StyleF[I])(implicit l: StyleLookup[I]): I => StyleA = registerF(s)
-  @inline def register[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out = registerC(s)(m, u)
-
-  def registerS(s: StyleS): StyleA = mutex {
-    val cn = s.className getOrElse nextName()
+  def registerS(s: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
+    val cn = s.className getOrElse nextName(cnh)
 
     // Optional side-effects for warnings
     errHandler.warn.foreach { f =>
@@ -57,7 +52,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     a
   }
 
-  def registerF[I](s: StyleF[I])(implicit l: StyleLookup[I]): I => StyleA = {
+  def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA = {
     val add = l.add
     val lookup = mutex(
       s.domain.toStream.foldLeft(l.empty)((q, i) =>
@@ -66,12 +61,12 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
 
-  def registerC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out =
+  def registerC[M <: HList](s: StyleC)(implicit cnh: ClassNameHint, m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out =
     u apply m(s.styles)
 
   object _registerC extends Poly1 {
-    implicit def cs[W]                : Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
-    implicit def cf[W, I: StyleLookup]: Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
+    implicit def cs[W]                (implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
+    implicit def cf[W, I: StyleLookup](implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
   def styles: Vector[StyleA] = mutex {
@@ -87,19 +82,22 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
 object Register { // ===================================================================================================
 
   trait NameGen {
-    def next: (ClassName, NameGen)
+    def next(cnh: ClassNameHint): (ClassName, NameGen)
   }
 
   object NameGen {
     class IncFmt(fmt: String, nextInt: Int = 1) extends NameGen {
-      override def next = {
-        val cn = ClassName(String.format(fmt, nextInt: java.lang.Integer))
+      override def next(cnh: ClassNameHint) = {
+        val cn = ClassName(String.format(fmt, cnh.value, nextInt: java.lang.Integer))
         val ng = new IncFmt(fmt, nextInt + 1)
         (cn, ng)
       }
     }
 
-    class Alphabet(alphabet: Array[Char], fmt: String => String, n: Int = 0) extends NameGen {
+    def numbered(format: String = "%s-%04d"): NameGen =
+      new NameGen.IncFmt(format)
+
+    class Alphabet(alphabet: Array[Char], fmt: (ClassNameHint, String) => String, n: Int = 0) extends NameGen {
       @tailrec final def code(cs: List[Char], i: Int): List[Char] = {
         val m = i % alphabet.length
         val r = i / alphabet.length - 1
@@ -108,9 +106,9 @@ object Register { // ===========================================================
         if (r == -1) x else code(x, r)
       }
 
-      override def next = {
+      override def next(cnh: ClassNameHint) = {
         val c = String valueOf code(Nil, n).toArray
-        val cn = ClassName(fmt(c))
+        val cn = ClassName(fmt(cnh, c))
         val ng = new Alphabet(alphabet, fmt, n + 1)
         (cn, ng)
       }
@@ -123,20 +121,28 @@ object Register { // ===========================================================
     // nmstart    [_a-z]|{nonascii}|{escape}
     // nmchar     [_a-z0-9-]|{nonascii}|{escape}
 
-    def nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
-    def nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
+    lazy val nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
+    lazy val nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
-    def short(prefix: String = "_", alphabet: Array[Char] = nmchar7): NameGen = {
-      if (!prefix.matches("^[_a-zA-Z\u00a0-\u00ff]"))
+    private[this] var _nextShortPrefix = 0
+
+    def nextShortPrefix(): String = {
+      val p = ('a' + _nextShortPrefix).toChar.toString
+      _nextShortPrefix += 1
+      p
+    }
+
+    def short(prefix  : String      = "_",
+              prefix2 : String      = nextShortPrefix(),
+              alphabet: Array[Char] = nmchar7): NameGen = {
+      val fullPrefix = prefix + prefix2
+      if (!fullPrefix.matches("^[_a-zA-Z\u00a0-\u00ff].*"))
         System.err.println(s"[NameGen.short] CSS class names must begin with a-z, an underscore, or A0-FF. Not: '$prefix'.")
-      new NameGen.Alphabet(alphabet, prefix + _)
+      new NameGen.Alphabet(alphabet, (_, c) => fullPrefix + c)
     }
 
     def short8: NameGen =
-      short("\u00a2", nmchar8)
-
-    def numbered(prefix: String = "scalacss-"): NameGen =
-      new NameGen.IncFmt(prefix + "%04d")
+      short("\u00a2", alphabet = nmchar8)
   }
 
   // ===================================================================================================================
