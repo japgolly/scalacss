@@ -78,6 +78,8 @@ object MyInline extends StyleSheet.Inline {
     marginTop.inherit
   )
 
+  val empty = style()
+
   /** Composite style */
   val sc = styleC {
     val o = styleS(border(1 px, solid, black), padding(1 ex))
@@ -187,16 +189,16 @@ object InlineTest extends utest.TestSuite {
         |  margin-top: inherit;
         |}
         |
-        |.MyInline-0008 {
+        |.MyInline-0009 {
         |  border: 1px solid black;
         |  padding: 1ex;
         |}
         |
-        |.MyInline-0009 {
+        |.MyInline-0010 {
         |  font-weight: bold;
         |}
         |
-        |.MyInline-0010 {
+        |.MyInline-0011 {
         |  margin: 4ex;
         |  background-color: #eee;
         |}
@@ -213,13 +215,15 @@ object InlineTest extends utest.TestSuite {
       assertEq(MyInline.sb1.htmlClass, "btn btn-default")
       assertEq(MyInline.sb2.htmlClass, "MyInline-0007 btn btn-default")
 
+      assertEq(MyInline.empty.htmlClass, "MyInline-0008")
+
       import shapeless.syntax.singleton._ // TODO
       val classNames =
         MyInline.sc('outer)(o =>
                     _('label)(l =>
                       _('checkbox)(c =>
                         List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("MyInline-0008", "MyInline-0009", "MyInline-0010"))
+      assertEq(classNames, List("MyInline-0009", "MyInline-0010", "MyInline-0011"))
     }
   }
 }

@@ -48,7 +48,7 @@ object Css {
     style(sel, u.style)
   }
 
-  type ValuesByMediaQuery = Vector[(CssSelector, NonEmptyVector[CssKV])]
+  type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
   type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
   def mapByMediaQuery(c: Css): ByMediaQuery = {
@@ -56,7 +56,7 @@ object Css {
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
       val k = e.mq
-      q.updated(k, q.getOrElse(k, Vector.empty) :+ add)
+      q.updated(k, q.get(k).fold(OneAnd(add, Vector.empty))(_ :+ add))
     }
   }
 
