@@ -28,7 +28,16 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
       cn
     }
 
-  def registerS(s: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
+  def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
+
+    // Special case: addClassNames-only styles don't need a class-name generated
+    val s =
+      if (s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty) {
+        val h = s0.addClassNames.head
+        val t = s0.addClassNames.tail
+        s0.copy(className = Some(h), addClassNames = t)
+      } else s0
+
     val cn = s.className getOrElse nextName(cnh)
 
     // Optional side-effects for warnings

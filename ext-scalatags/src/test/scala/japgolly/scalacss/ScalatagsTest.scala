@@ -42,7 +42,7 @@ object ScalatagsTest extends TestSuite {
     'addClassName {
       val el = button(MyStyles.bootstrappy)
       val html = el.toString()
-      assertEq(html, """<button class="ScalatagsTest_MyStyles-0002 btn btn-default"></button>""")
+      assertEq(html, """<button class="btn btn-default"></button>""")
     }
 
   }

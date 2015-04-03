@@ -51,7 +51,7 @@ object ReactTest extends TestSuite {
     'addClassName {
       val el = <.button(MyStyles.bootstrappy)
       val html = React.renderToStaticMarkup(el)
-      assertEq(html, """<button class="ReactTest_MyStyles-0002 btn btn-default"></button>""")
+      assertEq(html, """<button class="btn btn-default"></button>""")
     }
 
   }

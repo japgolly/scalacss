@@ -69,8 +69,11 @@ object MyInline extends StyleSheet.Inline {
     intStyle(1 to 3)(i =>
       styleS(paddingLeft(i * 4.ex)))
 
-  /** Style hooking into Bootstrap */
-  val sb = style(
+  /** Style applying Bootstrap */
+  val sb1 = style(addClassNames("btn", "btn-default"))
+
+  /** Style extending into Bootstrap */
+  val sb2 = style(
     addClassNames("btn", "btn-default"),
     marginTop.inherit
   )
@@ -207,7 +210,8 @@ object InlineTest extends utest.TestSuite {
       assertEq(MyInline.indent(2).htmlClass, "MyInline-0005")
       assertEq(MyInline.indent(3).htmlClass, "MyInline-0006")
 
-      assertEq(MyInline.sb.htmlClass, "MyInline-0007 btn btn-default")
+      assertEq(MyInline.sb1.htmlClass, "btn btn-default")
+      assertEq(MyInline.sb2.htmlClass, "MyInline-0007 btn btn-default")
 
       import shapeless.syntax.singleton._ // TODO
       val classNames =
