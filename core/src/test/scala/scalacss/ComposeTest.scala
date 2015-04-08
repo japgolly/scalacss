@@ -34,7 +34,7 @@ object ComposeTest extends TestSuite {
   object Issue25 {
     import DevDefaults._
     object SampleStyles extends StyleSheet.Inline {
-      override implicit val classNameHint = mutable.ClassNameHint("TEST")
+      override implicit val classNameHint = ClassNameHint("TEST")
       import dsl._
       val other = style("other")(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
       val outer = style("outer")(fontWeight.bold)
@@ -66,7 +66,6 @@ object ComposeTest extends TestSuite {
         """.stripMargin.trim)
     }
   }
-
 
   override val tests = TestSuite {
     'append  - appendTest .mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))

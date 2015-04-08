@@ -102,4 +102,11 @@ package object scalacss {
   /** Faster than Vector(a) */
   @inline private[scalacss] def Vector1[A](a: A): Vector[A] =
     Vector.empty :+ a
+
+  /**
+   * Text to include in generated class names.
+   *
+   * [[mutable.Register.NameGen]]s can choose to include it in the output class names, or ignore it.
+   */
+  case class ClassNameHint(value: String)
 }
