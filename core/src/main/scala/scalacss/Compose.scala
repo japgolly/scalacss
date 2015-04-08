@@ -1,7 +1,13 @@
 package scalacss
 
 /**
- * TODO Doc this file
+ * Style composition logic.
+ *
+ * This is responsible for adding things into a style, and producing warnings.
+ * It is used each time a CSS key-value pair is added to a style, a new condition is added,
+ * and when whole styles are combined with others.
+ *
+ * It has the power to perform merges on conflicting CSS values, and selectively ignore merges.
  */
 final case class Compose(rules: Compose.Rules) {
 
