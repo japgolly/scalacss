@@ -31,6 +31,12 @@ object StyleSheet {
 
     @inline final protected def ^ = Literal
 
+    final def css(implicit env: Env): Css =
+      register.css
+
+    final def styles: Vector[StyleA] =
+      register.styles
+
     /**
      * Render registered styles into some format, usually a String of plain CSS.
      *

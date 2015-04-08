@@ -83,8 +83,11 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     _styles
   }
 
+  def css(implicit env: Env): Css =
+    Css(styles)
+
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
-    r(Css(styles))
+    r(css)
 }
 
 
