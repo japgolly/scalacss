@@ -23,7 +23,7 @@ object Gen {
             .map(a => s"  @inline final def $a = Attrs.$a")
         val attrAliases =
         s"""
-          |package japgolly.scalacss
+          |package scalacss
           |
           |abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
           |${attrs mkString "\n"}

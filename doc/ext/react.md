@@ -6,7 +6,7 @@
 
 1. Add this to Scala where you want ScalaCSS to integrate with your React code.
   ```scala
-  import japgolly.scalacss.ScalaCssReact._
+  import scalacss.ScalaCssReact._
   ```
 
 1. Create your [inline styles](../quickstart/inline.md) as normal.
@@ -26,7 +26,7 @@
 
 MyStyles.scala
 ```scala
-import japgolly.scalacss.Defaults._
+import scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -44,8 +44,8 @@ import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom.{alert, document}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import japgolly.scalacss.Defaults._
-import japgolly.scalacss.ScalaCssReact._
+import scalacss.Defaults._
+import scalacss.ScalaCssReact._
 
 object MyApp {
 

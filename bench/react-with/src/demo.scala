@@ -3,8 +3,8 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 import japgolly.scalajs.react._, vdom.prefix_<^._, ScalazReact._
 
-import japgolly.scalacss.Defaults._
-import japgolly.scalacss.ScalaCssReact._
+import scalacss.Defaults._
+import scalacss.ScalaCssReact._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._

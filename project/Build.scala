@@ -66,7 +66,7 @@ object ScalaCSS extends Build {
     crossDialectProject("core", commonSettings
       .configure(utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
-      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, japgolly.scalacss._")
+      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
     )
 
   lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =

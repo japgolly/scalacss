@@ -3,7 +3,7 @@
 The first thing you'll want to do is import the default settings.
 
 ```scala
-import japgolly.scalacss.Defaults._
+import scalacss.Defaults._
 ```
 
 This provides two sets of sensible settings: development and production.
@@ -27,7 +27,7 @@ scalacOptions ++= Seq("-Xelide-below", "OFF")
 _Note: `-Xelide-below OFF` doesn't turn eliding off, it means "elide everything". There must've been painting going on in the building with no windows open when that was named._
 
 Defaults aren't mandatory, you're free to customise as needed.
-(See [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Defaults.scala).)
+(See [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala).)
 
 ## StyleSheets
 
@@ -55,6 +55,6 @@ To create a style module,
 
 ##### Full examples:
 
-* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/StandaloneTest.scala)
-* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/InlineTest.scala)
+* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala)
+* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala)
 

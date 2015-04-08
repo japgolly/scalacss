@@ -8,7 +8,7 @@ ScalaCSS integrates with Scalatags in both `Text` and `JsDom` modes.
 
 1. Add this to your Scala code:
   ```scala
-  import japgolly.scalacss.ScalatagsCss._
+  import scalacss.ScalatagsCss._
   ```
 
 1. Create your [inline styles](../quickstart/inline.md) as normal.
@@ -30,7 +30,7 @@ ScalaCSS integrates with Scalatags in both `Text` and `JsDom` modes.
 
 MyStyles.scala
 ```scala
-import japgolly.scalacss.Defaults._
+import scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -44,8 +44,8 @@ object MyStyles extends StyleSheet.Inline {
 
 MyApp.scala
 ```scala
-import japgolly.scalacss.Defaults._
-import japgolly.scalacss.ScalatagsCss._
+import scalacss.Defaults._
+import scalacss.ScalatagsCss._
 import scalatags.Text._
 import scalatags.Text.all._
 

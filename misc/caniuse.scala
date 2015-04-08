@@ -148,7 +148,7 @@ object Caniuse {
 
     // ====================================================================================================
     val obj = "CanIUse"
-    val pkg = "japgolly.scalacss"
+    val pkg = "scalacss"
     val fout = s"../core/src/main/scala/${pkg.replace('.','/')}/$obj.scala"
 
     val fmtstr: String => String =
