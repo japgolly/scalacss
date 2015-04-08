@@ -1,7 +1,5 @@
 package japgolly.scalacss
 
-import scalaz.OneAnd
-
 object Css {
 
   def apply(styles: TraversableOnce[StyleA])(implicit env: Env): Css =
@@ -32,7 +30,7 @@ object Css {
           else {
             val mq = mediaQuery(cond)
             val s  = selector(sel, cond)
-            val c  = OneAnd(r.head, r.tail)
+            val c  = NonEmptyVector(r.head, r.tail)
             Stream(CssEntry(mq, s, c))
           }
         }
@@ -56,18 +54,18 @@ object Css {
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
       val k = e.mq
-      q.updated(k, q.get(k).fold(OneAnd(add, Vector.empty))(_ :+ add))
+      q.updated(k, q.get(k).fold(NonEmptyVector(add))(_ :+ add))
     }
   }
 
   def flatten(css: Css): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
     css.flatMap { case CssEntry(mq, sel, kvs) =>
-      kvs.vector.toStream.map(kv => (mq, sel, kv))
+      kvs.toStream.map(kv => (mq, sel, kv))
     }
 
   type Flat4 = (CssMediaQueryO, CssSelector, String, String)
   def flatten4(css: Css): Stream[Flat4] =
     css.flatMap { case CssEntry(mq, sel, kvs) =>
-      kvs.vector.toStream.map(kv => (mq, sel, kv.key, kv.value))
+      kvs.toStream.map(kv => (mq, sel, kv.key, kv.value))
     }
 }

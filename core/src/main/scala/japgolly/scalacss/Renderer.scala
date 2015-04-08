@@ -14,7 +14,7 @@ final class StringRenderer(format: StringRenderer.Format) extends Renderer[Strin
 
     def doit(omq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
       omq foreach fmt.mqStart
-      for ((sel, kvs) <- data.vector) {
+      for ((sel, kvs) <- data.whole) {
         fmt.selStart(omq, sel)
         fmt.kv1(omq, kvs.head)
         kvs.tail.foreach(fmt.kvn(omq, _))

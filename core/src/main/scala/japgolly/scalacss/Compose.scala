@@ -1,7 +1,5 @@
 package japgolly.scalacss
 
-import scalaz.OneAnd
-
 /**
  * TODO Doc this file
  */
@@ -22,8 +20,8 @@ final case class Compose(rules: Compose.Rules) {
         into.foldLeft(avs)((q, av) => mergeAV(c, av, q))
 
       @inline def mergeAV(c: Cond, av: AV, into: AVs): AVs = {
-        val (ko, ok) = into.vector.partition(i => av.attr.cmp(i.attr).conflict)
-        NonEmptyVector.maybe(ko, OneAnd(av, ok))(ko1 =>
+        val (ko, ok) = into.whole.partition(i => av.attr.cmp(i.attr).conflict)
+        NonEmptyVector.maybe(ko, NonEmptyVector(av, ok))(ko1 =>
           absorbWarning(c, rules.mergeAttrs(av, ko1)) ++ ok)
       }
 
@@ -110,7 +108,7 @@ object Compose {
 
         override def mergeAttrs(lo: AV, hi: AVs) = {
           def show1(x: AV) = x.attr.id
-          def showN(x: AVs) = if (x.tail.isEmpty) show1(x.head) else x.vector.map(show1).mkString("{", ",", "}")
+          def showN(x: AVs) = if (x.tail.isEmpty) show1(x.head) else x.toStream.map(show1).mkString("{", ",", "}")
           (merge(lo, hi), Vector1(s"${show1(lo)} overridden by ${showN(hi)}."))
         }
       }

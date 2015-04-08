@@ -2,7 +2,7 @@ package japgolly.scalacss
 
 import japgolly.nyaya.util._
 import japgolly.nyaya.test._
-import scalaz.{Need, NonEmptyList, OneAnd}
+import scalaz.{Need, NonEmptyList}
 import Style.{UnsafeExts, UnsafeExt}
 
 object RandomData {
@@ -12,7 +12,7 @@ object RandomData {
   val (str, str1) = (Gen.alphanumericstring lim 32, Gen.alphanumericstring1 lim 32)
 
   def nev[A](g: Gen[A]): GenS[NonEmptyVector[A]] =
-    g.vector.flatMap(as => g.map(OneAnd(_, as)))
+    g.vector.flatMap(as => g.map(NonEmptyVector(_, as)))
 
   val attr: Gen[Attr] =
     Gen.oneof(Attrs.values.head, Attrs.values.tail: _*)

@@ -1,10 +1,8 @@
 package japgolly
 
-import scala.collection.GenTraversableOnce
-import scalaz.{Equal, OneAnd}
+import scalaz.Equal
 import scalaz.std.stream.streamEqual
 import scalaz.std.option.optionEqual
-import scalaz.std.vector._
 
 package object scalacss {
   private[this] implicit def stringEqual: Equal[String] = Equal.equalA
@@ -101,74 +99,6 @@ package object scalacss {
     /** Value to be applied to a HTML element's `class` attribute. */
     val htmlClass: String =
       (className.value /: addClassNames)(_ + " " + _.value)
-  }
-
-  // ===================================================================================================================
-  type NonEmptyVector[A] = OneAnd[Vector, A]
-
-  object NonEmptyVector {
-    @inline def apply[A](h: A, t: A*): NonEmptyVector[A] =
-      OneAnd(h, t.toVector)
-
-    def end[A](init: Vector[A], last: A): NonEmptyVector[A] =
-      if (init.isEmpty)
-        OneAnd(last, Vector.empty)
-      else
-        OneAnd(init.head, init.tail :+ last)
-
-    @inline def maybe[A, B](v: Vector[A], empty: => B)(f: NonEmptyVector[A] => B): B =
-      if (v.isEmpty) empty else f(OneAnd(v.head, v.tail))
-
-    @inline def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
-      maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
-  }
-
-  // Using these & traverse1 syntax pulls in too much other stuff. Size matters for JS.
-  //
-  //  private[this] implicit val vectorTypeclass: Traverse[Vector] =
-  //    new Traverse[Vector] {
-  //      override def traverseImpl[G[_], A, B](fa: Vector[A])(f: A => G[B])(implicit G: Applicative[G]): G[Vector[B]] = {
-  //        val gba = G pure new scala.collection.immutable.VectorBuilder[B]
-  //        val gbb = fa.foldLeft(gba)((buf, a) => G.apply2(buf, f(a))(_ += _))
-  //        G.map(gbb)(_.result)
-  //      }
-  //    }
-  //  implicit val nonEmptyVectorTraverse1: Traverse1[NonEmptyVector] =
-  //    OneAnd.oneAndTraverse[Vector]
-
-  implicit def nonEmptyVectorEquality[A: Equal]: Equal[NonEmptyVector[A]] =
-    OneAnd.oneAndEqual[Vector, A]
-
-  @inline implicit class NonEmptyVectorExt[A](val self: NonEmptyVector[A]) extends AnyVal {
-    @inline def modt(f: Vector[A] => Vector[A]): NonEmptyVector[A] =
-      OneAnd(self.head, f(self.tail))
-
-    @inline def :+(a: A): NonEmptyVector[A] =
-      modt(_ :+ a)
-
-    @inline def +:(a: A): NonEmptyVector[A] =
-      OneAnd(a, self.head +: self.tail)
-
-    @inline def ++(as: GenTraversableOnce[A]): NonEmptyVector[A] =
-      modt(_ ++ as)
-
-    @inline def ++(b: NonEmptyVector[A]): NonEmptyVector[A] =
-      ++(b.vector)
-
-    def ++:(as: Vector[A]): NonEmptyVector[A] =
-      if (as.isEmpty) self else OneAnd(as.head, as.tail ++ vector)
-
-    @inline def vector: Vector[A] =
-      self.head +: self.tail
-
-    def foldLeft[B](z: B)(f: (B, A) => B): B =
-      self.tail.foldLeft(f(z, self.head))(f)
-
-    def foldMapLeft1[B](g: A => B)(f: (B, A) => B): B =
-      self.tail.foldLeft(g(self.head))(f)
-
-    def reduceMapLeft1[B](f: A => B)(g: (B, B) => B): B =
-      foldMapLeft1(f)((b, a) => g(b, f(a)))
   }
 
   /** Faster than Vector(a) */

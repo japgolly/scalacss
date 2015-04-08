@@ -20,7 +20,7 @@ object AttrTest extends TestSuite {
     Prop.equal("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
 
   val builtInAttrs: NDomain[Attr] =
-    NDomain.ofValues(Attrs.values.vector: _*)
+    NDomain.ofValues(Attrs.values.whole: _*)
 
   val builtInAttrPairs: NDomain[(Attr, Attr)] =
     builtInAttrs.pair

@@ -41,11 +41,11 @@ final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyVecto
         queue.head match {
           case a if seen contains a => go(seen, found, t)
           case (a: RealAttr)        => go(seen + a, found + a, t)
-          case (a: AliasAttr)       => go(seen + a, found, a.targets.value.vector ++ t)
+          case (a: AliasAttr)       => go(seen + a, found, a.targets.value.whole ++ t)
           // ↗ Using a.targets instead of a.realAttrs to avoid potential deadlock
         }
       }
-    go(Set.empty, Set.empty, targets.value.vector)
+    go(Set.empty, Set.empty, targets.value.whole)
   }
 }
 

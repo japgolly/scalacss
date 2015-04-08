@@ -74,7 +74,7 @@ final case class StyleS(data         : Map[Cond, AVs],
 
   def conflicts: Map[Cond, Set[AV]] = {
     data.toStream
-      .map { case (c, avs) => (c, AttrCmp.conflicts(avs.vector)) }
+      .map { case (c, avs) => (c, AttrCmp.conflicts(avs.whole)) }
       .filter(_._2.nonEmpty)
       .toMap
   }
