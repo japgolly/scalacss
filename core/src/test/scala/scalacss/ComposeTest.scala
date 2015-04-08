@@ -31,8 +31,46 @@ object ComposeTest extends TestSuite {
       {case (a, b) => flat(a compose b) })
   }
 
+  object Issue25 {
+    import DevDefaults._
+    object SampleStyles extends StyleSheet.Inline {
+      override implicit val classNameHint = mutable.ClassNameHint("TEST")
+      import dsl._
+      val other = style("other")(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
+      val outer = style("outer")(fontWeight.bold)
+      val inner = style(color.red, outer)
+    }
+    def test(): Unit = {
+      val css = SampleStyles.renderA[String].trim
+      assertEq(SampleStyles.outer.htmlClass, "outer")
+      assertEq(SampleStyles.inner.htmlClass, "TEST-0001")
+      assertEq(css,
+        """
+          |.other {
+          |  border-collapse: collapse;
+          |  font-weight: 100;
+          |}
+          |
+          |.other:hover {
+          |  font-weight: 200;
+          |}
+          |
+          |.outer {
+          |  font-weight: bold;
+          |}
+          |
+          |.TEST-0001 {
+          |  color: red;
+          |  font-weight: bold;
+          |}
+        """.stripMargin.trim)
+    }
+  }
+
+
   override val tests = TestSuite {
     'append  - appendTest .mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
     'replace - replaceTest.mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
+    'issue25 - Issue25.test()
   }
 }

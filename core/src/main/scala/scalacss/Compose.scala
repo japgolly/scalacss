@@ -35,17 +35,9 @@ final case class Compose(rules: Compose.Rules) {
 
     val exts = a.unsafeExts ++ b.unsafeExts
 
-    val cn: Option[ClassName] =
-      (a.className, b.className) match {
-        case (None,       None) => None
-        case (r@ Some(_), None) => r // Should this also warn
-        case (None, r@ Some(_)) => r // about propagation too?
-        case (Some(l), Some(r)) => absorbWarning(Cond.empty, rules.mergeClassNames(l, r))
-      }
-
     val cns = a.addClassNames ++ b.addClassNames
 
-    new StyleS(newData, exts, cn, cns, warnings)
+    new StyleS(newData, exts, className = None, cns, warnings)
   }
 
   def apply[B](a: StyleS, b: StyleF[B]): StyleF[B] =
