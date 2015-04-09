@@ -10,10 +10,14 @@ trait TestUtil
   extends scalaz.std.StringInstances
      with scalaz.std.StreamInstances
      with scalaz.std.VectorInstances
+     with scalaz.std.SetInstances
      with scalaz.std.TupleInstances
      with scalaz.std.OptionInstances
      with scalaz.std.AnyValInstances
      with scalaz.std.ListInstances {
+
+  implicit def      avEquality: Equal[AV]      = Equal.equal((a, b) => a.attr === b.attr && a.value === b.value)
+  implicit def warningEquality: Equal[Warning] = Equal.equalA
 
   @inline def NDomain = japgolly.nyaya.test.Domain
   type NDomain[A] = japgolly.nyaya.test.Domain[A]
@@ -28,8 +32,14 @@ trait TestUtil
     if (actual ≠ expect) {
       println()
       name.foreach(n => println(s">>>>>>> $n"))
-      var as = actual.toString
-      var es = expect.toString
+
+      val toString: Any => String = {
+        case s: Stream[_] => s.force.toString() // SI-9266
+        case a            => a.toString
+      }
+
+      var as = toString(actual)
+      var es = toString(expect)
       var pre = "["
       var post = "]"
       if ((as + es) contains "\n") {

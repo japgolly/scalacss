@@ -230,10 +230,10 @@ object ValueT {
       av(concat(sep, t, r, b, l))
 
     final def horizontal(h: V): AVs =
-      NonEmptyVector(AV(attrL, h.value), AV(attrR, h.value))
+      AVs(attrL, h.value).add(attrR, h.value)
 
     final def vertical(v: V): AVs =
-      NonEmptyVector(AV(attrT, v.value), AV(attrB, v.value))
+      AVs(attrT, v.value).add(attrB, v.value)
   }
 
   abstract class TypedAttrTN[T <: ValueClass](sep: String) extends TypedAttrBase {

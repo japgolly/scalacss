@@ -24,7 +24,7 @@ object RandomData {
     Gen.apply2(AV)(attr, value)
 
   val avs: GenS[AVs] =
-    nev(av)
+    nev(av).map(n => AVs(n.head, n.tail: _*))
 
   val pseduo: Gen[Pseudo] = {
     import Pseudo._

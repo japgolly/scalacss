@@ -123,19 +123,19 @@ object DslBase {
   }
 
   final class DslAV(val self: AV) extends AnyVal {
-    @inline def &(b: AV) : AVs = NonEmptyVector(self, b)
+    @inline def &(b: AV) : AVs = AVs(self) + b
     @inline def &(b: AVs): AVs = self +: b
   }
 
   final class DslAVs(val self: AVs) extends AnyVal {
-    @inline def &(b: AV) : AVs = self :+ b
+    @inline def &(b: AV) : AVs = self + b
     @inline def &(b: AVs): AVs = self ++ b
   }
 
   final class DslCond(val c: Cond) extends AnyVal {
     @inline def apply()             : ToStyle = new ToStyle(StyleS.empty)
     @inline def apply(avs: AVs)     : ToStyle = new ToStyle(StyleS.data1(c, avs))
-    @inline def apply(h: AV, t: AV*): ToStyle = apply(NonEmptyVector(h, t: _*))
+    @inline def apply(h: AV, t: AV*): ToStyle = apply(AVs(h, t: _*))
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -167,9 +167,9 @@ abstract class DslBase
   @inline implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, Vector1(x))
 
   @inline implicit final def ToStyleToAV           (x: ToAV)      : ToStyle = ToStyleAV(x.av)
-  @inline implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(NonEmptyVector(x))
+  @inline implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(AVs(x))
           implicit final def ToStyleAVs            (x: AVs)       : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
-          implicit final def ToStyleCAV [C <% Cond](x: (C, AV))   : ToStyle = new ToStyle(StyleS.data1(x._1, NonEmptyVector(x._2)))
+          implicit final def ToStyleCAV [C <% Cond](x: (C, AV))   : ToStyle = new ToStyle(StyleS.data1(x._1, AVs(x._2)))
           implicit final def ToStyleCAVs[C <% Cond](x: (C, AVs))  : ToStyle = new ToStyle(StyleS.data1(x._1, x._2))
   @inline implicit final def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts     (x: UnsafeExts): ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))

@@ -132,12 +132,12 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.MyInline-0001 {
+        |  margin: 12px;
+        |  padding: 0.5ex;
+        |  cursor: pointer;
         |  -webkit-text-decoration-line: underline overline;
         |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
-        |  padding: 0.5ex;
-        |  margin: 12px;
-        |  cursor: pointer;
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);

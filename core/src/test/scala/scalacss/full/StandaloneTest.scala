@@ -55,8 +55,8 @@ object StandaloneTest extends utest.TestSuite {
         |}
         |
         |div.std {
-        |  text-align: left;
         |  margin: 12px auto;
+        |  text-align: left;
         |  cursor: pointer;
         |}
         |

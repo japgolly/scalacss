@@ -4,6 +4,7 @@ import japgolly.nyaya._
 import japgolly.nyaya.test.PropTest._
 import utest._
 import scalacss.TestUtil._
+import Compose.{Rules => R}
 
 object ComposeTest extends TestSuite {
 
@@ -17,19 +18,29 @@ object ComposeTest extends TestSuite {
   def flat(s: StyleS) =
     Css.flatten4(s.copy(className = None).inspectCss)
 
-  val appendTest = {
-    implicit val impc = new Compose(Compose.Rules.silent(Compose.Rules.append))
-    Prop.equal[TT]("sort(a) + sort(b) = sort(a + b)")(
-      {case (a,b) => (flat(a) ++ flat(b)).sorted },
-      {case (a,b) => flat(a compose b).sorted })
+  case class PropTest(a: StyleS, b: StyleS) {
+    val E = EvalOver(this.toString.take(200))
+
+    def appendTest = {
+      implicit val impc = new Compose(R(R.append, R.silent))
+      E.equal("sort(a) + sort(b) = sort(a + b)",
+        (flat(a) ++ flat(b)).sorted.toVector,
+        flat(a compose b).sorted.toVector)
+    }
+
+    def replaceTest = {
+      implicit val impc = new Compose(R(R.replace, R.silent))
+      E.allPresent("a∘b ⊇ b",
+        flat(b).toSet,
+        flat(a compose b))
+    }
+
+    //def all = "Props" rename_: (appendTest & replaceTest)
+    def all = appendTest
   }
 
-  val replaceTest = {
-    implicit val impc = new Compose(Compose.Rules.silent(Compose.Rules.replace))
-    Prop.allPresent[(TT)]("a∘b ⊇ b")(
-      {case (_, b) => flat(b).toSet },
-      {case (a, b) => flat(a compose b) })
-  }
+  val propTest =
+    RandomData.styleS.pair.map((PropTest.apply _).tupled)
 
   object Issue25 {
     import DevDefaults._
@@ -68,8 +79,38 @@ object ComposeTest extends TestSuite {
   }
 
   override val tests = TestSuite {
-    'append  - appendTest .mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
-    'replace - replaceTest.mustBeSatisfiedBy(RandomData.styleS.pair) //(defaultPropSettings.setSampleSize(2000))
+    'props   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
     'issue25 - Issue25.test()
+
+    'values {
+      import Dsl._
+      implicit def c = Compose.safe
+
+      def test(s: StyleS)(avs: AV*)(ws: String*): Unit = {
+        assertEq(s.data(Cond.empty).avStream, avs.toStream)
+        assertEq(s.warnings.map(_.msg), ws.toVector)
+      }
+
+      'idempotency {
+        val a = style(display.block)
+        test(a compose a)(AV(display, "block"))()
+      }
+
+      'sameKey -
+        test(style(display.block) compose style(display.inline))(
+          AV(display, "block"), AV(display, "inline")
+        )("{display: inline} conflicts with {display: block}")
+
+      'marginN1 -
+        test(style(margin.auto) compose style(marginLeft.`0`))(
+          AV(margin, "auto"), AV(marginLeft, "0")
+        )("{margin-left: 0} conflicts with {margin: auto}")
+
+      'margin1N -
+        test(style(marginLeft.`0`) compose style(margin.auto))(
+          AV(marginLeft, "0"), AV(margin, "auto")
+        )("{margin: auto} conflicts with {margin-left: 0}")
+
+    }
   }
 }

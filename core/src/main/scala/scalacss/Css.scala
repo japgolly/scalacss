@@ -23,14 +23,11 @@ object Css {
   def style(sel: CssSelector, s: StyleS)(implicit env: Env): Css = {
     def main: Css =
       s.data.toStream.flatMap {
-        case (cond, avs1) =>
-          val r: Vector[CssKV] = avs1.reduceMapLeft1(_(env))(_ ++ _)
-          if (r.isEmpty)
-            Stream.empty
-          else {
+        case (cond, avs) =>
+          val kvs = avs.avStream.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
+          NonEmptyVector.maybe(kvs, Stream.empty[CssEntry]) {c =>
             val mq = mediaQuery(cond)
             val s  = selector(sel, cond)
-            val c  = NonEmptyVector(r.head, r.tail)
             Stream(CssEntry(mq, s, c))
           }
         }
@@ -54,7 +51,7 @@ object Css {
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
       val k = e.mq
-      q.updated(k, q.get(k).fold(NonEmptyVector(add))(_ :+ add))
+      q.updated(k, NonEmptyVector.endO(q get k, add))
     }
   }
 

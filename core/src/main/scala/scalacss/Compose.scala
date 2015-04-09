@@ -3,10 +3,7 @@ package scalacss
 /**
  * Style composition logic.
  *
- * This is responsible for adding things into a style, and producing warnings.
- * It is used each time a CSS key-value pair is added to a style, a new condition is added,
- * and when whole styles are combined with others.
- *
+ * This is responsible for merges styles together, and producing warnings.
  * It has the power to perform merges on conflicting CSS values, and selectively ignore merges.
  */
 final case class Compose(rules: Compose.Rules) {
@@ -14,30 +11,44 @@ final case class Compose(rules: Compose.Rules) {
   def apply(a: StyleS, b: StyleS): StyleS = {
     var warnings = a.warnings ++ b.warnings
 
-    @inline def absorbWarning[A](c: Cond, t: (A, Vector[WarningMsg])): A = {
-      t._2.foreach{w =>
-        warnings :+= Warning(c, w)
-      }
+    def absorbWarning[A](c: Cond, t: (A, Vector[WarningMsg])): A = {
+      t._2.foreach { w => warnings :+= Warning(c, w) }
       t._1
     }
 
-    val newData = {
-      @inline def mergeAVs(c: Cond, avs: AVs, into: AVs): AVs =
-        into.foldLeft(avs)((q, av) => mergeAV(c, av, q))
+    def mergeAVs(c: Cond, newAVs: AVs, into: AVs): AVs = {
 
-      @inline def mergeAV(c: Cond, av: AV, into: AVs): AVs = {
-        val (ko, ok) = into.whole.partition(i => av.attr.cmp(i.attr).conflict)
-        NonEmptyVector.maybe(ko, NonEmptyVector(av, ok))(ko1 =>
-          absorbWarning(c, rules.mergeAttrs(av, ko1)) ++ ok)
+      // Remove exact matches
+      var newData = newAVs.data
+      for {(a, nvs) <- newData; ovs <- into.get(a)} {
+        val o = ovs.toSet
+        val newVals = nvs.whole.filterNot(o.contains)
+        NonEmptyVector.maybe(newVals, newData -= a)(n => newData = newData.updated(a, n))
       }
 
-      b.data.foldLeft(a.data) { case (data, (c, newAVs)) =>
-        data.updated(c,
-          data.get(c).fold(newAVs)(oldAVs =>
-            // TODO concat&silent should be able to change the following line
-            // No point looking for conflicts if they won't be considered
-            mergeAVs(c, newAVs, into = oldAVs)))}
+      // Find conflicts
+      newData.foldLeft(into) { case (results, (a, nvs)) =>
+        results.filterKeys(k => a.cmp(k).conflict) match {
+          case None =>
+            // No conflicts - safe to add
+            results.addAll(a, nvs)
+          case Some(conflicts) =>
+            // Handle conflict via rules
+            val r = absorbWarning(c, rules.mergeAVs(conflicts, AVs(a, nvs)))
+            val delete = conflicts.data.keySet -- r.order.whole
+            results.filterKeys(!delete.contains(_)) match {
+              case None    => r
+              case Some(o) => r.data.foldLeft(o)((o, b) => o.modify(b._1, _ => b._2))
+            }
+        }
+      }
     }
+
+    val newData =
+      b.data.foldLeft(a.data) { case (data, (cond, newAVs)) =>
+        data.updated(cond,
+          data.get(cond).fold(newAVs)(oldAVs =>
+            mergeAVs(cond, newAVs, into = oldAVs)))}
 
     val exts = a.unsafeExts ++ b.unsafeExts
 
@@ -74,36 +85,52 @@ final case class Compose(rules: Compose.Rules) {
 object Compose {
 
   val safe: Compose =
-    new Compose(Rules.warn(Rules.append))
+    new Compose(Rules(Rules.append, Rules.warn))
 
   val trust: Compose =
-    new Compose(Rules.silent(Rules.append))
+    new Compose(Rules(Rules.append, Rules.silent))
 
   trait Rules {
-    def mergeAttrs(lo: AV, hi: AVs): (AVs, Vector[WarningMsg])
+    def mergeAVs(lo: AVs, hi: AVs): (AVs, Vector[WarningMsg])
   }
 
   object Rules {
-    type AttrMerge = (AV, AVs) => AVs
+    type MergeRule = (AVs, AVs) => AVs
+    type WarnRule  = (AVs, AVs) => Vector[WarningMsg]
 
-    val append: AttrMerge =
-      (lo, hi) => lo +: hi
-
-    val replace: AttrMerge =
-      (_, hi) => hi
-
-    def silent(merge: AttrMerge): Rules =
+    def apply(m: MergeRule, w: WarnRule): Rules =
       new Rules {
-        override def mergeAttrs(lo: AV, hi: AVs) = (merge(lo, hi), Vector.empty)
+        override def mergeAVs(lo: AVs, hi: AVs): (AVs, Vector[WarningMsg]) =
+          (m(lo, hi), w(lo, hi))
       }
 
-    def warn(merge: AttrMerge): Rules =
-      new Rules {
-        override def mergeAttrs(lo: AV, hi: AVs) = {
-          def show1(x: AV) = x.attr.id
-          def showN(x: AVs) = if (x.tail.isEmpty) show1(x.head) else x.toStream.map(show1).mkString("{", ",", "}")
-          (merge(lo, hi), Vector1(s"${show1(lo)} overridden by ${showN(hi)}."))
+    val append: MergeRule =
+      (lo, hi) => lo ++ hi
+
+    val replace: MergeRule =
+      (_, hi) => hi
+
+    val silent: WarnRule =
+      (_, _) => Vector.empty
+
+    val warn: WarnRule =
+      (lo, hi) => {
+        def showA(a: Attr): String = a.id
+        def showV(vs: NonEmptyVector[Value]): String =
+          if (vs.tail.isEmpty) vs.head else vs.whole.mkString("[", "; ", "]")
+        def showAVt(t: (Attr, NonEmptyVector[Value])) =
+          showAV(t._1, t._2)
+        def showAV(a: Attr, vs: NonEmptyVector[Value]): String =
+//          s"(${showA(a)}: ${showV(vs)})"
+          s"${showA(a)}: ${showV(vs)}"
+        def showAVs(avs: AVs): String = {
+          val s = avs.toStream.map(showAVt)
+//          if (s.lengthCompare(1) == 0) s.head else s.mkString("{ ", ", ", " }")
+          s.mkString("{", ", ", "}")
         }
+        hi.toStream
+          .map(t => s"{${showAVt(t)}} conflicts with ${showAVs(lo)}")
+          .toVector
       }
   }
 }

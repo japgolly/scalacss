@@ -58,17 +58,27 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   def reduceMapLeft1[B](f: A => B)(g: (B, B) => B): B =
     foldMapLeft1(f)((b, a) => g(b, f(a)))
 
-  @inline def toStream = whole.toStream
+  @inline def toSet[B >: A] = whole.toSet[B]
+  @inline def toStream      = whole.toStream
 }
 
 // =====================================================================================================================
 
 object NonEmptyVector extends NonEmptyVectorImplicits0 {
+  @inline def one[A](h: A): NonEmptyVector[A] =
+    new NonEmptyVector(h, Vector.empty)
+
   @inline def apply[A](h: A, t: A*): NonEmptyVector[A] =
     apply(h, t.toVector)
 
   @inline def apply[A](h: A, t: Vector[A]): NonEmptyVector[A] =
     new NonEmptyVector(h, t)
+
+  def endOV[A](init: Option[Vector[A]], last: A): NonEmptyVector[A] =
+    init.fold(one(last))(end(_, last))
+
+  def endO[A](init: Option[NonEmptyVector[A]], last: A): NonEmptyVector[A] =
+    init.fold(one(last))(_ :+ last)
 
   def end[A](init: Vector[A], last: A): NonEmptyVector[A] =
     if (init.isEmpty)

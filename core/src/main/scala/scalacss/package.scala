@@ -10,20 +10,7 @@ package object scalacss {
    */
   type Value = String
 
-  private final val _important = " !important"
-
-  final case class AV(attr: Attr, value: Value) {
-    def important: AV =
-      if (value endsWith _important)
-        this
-      else
-        copy(value = this.value + _important)
-
-    @inline def apply(env: Env) =
-      attr.gen(env)(value)
-  }
-
-  type AVs = NonEmptyVector[AV]
+  private[scalacss] final val _important = " !important"
 
   final case class ClassName(value: String)
   implicit def classNameEquality: Equal[ClassName] = Equal.equalA
