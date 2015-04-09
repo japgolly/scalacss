@@ -80,8 +80,7 @@ object Compose {
     new Compose(Rules.silent(Rules.append))
 
   trait Rules {
-    def mergeClassNames(lo: ClassName, hi: ClassName): (Option[ClassName], Vector[WarningMsg])
-    def mergeAttrs     (lo: AV,        hi: AVs)      : (AVs              , Vector[WarningMsg])
+    def mergeAttrs(lo: AV, hi: AVs): (AVs, Vector[WarningMsg])
   }
 
   object Rules {
@@ -95,15 +94,11 @@ object Compose {
 
     def silent(merge: AttrMerge): Rules =
       new Rules {
-        override def mergeClassNames(lo: ClassName, hi: ClassName) = (Some(hi)     , Vector.empty)
-        override def mergeAttrs(lo: AV, hi: AVs)                   = (merge(lo, hi), Vector.empty)
+        override def mergeAttrs(lo: AV, hi: AVs) = (merge(lo, hi), Vector.empty)
       }
 
     def warn(merge: AttrMerge): Rules =
       new Rules {
-        override def mergeClassNames(lo: ClassName, hi: ClassName) =
-          (Some(hi), Vector1(s"Overriding explicit className '$lo' with '$hi'."))
-
         override def mergeAttrs(lo: AV, hi: AVs) = {
           def show1(x: AV) = x.attr.id
           def showN(x: AVs) = if (x.tail.isEmpty) show1(x.head) else x.toStream.map(show1).mkString("{", ",", "}")
