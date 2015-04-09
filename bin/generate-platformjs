@@ -12,5 +12,5 @@ curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/platform.j
       undef $/;
       $r = `cat "'$tmp'"`;
       s/(def sourceCode\s*=\s*""").+?(""")/"$1".$r."$2"/se;
-    ' core/src/main/scala-js/japgolly/scalacss/js/PlatformJs.scala \
+    ' core/src/main/scala-js/scalacss/js/PlatformJs.scala \
   && rm -f $tmp
