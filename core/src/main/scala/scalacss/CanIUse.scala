@@ -95,7 +95,7 @@ object CanIUse {
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
     Firefox           -> Set(FullX),
-    IE                -> Set(Unsupported),
+    IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Unsupported, Partial),
     IOSSafari         -> Set(FullX),
     Opera             -> Set(Unsupported, FullX),
@@ -189,11 +189,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, Full),
+    IOSSafari         -> Set(Unsupported, Partial),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported, Full))
+    Safari            -> Set(Unsupported, Partial))
 
   /**
    * CSS3 Border images
@@ -456,20 +456,20 @@ object CanIUse {
    * http://www.w3.org/TR/css3-text/#tab-size1
    */
   def css3Tabsize: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Full),
-    AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(FullX),
+    AndroidBrowser    -> Set(Unsupported, Partial),
+    AndroidChrome     -> Set(Partial),
+    AndroidFirefox    -> Set(PartialX),
     AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(Full),
-    Chrome            -> Set(Unsupported, Full),
-    Firefox           -> Set(Unsupported, FullX),
+    BlackberryBrowser -> Set(Partial),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, PartialX),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, Full),
-    Opera             -> Set(Unsupported, FullX, Full),
-    OperaMini         -> Set(FullX),
-    OperaMobile       -> Set(Unsupported, FullX, Full),
-    Safari            -> Set(Unsupported, Full))
+    IOSSafari         -> Set(Unsupported, Partial),
+    Opera             -> Set(Unsupported, PartialX, Partial, Full),
+    OperaMini         -> Set(PartialX),
+    OperaMobile       -> Set(Unsupported, PartialX, Partial),
+    Safari            -> Set(Unsupported, Partial))
 
   /**
    * CSS Device Adaptation
@@ -492,7 +492,7 @@ object CanIUse {
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX),
-    Safari            -> Set(Unsupported, Unknown))
+    Safari            -> Set(Unsupported))
 
   /**
    * CSS Feature Queries
@@ -608,6 +608,29 @@ object CanIUse {
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
     Safari            -> Set(Unsupported, Partial))
+
+  /**
+   * CSS font-size-adjust
+   *
+   * Method of adjusting the font size in a matter that relates to the height of lowercase vs. uppercase letters. This makes it easier to set the size of fallback fonts.
+   *
+   * http://www.w3.org/TR/css-fonts-3/#font-size-adjust-prop
+   */
+  def fontSizeAdjust: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Unknown),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported),
+    Safari            -> Set(Unsupported))
 
   /**
    * CSS font-stretch
@@ -794,6 +817,29 @@ object CanIUse {
     Safari            -> Set(Unsupported, FullX))
 
   /**
+   * CSS Logical Properties
+   *
+   * Use start/end properties that depend on LTR or RTL writing direction instead of left/right
+   *
+   * http://dev.w3.org/csswg/css-logical-props/
+   */
+  def logicalProps: Subject = Map(
+    AndroidBrowser    -> Set(PartialX),
+    AndroidChrome     -> Set(PartialX),
+    AndroidFirefox    -> Set(PartialX),
+    AndroidUC         -> Set(PartialX),
+    BlackberryBrowser -> Set(PartialX),
+    Chrome            -> Set(PartialX),
+    Firefox           -> Set(Unsupported, PartialX),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(PartialX),
+    Opera             -> Set(Unsupported, PartialX),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, PartialX),
+    Safari            -> Set(PartialX))
+
+  /**
    * CSS Masks
    *
    * Method of displaying part of an element, using a selected image as a mask
@@ -831,7 +877,7 @@ object CanIUse {
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Full),
     Firefox           -> Set(Unsupported, Partial, Full),
-    IE                -> Set(Unsupported, Partial),
+    IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unknown, PartialX),
     Opera             -> Set(Unsupported, PartialX, Full),
@@ -934,7 +980,7 @@ object CanIUse {
   /**
    * :placeholder-shown CSS pseudo-class
    *
-   * The :placeholder-shown pseudo-class represents the placeholder contents of a form field with placeholder text.
+   * The :placeholder-shown pseudo-class represents a form element with visible placeholder contents.
    *
    * http://www.w3.org/TR/selectors4/#placeholder
    */
@@ -1097,7 +1143,7 @@ object CanIUse {
    *
    * The ::selection CSS pseudo-element applies rules to the portion of a document that has been highlighted (e.g., selected with the mouse or another pointing device) by the user.
    *
-   * https://developer.mozilla.org/en-US/docs/Web/CSS/::selection
+   * http://www.w3.org/TR/css-pseudo-4/#selectordef-selection
    */
   def selection: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
@@ -1359,7 +1405,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
-    Firefox           -> Set(FullX, Full, Unsupported),
+    Firefox           -> Set(FullX, Unsupported, Full),
     IE                -> Set(Unsupported, Full, Partial, FullX),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX),
@@ -1417,7 +1463,7 @@ object CanIUse {
   /**
    * CSS3 Transitions
    *
-   * Simple method of animating certain properties of an element
+   * Simple method of animating certain properties of an element.
    *
    * http://www.w3.org/TR/css3-transitions/
    */

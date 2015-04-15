@@ -533,7 +533,8 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/caption-side">MDN</a>
    */
   object captionSide extends TypedAttrBase {
-    override val attr = Attr.real("caption-side")
+    override val attr = Attr.real("caption-side",
+      Transform.values(CanIUse.logicalProps)(L.blockStart, L.blockEnd, L.inlineStart, L.inlineEnd))
     @inline def blockEnd    = av(L.blockEnd)
     @inline def blockStart  = av(L.blockStart)
     @inline def bottom      = av(L.bottom)
@@ -548,11 +549,14 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear">MDN</a>
    */
   object clear extends TypedAttrBase {
-    override val attr = Attr.real("clear")
-    @inline def both  = av(L.both)
-    @inline def left  = av(L.left)
-    @inline def none  = avl(LT.none)
-    @inline def right = av(L.right)
+    override val attr = Attr.real("clear",
+      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    @inline def both        = av(L.both)
+    @inline def inlineEnd   = av(L.inlineEnd)
+    @inline def inlineStart = av(L.inlineStart)
+    @inline def left        = av(L.left)
+    @inline def none        = avl(LT.none)
+    @inline def right       = av(L.right)
   }
 
   /**
@@ -921,10 +925,13 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float">MDN</a>
    */
   object float extends TypedAttrBase {
-    override val attr = Attr.real("float")
-    @inline def left  = av(L.left)
-    @inline def none  = avl(LT.none)
-    @inline def right = av(L.right)
+    override val attr = Attr.real("float",
+      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    @inline def inlineEnd   = av(L.inlineEnd)
+    @inline def inlineStart = av(L.inlineStart)
+    @inline def left        = av(L.left)
+    @inline def none        = avl(LT.none)
+    @inline def right       = av(L.right)
   }
 
   /**
@@ -998,7 +1005,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size-adjust">MDN</a>
    */
   object fontSizeAdjust extends TypedAttrT1[Number] {
-    override val attr = Attr.real("font-size-adjust")
+    override val attr = Attr.real("font-size-adjust", Transform keys CanIUse.fontSizeAdjust)
     @inline def none = avl(LT.none)
   }
 
@@ -1728,9 +1735,13 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/resize">MDN</a>
    */
   object resize extends TypedAttrBase {
-    override val attr = Attr.real("resize", Transform keys CanIUse.resize)
+    override val attr = Attr.real("resize",
+      Transform.keys(CanIUse.resize) *
+      Transform.values(CanIUse.logicalProps)(L.block, L.inline))
+    @inline def block      = av(L.block)
     @inline def both       = av(L.both)
     @inline def horizontal = av(L.horizontal)
+    @inline def inline     = av(L.inline)
     @inline def none       = avl(LT.none)
     @inline def vertical   = av(L.vertical)
   }
@@ -1836,7 +1847,8 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">MDN</a>
    */
   object textAlign extends TypedAttrBase {
-    override val attr = Attr.real("text-align")
+    override val attr = Attr.real("text-align",
+      Transform.values(CanIUse.logicalProps)(L.start, L.end))
     @inline def center      = av(L.center)
     @inline def end         = av(L.end)
     @inline def justify     = av(L.justify)
