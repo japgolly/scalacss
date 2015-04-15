@@ -197,6 +197,12 @@ abstract class DslBase
 
   @inline def mixin(t: ToStyle*)(implicit c: Compose) =
     styleS(t: _*)(c)
+
+  @inline def mixinIf(b: Boolean)(t: ToStyle*)(implicit c: Compose): StyleS =
+    if (b) styleS(t: _*)(c) else StyleS.empty
+
+  @inline def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
+    styleS((if (b) t else f): _*)(c)
 }
 
 // =====================================================================================================================

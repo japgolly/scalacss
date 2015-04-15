@@ -67,7 +67,11 @@ object MyInline extends StyleSheet.Inline {
   /** Style requiring int */
   val indent: Int => StyleA =
     intStyle(1 to 3)(i =>
-      styleS(paddingLeft(i * 4.ex)))
+      styleS(
+        paddingLeft(i * 4.ex),
+        mixinIf(i == 2)(color.red),
+        mixinIfElse(i == 1)(color.blue)(marginTop(1 em))
+    ))
 
   /** Style applying Bootstrap */
   val sb1 = style(addClassNames("btn", "btn-default"))
@@ -175,14 +179,18 @@ object InlineTest extends utest.TestSuite {
         |
         |.MyInline-0004 {
         |  padding-left: 4ex;
+        |  color: blue;
         |}
         |
         |.MyInline-0005 {
         |  padding-left: 8ex;
+        |  color: red;
+        |  margin-top: 1em;
         |}
         |
         |.MyInline-0006 {
         |  padding-left: 12ex;
+        |  margin-top: 1em;
         |}
         |
         |.MyInline-0007 {
