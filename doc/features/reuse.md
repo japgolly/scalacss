@@ -102,3 +102,5 @@ def showDetailsButton(theme: SharedTheme) =
     ^.onClick ~~> showLoginDetails(user),
     "Show Details"))
 ```
+
+If you don't want to pass a stylesheet around, see [Global Registry](global_registry.md).

@@ -12,6 +12,7 @@
   * [Browser Prefixes](features/prefixes.md)
   * [Conflict Detection](features/conflict.md)
   * [Reusable Styles](features/reuse.md)
+  * [Global Registry](features/global_registry.md)
   * [External CSS Libraries](features/extern.md)
 * Extensions
   * [scalajs-react](ext/react.md)
