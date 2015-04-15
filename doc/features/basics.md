@@ -1,22 +1,27 @@
-## Defaults
+## Settings
 
-The first thing you'll want to do is import the default settings.
+The first thing you'll want to do is import some settings by using one of these `import` statements:
 
 ```scala
-import japgolly.scalacss.Defaults._
+import scalacss.Defaults._     // Choose dev or prod
+import scalacss.DevDefaults._  // Always use dev settings
+import scalacss.ProdDefaults._ // Always use prod settings
 ```
 
 This provides two sets of sensible settings: development and production.
 
 Property | Dev | Prod
 --- | --- | ---
-Style conflicts       | Warn and append | Silently append
-Error handling        | Noisy | Silent
-Class name generation | `.scalacss-0001` <br/> `.scalacss-0002` <br/> etc | `.¢¢` <br/> `.¢¥` <br/> etc
-CSS output            | Pretty-print. <br/> Indents, spaces, newlines. | Tiny. <br/> No whitespace.
+Style conflicts       | Keep both sides of conflict. <br/> Issue warnings. | Keep both sides of conflict.
+Error handling        | Print to `stderr` | Ignore
+Class name generation | `.MyStyles-0001` <br/> `.MyStyles-0002` <br/> etc | `._a0` <br/> `._a1` <br/> etc
+CSS output            | Pretty-print. <br/> Indents, spaces, newlines. | Minified. <br/> No whitespace.
 
-The defaults automatically determine which mode to use based on
-[elision](http://www.scala-lang.org/api/current/scala/annotation/elidable.html).
+`Defaults` will choose a mode to use based on its `devMode: Boolean` method
+which uses
+[elision](http://www.scala-lang.org/api/current/scala/annotation/elidable.html)
+to determine production-mode.
+
 For instance, in my production SBT settings I generally have:
 
 ```scala
@@ -27,7 +32,7 @@ scalacOptions ++= Seq("-Xelide-below", "OFF")
 _Note: `-Xelide-below OFF` doesn't turn eliding off, it means "elide everything". There must've been painting going on in the building with no windows open when that was named._
 
 Defaults aren't mandatory, you're free to customise as needed.
-(See [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Defaults.scala).)
+(See [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala).)
 
 ## StyleSheets
 
@@ -55,6 +60,6 @@ To create a style module,
 
 ##### Full examples:
 
-* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/StandaloneTest.scala)
-* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/InlineTest.scala)
+* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala)
+* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala)
 

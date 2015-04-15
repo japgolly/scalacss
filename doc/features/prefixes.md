@@ -28,7 +28,7 @@ It's taken care of under-the-hood.
 ## But wait, there's more
 
 You can configure which prefixes to apply or omit.
-CSS attributes ([`Attr`](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Attr.scala))
+CSS attributes ([`Attr`](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Attr.scala))
 aren't just a `Value => CssKV`; they have a ` Env => Value => Vector[CssKV]`
 which allows them to customise what they produce depending on an environment
 you feed in.

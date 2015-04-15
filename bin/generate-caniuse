@@ -1,0 +1,21 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
+
+#status="git submodule status misc/caniuse"
+
+#i="$($status)"
+#h=${i:0:1}
+#if [ "$h" == " " ]; then
+#  git submodule update --init || exit 1
+#  i="$($status)"
+#  h=${i:0:1}
+#fi
+
+echo "Updating caniuse data..." \
+  && git submodule update --remote \
+  && echo && echo "Running caniuse data parser..." \
+  && cd misc \
+  && sbt run \
+  && cd .. \
+  && echo \
+  && git status

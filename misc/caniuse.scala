@@ -1,5 +1,8 @@
 import argonaut._
 import Argonaut._
+import scalaz._
+import scalaz.std.map._
+import scalaz.syntax.semigroup._
 
 object Caniuse {
 
@@ -40,19 +43,22 @@ object Caniuse {
       ,"cssGencontent"
       ,"cssImageOrientation"
       ,"currentcolor"
+      ,"exclusions"
       ,"fontface"
       ,"fontLoading"
-      ,"fontSizeAdjust"
+      ,"fontSmooth"
       ,"fontUnicodeRange"
       ,"getcomputedstyle"
       ,"inlineBlock"
       ,"kerningPairsLigatures"
+      ,"mediaInteraction"
       ,"mediaqueries"
       ,"minmaxwh"
       ,"mixblendmode"
       ,"multibackgrounds"
       ,"pointerEvents"
       ,"rem"
+      ,"snappoints"
       ,"styleScoped"
       ,"svgCss"
       ,"table"
@@ -120,20 +126,31 @@ object Caniuse {
     val dataj = json.cursor --\ "data" focus
     val cssj = dataj.assoc.get.filter(kv =>
                  (+kv._2 --\ "categories" focus).toString.toUpperCase contains "CSS")
-    val data = cssj.map{ case (k,v) =>
+    val data1 = cssj.map{ case (k,v) =>
       Data(k.toString,
         v.field("title") |> str |> removeAt,
         v.field("description") |> str,
         v.field("spec") |> str,
         (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
     }.filterNot(dataToIgnore contains _.scalaval)
-      .sortBy(_.scalaval)
+
+    val data2 = {
+      implicit val stringConcat: Semigroup[String] = new Semigroup[String] {
+        override def append(a: String, b: => String) = a + "," + b
+      }
+      val dm = data1.map(d => (d.key,d)).toMap
+      val a = dm("transforms2d")
+      val b = dm("transforms3d")
+      val t = Data("transforms", "Combination of transforms2d & transforms3d.", "", "", a.stats |+| b.stats)
+      data1 :+ t
+    }
+    val data = data2.sortBy(_.scalaval)
 
     println(s"Found ${data.size} CSS properties...")
 
     // ====================================================================================================
     val obj = "CanIUse"
-    val pkg = "japgolly.scalacss"
+    val pkg = "scalacss"
     val fout = s"../core/src/main/scala/${pkg.replace('.','/')}/$obj.scala"
 
     val fmtstr: String => String =
@@ -218,8 +235,6 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-import scalaz.NonEmptyList
-
 object $obj {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -239,7 +254,7 @@ object $obj {
   }
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
-    val values = NonEmptyList[Prefix](${prefixes mkString ", "})
+    val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
   }
 
   import Prefix._
@@ -247,7 +262,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
-    val values = NonEmptyList[Agent](${agents.map(_.key.trim).sorted mkString ", "})
+    val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 
   import Agent._

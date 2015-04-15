@@ -4,11 +4,11 @@ ScalaCSS integrates with Scalatags in both `Text` and `JsDom` modes.
 
 1. Add this to your SBT build:
 
-  <pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-scalatags&quot;</span> % <span class="hljs-string">&quot;{{ book.ver }}&quot;</span></code></pre>
+  <pre><code class="lang-scala">libraryDependencies += "com.github.japgolly.scalacss" %%% "ext-scalatags" % "{{ book.ver }}"</code></pre>
 
 1. Add this to your Scala code:
   ```scala
-  import japgolly.scalacss.ScalatagsCss._
+  import scalacss.ScalatagsCss._
   ```
 
 1. Create your [inline styles](../quickstart/inline.md) as normal.
@@ -30,7 +30,7 @@ ScalaCSS integrates with Scalatags in both `Text` and `JsDom` modes.
 
 MyStyles.scala
 ```scala
-import japgolly.scalacss.Defaults._
+import scalacss.Defaults._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -44,8 +44,8 @@ object MyStyles extends StyleSheet.Inline {
 
 MyApp.scala
 ```scala
-import japgolly.scalacss.Defaults._
-import japgolly.scalacss.ScalatagsCss._
+import scalacss.Defaults._
+import scalacss.ScalatagsCss._
 import scalatags.Text._
 import scalatags.Text.all._
 

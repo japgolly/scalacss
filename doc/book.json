@@ -1,6 +1,8 @@
 {
-  "gitbook": "2.x.x",
+  "gitbook": "2.0.1",
   "variables": {
-    "ver": "0.1.0"
+    "issue": "https://github.com/japgolly/scalacss/issues/",
+    "scalajsReact": "[scalajs-react](https://github.com/japgolly/scalajs-react)",
+    "ver": "0.2.0"
   }
 }

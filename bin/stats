@@ -8,7 +8,7 @@ $cloc */src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
   && $cloc */src | sed -n '/^Scala/s/Scala/Total/p; $p'
 
 
-f=core/src/main/scala/japgolly/scalacss/Attrs.scala
+f=core/src/main/scala/scalacss/Attrs.scala
 _list="$(grep -v '^ *//' $f)"
 function list { echo "$_list" ;}
 function count { wc -l | awk '{print $1}' ;}

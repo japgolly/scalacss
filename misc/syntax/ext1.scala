@@ -15,7 +15,7 @@ def fmtval(s: String)(implicit sz: Int) =
 
 val ar = "(?:Attr.*(?:real|alias)|new AliasAttr).*\"([a-z0-9-]+)\"".r
 val as =
-  scala.io.Source.fromFile("../../core/src/main/scala/japgolly/scalacss/Attrs.scala").mkString
+  scala.io.Source.fromFile("../../core/src/main/scala/scalacss/Attrs.scala").mkString
     .split("\n[ \t]*\n+").toList
     .flatMap(l => ar.findFirstMatchIn(l).map(m => (m.group(1).replace("-","_"), l)).toList)
     .toMap

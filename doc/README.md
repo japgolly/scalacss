@@ -4,6 +4,7 @@
 * creating CSS
 * using CSS
 * maintaining CSS
+* correctness of CSS
 
 You can create standalone CSS like SCSS/LESS,
 or you can create inline styles to be applied to directly without the need

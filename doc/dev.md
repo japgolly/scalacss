@@ -1,15 +1,14 @@
 ## Adding attributes
 
-1. Add to [Attrs.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Attrs.scala)
+1. Add to [Attrs.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Attrs.scala)
 1. Copy some ScalaDoc from MDN or similar.
 1. Add it to `Attrs.valuesForAllAttr`
 1. Run `bin/generate-aliases`
 
 ## Updaing CanIUse data
 
-1. `cd misc`
-1. Update caniuse (how? lol)
-1. `sbt run`
+1. `bin/generate-caniuse`
+1. `git diff` to inspect changes.
 1. Check-in changes.
 
 ## Updaing platform.js

@@ -166,6 +166,7 @@ object Typical {
     ).
     all(
       _.settings(
+        shellPrompt in ThisBuild := { (s: State) => Project.extract(s).currentRef.project + "> " },
         clearScreenTask := { println("\033[2J\033[;H") })
       .configure(
         addCommandAliases(

@@ -28,13 +28,19 @@ It's not always obvious when there's a conflict either.
 
 ScalaCSS allows you to catch them and handle them immediately.
 
+##### Example warnings
+```
+[CSS WARNING] .MyStyles-0001 -- {margin-left: 6px} conflicts with {margin: 12px}
+[CSS WARNING] .MyStyles-0002 -- {cursor: zoom-in} conflicts with {cursor: pointer}
+```
+
 
 ## Handling conflict
 
 Conflict is detected whenever styles and/or attributes are composed.
 How conflict should be handled is determined by the `Compose` class.
 It's implicitly required to build a style with more than one attribute
-but often invisible because [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Defaults.scala)
+but often invisible because [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala)
 provides an instance.
 
 By customising your `Compose` instance you can

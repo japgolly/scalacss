@@ -1,7 +1,7 @@
 #!/bin/bash
 cd "$(dirname "$(readlink -e "$0")")" || exit 1
 [ -e attrs.lst ] && rm attrs.lst
-fgrep developer.mozilla ../../core/src/main/scala/japgolly/scalacss/Attrs.scala \
+fgrep developer.mozilla ../../core/src/main/scala/scalacss/Attrs.scala \
   | perl -pe 's!^.+Web/CSS/(.+?)">.+!\1!' | grep -v REDIRECT > attrs.lst \
   && wc -l attrs.lst
 
