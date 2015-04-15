@@ -1,6 +1,7 @@
 {
   "gitbook": "2.0.1",
   "variables": {
+    "issue": "https://github.com/japgolly/scalacss/issues/",
     "ver": "0.1.0"
   }
 }
