@@ -53,7 +53,7 @@ object MyInline extends StyleSheet.Inline {
         content := none
       ),
       unsafeRoot(".DEBUG")(
-        borderColor.red
+        borderColor("#080".color)
       )
     )
 
@@ -164,7 +164,7 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.DEBUG {
-        |  border-color: red;
+        |  border-color: #080;
         |}
         |
         |.MyInline-0002 {

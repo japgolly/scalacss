@@ -101,6 +101,10 @@ object DslBase {
     @inline def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
   }
 
+  final class DslStr(val self: String) extends AnyVal {
+    @inline def color = scalacss.Color(self)
+  }
+
   /** Untyped attributes */
   final class DslAttr(val self: Attr) extends AnyVal {
     @inline def :=(value: Value)    : AV = AV(self, value)
@@ -154,6 +158,7 @@ abstract class DslBase
   @inline implicit final def autoDslInt  (a: Int)          : DslInt         = new DslInt(a)
   @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
   @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)
+  @inline implicit final def autoDslStr  (a: String)       : DslStr         = new DslStr(a)
   @inline implicit final def autoDslAttr (a: Attr)         : DslAttr        = new DslAttr(a)
   @inline implicit final def autoDslAttrT(a: TypedAttrBase): DslAttrT       = new DslAttrT(a)
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
