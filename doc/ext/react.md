@@ -2,7 +2,7 @@
 
 1. Add this to your SBT build:
 
-  <pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-react&quot;</span> % <span class="hljs-string">&quot;{{ book.ver }}&quot;</span></code></pre>
+  <pre><code class="lang-scala">libraryDependencies += "com.github.japgolly.scalacss" %%% "ext-react" % "{{ book.ver }}"</code></pre>
 
 1. Add this to Scala where you want ScalaCSS to integrate with your React code.
   ```scala
