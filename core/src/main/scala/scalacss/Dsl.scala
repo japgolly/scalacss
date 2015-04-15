@@ -194,6 +194,9 @@ abstract class DslBase
 
   def unsafeRoot(sel: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
     unsafeExt(_ => sel)(t: _*)
+
+  @inline def mixin(t: ToStyle*)(implicit c: Compose) =
+    styleS(t: _*)(c)
 }
 
 // =====================================================================================================================

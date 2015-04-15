@@ -26,7 +26,6 @@ object StyleSheet {
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
-      @inline def mixin(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
     }
 
     @inline final protected def ^ = Literal
