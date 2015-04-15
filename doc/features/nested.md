@@ -39,49 +39,59 @@ in order to use it.
 This adds a little tedium but it provides an unprecedented level of safety and
 error prevention.
 
-##### Example
+##### Example (using {{book.scalajsReact}}):
 
 Definition:
 ```scala
-object Demo extends StyleSheet.Inline {
+object Styles extends StyleSheet.Inline {
   import dsl._
 
   // This is a style for a container
   // with a <label> and an <input type=checkbox> in it
   val example = styleC {
-    val top = styleS(...)
-    val lbl = styleS(...)
-    val inp = styleS(...)
-    top.named('outer) :*: lbl.named('label) :*: inp.named('checkbox)
+    val top = styleS(display.block)
+    val lbl = styleS(fontWeight.bold)
+    val chk = styleS(backgroundColor.red, marginLeft(1 ex))
+    top.named('outer) :*: lbl.named('label) :*: chk.named('checkbox)
   }
 }
 ```
 
 Usage:
 ```scala
-Demo.example('outer   )(o =>
-           _('label   )(l =>
-           _('checkbox)(c =>
-             // Here you apply o,l,c as you would normal styles
+def featureActiveCheckbox(on: Boolean): ReactElement =
+  Styles.example('outer   )(outerStyle =>
+               _('label   )(labelStyle =>
+               _('checkbox)(inputStyle =>
+    <.div(outerStyle,
+      <.label(labelStyle, "Feature Active:"),
+      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
+  )))
 ```
 
 Error prevention: arity
 ```scala
-Demo.example('outer)(o =>
-           _('label)(l =>
-             // Compiler error!
-             // You can't return anything from inside here until you
-             // receive another style (checkbox)
+// Forgot outerStyle. Compile error!
+def featureActiveCheckbox(on: Boolean): ReactElement =
+  Styles.example('label   )(labelStyle =>
+               _('checkbox)(inputStyle =>
+    <.div(
+      <.label(labelStyle, "Feature Active:"),
+      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
+  ))
 ```
 
 Error prevention: order
 ```scala
-Demo.example('outer   )(o =>
-           _('checkbox)(c =>
-           _('label   )(l =>
-             // Compiler error!
-             // The value c above is the label style
-             // The correct order is: order,label,checkbox
+// The second style is for the label, not the checkbox. Compile error!
+def featureActiveCheckbox(on: Boolean): ReactElement =
+  Styles.example('outer   )(outerStyle =>
+               _('checkbox)(inputStyle =>
+               _('label   )(labelStyle =>
+    <.div(outerStyle,
+      <.label(labelStyle, "Feature Active:"),
+      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
+  )))
 ```
 
 # Unsafety

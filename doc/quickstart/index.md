@@ -4,6 +4,10 @@ Add [ScalaCSS](https://github.com/japgolly/scalacss/) to your project by adding 
 
 <pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %% <span class="hljs-string">&quot;core&quot;</span> % <span class="hljs-string">&quot;{{ book.ver }}&quot;</span></code></pre>
 
+Or for Scala.JS:
+
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;core&quot;</span> % <span class="hljs-string">&quot;{{ book.ver }}&quot;</span></code></pre>
+
 Then to start using it, decide which of the following best suits your needs.
 
 StyleSheets come in two flavours.

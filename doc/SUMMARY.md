@@ -7,7 +7,7 @@
   * [Getting Started](features/basics.md)
   * [Conditional CSS](features/cond.md)
   * [Functions](features/stylef.md)
-  * [Nested Styles](features/nested.md)
+  * [Composite/Nested Styles](features/nested.md)
   * [Typed CSS Values](features/typed-values.md)
   * [Browser Prefixes](features/prefixes.md)
   * [Conflict Detection](features/conflict.md)

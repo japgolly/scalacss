@@ -1,8 +1,8 @@
 ## Styles
 
 Everything is immutable in ScalaCSS
-(except for [`mutable.Register`](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/mutable/Register.scala)
-which collects and remembers styles as you define them),
+(except for the small [`scalacss.mutable`](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/mutable/)
+package),
 so any `StyleS`,
 [`StyleF`](stylef.md),
 [`StyleC`](nested.md)
@@ -42,6 +42,8 @@ object MyStyles extends StyleSheet.Inline {
 
 That's all there is to it.
 
+
+
 ## Example
 
 A shared module:
@@ -75,15 +77,28 @@ object MyAppStyles extends StyleSheet.Inline {
 }
 ```
 
-Example usage in [scalajs-react](https://github.com/japgolly/scalajs-react):
+Example usage in {{book.scalajsReact}}:
 ```scala
+def showDetailsButton =
+  <.button(
+    MyAppStyles.theme.button,
+    ^.onClick ~~> showLoginDetails(user),
+    "Show Details"))
+
 def render =
   <.div(
     <.h1(
       MyAppStyles.headingTitle,
       "Your Login Details"),
-    <.button(
-      MyAppStyles.theme.button,
-      ^.onClick ~~> showLoginDetails(user),
-      "Show Details"))
+    showDetailsButton)
+```
+
+If you're writing a shared library, then we tweak the above snippet so that
+the sharable style is passed in.
+```scala
+def showDetailsButton(theme: SharedTheme) =
+  <.button(
+    theme.button,
+    ^.onClick ~~> showLoginDetails(user),
+    "Show Details"))
 ```
