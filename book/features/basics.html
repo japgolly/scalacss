@@ -8,7 +8,7 @@
         <title>Getting Started | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.0-beta.5">
+        <meta name="generator" content="GitBook 2.0.1">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -34,9 +34,11 @@
     <link rel="stylesheet" href="../gitbook/style.css">
     
     
+        <link rel="stylesheet" href="../styles/website.css">
+    
 
         
-    <div class="book" data-level="2.1" data-basepath=".." data-revision="Mon Mar 23 2015 14:42:40 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.1" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -186,7 +188,7 @@
                         
                             <b>2.4.</b>
                         
-                        Nested Styles
+                        Composite/Nested Styles
                     </a>
                 
             
@@ -253,13 +255,28 @@
             
         </li>
     
-        <li class="chapter " data-level="2.9" data-path="features/extern.html">
+        <li class="chapter " data-level="2.9" data-path="features/global_registry.html">
+            
+                
+                    <a href="../features/global_registry.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.9.</b>
+                        
+                        Global Registry
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="features/extern.html">
             
                 
                     <a href="../features/extern.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>2.9.</b>
+                            <b>2.10.</b>
                         
                         External CSS Libraries
                     </a>
@@ -353,12 +370,50 @@
             
         </li>
     
+        <li class="chapter " data-level="7" data-path="history/index.html">
+            
+                
+                    <a href="../history/index.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        History
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+            
+                
+                    <a href="../history/0.2.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.2.x
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
 
 
         
         <li class="divider"></li>
         <li>
-            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">Published with GitBook</a>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                Published with GitBook
+            </a>
         </li>
         
     </ul>
@@ -410,11 +465,21 @@
                 <span class="caret-inner"></span>
             </div>
             <div class="buttons">
-                <button type="button" data-sharing="twitter" class="button">Share on Twitter</button>
-                <button type="button" data-sharing="google-plus" class="button">Share on Google</button>
-                <button type="button" data-sharing="facebook" class="button">Share on Facebook</button>
-                <button type="button" data-sharing="weibo" class="button">Share on Weibo</button>
-                <button type="button" data-sharing="instapaper" class="button">Share on Instapaper</button>
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
             </div>
         </div>
     </div>
@@ -444,9 +509,11 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="defaults">Defaults</h2>
-<p>The first thing you&apos;ll want to do is import the default settings.</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
+                        <h2 id="settings">Settings</h2>
+<p>The first thing you&apos;ll want to do is import some settings by using one of these <code>import</code> statements:</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._     <span class="hljs-comment">// Choose dev or prod</span>
+<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">DevDefaults</span>._  <span class="hljs-comment">// Always use dev settings</span>
+<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ProdDefaults</span>._ <span class="hljs-comment">// Always use prod settings</span>
 </code></pre>
 <p>This provides two sets of sensible settings: development and production.</p>
 <table>
@@ -460,35 +527,37 @@
 <tbody>
 <tr>
 <td>Style conflicts</td>
-<td>Warn and append</td>
-<td>Silently append</td>
+<td>Keep both sides of conflict. <br> Issue warnings.</td>
+<td>Keep both sides of conflict.</td>
 </tr>
 <tr>
 <td>Error handling</td>
-<td>Noisy</td>
-<td>Silent</td>
+<td>Print to <code>stderr</code></td>
+<td>Ignore</td>
 </tr>
 <tr>
 <td>Class name generation</td>
-<td><code>.scalacss-0001</code> <br> <code>.scalacss-0002</code> <br> etc</td>
-<td><code>.&#xA2;&#xA2;</code> <br> <code>.&#xA2;&#xA5;</code> <br> etc</td>
+<td><code>.MyStyles-0001</code> <br> <code>.MyStyles-0002</code> <br> etc</td>
+<td><code>._a0</code> <br> <code>._a1</code> <br> etc</td>
 </tr>
 <tr>
 <td>CSS output</td>
 <td>Pretty-print. <br> Indents, spaces, newlines.</td>
-<td>Tiny. <br> No whitespace.</td>
+<td>Minified. <br> No whitespace.</td>
 </tr>
 </tbody>
 </table>
-<p>The defaults automatically determine which mode to use based on
-<a href="http://www.scala-lang.org/api/current/scala/annotation/elidable.html" target="_blank">elision</a>.
-For instance, in my production SBT settings I generally have:</p>
+<p><code>Defaults</code> will choose a mode to use based on its <code>devMode: Boolean</code> method
+which uses
+<a href="http://www.scala-lang.org/api/current/scala/annotation/elidable.html" target="_blank">elision</a>
+to determine production-mode.</p>
+<p>For instance, in my production SBT settings I generally have:</p>
 <pre><code class="lang-scala"><span class="hljs-comment">// Prod settings</span>
 scalacOptions ++= <span class="hljs-type">Seq</span>(<span class="hljs-string">&quot;-Xelide-below&quot;</span>, <span class="hljs-string">&quot;OFF&quot;</span>)
 </code></pre>
 <p><em>Note: <code>-Xelide-below OFF</code> doesn&apos;t turn eliding off, it means &quot;elide everything&quot;. There must&apos;ve been painting going on in the building with no windows open when that was named.</em></p>
 <p>Defaults aren&apos;t mandatory, you&apos;re free to customise as needed.
-(See <a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/japgolly/scalacss/Defaults.scala" target="_blank">Defaults.scala</a>.)</p>
+(See <a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala" target="_blank">Defaults.scala</a>.)</p>
 <h2 id="stylesheets">StyleSheets</h2>
 <p>Styles, attributes, values, nearly everything in ScalaCSS is immutable.
 When you&apos;re declaring a large module of styles, it&apos;s very inconvenient to have
@@ -541,8 +610,8 @@ CSS at once.</p>
 </ol>
 <h5 id="full-examples">Full examples:</h5>
 <ul>
-<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/StandaloneTest.scala" target="_blank">StandaloneTest.scala</a></li>
-<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/japgolly/scalacss/full/InlineTest.scala" target="_blank">InlineTest.scala</a></li>
+<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala" target="_blank">StandaloneTest.scala</a></li>
+<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala" target="_blank">InlineTest.scala</a></li>
 </ul>
 
                     

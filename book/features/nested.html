@@ -5,10 +5,10 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>Nested Styles | ScalaCSS</title>
+        <title>Composite/Nested Styles | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.0-beta.5">
+        <meta name="generator" content="GitBook 2.0.1">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -34,9 +34,11 @@
     <link rel="stylesheet" href="../gitbook/style.css">
     
     
+        <link rel="stylesheet" href="../styles/website.css">
+    
 
         
-    <div class="book" data-level="2.4" data-basepath=".." data-revision="Mon Mar 23 2015 14:42:40 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.4" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -186,7 +188,7 @@
                         
                             <b>2.4.</b>
                         
-                        Nested Styles
+                        Composite/Nested Styles
                     </a>
                 
             
@@ -253,13 +255,28 @@
             
         </li>
     
-        <li class="chapter " data-level="2.9" data-path="features/extern.html">
+        <li class="chapter " data-level="2.9" data-path="features/global_registry.html">
+            
+                
+                    <a href="../features/global_registry.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.9.</b>
+                        
+                        Global Registry
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="features/extern.html">
             
                 
                     <a href="../features/extern.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>2.9.</b>
+                            <b>2.10.</b>
                         
                         External CSS Libraries
                     </a>
@@ -353,12 +370,50 @@
             
         </li>
     
+        <li class="chapter " data-level="7" data-path="history/index.html">
+            
+                
+                    <a href="../history/index.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        History
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+            
+                
+                    <a href="../history/0.2.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.2.x
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
 
 
         
         <li class="divider"></li>
         <li>
-            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">Published with GitBook</a>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                Published with GitBook
+            </a>
         </li>
         
     </ul>
@@ -410,11 +465,21 @@
                 <span class="caret-inner"></span>
             </div>
             <div class="buttons">
-                <button type="button" data-sharing="twitter" class="button">Share on Twitter</button>
-                <button type="button" data-sharing="google-plus" class="button">Share on Google</button>
-                <button type="button" data-sharing="facebook" class="button">Share on Facebook</button>
-                <button type="button" data-sharing="weibo" class="button">Share on Weibo</button>
-                <button type="button" data-sharing="instapaper" class="button">Share on Instapaper</button>
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
             </div>
         </div>
     </div>
@@ -473,41 +538,51 @@ a problem.</p>
 in order to use it.</p>
 <p>This adds a little tedium but it provides an unprecedented level of safety and
 error prevention.</p>
-<h5 id="example">Example</h5>
+<h5 id="example-using-scalajs-react-https-github-com-japgolly-scalajs-react">Example (using <a href="https://github.com/japgolly/scalajs-react" target="_blank">scalajs-react</a>):</h5>
 <p>Definition:</p>
-<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Styles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
 
   <span class="hljs-comment">// This is a style for a container</span>
   <span class="hljs-comment">// with a &lt;label&gt; and an &lt;input type=checkbox&gt; in it</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">example</span> =</span> styleC {
-    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">top</span> =</span> styleS(...)
-    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">lbl</span> =</span> styleS(...)
-    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">inp</span> =</span> styleS(...)
-    top.named(<span class="hljs-symbol">&apos;outer</span>) :*: lbl.named(<span class="hljs-symbol">&apos;label</span>) :*: inp.named(<span class="hljs-symbol">&apos;checkbox</span>)
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">top</span> =</span> styleS(display.block)
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">lbl</span> =</span> styleS(fontWeight.bold)
+    <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">chk</span> =</span> styleS(backgroundColor.red, marginLeft(<span class="hljs-number">1</span> ex))
+    top.named(<span class="hljs-symbol">&apos;outer</span>) :*: lbl.named(<span class="hljs-symbol">&apos;label</span>) :*: chk.named(<span class="hljs-symbol">&apos;checkbox</span>)
   }
 }
 </code></pre>
 <p>Usage:</p>
-<pre><code class="lang-scala"><span class="hljs-type">Demo</span>.example(<span class="hljs-symbol">&apos;outer</span>   )(o =&gt;
-           _(<span class="hljs-symbol">&apos;label</span>   )(l =&gt;
-           _(<span class="hljs-symbol">&apos;checkbox</span>)(c =&gt;
-             <span class="hljs-comment">// Here you apply o,l,c as you would normal styles</span>
+<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">featureActiveCheckbox</span>(</span>on: <span class="hljs-type">Boolean</span>): <span class="hljs-type">ReactElement</span> =
+  <span class="hljs-type">Styles</span>.example(<span class="hljs-symbol">&apos;outer</span>   )(outerStyle =&gt;
+               _(<span class="hljs-symbol">&apos;label</span>   )(labelStyle =&gt;
+               _(<span class="hljs-symbol">&apos;checkbox</span>)(inputStyle =&gt;
+    &lt;.div(outerStyle,
+      &lt;.label(labelStyle, <span class="hljs-string">&quot;Feature Active:&quot;</span>),
+      &lt;.input(inputStyle, ^.typ := <span class="hljs-string">&quot;checkbox&quot;</span>, ^.value := on))
+  )))
 </code></pre>
 <p>Error prevention: arity</p>
-<pre><code class="lang-scala"><span class="hljs-type">Demo</span>.example(<span class="hljs-symbol">&apos;outer</span>)(o =&gt;
-           _(<span class="hljs-symbol">&apos;label</span>)(l =&gt;
-             <span class="hljs-comment">// Compiler error!</span>
-             <span class="hljs-comment">// You can&apos;t return anything from inside here until you</span>
-             <span class="hljs-comment">// receive another style (checkbox)</span>
+<pre><code class="lang-scala"><span class="hljs-comment">// Forgot outerStyle. Compile error!</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">featureActiveCheckbox</span>(</span>on: <span class="hljs-type">Boolean</span>): <span class="hljs-type">ReactElement</span> =
+  <span class="hljs-type">Styles</span>.example(<span class="hljs-symbol">&apos;label</span>   )(labelStyle =&gt;
+               _(<span class="hljs-symbol">&apos;checkbox</span>)(inputStyle =&gt;
+    &lt;.div(
+      &lt;.label(labelStyle, <span class="hljs-string">&quot;Feature Active:&quot;</span>),
+      &lt;.input(inputStyle, ^.typ := <span class="hljs-string">&quot;checkbox&quot;</span>, ^.value := on))
+  ))
 </code></pre>
 <p>Error prevention: order</p>
-<pre><code class="lang-scala"><span class="hljs-type">Demo</span>.example(<span class="hljs-symbol">&apos;outer</span>   )(o =&gt;
-           _(<span class="hljs-symbol">&apos;checkbox</span>)(c =&gt;
-           _(<span class="hljs-symbol">&apos;label</span>   )(l =&gt;
-             <span class="hljs-comment">// Compiler error!</span>
-             <span class="hljs-comment">// The value c above is the label style</span>
-             <span class="hljs-comment">// The correct order is: order,label,checkbox</span>
+<pre><code class="lang-scala"><span class="hljs-comment">// The second style is for the label, not the checkbox. Compile error!</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">featureActiveCheckbox</span>(</span>on: <span class="hljs-type">Boolean</span>): <span class="hljs-type">ReactElement</span> =
+  <span class="hljs-type">Styles</span>.example(<span class="hljs-symbol">&apos;outer</span>   )(outerStyle =&gt;
+               _(<span class="hljs-symbol">&apos;checkbox</span>)(inputStyle =&gt;
+               _(<span class="hljs-symbol">&apos;label</span>   )(labelStyle =&gt;
+    &lt;.div(outerStyle,
+      &lt;.label(labelStyle, <span class="hljs-string">&quot;Feature Active:&quot;</span>),
+      &lt;.input(inputStyle, ^.typ := <span class="hljs-string">&quot;checkbox&quot;</span>, ^.value := on))
+  )))
 </code></pre>
 <h1 id="unsafety">Unsafety</h1>
 <p>ScalaCSS&apos;s philosophy is to provide tools, not force decisions upon you.

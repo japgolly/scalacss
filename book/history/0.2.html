@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>Conflict Detection | ScalaCSS</title>
+        <title>0.2.x | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.0.1">
@@ -20,10 +20,8 @@
         
     
     
-    <link rel="next" href="../features/reuse.html" />
     
-    
-    <link rel="prev" href="../features/prefixes.html" />
+    <link rel="prev" href="../history/index.html" />
     
 
         
@@ -38,7 +36,7 @@
     
 
         
-    <div class="book" data-level="2.7" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -225,7 +223,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.7" data-path="features/conflict.html">
+        <li class="chapter " data-level="2.7" data-path="features/conflict.html">
             
                 
                     <a href="../features/conflict.html">
@@ -386,7 +384,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+        <li class="chapter active" data-level="7.1" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
@@ -509,45 +507,79 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="detecting-conflict">Detecting conflict</h2>
-<p>Whether you&apos;re creating a new style from scratch,
-extending an existing one,
-or composing a few together,
-you can end up with multiple attributes stepping on each other&apos;s toes.</p>
-<p>Example:</p>
-<pre><code class="lang-scala"><span class="hljs-comment">// In MyGenericTheme.scala</span>
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(margin(<span class="hljs-number">8</span> px, auto), ...)
-
-<span class="hljs-comment">// In UserStyles.scala</span>
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">userTitle</span> =</span> style(marginLeft(<span class="hljs-number">4</span> ex), ...)
-...
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">userButton</span> =</span> style(button, userTitle, ...)
-</code></pre>
-<p>Whoops. The <code>button</code> style thinks <code>margin-left</code> should be <code>auto</code>,
-but the <code>userTitle</code> style thinks it should be <code>4ex</code>.
-Something is probably going to <strong><em>look wrong in production</em></strong>.
-Worse, broken styles can cause UI to be inaccessible to the user.
-It&apos;s often been the case that these kinds of errors slip by unnoticed.</p>
-<p>It&apos;s not always obvious when there&apos;s a conflict either.
-<code>grid-area</code> and <code>grid-row</code> conflict. Why? They both affect <code>grid-row-start</code>.</p>
-<p>ScalaCSS allows you to catch them and handle them immediately.</p>
-<h5 id="example-warnings">Example warnings</h5>
-<pre><code>[CSS WARNING] .MyStyles-0001 -- {margin-left: 6px} conflicts with {margin: 12px}
-[CSS WARNING] .MyStyles-0002 -- {cursor: zoom-in} conflicts with {cursor: pointer}
-</code></pre><h2 id="handling-conflict">Handling conflict</h2>
-<p>Conflict is detected whenever styles and/or attributes are composed.
-How conflict should be handled is determined by the <code>Compose</code> class.
-It&apos;s implicitly required to build a style with more than one attribute
-but often invisible because <a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala" target="_blank">Defaults.scala</a>
-provides an instance.</p>
-<p>By customising your <code>Compose</code> instance you can</p>
+                        <h1 id="0-2-0-commit-log-https-github-com-japgolly-scalacss-compare-v0-1-0-v0-2-0">0.2.0 (<a href="https://github.com/japgolly/scalacss/compare/v0.1.0...v0.2.0" target="_blank">commit log</a>)</h1>
 <ul>
-<li>Create warnings when conflict occurs.</li>
-<li>Discard the old value and use the new one (or vica versa).</li>
-<li>Define custom merge strategies.</li>
+<li>Changed package to just <code>scalacss</code>. Many projects already do this.
+<br>Automate the transition with this:<pre><code>find . -type f -name &apos;*.scala&apos; -exec perl -pi -e &apos;s/japgolly\.(?=scalacss)//g&apos; {} +
+</code></pre></li>
+<li>Reduced JS output size to less than half. (<a href="https://github.com/japgolly/scalacss/issues/17" target="_blank">#17</a>)</li>
+<li>Style composition now handles compatable duplicates without warning. (<a href="https://github.com/japgolly/scalacss/issues/28" target="_blank">#28</a>)</li>
+<li><p>Style composition warnings gained more detail.</p>
+<pre><code>// Before
+[CSS WARNING] .scalacss-0001 -- margin overridden by marginLeft.
+[CSS WARNING] .scalacss-0002 -- cursor overridden by cursor.
+
+// After
+[CSS WARNING] .MyStyles-0001 -- {margin-left: 6px} conflicts with {margin: 12px}
+[CSS WARNING] .MyStyles-0002 -- {cursor: zoom-in} conflicts with {cursor: pointer}
+</code></pre></li>
+<li>Manually-specified className no longer propagated in style composition. (<a href="https://github.com/japgolly/scalacss/issues/25" target="_blank">#25</a>)</li>
+<li>CSS no longer generated for empty styles,
+including styles consisting solely of <code>addClassNames</code>.</li>
+<li>Added <code>DevDefaults</code> and <code>ProdDefaults</code> with <code>Defaults</code> choosing between the two.</li>
 </ul>
-<p>Because this behaviour is provided by an implicit value,
-you can provide specialised behaviours to limited scopes or to explicit attributes.</p>
+<h4 id="stylesheets">StyleSheets</h4>
+<ul>
+<li>Changes to generated CSS class names:<ul>
+<li>In prod-mode, each <code>StyleSheet</code> gets a different prefix.</li>
+<li>In dev-mode, class names are prefixed by the <code>StyleSheet</code> class/object name.</li>
+<li>You can specify your own class name prefix by adding this to your <code>StyleSheet</code>:<pre><code class="lang-scala"><span class="hljs-keyword">override</span> <span class="hljs-keyword">implicit</span> <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">classNameHint</span> =</span> <span class="hljs-type">ClassNameHint</span>(<span class="hljs-string">&quot;TEST&quot;</span>)
+</code></pre>
+</li>
+<li>This means that separate, unrelated <code>StyleSheet</code>s can be used in the same process without overlap.</li>
+</ul>
+</li>
+<li>Added <code>mutable.GlobalRegistry</code> as an optional convenience for managing shared stylesheets.
+<br>See <a href="../features/global_registry.html">Global Registry feature doc</a>.</li>
+<li>Added <code>.styles</code> and <code>.css</code> to <code>StyleSheet</code>.</li>
+<li><code>StyleSheet</code> now warn if new styles are registered after <code>.render</code>, <code>.css</code>, <code>.styles</code> called.
+<br><em>(Yep, that&apos;s why it&apos;s in the <code>mutable</code> package.)</em></li>
+</ul>
+<h4 id="dsl">DSL</h4>
+<ul>
+<li>Attribute aliases in DSL were missing Scaladoc.</li>
+<li>New DSL: <code>mixin(&#x2026;)</code>.
+<em>(The difference between <code>style()</code> which registers, and <code>styleS()</code> which doesn&apos;t, was too fine.)</em></li>
+<li>New DSL: <code>mixinIf(bool)(&#x2026;)</code>.</li>
+<li>New DSL: <code>mixinIfElse(bool)(&#x2026;)(&#x2026;)</code>.</li>
+<li>New DSL: <code>&lt;String&gt;.color</code>. Example: <code>borderColor(&quot;#080&quot;.color)</code>.</li>
+<li>Add literals to DSL auto-import: <code>inherit</code>,<code>initial</code>, <code>unset</code>.</li>
+<li>Renamed literal <code>each_line</code> to <code>eachLine</code>.</li>
+</ul>
+<h4 id="typed-css">Typed CSS</h4>
+<ul>
+<li>Four-edge CSS attributes had vertical/horizontal around the wrong way.<pre><code class="lang-scala"><span class="hljs-comment">// These correctly generate {margin: 4px 1ex}</span>
+margin(<span class="hljs-number">4</span> px, <span class="hljs-number">1</span> ex)
+margin(h = <span class="hljs-number">1.</span>ex, v = <span class="hljs-number">4.</span>px)
+</code></pre>
+</li>
+<li>Four-edge CSS attributes learned <code>.vertical</code> and <code>.horizontal</code>.<pre><code class="lang-scala">margin.vertical(<span class="hljs-number">4</span> px)
+<span class="hljs-comment">// &#x2191; is a shortcut for &#x2193;</span>
+marginTop(<span class="hljs-number">4</span> px) compose marginBottom(<span class="hljs-number">4</span> px)
+</code></pre>
+</li>
+<li><code>clear</code> learned <code>inlineStart</code> and <code>inlineEnd</code> values.</li>
+<li><code>float</code> learned <code>inlineStart</code> and <code>inlineEnd</code> values.</li>
+</ul>
+<h4 id="browser-prefixes">Browser prefixes</h4>
+<p>Added browser prefixes for...</p>
+<ul>
+<li><code>captionSide</code> block/inline start/end values.</li>
+<li><code>display</code> flex and grid values.</li>
+<li><code>fontSizeAdjust</code> keys.</li>
+<li><code>order</code> keys.</li>
+<li><code>textAlign</code> start/end values.</li>
+</ul>
 
                     
                     </section>
@@ -558,10 +590,8 @@ you can provide specialised behaviours to limited scopes or to explicit attribut
         </div>
 
         
-        <a href="../features/prefixes.html" class="navigation navigation-prev " aria-label="Previous page: Browser Prefixes"><i class="fa fa-angle-left"></i></a>
+        <a href="../history/index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: History"><i class="fa fa-angle-left"></i></a>
         
-        
-        <a href="../features/reuse.html" class="navigation navigation-next " aria-label="Next page: Reusable Styles"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

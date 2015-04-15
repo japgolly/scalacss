@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
-        <title>Conflict Detection | ScalaCSS</title>
+        <title>History | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.0.1">
@@ -20,10 +20,10 @@
         
     
     
-    <link rel="next" href="../features/reuse.html" />
+    <link rel="next" href="../history/0.2.html" />
     
     
-    <link rel="prev" href="../features/prefixes.html" />
+    <link rel="prev" href="../dev.html" />
     
 
         
@@ -38,7 +38,7 @@
     
 
         
-    <div class="book" data-level="2.7" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
+    <div class="book" data-level="7" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -225,7 +225,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.7" data-path="features/conflict.html">
+        <li class="chapter " data-level="2.7" data-path="features/conflict.html">
             
                 
                     <a href="../features/conflict.html">
@@ -370,7 +370,7 @@
             
         </li>
     
-        <li class="chapter " data-level="7" data-path="history/index.html">
+        <li class="chapter active" data-level="7" data-path="history/index.html">
             
                 
                     <a href="../history/index.html">
@@ -509,45 +509,7 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="detecting-conflict">Detecting conflict</h2>
-<p>Whether you&apos;re creating a new style from scratch,
-extending an existing one,
-or composing a few together,
-you can end up with multiple attributes stepping on each other&apos;s toes.</p>
-<p>Example:</p>
-<pre><code class="lang-scala"><span class="hljs-comment">// In MyGenericTheme.scala</span>
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(margin(<span class="hljs-number">8</span> px, auto), ...)
-
-<span class="hljs-comment">// In UserStyles.scala</span>
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">userTitle</span> =</span> style(marginLeft(<span class="hljs-number">4</span> ex), ...)
-...
-<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">userButton</span> =</span> style(button, userTitle, ...)
-</code></pre>
-<p>Whoops. The <code>button</code> style thinks <code>margin-left</code> should be <code>auto</code>,
-but the <code>userTitle</code> style thinks it should be <code>4ex</code>.
-Something is probably going to <strong><em>look wrong in production</em></strong>.
-Worse, broken styles can cause UI to be inaccessible to the user.
-It&apos;s often been the case that these kinds of errors slip by unnoticed.</p>
-<p>It&apos;s not always obvious when there&apos;s a conflict either.
-<code>grid-area</code> and <code>grid-row</code> conflict. Why? They both affect <code>grid-row-start</code>.</p>
-<p>ScalaCSS allows you to catch them and handle them immediately.</p>
-<h5 id="example-warnings">Example warnings</h5>
-<pre><code>[CSS WARNING] .MyStyles-0001 -- {margin-left: 6px} conflicts with {margin: 12px}
-[CSS WARNING] .MyStyles-0002 -- {cursor: zoom-in} conflicts with {cursor: pointer}
-</code></pre><h2 id="handling-conflict">Handling conflict</h2>
-<p>Conflict is detected whenever styles and/or attributes are composed.
-How conflict should be handled is determined by the <code>Compose</code> class.
-It&apos;s implicitly required to build a style with more than one attribute
-but often invisible because <a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala" target="_blank">Defaults.scala</a>
-provides an instance.</p>
-<p>By customising your <code>Compose</code> instance you can</p>
-<ul>
-<li>Create warnings when conflict occurs.</li>
-<li>Discard the old value and use the new one (or vica versa).</li>
-<li>Define custom merge strategies.</li>
-</ul>
-<p>Because this behaviour is provided by an implicit value,
-you can provide specialised behaviours to limited scopes or to explicit attributes.</p>
+                        <p>This page is intentionally (nearly) blank.</p>
 
                     
                     </section>
@@ -558,10 +520,10 @@ you can provide specialised behaviours to limited scopes or to explicit attribut
         </div>
 
         
-        <a href="../features/prefixes.html" class="navigation navigation-prev " aria-label="Previous page: Browser Prefixes"><i class="fa fa-angle-left"></i></a>
+        <a href="../dev.html" class="navigation navigation-prev " aria-label="Previous page: Developing"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../features/reuse.html" class="navigation navigation-next " aria-label="Next page: Reusable Styles"><i class="fa fa-angle-right"></i></a>
+        <a href="../history/0.2.html" class="navigation navigation-next " aria-label="Next page: 0.2.x"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

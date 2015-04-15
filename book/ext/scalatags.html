@@ -8,7 +8,7 @@
         <title>Scalatags | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.0-beta.5">
+        <meta name="generator" content="GitBook 2.0.1">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -34,9 +34,11 @@
     <link rel="stylesheet" href="../gitbook/style.css">
     
     
+        <link rel="stylesheet" href="../styles/website.css">
+    
 
         
-    <div class="book" data-level="3.2" data-basepath=".." data-revision="Mon Mar 23 2015 14:42:40 GMT+1100 (AEDT)">
+    <div class="book" data-level="3.2" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -186,7 +188,7 @@
                         
                             <b>2.4.</b>
                         
-                        Nested Styles
+                        Composite/Nested Styles
                     </a>
                 
             
@@ -253,13 +255,28 @@
             
         </li>
     
-        <li class="chapter " data-level="2.9" data-path="features/extern.html">
+        <li class="chapter " data-level="2.9" data-path="features/global_registry.html">
+            
+                
+                    <a href="../features/global_registry.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.9.</b>
+                        
+                        Global Registry
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.10" data-path="features/extern.html">
             
                 
                     <a href="../features/extern.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>2.9.</b>
+                            <b>2.10.</b>
                         
                         External CSS Libraries
                     </a>
@@ -353,12 +370,50 @@
             
         </li>
     
+        <li class="chapter " data-level="7" data-path="history/index.html">
+            
+                
+                    <a href="../history/index.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        History
+                    </a>
+                
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+            
+                
+                    <a href="../history/0.2.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.2.x
+                    </a>
+                
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
 
 
         
         <li class="divider"></li>
         <li>
-            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">Published with GitBook</a>
+            <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                Published with GitBook
+            </a>
         </li>
         
     </ul>
@@ -410,11 +465,21 @@
                 <span class="caret-inner"></span>
             </div>
             <div class="buttons">
-                <button type="button" data-sharing="twitter" class="button">Share on Twitter</button>
-                <button type="button" data-sharing="google-plus" class="button">Share on Google</button>
-                <button type="button" data-sharing="facebook" class="button">Share on Facebook</button>
-                <button type="button" data-sharing="weibo" class="button">Share on Weibo</button>
-                <button type="button" data-sharing="instapaper" class="button">Share on Instapaper</button>
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
             </div>
         </div>
     </div>
@@ -448,10 +513,10 @@
 <p>ScalaCSS integrates with Scalatags in both <code>Text</code> and <code>JsDom</code> modes.</p>
 <ol>
 <li><p>Add this to your SBT build:</p>
-<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-scalatags&quot;</span> % <span class="hljs-string">&quot;0.1.0&quot;</span></code></pre>
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-scalatags&quot;</span> % <span class="hljs-string">&quot;0.2.0&quot;</span></code></pre>
 </li>
 <li><p>Add this to your Scala code:</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">ScalatagsCss</span>._
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ScalatagsCss</span>._
 </code></pre>
 </li>
 <li><p>Create your <a href="../quickstart/inline.html">inline styles</a> as normal.</p>
@@ -473,7 +538,7 @@
 </ol>
 <h2 id="example">Example</h2>
 <p>MyStyles.scala</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
@@ -485,8 +550,8 @@
 }
 </code></pre>
 <p>MyApp.scala</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">Defaults</span>._
-<span class="hljs-keyword">import</span> japgolly.scalacss.<span class="hljs-type">ScalatagsCss</span>._
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
+<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ScalatagsCss</span>._
 <span class="hljs-keyword">import</span> scalatags.<span class="hljs-type">Text</span>._
 <span class="hljs-keyword">import</span> scalatags.<span class="hljs-type">Text</span>.all._
 
