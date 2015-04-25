@@ -5,13 +5,13 @@
 1. Add it to `Attrs.valuesForAllAttr`
 1. Run `bin/generate-aliases`
 
-## Updaing CanIUse data
+## Updating CanIUse data
 
 1. `bin/generate-caniuse`
 1. `git diff` to inspect changes.
 1. Check-in changes.
 
-## Updaing platform.js
+## Updating platform.js
 
 1. `bin/generate-platformjs`
 1. Check-in changes.
