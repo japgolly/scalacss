@@ -38,7 +38,7 @@ object RandomData {
       NthChild, NthLastChild, NthLastOfType, NthOfType)
 
     val needStr = NonEmptyList[String => Pseudo](
-      Custom, Lang, Not(_))
+      Custom(_, PseudoClass), Lang, Not(_))
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
