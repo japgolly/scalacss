@@ -207,11 +207,11 @@ object Typical {
           </developer>
         </developers>)
 
-  def utestSettings(scope: String = "test", phantom: Boolean = false): CDS =
+  def utestSettings(scope: String = "test"): CDS =
     CDS.addLibs(Library("com.lihaoyi", "utest", "0.3.1") % scope)
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
       .js(_.settings(
         scalaJSStage in Test := FastOptStage,
-        jsEnv in Test        := (if (phantom) PhantomJSEnv().value else NodeJSEnv().value)))
+        jsEnv in Test        := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
 }
 

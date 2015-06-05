@@ -79,7 +79,7 @@ object ScalaCSS extends Build {
   lazy val extReact =
     Project("ext-react", file("ext-react"))
       .enablePlugins(ScalaJSPlugin)
-      .configure(commonSettings.jsS, utestSettings(phantom = true).jsS)
+      .configure(commonSettings.jsS, utestSettings().jsS)
       .dependsOn(coreJs)
       .settings(
         libraryDependencies ++= Seq(react.core, react.test % "test"),
