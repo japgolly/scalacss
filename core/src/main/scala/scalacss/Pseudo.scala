@@ -7,9 +7,10 @@ import scalaz.syntax.equal._
 
 // TODO Rename PseudoXxxxx (selector probably)
 
+/** http://www.w3.org/TR/selectors/#selector-syntax */
 sealed trait PseudoType
-final object PseudoElement extends PseudoType
-final object PseudoClass extends PseudoType  
+case object PseudoElement extends PseudoType
+case object PseudoClass   extends PseudoType
 
 object PseudoType {
   // Class comes before Element: http://www.w3.org/TR/selectors/#selector-syntax
