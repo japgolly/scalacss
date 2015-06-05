@@ -42,7 +42,7 @@ object ScalaCSS extends Build {
     val concurrent = m("concurrent") > effect
   }
   object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.9")
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.11")
     val core = m("core")
     val test = m("test")
   }
