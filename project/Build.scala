@@ -52,7 +52,7 @@ object ScalaCSS extends Build {
     val test  = m("test")
     val extra = m("extra")
   }
-  val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
+  val shapeless = Library("com.chuusai", "shapeless", "2.2.0")
 
   // ==============================================================================================
   override def rootProject = Some(root)
