@@ -19,6 +19,12 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
 
   def &(b: Cond): Cond =
     Cond(pseudo |+| b.pseudo, mediaQueries ++ b.mediaQueries)
+
+  def applyToStyle(s: StyleS): StyleS = {
+    val d = s.data.toStream.map(t => (this & t._1, t._2)).toMap
+    val u = s.unsafeExts.map(e => e.copy(style = applyToStyle(e.style)))
+    s.copy(data = d, unsafeExts = u)
+  }
 }
 
 object Cond {

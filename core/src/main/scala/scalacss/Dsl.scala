@@ -137,11 +137,7 @@ object DslBase {
   }
 
   final class DslCond(c: Cond, b: DslBase) {
-    def apply(t: ToStyle*)(implicit u: Compose): StyleS = {
-      val m = b.mixin(t: _*)
-      val d = m.data.toStream.map(t => (t._1 & c, t._2)).toMap
-      m.copy(data = d)
-    }
+    @inline def apply(t: ToStyle*)(implicit u: Compose): StyleS = c applyToStyle b.mixin(t: _*)
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
