@@ -136,10 +136,12 @@ object DslBase {
     @inline def &(b: AVs): AVs = self ++ b
   }
 
-  final class DslCond(val c: Cond) extends AnyVal {
-    @inline def apply()             : ToStyle = new ToStyle(StyleS.empty)
-    @inline def apply(avs: AVs)     : ToStyle = new ToStyle(StyleS.data1(c, avs))
-    @inline def apply(h: AV, t: AV*): ToStyle = apply(AVs(h, t: _*))
+  final class DslCond(c: Cond, b: DslBase) {
+    def apply(t: ToStyle*)(implicit u: Compose): StyleS = {
+      val m = b.mixin(t: _*)
+      val d = m.data.toStream.map(t => (t._1 & c, t._2)).toMap
+      m.copy(data = d)
+    }
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -164,7 +166,7 @@ abstract class DslBase
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
+  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x, this)
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 

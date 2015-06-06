@@ -57,6 +57,13 @@ object MyInline extends StyleSheet.Inline {
       )
     )
 
+  val `it's a mixin!` = mixin(color.brown)
+
+  val medianess = style("medianess")(
+    // https://github.com/japgolly/scalacss/issues/38
+    media.maxWidth(100 px)(`it's a mixin!`)
+  )
+
   /** Style requiring boolean */
   val everythingOk =
     boolStyle(ok => styleS(
@@ -113,6 +120,12 @@ object InlineTest extends utest.TestSuite {
         |  .MyInline-0001 {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
+        |  }
+        |}
+        |
+        |@media (max-width:100px) {
+        |  .medianess {
+        |    color: brown;
         |  }
         |}
         |

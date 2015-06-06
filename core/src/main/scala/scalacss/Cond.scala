@@ -16,6 +16,9 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
 
   def &(q: Media.Query): Cond =
     copy(mediaQueries = this.mediaQueries :+ q)
+
+  def &(b: Cond): Cond =
+    Cond(pseudo |+| b.pseudo, mediaQueries ++ b.mediaQueries)
 }
 
 object Cond {
@@ -27,6 +30,6 @@ object Cond {
       override def equalIsNatural              = true
       override def equal(a: Cond, b: Cond)     = a == b
       override def zero                        = empty
-      override def append(a: Cond, b: => Cond) = Cond(a.pseudo |+| b.pseudo, a.mediaQueries ++ b.mediaQueries)
+      override def append(a: Cond, b: => Cond) = a & b
     }
 }

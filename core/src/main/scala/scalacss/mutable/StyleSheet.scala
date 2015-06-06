@@ -87,7 +87,7 @@ object StyleSheet {
 
     @inline protected final implicit class NestedCondOps(val cond: Cond) {
       /** Create a child style. */
-      def - = new DslCond(cond)
+      def - = new DslCond(cond, dsl)
     }
 
     protected final class NestedStringOps(val sel: CssSelector) extends Pseudo.ChainOps[NestedStringOps] {
