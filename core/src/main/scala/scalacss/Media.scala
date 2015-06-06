@@ -88,6 +88,9 @@ object Media {
   case class Query(head: TypeExpr \/ Feature, tail: Vector[Feature]) extends FeatureOps[Query] {
     override protected def F = f => new Query(head, tail :+ f)
 
+    override def toString =
+      css(NonEmptyVector one this)
+
     def +:(qs: Vector[Query]): Vector[Query] =
       if (qs.exists(_ === this)) qs else qs :+ this
 

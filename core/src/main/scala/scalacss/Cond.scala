@@ -7,6 +7,9 @@ import scalaz.syntax.monoid._
  * Condition under which CSS is applicable.
  */
 final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query]) extends Pseudo.ChainOps[Cond] {
+  override def toString =
+    NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
+    Css.selector("", this)
 
   protected def addPseudo(p: Pseudo): Cond =
     copy(pseudo = Some(this.pseudo.fold(p)(_ & p)))
