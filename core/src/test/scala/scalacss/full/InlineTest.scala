@@ -67,6 +67,14 @@ object MyInline extends StyleSheet.Inline {
       `it's a mixin!`)
   )
 
+  val condMixins = mixin(
+    display.block,
+    media.maxWidth(100 px)(margin.auto),
+    &.hover(color.red))
+
+  val condMixinP = style("condMixinP")(&.hover(condMixins))
+  val condMixinQ = style("condMixinQ")(media.maxWidth(100 px)(condMixins))
+
   /** Style requiring boolean */
   val everythingOk =
     boolStyle(ok => styleS(
@@ -133,6 +141,16 @@ object InlineTest extends utest.TestSuite {
         |  .medianess span {
         |    background-color: yellow;
         |  }
+        |  .condMixinP:hover {
+        |    margin: auto;
+        |  }
+        |  .condMixinQ {
+        |    display: block;
+        |    margin: auto;
+        |  }
+        |  .condMixinQ:hover {
+        |    color: red;
+        |  }
         |}
         |
         |.MyInline-0001:not(:first-child):visited {
@@ -184,6 +202,11 @@ object InlineTest extends utest.TestSuite {
         |
         |.DEBUG {
         |  border-color: #080;
+        |}
+        |
+        |.condMixinP:hover {
+        |  display: block;
+        |  color: red;
         |}
         |
         |.MyInline-0002 {

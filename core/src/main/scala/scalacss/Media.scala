@@ -1,6 +1,7 @@
 package scalacss
 
-import scalaz.\/
+import scalaz.{Equal, \/}
+import scalaz.syntax.equal._
 import scalacss.{Resolution => Res}
 
 object Media {
@@ -80,11 +81,21 @@ object Media {
   case class Only(t: TypeA) extends TypeExpr
   case class Not (t: TypeA) extends TypeExpr
 
+  // Hmmm, well this will never be true when false, it shouldn't be false when true.
+  // Should really use Shapeless' typeclass derivation here...
+  implicit def queryEquality: Equal[Query] = Equal.equalA
+
   case class Query(head: TypeExpr \/ Feature, tail: Vector[Feature]) extends FeatureOps[Query] {
     override protected def F = f => new Query(head, tail :+ f)
 
+    def +:(qs: Vector[Query]): Vector[Query] =
+      if (qs.exists(_ === this)) qs else qs :+ this
+
+    def +(q2: Query): Vector[Query] =
+      Vector1(this) +: q2
+
     def &(q2: Query): Cond =
-      Cond(None, Vector(this, q2))
+      Cond(None, this + q2)
   }
 
   trait TypeAOps[Out] {

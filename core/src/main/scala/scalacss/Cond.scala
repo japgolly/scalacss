@@ -15,13 +15,17 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     addPseudo(p)
 
   def &(q: Media.Query): Cond =
-    copy(mediaQueries = this.mediaQueries :+ q)
+    copy(mediaQueries = this.mediaQueries +: q)
 
   def &(b: Cond): Cond =
-    Cond(pseudo |+| b.pseudo, mediaQueries ++ b.mediaQueries)
+    Cond(pseudo |+| b.pseudo, b.mediaQueries.foldLeft(mediaQueries)(_  +: _))
 
   def applyToStyle(s: StyleS): StyleS = {
-    val d = s.data.toStream.map(t => (this & t._1, t._2)).toMap
+    val d = s.data.foldLeft(Map.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
+      val newCond = this & oldCond
+      val newValue = q.get(newCond).fold(av)(_ ++ av)
+      q.updated(newCond, newValue)
+    }
     val u = s.unsafeExts.map(e => e.copy(style = applyToStyle(e.style)))
     s.copy(data = d, unsafeExts = u)
   }
