@@ -87,7 +87,11 @@ object Pseudo {
 
   final case class Custom(override val cssValue: String, override val pseudoType: PseudoType) extends Pseudo1(cssValue, pseudoType)
 
-  type PseudoF = Pseudo.type => Pseudo
+  type PseudoF = ChainOps[Pseudo] => Pseudo
+
+  object ChainOps extends ChainOps[Pseudo] {
+    protected def addPseudo(p: Pseudo) = p
+  }
 
   /**
    * Trait providing a nice chaining DSL.
@@ -182,7 +186,7 @@ object Pseudo {
   final case class Not(selector: String) extends Pseudo1(s":not($selector)", PseudoClass)
   object Not {
     def apply(selector: Pseudo): Not = Not(selector.cssValue)
-    def apply(f: PseudoF)      : Not = Not(f(Pseudo))
+    def apply(f: PseudoF)      : Not = Not(f(ChainOps))
   }
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */

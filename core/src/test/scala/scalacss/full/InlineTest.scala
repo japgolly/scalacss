@@ -24,7 +24,7 @@ object MyInline extends StyleSheet.Inline {
         cursor.zoomIn
       ),
 
-      &.visited.not(_.FirstChild)(
+      &.visited.not(_.firstChild)(
         animationDelay(1 minute, 50 millis),
         fontWeight.bold,
         font := ^.inherit
