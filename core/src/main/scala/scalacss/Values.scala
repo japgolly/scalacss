@@ -338,6 +338,9 @@ trait ColorOps[Out] {
   final def hsla(h: Int, s: Percentage[_], l: Percentage[_], a: Double): Out =
     mkColor(s"hsla($h,${s.value},${l.value},$a)")
 
+  final def grey(amount: Int): Out =
+    rgb(amount, amount, amount)
+
   /**
    * The currentColor keyword represents the calculated value of the element's color property. It allows to make the color properties inherited by properties or child's element properties that do not inherit it by default.
    *
