@@ -17,6 +17,11 @@
   MyStyles.addToDocument()
   ```
 
+  If you're using [`GlobalRegistry`](../features/global_registry.md), do this:
+  ```scala
+  GlobalRegistry.addToDocumentOnRegistration()
+  ```
+
 1. Finally, to apply styles, just reference them in your tags.
   ```scala
   <.h1( MyStyles.heading, "This is a heading" )
