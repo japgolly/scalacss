@@ -152,8 +152,15 @@ object StyleSheet {
       }
     }
 
-    protected def intStyle(r: Range)(f: Int => StyleS): Int => StyleA =
-      styleF(Domain ofRange r)(f)
+    override protected def __macroStyleI(name: String) =
+      new MStyleI(name)
+
+    protected class MStyleI(/*d: Domain[Int],*/ name: String) extends DslMacros.MStyleI {
+      override def apply(r: Range)(f: Int => StyleS): Int => StyleA = {
+        val s = StyleF(f)(Domain ofRange r)
+        register.registerFM(s, name)((i, _) => i.toString)
+      }
+    }
 
     protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
       register registerF StyleF(f)(d)

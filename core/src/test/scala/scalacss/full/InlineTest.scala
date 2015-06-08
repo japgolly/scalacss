@@ -219,18 +219,18 @@ object InlineTest extends utest.TestSuite {
         |  max-width: 80ex;
         |}
         |
-        |.MyInline-0001 {
+        |.MyInline-indent-1 {
         |  padding-left: 4ex;
         |  color: blue;
         |}
         |
-        |.MyInline-0002 {
+        |.MyInline-indent-2 {
         |  padding-left: 8ex;
         |  color: red;
         |  margin-top: 1em;
         |}
         |
-        |.MyInline-0003 {
+        |.MyInline-indent-3 {
         |  padding-left: 12ex;
         |  margin-top: 1em;
         |}
@@ -239,16 +239,16 @@ object InlineTest extends utest.TestSuite {
         |  margin-top: inherit;
         |}
         |
-        |.MyInline-0005 {
+        |.MyInline-0002 {
         |  border: 1px solid black;
         |  padding: 1ex;
         |}
         |
-        |.MyInline-0006 {
+        |.MyInline-0003 {
         |  font-weight: bold;
         |}
         |
-        |.MyInline-0007 {
+        |.MyInline-0004 {
         |  margin: 4ex;
         |  background-color: #eee;
         |}
@@ -260,14 +260,14 @@ object InlineTest extends utest.TestSuite {
       assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-everythingOk-t")
       assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-everythingOk-f")
 
-      assertEq(MyInline.indent(1).htmlClass, "MyInline-0001")
-      assertEq(MyInline.indent(2).htmlClass, "MyInline-0002")
-      assertEq(MyInline.indent(3).htmlClass, "MyInline-0003")
+      assertEq(MyInline.indent(1).htmlClass, "MyInline-indent-1")
+      assertEq(MyInline.indent(2).htmlClass, "MyInline-indent-2")
+      assertEq(MyInline.indent(3).htmlClass, "MyInline-indent-3")
 
       assertEq(MyInline.sb1.htmlClass, "btn btn-default")
       assertEq(MyInline.sb2.htmlClass, "MyInline-sb2 btn btn-default")
 
-      assertEq(MyInline.empty.htmlClass, "MyInline-0004")
+      assertEq(MyInline.empty.htmlClass, "MyInline-0001")
 
       import shapeless.syntax.singleton._ // TODO
       val classNames =
@@ -275,7 +275,7 @@ object InlineTest extends utest.TestSuite {
                     _('label)(l =>
                       _('checkbox)(c =>
                         List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("MyInline-0005", "MyInline-0006", "MyInline-0007"))
+      assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
     }
   }
 }

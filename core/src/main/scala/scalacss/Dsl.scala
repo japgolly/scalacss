@@ -243,6 +243,11 @@ object DslMacros {
     c.Expr(q"__macroStyleB(${name(c)})")
   }
 
+  def styleIImpl(c: Context): c.Expr[MStyleI] = {
+    import c.universe._
+    c.Expr(q"__macroStyleI(${name(c)})")
+  }
+
   trait MStyle {
     def apply                   (t: ToStyle*)(implicit c: Compose): StyleA
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
@@ -251,6 +256,9 @@ object DslMacros {
   trait MStyleB {
     def apply(f: Boolean => StyleS): Boolean => StyleA
   }
+  trait MStyleI {
+    def apply(r: Range)(f: Int => StyleS): Int => StyleA
+  }
 
   trait Mixin {
     protected def __macroStyle(className: String): MStyle
@@ -258,6 +266,9 @@ object DslMacros {
 
     protected def __macroStyleB(className: String): MStyleB
     final protected def boolStyle: MStyleB = macro styleBImpl
+
+    protected def __macroStyleI(className: String): MStyleI
+    final protected def intStyle: MStyleI = macro styleIImpl
   }
 }
 
