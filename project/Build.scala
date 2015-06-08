@@ -54,20 +54,6 @@ object ScalaCSS extends Build {
   }
   val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
 
-  val macroVersion = "2.0.1"
-  val paradisePlugin = compilerPlugin("org.scalamacros" % "paradise" % macroVersion cross CrossVersion.full)
-
-  def devMacros: CDS =
-    CDS.all(
-      _.settings(
-        scalacOptions  += "-language:experimental.macros",
-        libraryDependencies ++= Seq(
-          "org.scala-lang"  %  "scala-reflect"  % scalaVersion.value,
-          "org.scala-lang"  %  "scala-compiler" % scalaVersion.value % "provided"
-        ),
-        addCompilerPlugin(paradisePlugin)
-      )
-    )
 
   // ==============================================================================================
   override def rootProject = Some(root)
@@ -79,8 +65,7 @@ object ScalaCSS extends Build {
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
-      .configure(utestSettings()) //, Gen.attrAliases)
-      .configure(devMacros)
+      .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
     )

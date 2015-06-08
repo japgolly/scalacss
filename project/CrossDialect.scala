@@ -213,5 +213,13 @@ object Typical {
       .js(_.settings(
         scalaJSStage in Test := FastOptStage,
         jsEnv in Test        := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+
+  def definesMacros: CDS =
+    CDS.all(
+      _.settings(
+        scalacOptions += "-language:experimental.macros",
+        libraryDependencies ++= Seq(
+          "org.scala-lang"  %  "scala-reflect"  % scalaVersion.value,
+          "org.scala-lang"  %  "scala-compiler" % scalaVersion.value % "provided")))
 }
 
