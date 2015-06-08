@@ -128,8 +128,8 @@ object StyleSheet {
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    override protected def __macroStyle(className: String) =
-      new MStyle(className)
+    override protected def __macroStyle (name: String) = new MStyle (name)
+    override protected def __macroStyleF(name: String) = new MStyleF(name)
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
@@ -142,28 +142,10 @@ object StyleSheet {
         register registerS Dsl.style(className)(t: _*)
     }
 
-    override protected def __macroStyleB(name: String) =
-      new MStyleB(name)
-
-    protected class MStyleB(name: String) extends DslMacros.MStyleB {
-      override def apply(f: Boolean => StyleS): Boolean => StyleA = {
-        val s = StyleF(f)(Domain.boolean)
-        register.registerFM(s, name)((b, _) => if (b) "t" else "f")
-      }
+    protected class MStyleF(name: String) extends DslMacros.MStyleF {
+      override protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+        register.registerFM(StyleF(f)(d), name)(classNameSuffix)
     }
-
-    override protected def __macroStyleI(name: String) =
-      new MStyleI(name)
-
-    protected class MStyleI(/*d: Domain[Int],*/ name: String) extends DslMacros.MStyleI {
-      override def apply(r: Range)(f: Int => StyleS): Int => StyleA = {
-        val s = StyleF(f)(Domain ofRange r)
-        register.registerFM(s, name)((i, _) => i.toString)
-      }
-    }
-
-    protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
-      register registerF StyleF(f)(d)
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
       register.registerC(s)(implicitly, m, u)

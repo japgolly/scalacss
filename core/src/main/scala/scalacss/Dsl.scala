@@ -238,14 +238,9 @@ object DslMacros {
     c.Expr(q"__macroStyle(${name(c)})")
   }
 
-  def styleBImpl(c: Context): c.Expr[MStyleB] = {
+  def styleFImpl(c: Context): c.Expr[MStyleF] = {
     import c.universe._
-    c.Expr(q"__macroStyleB(${name(c)})")
-  }
-
-  def styleIImpl(c: Context): c.Expr[MStyleI] = {
-    import c.universe._
-    c.Expr(q"__macroStyleI(${name(c)})")
+    c.Expr(q"__macroStyleF(${name(c)})")
   }
 
   trait MStyle {
@@ -253,22 +248,28 @@ object DslMacros {
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
   }
 
-  trait MStyleB {
-    def apply(f: Boolean => StyleS): Boolean => StyleA
-  }
-  trait MStyleI {
-    def apply(r: Range)(f: Int => StyleS): Int => StyleA
+  val defaultStyleFClassNameSuffix =
+    (_: Any, index: Int) => (index + 1).toString
+
+  trait MStyleF {
+    def bool(f: Boolean => StyleS): Boolean => StyleA =
+      apply(Domain.boolean)(f, (b, _) => if (b) "t" else "f")
+
+    def int(r: Range)(f: Int => StyleS): Int => StyleA =
+      apply(Domain ofRange r)(f, (i, _) => i.toString)
+
+    def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(d, f, classNameSuffix)
+
+    protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
   }
 
   trait Mixin {
     protected def __macroStyle(className: String): MStyle
     final protected def style: MStyle = macro styleImpl
 
-    protected def __macroStyleB(className: String): MStyleB
-    final protected def boolStyle: MStyleB = macro styleBImpl
-
-    protected def __macroStyleI(className: String): MStyleI
-    final protected def intStyle: MStyleI = macro styleIImpl
+    protected def __macroStyleF(className: String): MStyleF
+    final protected def styleF: MStyleF = macro styleFImpl
   }
 }
 

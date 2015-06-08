@@ -75,31 +75,6 @@ object MyInline extends StyleSheet.Inline {
   val condMixinP = style(&.hover(condMixins))
   val condMixinQ = style(media.maxWidth(100 px)(condMixins))
 
-  /** Style requiring boolean */
-  val everythingOk =
-    boolStyle(ok => styleS(
-      backgroundColor(if (ok) green else red),
-      maxWidth(80.ex)
-    ))
-
-  /** Style requiring int */
-  val indent: Int => StyleA =
-    intStyle(1 to 3)(i =>
-      styleS(
-        paddingLeft(i * 4.ex),
-        mixinIf(i == 2)(color.red),
-        mixinIfElse(i == 1)(color.blue)(marginTop(1 em))
-    ))
-
-  /** Style applying Bootstrap */
-  val sb1 = style(addClassNames("btn", "btn-default"))
-
-  /** Style extending into Bootstrap */
-  val sb2 = style(
-    addClassNames("btn", "btn-default"),
-    marginTop.inherit
-  )
-
   val empty = style(null: String)()
 
   /** Composite style */
@@ -111,14 +86,51 @@ object MyInline extends StyleSheet.Inline {
   }
 }
 
+object MyInline2 extends StyleSheet.Inline {
+  import dsl._
+
+  /** Style applying Bootstrap */
+  val sb1 = style(addClassNames("btn", "btn-default"))
+
+  /** Style extending into Bootstrap */
+  val sb2 = style(
+    addClassNames("btn", "btn-default"),
+    marginTop.inherit
+  )
+
+  /** Style requiring boolean */
+  val everythingOk =
+    styleF.bool(ok => styleS(
+      backgroundColor(if (ok) green else red),
+      maxWidth(80.ex)
+    ))
+
+  /** Style requiring int */
+  val indent: Int => StyleA =
+    styleF.int(2 to 4)(i => styleS(
+      paddingLeft(i * 4.ex),
+      mixinIf(i == 3)(color.red),
+      mixinIfElse(i == 2)(color.blue)(marginTop(1 em))
+    ))
+
+  /** Other styleF */
+  val opbool =
+    styleF(Domain.boolean.option) {
+      case None        => styleS(color.black)
+      case Some(false) => styleS(color.red)
+      case Some(true)  => styleS(color.green)
+    }
+
+}
+
 object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.TestUtil._
 
   def norm(css: String) = css.trim
 
-  override val tests = TestSuite {
-    'css - assertEq(norm(MyInline.render), norm(
+  override def tests = TestSuite {
+    'css1 - assertEq(norm(MyInline.render), norm(
       """
         |@media not handheld and (orientation:landscape) and (color) {
         |  .manual {
@@ -209,36 +221,6 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |.MyInline-everythingOk-t {
-        |  background-color: green;
-        |  max-width: 80ex;
-        |}
-        |
-        |.MyInline-everythingOk-f {
-        |  background-color: red;
-        |  max-width: 80ex;
-        |}
-        |
-        |.MyInline-indent-1 {
-        |  padding-left: 4ex;
-        |  color: blue;
-        |}
-        |
-        |.MyInline-indent-2 {
-        |  padding-left: 8ex;
-        |  color: red;
-        |  margin-top: 1em;
-        |}
-        |
-        |.MyInline-indent-3 {
-        |  padding-left: 12ex;
-        |  margin-top: 1em;
-        |}
-        |
-        |.MyInline-sb2 {
-        |  margin-top: inherit;
-        |}
-        |
         |.MyInline-0002 {
         |  border: 1px solid black;
         |  padding: 1ex;
@@ -254,28 +236,85 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
+    'css2 - assertEq(norm(MyInline2.render), norm(
+      """
+        |.MyInline2-sb2 {
+        |  margin-top: inherit;
+        |}
+        |
+        |.MyInline2-everythingOk-t {
+        |  background-color: green;
+        |  max-width: 80ex;
+        |}
+        |
+        |.MyInline2-everythingOk-f {
+        |  background-color: red;
+        |  max-width: 80ex;
+        |}
+        |
+        |.MyInline2-indent-2 {
+        |  padding-left: 8ex;
+        |  color: blue;
+        |}
+        |
+        |.MyInline2-indent-3 {
+        |  padding-left: 12ex;
+        |  color: red;
+        |  margin-top: 1em;
+        |}
+        |
+        |.MyInline2-indent-4 {
+        |  padding-left: 16ex;
+        |  margin-top: 1em;
+        |}
+        |
+        |.MyInline2-opbool-1 {
+        |  color: black;
+        |}
+        |
+        |.MyInline2-opbool-2 {
+        |  color: green;
+        |}
+        |
+        |.MyInline2-opbool-3 {
+        |  color: red;
+        |}
+      """.stripMargin))
+
     'classnames {
-      assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
+      'manual - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
-      assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-everythingOk-t")
-      assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-everythingOk-f")
+      'everythingOk {
+        assertEq(MyInline2.everythingOk(true) .htmlClass, "MyInline2-everythingOk-t")
+        assertEq(MyInline2.everythingOk(false).htmlClass, "MyInline2-everythingOk-f")
+      }
 
-      assertEq(MyInline.indent(1).htmlClass, "MyInline-indent-1")
-      assertEq(MyInline.indent(2).htmlClass, "MyInline-indent-2")
-      assertEq(MyInline.indent(3).htmlClass, "MyInline-indent-3")
+      'indent {
+        assertEq(MyInline2.indent(2).htmlClass, "MyInline2-indent-2")
+        assertEq(MyInline2.indent(3).htmlClass, "MyInline2-indent-3")
+        assertEq(MyInline2.indent(4).htmlClass, "MyInline2-indent-4")
+      }
 
-      assertEq(MyInline.sb1.htmlClass, "btn btn-default")
-      assertEq(MyInline.sb2.htmlClass, "MyInline-sb2 btn btn-default")
+      'opbool {
+        assertEq(MyInline2.opbool(None)       .htmlClass, "MyInline2-opbool-1")
+        assertEq(MyInline2.opbool(Some(true)) .htmlClass, "MyInline2-opbool-2")
+        assertEq(MyInline2.opbool(Some(false)).htmlClass, "MyInline2-opbool-3")
+      }
 
-      assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+      'sb1 - assertEq(MyInline2.sb1.htmlClass, "btn btn-default")
+      'sb2 - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
 
-      import shapeless.syntax.singleton._ // TODO
-      val classNames =
-        MyInline.sc('outer)(o =>
-                    _('label)(l =>
-                      _('checkbox)(c =>
-                        List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
+      'empty - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+
+      'styleC {
+        import shapeless.syntax.singleton._
+        val classNames =
+          MyInline.sc('outer)(o =>
+                      _('label)(l =>
+                        _('checkbox)(c =>
+                          List(o, l, c).map(_.htmlClass))))
+        assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
+      }
     }
   }
 }
