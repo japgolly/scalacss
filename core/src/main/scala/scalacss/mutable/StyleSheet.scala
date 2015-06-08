@@ -131,18 +131,26 @@ object StyleSheet {
     override protected def __macroStyle(className: String) =
       new MStyle(className)
 
-    protected class MStyle(className: String) extends DslMacros.MStyle {
-      def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
-        val s = register.applyMacroName(className, Dsl.style(t: _*))
-        register registerS s
+    protected class MStyle(name: String) extends DslMacros.MStyle {
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
+        val s1 = Dsl.style(t: _*)
+        val s2 = register.applyMacroName(name, s1)
+        register registerS s2
       }
 
-      def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
         register registerS Dsl.style(className)(t: _*)
     }
 
-    protected def boolStyle(f: Boolean => StyleS): Boolean => StyleA =
-      styleF(Domain.boolean)(f)
+    override protected def __macroStyleB(name: String) =
+      new MStyleB(name)
+
+    protected class MStyleB(name: String) extends DslMacros.MStyleB {
+      override def apply(f: Boolean => StyleS): Boolean => StyleA = {
+        val s = StyleF(f)(Domain.boolean)
+        register.registerFM(s, name)((b, _) => if (b) "t" else "f")
+      }
+    }
 
     protected def intStyle(r: Range)(f: Int => StyleS): Int => StyleA =
       styleF(Domain ofRange r)(f)

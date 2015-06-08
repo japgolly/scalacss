@@ -209,28 +209,28 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |.MyInline-0001 {
+        |.MyInline-everythingOk-t {
         |  background-color: green;
         |  max-width: 80ex;
         |}
         |
-        |.MyInline-0002 {
+        |.MyInline-everythingOk-f {
         |  background-color: red;
         |  max-width: 80ex;
         |}
         |
-        |.MyInline-0003 {
+        |.MyInline-0001 {
         |  padding-left: 4ex;
         |  color: blue;
         |}
         |
-        |.MyInline-0004 {
+        |.MyInline-0002 {
         |  padding-left: 8ex;
         |  color: red;
         |  margin-top: 1em;
         |}
         |
-        |.MyInline-0005 {
+        |.MyInline-0003 {
         |  padding-left: 12ex;
         |  margin-top: 1em;
         |}
@@ -239,16 +239,16 @@ object InlineTest extends utest.TestSuite {
         |  margin-top: inherit;
         |}
         |
-        |.MyInline-0007 {
+        |.MyInline-0005 {
         |  border: 1px solid black;
         |  padding: 1ex;
         |}
         |
-        |.MyInline-0008 {
+        |.MyInline-0006 {
         |  font-weight: bold;
         |}
         |
-        |.MyInline-0009 {
+        |.MyInline-0007 {
         |  margin: 4ex;
         |  background-color: #eee;
         |}
@@ -257,17 +257,17 @@ object InlineTest extends utest.TestSuite {
     'classnames {
       assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
-      assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-0001")
-      assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-0002")
+      assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-everythingOk-t")
+      assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-everythingOk-f")
 
-      assertEq(MyInline.indent(1).htmlClass, "MyInline-0003")
-      assertEq(MyInline.indent(2).htmlClass, "MyInline-0004")
-      assertEq(MyInline.indent(3).htmlClass, "MyInline-0005")
+      assertEq(MyInline.indent(1).htmlClass, "MyInline-0001")
+      assertEq(MyInline.indent(2).htmlClass, "MyInline-0002")
+      assertEq(MyInline.indent(3).htmlClass, "MyInline-0003")
 
       assertEq(MyInline.sb1.htmlClass, "btn btn-default")
       assertEq(MyInline.sb2.htmlClass, "MyInline-sb2 btn btn-default")
 
-      assertEq(MyInline.empty.htmlClass, "MyInline-0006")
+      assertEq(MyInline.empty.htmlClass, "MyInline-0004")
 
       import shapeless.syntax.singleton._ // TODO
       val classNames =
@@ -275,7 +275,7 @@ object InlineTest extends utest.TestSuite {
                     _('label)(l =>
                       _('checkbox)(c =>
                         List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("MyInline-0007", "MyInline-0008", "MyInline-0009"))
+      assertEq(classNames, List("MyInline-0005", "MyInline-0006", "MyInline-0007"))
     }
   }
 }

@@ -90,11 +90,25 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     a
   }
 
-  def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA = {
+  def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+    _registerF(s, l)((add, domain) =>
+      domain.toStream.foldLeft(l.empty)((q, i) =>
+        add(q, i, s f i)))
+
+  def registerFM[I](s: StyleF[I], nameFromMacro: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+    _registerF(s, l)((add, domain) =>
+      domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
+        var style = s f i
+        if (style.className.isEmpty && (nameFromMacro ne null))
+          for (cn <- macroName(cnh, nameFromMacro, toCN(i, index)))
+            style = style.copy(className = Some(ensureUnique(cn)))
+        add(q, i, style)
+      }
+    )
+
+  private def _registerF[I](s: StyleF[I], l: StyleLookup[I])(build: ((l.T, I, StyleS) => l.T, Domain[I]) => l.T)(implicit cnh: ClassNameHint): I => StyleA = {
     val add = l.add
-    val lookup = mutex(
-      s.domain.toStream.foldLeft(l.empty)((q, i) =>
-        add(q, i, registerS(s f i))))
+    val lookup = mutex(build((q, i, styleS) => add(q, i, registerS(styleS)), s.domain))
     val f = l.get(lookup)
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
@@ -103,8 +117,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     u apply m(s.styles)
 
   object _registerC extends Poly1 {
-    implicit def cs[W]                (implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
-    implicit def cf[W, I: StyleLookup](implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
+    implicit def s[W]                (implicit h: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
+    implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
   def styles: Vector[StyleA] = mutex {
@@ -124,6 +138,9 @@ object Register { // ===========================================================
 
   trait MacroName {
     def apply(cnh: ClassNameHint, name: String): Option[ClassName]
+
+    def apply(cnh: ClassNameHint, name: String, domain: => String): Option[ClassName] =
+      apply(cnh, name).map(n => ClassName(n.value + "-" + domain))
   }
   object MacroName {
     object Use extends MacroName {

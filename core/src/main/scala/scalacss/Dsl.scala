@@ -228,7 +228,6 @@ object DslMacros {
       n
   }
 
-
   def nameImpl(c: Context): c.Expr[String] = {
     import c.universe._
     c.Expr(Literal(Constant(name(c))))
@@ -236,7 +235,12 @@ object DslMacros {
 
   def styleImpl(c: Context): c.Expr[MStyle] = {
     import c.universe._
-    c.Expr[MStyle](q"__macroStyle(${name(c)})")
+    c.Expr(q"__macroStyle(${name(c)})")
+  }
+
+  def styleBImpl(c: Context): c.Expr[MStyleB] = {
+    import c.universe._
+    c.Expr(q"__macroStyleB(${name(c)})")
   }
 
   trait MStyle {
@@ -244,9 +248,16 @@ object DslMacros {
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
   }
 
+  trait MStyleB {
+    def apply(f: Boolean => StyleS): Boolean => StyleA
+  }
+
   trait Mixin {
     protected def __macroStyle(className: String): MStyle
     final protected def style: MStyle = macro styleImpl
+
+    protected def __macroStyleB(className: String): MStyleB
+    final protected def boolStyle: MStyleB = macro styleBImpl
   }
 }
 
