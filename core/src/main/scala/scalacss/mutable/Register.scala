@@ -144,12 +144,15 @@ object Register { // ===========================================================
   }
   object MacroName {
     object Use extends MacroName {
+      val cssIllegal = "[^_a-zA-Z0-9\u00a0-\u00ff-]".r
+
       override def apply(cnh: ClassNameHint, name: String) =
         if (name.isEmpty)
           None
-        else
-          // TODO ensure name valid
-          Some(ClassName(s"${cnh.value}-$name"))
+        else {
+          val name2 = cssIllegal.replaceAllIn(name, "_")
+          Some(ClassName(s"${cnh.value}-$name2"))
+        }
     }
     object Ignore extends MacroName {
       override def apply(cnh: ClassNameHint, name: String) =

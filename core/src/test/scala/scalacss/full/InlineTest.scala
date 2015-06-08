@@ -121,6 +121,8 @@ object MyInline2 extends StyleSheet.Inline {
       case Some(true)  => styleS(color.green)
     }
 
+  val `what the hell??` = style(visibility.hidden)
+
 }
 
 object InlineTest extends utest.TestSuite {
@@ -279,6 +281,10 @@ object InlineTest extends utest.TestSuite {
         |.MyInline2-opbool-3 {
         |  color: red;
         |}
+        |
+        |.MyInline2-what_the_hell__ {
+        |  visibility: hidden;
+        |}
       """.stripMargin))
 
     'classnames {
@@ -305,6 +311,8 @@ object InlineTest extends utest.TestSuite {
       'sb2 - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
 
       'empty - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+
+      'wth - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
 
       'styleC {
         import shapeless.syntax.singleton._

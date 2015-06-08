@@ -219,37 +219,34 @@ abstract class DslBase
 object DslMacros {
   import scala.reflect.macros.blackbox.Context
 
-  def name(c: Context): String = {
+  private def name(c: Context): String = {
     val n = c.internal.enclosingOwner.name.toString.trim
     // `style()` instead of `val x = style()` results in "<local OuterClass>"
     if (n startsWith "<")
       ""
     else
-      n
+      scala.reflect.NameTransformer.decode(n)
   }
 
-  def nameImpl(c: Context): c.Expr[String] = {
+  private def impl[A](c: Context, method: String): c.Expr[A] = {
     import c.universe._
-    c.Expr(Literal(Constant(name(c))))
+    c.Expr(Apply(Ident(TermName(method)), List(Literal(Constant(name(c))))))
   }
 
-  def styleImpl(c: Context): c.Expr[MStyle] = {
-    import c.universe._
-    c.Expr(q"__macroStyle(${name(c)})")
-  }
+  def implStyle (c: Context): c.Expr[MStyle]  = impl(c, "__macroStyle")
+  def implStyleF(c: Context): c.Expr[MStyleF] = impl(c, "__macroStyleF")
 
-  def styleFImpl(c: Context): c.Expr[MStyleF] = {
-    import c.universe._
-    c.Expr(q"__macroStyleF(${name(c)})")
+  trait Mixin {
+    protected def __macroStyle (name: String): MStyle
+    protected def __macroStyleF(name: String): MStyleF
+    final protected def style : MStyle  = macro implStyle
+    final protected def styleF: MStyleF = macro implStyleF
   }
 
   trait MStyle {
     def apply                   (t: ToStyle*)(implicit c: Compose): StyleA
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
   }
-
-  val defaultStyleFClassNameSuffix =
-    (_: Any, index: Int) => (index + 1).toString
 
   trait MStyleF {
     def bool(f: Boolean => StyleS): Boolean => StyleA =
@@ -264,13 +261,8 @@ object DslMacros {
     protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
   }
 
-  trait Mixin {
-    protected def __macroStyle(className: String): MStyle
-    final protected def style: MStyle = macro styleImpl
-
-    protected def __macroStyleF(className: String): MStyleF
-    final protected def styleF: MStyleF = macro styleFImpl
-  }
+  val defaultStyleFClassNameSuffix: (Any, Int) => String =
+    (_, index) => (index + 1).toString
 }
 
 // =====================================================================================================================
