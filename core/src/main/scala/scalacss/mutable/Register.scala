@@ -6,7 +6,7 @@ import shapeless._
 import shapeless.ops.hlist.Mapper
 import scalacss._
 import StyleC.{Named, MkUsage}
-import Register.{ErrorHandler, NameGen}
+import Register.{MacroName, ErrorHandler, NameGen}
 
 /**
  * TODO Doc & test MutableRegister and friends inc. Style[FC]
@@ -15,7 +15,7 @@ import Register.{ErrorHandler, NameGen}
  *
  * Thread-safe.
  */
-final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
+final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
   var _nameGen  = initNameGen
   var _styles   = Vector.empty[StyleA]
@@ -28,11 +28,40 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
       cn
     }
 
+  // Special case: addClassNames-only styles don't need a class-name generated
+  private def doesntNeedClassName(s0: StyleS): Boolean =
+    s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
+
+  private def isTaken(className: ClassName): Boolean =
+    mutex(_styles.exists(_.className === className))
+
+  private def ensureUnique(cn: ClassName): ClassName =
+    mutex(
+      if (isTaken(cn)) {
+        @tailrec def go(suf: Int): ClassName = {
+          val n = ClassName(s"$cn-$suf")
+          if (isTaken(n))
+            go(suf + 1)
+          else
+            n
+        }
+        go(2)
+      } else
+        cn
+    )
+
+  def applyMacroName(name: String, style: StyleS)(implicit cnh: ClassNameHint): StyleS =
+    if (style.data.isEmpty && style.unsafeExts.isEmpty)
+      style
+    else {
+      val cn = macroName(cnh, name) map ensureUnique
+      style.copy(className = cn)
+    }
+
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
 
-    // Special case: addClassNames-only styles don't need a class-name generated
     val s =
-      if (s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty) {
+      if (doesntNeedClassName(s0)) {
         val h = s0.addClassNames.head
         val t = s0.addClassNames.tail
         s0.copy(className = Some(h), addClassNames = t)
@@ -49,7 +78,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
       if (_rendered)
         warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
 
-      if (_styles.exists(_.className === cn))
+      if (isTaken(cn))
         warn("Another style in the register has the same classname.")
 
       s.warnings foreach (f(cn, _))
@@ -92,6 +121,24 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
 
 
 object Register { // ===================================================================================================
+
+  trait MacroName {
+    def apply(cnh: ClassNameHint, name: String): Option[ClassName]
+  }
+  object MacroName {
+    object Use extends MacroName {
+      override def apply(cnh: ClassNameHint, name: String) =
+        if (name.isEmpty)
+          None
+        else
+          // TODO ensure name valid
+          Some(ClassName(s"${cnh.value}-$name"))
+    }
+    object Ignore extends MacroName {
+      override def apply(cnh: ClassNameHint, name: String) =
+        None
+    }
+  }
 
   trait NameGen {
     def next(cnh: ClassNameHint): (ClassName, NameGen)

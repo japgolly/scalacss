@@ -216,12 +216,62 @@ abstract class DslBase
 }
 
 // =====================================================================================================================
+object DslMacros {
+  import scala.reflect.macros.blackbox.Context
+
+  def name(c: Context): String = {
+    val n = c.internal.enclosingOwner.name.toString.trim
+    // `style()` instead of `val x = style()` results in "<local OuterClass>"
+    if (n startsWith "<")
+      ""
+    else
+      n
+  }
+
+
+  def nameImpl(c: Context): c.Expr[String] = {
+    import c.universe._
+    c.Expr(Literal(Constant(name(c))))
+  }
+
+  def styleImpl(c: Context): c.Expr[MStyle] = {
+    import c.universe._
+    c.Expr[MStyle](q"__macroStyle(${name(c)})")
+  }
+
+  trait MStyle {
+    def apply                   (t: ToStyle*)(implicit c: Compose): StyleA
+    def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
+  }
+
+//  class MStyle(autoClassName: String, f: StyleS => StyleA) {
+//    def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+//      apply(autoClassName)(t: _*)
+//
+//    def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA = {
+//      def n(s: String): Option[ClassName] = if ((s ne null) && s.nonEmpty) Some(ClassName(s)) else None
+//      val cn = n(className) orElse n(autoClassName)
+//      // TODO fix classname
+//      val s1 = if (t.isEmpty) StyleS.empty else t.map(_.s).reduce(_ compose _)
+//      val s2 = s1.copy(className = cn)
+//      f(s2)
+//    }
+//  }
+
+  trait Mixin {
+    def __macroStyle(className: String): MStyle
+
+    final def style: MStyle = macro styleImpl
+  }
+}
+
+// =====================================================================================================================
 object Dsl extends DslBase {
 
   override protected def styleS(t: ToStyle*)(implicit c: Compose) =
     style(t: _*)
 
-  def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleS =
+  def style(className: String)(t: ToStyle*)(implicit c: Compose): StyleS =
     style(t: _*).copy(className = Option(className) map ClassName)
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =

@@ -47,30 +47,30 @@ object ComposeTest extends TestSuite {
     object SampleStyles extends StyleSheet.Inline {
       override implicit val classNameHint = ClassNameHint("TEST")
       import dsl._
-      val other = style("other")(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
-      val outer = style("outer")(fontWeight.bold)
+      val other = style(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
+      val outer = style(fontWeight.bold)
       val inner = style(color.red, outer)
     }
     def test(): Unit = {
       val css = SampleStyles.renderA[String].trim
-      assertEq(SampleStyles.outer.htmlClass, "outer")
-      assertEq(SampleStyles.inner.htmlClass, "TEST-0001")
+      assertEq(SampleStyles.outer.htmlClass, "TEST-outer")
+      assertEq(SampleStyles.inner.htmlClass, "TEST-inner")
       assertEq(css,
         """
-          |.other {
+          |.TEST-other {
           |  border-collapse: collapse;
           |  font-weight: 100;
           |}
           |
-          |.other:hover {
+          |.TEST-other:hover {
           |  font-weight: 200;
           |}
           |
-          |.outer {
+          |.TEST-outer {
           |  font-weight: bold;
           |}
           |
-          |.TEST-0001 {
+          |.TEST-inner {
           |  color: red;
           |  font-weight: bold;
           |}

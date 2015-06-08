@@ -19,7 +19,7 @@ object StyleSheet {
   abstract class Base {
     protected def register: Register
 
-    protected implicit val classNameHint: ClassNameHint =
+    protected implicit val classNameHint: ClassNameHint = // TODO no point in this being implicit
       ClassNameHint(getClass.getName
         .replaceFirst("""^(?:.+\.)(.+?)\$?$""", "$1")
         .replaceAll("\\$+", "_"))
@@ -122,17 +122,24 @@ object StyleSheet {
    *   - Style class names / CSS selectors are automatically generated.
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
-  abstract class Inline(protected implicit val register: Register) extends Base {
+  abstract class Inline(protected implicit val register: Register) extends Base with DslMacros.Mixin {
     import dsl._
 
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    protected def style(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(t: _*)
+    override def __macroStyle(className: String) =
+      new MStyle(className)
 
-    protected def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(className)(t: _*)
+    class MStyle(className: String) extends DslMacros.MStyle {
+      def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
+        val s = register.applyMacroName(className, Dsl.style(t: _*))
+        register registerS s
+      }
+
+      def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+        register registerS Dsl.style(className)(t: _*)
+    }
 
     protected def boolStyle(f: Boolean => StyleS): Boolean => StyleA =
       styleF(Domain.boolean)(f)
