@@ -244,24 +244,9 @@ object DslMacros {
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
   }
 
-//  class MStyle(autoClassName: String, f: StyleS => StyleA) {
-//    def apply(t: ToStyle*)(implicit c: Compose): StyleA =
-//      apply(autoClassName)(t: _*)
-//
-//    def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA = {
-//      def n(s: String): Option[ClassName] = if ((s ne null) && s.nonEmpty) Some(ClassName(s)) else None
-//      val cn = n(className) orElse n(autoClassName)
-//      // TODO fix classname
-//      val s1 = if (t.isEmpty) StyleS.empty else t.map(_.s).reduce(_ compose _)
-//      val s2 = s1.copy(className = cn)
-//      f(s2)
-//    }
-//  }
-
   trait Mixin {
-    def __macroStyle(className: String): MStyle
-
-    final def style: MStyle = macro styleImpl
+    protected def __macroStyle(className: String): MStyle
+    final protected def style: MStyle = macro styleImpl
   }
 }
 

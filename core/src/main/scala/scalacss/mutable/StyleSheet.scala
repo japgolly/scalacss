@@ -128,10 +128,10 @@ object StyleSheet {
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    override def __macroStyle(className: String) =
+    override protected def __macroStyle(className: String) =
       new MStyle(className)
 
-    class MStyle(className: String) extends DslMacros.MStyle {
+    protected class MStyle(className: String) extends DslMacros.MStyle {
       def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
         val s = register.applyMacroName(className, Dsl.style(t: _*))
         register registerS s
