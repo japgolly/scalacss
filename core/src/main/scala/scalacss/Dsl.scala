@@ -97,6 +97,13 @@ object DslBase {
     /** Dots per centimeter */
     @inline def dpcm = Resolution(self, ResolutionUnit.dpcm)
 
+    /**
+     * This unit represents the number of dots per px unit. Due to the 1:96 fixed ratio of CSS in to CSS px, 1dppx is
+     * equivalent to 96dpi, that corresponds to the default resolution of images displayed in CSS as defined by
+     * image-resolution.
+     */
+    @inline def dppx = Resolution(self, ResolutionUnit.dppx)
+
     @inline def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
     @inline def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
   }
