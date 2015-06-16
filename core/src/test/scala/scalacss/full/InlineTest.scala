@@ -123,6 +123,12 @@ object MyInline2 extends StyleSheet.Inline {
 
   val `what the hell??` = style(visibility.hidden)
 
+  val dup1a = style("MyInline2-dup1b")(wordBreak.breakAll)
+  val dup1b = style(wordBreak.keepAll)
+
+  val dup2a = style("MyInline2-dup2c")(verticalAlign.top)
+  val dup2b = style("MyInline2-dup2c-2")(verticalAlign.middle)
+  val dup2c = style(verticalAlign.bottom)
 }
 
 object InlineTest extends utest.TestSuite {
@@ -285,6 +291,26 @@ object InlineTest extends utest.TestSuite {
         |.MyInline2-what_the_hell__ {
         |  visibility: hidden;
         |}
+        |
+        |.MyInline2-dup1b {
+        |  word-break: break-all;
+        |}
+        |
+        |.MyInline2-dup1b-2 {
+        |  word-break: keep-all;
+        |}
+        |
+        |.MyInline2-dup2c {
+        |  vertical-align: top;
+        |}
+        |
+        |.MyInline2-dup2c-2 {
+        |  vertical-align: middle;
+        |}
+        |
+        |.MyInline2-dup2c-3 {
+        |  vertical-align: bottom;
+        |}
       """.stripMargin))
 
     'classnames {
@@ -313,6 +339,17 @@ object InlineTest extends utest.TestSuite {
       'empty - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
 
       'wth - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
+
+      'dup1 - {
+        assertEq(MyInline2.dup1a.htmlClass, "MyInline2-dup1b")
+        assertEq(MyInline2.dup1b.htmlClass, "MyInline2-dup1b-2")
+      }
+
+      'dup2 - {
+        assertEq(MyInline2.dup2a.htmlClass, "MyInline2-dup2c")
+        assertEq(MyInline2.dup2b.htmlClass, "MyInline2-dup2c-2")
+        assertEq(MyInline2.dup2c.htmlClass, "MyInline2-dup2c-3")
+      }
 
       'styleC {
         import shapeless.syntax.singleton._

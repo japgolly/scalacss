@@ -39,7 +39,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     mutex(
       if (isTaken(cn)) {
         @tailrec def go(suf: Int): ClassName = {
-          val n = ClassName(s"$cn-$suf")
+          val n = ClassName(s"${cn.value}-$suf")
           if (isTaken(n))
             go(suf + 1)
           else
@@ -136,13 +136,21 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
 object Register { // ===================================================================================================
 
+  /**
+   * Determines how to generate a class name for a style, using a name provided by a macro (i.e. the variable name).
+   */
   trait MacroName {
     def apply(cnh: ClassNameHint, name: String): Option[ClassName]
 
     def apply(cnh: ClassNameHint, name: String, domain: => String): Option[ClassName] =
       apply(cnh, name).map(n => ClassName(n.value + "-" + domain))
   }
+
   object MacroName {
+
+    /**
+     * Makes a macro-provided name safe for CSS and appends it to the ClassNameHint.
+     */
     object Use extends MacroName {
       val cssIllegal = "[^_a-zA-Z0-9\u00a0-\u00ff-]".r
 
@@ -154,12 +162,19 @@ object Register { // ===========================================================
           Some(ClassName(s"${cnh.value}-$name2"))
         }
     }
+
+    /**
+     * Ignore the macro-provided name. Styles will be named arbitrarily by [[NameGen]].
+     */
     object Ignore extends MacroName {
       override def apply(cnh: ClassNameHint, name: String) =
         None
     }
   }
 
+  /**
+   * Generates an arbitrary name for a style.
+   */
   trait NameGen {
     def next(cnh: ClassNameHint): (ClassName, NameGen)
   }
