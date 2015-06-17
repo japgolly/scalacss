@@ -35,9 +35,11 @@ object StyleSheet {
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
-    }
 
-    @inline final protected def ^ = Literal
+      @inline final def ^ = Literal
+
+      @inline final def Color(literal: String) = scalacss.Color(literal)
+    }
 
     final def css(implicit env: Env): Css =
       register.css

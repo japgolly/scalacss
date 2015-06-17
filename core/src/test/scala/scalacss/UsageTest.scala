@@ -22,7 +22,7 @@ object UsageTest extends TestSuite {
         fontWeight.bold),
 
       unsafeChild("nav.debug")(
-        backgroundColor("#f88"),
+        backgroundColor(c"#f88"),
         color.black,
 
         unsafeChild("q")(

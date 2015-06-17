@@ -39,7 +39,7 @@ object MyInline extends StyleSheet.Inline {
       ),
 
       unsafeChild("nav.debug")(
-        backgroundColor("#f88"),
+        backgroundColor(Color("#f88")), // Bypass validation
         color.black.important,
 
         unsafeChild("h1")(
@@ -81,7 +81,7 @@ object MyInline extends StyleSheet.Inline {
   val sc = styleC {
     val o = styleS(border(1 px, solid, black), padding(1 ex))
     val l = styleS(fontWeight.bold)
-    val c = styleS(margin(4 ex), backgroundColor("#eee"))
+    val c = styleS(margin(4 ex), backgroundColor(c"#eee"))
     o.named('outer) :*: l.named('label) :*: c.named('checkbox)
   }
 }

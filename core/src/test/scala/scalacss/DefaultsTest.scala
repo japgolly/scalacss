@@ -21,8 +21,8 @@ object DefaultsTest extends TestSuite {
   class SharedStyles(implicit reg: mutable.Register) extends mutable.StyleSheet.Inline {
     import dsl._
     implicit def compose = Compose.trust
-    val header = style(backgroundColor("#333"))
-    val footer = style(backgroundColor("#666"))
+    val header = style(backgroundColor(c"#333"))
+    val footer = style(backgroundColor(c"#666"))
   }
 
   // ===================================================================================================================

@@ -281,8 +281,8 @@ object Register { // ===========================================================
 
     val fallbackStyle: StyleA = {
       import Dsl._
-      val s = style(backgroundColor("#ffbaba"), color("#d8000c"))(Compose.safe)
-      StyleA(ClassName("_SCSS_ERROR_"), Vector.empty, s)
+      val s = style(backgroundColor(Color("#ffbaba")), color(Color("#d8000c")))(Compose.safe)
+      StyleA(ClassName("_SCALACSS_ERROR_"), Vector.empty, s)
     }
   }
 }
