@@ -16,13 +16,22 @@ import StyleC.MkUsage
  */
 object StyleSheet {
 
+  /**
+   * Classes defined in the REPL appear like this:
+   *   $line8.$read.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.MyStyles
+   */
+  private def fixRepl(s: String): String =
+    s.replaceFirst("""^\$line.+[.$]\$iw[.$]""", "")
+
   abstract class Base {
     protected def register: Register
 
     protected implicit val classNameHint: ClassNameHint =
-      ClassNameHint(getClass.getName
-        .replaceFirst("""^(?:.+\.)(.+?)\$?$""", "$1")
-        .replaceAll("\\$+", "_"))
+      ClassNameHint(
+        fixRepl(getClass.getName)
+          .replaceFirst("\\$+$", "")
+          .replaceFirst("""^(?:.+\.)(.+?)$""", "$1")
+          .replaceAll("\\$+", "_"))
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)

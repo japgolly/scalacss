@@ -12,7 +12,7 @@ object MyStyles extends StyleSheet.Inline {
     backgroundColor.green
   )
 
-  val myStyle1 = style(
+  val outer = style(
     common, // Applying our mixin
     margin(12 px, auto),
     textAlign.left,
@@ -29,7 +29,7 @@ object MyStyles extends StyleSheet.Inline {
 
   /** Style requiring an Int when applied. */
   val indent =
-    intStyle(0 to 3)(i => styleS(
+    styleF.int(0 to 3)(i => styleS(
       paddingLeft(i * 2.ex)
     ))
 
@@ -45,9 +45,9 @@ To apply a style, you apply the style's class names to some inline HTML.
 You can see styles' class names like this:
 
 ```scala
-MyStyles.myStyle1.htmlClass  // Returns "MyStyles-0001"
-MyStyles.indent(1).htmlClass // Returns "MyStyles-0003"
-MyStyles.indent(2).htmlClass // Returns "MyStyles-0004"
+MyStyles.outer.htmlClass     // Returns "MyStyles-outer"
+MyStyles.indent(1).htmlClass // Returns "MyStyles-indent-1"
+MyStyles.indent(2).htmlClass // Returns "MyStyles-indent-2"
 MyStyles.button.htmlClass    // Returns "btn btn-default"
 ```
 
@@ -59,43 +59,43 @@ println( MyStyles.render )
 Which prints:
 ```css
 @media not handheld and (orientation:landscape) and (max-width:640px) {
-  .MyStyles-0001 {
+  .MyStyles-outer {
     width: 400px;
   }
 }
 
-.MyStyles-0001 {
+.MyStyles-outer {
   background-color: green;
   margin: 12px auto;
   text-align: left;
   cursor: pointer;
 }
 
-.MyStyles-0001:hover {
+.MyStyles-outer:hover {
   cursor: -webkit-zoom-in;
   cursor: -moz-zoom-in;
   cursor: -o-zoom-in;
   cursor: zoom-in;
 }
 
-.MyStyles-0002 {
+.MyStyles-indent-0 {
   padding-left: 0;
 }
 
-.MyStyles-0003 {
+.MyStyles-indent-1 {
   padding-left: 2ex;
 }
 
-.MyStyles-0004 {
+.MyStyles-indent-2 {
   padding-left: 4ex;
 }
 
-.MyStyles-0005 {
+.MyStyles-indent-3 {
   padding-left: 6ex;
 }
 ```
 
-Or if you're running in production-mode, you'll see:
-```css
-@media not handheld and (orientation:landscape) and (max-width:640px){._a0{width:400px}}._a0{background-color:green;margin:12px auto;text-align:left;cursor:pointer}._a0:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}._a1{padding-left:0}._a2{padding-left:2ex}._a3{padding-left:4ex}._a4{padding-left:6ex}
-```
+Or if you're running in production-mode (see `ProdDefaults`), you'll see:
+<div style="padding:16px; background-color: #f7f7f7">
+<code style="word-break:break-all" class="lang-css">@media not handheld and (orientation:landscape) and (max-width:640px){._a0{width:400px}}._a0{background-color:green;margin:12px auto;text-align:left;cursor:pointer}._a0:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}._a1{padding-left:0}._a2{padding-left:2ex}._a3{padding-left:4ex}._a4{padding-left:6ex}</code>
+</div>
