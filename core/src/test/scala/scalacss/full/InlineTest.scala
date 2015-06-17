@@ -30,11 +30,11 @@ object MyInline extends StyleSheet.Inline {
         font := ^.inherit
       ),
 
-      &(media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
+      (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
         margin.vertical(10 em)
       ),
 
-      &(media.not.handheld.landscape.color)(
+      media.not.handheld.landscape.color - (
         padding.horizontal(500 px)
       ),
 

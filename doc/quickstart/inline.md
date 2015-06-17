@@ -22,7 +22,7 @@ object MyStyles extends StyleSheet.Inline {
       cursor.zoomIn
     ),
 
-    &(media.not.handheld.landscape.maxWidth(640 px))(
+    media.not.handheld.landscape.maxWidth(640 px)(
       width(400 px)
     )
   )

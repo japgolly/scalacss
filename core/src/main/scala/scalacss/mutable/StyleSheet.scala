@@ -39,6 +39,11 @@ object StyleSheet {
       @inline final def ^ = Literal
 
       @inline final def Color(literal: String) = scalacss.Color(literal)
+
+      @inline implicit final def toCondOps[C <% Cond](x: C) = new CondOps(x)
+      final class CondOps(val cond: Cond) {
+        @inline def - = new DslCond(cond, dsl)
+      }
     }
 
     final def css(implicit env: Env): Css =
@@ -96,11 +101,6 @@ object StyleSheet {
         register registerS styleS(unsafeRoot(sel)(t: _*))
     }
 
-    @inline protected final implicit class NestedCondOps(val cond: Cond) {
-      /** Create a child style. */
-      def - = new DslCond(cond, dsl)
-    }
-
     protected final class NestedStringOps(val sel: CssSelector) extends Pseudo.ChainOps[NestedStringOps] {
       override protected def addPseudo(p: Pseudo): NestedStringOps =
         new NestedStringOps(p modSelector sel)
@@ -110,16 +110,9 @@ object StyleSheet {
         styleS(unsafeChild(sel)(t: _*))
     }
 
-    /** Created a nested conditional style. */
     @inline final protected def & : Cond = Cond.empty
 
-    /** Created a nested conditional style. */
-    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
-
-    /** Created a nested conditional style. */
-    @inline final protected def &(c: Cond): Cond = c
-
-    /** Created a child style. */
+    /** Create a child style. */
     @inline final protected def &(sel: CssSelector): NestedStringOps = new NestedStringOps(sel)
   }
 
@@ -164,14 +157,7 @@ object StyleSheet {
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
       register.registerC(s)(implicitly, m, u)
 
-    /** Created a nested conditional style. */
     @inline final protected def & : Cond = Cond.empty
-
-    /** Created a nested conditional style. */
-    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
-
-    /** Created a nested conditional style. */
-    @inline final protected def &(c: Cond): Cond = c
 
     /**
      * Objects in Scala are lazy. If you put styles in inner objects you need to make sure they're initialised before
