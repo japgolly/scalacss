@@ -54,6 +54,7 @@ object ScalaCSS extends Build {
   }
   val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
 
+
   // ==============================================================================================
   override def rootProject = Some(root)
 
@@ -64,7 +65,7 @@ object ScalaCSS extends Build {
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
-      .configure(utestSettings()) //, Gen.attrAliases)
+      .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
     )

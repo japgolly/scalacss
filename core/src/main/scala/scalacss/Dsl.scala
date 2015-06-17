@@ -216,12 +216,37 @@ abstract class DslBase
 }
 
 // =====================================================================================================================
+object DslMacros {
+
+  trait MStyle {
+    def apply                   (t: ToStyle*)(implicit c: Compose): StyleA
+    def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
+  }
+
+  trait MStyleF {
+    def bool(f: Boolean => StyleS): Boolean => StyleA =
+      apply(Domain.boolean)(f, (b, _) => if (b) "t" else "f")
+
+    def int(r: Range)(f: Int => StyleS): Int => StyleA =
+      apply(Domain ofRange r)(f, (i, _) => i.toString)
+
+    def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(d, f, classNameSuffix)
+
+    protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
+  }
+
+  val defaultStyleFClassNameSuffix: (Any, Int) => String =
+    (_, index) => (index + 1).toString
+}
+
+// =====================================================================================================================
 object Dsl extends DslBase {
 
   override protected def styleS(t: ToStyle*)(implicit c: Compose) =
     style(t: _*)
 
-  def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleS =
+  def style(className: String)(t: ToStyle*)(implicit c: Compose): StyleS =
     style(t: _*).copy(className = Option(className) map ClassName)
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =

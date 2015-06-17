@@ -9,8 +9,8 @@ import scalacss.Defaults._
 object MyInline extends StyleSheet.Inline {
   import dsl._
 
-  val s1 =
-    style(
+  val noMacrosOrClassnameHintHere =
+    style("manual")(
       margin(12 px),
       padding(0.5 ex),
       cursor.pointer,
@@ -59,7 +59,7 @@ object MyInline extends StyleSheet.Inline {
 
   val `it's a mixin!` = mixin(color.brown)
 
-  val medianess = style("medianess")(
+  val medianess = style(
     media.maxWidth(100 px)(
       // https://github.com/japgolly/scalacss/issues/41
       unsafeChild("span")(backgroundColor(yellow)),
@@ -72,35 +72,10 @@ object MyInline extends StyleSheet.Inline {
     media.maxWidth(100 px)(margin.auto),
     &.hover(color.red))
 
-  val condMixinP = style("condMixinP")(&.hover(condMixins))
-  val condMixinQ = style("condMixinQ")(media.maxWidth(100 px)(condMixins))
+  val condMixinP = style(&.hover(condMixins))
+  val condMixinQ = style(media.maxWidth(100 px)(condMixins))
 
-  /** Style requiring boolean */
-  val everythingOk =
-    boolStyle(ok => styleS(
-      backgroundColor(if (ok) green else red),
-      maxWidth(80.ex)
-    ))
-
-  /** Style requiring int */
-  val indent: Int => StyleA =
-    intStyle(1 to 3)(i =>
-      styleS(
-        paddingLeft(i * 4.ex),
-        mixinIf(i == 2)(color.red),
-        mixinIfElse(i == 1)(color.blue)(marginTop(1 em))
-    ))
-
-  /** Style applying Bootstrap */
-  val sb1 = style(addClassNames("btn", "btn-default"))
-
-  /** Style extending into Bootstrap */
-  val sb2 = style(
-    addClassNames("btn", "btn-default"),
-    marginTop.inherit
-  )
-
-  val empty = style()
+  val empty = style(null: String)()
 
   /** Composite style */
   val sc = styleC {
@@ -111,49 +86,109 @@ object MyInline extends StyleSheet.Inline {
   }
 }
 
-object InlineTest extends utest.TestSuite {
+object MyInline2 extends StyleSheet.Inline {
+  import dsl._
+
+  /** Style applying Bootstrap */
+  val sb1 = style(addClassNames("btn", "btn-default"))
+
+  /** Style extending into Bootstrap */
+  val sb2 = style(
+    addClassNames("btn", "btn-default"),
+    marginTop.inherit
+  )
+
+  /** Style requiring boolean */
+  val everythingOk =
+    styleF.bool(ok => styleS(
+      backgroundColor(if (ok) green else red),
+      maxWidth(80.ex)
+    ))
+
+  /** Style requiring int */
+  val indent: Int => StyleA =
+    styleF.int(2 to 4)(i => styleS(
+      paddingLeft(i * 4.ex),
+      mixinIf(i == 3)(color.red),
+      mixinIfElse(i == 2)(color.blue)(marginTop(1 em))
+    ))
+
+  /** Other styleF */
+  val opbool =
+    styleF(Domain.boolean.option) {
+      case None        => styleS(color.black)
+      case Some(false) => styleS(color.red)
+      case Some(true)  => styleS(color.green)
+    }
+
+  val `what the hell??` = style(visibility.hidden)
+}
+
+object MyInline3 extends StyleSheet.Inline {
+  import dsl._
+
+  val dup1a = style("MyInline3-dup1b")(wordBreak.breakAll)
+  val dup1b = style(wordBreak.keepAll)
+
+  val dup2a = style("MyInline3-dup2c")(verticalAlign.top)
+  val dup2b = style("MyInline3-dup2c-2")(verticalAlign.middle)
+  val dup2c = style(verticalAlign.bottom)
+
+  object innerObject {
+    val depth1 = style(borderCollapse.collapse)
+    object andAgain {
+      val depth2 = style(borderCollapse.separate)
+    }
+  }
+
+  // TODO
+  innerObject.depth1
+  innerObject.andAgain.depth2
+}
+
+  object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.TestUtil._
 
   def norm(css: String) = css.trim
 
-  override val tests = TestSuite {
-    'css - assertEq(norm(MyInline.render), norm(
+  override def tests = TestSuite {
+    'css1 - assertEq(norm(MyInline.render), norm(
       """
         |@media not handheld and (orientation:landscape) and (color) {
-        |  .MyInline-0001 {
+        |  .manual {
         |    padding-left: 500px;
         |    padding-right: 500px;
         |  }
         |}
         |
         |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .MyInline-0001 {
+        |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
         |  }
         |}
         |
         |@media (max-width:100px) {
-        |  .medianess {
+        |  .MyInline-medianess {
         |    color: brown;
         |  }
-        |  .medianess span {
+        |  .MyInline-medianess span {
         |    background-color: yellow;
         |  }
-        |  .condMixinP:hover {
+        |  .MyInline-condMixinP:hover {
         |    margin: auto;
         |  }
-        |  .condMixinQ {
+        |  .MyInline-condMixinQ {
         |    display: block;
         |    margin: auto;
         |  }
-        |  .condMixinQ:hover {
+        |  .MyInline-condMixinQ:hover {
         |    color: red;
         |  }
         |}
         |
-        |.MyInline-0001:not(:first-child):visited {
+        |.manual:not(:first-child):visited {
         |  -o-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
         |  -moz-animation-delay: 60s,50ms;
@@ -162,7 +197,7 @@ object InlineTest extends utest.TestSuite {
         |  font: inherit;
         |}
         |
-        |.MyInline-0001:hover {
+        |.manual:hover {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
@@ -172,7 +207,7 @@ object InlineTest extends utest.TestSuite {
         |  cursor: zoom-in;
         |}
         |
-        |.MyInline-0001 {
+        |.manual {
         |  margin: 12px;
         |  padding: 0.5ex;
         |  cursor: pointer;
@@ -185,12 +220,12 @@ object InlineTest extends utest.TestSuite {
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
-        |.MyInline-0001 nav.debug {
+        |.manual nav.debug {
         |  background-color: #f88;
         |  color: black !important;
         |}
         |
-        |.MyInline-0001 nav.debug h1 {
+        |.manual nav.debug h1 {
         |  line-height: 97.5%;
         |  font-size: 150%;
         |}
@@ -204,76 +239,156 @@ object InlineTest extends utest.TestSuite {
         |  border-color: #080;
         |}
         |
-        |.condMixinP:hover {
+        |.MyInline-condMixinP:hover {
         |  display: block;
         |  color: red;
         |}
         |
         |.MyInline-0002 {
-        |  background-color: green;
-        |  max-width: 80ex;
-        |}
-        |
-        |.MyInline-0003 {
-        |  background-color: red;
-        |  max-width: 80ex;
-        |}
-        |
-        |.MyInline-0004 {
-        |  padding-left: 4ex;
-        |  color: blue;
-        |}
-        |
-        |.MyInline-0005 {
-        |  padding-left: 8ex;
-        |  color: red;
-        |  margin-top: 1em;
-        |}
-        |
-        |.MyInline-0006 {
-        |  padding-left: 12ex;
-        |  margin-top: 1em;
-        |}
-        |
-        |.MyInline-0007 {
-        |  margin-top: inherit;
-        |}
-        |
-        |.MyInline-0009 {
         |  border: 1px solid black;
         |  padding: 1ex;
         |}
         |
-        |.MyInline-0010 {
+        |.MyInline-0003 {
         |  font-weight: bold;
         |}
         |
-        |.MyInline-0011 {
+        |.MyInline-0004 {
         |  margin: 4ex;
         |  background-color: #eee;
         |}
       """.stripMargin))
 
+    'css2 - assertEq(norm(MyInline2.render), norm(
+      """
+        |.MyInline2-sb2 {
+        |  margin-top: inherit;
+        |}
+        |
+        |.MyInline2-everythingOk-t {
+        |  background-color: green;
+        |  max-width: 80ex;
+        |}
+        |
+        |.MyInline2-everythingOk-f {
+        |  background-color: red;
+        |  max-width: 80ex;
+        |}
+        |
+        |.MyInline2-indent-2 {
+        |  padding-left: 8ex;
+        |  color: blue;
+        |}
+        |
+        |.MyInline2-indent-3 {
+        |  padding-left: 12ex;
+        |  color: red;
+        |  margin-top: 1em;
+        |}
+        |
+        |.MyInline2-indent-4 {
+        |  padding-left: 16ex;
+        |  margin-top: 1em;
+        |}
+        |
+        |.MyInline2-opbool-1 {
+        |  color: black;
+        |}
+        |
+        |.MyInline2-opbool-2 {
+        |  color: green;
+        |}
+        |
+        |.MyInline2-opbool-3 {
+        |  color: red;
+        |}
+        |
+        |.MyInline2-what_the_hell__ {
+        |  visibility: hidden;
+        |}
+      """.stripMargin))
+
+    'css3 - assertEq(norm(MyInline3.render), norm(
+      """
+        |.MyInline3-dup1b {
+        |  word-break: break-all;
+        |}
+        |
+        |.MyInline3-dup1b-2 {
+        |  word-break: keep-all;
+        |}
+        |
+        |.MyInline3-dup2c {
+        |  vertical-align: top;
+        |}
+        |
+        |.MyInline3-dup2c-2 {
+        |  vertical-align: middle;
+        |}
+        |
+        |.MyInline3-dup2c-3 {
+        |  vertical-align: bottom;
+        |}
+        |
+        |.MyInline3-innerObject-depth1 {
+        |  border-collapse: collapse;
+        |}
+        |
+        |.MyInline3-innerObject-andAgain-depth2 {
+        |  border-collapse: separate;
+        |}
+      """.stripMargin))
+
     'classnames {
-      assertEq(MyInline.everythingOk(true) .htmlClass, "MyInline-0002")
-      assertEq(MyInline.everythingOk(false).htmlClass, "MyInline-0003")
+      'manual - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
-      assertEq(MyInline.indent(1).htmlClass, "MyInline-0004")
-      assertEq(MyInline.indent(2).htmlClass, "MyInline-0005")
-      assertEq(MyInline.indent(3).htmlClass, "MyInline-0006")
+      'everythingOk {
+        assertEq(MyInline2.everythingOk(true) .htmlClass, "MyInline2-everythingOk-t")
+        assertEq(MyInline2.everythingOk(false).htmlClass, "MyInline2-everythingOk-f")
+      }
 
-      assertEq(MyInline.sb1.htmlClass, "btn btn-default")
-      assertEq(MyInline.sb2.htmlClass, "MyInline-0007 btn btn-default")
+      'indent {
+        assertEq(MyInline2.indent(2).htmlClass, "MyInline2-indent-2")
+        assertEq(MyInline2.indent(3).htmlClass, "MyInline2-indent-3")
+        assertEq(MyInline2.indent(4).htmlClass, "MyInline2-indent-4")
+      }
 
-      assertEq(MyInline.empty.htmlClass, "MyInline-0008")
+      'opbool {
+        assertEq(MyInline2.opbool(None)       .htmlClass, "MyInline2-opbool-1")
+        assertEq(MyInline2.opbool(Some(true)) .htmlClass, "MyInline2-opbool-2")
+        assertEq(MyInline2.opbool(Some(false)).htmlClass, "MyInline2-opbool-3")
+      }
 
-      import shapeless.syntax.singleton._ // TODO
-      val classNames =
-        MyInline.sc('outer)(o =>
-                    _('label)(l =>
-                      _('checkbox)(c =>
-                        List(o, l, c).map(_.htmlClass))))
-      assertEq(classNames, List("MyInline-0009", "MyInline-0010", "MyInline-0011"))
+      'sb1 - assertEq(MyInline2.sb1.htmlClass, "btn btn-default")
+      'sb2 - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
+
+      'empty - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+
+      'wth - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
+
+      'dup1 - {
+        assertEq(MyInline3.dup1a.htmlClass, "MyInline3-dup1b")
+        assertEq(MyInline3.dup1b.htmlClass, "MyInline3-dup1b-2")
+      }
+
+      'dup2 - {
+        assertEq(MyInline3.dup2a.htmlClass, "MyInline3-dup2c")
+        assertEq(MyInline3.dup2b.htmlClass, "MyInline3-dup2c-2")
+        assertEq(MyInline3.dup2c.htmlClass, "MyInline3-dup2c-3")
+      }
+
+      'innerObject_1 - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
+      'innerObject_2 - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+
+      'styleC {
+        import shapeless.syntax.singleton._
+        val classNames =
+          MyInline.sc('outer)(o =>
+                      _('label)(l =>
+                        _('checkbox)(c =>
+                          List(o, l, c).map(_.htmlClass))))
+        assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
+      }
     }
   }
 }

@@ -6,7 +6,7 @@ import shapeless._
 import shapeless.ops.hlist.Mapper
 import scalacss._
 import StyleC.{Named, MkUsage}
-import Register.{ErrorHandler, NameGen}
+import Register.{MacroName, ErrorHandler, NameGen}
 
 /**
  * TODO Doc & test MutableRegister and friends inc. Style[FC]
@@ -15,7 +15,7 @@ import Register.{ErrorHandler, NameGen}
  *
  * Thread-safe.
  */
-final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mutex: Mutex) {
+final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
   var _nameGen  = initNameGen
   var _styles   = Vector.empty[StyleA]
@@ -28,11 +28,40 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
       cn
     }
 
+  // Special case: addClassNames-only styles don't need a class-name generated
+  private def doesntNeedClassName(s0: StyleS): Boolean =
+    s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
+
+  private def isTaken(className: ClassName): Boolean =
+    mutex(_styles.exists(_.className === className))
+
+  private def ensureUnique(cn: ClassName): ClassName =
+    mutex(
+      if (isTaken(cn)) {
+        @tailrec def go(suf: Int): ClassName = {
+          val n = ClassName(s"${cn.value}-$suf")
+          if (isTaken(n))
+            go(suf + 1)
+          else
+            n
+        }
+        go(2)
+      } else
+        cn
+    )
+
+  def applyMacroName(name: String, style: StyleS)(implicit cnh: ClassNameHint): StyleS =
+    if (style.data.isEmpty && style.unsafeExts.isEmpty)
+      style
+    else {
+      val cn = macroName(cnh, name) map ensureUnique
+      style.copy(className = cn)
+    }
+
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
 
-    // Special case: addClassNames-only styles don't need a class-name generated
     val s =
-      if (s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty) {
+      if (doesntNeedClassName(s0)) {
         val h = s0.addClassNames.head
         val t = s0.addClassNames.tail
         s0.copy(className = Some(h), addClassNames = t)
@@ -49,7 +78,7 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
       if (_rendered)
         warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
 
-      if (_styles.exists(_.className === cn))
+      if (isTaken(cn))
         warn("Another style in the register has the same classname.")
 
       s.warnings foreach (f(cn, _))
@@ -61,12 +90,26 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     a
   }
 
-  def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA = {
-    val add = l.add
-    val lookup = mutex(
-      s.domain.toStream.foldLeft(l.empty)((q, i) =>
-        add(q, i, registerS(s f i))))
-    val f = l.get(lookup)
+  def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+    _registerF(s, l)((add, domain) =>
+      domain.toStream.foldLeft(l.empty)((q, i) =>
+        add(q, i, s f i)))
+
+  def registerFM[I](s: StyleF[I], nameFromMacro: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+    _registerF(s, l)((add, domain) =>
+      domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
+        var style = s f i
+        if (style.className.isEmpty && (nameFromMacro ne null))
+          for (cn <- macroName(cnh, nameFromMacro, toCN(i, index)))
+            style = style.copy(className = Some(ensureUnique(cn)))
+        add(q, i, style)
+      }
+    )
+
+  private def _registerF[I](s: StyleF[I], l: StyleLookup[I])(build: ((l.T, I, StyleS) => l.T, Domain[I]) => l.T)(implicit cnh: ClassNameHint): I => StyleA = {
+    val add    = l.add
+    val lookup = mutex(build((q, i, styleS) => add(q, i, registerS(styleS)), s.domain))
+    val f      = l.get(lookup)
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
 
@@ -74,8 +117,8 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
     u apply m(s.styles)
 
   object _registerC extends Poly1 {
-    implicit def cs[W]                (implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
-    implicit def cf[W, I: StyleLookup](implicit cnh: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
+    implicit def s[W]                (implicit h: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
+    implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
   def styles: Vector[StyleA] = mutex {
@@ -93,6 +136,45 @@ final class Register(initNameGen: NameGen, errHandler: ErrorHandler)(implicit mu
 
 object Register { // ===================================================================================================
 
+  /**
+   * Determines how to generate a class name for a style, using a name provided by a macro (i.e. the variable name).
+   */
+  trait MacroName {
+    def apply(cnh: ClassNameHint, name: String): Option[ClassName]
+
+    def apply(cnh: ClassNameHint, name: String, domain: => String): Option[ClassName] =
+      apply(cnh, name).map(n => ClassName(n.value + "-" + domain))
+  }
+
+  object MacroName {
+
+    /**
+     * Makes a macro-provided name safe for CSS and appends it to the ClassNameHint.
+     */
+    object Use extends MacroName {
+      val cssIllegal = "[^_a-zA-Z0-9\u00a0-\u00ff-]".r
+
+      override def apply(cnh: ClassNameHint, name: String) =
+        if (name.isEmpty)
+          None
+        else {
+          val name2 = cssIllegal.replaceAllIn(name, "_")
+          Some(ClassName(s"${cnh.value}-$name2"))
+        }
+    }
+
+    /**
+     * Ignore the macro-provided name. Styles will be named arbitrarily by [[NameGen]].
+     */
+    object Ignore extends MacroName {
+      override def apply(cnh: ClassNameHint, name: String) =
+        None
+    }
+  }
+
+  /**
+   * Generates an arbitrary name for a style.
+   */
   trait NameGen {
     def next(cnh: ClassNameHint): (ClassName, NameGen)
   }

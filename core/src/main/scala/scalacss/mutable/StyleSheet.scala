@@ -122,26 +122,30 @@ object StyleSheet {
    *   - Style class names / CSS selectors are automatically generated.
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
-  abstract class Inline(protected implicit val register: Register) extends Base {
+  abstract class Inline(protected implicit val register: Register) extends Base with Macros.DslMixin {
     import dsl._
 
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    protected def style(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(t: _*)
+    override protected def __macroStyle (name: String) = new MStyle (name)
+    override protected def __macroStyleF(name: String) = new MStyleF(name)
 
-    protected def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(className)(t: _*)
+    protected class MStyle(name: String) extends DslMacros.MStyle {
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
+        val s1 = Dsl.style(t: _*)
+        val s2 = register.applyMacroName(name, s1)
+        register registerS s2
+      }
 
-    protected def boolStyle(f: Boolean => StyleS): Boolean => StyleA =
-      styleF(Domain.boolean)(f)
+      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+        register registerS Dsl.style(className)(t: _*)
+    }
 
-    protected def intStyle(r: Range)(f: Int => StyleS): Int => StyleA =
-      styleF(Domain ofRange r)(f)
-
-    protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
-      register registerF StyleF(f)(d)
+    protected class MStyleF(name: String) extends DslMacros.MStyleF {
+      override protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+        register.registerFM(StyleF(f)(d), name)(classNameSuffix)
+    }
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
       register.registerC(s)(implicitly, m, u)

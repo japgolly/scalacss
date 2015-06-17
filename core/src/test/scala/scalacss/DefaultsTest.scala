@@ -50,12 +50,12 @@ object DefaultsTest extends TestSuite {
     def test(): Unit =
       assertEq(norm(css), norm(
         """
-          |.DefaultsTest_Dev_SS-0001 {
+          |.DefaultsTest_Dev_SS-style1 {
           |  margin: 12px;
           |  margin-left: 6px;
           |}
           |
-          |.DefaultsTest_Dev_SS-0002 {
+          |.DefaultsTest_Dev_SS-style2 {
           |  cursor: pointer;
           |  cursor: -webkit-zoom-in;
           |  cursor: -moz-zoom-in;
@@ -63,11 +63,11 @@ object DefaultsTest extends TestSuite {
           |  cursor: zoom-in;
           |}
           |
-          |.DefaultsTest_SharedStyles-0003 {
+          |.DefaultsTest_SharedStyles-header {
           |  background-color: #333;
           |}
           |
-          |.DefaultsTest_SharedStyles-0004 {
+          |.DefaultsTest_SharedStyles-footer {
           |  background-color: #666;
           |}
         """.stripMargin))
