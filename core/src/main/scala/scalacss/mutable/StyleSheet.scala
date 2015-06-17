@@ -122,7 +122,7 @@ object StyleSheet {
    *   - Style class names / CSS selectors are automatically generated.
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
-  abstract class Inline(protected implicit val register: Register) extends Base with DslMacros.Mixin {
+  abstract class Inline(protected implicit val register: Register) extends Base with Macros.DslMixin {
     import dsl._
 
             final protected type Domain[A] = scalacss.Domain[A]

@@ -122,16 +122,31 @@ object MyInline2 extends StyleSheet.Inline {
     }
 
   val `what the hell??` = style(visibility.hidden)
-
-  val dup1a = style("MyInline2-dup1b")(wordBreak.breakAll)
-  val dup1b = style(wordBreak.keepAll)
-
-  val dup2a = style("MyInline2-dup2c")(verticalAlign.top)
-  val dup2b = style("MyInline2-dup2c-2")(verticalAlign.middle)
-  val dup2c = style(verticalAlign.bottom)
 }
 
-object InlineTest extends utest.TestSuite {
+object MyInline3 extends StyleSheet.Inline {
+  import dsl._
+
+  val dup1a = style("MyInline3-dup1b")(wordBreak.breakAll)
+  val dup1b = style(wordBreak.keepAll)
+
+  val dup2a = style("MyInline3-dup2c")(verticalAlign.top)
+  val dup2b = style("MyInline3-dup2c-2")(verticalAlign.middle)
+  val dup2c = style(verticalAlign.bottom)
+
+  object innerObject {
+    val depth1 = style(borderCollapse.collapse)
+    object andAgain {
+      val depth2 = style(borderCollapse.separate)
+    }
+  }
+
+  // TODO
+  innerObject.depth1
+  innerObject.andAgain.depth2
+}
+
+  object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.TestUtil._
 
@@ -291,25 +306,36 @@ object InlineTest extends utest.TestSuite {
         |.MyInline2-what_the_hell__ {
         |  visibility: hidden;
         |}
-        |
-        |.MyInline2-dup1b {
+      """.stripMargin))
+
+    'css3 - assertEq(norm(MyInline3.render), norm(
+      """
+        |.MyInline3-dup1b {
         |  word-break: break-all;
         |}
         |
-        |.MyInline2-dup1b-2 {
+        |.MyInline3-dup1b-2 {
         |  word-break: keep-all;
         |}
         |
-        |.MyInline2-dup2c {
+        |.MyInline3-dup2c {
         |  vertical-align: top;
         |}
         |
-        |.MyInline2-dup2c-2 {
+        |.MyInline3-dup2c-2 {
         |  vertical-align: middle;
         |}
         |
-        |.MyInline2-dup2c-3 {
+        |.MyInline3-dup2c-3 {
         |  vertical-align: bottom;
+        |}
+        |
+        |.MyInline3-innerObject-depth1 {
+        |  border-collapse: collapse;
+        |}
+        |
+        |.MyInline3-innerObject-andAgain-depth2 {
+        |  border-collapse: separate;
         |}
       """.stripMargin))
 
@@ -341,15 +367,18 @@ object InlineTest extends utest.TestSuite {
       'wth - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
 
       'dup1 - {
-        assertEq(MyInline2.dup1a.htmlClass, "MyInline2-dup1b")
-        assertEq(MyInline2.dup1b.htmlClass, "MyInline2-dup1b-2")
+        assertEq(MyInline3.dup1a.htmlClass, "MyInline3-dup1b")
+        assertEq(MyInline3.dup1b.htmlClass, "MyInline3-dup1b-2")
       }
 
       'dup2 - {
-        assertEq(MyInline2.dup2a.htmlClass, "MyInline2-dup2c")
-        assertEq(MyInline2.dup2b.htmlClass, "MyInline2-dup2c-2")
-        assertEq(MyInline2.dup2c.htmlClass, "MyInline2-dup2c-3")
+        assertEq(MyInline3.dup2a.htmlClass, "MyInline3-dup2c")
+        assertEq(MyInline3.dup2b.htmlClass, "MyInline3-dup2c-2")
+        assertEq(MyInline3.dup2c.htmlClass, "MyInline3-dup2c-3")
       }
+
+      'innerObject_1 - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
+      'innerObject_2 - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
 
       'styleC {
         import shapeless.syntax.singleton._
