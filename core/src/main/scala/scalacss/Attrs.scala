@@ -968,7 +968,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-kerning">MDN</a>
    */
   object fontKerning extends TypedAttrBase {
-    override val attr = Attr.real("font-kerning")
+    override val attr = Attr.real("font-kerning", Transform keys CanIUse.fontKerning)
     @inline def auto   = avl(LT.auto)
     @inline def none   = avl(LT.none)
     @inline def normal = av(L.normal)
@@ -1630,7 +1630,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/page-break-after">MDN</a>
    */
   object pageBreakAfter extends TypedAttrBase {
-    override val attr = Attr.real("page-break-after")
+    override val attr = Attr.real("page-break-after", Transform keys CanIUse.pageBreak)
     @inline def always = av(L.always)
     @inline def auto   = avl(LT.auto)
     @inline def avoid  = av(L.avoid)
@@ -1644,7 +1644,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/page-break-before">MDN</a>
    */
   object pageBreakBefore extends TypedAttrBase {
-    override val attr = Attr.real("page-break-before")
+    override val attr = Attr.real("page-break-before", Transform keys CanIUse.pageBreak)
     @inline def always = av(L.always)
     @inline def auto   = avl(LT.auto)
     @inline def avoid  = av(L.avoid)
@@ -1658,7 +1658,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/page-break-inside">MDN</a>
    */
   object pageBreakInside extends TypedAttrBase {
-    override val attr = Attr.real("page-break-inside")
+    override val attr = Attr.real("page-break-inside", Transform keys CanIUse.pageBreak)
     @inline def auto  = avl(LT.auto)
     @inline def avoid = av(L.avoid)
   }

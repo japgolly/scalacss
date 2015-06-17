@@ -74,11 +74,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(FullX),
+    IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full, FullX),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, FullX, Full))
 
   /**
    * CSS Appearance
@@ -123,7 +123,7 @@ object CanIUse {
     IOSSafari         -> Set(Unsupported, Partial, Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unknown, Full, Unsupported),
+    OperaMobile       -> Set(Partial, Full, Unsupported),
     Safari            -> Set(Partial, Full))
 
   /**
@@ -177,7 +177,7 @@ object CanIUse {
    *
    * Allows blending between CSS background images, gradients, and colors.
    *
-   * http://www.w3.org/TR/compositing-1/#background-blend-mode
+   * http://www.w3.org/TR/compositing-1/#propdef-background-blend-mode
    */
   def backgroundblendmode: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
@@ -249,20 +249,20 @@ object CanIUse {
    * http://www.w3.org/TR/css3-break/#break-decoration
    */
   def boxdecorationbreak: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, FullX),
-    AndroidChrome     -> Set(FullX),
+    AndroidBrowser    -> Set(Unsupported, PartialX),
+    AndroidChrome     -> Set(PartialX),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unknown, FullX),
-    Chrome            -> Set(Unsupported, FullX),
+    BlackberryBrowser -> Set(Unsupported, PartialX),
+    Chrome            -> Set(Unsupported, PartialX),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
-    Opera             -> Set(Unknown, Full, FullX),
-    OperaMini         -> Set(Full),
-    OperaMobile       -> Set(Unknown, Full, FullX),
-    Safari            -> Set(Unsupported, FullX))
+    IOSSafari         -> Set(Unsupported, PartialX),
+    Opera             -> Set(Unsupported, Full, PartialX),
+    OperaMini         -> Set(Partial),
+    OperaMobile       -> Set(Unsupported, Full, PartialX),
+    Safari            -> Set(Unsupported, PartialX))
 
   /**
    * CSS3 Box-shadow
@@ -410,20 +410,20 @@ object CanIUse {
    * http://www.w3.org/TR/css3-ui/#box-sizing
    */
   def css3Boxsizing: Subject = Map(
-    AndroidBrowser    -> Set(PartialX, Partial),
-    AndroidChrome     -> Set(Partial),
+    AndroidBrowser    -> Set(FullX, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Partial),
-    BlackberryBrowser -> Set(PartialX, Partial),
-    Chrome            -> Set(PartialX, Partial),
+    AndroidUC         -> Set(Full),
+    BlackberryBrowser -> Set(FullX, Full),
+    Chrome            -> Set(FullX, Full),
     Firefox           -> Set(FullX, Full),
-    IE                -> Set(Unsupported, Partial),
-    IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(PartialX, Partial),
-    Opera             -> Set(Unsupported, Partial),
-    OperaMini         -> Set(Partial),
-    OperaMobile       -> Set(Partial),
-    Safari            -> Set(PartialX, Partial))
+    IE                -> Set(Unsupported, Full),
+    IEMobile          -> Set(Full),
+    IOSSafari         -> Set(FullX, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Full),
+    OperaMobile       -> Set(Full),
+    Safari            -> Set(FullX, Full))
 
   /**
    * CSS3 Cursors (new values)
@@ -440,13 +440,13 @@ object CanIUse {
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Firefox           -> Set(FullX, Full),
-    IE                -> Set(Unsupported),
+    IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    Safari            -> Set(FullX))
+    Safari            -> Set(FullX, Full))
 
   /**
    * CSS3 tab-size
@@ -457,7 +457,7 @@ object CanIUse {
    */
   def css3Tabsize: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Partial),
-    AndroidChrome     -> Set(Partial),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(PartialX),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Partial),
@@ -474,7 +474,7 @@ object CanIUse {
   /**
    * CSS Device Adaptation
    *
-   * A standard way to override the size of viewport in web page, standardizing and replacing Apple's own popular &lt;meta&gt; viewport implementation.
+   * A standard way to override the size of viewport in web page using the `@viewport` rule, standardizing and replacing Apple's own popular `&lt;meta&gt;` viewport implementation.
    *
    * http://www.w3.org/TR/css-device-adapt/
    */
@@ -515,7 +515,7 @@ object CanIUse {
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported))
+    Safari            -> Set(Unsupported, Full))
 
   /**
    * CSS Filter Effects
@@ -566,7 +566,7 @@ object CanIUse {
   /**
    * Flexible Box Layout Module
    *
-   * Method of positioning elements in horizontal or vertical stacks. Support includes the support for the all properties prefixed with `flex` as well as `align-content`, `align-items`, `align-self`, and `justify-content`.
+   * Method of positioning elements in horizontal or vertical stacks. Support includes the support for the all properties prefixed with `flex` as well as `display: flex`, `display: inline-flex`, `align-content`, `align-items`, `align-self`, `justify-content` and `order`.
    *
    * http://www.w3.org/TR/css3-flexbox/
    */
@@ -580,14 +580,14 @@ object CanIUse {
     Firefox           -> Set(PartialX, Partial, Full),
     IE                -> Set(Unsupported, PartialX, Full),
     IEMobile          -> Set(PartialX, Full),
-    IOSSafari         -> Set(PartialX, FullX),
+    IOSSafari         -> Set(PartialX, FullX, Full),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(PartialX, FullX))
+    Safari            -> Set(PartialX, FullX, Full))
 
   /**
-   * Font feature settings
+   * CSS font-feature-settings
    *
    * Method of applying advanced typographic and language-specific font features to supported OpenType fonts.
    *
@@ -610,6 +610,29 @@ object CanIUse {
     Safari            -> Set(Unsupported, Partial))
 
   /**
+   * CSS3 font-kerning
+   *
+   * Controls the usage of the kerning information (spacing between letters) stored in the font. Note that this only affects OpenType fonts with kerning information, it has no effect on other fonts.
+   *
+   * http://www.w3.org/TR/css3-fonts/#font-kerning-prop
+   */
+  def fontKerning: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, FullX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(FullX),
+    BlackberryBrowser -> Set(Unsupported, FullX),
+    Chrome            -> Set(Unsupported, FullX, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, FullX),
+    Opera             -> Set(Unsupported, FullX, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    Safari            -> Set(Unsupported, FullX))
+
+  /**
    * CSS font-size-adjust
    *
    * Method of adjusting the font size in a matter that relates to the height of lowercase vs. uppercase letters. This makes it easier to set the size of fallback fonts.
@@ -627,7 +650,7 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported, Unknown),
+    Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     Safari            -> Set(Unsupported))
@@ -650,7 +673,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported, Unknown),
+    Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     Safari            -> Set(Unsupported))
@@ -782,7 +805,7 @@ object CanIUse {
     AndroidChrome     -> Set(FullX),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unknown, FullX),
+    BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
@@ -796,25 +819,25 @@ object CanIUse {
   /**
    * Intrinsic & Extrinsic Sizing
    *
-   * Allows for the heights and widths to be specified in intrinsic values using the fill-available, max-content, min-content, and fit-content properties.
+   * Allows for the heights and widths to be specified in intrinsic values using the `fill-available`, `max-content`, `min-content`, and `fit-content` properties.
    *
    * http://www.w3.org/TR/css3-sizing/
    */
   def intrinsicWidth: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX),
     AndroidChrome     -> Set(FullX),
-    AndroidFirefox    -> Set(FullX),
+    AndroidFirefox    -> Set(PartialX),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX),
-    Firefox           -> Set(Unsupported, FullX),
+    Firefox           -> Set(Unsupported, PartialX),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(Unsupported, PartialX),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, PartialX))
 
   /**
    * CSS Logical Properties
@@ -844,7 +867,7 @@ object CanIUse {
    *
    * Method of displaying part of an element, using a selected image as a mask
    *
-   * http://www.w3.org/TR/css-masking/
+   * http://www.w3.org/TR/css-masking-1/
    */
   val masks: Subject = Map(
     AndroidBrowser    -> Set(PartialX),
@@ -882,7 +905,7 @@ object CanIUse {
     IOSSafari         -> Set(Unknown, PartialX),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Partial),
-    OperaMobile       -> Set(Unknown, Full),
+    OperaMobile       -> Set(PartialX, Full),
     Safari            -> Set(Unsupported, PartialX))
 
   /**
@@ -902,11 +925,11 @@ object CanIUse {
     Firefox           -> Set(PartialX),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(PartialX),
+    IOSSafari         -> Set(PartialX, Full),
     Opera             -> Set(Unsupported, Full, PartialX),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full, PartialX),
-    Safari            -> Set(PartialX))
+    Safari            -> Set(PartialX, Full))
 
   /**
    * CSS3 object-fit/object-position
@@ -978,27 +1001,27 @@ object CanIUse {
     Safari            -> Set(Full))
 
   /**
-   * :placeholder-shown CSS pseudo-class
+   * CSS page-break properties
    *
-   * The :placeholder-shown pseudo-class represents a form element with visible placeholder contents.
+   * Properties to control the way elements are broken across (printed) pages.
    *
-   * http://www.w3.org/TR/selectors4/#placeholder
+   * http://www.w3.org/TR/CSS2/page.html#page-breaks
    */
-  def placeholder: Subject = Map(
-    AndroidBrowser    -> Set(PartialX),
-    AndroidChrome     -> Set(PartialX),
-    AndroidFirefox    -> Set(PartialX),
-    AndroidUC         -> Set(PartialX),
-    BlackberryBrowser -> Set(Unknown, PartialX),
-    Chrome            -> Set(PartialX),
-    Firefox           -> Set(Unsupported, PartialX),
-    IE                -> Set(Unsupported, PartialX),
-    IEMobile          -> Set(PartialX),
-    IOSSafari         -> Set(Unsupported, PartialX),
-    Opera             -> Set(Unsupported, PartialX),
-    OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
-    Safari            -> Set(Unsupported, PartialX))
+  def pageBreak: Subject = Map(
+    AndroidBrowser    -> Set(Partial),
+    AndroidChrome     -> Set(Partial),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Partial),
+    BlackberryBrowser -> Set(Partial),
+    Chrome            -> Set(Partial),
+    Firefox           -> Set(Partial),
+    IE                -> Set(Partial),
+    IEMobile          -> Set(Partial),
+    IOSSafari         -> Set(Partial),
+    Opera             -> Set(Unknown, Full, Partial),
+    OperaMini         -> Set(Full),
+    OperaMobile       -> Set(Full, Partial),
+    Safari            -> Set(Partial))
 
   /**
    * CSS Reflections
@@ -1406,16 +1429,16 @@ object CanIUse {
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Firefox           -> Set(FullX, Unsupported, Full),
-    IE                -> Set(Unsupported, Full, Partial, FullX),
+    IE                -> Set(Partial, Unsupported, Full, FullX),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(FullX),
-    Opera             -> Set(Unsupported, FullX, Full),
+    IOSSafari         -> Set(FullX, Full),
+    Opera             -> Set(Full, Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, FullX, Full))
 
   /**
-   * CSS3 Transforms
+   * CSS3 Transforms (2D)
    *
    * Method of transforming an element including rotating, scaling, etc.
    *
@@ -1431,11 +1454,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(FullX),
+    IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(FullX))
+    Safari            -> Set(FullX, Full))
 
   /**
    * CSS3 3D Transforms
@@ -1454,16 +1477,16 @@ object CanIUse {
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(FullX),
+    IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, FullX, Full))
 
   /**
    * CSS3 Transitions
    *
-   * Simple method of animating certain properties of an element.
+   * Simple method of animating certain properties of an element, with ability to define property, duration, delay and timing function.
    *
    * http://www.w3.org/TR/css3-transitions/
    */
