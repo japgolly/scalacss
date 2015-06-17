@@ -21,4 +21,5 @@
 * [Requirements](reqs.md)
 * [Developing](dev.md)
 * [History](history/index.md)
-  * [0.2.x](history/0.2.md)
+  * [0.3.0](history/0.3.md)
+  * [0.2.0](history/0.2.md)
