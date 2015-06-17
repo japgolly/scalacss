@@ -95,6 +95,15 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       domain.toStream.foldLeft(l.empty)((q, i) =>
         add(q, i, s f i)))
 
+  def registerF2[I](s: StyleF[I], manualName: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+    _registerF(s, l)((add, domain) =>
+      domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
+        val cn = ClassName(manualName + "-" + toCN(i, index))
+        val style = (s f i).copy(className = Some(cn))
+        add(q, i, style)
+      }
+    )
+
   def registerFM[I](s: StyleF[I], nameFromMacro: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
       domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>

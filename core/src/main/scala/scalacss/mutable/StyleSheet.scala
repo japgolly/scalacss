@@ -143,8 +143,11 @@ object StyleSheet {
     }
 
     protected class MStyleF(name: String) extends DslMacros.MStyleF {
-      override protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
-        register.registerFM(StyleF(f)(d), name)(classNameSuffix)
+      override protected def create[I](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+        manualName match {
+          case None    => register.registerFM(StyleF(f)(d), name)(classNameSuffix)
+          case Some(n) => register.registerF2(StyleF(f)(d), n)(classNameSuffix)
+        }
     }
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =

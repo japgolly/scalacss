@@ -223,21 +223,37 @@ object DslMacros {
     def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
   }
 
-  trait MStyleF {
-    def bool(f: Boolean => StyleS): Boolean => StyleA =
-      apply(Domain.boolean)(f, (b, _) => if (b) "t" else "f")
+  trait MStyleF2 {
+    protected def create[I](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
 
-    def int(r: Range)(f: Int => StyleS): Int => StyleA =
-      apply(Domain ofRange r)(f, (i, _) => i.toString)
+    final def bool(f: Boolean => StyleS): Boolean => StyleA =
+      create(None, Domain.boolean, f, defaultStyleFClassNameSuffixB)
 
-    def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
-      create(d, f, classNameSuffix)
+    final def int(r: Range)(f: Int => StyleS): Int => StyleA =
+      create(None, Domain ofRange r, f, defaultStyleFClassNameSuffixI)
+  }
 
-    protected def create[I](d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
+  trait MStyleF extends MStyleF2 {
+
+    /** Manually specify a name */
+    final def apply(name: String): MStyleF2 =
+      new MStyleF2 {
+        override protected def create[I](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+          MStyleF.this.create(Some(name), d, f, classNameSuffix)
+      }
+
+    final def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(None, d, f, classNameSuffix)
   }
 
   val defaultStyleFClassNameSuffix: (Any, Int) => String =
     (_, index) => (index + 1).toString
+
+  val defaultStyleFClassNameSuffixB: (Boolean, Int) => String =
+    (b, _) => if (b) "t" else "f"
+
+  val defaultStyleFClassNameSuffixI: (Int, Int) => String =
+    (i, _) => i.toString
 }
 
 // =====================================================================================================================

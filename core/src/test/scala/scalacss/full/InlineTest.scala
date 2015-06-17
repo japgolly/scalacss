@@ -135,6 +135,13 @@ object MyInline3 extends StyleSheet.Inline {
   val dup2c = style(verticalAlign.bottom)
 
   object innerObject {
+
+    val mybool =
+      styleF("blah").bool(ok => styleS(
+        backgroundColor(if (ok) green else red),
+        maxWidth(80.ex)
+      ))
+
     val depth1 = style(borderCollapse.collapse)
     object andAgain {
       val depth2 = style(borderCollapse.separate)
@@ -330,6 +337,16 @@ object MyInline3 extends StyleSheet.Inline {
         |  vertical-align: bottom;
         |}
         |
+        |.blah-t {
+        |  background-color: green;
+        |  max-width: 80ex;
+        |}
+        |
+        |.blah-f {
+        |  background-color: red;
+        |  max-width: 80ex;
+        |}
+        |
         |.MyInline3-innerObject-depth1 {
         |  border-collapse: collapse;
         |}
@@ -341,6 +358,11 @@ object MyInline3 extends StyleSheet.Inline {
 
     'classnames {
       'manual - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
+
+      'manualF - {
+        assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
+        assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
+      }
 
       'everythingOk {
         assertEq(MyInline2.everythingOk(true) .htmlClass, "MyInline2-everythingOk-t")
