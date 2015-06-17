@@ -17,7 +17,7 @@
 * Extensions
   * [scalajs-react](ext/react.md)
   * [Scalatags](ext/scalatags.md)
-* [Digging Deeper](deeper.md)
+* [Gotchas](gotchas.md)
 * [Requirements](reqs.md)
 * [Developing](dev.md)
 * [History](history/index.md)

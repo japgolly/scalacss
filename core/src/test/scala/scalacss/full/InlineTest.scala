@@ -148,9 +148,9 @@ object MyInline3 extends StyleSheet.Inline {
     }
   }
 
-  // TODO
-  innerObject.depth1
-  innerObject.andAgain.depth2
+  initInnerObjects(
+    innerObject.depth1,
+    innerObject.andAgain.depth2)
 }
 
   object InlineTest extends utest.TestSuite {

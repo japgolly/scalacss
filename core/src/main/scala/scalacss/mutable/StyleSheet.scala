@@ -172,5 +172,12 @@ object StyleSheet {
 
     /** Created a nested conditional style. */
     @inline final protected def &(c: Cond): Cond = c
+
+    /**
+     * Objects in Scala are lazy. If you put styles in inner objects you need to make sure they're initialised before
+     * your styles are rendered.
+     * To do so, call this at the end of your stylesheet with one style from each inner object.
+     */
+    protected def initInnerObjects(a: StyleA*) = ()
   }
 }
