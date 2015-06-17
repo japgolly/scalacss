@@ -19,7 +19,7 @@ object StyleSheet {
   abstract class Base {
     protected def register: Register
 
-    protected implicit val classNameHint: ClassNameHint = // TODO no point in this being implicit
+    protected implicit val classNameHint: ClassNameHint =
       ClassNameHint(getClass.getName
         .replaceFirst("""^(?:.+\.)(.+?)\$?$""", "$1")
         .replaceAll("\\$+", "_"))

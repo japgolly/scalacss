@@ -107,9 +107,9 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     )
 
   private def _registerF[I](s: StyleF[I], l: StyleLookup[I])(build: ((l.T, I, StyleS) => l.T, Domain[I]) => l.T)(implicit cnh: ClassNameHint): I => StyleA = {
-    val add = l.add
+    val add    = l.add
     val lookup = mutex(build((q, i, styleS) => add(q, i, registerS(styleS)), s.domain))
-    val f = l.get(lookup)
+    val f      = l.get(lookup)
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
 
