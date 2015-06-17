@@ -213,6 +213,9 @@ abstract class DslBase
 
   @inline def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
     styleS((if (b) t else f): _*)(c)
+
+  @inline implicit def colourLiteralMacro(sc: StringContext) =
+    new Macros.ColourLiteral(sc)
 }
 
 // =====================================================================================================================

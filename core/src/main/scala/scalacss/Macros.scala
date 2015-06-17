@@ -1,5 +1,6 @@
 package scalacss
 
+import java.util.regex.Pattern
 import scala.reflect.macros.blackbox.Context
 import scala.reflect.NameTransformer
 
@@ -28,7 +29,7 @@ object Macros {
 
   private def impl[A](c: Context, method: String): c.Expr[A] = {
     import c.universe._
-    c.Expr(Apply(Ident(TermName(method)), List(Literal(Constant(name(c))))))
+    c.Expr(Apply(Ident(TermName(method)), Literal(Constant(name(c))) :: Nil))
   }
 
   // ===================================================================================================================
@@ -43,5 +44,123 @@ object Macros {
     protected def __macroStyleF(name: String): MStyleF
     final protected def style : MStyle  = macro implStyle
     final protected def styleF: MStyleF = macro implStyleF
+  }
+
+  // ===================================================================================================================
+
+  type Color = ValueT[ValueT.Color]
+
+  object ColorLiteral {
+
+    private def cssFnRegex(f: String, as: String*) = {
+      val args = as mkString ","
+      Pattern compile s"^$f\\($args\\)$$"
+    }
+
+    private def int = "(-?\\d+)"
+    private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
+    private def pct = s"$dbl%"
+
+    private val ws   = "\\s+".r
+    private val hex  = Pattern compile """^#(?:[0-9a-fA-F]{3}){1,2}$"""
+    private val rgbI = cssFnRegex("rgb",  int, int, int)
+    private val rgbP = cssFnRegex("rgb",  pct, pct, pct)
+    private val rgba = cssFnRegex("rgba", int, int, int, dbl)
+    private val hsl  = cssFnRegex("hsl",  int, pct, pct)
+    private val hsla = cssFnRegex("hsla", int, pct, pct, dbl)
+
+    def impl(c: Context)(args: c.Expr[Any]*): c.Expr[Color] = {
+      import c.universe._
+
+      c.prefix.tree match {
+        case Apply(_, List(Apply(_, List(l @Literal(Constant(text0: String)))))) =>
+
+          def fail(reason: String = null): Nothing = {
+            var err = s"""Invalid colour literal: "$text0"."""
+            if (reason ne null)
+              err = s"$err $reason"
+            c.abort(c.enclosingPosition, err)
+          }
+
+          val text = ws.replaceAllIn(text0, "").toLowerCase
+
+          def pass = true
+          def undecided = false
+
+          def validateHex: Boolean =
+            (text.charAt(0) == '#') && {
+              if (hex.matcher(text).matches)
+                pass
+              else
+                fail("Hex notation must be either #RRGGBB and #RGB.")
+            }
+
+          type V = String => Unit
+
+          def validateInt(name: String, max: Int): V =
+            s => {
+              val i = s.toInt
+              if (i < 0 || i > max)
+                fail(s"Invalid $name value: $s")
+            }
+
+          def validateDbl(name: String, max: Double): V =
+            s => {
+              val d = s.toDouble
+              if (d < 0 || d > max)
+                fail(s"Invalid $name value: $s")
+            }
+
+          def validatePct(name: String): V =
+            validateDbl(name, 100)
+
+          def validateFn(p: Pattern, a: V, b: V, c: V, d: V = null): Boolean = {
+            val m = p.matcher(text)
+            if (m.matches) {
+              a(m group 1)
+              b(m group 2)
+              c(m group 3)
+              if (d ne null) d(m group 4)
+              pass
+            } else
+              undecided
+          }
+
+          def ri = validateInt("red",   255)
+          def gi = validateInt("green", 255)
+          def bi = validateInt("blue",  255)
+          def rp = validatePct("red")
+          def gp = validatePct("green")
+          def bp = validatePct("blue")
+          def h  = validateInt("hue", 359)
+          def s  = validatePct("saturation")
+          def l  = validatePct("lightness")
+          def a  = validateDbl("alpha", 1)
+
+          def validateRgbI = validateFn(rgbI, ri, gi, bi)
+          def validateRgbP = validateFn(rgbP, rp, gp, bp)
+          def validateRgba = validateFn(rgba, ri, gi, bi, a)
+          def validateHsl  = validateFn(hsl,  h, s, l)
+          def validateHsla = validateFn(hsla, h, s, l, a)
+
+          val validated =
+            validateHex || validateRgbI || validateRgbP || validateRgba || validateHsl || validateHsla
+
+          if (validated) {
+            //println(showRaw(q"""_root_.scalacss.Color($text)"""))
+            c.Expr(Apply(Select(Select(Ident(termNames.ROOTPKG), TermName("scalacss")), TermName("Color")),
+              Literal(Constant(text)) :: Nil))
+          } else
+            fail()
+
+        case t =>
+          c.abort(c.enclosingPosition, s"Expected string literal. Got:\n$t($args)")
+      }
+    }
+  }
+
+  class ColourLiteral(val sc: StringContext) extends AnyVal {
+    /** c"#fc6" provides a validates Color */
+    def c(args: Any*): Color = macro ColorLiteral.impl
   }
 }

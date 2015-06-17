@@ -53,7 +53,7 @@ object MyInline extends StyleSheet.Inline {
         content := none
       ),
       unsafeRoot(".DEBUG")(
-        borderColor("#080".color)
+        borderColor(c"#080")
       )
     )
 
