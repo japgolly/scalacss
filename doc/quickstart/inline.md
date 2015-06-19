@@ -97,5 +97,5 @@ Which prints:
 
 Or if you're running in production-mode (see `ProdDefaults`), you'll see:
 <div style="padding:16px; background-color: #f7f7f7">
-<code style="word-break:break-all" class="lang-css">@media not handheld and (orientation:landscape) and (max-width:640px){._a0{width:400px}}._a0{background-color:green;margin:12px auto;text-align:left;cursor:pointer}._a0:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}._a1{padding-left:0}._a2{padding-left:2ex}._a3{padding-left:4ex}._a4{padding-left:6ex}</code>
+<code style="word-break:break-all" class="lang-css">._a0{background-color:green;margin:12px auto;text-align:left;cursor:pointer}._a0:hover{cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}._a1{padding-left:0}._a2{padding-left:2ex}._a3{padding-left:4ex}._a4{padding-left:6ex}@media not handheld and (orientation:landscape) and (max-width:640px){._a0{width:400px}}</code>
 </div>

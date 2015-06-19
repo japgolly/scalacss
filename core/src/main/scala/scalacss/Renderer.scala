@@ -12,20 +12,9 @@ final class StringRenderer(format: StringRenderer.Format) extends Renderer[Strin
     val sb = new StringBuilder
     val fmt = format(sb)
 
-    def doit(omq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
-      omq foreach fmt.mqStart
-      for ((sel, kvs) <- data.whole) {
-        fmt.selStart(omq, sel)
-        fmt.kv1(omq, kvs.head)
-        kvs.tail.foreach(fmt.kvn(omq, _))
-        fmt.selEnd(omq, sel)
-      }
-      omq foreach fmt.mqEnd
-    }
-
     val m = Css.mapByMediaQuery(css)
-    m.foreach(t => if (t._1.isDefined) doit(t._1, t._2))
-    m.foreach(t => if (t._1.isEmpty)   doit(None, t._2))
+    m.foreach(t => if (t._1.isEmpty)   fmt(None, t._2)) // CSS without media queries first
+    m.foreach(t => if (t._1.isDefined) fmt(t._1, t._2)) // CSS with media queries last
     fmt.done()
 
     sb.toString()
@@ -44,7 +33,19 @@ object StringRenderer {
                       kvn     : (CssMediaQueryO, CssKV)       => Unit,
                       selEnd  : (CssMediaQueryO, CssSelector) => Unit,
                       mqEnd   : CssMediaQuery                 => Unit,
-                      done    : ()                            => Unit)
+                      done    : ()                            => Unit) {
+
+    def apply(omq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
+      omq foreach mqStart
+      for ((sel, kvs) <- data.whole) {
+        selStart(omq, sel)
+        kv1(omq, kvs.head)
+        kvs.tail.foreach(kvn(omq, _))
+        selEnd(omq, sel)
+      }
+      omq foreach mqEnd
+    }
+  }
 
   /**
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.

@@ -42,18 +42,6 @@ object StandaloneTest extends utest.TestSuite {
     def norm(css: String) = css.trim
     assertEq(norm(MyStandalone.render), norm(
       """
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
-        |  div.std {
-        |    width: 600px;
-        |  }
-        |}
-        |
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  div.std {
-        |    width: 500px;
-        |  }
-        |}
-        |
         |div.std {
         |  margin: 12px auto;
         |  text-align: left;
@@ -89,6 +77,18 @@ object StandaloneTest extends utest.TestSuite {
         |
         |.indent-3 {
         |  padding-left: 6ex;
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
+        |  div.std {
+        |    width: 600px;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  div.std {
+        |    width: 500px;
+        |  }
         |}
       """.stripMargin))
   }

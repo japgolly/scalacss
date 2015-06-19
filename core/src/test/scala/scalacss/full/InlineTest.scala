@@ -162,39 +162,6 @@ object MyInline3 extends StyleSheet.Inline {
   override def tests = TestSuite {
     'css1 - assertEq(norm(MyInline.render), norm(
       """
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  .manual {
-        |    padding-left: 500px;
-        |    padding-right: 500px;
-        |  }
-        |}
-        |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .manual {
-        |    margin-top: 10em;
-        |    margin-bottom: 10em;
-        |  }
-        |}
-        |
-        |@media (max-width:100px) {
-        |  .MyInline-medianess {
-        |    color: brown;
-        |  }
-        |  .MyInline-medianess span {
-        |    background-color: yellow;
-        |  }
-        |  .MyInline-condMixinP:hover {
-        |    margin: auto;
-        |  }
-        |  .MyInline-condMixinQ {
-        |    display: block;
-        |    margin: auto;
-        |  }
-        |  .MyInline-condMixinQ:hover {
-        |    color: red;
-        |  }
-        |}
-        |
         |.manual:not(:first-child):visited {
         |  -o-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
@@ -263,6 +230,39 @@ object MyInline3 extends StyleSheet.Inline {
         |.MyInline-0004 {
         |  margin: 4ex;
         |  background-color: #eee;
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  .manual {
+        |    padding-left: 500px;
+        |    padding-right: 500px;
+        |  }
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  .manual {
+        |    margin-top: 10em;
+        |    margin-bottom: 10em;
+        |  }
+        |}
+        |
+        |@media (max-width:100px) {
+        |  .MyInline-medianess {
+        |    color: brown;
+        |  }
+        |  .MyInline-medianess span {
+        |    background-color: yellow;
+        |  }
+        |  .MyInline-condMixinP:hover {
+        |    margin: auto;
+        |  }
+        |  .MyInline-condMixinQ {
+        |    display: block;
+        |    margin: auto;
+        |  }
+        |  .MyInline-condMixinQ:hover {
+        |    color: red;
+        |  }
         |}
       """.stripMargin))
 
