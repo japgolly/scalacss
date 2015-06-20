@@ -36,7 +36,7 @@ object ScalaCSS extends Build {
     ) :+ Typical.settings("scalacss")
 
   object scalaz {
-    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.2").myJsFork("scalaz") //.jsVersion(_+"-2")
+    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.3").myJsFork("scalaz") //.jsVersion(_+"-2")
     val core       = m("core")
     val effect     = m("effect") > core
     val concurrent = m("concurrent") > effect
