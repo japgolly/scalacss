@@ -47,7 +47,7 @@ object ScalaCSS extends Build {
     val test = m("test")
   }
   object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.9.0"
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.9.1"
     val core  = m("core")
     val test  = m("test")
     val extra = m("extra")
