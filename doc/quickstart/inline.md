@@ -58,12 +58,6 @@ println( MyStyles.render )
 
 Which prints:
 ```css
-@media not handheld and (orientation:landscape) and (max-width:640px) {
-  .MyStyles-outer {
-    width: 400px;
-  }
-}
-
 .MyStyles-outer {
   background-color: green;
   margin: 12px auto;
@@ -92,6 +86,12 @@ Which prints:
 
 .MyStyles-indent-3 {
   padding-left: 6ex;
+}
+
+@media not handheld and (orientation:landscape) and (max-width:640px) {
+  .MyStyles-outer {
+    width: 400px;
+  }
 }
 ```
 

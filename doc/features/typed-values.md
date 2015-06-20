@@ -38,7 +38,8 @@ textDecorationLine.underline
 textDecorationLine.underline.overline
 ```
 
-##### Colours
+
+#### Colours
 
 The following DSL is available for specifying colours.
 
@@ -73,7 +74,7 @@ backgroundColor(c"rbg(32, 128, 32)")   // compiler error: typo in rbg
 ```
 
 
-##### Bypassing
+#### Bypassing
 
 You can bypass type-safety and provide a manual value.
 Similar to the untyped attribute syntax of `attr := value`,
