@@ -34,7 +34,8 @@ object Caniuse {
       _.replaceFirst("^@","")
 
     val dataToIgnore = Set[String](
-       "css3Colors"
+       "atCounterStyle"
+      ,"css3Colors"
       ,"css3Cursors"
       ,"cssBackgroundblendmode"
       ,"cssBackgroundOffsets"
@@ -48,6 +49,7 @@ object Caniuse {
       ,"fontLoading"
       ,"fontSmooth"
       ,"fontUnicodeRange"
+      ,"fontVariantAlternates"
       ,"getcomputedstyle"
       ,"inlineBlock"
       ,"kerningPairsLigatures"
@@ -56,6 +58,8 @@ object Caniuse {
       ,"minmaxwh"
       ,"mixblendmode"
       ,"multibackgrounds"
+      ,"placeholder"
+      ,"placeholderShown"
       ,"pointerEvents"
       ,"rem"
       ,"snappoints"

@@ -19,10 +19,10 @@ object MyStandalone extends StyleSheet.Standalone {
     &("span") -
       color.red,
 
-    &(media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi)) -
+    (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dppx)) -
       width(600 px),
 
-    &(media.not.handheld.landscape.color) -
+    media.not.handheld.landscape.color -
       width(500 px)
   )
 
@@ -42,18 +42,6 @@ object StandaloneTest extends utest.TestSuite {
     def norm(css: String) = css.trim
     assertEq(norm(MyStandalone.render), norm(
       """
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  div.std {
-        |    width: 600px;
-        |  }
-        |}
-        |
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  div.std {
-        |    width: 500px;
-        |  }
-        |}
-        |
         |div.std {
         |  margin: 12px auto;
         |  text-align: left;
@@ -89,6 +77,18 @@ object StandaloneTest extends utest.TestSuite {
         |
         |.indent-3 {
         |  padding-left: 6ex;
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
+        |  div.std {
+        |    width: 600px;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  div.std {
+        |    width: 500px;
+        |  }
         |}
       """.stripMargin))
   }

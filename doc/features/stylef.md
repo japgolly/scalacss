@@ -30,33 +30,49 @@ Domain.ofRange(0 to 4)                           // Domain[Int]
 Domain.ofRange(0 to 4).option *** Domain.boolean // Domain[(Option[Int], Boolean)]
 ```
 
-The most common domains are `Int` and `Boolean` and so convenience methods
-`intStyle` and `boolStyle` exist. Otherwise, call `styleF`.
+##### Syntax
+```scala
+// Styles for each A
+styleF(Domain[A])(a => styleS(…))
 
-Examples:
+// Convenience methods for boolean & integer ranges
+styleF.bool      (b => styleS(…))
+styleF.int(range)(i => styleS(…))
+
+// Manual classname
+styleF("manual")(Domain[A])(a => styleS(…))
+styleF("manual").bool      (b => styleS(…))
+styleF("manual").int(range)(i => styleS(…))
+```
+
+##### Example
 
 ```scala
 object MyInline extends StyleSheet.Inline {
   import dsl._
 
-  // Convenience method: boolStyle
+  // Convenience method: styleF.bool
   val everythingOk =
-    boolStyle(ok =>
-      styleS(backgroundColor(if (ok) green else red)))
+    styleF.bool(ok => styleS(
+      backgroundColor(if (ok) green else red)
+    ))
 
-  // Convenience method: intStyle
+  // Convenience method: styleF.int
   val indent =
-    intStyle(1 to 3)(i =>
-      styleS(paddingLeft(i * 4.ex)))
+    styleF.int(1 to 3)(i => styleS(
+      paddingLeft(i * 4.ex)
+    ))
 
   // Full control
   sealed trait Blah
   case object Blah1 extends Blah
   case object Blah2 extends Blah
   case object Blah3 extends Blah
+  val blahDomain = Domain.ofValues(Blah1, Blah2, Blah3)
   val blahStyle =
-    styleF(Domain.ofValues(Blah1, Blah2, Blah3))(b =>
-      styleS(...))
+    styleF(blahDomain)(b => styleS(
+      ...
+    ))
 }
 
 ```

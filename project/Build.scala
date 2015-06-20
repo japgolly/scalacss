@@ -15,7 +15,7 @@ object ScalaCSS extends Build {
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.2.1-SNAPSHOT",
+        version            := "0.3.0",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
         scalaVersion       := Scala211,
@@ -36,23 +36,24 @@ object ScalaCSS extends Build {
     ) :+ Typical.settings("scalacss")
 
   object scalaz {
-    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.1").myJsFork("scalaz").jsVersion(_+"-2")
+    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.3").myJsFork("scalaz") //.jsVersion(_+"-2")
     val core       = m("core")
     val effect     = m("effect") > core
     val concurrent = m("concurrent") > effect
   }
   object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.9")
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.11")
     val core = m("core")
     val test = m("test")
   }
   object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.8.2"
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.9.1"
     val core  = m("core")
     val test  = m("test")
     val extra = m("extra")
   }
-  val shapeless = Library("com.chuusai", "shapeless", "2.1.0").myJsFork("shapeless").jsVersion(_+"-2")
+  val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
+
 
   // ==============================================================================================
   override def rootProject = Some(root)
@@ -64,7 +65,7 @@ object ScalaCSS extends Build {
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
-      .configure(utestSettings()) //, Gen.attrAliases)
+      .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, shapeless, nyaya.test % Test)
       .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
     )
@@ -79,7 +80,7 @@ object ScalaCSS extends Build {
   lazy val extReact =
     Project("ext-react", file("ext-react"))
       .enablePlugins(ScalaJSPlugin)
-      .configure(commonSettings.jsS, utestSettings(phantom = true).jsS)
+      .configure(commonSettings.jsS, utestSettings().jsS)
       .dependsOn(coreJs)
       .settings(
         libraryDependencies ++= Seq(react.core, react.test % "test"),

@@ -34,17 +34,27 @@ def onStartup(): Unit = {
 }
 ```
 
-#### 2. `onRegistration`
-This specifies code to be executed once per each stylesheet added to the registry.
-It will be applied retroactively to all styles already registered,
-as well as new ones when they're added.
-This can be called multiple times to have multiple actions applied.
+#### 2. `onRegistration` & `onRegistrationN`
+`onRegistration` allows you to specify code to be executed once per stylesheet
+added to the registry.
+`onRegistrationN` does the same but in bulk (i.e. takes a `Vector` of stylesheets).
+
+Specified functions will be applied retroactively to all styles already registered,
+and applied to new styles when they're added.
+
+`onRegistration` can be called called multiple times to have multiple actions applied.
 
 ```scala
-// For scalajs-react, add each stylesheet to the document DOM.
-import scalacss.ScalaCssReact._
+GlobalRegistry.onRegistration { s =>
+  val styleCount = s.styles.size
+  println(s"Registered $styleCount styles.")
+}
 
-GlobalRegistry.onRegistration(_.addToDocument())
+GlobalRegistry.onRegistrationN { ss =>
+  val sheetCount = ss.size
+  val styleCount = ss.map(_.styles.size).sum
+  println(s"Registered $sheetCount sheets with a total of $styleCount styles.")
+}
 ```
 
 #### 3. `apply`

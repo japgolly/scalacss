@@ -2,7 +2,7 @@ package scalacss
 
 import scala.annotation.elidable
 import mutable._
-import Register.{ErrorHandler, NameGen}
+import Register.{ErrorHandler, NameGen, MacroName}
 
 trait DefaultImports {
 
@@ -16,12 +16,13 @@ trait DefaultImports {
 
 trait IDefaults extends PlatformDefaults with DefaultImports {
            def registerNameGen     : NameGen
+           def registerMacroName   : MacroName
            val registerErrorHandler: ErrorHandler
   implicit def stringRenderer      : Renderer[String]
   implicit def composition         : Compose
 
   implicit def register: Register =
-    new Register(registerNameGen, registerErrorHandler)
+    new Register(registerNameGen, registerMacroName, registerErrorHandler)
 }
 
 /**
@@ -30,6 +31,7 @@ trait IDefaults extends PlatformDefaults with DefaultImports {
 object DevDefaults extends DevDefaults
 trait DevDefaults extends IDefaults {
   override          val registerNameGen     : NameGen          = NameGen.numbered()
+  override          def registerMacroName   : MacroName        = MacroName.Use
   override          val registerErrorHandler: ErrorHandler     = ErrorHandler.noisy
   override implicit def stringRenderer      : Renderer[String] = StringRenderer.defaultPretty
   override implicit def composition         : Compose          = Compose.safe
@@ -41,6 +43,7 @@ trait DevDefaults extends IDefaults {
 object ProdDefaults extends ProdDefaults
 trait ProdDefaults extends IDefaults {
   override          def registerNameGen     : NameGen          = NameGen.short()
+  override          def registerMacroName   : MacroName        = MacroName.Ignore
   override          val registerErrorHandler: ErrorHandler     = ErrorHandler.silent
   override implicit def stringRenderer      : Renderer[String] = StringRenderer.formatTiny
   override implicit def composition         : Compose          = Compose.trust
@@ -66,6 +69,7 @@ trait Defaults extends IDefaults {
       ProdDefaults
 
   override          def registerNameGen     : NameGen          = defaults.registerNameGen
+  override          def registerMacroName   : MacroName        = defaults.registerMacroName
   override          val registerErrorHandler: ErrorHandler     = defaults.registerErrorHandler
   override implicit def stringRenderer      : Renderer[String] = defaults.stringRenderer
   override implicit def composition         : Compose          = defaults.composition

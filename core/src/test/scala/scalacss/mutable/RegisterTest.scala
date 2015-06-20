@@ -40,7 +40,7 @@ object RegisterTest extends TestSuite {
     Css(s).map(e => (e.sel, e.content)).toMap
 
   override val tests = TestSuite {
-    val reg = new Register(NameGen.numbered(), ErrorHandler.noisy)
+    val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.noisy)
     implicit def cnh = ClassNameHint("blah")
 
     'registerS {

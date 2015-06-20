@@ -207,11 +207,19 @@ object Typical {
           </developer>
         </developers>)
 
-  def utestSettings(scope: String = "test", phantom: Boolean = false): CDS =
+  def utestSettings(scope: String = "test"): CDS =
     CDS.addLibs(Library("com.lihaoyi", "utest", "0.3.1") % scope)
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
       .js(_.settings(
         scalaJSStage in Test := FastOptStage,
-        jsEnv in Test        := (if (phantom) PhantomJSEnv().value else NodeJSEnv().value)))
+        jsEnv in Test        := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+
+  def definesMacros: CDS =
+    CDS.all(
+      _.settings(
+        scalacOptions += "-language:experimental.macros",
+        libraryDependencies ++= Seq(
+          "org.scala-lang"  %  "scala-reflect"  % scalaVersion.value,
+          "org.scala-lang"  %  "scala-compiler" % scalaVersion.value % "provided")))
 }
 

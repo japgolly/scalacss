@@ -38,6 +38,44 @@ textDecorationLine.underline
 textDecorationLine.underline.overline
 ```
 
+
+#### Colours
+
+The following DSL is available for specifying colours.
+
+| DSL | Example | Description |
+|-----|---------|-------------|
+| `c"<literal>"` | `c"#37b"` <br> `c"#ffcc99"` | Specify a literal colour and have the compiler verify that it is a valid `#RGB`, `#RRGGBB`, or `{rgb,hsl}{,a}` function with valid arguments. |
+| `<name>` | `red` <br> `black` | A colour literal, specified in the CSS spec. |
+| `rgb(int x 3)` | `rgb(0, 128, 0)` | Combines red, green and blue values [0-255]. |
+| `rgb(percentage x 3)` | `rgb(0.%%, 50.%%, 0.%%)` | Red, green and blue percentages. |
+| `rgba(int x 3, double)` | `rgba(0, 128, 0, 0.5)` | Red, green and blue values [0-255] with an alpha component [0-1]. |
+| `hsl(int, percentage x 2)` | `hsl(300, 50.%%, 10.%%)` | Hue [0-360], saturation and lightness. |
+| `hsla(int, percentage x 2, double)` | `hsla(300, 50.%%, 10.%%, 0.5)` | Hue [0-360], saturation, lightness and alpha [0-1]. |
+| `grey(int)` | `grey(224)` | A greyscale colour [0-255] with the specified amount of red, green and blue. |
+| `<keyword>` | `transparent` <br> `currentColor` <br> `inherit` | Any other keywords that are legal as, or in place of colours in the CSS spec can be used as is. |
+| `Color("<literal>")` | `Color("i break you css!")`| Specify a literal colour without any compiler validation. |
+
+Using the `c"<literal>"` syntax, invalid colours will result in compiler errors.
+
+Example:
+```scala
+backgroundColor(red) // ok
+
+backgroundColor(c"#ffcc99") // ok
+backgroundColor(c"#ffcc9o") // compiler error: o is not hex
+backgroundColor(c"#ffcc9")  // compiler error: 5 digits
+
+backgroundColor(c"hsl(200, 20%, 10%)") // ok
+backgroundColor(c"rgb(0%, 20%, 10%)")  // ok
+backgroundColor(c"rgba(0, 0, 0, 0.5)") // ok
+backgroundColor(c"rgb(30, 30, 300)")   // compiler error: 300 is too large
+backgroundColor(c"rbg(32, 128, 32)")   // compiler error: typo in rbg
+```
+
+
+#### Bypassing
+
 You can bypass type-safety and provide a manual value.
 Similar to the untyped attribute syntax of `attr := value`,
 for typed attributes the syntax is
@@ -55,6 +93,7 @@ Example:
 margin :=  "12px auto"  // Compile warns there's a type-safe alternative
 margin :=! "auto\\9"    // The ! means you know what you're doing
 ```
+
 
 ## Contributing
 

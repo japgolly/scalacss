@@ -38,6 +38,8 @@ object ResolutionUnit {
   case object dpi  extends ResolutionUnit("dpi")
   /** Dots per centimeter */
   case object dpcm extends ResolutionUnit("dpcm")
+  /** Dots per pixel */
+  case object dppx extends ResolutionUnit("dppx")
 }
 
 final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: ResolutionUnit) {

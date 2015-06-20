@@ -30,8 +30,8 @@ ScalaCSS allows you to catch them and handle them immediately.
 
 ##### Example warnings
 ```
-[CSS WARNING] .MyStyles-0001 -- {margin-left: 6px} conflicts with {margin: 12px}
-[CSS WARNING] .MyStyles-0002 -- {cursor: zoom-in} conflicts with {cursor: pointer}
+[CSS WARNING] .MyStyles-navbar -- {margin-left: 6px} conflicts with {margin: 12px}
+[CSS WARNING] .MyStyles-button -- {cursor: zoom-in} conflicts with {cursor: pointer}
 ```
 
 

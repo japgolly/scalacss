@@ -29,17 +29,22 @@ object GlobalRegistry extends StyleSheetRegistry
 class StyleSheetRegistry(implicit mutex: Mutex) {
 
   import StyleSheet.{Inline => ISS}
+  final type ISSs = Vector[ISS]
 
-  private[this] var _register =
+  private[this] var _register: ISSs =
     Vector.empty[ISS]
 
-  private[this] var _onRegistration: ISS => Unit =
-    (_: ISS) => ()
+  private[this] var _onRegistration: ISSs => Unit =
+    (_: ISSs) => ()
 
   def onRegistration(f: ISS => Unit): Unit =
+    onRegistrationN(_ foreach f)
+
+  def onRegistrationN(f: ISSs => Unit): Unit =
     mutex {
       // Apply to already registered
-      _register foreach f
+      if (_register.nonEmpty)
+        f(_register)
 
       // Apply to future registrations
       val g = _onRegistration
@@ -47,11 +52,12 @@ class StyleSheetRegistry(implicit mutex: Mutex) {
     }
 
   def register(ss: ISS*): Unit = {
+    val v = ss.toVector
     val f = mutex {
-      _register ++= ss
+      _register ++= v
       _onRegistration
     }
-    ss foreach f
+    f(v)
   }
 
   def apply[S <: ISS](implicit t: ClassTag[S]): Option[S] =

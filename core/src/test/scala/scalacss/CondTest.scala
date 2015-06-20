@@ -12,6 +12,11 @@ object CondTest extends TestSuite {
         assertEq(Not("div").cssValue, ":not(div)")
         assertEq(Not(Link).cssValue, ":not(:link)")
       }
+     
+      'elementClassOrder {
+        assertEq(Before.&(Hover).cssValue, ":hover::before")
+        assertEq(Hover.&(Before).cssValue, ":hover::before")
+      }
     }
   }
 }

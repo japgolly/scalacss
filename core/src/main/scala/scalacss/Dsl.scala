@@ -97,13 +97,19 @@ object DslBase {
     /** Dots per centimeter */
     @inline def dpcm = Resolution(self, ResolutionUnit.dpcm)
 
+    /**
+     * This unit represents the number of dots per px unit. Due to the 1:96 fixed ratio of CSS in to CSS px, 1dppx is
+     * equivalent to 96dpi, that corresponds to the default resolution of images displayed in CSS as defined by
+     * image-resolution.
+     */
+    @inline def dppx = Resolution(self, ResolutionUnit.dppx)
+
     @inline def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
     @inline def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
   }
 
-  final class DslStr(val self: String) extends AnyVal {
-    @inline def color = scalacss.Color(self)
-  }
+  //final class DslStr(val self: String) extends AnyVal {
+  //}
 
   /** Untyped attributes */
   final class DslAttr(val self: Attr) extends AnyVal {
@@ -136,10 +142,8 @@ object DslBase {
     @inline def &(b: AVs): AVs = self ++ b
   }
 
-  final class DslCond(val c: Cond) extends AnyVal {
-    @inline def apply()             : ToStyle = new ToStyle(StyleS.empty)
-    @inline def apply(avs: AVs)     : ToStyle = new ToStyle(StyleS.data1(c, avs))
-    @inline def apply(h: AV, t: AV*): ToStyle = apply(AVs(h, t: _*))
+  final class DslCond(c: Cond, b: DslBase) {
+    @inline def apply(t: ToStyle*)(implicit u: Compose): StyleS = c applyToStyle b.mixin(t: _*)
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -158,13 +162,13 @@ abstract class DslBase
   @inline implicit final def autoDslInt  (a: Int)          : DslInt         = new DslInt(a)
   @inline implicit final def autoDslNumI (a: Int)          : DslNum[Int]    = new DslNum[Int](a)
   @inline implicit final def autoDslNumD (a: Double)       : DslNum[Double] = new DslNum[Double](a)
-  @inline implicit final def autoDslStr  (a: String)       : DslStr         = new DslStr(a)
+  //nline implicit final def autoDslStr  (a: String)       : DslStr         = new DslStr(a)
   @inline implicit final def autoDslAttr (a: Attr)         : DslAttr        = new DslAttr(a)
   @inline implicit final def autoDslAttrT(a: TypedAttrBase): DslAttrT       = new DslAttrT(a)
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x)
+  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x, this)
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
@@ -208,6 +212,50 @@ abstract class DslBase
 
   @inline def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
     styleS((if (b) t else f): _*)(c)
+
+  @inline implicit def colourLiteralMacro(sc: StringContext) =
+    new Macros.ColourLiteral(sc)
+}
+
+// =====================================================================================================================
+object DslMacros {
+
+  trait MStyle {
+    def apply                   (t: ToStyle*)(implicit c: Compose): StyleA
+    def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA
+  }
+
+  trait MStyleF2 {
+    protected def create[I](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
+
+    final def bool(f: Boolean => StyleS): Boolean => StyleA =
+      create(None, Domain.boolean, f, defaultStyleFClassNameSuffixB)
+
+    final def int(r: Range)(f: Int => StyleS): Int => StyleA =
+      create(None, Domain ofRange r, f, defaultStyleFClassNameSuffixI)
+  }
+
+  trait MStyleF extends MStyleF2 {
+
+    /** Manually specify a name */
+    final def apply(name: String): MStyleF2 =
+      new MStyleF2 {
+        override protected def create[I](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+          MStyleF.this.create(Some(name), d, f, classNameSuffix)
+      }
+
+    final def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(None, d, f, classNameSuffix)
+  }
+
+  val defaultStyleFClassNameSuffix: (Any, Int) => String =
+    (_, index) => (index + 1).toString
+
+  val defaultStyleFClassNameSuffixB: (Boolean, Int) => String =
+    (b, _) => if (b) "t" else "f"
+
+  val defaultStyleFClassNameSuffixI: (Int, Int) => String =
+    (i, _) => i.toString
 }
 
 // =====================================================================================================================
@@ -216,7 +264,7 @@ object Dsl extends DslBase {
   override protected def styleS(t: ToStyle*)(implicit c: Compose) =
     style(t: _*)
 
-  def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleS =
+  def style(className: String)(t: ToStyle*)(implicit c: Compose): StyleS =
     style(t: _*).copy(className = Option(className) map ClassName)
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =

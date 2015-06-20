@@ -7,36 +7,44 @@ trait Renderer[Out] {
   def apply(css: Css): Out
 }
 
-final class StringRenderer(format: StringRenderer.Format) extends Renderer[String] {
-  override def apply(css: Css): String = {
-    val sb = new StringBuilder
-    val fmt = format(sb)
-
-    def doit(omq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
-      omq foreach fmt.mqStart
-      for ((sel, kvs) <- data.whole) {
-        fmt.selStart(omq, sel)
-        fmt.kv1(omq, kvs.head)
-        kvs.tail.foreach(fmt.kvn(omq, _))
-        fmt.selEnd(omq, sel)
-      }
-      omq foreach fmt.mqEnd
-    }
-
-    val m = Css.mapByMediaQuery(css)
-    m.foreach(t => if (t._1.isDefined) doit(t._1, t._2))
-    m.foreach(t => if (t._1.isEmpty)   doit(None, t._2))
-    fmt.done()
-
-    sb.toString()
-  }
-}
-
 object StringRenderer {
   type Format = StringBuilder => FormatSB
 
-  implicit def autoFormatToRenderer(f: Format): StringRenderer =
-    new StringRenderer(f)
+  /**
+   * Default CSS generator.
+   *
+   * Merges CSS with the same media query into a single media query clause.
+   */
+  final class Default(format: Format) extends Renderer[String] {
+    override def apply(css: Css): String = {
+      val sb = new StringBuilder
+      val fmt = format(sb)
+
+      val m = Css.mapByMediaQuery(css)                    // Group by MQ
+      m.foreach(t => if (t._1.isEmpty)   fmt(None, t._2)) // CSS without MQs first
+      m.foreach(t => if (t._1.isDefined) fmt(t._1, t._2)) // CSS with MQs last
+      fmt.done()
+
+      sb.toString()
+    }
+  }
+
+  /**
+   * Generates CSS however it's received in. No pre-processing.
+   */
+  final class Raw(format: Format) extends Renderer[String] {
+    override def apply(css: Css): String = {
+      val sb = new StringBuilder
+      val fmt = format(sb)
+
+      css foreach (fmt(_))
+
+      sb.toString()
+    }
+  }
+
+  implicit def autoFormatToRenderer(f: Format): Renderer[String] =
+    new Default(f)
 
   case class FormatSB(mqStart : CssMediaQuery                 => Unit,
                       selStart: (CssMediaQueryO, CssSelector) => Unit,
@@ -44,7 +52,29 @@ object StringRenderer {
                       kvn     : (CssMediaQueryO, CssKV)       => Unit,
                       selEnd  : (CssMediaQueryO, CssSelector) => Unit,
                       mqEnd   : CssMediaQuery                 => Unit,
-                      done    : ()                            => Unit)
+                      done    : ()                            => Unit) {
+
+    def apply(mq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
+      mq foreach mqStart
+      for ((sel, kvs) <- data.whole)
+        apply(mq, sel, kvs)
+      mq foreach mqEnd
+    }
+
+    def apply(e: CssEntry): Unit = {
+      import e._
+      mq foreach mqStart
+      apply(mq, sel, content)
+      mq foreach mqEnd
+    }
+
+    def apply(mq: CssMediaQueryO, sel: CssSelector, kvs: NonEmptyVector[CssKV]): Unit = {
+      selStart(mq, sel)
+      kv1(mq, kvs.head)
+      kvs.tail.foreach(kvn(mq, _))
+      selEnd(mq, sel)
+    }
+  }
 
   /**
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.
@@ -101,6 +131,6 @@ object StringRenderer {
       () => ())
   }
 
-  val defaultPretty =
-    new StringRenderer(formatPretty())
+  val defaultPretty: Renderer[String] =
+    formatPretty()
 }

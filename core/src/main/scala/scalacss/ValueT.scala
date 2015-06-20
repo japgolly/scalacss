@@ -247,9 +247,8 @@ object ValueT {
   abstract class TypedAttr_BrStyle extends TypedAttrBase //TypedAttrT[BrStyle]
     with BrStyleOps
 
-  abstract class TypedAttr_Color extends TypedAttrT1[Color] with ColourOps {
-    final def apply(literal: String) = av(literal)
-  }
+  abstract class TypedAttr_Color extends TypedAttrT1[Color]
+    with ColourOps
 
   abstract class TypedAttr_Shape extends TypedAttrBase {
     final def rect(top: ValueT[Len], right: ValueT[Len], bottom: ValueT[Len], left: ValueT[Len]) =

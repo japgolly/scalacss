@@ -1,11 +1,13 @@
 package scalacss
 
 import org.scalajs.dom.raw.HTMLStyleElement
+import org.scalajs.dom.document
 import utest._
 import scalacss.TestUtil._
 import japgolly.scalajs.react._, vdom.prefix_<^._
 import Defaults._
 import ScalaCssReact._
+import mutable.StyleSheetRegistry
 
 object ReactTest extends TestSuite {
 
@@ -20,38 +22,73 @@ object ReactTest extends TestSuite {
     val bootstrappy = style(addClassName("btn btn-default"))
   }
 
-  val expectedStyleTag =
+  object MyStyles2 extends StyleSheet.Inline {
+    import dsl._
+    style(display.inline)
+  }
+
+  val expectedMyStyles =
     """
-      |<style type="text/css">.ReactTest_MyStyles-0001 {
+      |.ReactTest_MyStyles-input {
       |  font-weight: bold;
       |  padding: 0.3ex 2ex;
       |}
-      |
-      |</style>
     """.stripMargin.trim
+
+  val expectedMyStyles2 =
+    """
+      |.ReactTest_MyStyles2-0001 {
+      |  display: inline;
+      |}
+    """.stripMargin.trim
+
+  val expectedStyleTag1 =
+    s"""<style type="text/css">$expectedMyStyles</style>"""
+
+  val expectedStyleTag12 =
+    s"""
+       |<style type="text/css">$expectedMyStyles
+       |$expectedMyStyles2
+       |</style>
+    """.stripMargin.trim
+
+  def assertStyle(actual: String, expect: String) = {
+    def fix(s: String) = s.replaceAll("\n{2,}", "\n").replaceFirst("\n+(?=</style>)", "")
+    assertEq(fix(actual), fix(expect))
+  }
 
   override val tests = TestSuite {
 
     'styleReactElement {
       val html = React.renderToStaticMarkup(MyStyles.render[ReactElement])
-      assertEq(html, expectedStyleTag)
+      assertStyle(html, expectedStyleTag1)
     }
 
     'styleHtmlElement {
       val html = MyStyles.render[HTMLStyleElement].outerHTML
-      assertEq(html, expectedStyleTag)
+      assertStyle(html, expectedStyleTag1)
     }
 
     'simple {
       val el = <.input(^.`type` := "text", MyStyles.input, ^.defaultValue := "ah")
       val html = React.renderToStaticMarkup(el)
-      assertEq(html, """<input type="text" class="ReactTest_MyStyles-0001" value="ah">""")
+      assertEq(html, """<input type="text" class="ReactTest_MyStyles-input" value="ah">""")
     }
 
     'addClassName {
       val el = <.button(MyStyles.bootstrappy)
       val html = React.renderToStaticMarkup(el)
       assertEq(html, """<button class="btn btn-default"></button>""")
+    }
+
+    'addToDocumentOnRegistration {
+      val registry = new StyleSheetRegistry
+      registry.register(MyStyles, MyStyles2)
+      def count = document.head.childElementCount
+      val before = count
+      registry.addToDocumentOnRegistration()
+      assertEq("Elements added", count, before + 1)
+      assertStyle(document.head.lastElementChild.outerHTML, expectedStyleTag12)
     }
 
   }

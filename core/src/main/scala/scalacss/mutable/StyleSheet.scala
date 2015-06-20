@@ -16,19 +16,35 @@ import StyleC.MkUsage
  */
 object StyleSheet {
 
+  /**
+   * Classes defined in the REPL appear like this:
+   *   $line8.$read.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.$iw.MyStyles
+   */
+  private def fixRepl(s: String): String =
+    s.replaceFirst("""^\$line.+[.$]\$iw[.$]""", "")
+
   abstract class Base {
     protected def register: Register
 
     protected implicit val classNameHint: ClassNameHint =
-      ClassNameHint(getClass.getName
-        .replaceFirst("""^(?:.+\.)(.+?)\$?$""", "$1")
-        .replaceAll("\\$+", "_"))
+      ClassNameHint(
+        fixRepl(getClass.getName)
+          .replaceFirst("\\$+$", "")
+          .replaceFirst("""^(?:.+\.)(.+?)$""", "$1")
+          .replaceAll("\\$+", "_"))
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
-    }
 
-    @inline final protected def ^ = Literal
+      @inline final def ^ = Literal
+
+      @inline final def Color(literal: String) = scalacss.Color(literal)
+
+      @inline implicit final def toCondOps[C <% Cond](x: C) = new CondOps(x)
+      final class CondOps(val cond: Cond) {
+        @inline def - = new DslCond(cond, dsl)
+      }
+    }
 
     final def css(implicit env: Env): Css =
       register.css
@@ -85,11 +101,6 @@ object StyleSheet {
         register registerS styleS(unsafeRoot(sel)(t: _*))
     }
 
-    @inline protected final implicit class NestedCondOps(val cond: Cond) {
-      /** Create a child style. */
-      def - = new DslCond(cond)
-    }
-
     protected final class NestedStringOps(val sel: CssSelector) extends Pseudo.ChainOps[NestedStringOps] {
       override protected def addPseudo(p: Pseudo): NestedStringOps =
         new NestedStringOps(p modSelector sel)
@@ -99,16 +110,9 @@ object StyleSheet {
         styleS(unsafeChild(sel)(t: _*))
     }
 
-    /** Created a nested conditional style. */
     @inline final protected def & : Cond = Cond.empty
 
-    /** Created a nested conditional style. */
-    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
-
-    /** Created a nested conditional style. */
-    @inline final protected def &(c: Cond): Cond = c
-
-    /** Created a child style. */
+    /** Create a child style. */
     @inline final protected def &(sel: CssSelector): NestedStringOps = new NestedStringOps(sel)
   }
 
@@ -122,37 +126,44 @@ object StyleSheet {
    *   - Style class names / CSS selectors are automatically generated.
    *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
    */
-  abstract class Inline(protected implicit val register: Register) extends Base {
+  abstract class Inline(protected implicit val register: Register) extends Base with Macros.DslMixin {
     import dsl._
 
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    protected def style(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(t: _*)
+    override protected def __macroStyle (name: String) = new MStyle (name)
+    override protected def __macroStyleF(name: String) = new MStyleF(name)
 
-    protected def style(className: String = null)(t: ToStyle*)(implicit c: Compose): StyleA =
-      register registerS Dsl.style(className)(t: _*)
+    protected class MStyle(name: String) extends DslMacros.MStyle {
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
+        val s1 = Dsl.style(t: _*)
+        val s2 = register.applyMacroName(name, s1)
+        register registerS s2
+      }
 
-    protected def boolStyle(f: Boolean => StyleS): Boolean => StyleA =
-      styleF(Domain.boolean)(f)
+      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+        register registerS Dsl.style(className)(t: _*)
+    }
 
-    protected def intStyle(r: Range)(f: Int => StyleS): Int => StyleA =
-      styleF(Domain ofRange r)(f)
-
-    protected def styleF[I: StyleLookup](d: Domain[I])(f: I => StyleS): I => StyleA =
-      register registerF StyleF(f)(d)
+    protected class MStyleF(name: String) extends DslMacros.MStyleF {
+      override protected def create[I](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+        manualName match {
+          case None    => register.registerFM(StyleF(f)(d), name)(classNameSuffix)
+          case Some(n) => register.registerF2(StyleF(f)(d), n)(classNameSuffix)
+        }
+    }
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
       register.registerC(s)(implicitly, m, u)
 
-    /** Created a nested conditional style. */
     @inline final protected def & : Cond = Cond.empty
 
-    /** Created a nested conditional style. */
-    @inline final protected def &(q: Media.Query): Cond = Cond.empty & q
-
-    /** Created a nested conditional style. */
-    @inline final protected def &(c: Cond): Cond = c
+    /**
+     * Objects in Scala are lazy. If you put styles in inner objects you need to make sure they're initialised before
+     * your styles are rendered.
+     * To do so, call this at the end of your stylesheet with one style from each inner object.
+     */
+    protected def initInnerObjects(a: StyleA*) = ()
   }
 }

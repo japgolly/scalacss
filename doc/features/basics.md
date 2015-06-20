@@ -14,7 +14,7 @@ Property | Dev | Prod
 --- | --- | ---
 Style conflicts       | Keep both sides of conflict. <br/> Issue warnings. | Keep both sides of conflict.
 Error handling        | Print to `stderr` | Ignore
-Class name generation | `.MyStyles-0001` <br/> `.MyStyles-0002` <br/> etc | `._a0` <br/> `._a1` <br/> etc
+Class name generation | `.<class>-<val>` <br/> Eg. `.MyStyles-outer` | `._a0` <br/> `._a1` <br/> etc
 CSS output            | Pretty-print. <br/> Indents, spaces, newlines. | Minified. <br/> No whitespace.
 
 `Defaults` will choose a mode to use based on its `devMode: Boolean` method
