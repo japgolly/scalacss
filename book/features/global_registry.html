@@ -4,11 +4,11 @@
     <head>
         
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Global Registry | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.1">
+        <meta name="generator" content="GitBook 2.1.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -17,6 +17,13 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
         <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+        <link rel="stylesheet" href="../styles/website.css">
+    
+
         
     
     
@@ -31,14 +38,7 @@
     <body>
         
         
-    <link rel="stylesheet" href="../gitbook/style.css">
-    
-    
-        <link rel="stylesheet" href="../styles/website.css">
-    
-
-        
-    <div class="book" data-level="2.9" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
+    <div class="book" data-level="2.9" data-basepath=".." data-revision="Sat Jun 20 2015 16:35:00 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -333,9 +333,17 @@
             
         </li>
     
-        <li class="chapter " data-level="4" data-path="deeper.html">
+        <li class="chapter " data-level="4" data-path="gotchas.html">
             
-            <span><b>4.</b> Digging Deeper</span>
+                
+                    <a href="../gotchas.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Gotchas
+                    </a>
+                
             
             
         </li>
@@ -386,15 +394,30 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.3.html">
+            
+                
+                    <a href="../history/0.3.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.3.0
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
-                        0.2.x
+                        0.2.0
                     </a>
                 
             
@@ -495,6 +518,8 @@
     <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
     
     
+    
+
 
     <!-- Title -->
     <h1>
@@ -535,15 +560,23 @@ and have client-code retrieve modules from the global registry by type.</p>
   <span class="hljs-type">GlobalRegistry</span>.register(<span class="hljs-keyword">new</span> <span class="hljs-type">BoxStyles</span>)
 }
 </code></pre>
-<h4 id="2-onregistration">2. <code>onRegistration</code></h4>
-<p>This specifies code to be executed once per each stylesheet added to the registry.
-It will be applied retroactively to all styles already registered,
-as well as new ones when they&apos;re added.
-This can be called multiple times to have multiple actions applied.</p>
-<pre><code class="lang-scala"><span class="hljs-comment">// For scalajs-react, add each stylesheet to the document DOM.</span>
-<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ScalaCssReact</span>._
+<h4 id="2-onregistration-onregistrationn">2. <code>onRegistration</code> &amp; <code>onRegistrationN</code></h4>
+<p><code>onRegistration</code> allows you to specify code to be executed once per stylesheet
+added to the registry.
+<code>onRegistrationN</code> does the same but in bulk (i.e. takes a <code>Vector</code> of stylesheets).</p>
+<p>Specified functions will be applied retroactively to all styles already registered,
+and applied to new styles when they&apos;re added.</p>
+<p><code>onRegistration</code> can be called called multiple times to have multiple actions applied.</p>
+<pre><code class="lang-scala"><span class="hljs-type">GlobalRegistry</span>.onRegistration { s =&gt;
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">styleCount</span> =</span> s.styles.size
+  println(s<span class="hljs-string">&quot;Registered $styleCount styles.&quot;</span>)
+}
 
-<span class="hljs-type">GlobalRegistry</span>.onRegistration(_.addToDocument())
+<span class="hljs-type">GlobalRegistry</span>.onRegistrationN { ss =&gt;
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">sheetCount</span> =</span> ss.size
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">styleCount</span> =</span> ss.map(_.styles.size).sum
+  println(s<span class="hljs-string">&quot;Registered $sheetCount sheets with a total of $styleCount styles.&quot;</span>)
+}
 </code></pre>
 <h4 id="3-apply">3. <code>apply</code></h4>
 <p>This is used to retrieve a stylesheet from the registry.

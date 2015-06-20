@@ -4,11 +4,11 @@
     <head>
         
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Functions | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.1">
+        <meta name="generator" content="GitBook 2.1.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -17,6 +17,13 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
         <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+        <link rel="stylesheet" href="../styles/website.css">
+    
+
         
     
     
@@ -31,14 +38,7 @@
     <body>
         
         
-    <link rel="stylesheet" href="../gitbook/style.css">
-    
-    
-        <link rel="stylesheet" href="../styles/website.css">
-    
-
-        
-    <div class="book" data-level="2.3" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
+    <div class="book" data-level="2.3" data-basepath=".." data-revision="Sat Jun 20 2015 16:35:00 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -333,9 +333,17 @@
             
         </li>
     
-        <li class="chapter " data-level="4" data-path="deeper.html">
+        <li class="chapter " data-level="4" data-path="gotchas.html">
             
-            <span><b>4.</b> Digging Deeper</span>
+                
+                    <a href="../gotchas.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Gotchas
+                    </a>
+                
             
             
         </li>
@@ -386,15 +394,30 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.3.html">
+            
+                
+                    <a href="../history/0.3.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.3.0
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
-                        0.2.x
+                        0.2.0
                     </a>
                 
             
@@ -495,6 +518,8 @@
     <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
     
     
+    
+
 
     <!-- Title -->
     <h1>
@@ -534,30 +559,45 @@ CSS is generated ahead-of-time, before styles are used so its inputs must also b
 <span class="hljs-type">Domain</span>.ofRange(<span class="hljs-number">0</span> to <span class="hljs-number">4</span>)                           <span class="hljs-comment">// Domain[Int]</span>
 <span class="hljs-type">Domain</span>.ofRange(<span class="hljs-number">0</span> to <span class="hljs-number">4</span>).option *** <span class="hljs-type">Domain</span>.boolean <span class="hljs-comment">// Domain[(Option[Int], Boolean)]</span>
 </code></pre>
-<p>The most common domains are <code>Int</code> and <code>Boolean</code> and so convenience methods
-<code>intStyle</code> and <code>boolStyle</code> exist. Otherwise, call <code>styleF</code>.</p>
-<p>Examples:</p>
+<h5 id="syntax">Syntax</h5>
+<pre><code class="lang-scala"><span class="hljs-comment">// Styles for each A</span>
+styleF(<span class="hljs-type">Domain</span>[<span class="hljs-type">A</span>])(a =&gt; styleS(&#x2026;))
+
+<span class="hljs-comment">// Convenience methods for boolean &amp; integer ranges</span>
+styleF.bool      (b =&gt; styleS(&#x2026;))
+styleF.int(range)(i =&gt; styleS(&#x2026;))
+
+<span class="hljs-comment">// Manual classname</span>
+styleF(<span class="hljs-string">&quot;manual&quot;</span>)(<span class="hljs-type">Domain</span>[<span class="hljs-type">A</span>])(a =&gt; styleS(&#x2026;))
+styleF(<span class="hljs-string">&quot;manual&quot;</span>).bool      (b =&gt; styleS(&#x2026;))
+styleF(<span class="hljs-string">&quot;manual&quot;</span>).int(range)(i =&gt; styleS(&#x2026;))
+</code></pre>
+<h5 id="example">Example</h5>
 <pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyInline</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
 
-  <span class="hljs-comment">// Convenience method: boolStyle</span>
+  <span class="hljs-comment">// Convenience method: styleF.bool</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">everythingOk</span> =</span>
-    boolStyle(ok =&gt;
-      styleS(backgroundColor(<span class="hljs-keyword">if</span> (ok) green <span class="hljs-keyword">else</span> red)))
+    styleF.bool(ok =&gt; styleS(
+      backgroundColor(<span class="hljs-keyword">if</span> (ok) green <span class="hljs-keyword">else</span> red)
+    ))
 
-  <span class="hljs-comment">// Convenience method: intStyle</span>
+  <span class="hljs-comment">// Convenience method: styleF.int</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">indent</span> =</span>
-    intStyle(<span class="hljs-number">1</span> to <span class="hljs-number">3</span>)(i =&gt;
-      styleS(paddingLeft(i * <span class="hljs-number">4.</span>ex)))
+    styleF.int(<span class="hljs-number">1</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
+      paddingLeft(i * <span class="hljs-number">4.</span>ex)
+    ))
 
   <span class="hljs-comment">// Full control</span>
   <span class="hljs-keyword">sealed</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Blah</span>
 </span>  <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Blah1</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Blah</span>
 </span>  <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Blah2</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Blah</span>
 </span>  <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Blah3</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">Blah</span>
-</span>  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">blahStyle</span> =</span>
-    styleF(<span class="hljs-type">Domain</span>.ofValues(<span class="hljs-type">Blah1</span>, <span class="hljs-type">Blah2</span>, <span class="hljs-type">Blah3</span>))(b =&gt;
-      styleS(...))
+</span>  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">blahDomain</span> =</span> <span class="hljs-type">Domain</span>.ofValues(<span class="hljs-type">Blah1</span>, <span class="hljs-type">Blah2</span>, <span class="hljs-type">Blah3</span>)
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">blahStyle</span> =</span>
+    styleF(blahDomain)(b =&gt; styleS(
+      ...
+    ))
 }
 </code></pre>
 

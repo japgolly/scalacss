@@ -4,11 +4,11 @@
     <head>
         
         <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <title>Inline | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 2.0.1">
+        <meta name="generator" content="GitBook 2.1.0">
         
         
         <meta name="HandheldFriendly" content="true"/>
@@ -17,6 +17,13 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
         <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+    
+        <link rel="stylesheet" href="../styles/website.css">
+    
+
         
     
     
@@ -31,14 +38,7 @@
     <body>
         
         
-    <link rel="stylesheet" href="../gitbook/style.css">
-    
-    
-        <link rel="stylesheet" href="../styles/website.css">
-    
-
-        
-    <div class="book" data-level="1.2" data-basepath=".." data-revision="Wed Apr 15 2015 16:47:22 GMT+1000 (AEST)">
+    <div class="book" data-level="1.2" data-basepath=".." data-revision="Sat Jun 20 2015 16:35:00 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -333,9 +333,17 @@
             
         </li>
     
-        <li class="chapter " data-level="4" data-path="deeper.html">
+        <li class="chapter " data-level="4" data-path="gotchas.html">
             
-            <span><b>4.</b> Digging Deeper</span>
+                
+                    <a href="../gotchas.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Gotchas
+                    </a>
+                
             
             
         </li>
@@ -386,15 +394,30 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.3.html">
+            
+                
+                    <a href="../history/0.3.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.3.0
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
-                        0.2.x
+                        0.2.0
                     </a>
                 
             
@@ -495,6 +518,8 @@
     <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
     
     
+    
+
 
     <!-- Title -->
     <h1>
@@ -520,7 +545,7 @@
     backgroundColor.green
   )
 
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">myStyle1</span> =</span> style(
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">outer</span> =</span> style(
     common, <span class="hljs-comment">// Applying our mixin</span>
     margin(<span class="hljs-number">12</span> px, auto),
     textAlign.left,
@@ -530,14 +555,14 @@
       cursor.zoomIn
     ),
 
-    &amp;(media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px))(
+    media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px)(
       width(<span class="hljs-number">400</span> px)
     )
   )
 
   <span class="hljs-comment">/** Style requiring an Int when applied. */</span>
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">indent</span> =</span>
-    intStyle(<span class="hljs-number">0</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
+    styleF.int(<span class="hljs-number">0</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
       paddingLeft(i * <span class="hljs-number">2.</span>ex)
     ))
 
@@ -549,54 +574,55 @@
 </code></pre>
 <p>To apply a style, you apply the style&apos;s class names to some inline HTML.</p>
 <p>You can see styles&apos; class names like this:</p>
-<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.myStyle1.htmlClass  <span class="hljs-comment">// Returns &quot;MyStyles-0001&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">1</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-0003&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">2</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-0004&quot;</span>
+<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.outer.htmlClass     <span class="hljs-comment">// Returns &quot;MyStyles-outer&quot;</span>
+<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">1</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-1&quot;</span>
+<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">2</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-2&quot;</span>
 <span class="hljs-type">MyStyles</span>.button.htmlClass    <span class="hljs-comment">// Returns &quot;btn btn-default&quot;</span>
 </code></pre>
 <p>And to see the generated CSS:</p>
 <pre><code class="lang-scala">println( <span class="hljs-type">MyStyles</span>.render )
 </code></pre>
 <p>Which prints:</p>
-<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>) </span>{
-  <span class="hljs-class">.MyStyles-0001</span> <span class="hljs-rules">{
-    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">400px</span></span></span>;
-  <span class="hljs-rule">}</span></span>
-}
-
-<span class="hljs-class">.MyStyles-0001</span> <span class="hljs-rules">{
+<pre><code class="lang-css"><span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> green</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">12px</span> auto</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> left</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
 <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-0001</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
+<span class="hljs-class">.MyStyles-outer</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -webkit-zoom-in</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -moz-zoom-in</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -o-zoom-in</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> zoom-in</span></span>;
 <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-0002</span> <span class="hljs-rules">{
+<span class="hljs-class">.MyStyles-indent-0</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
 <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-0003</span> <span class="hljs-rules">{
+<span class="hljs-class">.MyStyles-indent-1</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">2ex</span></span></span>;
 <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-0004</span> <span class="hljs-rules">{
+<span class="hljs-class">.MyStyles-indent-2</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">4ex</span></span></span>;
 <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-0005</span> <span class="hljs-rules">{
+<span class="hljs-class">.MyStyles-indent-3</span> <span class="hljs-rules">{
   <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">6ex</span></span></span>;
 <span class="hljs-rule">}</span></span>
+
+<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>) </span>{
+  <span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">400px</span></span></span>;
+  <span class="hljs-rule">}</span></span>
+}
 </code></pre>
-<p>Or if you&apos;re running in production-mode, you&apos;ll see:</p>
-<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{<span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}<span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value">green</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}<span class="hljs-class">._a0</span><span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}<span class="hljs-class">._a1</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}<span class="hljs-class">._a2</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}<span class="hljs-class">._a3</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}<span class="hljs-class">._a4</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}
-</code></pre>
+<p>Or if you&apos;re running in production-mode (see <code>ProdDefaults</code>), you&apos;ll see:</p>
+<div style="padding:16px; background-color: #f7f7f7">
+<code style="word-break:break-all" class="lang-css"><span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value">green</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}<span class="hljs-class">._a0</span><span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}<span class="hljs-class">._a1</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}<span class="hljs-class">._a2</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}<span class="hljs-class">._a3</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}<span class="hljs-class">._a4</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{<span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}</code>
+</div>
 
                     
                     </section>
