@@ -84,6 +84,8 @@ package object scalacss {
     /** Value to be applied to a HTML element's `class` attribute. */
     val htmlClass: String =
       (className.value /: addClassNames)(_ + " " + _.value)
+
+    override def toString = htmlClass
   }
 
   /** Faster than Vector(a) */
