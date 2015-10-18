@@ -72,7 +72,7 @@ object ReactTest extends TestSuite {
     'simple {
       val el = <.input(^.`type` := "text", MyStyles.input, ^.defaultValue := "ah")
       val html = React.renderToStaticMarkup(el)
-      assertEq(html, """<input type="text" class="ReactTest_MyStyles-input" value="ah">""")
+      assertEq(html, """<input type="text" class="ReactTest_MyStyles-input" value="ah"/>""")
     }
 
     'addClassName {
