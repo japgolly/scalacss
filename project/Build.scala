@@ -17,7 +17,7 @@ object ScalaCSS extends Build {
         organization       := "com.github.japgolly.scalacss",
         version            := "0.3.1-SNAPSHOT",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
-        licenses           += ("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
+        licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
         // Needs Shapeless for Scala 2.10
         // crossScalaVersions := Seq("2.10.5", Scala211),
