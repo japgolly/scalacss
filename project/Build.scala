@@ -15,9 +15,9 @@ object ScalaCSS extends Build {
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.3.0",
+        version            := "0.3.2-SNAPSHOT",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
-        licenses           += ("LGPL v2.1+" -> url("http://www.gnu.org/licenses/lgpl-2.1.txt")),
+        licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
         // Needs Shapeless for Scala 2.10
         // crossScalaVersions := Seq("2.10.5", Scala211),
@@ -47,10 +47,11 @@ object ScalaCSS extends Build {
     val test = m("test")
   }
   object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.9.1"
-    val core  = m("core")
-    val test  = m("test")
-    val extra = m("extra")
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.10.0"
+    val core        = m("core")
+    val test        = m("test")
+    val extra       = m("extra")
+    val extScalaz71 = m("ext-scalaz71")
   }
   val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
 
@@ -84,8 +85,8 @@ object ScalaCSS extends Build {
       .dependsOn(coreJs)
       .settings(
         libraryDependencies ++= Seq(react.core, react.test % "test"),
-        jsDependencies +=
-          "org.webjars" % "react" % "0.12.2" % "test" / "react-with-addons.js" commonJSName "React")
+        jsDependencies += "org.webjars.npm" % "react"     % "0.14.0" % "test" / "react-with-addons.js" commonJSName "React"    minified "react-with-addons.min.js",
+        jsDependencies += "org.webjars.npm" % "react-dom" % "0.14.0" % "test" / "react-dom.js"         commonJSName "ReactDOM" minified "react-dom.min.js" dependsOn "react-with-addons.js")
 
   // ==============================================================================================
   private def benchModule(name: String, dir: File => File) =
@@ -97,7 +98,7 @@ object ScalaCSS extends Build {
       .enablePlugins(ScalaJSPlugin)
       .settings(
         scalaSource in Compile := baseDirectory.value / "src",
-        libraryDependencies += react.extra)
+        libraryDependencies ++= Seq(react.extra, react.extScalaz71))
 
   val intfmt = java.text.NumberFormat.getIntegerInstance
 
