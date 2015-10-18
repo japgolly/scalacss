@@ -10,26 +10,39 @@ abstract class Literal(final val value: Value) {
 /** Gets merged into [[Dsl]]. */
 trait TypedLiteralAliases {
   import Literal.Typed
-  final def inherit  = Typed.inherit
-  final def initial  = Typed.initial
-  final def unset    = Typed.unset
-  final def `0`      = Typed.`0`
-  final def auto     = Typed.auto
-  final def hanging  = Typed.hanging
-  final def eachLine = Typed.eachLine
-  final def thin     = Typed.thin
-  final def medium   = Typed.medium
-  final def thick    = Typed.thick
-  final def none     = Typed.none
-  final def hidden   = Typed.hidden
-  final def dotted   = Typed.dotted
-  final def dashed   = Typed.dashed
-  final def solid    = Typed.solid
-  final def double   = Typed.double
-  final def groove   = Typed.groove
-  final def ridge    = Typed.ridge
-  final def inset    = Typed.inset
-  final def outset   = Typed.outset
+  import scalacss.Literal.Typed.TimingFunctionDirection
+
+  final def inherit                                                         = Typed.inherit
+  final def initial                                                         = Typed.initial
+  final def unset                                                           = Typed.unset
+  final def `0`                                                             = Typed.`0`
+  final def auto                                                            = Typed.auto
+  final def hanging                                                         = Typed.hanging
+  final def eachLine                                                        = Typed.eachLine
+  final def thin                                                            = Typed.thin
+  final def medium                                                          = Typed.medium
+  final def thick                                                           = Typed.thick
+  final def none                                                            = Typed.none
+  final def hidden                                                          = Typed.hidden
+  final def dotted                                                          = Typed.dotted
+  final def dashed                                                          = Typed.dashed
+  final def solid                                                           = Typed.solid
+  final def double                                                          = Typed.double
+  final def groove                                                          = Typed.groove
+  final def ridge                                                           = Typed.ridge
+  final def inset                                                           = Typed.inset
+  final def outset                                                          = Typed.outset
+  final def start                                                           = Typed.start
+  final def end                                                             = Typed.end
+  final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
+  final def steps(steps: Int, direction: TimingFunctionDirection)           = new Typed.steps(steps, direction)
+  final def linear                                                          = Typed.linear
+  final def ease                                                            = Typed.ease
+  final def easeIn                                                          = Typed.easeIn
+  final def easeInOut                                                       = Typed.easeInOut
+  final def easeOut                                                         = Typed.easeOut
+  final def stepStart                                                       = Typed.stepStart
+  final def stepEnd                                                         = Typed.stepEnd
 }
 
 /**
@@ -46,6 +59,8 @@ object Literal extends TypedLiteralAliases {
 
   object Typed {
     final val `0` = Length(0, LengthUnit.px)
+
+    class count(n: Int) extends Literal(n.toString)
 
     object auto     extends Literal("auto")
     object hanging  extends Literal("hanging")
@@ -75,6 +90,22 @@ object Literal extends TypedLiteralAliases {
     object ridge  extends Literal("ridge")  with BrStyle
     object inset  extends Literal("inset")  with BrStyle
     object outset extends Literal("outset") with BrStyle
+
+    // <timing-function>
+    sealed trait TimingFunctionDirection { def value: Value }
+    object start  extends Literal("start") with TimingFunctionDirection
+    object end    extends Literal("end") with TimingFunctionDirection
+
+    sealed trait TimingFunction
+    class cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) extends Literal(s"cubic-bezier($x1, $y1, $x2, $y2)") with TimingFunction
+    class steps(steps: Int, direction: TimingFunctionDirection)       extends Literal(s"steps($steps, ${direction.value})") with TimingFunction
+    object linear     extends Literal("linear") with TimingFunction
+    object ease       extends Literal("ease") with TimingFunction
+    object easeIn     extends Literal("ease-in") with TimingFunction
+    object easeInOut  extends Literal("ease-in-out") with TimingFunction
+    object easeOut    extends Literal("ease-out") with TimingFunction
+    object stepStart  extends Literal("step-start") with TimingFunction
+    object stepEnd    extends Literal("step-end") with TimingFunction
   }
 
   @inline def absolute           : Value = "absolute"
@@ -84,11 +115,14 @@ object Literal extends TypedLiteralAliases {
   @inline def allPetiteCaps      : Value = "all-petite-caps"
   @inline def allScroll          : Value = "all-scroll"
   @inline def allSmallCaps       : Value = "all-small-caps"
+  @inline def alternate          : Value = "alternate"
+  @inline def alternateReverse   : Value = "alternate-reverse"
   @inline def always             : Value = "always"
   @inline def available          : Value = "available"
   @inline def avoid              : Value = "avoid"
   @inline def avoidColumn        : Value = "avoid-column"
   @inline def avoidPage          : Value = "avoid-page"
+  @inline def backwards          : Value = "backwards"
   @inline def balance            : Value = "balance"
   @inline def baseline           : Value = "baseline"
   @inline def bidiOverride       : Value = "bidi-override"
@@ -129,7 +163,6 @@ object Literal extends TypedLiteralAliases {
   @inline def disabled           : Value = "disabled"
   @inline def ellipsis           : Value = "ellipsis"
   @inline def embed              : Value = "embed"
-  @inline def end                : Value = "end"
   @inline def eResize            : Value = "e-resize"
   @inline def ewResize           : Value = "ew-resize"
   @inline def expanded           : Value = "expanded"
@@ -144,6 +177,7 @@ object Literal extends TypedLiteralAliases {
   @inline def flexEnd            : Value = "flex-end"
   @inline def flexStart          : Value = "flex-start"
   @inline def flip               : Value = "flip"
+  @inline def forwards           : Value = "forwards"
   @inline def fromImage          : Value = "from-image"
   @inline def fullWidth          : Value = "full-width"
   @inline def grab               : Value = "grab"
@@ -156,6 +190,7 @@ object Literal extends TypedLiteralAliases {
   @inline def horizontalTB       : Value = "horizontal-tb"
   @inline def icon               : Value = "icon"
   @inline def inactive           : Value = "inactive"
+  @inline def infinite           : Value = "infinite"
   @inline def inline             : Value = "inline"
   @inline def inlineBlock        : Value = "inline-block"
   @inline def inlineEnd          : Value = "inline-end"
@@ -210,6 +245,7 @@ object Literal extends TypedLiteralAliases {
   @inline def page               : Value = "page"
   @inline def panX               : Value = "pan-x"
   @inline def panY               : Value = "pan-y"
+  @inline def paused             : Value = "paused"
   @inline def petiteCaps         : Value = "petite-caps"
   @inline def pixelated          : Value = "pixelated"
   @inline def plaintext          : Value = "plaintext"
@@ -221,6 +257,7 @@ object Literal extends TypedLiteralAliases {
   @inline def progress           : Value = "progress"
   @inline def relative           : Value = "relative"
   @inline def repeat             : Value = "repeat"
+  @inline def reverse            : Value = "reverse"
   @inline def right              : Value = "right"
   @inline def round              : Value = "round"
   @inline def row                : Value = "row"
@@ -233,6 +270,7 @@ object Literal extends TypedLiteralAliases {
   @inline def rubyText           : Value = "ruby-text"
   @inline def rubyTextContainer  : Value = "ruby-text-container"
   @inline def runIn              : Value = "run-in"
+  @inline def running            : Value = "running"
   @inline def scaleDown          : Value = "scale-down"
   @inline def scroll             : Value = "scroll"
   @inline def semiCondensed      : Value = "semi-condensed"
@@ -251,7 +289,6 @@ object Literal extends TypedLiteralAliases {
   @inline def spaceAround        : Value = "space-around"
   @inline def spaceBetween       : Value = "space-between"
   @inline def sResize            : Value = "s-resize"
-  @inline def start              : Value = "start"
   @inline def startEnd           : Value = "start end"
   @inline def static             : Value = "static"
   @inline def statusBar          : Value = "status-bar"

@@ -176,7 +176,12 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
   )
 
   val animation = style(
-    animationName(kf1)
+    animationName(kf1),
+    animationDuration(5 seconds),
+    animationDirection.alternate,
+    animationIterationCount.count(5),
+    animationPlayState.running,
+    animationTimingFunction.ease
   )
 }
 
@@ -469,6 +474,26 @@ object InlineTest extends utest.TestSuite {
        |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -o-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-duration: 5s;
+       |  -moz-animation-duration: 5s;
+       |  -o-animation-duration: 5s;
+       |  animation-duration: 5s;
+       |  -webkit-animation-direction: alternate;
+       |  -moz-animation-direction: alternate;
+       |  -o-animation-direction: alternate;
+       |  animation-direction: alternate;
+       |  -webkit-animation-iteration-count: 5;
+       |  -moz-animation-iteration-count: 5;
+       |  -o-animation-iteration-count: 5;
+       |  animation-iteration-count: 5;
+       |  -webkit-animation-play-state: running;
+       |  -moz-animation-play-state: running;
+       |  -o-animation-play-state: running;
+       |  animation-play-state: running;
+       |  -webkit-animation-timing-function: ease;
+       |  -moz-animation-timing-function: ease;
+       |  -o-animation-timing-function: ease;
+       |  animation-timing-function: ease;
        |}
      """.stripMargin))
   }

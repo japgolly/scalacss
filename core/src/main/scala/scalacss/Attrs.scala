@@ -108,7 +108,13 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction">MDN</a>
    */
-  final val animationDirection = Attr.real("animation-direction", Transform keys CanIUse.animation)
+  object animationDirection extends TypedAttrBase {
+    override val attr: Attr = Attr.real("animation-direction", Transform keys CanIUse.animation)
+    @inline def normal            = av(L.normal)
+    @inline def reverse           = av(L.reverse)
+    @inline def alternate         = av(L.alternate)
+    @inline def alternateReverse  = av(L.alternateReverse)
+  }
 
   /**
    * The animation-duration CSS property specifies the length of time that an animation should take to complete one cycle.
@@ -124,14 +130,23 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">MDN</a>
    */
-  final val animationFillMode = Attr.real("animation-fill-mode", Transform keys CanIUse.animation)
+  object animationFillMode extends TypedAttrBase {
+    override val attr: Attr = Attr.real("animation-fill-mode", Transform keys CanIUse.animation)
+    @inline def forwards  = av(L.forwards)
+    @inline def backwards = av(L.backwards)
+    @inline def both      = av(L.both)
+  }
 
   /**
    * The animation-iteration-count CSS property defines the number of times an animation cycle should be played before stopping.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">MDN</a>
    */
-  final val animationIterationCount = Attr.real("animation-iteration-count", Transform keys CanIUse.animation)
+  object animationIterationCount extends TypedAttrBase {
+    override val attr: Attr = Attr.real("animation-iteration-count", Transform keys CanIUse.animation)
+    @inline def infinite       = av(L.infinite)
+    @inline def count(n: Int)  = avl(new LT.count(n))
+  }
 
   /**
    * The animation-name CSS property specifies a list of animations that should be applied to the selected element. Each name indicates a @keyframes at-rule that defines the property values for the animation sequence.
@@ -148,14 +163,29 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">MDN</a>
    */
-  final val animationPlayState = Attr.real("animation-play-state", Transform keys CanIUse.animation)
+  object animationPlayState extends TypedAttrBase {
+    override val attr: Attr = Attr.real("animation-play-state", Transform keys CanIUse.animation)
+    @inline def running = av(L.running)
+    @inline def paused  = av(L.paused)
+  }
 
   /**
    * The CSS animation-timing-function property specifies how a CSS animation should progress over the duration of each cycle. The possible values are one or several &lt;timing-function>.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function">MDN</a>
    */
-  final val animationTimingFunction = Attr.real("animation-timing-function", Transform keys CanIUse.animation)
+  object animationTimingFunction extends TypedAttrBase {
+    override val attr: Attr = Attr.real("animation-timing-function", Transform keys CanIUse.animation)
+    @inline def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    @inline def steps(steps: Int, direction: LT.TimingFunctionDirection)    = avl(new LT.steps(steps, direction))
+    @inline def linear                                                      = avl(LT.linear)
+    @inline def ease                                                        = avl(LT.ease)
+    @inline def easeIn                                                      = avl(LT.easeIn)
+    @inline def easeInOut                                                   = avl(LT.easeInOut)
+    @inline def easeOut                                                     = avl(LT.easeOut)
+    @inline def stepStart                                                   = avl(LT.stepStart)
+    @inline def stepEnd                                                     = avl(LT.stepEnd)
+  }
 
   /**
    * The CSS backface-visibility property determines whether or not the back face of the element is visible when facing the user. The back face of an element always is a transparent background, letting, when visible, a mirror image of the front face be displayed.
@@ -1768,7 +1798,7 @@ object Attrs {
     @inline def center       = av(L.center)
     @inline def spaceAround  = av(L.spaceAround)
     @inline def spaceBetween = av(L.spaceBetween)
-    @inline def start        = av(L.start)
+    @inline def start        = avl(L.start)
   }
 
   /**
@@ -1851,14 +1881,14 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align",
-      Transform.values(CanIUse.logicalProps)(L.start, L.end))
+      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value))
     @inline def center      = av(L.center)
-    @inline def end         = av(L.end)
+    @inline def end         = avl(L.end)
     @inline def justify     = av(L.justify)
     @inline def left        = av(L.left)
     @inline def matchParent = av(L.matchParent)
     @inline def right       = av(L.right)
-    @inline def start       = av(L.start)
+    @inline def start       = avl(L.start)
     @inline def startEnd    = av(L.startEnd)
   }
 
@@ -1871,11 +1901,11 @@ object Attrs {
     override val attr = Attr.real("text-align-last", Transform keys CanIUse.textAlignLast)
     @inline def auto    = avl(LT.auto)
     @inline def center  = av(L.center)
-    @inline def end     = av(L.end)
+    @inline def end     = avl(L.end)
     @inline def justify = av(L.justify)
     @inline def left    = av(L.left)
     @inline def right   = av(L.right)
-    @inline def start   = av(L.start)
+    @inline def start   = avl(L.start)
   }
 
   /**
@@ -2126,7 +2156,18 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function">MDN</a>
    */
-  final val transitionTimingFunction = Attr.real("transition-timing-function", Transform keys CanIUse.transitions)
+  object transitionTimingFunction extends TypedAttrBase {
+    override val attr: Attr = Attr.real("transition-timing-function", Transform keys CanIUse.transitions)
+    @inline def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)   = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    @inline def steps(steps: Int, direction: LT.TimingFunctionDirection)      = avl(new LT.steps(steps, direction))
+    @inline def linear                                                        = avl(LT.linear)
+    @inline def ease                                                          = avl(LT.ease)
+    @inline def easeIn                                                        = avl(LT.easeIn)
+    @inline def easeInOut                                                     = avl(LT.easeInOut)
+    @inline def easeOut                                                       = avl(LT.easeOut)
+    @inline def stepStart                                                     = avl(LT.stepStart)
+    @inline def stepEnd                                                       = avl(LT.stepEnd)
+  }
 
   /**
    * The unicode-bidi CSS property together with the direction property relates to the handling of bidirectional text in a document. For example, if a block of text contains both left-to-right and right-to-left text then the user-agent uses a complex Unicode algorithm to decide how to display the text. This property overrides this algorithm and allows the developer to control the text embedding.
