@@ -12,10 +12,19 @@ object CondTest extends TestSuite {
         assertEq(Not("div").cssValue, ":not(div)")
         assertEq(Not(Link).cssValue, ":not(:link)")
       }
+
+      'attrSelectors {
+        assertEq(AttrExists("custom-attr").cssValue, "[custom-attr]")
+        assertEq(Attr("custom-attr", "bla").cssValue, "[custom-attr=\"bla\"]")
+        assertEq(AttrContains("custom-attr", "bla").cssValue, "[custom-attr~=\"bla\"]")
+        assertEq(AttrStartsWith("custom-attr", "bla").cssValue, "[custom-attr|=\"bla\"]")
+        assertEq(AttrEndsWith("custom-attr", "bla").cssValue, "[custom-attr$=\"bla\"]")
+      }
      
       'elementClassOrder {
-        assertEq(Before.&(Hover).cssValue, ":hover::before")
-        assertEq(Hover.&(Before).cssValue, ":hover::before")
+        assertEq(Before.&(Hover).attrExists("custom-attr").cssValue, ":hover::before[custom-attr]")
+        assertEq(Hover.attr("custom-attr", "bla").&(Before).cssValue, ":hover::before[custom-attr=\"bla\"]")
+        assertEq(AttrEndsWith("custom-attr", "bla").&(Hover).&(Before).cssValue, ":hover::before[custom-attr$=\"bla\"]")
       }
     }
   }

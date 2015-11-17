@@ -135,6 +135,12 @@ object Pseudo {
     final def firstLetter                    : Out = addPseudo(FirstLetter)
     final def firstLine                      : Out = addPseudo(FirstLine)
     final def selection                      : Out = addPseudo(Selection)
+
+    final def attrExists(name: String)       : Out = addPseudo(AttrExists(name))
+    final def attr(name: String, value: String) : Out = addPseudo(Attr(name, value))
+    final def attrContains(name: String, value: String) : Out = addPseudo(AttrContains(name, value))
+    final def attrStartsWith(name: String, value: String) : Out = addPseudo(AttrStartsWith(name, value))
+    final def attrEndsWith(name: String, value: String) : Out = addPseudo(AttrEndsWith(name, value))
   }
 
   /** Selects the active link. */
@@ -249,4 +255,22 @@ object Pseudo {
 
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Pseudo1("::selection", PseudoElement)
+
+
+  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"[$name$cmp${"\"" + value + "\""}]", PseudoElement)
+
+  /** Selects all elements with a name attribute. */
+  case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoElement)
+
+  /** Selects all elements with a name="value". */
+  case class Attr(name: String, value: String) extends AttrSelector(name, value, "=")
+
+  /** Selects all elements with a name containing the word value. */
+  case class AttrContains(name: String, value: String) extends AttrSelector(name, value, "~=")
+
+  /** Selects all elements with a name starting with value. */
+  case class AttrStartsWith(name: String, value: String) extends AttrSelector(name, value, "|=")
+
+  /** Selects all elements with a name ends with value. */
+  case class AttrEndsWith(name: String, value: String) extends AttrSelector(name, value, "$=")
 }
