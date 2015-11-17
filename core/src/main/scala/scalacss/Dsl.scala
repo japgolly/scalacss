@@ -248,6 +248,10 @@ object DslMacros {
       create(None, d, f, classNameSuffix)
   }
 
+  trait MKeyframes {
+    def apply(frames: (Percentage[Int], StyleA)*): Keyframes
+  }
+
   val defaultStyleFClassNameSuffix: (Any, Int) => String =
     (_, index) => (index + 1).toString
 

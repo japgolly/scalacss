@@ -134,6 +134,7 @@ object StyleSheet {
 
     override protected def __macroStyle (name: String) = new MStyle (name)
     override protected def __macroStyleF(name: String) = new MStyleF(name)
+    override protected def __macroKeyframes(name: String) = new MKeyframes(name)
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
@@ -152,6 +153,14 @@ object StyleSheet {
           case None    => register.registerFM(StyleF(f)(d), name)(classNameSuffix)
           case Some(n) => register.registerF2(StyleF(f)(d), n)(classNameSuffix)
         }
+    }
+
+    protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
+      override def apply(frames: (KeyframeAnimationSelector, StyleA)*): Keyframes = {
+        val k = Keyframes(name, frames)
+        register.registerKeyframes(k)
+        k
+      }
     }
 
     protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =

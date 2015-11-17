@@ -153,7 +153,26 @@ object MyInline3 extends StyleSheet.Inline {
     innerObject.andAgain.depth2)
 }
 
-  object InlineTest extends utest.TestSuite {
+object MyInlineWithKeyframes extends StyleSheet.Inline {
+  import dsl._
+
+  val kf1 = keyframes(
+    (0 %%) -> style(
+      height(100 px),
+      width(30 px)
+    ),
+    (20 %%) -> style(
+      height(150 px),
+      width(30 px)
+    ),
+    (100 %%) -> style(
+      height(200 px),
+      width(60 px)
+    )
+  )
+}
+
+object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.TestUtil._
 
@@ -412,5 +431,25 @@ object MyInline3 extends StyleSheet.Inline {
         assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
       }
     }
+
+    'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
+       |@keyframes kf1 {
+       |  0% {
+       |  height: 100px;
+       |  width: 30px;
+       |  }
+       |
+       |  20% {
+       |  height: 150px;
+       |  width: 30px;
+       |  }
+       |
+       |  100% {
+       |  height: 200px;
+       |  width: 60px;
+       |  }
+       |
+       |}
+     """.stripMargin))
   }
 }

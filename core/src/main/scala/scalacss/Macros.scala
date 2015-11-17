@@ -38,12 +38,15 @@ object Macros {
 
   def implStyle (c: Context): c.Expr[MStyle]  = impl(c, "__macroStyle")
   def implStyleF(c: Context): c.Expr[MStyleF] = impl(c, "__macroStyleF")
+  def implKeyframes(c: Context): c.Expr[MKeyframes]  = impl(c, "__macroKeyframes")
 
   trait DslMixin {
     protected def __macroStyle (name: String): MStyle
     protected def __macroStyleF(name: String): MStyleF
+    protected def __macroKeyframes(name: String): MKeyframes
     final protected def style : MStyle  = macro implStyle
     final protected def styleF: MStyleF = macro implStyleF
+    final protected def keyframes: MKeyframes  = macro implKeyframes
   }
 
   // ===================================================================================================================
