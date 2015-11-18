@@ -44,9 +44,11 @@ object Macros {
     protected def __macroStyle (name: String): MStyle
     protected def __macroStyleF(name: String): MStyleF
     protected def __macroKeyframes(name: String): MKeyframes
+    protected def __macroKeyframeStyle: MStyle
     final protected def style : MStyle  = macro implStyle
     final protected def styleF: MStyleF = macro implStyleF
     final protected def keyframes: MKeyframes  = macro implKeyframes
+    final protected def kstyle : MStyle = __macroKeyframeStyle
   }
 
   // ===================================================================================================================

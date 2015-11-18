@@ -156,16 +156,18 @@ object MyInline3 extends StyleSheet.Inline {
 object MyInlineWithKeyframes extends StyleSheet.Inline {
   import dsl._
 
+  val s = style(
+    height(100 px),
+    width(30 px)
+  )
+
   val kf1 = keyframes(
-    (0 %%) -> style(
-      height(100 px),
-      width(30 px)
-    ),
-    (20 %%) -> style(
+    (0 %%) -> s,
+    (20 %%) -> kstyle(
       height(150 px),
       width(30 px)
     ),
-    (100 %%) -> style(
+    (100 %%) -> kstyle(
       height(200 px),
       width(60 px)
     )
@@ -433,7 +435,7 @@ object InlineTest extends utest.TestSuite {
     }
 
     'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
-       |@keyframes kf1 {
+       |@keyframes MyInlineWithKeyframes-kf1 {
        |  0% {
        |  height: 100px;
        |  width: 30px;
@@ -449,6 +451,11 @@ object InlineTest extends utest.TestSuite {
        |  width: 60px;
        |  }
        |
+       |}
+       |
+       |.MyInlineWithKeyframes-s {
+       |  height: 100px;
+       |  width: 30px;
        |}
      """.stripMargin))
   }

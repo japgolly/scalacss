@@ -130,8 +130,11 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
-  def registerKeyframes(keyframes: Keyframes) = {
-    _keyframes :+= keyframes
+  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = {
+    val cn = macroName(cnh, keyframes.name.value) map ensureUnique
+    val kf = keyframes.copy(name = cn.get)
+    _keyframes :+= kf
+    kf
   }
 
   def styles: Vector[StyleA] = mutex {
@@ -140,8 +143,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   }
 
   def css(implicit env: Env): Css = {
-    val keyframes = _keyframes.flatMap(_.frames.map(_._2)).map(_.className)
-    Css.prepareStyles(styles.filter(s => !keyframes.contains(s.className))) ++ Css.prepareKeyframes(_keyframes)
+    Css.prepareStyles(styles) ++ Css.prepareKeyframes(_keyframes)
   }
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =

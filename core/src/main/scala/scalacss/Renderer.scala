@@ -50,14 +50,14 @@ object StringRenderer {
     new Default(f)
 
   case class FormatSB(kfStart : KeyframeAnimationName         => Unit,
-                      kfsStart: KeyframeAnimationName         => Unit,
+                      kfsStart: KeyframeAnimationSelector     => Unit,
                       mqStart : CssMediaQuery                 => Unit,
                       selStart: (CssMediaQueryO, CssSelector) => Unit,
                       kv1     : (CssMediaQueryO, CssKV)       => Unit,
                       kvn     : (CssMediaQueryO, CssKV)       => Unit,
                       selEnd  : (CssMediaQueryO, CssSelector) => Unit,
                       mqEnd   : CssMediaQuery                 => Unit,
-                      kfsEnd  : KeyframeAnimationName         => Unit,
+                      kfsEnd  : KeyframeAnimationSelector     => Unit,
                       kfEnd   : KeyframeAnimationName         => Unit,
                       done    : ()                            => Unit) {
 
@@ -76,9 +76,9 @@ object StringRenderer {
       case e: CssKeyframesAnimation =>
         kfStart(e.name)
         e.frames foreach { frame =>
-          kfsStart(frame._1.value)
+          kfsStart(frame._1)
           frame._2.foreach(e => printCssKV(e.mq, e.content))
-          kfsEnd(frame._1.value)
+          kfsEnd(frame._1)
         }
         kfEnd(e.name)
     }}
@@ -105,8 +105,8 @@ object StringRenderer {
       sb append c.value
     }
     FormatSB(
-      n      => { sb append s"@keyframes $n{" },
-      s      => { sb append s"$s{" },
+      n      => { sb append s"@keyframes ${n.value}{" },
+      s      => { sb append s"${s.value}{" },
       m      => { sb append m; sb append '{' },
       (_, s) => { sb append s; sb append '{' },
       (_, c) => kv(c),
@@ -135,8 +135,8 @@ object StringRenderer {
         sb append ";\n"
       }
     FormatSB(
-      n => { sb append s"@keyframes $n {\n" },
-      s => { sb append s"$indent$s {\n" },
+      n => { sb append s"@keyframes ${n.value} {\n" },
+      s => { sb append s"$indent${s.value} {\n" },
       mq => {
         sb append mq
         sb append " {\n"

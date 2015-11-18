@@ -47,7 +47,7 @@ package object scalacss {
   /**
     * Keyframes animation in CSS
     */
-  type KeyframeAnimationName = String
+  type KeyframeAnimationName = ClassName
   type KeyframeAnimationSelector = Percentage[Int]
 
   sealed trait CssEntry
