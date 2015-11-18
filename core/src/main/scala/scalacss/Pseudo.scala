@@ -116,10 +116,14 @@ object Pseudo {
     final def not          (selector: String): Out = addPseudo(Not(selector))
     final def not          (selector: Pseudo): Out = addPseudo(Not(selector))
     final def not          (f: PseudoF)      : Out = addPseudo(Not(f))
-    final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n))
-    final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n))
-    final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n))
-    final def nthOfType    (n: Int)          : Out = addPseudo(NthOfType(n))
+    final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n.toString))
+    final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n.toString))
+    final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n.toString))
+    final def nthOfType    (n: Int)          : Out = addPseudo(NthOfType(n.toString))
+    final def nthChild     (n: String)       : Out = addPseudo(NthChild(n))
+    final def nthLastChild (n: String)       : Out = addPseudo(NthLastChild(n))
+    final def nthLastOfType(n: String)       : Out = addPseudo(NthLastOfType(n))
+    final def nthOfType    (n: String)       : Out = addPseudo(NthOfType(n))
     final def onlyOfType                     : Out = addPseudo(OnlyOfType)
     final def onlyChild                      : Out = addPseudo(OnlyChild)
     final def optional                       : Out = addPseudo(Optional)
@@ -195,17 +199,26 @@ object Pseudo {
     def apply(f: PseudoF)      : Not = Not(f(ChainOps))
   }
 
+  object NthChildBase {
+    val queryPattern = """^((\+|-)?\d+|odd|even)$""".r.pattern
+    val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
+  }
+
+  abstract class NthChildBase(cls: String, query: String) extends Pseudo1(s":$cls($query)", PseudoClass) {
+    require(NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches())
+  }
+
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
-  final case class NthChild(n: Int) extends Pseudo1(s":nth-child($n)", PseudoClass)
+  final case class NthChild(query: String) extends NthChildBase("nth-child", query)
 
   /** Selects every &lt;p&gt; element that is the second child of its parent, counting from the last child. */
-  final case class NthLastChild(n: Int) extends Pseudo1(s":nth-last-child($n)", PseudoClass)
+  final case class NthLastChild(query: String) extends NthChildBase("nth-last-child", query)
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent, counting from the last child. */
-  final case class NthLastOfType(n: Int) extends Pseudo1(s":nth-last-of-type($n)", PseudoClass)
+  final case class NthLastOfType(query: String) extends NthChildBase("nth-last-of-type", query)
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent. */
-  final case class NthOfType(n: Int) extends Pseudo1(s":nth-of-type($n)", PseudoClass)
+  final case class NthOfType(query: String) extends NthChildBase("nth-of-type", query)
 
   /** Selects every &lt;p&gt; element that is the only &lt;p&gt; element of its parent. */
   case object OnlyOfType extends Pseudo1(":only-of-type", PseudoClass)
