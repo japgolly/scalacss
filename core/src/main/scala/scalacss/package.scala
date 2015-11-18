@@ -81,8 +81,8 @@ package object scalacss {
           A.equalIsNatural
         override def equal(a: CssKeyframesAnimation, b: CssKeyframesAnimation): Boolean =
           A.equal(a.name, b.name) &&
-          a.frames.size == b.frames.size &&
-          a.frames.keys.forall(k => b.frames.contains(k) && streamEqual[CssStyleEntry].equal(a.frames(k), b.frames(k)))
+            streamEqual[String].equal(a.frames.keys.toStream.map(_.value), b.frames.keys.toStream.map(_.value)) &&
+            a.frames.keys.forall(k => streamEqual[CssStyleEntry].equal(a.frames(k), b.frames(k)))
       }
     }
   }
@@ -95,6 +95,7 @@ package object scalacss {
     override def equal(a1: CssEntry, a2: CssEntry): Boolean = { (a1, a2) match {
       case (a: CssStyleEntry, b: CssStyleEntry) => CssStyleEntry.equality.equal(a, b)
       case (a: CssKeyframesAnimation, b: CssKeyframesAnimation) => CssKeyframesAnimation.equality.equal(a, b)
+      case _ => false
     }}})
 
   type WarningMsg = String
