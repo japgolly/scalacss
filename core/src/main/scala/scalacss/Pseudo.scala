@@ -257,7 +257,7 @@ object Pseudo {
   case object Selection extends Pseudo1("::selection", PseudoElement)
 
 
-  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"[$name$cmp${"\"" + value + "\""}]", PseudoElement)
+  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"""[$name$cmp"$value"]""", PseudoElement)
 
   /** Selects all elements with a name attribute. */
   case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoElement)
