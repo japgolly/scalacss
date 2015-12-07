@@ -119,6 +119,9 @@ package object scalacss {
     /** Value to be applied to a HTML element's `class` attribute. */
     val htmlClass: String =
       (className.value /: addClassNames)(_ + " " + _.value)
+
+    def +(s : StyleA)(implicit c: Compose): StyleA =
+      StyleA(className, s.className +: (addClassNames ++ s.addClassNames), style.compose(s.style))
   }
 
   /** Faster than Vector(a) */
