@@ -19,9 +19,10 @@ object StringRenderer {
     override def apply(css: Css): String = {
       val sb = new StringBuilder
       val fmt = format(sb)
-      val (styles, keyframes) = Css.separateStylesAndKeyframes(css)
+      val (styles, keyframes, fontFaces) = Css.separateStylesAndKeyframes(css)
       val byMQ = Css.mapByMediaQuery(styles)
 
+      fontFaces.foreach(fmt(_))                              // Render font faces
       keyframes.foreach(fmt(_))                              // Render keyframes
       byMQ.foreach(t => if (t._1.isEmpty)   fmt(None, t._2)) // Render styles without MQs
       byMQ.foreach(t => if (t._1.isDefined) fmt(t._1, t._2)) // Render styles with MQs
@@ -60,6 +61,7 @@ object StringRenderer {
                       mqEnd   : CssMediaQuery                              => Unit,
                       kfsEnd  : KeyframeSelector                           => Unit,
                       kfEnd   : KeyframeAnimationName                      => Unit,
+                      ff      : CssFontFace                                => Unit,
                       done    : ()                                         => Unit) {
 
     def apply(mq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
@@ -87,6 +89,9 @@ object StringRenderer {
             kfsEnd(sel)
           }
           kfEnd(e.name)
+
+        case e: CssFontFace =>
+          ff(e)
       }
 
     def apply(kf: KeyframeSelectorO, mq: CssMediaQueryO, sel: CssSelector, kvs: NonEmptyVector[CssKV]): Unit = {
@@ -101,14 +106,28 @@ object StringRenderer {
     }
   }
 
+  def printFontFace(fontface: CssFontFace,
+                    start   : ()                        => Unit,
+                    kv      : (String, String, Boolean) => Unit, //Key, value, wrap
+                    end     : ()                        => Unit) = {
+    start()
+    kv("font-family", fontface.fontFamily, true)
+    kv("src", fontface.src.toStream.mkString(","), false)
+    if (fontface.fontStretch.isDefined) kv("font-stretch", fontface.fontStretch.get, false)
+    if (fontface.fontStyle.isDefined) kv("font-style", fontface.fontStyle.get, false)
+    if (fontface.fontWeight.isDefined) kv("font-weight", fontface.fontWeight.get, false)
+    if (fontface.unicodeRange.isDefined) kv("unicode-range", fontface.unicodeRange.get.toString, false)
+    end()
+  }
+
   /**
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.
    */
   val formatTiny: Format = sb => {
-    def kv(c: CssKV): Unit = {
+    def kv(c: CssKV, wrap: Boolean = false): Unit = {
       sb append c.key
       sb append ':'
-      sb append c.value
+      sb append (if (wrap && c.value.contains(" ")) s""""${c.value}"""" else c.value)
     }
     FormatSB(
       kfStart  = n         => { sb append "@keyframes "; sb append n; sb append '{' },
@@ -121,6 +140,13 @@ object StringRenderer {
       mqEnd    = _         => sb append '}',
       kfsEnd   = _         => sb append '}',
       kfEnd    = _         => sb append '}',
+      ff       = fontface  =>
+        printFontFace(
+          fontface,
+          () => sb append "@font-face {",
+          (key: String, value: String, wrap: Boolean) => kv(CssKV(key, value), wrap = wrap),
+          () => sb append "}"
+        ),
       done     = ()        => ())
   }
 
@@ -132,17 +158,16 @@ object StringRenderer {
       if (mq.isDefined) sb append indent
     def kfIndent(kf: KeyframeSelectorO): Unit =
       if (kf.isDefined) sb append indent
-    val kv: (KeyframeSelectorO, CssMediaQueryO, CssKV) => Unit =
-      (kf, mq, c) => {
-        kfIndent(kf)
-        mqIndent(mq)
-        sb append indent
-        sb append c.key
-        sb append ':'
-        sb append postColon
-        sb append c.value
-        sb append ";\n"
-      }
+    def kv(kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV, wrap: Boolean = false) = {
+      kfIndent(kf)
+      mqIndent(mq)
+      sb append indent
+      sb append c.key
+      sb append ':'
+      sb append postColon
+      sb append (if (wrap && c.value.contains(" ")) s""""${c.value}"""" else c.value)
+      sb append ";\n"
+    }
     FormatSB(
       kfStart  = n => { sb append "@keyframes "; sb append n; sb append " {\n" },
       kfsStart = s => { sb append indent; sb append s; sb append " {\n" },
@@ -155,8 +180,8 @@ object StringRenderer {
                    sb append sel
                    sb append " {\n"
                  },
-      kv1      = kv,
-      kvn      = kv,
+      kv1      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c),
+      kvn      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c),
       selEnd   = (mq, _) => {
                    mqIndent(mq)
                    sb append "}\n"
@@ -165,6 +190,13 @@ object StringRenderer {
       mqEnd    = _ => sb append "}\n\n",
       kfsEnd   = _ => { sb append indent; sb append "}\n\n" },
       kfEnd    = _ => sb append "}\n\n",
+      ff       = fontface =>
+        printFontFace(
+          fontface,
+          () => sb append "@font-face {\n",
+          (key: String, value: String, wrap: Boolean) => kv(None, None, CssKV(key, value), wrap = wrap),
+          () => sb append "}\n\n"
+        ),
       done     = () => ())
   }
 

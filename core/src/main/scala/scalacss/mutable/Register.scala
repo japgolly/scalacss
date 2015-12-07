@@ -17,6 +17,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   var _nameGen  = initNameGen
   var _styles   = Vector.empty[StyleA]
   var _keyframes = Vector.empty[Keyframes]
+  var _fontFaces = Vector.empty[FontFace]
   var _rendered = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -31,7 +32,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
 
   private def isTaken(className: ClassName): Boolean =
-    mutex(_styles.exists(_.className === className) || _keyframes.exists(f => f.name === className))
+    mutex(_styles.exists(_.className === className) || _keyframes.exists(f => f.name === className) || _fontFaces.exists(ff => ff.fontFamily == className.value))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -129,6 +130,14 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     kf
   }
 
+  def registerFontFace(fontFace: FontFace)(implicit cnh: ClassNameHint): FontFace = {
+    val cn = macroName(cnh, fontFace.fontFamily).fold(nextName(cnh))(ensureUnique)
+    val ff = fontFace.copy(fontFamily = cn.value)
+    emitRegistrationWarnings(cn, Vector.empty)
+    _fontFaces :+= ff
+    ff
+  }
+
   def styles: Vector[StyleA] = mutex {
     _rendered = true
     _styles
@@ -139,8 +148,13 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _keyframes
   }
 
+  def fontFaces: Vector[FontFace] = mutex {
+    _rendered = true
+    _fontFaces
+  }
+
   def css(implicit env: Env): Css =
-    Css(styles, keyframes)
+    Css(styles, keyframes, fontFaces)
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)
