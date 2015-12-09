@@ -196,7 +196,7 @@ abstract class DslBase
   def media = MediaQueryEmpty
 
   def unsafeExt(f: String => String)(t: ToStyle*)(implicit c: Compose): UnsafeExt =
-    UnsafeExt(f, styleS(t: _*))
+    UnsafeExt(f, Cond.empty, styleS(t: _*))
 
   def unsafeChild(n: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
     unsafeExt(_ + " " + n)(t: _*)

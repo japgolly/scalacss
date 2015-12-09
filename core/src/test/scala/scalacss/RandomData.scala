@@ -63,7 +63,7 @@ object RandomData {
     }
 
   def unsafeExt(g: Gen[StyleS]): Gen[UnsafeExt] =
-    Gen.apply2(UnsafeExt)(unsafeCssSelEndo, g)
+    Gen.apply3(UnsafeExt)(unsafeCssSelEndo, Gen insert Cond.empty, g)
 
   private def sized(from: Int, jvm: Int, js: Int): SizeSpec =
     from to (jvm `JVM|JS` js)
