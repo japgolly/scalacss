@@ -22,9 +22,9 @@ object CondTest extends TestSuite {
       }
 
       'elementClassOrder {
-        assertEq(Before.&(Hover).attrExists("custom-attr").cssValue, ":hover::before[custom-attr]")
-        assertEq(Hover.attr("custom-attr", "bla").&(Before).cssValue, ":hover::before[custom-attr=\"bla\"]")
-        assertEq(AttrEndsWith("custom-attr", "bla").&(Hover).&(Before).cssValue, ":hover::before[custom-attr$=\"bla\"]")
+        assertEq(Before.&(Hover).attrExists("custom-attr").cssValue, "[custom-attr]:hover::before")
+        assertEq(Hover.attr("custom-attr", "bla").&(Before).cssValue, "[custom-attr=\"bla\"]:hover::before")
+        assertEq(AttrEndsWith("custom-attr", "bla").&(Hover).&(Before).cssValue, "[custom-attr$=\"bla\"]:hover::before")
         assertEq(Before.&(Hover).nthChild("2n+1").cssValue, ":hover:nth-child(2n+1)::before")
         assertEq(Before.&(Hover).nthChild("n+4").cssValue, ":hover:nth-child(n+4)::before")
         assertEq(Before.&(Hover).nthChild("n").cssValue, ":hover:nth-child(n)::before")

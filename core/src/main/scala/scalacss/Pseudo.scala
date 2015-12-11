@@ -8,16 +8,17 @@ import scalaz.syntax.equal._
 // TODO Rename PseudoXxxxx (selector probably)
 
 /** http://www.w3.org/TR/selectors/#selector-syntax */
-sealed trait PseudoType
-case object PseudoElement extends PseudoType
-case object PseudoClass   extends PseudoType
+sealed class PseudoType(val priority: Short)
+case object PseudoAttr    extends PseudoType(0)
+case object PseudoClass   extends PseudoType(1)
+case object PseudoElement extends PseudoType(2)
 
 object PseudoType {
   // Class comes before Element: http://www.w3.org/TR/selectors/#selector-syntax
   implicit val psuedoTypeOrder: Order[PseudoType] = new Order[PseudoType] {
     def order(x: PseudoType, y: PseudoType): Ordering = {
       if (x == y) Ordering.EQ
-      else if (x == PseudoClass && y == PseudoElement) Ordering.LT
+      else if (x.priority < y.priority) Ordering.LT
       else Ordering.GT
     }
   }
@@ -73,7 +74,7 @@ object Pseudo {
 
   implicit val optionPseudoTC: Monoid[Option[Pseudo]] =
     scalaz.std.option.optionMonoid
-  
+
   implicit val psuedo1Order: Order[Pseudo1] =
     Order.orderBy[Pseudo1, (PseudoType, String)](p => (p.pseudoType, p.cssValue))
 
@@ -270,10 +271,10 @@ object Pseudo {
   case object Selection extends Pseudo1("::selection", PseudoElement)
 
 
-  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"""[$name$cmp"$value"]""", PseudoElement)
+  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"""[$name$cmp"$value"]""", PseudoAttr)
 
   /** Selects all elements with a name attribute. */
-  case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoElement)
+  case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoAttr)
 
   /** Selects all elements with a name="value". */
   case class Attr(name: String, value: String) extends AttrSelector(name, value, "=")
