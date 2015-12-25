@@ -9,7 +9,7 @@ import Typical.{settings => _, _}
 
 object ScalaCSS extends Build {
 
-  val Scala211 = "2.11.6"
+  val Scala211 = "2.11.7"
 
   val commonSettings: CDS =
     CDS.all(
