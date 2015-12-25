@@ -1,7 +1,7 @@
 package scalacss
 
-import japgolly.nyaya._
-import japgolly.nyaya.test.PropTest._
+import nyaya.prop._
+import nyaya.test.PropTest._
 import utest._
 import scalacss.TestUtil._
 import Compose.{Rules => R}

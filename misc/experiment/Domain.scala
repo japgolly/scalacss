@@ -1,4 +1,4 @@
-package japgolly.nyaya.test
+package nyaya.test
 
 import scala.collection.immutable.NumericRange
 import scalaz.{Functor, \/-, -\/, \/}
