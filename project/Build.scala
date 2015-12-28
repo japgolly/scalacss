@@ -9,13 +9,13 @@ import Typical.{settings => _, _}
 
 object ScalaCSS extends Build {
 
-  val Scala211 = "2.11.6"
+  val Scala211 = "2.11.7"
 
   val commonSettings: CDS =
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.3.2-SNAPSHOT",
+        version            := "0.4.0-SNAPSHOT",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
@@ -36,22 +36,22 @@ object ScalaCSS extends Build {
     ) :+ Typical.settings("scalacss")
 
   object scalaz {
-    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.1.3").myJsFork("scalaz") //.jsVersion(_+"-2")
+    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.2.0").myJsFork("scalaz") //.jsVersion(_+"-2")
     val core       = m("core")
     val effect     = m("effect") > core
     val concurrent = m("concurrent") > effect
   }
   object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.5.11")
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.6.1")
     val core = m("core")
     val test = m("test")
   }
   object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.10.0"
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.10.3"
     val core        = m("core")
     val test        = m("test")
     val extra       = m("extra")
-    val extScalaz71 = m("ext-scalaz71")
+    val extScalaz72 = m("ext-scalaz72")
   }
   val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
 
@@ -98,7 +98,7 @@ object ScalaCSS extends Build {
       .enablePlugins(ScalaJSPlugin)
       .settings(
         scalaSource in Compile := baseDirectory.value / "src",
-        libraryDependencies ++= Seq(react.extra, react.extScalaz71))
+        libraryDependencies ++= Seq(react.extra, react.extScalaz72))
 
   val intfmt = java.text.NumberFormat.getIntegerInstance
 

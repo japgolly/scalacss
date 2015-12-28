@@ -30,6 +30,7 @@ object PlatformJs {
 /**
  * https://github.com/bestiejs/platform.js/blob/master/doc/README.md#readme
  */
+@native
 trait PlatformJs extends Object {
   val description : UndefOr[String]       = native
   val layout      : UndefOr[String]       = native
@@ -42,6 +43,7 @@ trait PlatformJs extends Object {
   val os          : UndefOr[PlatformJsOS] = native
 }
 
+@native
 trait PlatformJsOS extends Object {
   val architecture: UndefOr[Int]    = native
   val family      : UndefOr[String] = native

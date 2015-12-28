@@ -2,7 +2,7 @@ import scalaz._
 import shapeless._
 import shapeless.ops.hlist._
 import shapeless.syntax.singleton._
-import japgolly.nyaya.test.Domain
+import nyaya.test.Domain
 import ScalaExt._
 
 import CompositeStyleStuff._
