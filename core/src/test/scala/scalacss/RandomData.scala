@@ -33,17 +33,21 @@ object RandomData {
       LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange, ReadOnly, ReadWrite, Required, Target, Valid,
       Visited, After, Before, FirstLetter, FirstLine, Selection)
 
-    val needInt = NonEmptyList[Int => Pseudo](
+    val needNthQuery = NonEmptyList[NthQuery => Pseudo](
       NthChild, NthLastChild, NthLastOfType, NthOfType)
 
     val needStr = NonEmptyList[String => Pseudo](
-      Custom(_, PseudoClass), Custom(_, PseudoElement), Lang, Not(_))
+      Custom(_, PseudoClass), Custom(_, PseudoElement), Lang, Not(_), AttrExists)
+
+    val need2Str = NonEmptyList[(String, String) => Pseudo](
+      Pseudo.Attr, AttrContains, AttrStartsWith, AttrEndsWith)
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
         objects.size -> Gen.chooseNE(objects),
-        needInt.size -> Gen.chooseNE(needInt).flatMap(Gen.positiveInt.map),
+        needNthQuery.size -> Gen.chooseNE(needNthQuery).flatMap(Gen.numeric.string1(20).map),
         needStr.size -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string1(20).map),
+        need2Str.size -> Gen.chooseNE(need2Str).flatMap(x => Gen.alphaNumeric.string1(20).pair.map(t => x(t._1, t._2))),
         2            -> Gen.lazily(self.map(Not(_))),
         1            -> Gen.lazily(self.list1(4).map(_.reduce(_ & _)))
       )
