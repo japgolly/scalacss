@@ -138,7 +138,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-name">MDN</a>
    */
-  final val animationName = Attr.real("animation-name", Transform keys CanIUse.animation)
+  object animationName extends TypedAttrBase {
+    override val attr = Attr.real("animation-name", Transform keys CanIUse.animation)
+    def apply(name: KeyframeAnimationName): AV = av(name.value)
+  }
 
   /**
    * The animation-play-state CSS property determines whether an animation is running or paused. You can query this property's value to determine whether or not the animation is currently running; in addition, you can set its value to pause and resume playback of an animation.

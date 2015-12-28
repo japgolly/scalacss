@@ -142,9 +142,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _styles
   }
 
-  def css(implicit env: Env): Css = {
+  def css(implicit env: Env): Css =
     Css.prepareStyles(styles) ++ Css.prepareKeyframes(_keyframes)
-  }
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)

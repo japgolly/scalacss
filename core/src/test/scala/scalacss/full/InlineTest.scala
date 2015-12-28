@@ -161,16 +161,22 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
     width(30 px)
   )
 
+  val ks = kstyle(
+    height(150 px),
+    width(30 px)
+  )
+
   val kf1 = keyframes(
     (0 %%) -> s,
-    (20 %%) -> kstyle(
-      height(150 px),
-      width(30 px)
-    ),
+    (20 %%) -> ks,
     (100 %%) -> kstyle(
       height(200 px),
       width(60 px)
     )
+  )
+
+  val animation = style(
+    animationName(kf1.name)
   )
 }
 
@@ -456,6 +462,13 @@ object InlineTest extends utest.TestSuite {
        |.MyInlineWithKeyframes-s {
        |  height: 100px;
        |  width: 30px;
+       |}
+       |
+       |.MyInlineWithKeyframes-animation {
+       |  -o-animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
+       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
+       |  animation-name: MyInlineWithKeyframes-kf1;
        |}
      """.stripMargin))
   }

@@ -55,7 +55,10 @@ package object scalacss {
                            sel    : CssSelector,
                            content: NonEmptyVector[CssKV]) extends CssEntry
   case class CssKeyframesAnimation(name: KeyframeAnimationName,
-                                   frames: Map[KeyframeAnimationSelector, Stream[CssStyleEntry]]) extends CssEntry
+                                   frames: Map[KeyframeAnimationSelector, StylesStream]) extends CssEntry
+
+  type StylesStream = Stream[CssStyleEntry]
+  type KeyframesStream = Stream[CssKeyframesAnimation]
 
   object CssStyleEntry {
     implicit val equality: Equal[CssStyleEntry] = {
