@@ -53,7 +53,7 @@ object ScalaCSS extends Build {
     val extra       = m("extra")
     val extScalaz72 = m("ext-scalaz72")
   }
-  val shapeless = Library("com.chuusai", "shapeless", "2.2.2")
+  val shapeless = Library("com.chuusai", "shapeless", "2.2.5")
 
 
   // ==============================================================================================
