@@ -19,8 +19,8 @@ trait TestUtil
   implicit def      avEquality: Equal[AV]      = Equal.equal((a, b) => a.attr === b.attr && a.value === b.value)
   implicit def warningEquality: Equal[Warning] = Equal.equalA
 
-  @inline def NDomain = japgolly.nyaya.test.Domain
-  type NDomain[A] = japgolly.nyaya.test.Domain[A]
+  @inline def NDomain = nyaya.test.Domain
+  type NDomain[A] = nyaya.test.Domain[A]
 
   def assertEq[A: Equal](actual: A, expect: A): Unit =
     assertEq(None, actual, expect)

@@ -1,8 +1,8 @@
 package scalacss
 
-import japgolly.nyaya._
-import japgolly.nyaya.test._
-import japgolly.nyaya.test.PropTest._
+import nyaya.gen._
+import nyaya.prop._
+import nyaya.test.PropTest._
 import utest._
 import TestUtil._
 import AttrCmp.{Overlap, Unrelated}
