@@ -44,12 +44,12 @@ object RandomData {
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
-        objects.size -> Gen.chooseNE(objects),
+        objects.size      -> Gen.chooseNE(objects),
         needNthQuery.size -> Gen.chooseNE(needNthQuery).flatMap(Gen.numeric.string1(20).map),
-        needStr.size -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string1(20).map),
-        need2Str.size -> Gen.chooseNE(need2Str).flatMap(x => Gen.alphaNumeric.string1(20).pair.map(t => x(t._1, t._2))),
-        2            -> Gen.lazily(self.map(Not(_))),
-        1            -> Gen.lazily(self.list1(4).map(_.reduce(_ & _)))
+        needStr.size      -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string1(20).map),
+        need2Str.size     -> Gen.chooseNE(need2Str).flatMap(x => Gen.alphaNumeric.string1(20).pair.map(t => x(t._1, t._2))),
+        2                 -> Gen.lazily(self.map(Not(_))),
+        1                 -> Gen.lazily(self.list1(4).map(_.reduce(_ & _)))
       )
     self
   }

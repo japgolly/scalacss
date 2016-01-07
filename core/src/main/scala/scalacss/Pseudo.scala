@@ -99,53 +99,52 @@ object Pseudo {
    */
   trait ChainOps[Out] {
     protected def addPseudo(p: Pseudo): Out
-    final def active                         : Out = addPseudo(Active)
-    final def checked                        : Out = addPseudo(Checked)
-    final def disabled                       : Out = addPseudo(Disabled)
-    final def empty                          : Out = addPseudo(Empty)
-    final def enabled                        : Out = addPseudo(Enabled)
-    final def firstChild                     : Out = addPseudo(FirstChild)
-    final def firstOfType                    : Out = addPseudo(FirstOfType)
-    final def focus                          : Out = addPseudo(Focus)
-    final def hover                          : Out = addPseudo(Hover)
-    final def inRange                        : Out = addPseudo(InRange)
-    final def invalid                        : Out = addPseudo(Invalid)
-    final def lang         (language: String): Out = addPseudo(Lang(language))
-    final def lastChild                      : Out = addPseudo(LastChild)
-    final def lastOfType                     : Out = addPseudo(LastOfType)
-    final def link                           : Out = addPseudo(Link)
-    final def not          (selector: String): Out = addPseudo(Not(selector))
-    final def not          (selector: Pseudo): Out = addPseudo(Not(selector))
-    final def not          (f: PseudoF)      : Out = addPseudo(Not(f))
-    final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n.toString))
-    final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n.toString))
-    final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n.toString))
-    final def nthOfType    (n: Int)          : Out = addPseudo(NthOfType(n.toString))
-    final def nthChild     (n: NthQuery)     : Out = addPseudo(NthChild(n))
-    final def nthLastChild (n: NthQuery)     : Out = addPseudo(NthLastChild(n))
-    final def nthLastOfType(n: NthQuery)     : Out = addPseudo(NthLastOfType(n))
-    final def nthOfType    (n: NthQuery)     : Out = addPseudo(NthOfType(n))
-    final def onlyOfType                     : Out = addPseudo(OnlyOfType)
-    final def onlyChild                      : Out = addPseudo(OnlyChild)
-    final def optional                       : Out = addPseudo(Optional)
-    final def outOfRange                     : Out = addPseudo(OutOfRange)
-    final def readOnly                       : Out = addPseudo(ReadOnly)
-    final def readWrite                      : Out = addPseudo(ReadWrite)
-    final def required                       : Out = addPseudo(Required)
-    final def target                         : Out = addPseudo(Target)
-    final def valid                          : Out = addPseudo(Valid)
-    final def visited                        : Out = addPseudo(Visited)
-    final def after                          : Out = addPseudo(After)
-    final def before                         : Out = addPseudo(Before)
-    final def firstLetter                    : Out = addPseudo(FirstLetter)
-    final def firstLine                      : Out = addPseudo(FirstLine)
-    final def selection                      : Out = addPseudo(Selection)
-
-    final def attrExists(name: String)       : Out = addPseudo(AttrExists(name))
-    final def attr(name: String, value: String) : Out = addPseudo(Attr(name, value))
-    final def attrContains(name: String, value: String) : Out = addPseudo(AttrContains(name, value))
-    final def attrStartsWith(name: String, value: String) : Out = addPseudo(AttrStartsWith(name, value))
-    final def attrEndsWith(name: String, value: String) : Out = addPseudo(AttrEndsWith(name, value))
+    final def active                                     : Out = addPseudo(Active)
+    final def after                                      : Out = addPseudo(After)
+    final def attrContains  (name: String, value: String): Out = addPseudo(AttrContains(name, value))
+    final def attrEndsWith  (name: String, value: String): Out = addPseudo(AttrEndsWith(name, value))
+    final def attrExists    (name: String)               : Out = addPseudo(AttrExists(name))
+    final def attr          (name: String, value: String): Out = addPseudo(Attr(name, value))
+    final def attrStartsWith(name: String, value: String): Out = addPseudo(AttrStartsWith(name, value))
+    final def before                                     : Out = addPseudo(Before)
+    final def checked                                    : Out = addPseudo(Checked)
+    final def disabled                                   : Out = addPseudo(Disabled)
+    final def empty                                      : Out = addPseudo(Empty)
+    final def enabled                                    : Out = addPseudo(Enabled)
+    final def firstChild                                 : Out = addPseudo(FirstChild)
+    final def firstLetter                                : Out = addPseudo(FirstLetter)
+    final def firstLine                                  : Out = addPseudo(FirstLine)
+    final def firstOfType                                : Out = addPseudo(FirstOfType)
+    final def focus                                      : Out = addPseudo(Focus)
+    final def hover                                      : Out = addPseudo(Hover)
+    final def inRange                                    : Out = addPseudo(InRange)
+    final def invalid                                    : Out = addPseudo(Invalid)
+    final def lang          (language: String)           : Out = addPseudo(Lang(language))
+    final def lastChild                                  : Out = addPseudo(LastChild)
+    final def lastOfType                                 : Out = addPseudo(LastOfType)
+    final def link                                       : Out = addPseudo(Link)
+    final def not           (f: PseudoF)                 : Out = addPseudo(Not(f))
+    final def not           (selector: Pseudo)           : Out = addPseudo(Not(selector))
+    final def not           (selector: String)           : Out = addPseudo(Not(selector))
+    final def nthChild      (n: Int)                     : Out = addPseudo(NthChild(n.toString))
+    final def nthChild      (q: NthQuery)                : Out = addPseudo(NthChild(q))
+    final def nthLastChild  (n: Int)                     : Out = addPseudo(NthLastChild(n.toString))
+    final def nthLastChild  (q: NthQuery)                : Out = addPseudo(NthLastChild(q))
+    final def nthLastOfType (n: Int)                     : Out = addPseudo(NthLastOfType(n.toString))
+    final def nthLastOfType (q: NthQuery)                : Out = addPseudo(NthLastOfType(q))
+    final def nthOfType     (n: Int)                     : Out = addPseudo(NthOfType(n.toString))
+    final def nthOfType     (q: NthQuery)                : Out = addPseudo(NthOfType(q))
+    final def onlyChild                                  : Out = addPseudo(OnlyChild)
+    final def onlyOfType                                 : Out = addPseudo(OnlyOfType)
+    final def optional                                   : Out = addPseudo(Optional)
+    final def outOfRange                                 : Out = addPseudo(OutOfRange)
+    final def readOnly                                   : Out = addPseudo(ReadOnly)
+    final def readWrite                                  : Out = addPseudo(ReadWrite)
+    final def required                                   : Out = addPseudo(Required)
+    final def selection                                  : Out = addPseudo(Selection)
+    final def target                                     : Out = addPseudo(Target)
+    final def valid                                      : Out = addPseudo(Valid)
+    final def visited                                    : Out = addPseudo(Visited)
   }
 
   /** Selects the active link. */
@@ -200,15 +199,17 @@ object Pseudo {
     def apply(f: PseudoF)      : Not = Not(f(ChainOps))
   }
 
+  type NthQuery = String
+
   object NthChildBase {
     val queryPattern = """^((\+|-)?\d+|odd|even)$""".r.pattern
     val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
   }
 
-  type NthQuery = String
-
   abstract class NthChildBase(cls: String, query: NthQuery) extends Pseudo1(s":$cls($query)", PseudoClass) {
-    require(NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches())
+    require(
+      NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches(),
+      s"Invalid NthQuery: '$query'")
   }
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
@@ -273,7 +274,7 @@ object Pseudo {
   case object Selection extends Pseudo1("::selection", PseudoElement)
 
 
-  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"""[$name$cmp"$value"]""", PseudoAttr)
+  class AttrSelector(name: String, value: String, op: String) extends Pseudo1(s"""[$name$op"$value"]""", PseudoAttr)
 
   /** Selects all elements with a name attribute. */
   case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoAttr)
