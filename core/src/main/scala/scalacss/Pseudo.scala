@@ -8,16 +8,17 @@ import scalaz.syntax.equal._
 // TODO Rename PseudoXxxxx (selector probably)
 
 /** http://www.w3.org/TR/selectors/#selector-syntax */
-sealed trait PseudoType
-case object PseudoElement extends PseudoType
-case object PseudoClass   extends PseudoType
+sealed class PseudoType(val priority: Short)
+case object PseudoAttr    extends PseudoType(0)
+case object PseudoClass   extends PseudoType(1)
+case object PseudoElement extends PseudoType(2)
 
 object PseudoType {
   // Class comes before Element: http://www.w3.org/TR/selectors/#selector-syntax
   implicit val psuedoTypeOrder: Order[PseudoType] = new Order[PseudoType] {
     def order(x: PseudoType, y: PseudoType): Ordering = {
       if (x == y) Ordering.EQ
-      else if (x == PseudoClass && y == PseudoElement) Ordering.LT
+      else if (x.priority < y.priority) Ordering.LT
       else Ordering.GT
     }
   }
@@ -73,7 +74,7 @@ object Pseudo {
 
   implicit val optionPseudoTC: Monoid[Option[Pseudo]] =
     scalaz.std.option.optionMonoid
-  
+
   implicit val psuedo1Order: Order[Pseudo1] =
     Order.orderBy[Pseudo1, (PseudoType, String)](p => (p.pseudoType, p.cssValue))
 
@@ -116,10 +117,14 @@ object Pseudo {
     final def not          (selector: String): Out = addPseudo(Not(selector))
     final def not          (selector: Pseudo): Out = addPseudo(Not(selector))
     final def not          (f: PseudoF)      : Out = addPseudo(Not(f))
-    final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n))
-    final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n))
-    final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n))
-    final def nthOfType    (n: Int)          : Out = addPseudo(NthOfType(n))
+    final def nthChild     (n: Int)          : Out = addPseudo(NthChild(n.toString))
+    final def nthLastChild (n: Int)          : Out = addPseudo(NthLastChild(n.toString))
+    final def nthLastOfType(n: Int)          : Out = addPseudo(NthLastOfType(n.toString))
+    final def nthOfType    (n: Int)          : Out = addPseudo(NthOfType(n.toString))
+    final def nthChild     (n: NthQuery)     : Out = addPseudo(NthChild(n))
+    final def nthLastChild (n: NthQuery)     : Out = addPseudo(NthLastChild(n))
+    final def nthLastOfType(n: NthQuery)     : Out = addPseudo(NthLastOfType(n))
+    final def nthOfType    (n: NthQuery)     : Out = addPseudo(NthOfType(n))
     final def onlyOfType                     : Out = addPseudo(OnlyOfType)
     final def onlyChild                      : Out = addPseudo(OnlyChild)
     final def optional                       : Out = addPseudo(Optional)
@@ -135,6 +140,12 @@ object Pseudo {
     final def firstLetter                    : Out = addPseudo(FirstLetter)
     final def firstLine                      : Out = addPseudo(FirstLine)
     final def selection                      : Out = addPseudo(Selection)
+
+    final def attrExists(name: String)       : Out = addPseudo(AttrExists(name))
+    final def attr(name: String, value: String) : Out = addPseudo(Attr(name, value))
+    final def attrContains(name: String, value: String) : Out = addPseudo(AttrContains(name, value))
+    final def attrStartsWith(name: String, value: String) : Out = addPseudo(AttrStartsWith(name, value))
+    final def attrEndsWith(name: String, value: String) : Out = addPseudo(AttrEndsWith(name, value))
   }
 
   /** Selects the active link. */
@@ -189,17 +200,28 @@ object Pseudo {
     def apply(f: PseudoF)      : Not = Not(f(ChainOps))
   }
 
+  object NthChildBase {
+    val queryPattern = """^((\+|-)?\d+|odd|even)$""".r.pattern
+    val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
+  }
+
+  type NthQuery = String
+
+  abstract class NthChildBase(cls: String, query: NthQuery) extends Pseudo1(s":$cls($query)", PseudoClass) {
+    require(NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches())
+  }
+
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
-  final case class NthChild(n: Int) extends Pseudo1(s":nth-child($n)", PseudoClass)
+  final case class NthChild(query: NthQuery) extends NthChildBase("nth-child", query)
 
   /** Selects every &lt;p&gt; element that is the second child of its parent, counting from the last child. */
-  final case class NthLastChild(n: Int) extends Pseudo1(s":nth-last-child($n)", PseudoClass)
+  final case class NthLastChild(query: NthQuery) extends NthChildBase("nth-last-child", query)
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent, counting from the last child. */
-  final case class NthLastOfType(n: Int) extends Pseudo1(s":nth-last-of-type($n)", PseudoClass)
+  final case class NthLastOfType(query: NthQuery) extends NthChildBase("nth-last-of-type", query)
 
   /** Selects every &lt;p&gt; element that is the second &lt;p&gt; element of its parent. */
-  final case class NthOfType(n: Int) extends Pseudo1(s":nth-of-type($n)", PseudoClass)
+  final case class NthOfType(query: NthQuery) extends NthChildBase("nth-of-type", query)
 
   /** Selects every &lt;p&gt; element that is the only &lt;p&gt; element of its parent. */
   case object OnlyOfType extends Pseudo1(":only-of-type", PseudoClass)
@@ -249,4 +271,22 @@ object Pseudo {
 
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Pseudo1("::selection", PseudoElement)
+
+
+  class AttrSelector(name: String, value: String, cmp: String) extends Pseudo1(s"""[$name$cmp"$value"]""", PseudoAttr)
+
+  /** Selects all elements with a name attribute. */
+  case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoAttr)
+
+  /** Selects all elements with a name="value". */
+  case class Attr(name: String, value: String) extends AttrSelector(name, value, "=")
+
+  /** Selects all elements with a name containing the word value. */
+  case class AttrContains(name: String, value: String) extends AttrSelector(name, value, "~=")
+
+  /** Selects all elements with a name starting with value. */
+  case class AttrStartsWith(name: String, value: String) extends AttrSelector(name, value, "|=")
+
+  /** Selects all elements with a name ends with value. */
+  case class AttrEndsWith(name: String, value: String) extends AttrSelector(name, value, "$=")
 }
