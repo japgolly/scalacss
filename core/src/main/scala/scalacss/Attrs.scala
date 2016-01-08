@@ -1306,7 +1306,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/letter-spacing">MDN</a>
    */
   object letterSpacing extends TypedAttrT1[Len] with ZeroLit {
-    override val attr = Attr.real("letter-spacing")
+    override val attr = Attr.real("letter-spacing", Transform keys CanIUse.letterSpacing)
     @inline def normal = av(L.normal)
   }
 
@@ -1796,7 +1796,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-behavior">MDN</a>
    */
   object scrollBehavior extends TypedAttrBase {
-    override val attr = Attr.real("scroll-behavior")
+    override val attr = Attr.real("scroll-behavior", Transform keys CanIUse.scrollBehavior)
     @inline def auto   = avl(LT.auto)
     @inline def smooth = av(L.smooth)
   }
@@ -2264,7 +2264,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/writing-mode">MDN</a>
    */
   object writingMode extends TypedAttrBase {
-    override val attr = Attr.real("writing-mode")
+    override val attr = Attr.real("writing-mode", Transform keys CanIUse.writingMode)
     @inline def horizontalTB = av(L.horizontalTB)
     @inline def verticalLR   = av(L.verticalLR)
     @inline def verticalRL   = av(L.verticalRL)

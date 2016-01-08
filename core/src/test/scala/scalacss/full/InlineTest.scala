@@ -190,9 +190,9 @@ object InlineTest extends utest.TestSuite {
     'css1 - assertEq(norm(MyInline.render), norm(
       """
         |.manual:not(:first-child):visited {
-        |  -o-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
         |  -moz-animation-delay: 60s,50ms;
+        |  -o-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
@@ -215,9 +215,9 @@ object InlineTest extends utest.TestSuite {
         |  -webkit-text-decoration-line: underline overline;
         |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
-        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
@@ -465,9 +465,9 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
-       |  -o-animation-name: MyInlineWithKeyframes-kf1;
        |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  -moz-animation-name: MyInlineWithKeyframes-kf1;
+       |  -o-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
        |}
      """.stripMargin))

@@ -34,7 +34,10 @@ object Caniuse {
       _.replaceFirst("^@","")
 
     val dataToIgnore = Set[String](
-       "atCounterStyle"
+       "all"
+      ,"atCounterStyle"
+      ,"backdropFilter"
+      ,"crossFade"
       ,"css3Colors"
       ,"css3Cursors"
       ,"cssBackgroundblendmode"
@@ -44,7 +47,11 @@ object Caniuse {
       ,"cssGencontent"
       ,"cssImageOrientation"
       ,"currentcolor"
+      ,"devicepixelratio"
+      ,"elementFunction"
       ,"exclusions"
+      ,"filterFunction"
+      ,"firstLetter"
       ,"fontface"
       ,"fontLoading"
       ,"fontSmooth"
@@ -52,11 +59,13 @@ object Caniuse {
       ,"fontVariantAlternates"
       ,"getcomputedstyle"
       ,"inlineBlock"
+      ,"initialValue"
       ,"kerningPairsLigatures"
       ,"mediaInteraction"
       ,"mediaqueries"
       ,"minmaxwh"
       ,"mixblendmode"
+      ,"motionPaths"
       ,"multibackgrounds"
       ,"placeholder"
       ,"placeholderShown"
@@ -67,8 +76,10 @@ object Caniuse {
       ,"svgCss"
       ,"table"
       ,"ttf"
+      ,"unsetValue"
       ,"variables"
       ,"willChange"
+      ,"zoom"
     )
 
     val agentkey0: String => String = {
@@ -86,6 +97,8 @@ object Caniuse {
       case "and_ff"  => "AndroidFirefox"
       case "ie_mob"  => "IEMobile"
       case "and_uc"  => "AndroidUC"
+      case "edge"    => "Edge"
+      case x         => sys error s"Unrecognised agent: '$x'"
     }
 
     val agentkey: String => String =
