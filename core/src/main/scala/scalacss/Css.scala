@@ -2,11 +2,14 @@ package scalacss
 
 object Css {
 
-  def prepareStyles(styles: TraversableOnce[StyleA])(implicit env: Env): StylesStream =
-    styles.toStream flatMap styleA
+  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes])(implicit env: Env): Css =
+    styles(ss) append keyframes(kfs)
 
-  def prepareKeyframes(styles: TraversableOnce[Keyframes])(implicit env: Env): KeyframesStream =
-    styles.toStream map keyframes
+  def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
+    ss.toStream flatMap styleA
+
+  def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
+    kfs.toStream map keyframes
 
   def className(cn: ClassName): CssSelector =
     "." + cn.value
@@ -20,15 +23,14 @@ object Css {
   def mediaQuery(c: Cond): CssMediaQueryO =
     NonEmptyVector.option(c.mediaQueries) map Media.css
 
-  def keyframes(frames: Keyframes)(implicit env: Env): CssKeyframesAnimation = {
-    CssKeyframesAnimation(frames.name, frames.frames.map(s => (s._1, styleA(s._2))).toMap)
-  }
+  def keyframes(kfs: Keyframes)(implicit env: Env): CssKeyframesEntry =
+    CssKeyframesEntry(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
 
-  def styleA(s: StyleA)(implicit env: Env): StylesStream =
+  def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)
 
-  def style(sel: CssSelector, s: StyleS)(implicit env: Env): StylesStream = {
-    def main: StylesStream =
+  def style(sel: CssSelector, s: StyleS)(implicit env: Env): StyleStream = {
+    def main: StyleStream =
       s.data.toStream.flatMap {
         case (cond, avs) =>
           val kvs = avs.avStream.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
@@ -39,13 +41,13 @@ object Css {
           }
         }
 
-    def exts: StylesStream =
+    def exts: StyleStream =
       s.unsafeExts.toStream.flatMap(unsafeExt(sel, _))
 
     main append exts
   }
 
-  def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StylesStream = {
+  def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StyleStream = {
     val sel = u.sel(root)
     style(sel, u.style)
   }
@@ -53,17 +55,17 @@ object Css {
   type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
   type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
-  def findStylesAndAnimations(c: Css): (StylesStream, KeyframesStream) = {
+  def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream) = {
     val styles = Stream.newBuilder[CssStyleEntry]
-    val animations = Stream.newBuilder[CssKeyframesAnimation]
+    val animations = Stream.newBuilder[CssKeyframesEntry]
     c.foreach {
       case e: CssStyleEntry => styles += e
-      case e: CssKeyframesAnimation => animations += e
+      case e: CssKeyframesEntry => animations += e
     }
     (styles.result(), animations.result())
   }
 
-  def mapByMediaQuery(c: StylesStream): ByMediaQuery = {
+  def mapByMediaQuery(c: StyleStream): ByMediaQuery = {
     val z: ByMediaQuery = Map.empty
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
@@ -72,13 +74,13 @@ object Css {
     }
   }
 
-  def flatten(css: StylesStream): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
+  def flatten(css: StyleStream): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
     css.flatMap { case CssStyleEntry(mq, sel, kvs) =>
       kvs.toStream.map(kv => (mq, sel, kv))
     }
 
   type Flat4 = (CssMediaQueryO, CssSelector, String, String)
-  def flatten4(css: StylesStream): Stream[Flat4] =
+  def flatten4(css: StyleStream): Stream[Flat4] =
     css.flatMap { case CssStyleEntry(mq, sel, kvs) =>
       kvs.toStream.map(kv => (mq, sel, kv.key, kv.value))
     }

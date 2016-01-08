@@ -69,7 +69,15 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
     val cn = s.className getOrElse nextName(cnh)
 
-    // Optional side-effects for warnings
+    // Register
+    emitRegistrationWarnings(cn, s.warnings)
+    val a = StyleA(cn, s.addClassNames, s)
+    _styles :+= a
+    a
+  }
+
+  /** Optional side-effects for warnings */
+  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning]): Unit =
     errHandler.warn.foreach { f =>
 
       @inline def warn(s: String): Unit =
@@ -81,14 +89,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       if (isTaken(cn))
         warn("Another style in the register has the same classname.")
 
-      s.warnings foreach (f(cn, _))
+      warnings foreach (f(cn, _))
     }
-
-    // Register
-    val a = StyleA(cn, s.addClassNames, s)
-    _styles :+= a
-    a
-  }
 
   def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
@@ -130,9 +132,10 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
-  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = {
-    val cn = macroName(cnh, keyframes.name.value) map ensureUnique
-    val kf = keyframes.copy(name = cn.get)
+  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
+    val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
+    val kf = keyframes.copy(name = cn)
+    emitRegistrationWarnings(cn, Vector.empty)
     _keyframes :+= kf
     kf
   }
@@ -142,8 +145,13 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _styles
   }
 
+  def keyframes: Vector[Keyframes] = mutex {
+    _rendered = true
+    _keyframes
+  }
+
   def css(implicit env: Env): Css =
-    Css.prepareStyles(styles) ++ Css.prepareKeyframes(_keyframes)
+    Css(styles, keyframes)
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)

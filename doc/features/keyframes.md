@@ -4,70 +4,65 @@ The following DSL is available for specifying keyframe animations.
 
 | DSL | Description |
 |-----|-----|
-| `kstyle(...)` | It is equivalent of `style(...)` method, which will not produce new class in rendered CSS. |
-| `keyframes((Percentage[Int], StyleA)*)` | Produces keyframe animation. |
+| `keyframe(...)` | It is equivalent of `style(...)`, but will not produce an indiviual class/entry in the rendered CSS. |
+| `keyframes((Percentage[Int], StyleA)*)` | Specify a group of keyframes for animation. |
 
 
 ##### Example:
 
 ```scala
-object Keyframes extends StyleSheet.Inline {
+object Demo extends StyleSheet.Inline {
   import dsl._
 
-  val s = style(
+  val hello = style(
     height(100 px),
-    width(30 px)
-  )
+    width(30 px))
 
-  val ks = kstyle(
+  val hello2 = keyframe(
     height(150 px),
-    width(30 px)
-  )
+    width(30 px))
 
   val kf1 = keyframes(
-    (0 %%) -> s,
-    (20 %%) -> ks,
-    (100 %%) -> kstyle(
+    (0 %%) -> hello,
+    (20 %%) -> hello2,
+    (100 %%) -> keyframe(
       height(200 px),
-      width(60 px)
-    )
+      width(60 px))
   )
 
-  val animation = style(
-    animationName(kf1.name)
-  )
+  val anim1 = style(
+    animationName(kf1))
 }
 ```
 
-This code will not produce separated CSS class for value `ks`. This style will be rendered inside keyframe declaration.
+This code will not produce separate CSS for value `hello2`; its style will only be rendered inside the `@keyframes` block.
 
 Rendered CSS gonna look like following:
 
 ```css
-@keyframes Keyframes-kf1 {
+@keyframes Demo-kf1 {
   0% {
-  height: 100px;
-  width: 30px;
+    height: 100px;
+    width: 30px;
   }
 
   20% {
-  height: 150px;
-  width: 30px;
+    height: 150px;
+    width: 30px;
   }
 
   100% {
-  height: 200px;
-  width: 60px;
+    height: 200px;
+    width: 60px;
   }
-
 }
 
-.Keyframes-s {
+.Demo-hello {
   height: 100px;
   width: 30px;
 }
 
-.Keyframes-animation {
+.Demo-anim1 {
   -o-animation-name: Keyframes-kf1;
   -webkit-animation-name: Keyframes-kf1;
   -moz-animation-name: Keyframes-kf1;

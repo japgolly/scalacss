@@ -45,20 +45,21 @@ package object scalacss {
   type CssMediaQueryO = Option[CssMediaQuery]
 
   /**
-    * Keyframes animation in CSS
-    */
+   * Keyframe animations in CSS.
+   *
+   * This is the name of a `@keyframes` group.
+   */
   type KeyframeAnimationName = ClassName
-  type KeyframeAnimationSelector = Percentage[Int]
+  type KeyframeSelector      = Percentage[Int]
 
   sealed trait CssEntry
+
   case class CssStyleEntry(mq     : CssMediaQueryO,
                            sel    : CssSelector,
                            content: NonEmptyVector[CssKV]) extends CssEntry
-  case class CssKeyframesAnimation(name: KeyframeAnimationName,
-                                   frames: Map[KeyframeAnimationSelector, StylesStream]) extends CssEntry
 
-  type StylesStream = Stream[CssStyleEntry]
-  type KeyframesStream = Stream[CssKeyframesAnimation]
+  case class CssKeyframesEntry(name  : KeyframeAnimationName,
+                               frames: Map[KeyframeSelector, StyleStream]) extends CssEntry
 
   object CssStyleEntry {
     implicit val equality: Equal[CssStyleEntry] = {
@@ -66,8 +67,7 @@ package object scalacss {
       val B = Equal[CssSelector]
       val C = Equal[NonEmptyVector[CssKV]]
       new Equal[CssStyleEntry] {
-        override val equalIsNatural =
-          A.equalIsNatural
+        override val equalIsNatural = A.equalIsNatural
         override def equal(a: CssStyleEntry, b: CssStyleEntry): Boolean =
           B.equal(a.sel, b.sel) &&
           A.equal(a.mq, b.mq) &&
@@ -76,19 +76,22 @@ package object scalacss {
     }
   }
 
-  object CssKeyframesAnimation {
-    implicit val equality: Equal[CssKeyframesAnimation] = {
+  object CssKeyframesEntry {
+    implicit val equality: Equal[CssKeyframesEntry] = {
       val A = Equal[KeyframeAnimationName]
-      new Equal[CssKeyframesAnimation] {
-        override val equalIsNatural =
-          A.equalIsNatural
-        override def equal(a: CssKeyframesAnimation, b: CssKeyframesAnimation): Boolean =
+      val B = Equal[StyleStream]
+      new Equal[CssKeyframesEntry] {
+        override val equalIsNatural = A.equalIsNatural
+        override def equal(a: CssKeyframesEntry, b: CssKeyframesEntry): Boolean =
           A.equal(a.name, b.name) &&
-            streamEqual[String].equal(a.frames.keys.toStream.map(_.value), b.frames.keys.toStream.map(_.value)) &&
-            a.frames.keys.forall(k => streamEqual[CssStyleEntry].equal(a.frames(k), b.frames(k)))
+          a.frames.size == b.frames.size &&
+          a.frames.keys.forall(k => b.frames.get(k).exists(B.equal(a.frames(k), _)))
       }
     }
   }
+
+  type StyleStream = Stream[CssStyleEntry]
+  type KeyframeStream = Stream[CssKeyframesEntry]
 
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
@@ -97,7 +100,7 @@ package object scalacss {
   implicit val cssEquality: Equal[Css] = streamEqual(new Equal[CssEntry] {
     override def equal(a1: CssEntry, a2: CssEntry): Boolean = { (a1, a2) match {
       case (a: CssStyleEntry, b: CssStyleEntry) => CssStyleEntry.equality.equal(a, b)
-      case (a: CssKeyframesAnimation, b: CssKeyframesAnimation) => CssKeyframesAnimation.equality.equal(a, b)
+      case (a: CssKeyframesEntry, b: CssKeyframesEntry) => CssKeyframesEntry.equality.equal(a, b)
       case _ => false
     }}})
 
@@ -127,13 +130,13 @@ package object scalacss {
    *
    * [[mutable.Register.NameGen]]s can choose to include it in the output class names, or ignore it.
    */
-  case class ClassNameHint(value: String)
+  final case class ClassNameHint(value: String)
 
   /**
-    * Keyframes animation
+    * Animation keyframes.
     *
-    * @param name Name of animation
-    * @param frames Seq of frame definitions
+    * @param name Name of animation.
+    * @param frames Frame definitions.
     */
-  final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeAnimationSelector, StyleA)])
+  final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSelector, StyleA)])
 }

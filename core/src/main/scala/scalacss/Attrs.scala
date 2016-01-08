@@ -140,7 +140,7 @@ object Attrs {
    */
   object animationName extends TypedAttrBase {
     override val attr = Attr.real("animation-name", Transform keys CanIUse.animation)
-    def apply(name: KeyframeAnimationName): AV = av(name.value)
+    def apply(a: Keyframes): AV = av(a.name.value)
   }
 
   /**

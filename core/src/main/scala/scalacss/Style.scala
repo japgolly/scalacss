@@ -66,7 +66,7 @@ final case class StyleS(data         : Map[Cond, AVs],
 
   override def toString = inspect
 
-  def inspectCss: StylesStream =
+  def inspectCss: StyleStream =
     Css.styleA(StyleA(className getOrElse ClassName("???"), addClassNames, this))(Env.empty)
 
   def inspect: String =

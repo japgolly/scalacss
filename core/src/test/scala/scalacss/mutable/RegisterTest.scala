@@ -37,7 +37,7 @@ object RegisterTest extends TestSuite {
   implicit def env = Env.empty
 
   def stylesToCssMap(s: Vector[StyleA]) =
-    Css.prepareStyles(s).map(e => (e.sel, e.content)).toMap
+    Css.styles(s).map(e => (e.sel, e.content)).toMap
 
   override val tests = TestSuite {
     val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.noisy)

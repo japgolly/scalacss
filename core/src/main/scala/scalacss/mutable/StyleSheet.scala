@@ -132,10 +132,10 @@ object StyleSheet {
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
-    override protected def __macroStyle (name: String) = new MStyle (name)
-    override protected def __macroStyleF(name: String) = new MStyleF(name)
+    override protected def __macroStyle    (name: String) = new MStyle (name)
+    override protected def __macroStyleF   (name: String) = new MStyleF(name)
     override protected def __macroKeyframes(name: String) = new MKeyframes(name)
-    override protected def __macroKeyframeStyle = new MKStyle
+    override protected def __macroKeyframe                = new MKStyle
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
@@ -157,14 +157,14 @@ object StyleSheet {
     }
 
     protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
-      override def apply(frames: (KeyframeAnimationSelector, StyleA)*): Keyframes =
+      override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
         register.registerKeyframes(Keyframes(ClassName(name), frames))
     }
 
     protected class MKStyle extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
         val s = Dsl.style(t: _*)
-        StyleA(ClassName("kstyle"), s.addClassNames, s)
+        StyleA(ClassName("keyframe"), s.addClassNames, s)
       }
 
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =

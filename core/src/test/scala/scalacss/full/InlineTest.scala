@@ -161,7 +161,7 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
     width(30 px)
   )
 
-  val ks = kstyle(
+  val ks = keyframe(
     height(150 px),
     width(30 px)
   )
@@ -169,14 +169,14 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
   val kf1 = keyframes(
     (0 %%) -> s,
     (20 %%) -> ks,
-    (100 %%) -> kstyle(
+    (100 %%) -> keyframe(
       height(200 px),
       width(60 px)
     )
   )
 
   val animation = style(
-    animationName(kf1.name)
+    animationName(kf1)
   )
 }
 
@@ -443,18 +443,18 @@ object InlineTest extends utest.TestSuite {
     'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
        |@keyframes MyInlineWithKeyframes-kf1 {
        |  0% {
-       |  height: 100px;
-       |  width: 30px;
+       |    height: 100px;
+       |    width: 30px;
        |  }
        |
        |  20% {
-       |  height: 150px;
-       |  width: 30px;
+       |    height: 150px;
+       |    width: 30px;
        |  }
        |
        |  100% {
-       |  height: 200px;
-       |  width: 60px;
+       |    height: 200px;
+       |    width: 60px;
        |  }
        |
        |}
