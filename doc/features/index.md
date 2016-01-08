@@ -10,6 +10,9 @@ The basics: default settings and simple stylesheets.
 * **[Conditional CSS](cond.md)** —
 Styles that are only active under certain conditions.
 
+* **[Keyframe animations](keyframes.md)** —
+Creating and usage of keyframe animations.
+
 * **[Functions](stylef.md)** —
 Styles based on input.
 

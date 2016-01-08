@@ -6,6 +6,7 @@
 * [Features](features/index.md)
   * [Getting Started](features/basics.md)
   * [Conditional CSS](features/cond.md)
+  * [Keyframe Animations](features/keyframes.md)
   * [Functions](features/stylef.md)
   * [Composite/Nested Styles](features/nested.md)
   * [Typed CSS Values](features/typed-values.md)

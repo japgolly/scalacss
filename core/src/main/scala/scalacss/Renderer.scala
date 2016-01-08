@@ -20,7 +20,10 @@ object StringRenderer {
       val sb = new StringBuilder
       val fmt = format(sb)
 
-      val m = Css.mapByMediaQuery(css)                    // Group by MQ
+      val grouped = Css.findStylesAndAnimations(css)
+      grouped._2.foreach(fmt(_))
+
+      val m = Css.mapByMediaQuery(grouped._1)             // Group by MQ
       m.foreach(t => if (t._1.isEmpty)   fmt(None, t._2)) // CSS without MQs first
       m.foreach(t => if (t._1.isDefined) fmt(t._1, t._2)) // CSS with MQs last
       fmt.done()
@@ -46,12 +49,16 @@ object StringRenderer {
   implicit def autoFormatToRenderer(f: Format): Renderer[String] =
     new Default(f)
 
-  case class FormatSB(mqStart : CssMediaQuery                 => Unit,
+  case class FormatSB(kfStart : KeyframeAnimationName         => Unit,
+                      kfsStart: KeyframeAnimationSelector     => Unit,
+                      mqStart : CssMediaQuery                 => Unit,
                       selStart: (CssMediaQueryO, CssSelector) => Unit,
                       kv1     : (CssMediaQueryO, CssKV)       => Unit,
                       kvn     : (CssMediaQueryO, CssKV)       => Unit,
                       selEnd  : (CssMediaQueryO, CssSelector) => Unit,
                       mqEnd   : CssMediaQuery                 => Unit,
+                      kfsEnd  : KeyframeAnimationSelector     => Unit,
+                      kfEnd   : KeyframeAnimationName         => Unit,
                       done    : ()                            => Unit) {
 
     def apply(mq: CssMediaQueryO, data: Css.ValuesByMediaQuery): Unit = {
@@ -61,18 +68,30 @@ object StringRenderer {
       mq foreach mqEnd
     }
 
-    def apply(e: CssEntry): Unit = {
-      import e._
-      mq foreach mqStart
-      apply(mq, sel, content)
-      mq foreach mqEnd
-    }
+    def apply(e: CssEntry): Unit = { e match {
+      case e: CssStyleEntry =>
+        e.mq foreach mqStart
+        apply(e.mq, e.sel, e.content)
+        e.mq foreach mqEnd
+      case e: CssKeyframesAnimation =>
+        kfStart(e.name)
+        e.frames foreach { frame =>
+          kfsStart(frame._1)
+          frame._2.foreach(e => printCssKV(e.mq, e.content))
+          kfsEnd(frame._1)
+        }
+        kfEnd(e.name)
+    }}
 
     def apply(mq: CssMediaQueryO, sel: CssSelector, kvs: NonEmptyVector[CssKV]): Unit = {
       selStart(mq, sel)
+      printCssKV(mq, kvs)
+      selEnd(mq, sel)
+    }
+
+    def printCssKV(mq: CssMediaQueryO, kvs: NonEmptyVector[CssKV]): Unit = {
       kv1(mq, kvs.head)
       kvs.tail.foreach(kvn(mq, _))
-      selEnd(mq, sel)
     }
   }
 
@@ -86,12 +105,16 @@ object StringRenderer {
       sb append c.value
     }
     FormatSB(
+      n      => { sb append s"@keyframes ${n.value}{" },
+      s      => { sb append s"${s.value}{" },
       m      => { sb append m; sb append '{' },
       (_, s) => { sb append s; sb append '{' },
       (_, c) => kv(c),
       (_, c) => { sb append ';'; kv (c) },
       (_, _) => sb append '}',
       _      => sb append '}',
+      _      => { sb append '}' },
+      _      => { sb append '}' },
       ()     => ())
   }
 
@@ -112,6 +135,8 @@ object StringRenderer {
         sb append ";\n"
       }
     FormatSB(
+      n => { sb append s"@keyframes ${n.value} {\n" },
+      s => { sb append s"$indent${s.value} {\n" },
       mq => {
         sb append mq
         sb append " {\n"
@@ -128,6 +153,8 @@ object StringRenderer {
         if (mq.isEmpty) sb append '\n'
       },
       _ => sb append "}\n\n",
+      _ => { sb append s"$indent}\n\n" },
+      _ => { sb append "}\n\n" },
       () => ())
   }
 

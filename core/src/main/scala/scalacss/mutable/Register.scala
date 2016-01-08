@@ -19,6 +19,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   var _nameGen  = initNameGen
   var _styles   = Vector.empty[StyleA]
+  var _keyframes = Vector.empty[Keyframes]
   var _rendered = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -33,7 +34,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
 
   private def isTaken(className: ClassName): Boolean =
-    mutex(_styles.exists(_.className === className))
+    mutex(_styles.exists(_.className === className) || _keyframes.exists(f => f.name === className))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -59,7 +60,6 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     }
 
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
-
     val s =
       if (doesntNeedClassName(s0)) {
         val h = s0.addClassNames.head
@@ -130,13 +130,20 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
+  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = {
+    val cn = macroName(cnh, keyframes.name.value) map ensureUnique
+    val kf = keyframes.copy(name = cn.get)
+    _keyframes :+= kf
+    kf
+  }
+
   def styles: Vector[StyleA] = mutex {
     _rendered = true
     _styles
   }
 
   def css(implicit env: Env): Css =
-    Css(styles)
+    Css.prepareStyles(styles) ++ Css.prepareKeyframes(_keyframes)
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)
