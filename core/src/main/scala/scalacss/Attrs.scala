@@ -877,7 +877,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis">MDN</a>
    */
-  final val flexBasis = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
+  object flexBasis extends TypedAttr_LenPctAuto {
+    override val attr = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
+    final def content = av(L.content)
+  }
 
   /**
    * The CSS flex-direction property specifies how flex items are placed in the flex container defining the main axis and the direction (normal or reversed).
@@ -2626,8 +2629,17 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
    */
-  final val flex = Attr.alias("flex", Transform keys CanIUse.flexbox)(_(
-    flexGrow, flexShrink, flexBasis))
+  object flex extends TypedAttrBase {
+    override val attr = Attr.alias("flex", Transform keys CanIUse.flexbox)(_(flexGrow, flexShrink, flexBasis))
+
+    type FlexBasis = ValueT[LenPctAuto]
+    val none: AV = av("none")
+    def apply(flexGrow: Int): AV = av(s"$flexGrow")
+    def apply(flexBasis: FlexBasis): AV = av(s"$flexBasis")
+    def apply(flexGrow: Int, flexBasis: FlexBasis): AV = av(s"$flexGrow $flexBasis")
+    def apply(flexGrow: Int, flexShrink: Int): AV = av(s"$flexGrow $flexShrink")
+    def apply(flexGrow: Int, flexShrink: Int, flexBasis: FlexBasis): AV = av(s"$flexGrow $flexShrink $flexBasis")
+  }
 
   /**
    * The CSS flex-flow property is a shorthand property for flex-direction and flex-wrap individual properties.
