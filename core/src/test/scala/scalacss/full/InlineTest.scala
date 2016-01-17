@@ -77,13 +77,6 @@ object MyInline extends StyleSheet.Inline {
 
   val empty = style(null: String)()
 
-  /** Composite style */
-  val sc = styleC {
-    val o = styleS(border(1 px, solid, black), padding(1 ex))
-    val l = styleS(fontWeight.bold)
-    val c = styleS(margin(4 ex), backgroundColor(c"#eee"))
-    o.named('outer) :*: l.named('label) :*: c.named('checkbox)
-  }
 }
 
 object MyInline2 extends StyleSheet.Inline {
@@ -243,20 +236,6 @@ object InlineTest extends utest.TestSuite {
         |.MyInline-condMixinP:hover {
         |  display: block;
         |  color: red;
-        |}
-        |
-        |.MyInline-0002 {
-        |  border: 1px solid black;
-        |  padding: 1ex;
-        |}
-        |
-        |.MyInline-0003 {
-        |  font-weight: bold;
-        |}
-        |
-        |.MyInline-0004 {
-        |  margin: 4ex;
-        |  background-color: #eee;
         |}
         |
         |@media not handheld and (orientation:landscape) and (color) {
@@ -429,15 +408,6 @@ object InlineTest extends utest.TestSuite {
       'innerObject_1 - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
       'innerObject_2 - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
 
-      'styleC {
-        import shapeless.syntax.singleton._
-        val classNames =
-          MyInline.sc('outer)(o =>
-                      _('label)(l =>
-                        _('checkbox)(c =>
-                          List(o, l, c).map(_.htmlClass))))
-        assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
-      }
     }
 
     'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
