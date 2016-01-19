@@ -47,14 +47,15 @@ object Attrs {
     boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
     textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect,
 
-    /* =================================================================================================================
-     * ==================================== SVG Attributes =============================================================
-     * ================================================================================================================= */
+    // =================================================================================================================
+    // ==================================== SVG Attributes =============================================================
+    // =================================================================================================================
 
-    svgClipRule, svgEnableBackground, svgFloodColor, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgColorInterpolation,
-    svgColorInterpolationFilters, svgColorProfile, svgColorRendering, svgFill, svgFillOpacity, svgFillRule, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
-    svgShapeRendering, svgStroke, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin, svgStrokeMiterLimit, svgStrokeOpacity,
-    svgStrokeWidth, svgAlignmentBaseline, svgBaselineShift, svgDominantBaseline, svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgTextAnchor)
+    svgAlignmentBaseline, svgBaselineShift, svgClipRule, svgColorInterpolation, svgColorInterpolationFilters,
+    svgColorProfile, svgColorRendering, svgDominantBaseline, svgEnableBackground, svgFill, svgFillRule, svgFloodColor,
+    svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
+    svgShapeRendering, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin,
+    svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor)
 
   lazy val values: NonEmptyVector[Attr] =
     Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
@@ -2330,9 +2331,9 @@ object Attrs {
     @inline def auto = avl(LT.auto)
   }
 
-  // -------------------------------------------------------------------------------------------------------------------
+  // ===================================================================================================================
   // Alias Attributes
-  // -------------------------------------------------------------------------------------------------------------------
+  // ===================================================================================================================
 
   /**
    * The CSS all shorthand property resets all properties, but unicode-bidi and direction to their initial or inherited value.
