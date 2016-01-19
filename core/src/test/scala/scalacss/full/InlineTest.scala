@@ -185,6 +185,68 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
   )
 }
 
+object MyInlineComplexCond extends StyleSheet.Inline {
+  import dsl._
+
+  val cond =
+    style("manual")(
+      margin(12 px),
+      padding(0.5 ex),
+
+      &.hover(
+        cursor.zoomIn,
+        media.maxWidth(150 px)(
+          margin(0 px)
+        ),
+
+        unsafeChild(".child")(
+          media.maxWidth(100 px)(
+            margin(2 px)
+          ),
+          margin(5 px)
+        )
+      ),
+
+      unsafeChild(".child2")(
+        &.hover(
+          margin(15 px),
+          media.maxWidth(100 px)(
+            margin(10 px)
+          )
+        )
+      ),
+
+      &.nthChild(5)(
+        cursor.zoomIn,
+        media.maxWidth(150 px)(
+          margin(0 px)
+        ),
+
+        unsafeChild(".row")(
+          media.maxWidth(100 px)(
+            margin(2 px)
+          ),
+          margin(5 px)
+        )
+      ),
+
+      unsafeChild(".row2")(
+        &.nthChild(15)(
+          margin(15 px),
+          media.maxWidth(100 px)(
+            margin(10 px)
+          )
+        )
+      ),
+
+      &.attr("some-attribute", "true") (
+        &.after (
+          padding(5 px)
+        )
+      )
+    )
+}
+
 object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.TestUtil._
@@ -496,5 +558,70 @@ object InlineTest extends utest.TestSuite {
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
+
+    'complexCond - assertEq(norm(MyInlineComplexCond.render), norm(
+      """.manual[some-attribute="true"]::after {
+        |  padding: 5px;
+        |}
+        |
+        |.manual:hover {
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual:nth-child(5) {
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual {
+        |  margin: 12px;
+        |  padding: 0.5ex;
+        |}
+        |
+        |.manual:hover .child {
+        |  margin: 5px;
+        |}
+        |
+        |.manual .child2:hover {
+        |  margin: 15px;
+        |}
+        |
+        |.manual:nth-child(5) .row {
+        |  margin: 5px;
+        |}
+        |
+        |.manual .row2:nth-child(15) {
+        |  margin: 15px;
+        |}
+        |
+        |@media (max-width:150px) {
+        |  .manual:nth-child(5) {
+        |    margin: 0;
+        |  }
+        |  .manual:hover {
+        |    margin: 0;
+        |  }
+        |}
+        |
+        |@media (max-width:100px) {
+        |  .manual:hover .child {
+        |    margin: 2px;
+        |  }
+        |  .manual .child2:hover {
+        |    margin: 10px;
+        |  }
+        |  .manual:nth-child(5) .row {
+        |    margin: 2px;
+        |  }
+        |  .manual .row2:nth-child(15) {
+        |    margin: 10px;
+        |  }
+        |}
+      """.stripMargin))
   }
 }

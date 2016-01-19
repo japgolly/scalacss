@@ -29,7 +29,9 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
       val newValue = q.get(newCond).fold(av)(_ ++ av)
       q.updated(newCond, newValue)
     }
-    val u = s.unsafeExts.map(e => e.copy(style = applyToStyle(e.style)))
+    val u = s.unsafeExts
+      .map(e => e.copy(style = this.copy(pseudo = None).applyToStyle(e.style)))
+      .map(e => e.copy(cond = this.copy(mediaQueries = Vector.empty) & e.cond))
     s.copy(data = d, unsafeExts = u)
   }
 }

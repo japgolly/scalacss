@@ -42,7 +42,7 @@ object Style {
    *
    *            Example: `(_+".debug")` will specify a style only active when a `"debug"` class is present.
    */
-  final case class UnsafeExt(sel: CssSelector => CssSelector, style: StyleS)
+  final case class UnsafeExt(sel: CssSelector => CssSelector, cond: Cond, style: StyleS)
 }
 
 /**

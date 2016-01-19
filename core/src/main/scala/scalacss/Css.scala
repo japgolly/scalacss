@@ -48,7 +48,7 @@ object Css {
   }
 
   def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StyleStream = {
-    val sel = u.sel(root)
+    val sel = u.sel(s"$root${u.cond}")
     style(sel, u.style)
   }
 
