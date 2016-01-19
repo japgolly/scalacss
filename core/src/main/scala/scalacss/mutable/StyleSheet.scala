@@ -1,7 +1,5 @@
 package scalacss.mutable
 
-import shapeless.HList
-import shapeless.ops.hlist.Mapper
 import scalacss._
 import DslBase.{DslCond, ToStyle}
 

@@ -19,7 +19,6 @@ object ScalaCSS extends Build {
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
-        // Needs Shapeless for Scala 2.10
         // crossScalaVersions := Seq("2.10.5", Scala211),
         scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
                                 "-language:postfixOps", "-language:implicitConversions",
@@ -53,7 +52,6 @@ object ScalaCSS extends Build {
     val extra       = m("extra")
     val extScalaz72 = m("ext-scalaz72")
   }
-  val shapeless = Library("com.chuusai", "shapeless", "2.2.5")
 
 
   // ==============================================================================================
@@ -67,8 +65,8 @@ object ScalaCSS extends Build {
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
       .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
-      .addLibs(scalaz.core, shapeless, nyaya.test % Test)
-      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
+      .addLibs(scalaz.core, nyaya.test % Test)
+      .jj(_ => initialCommands := "scalacss._")
     )
 
   lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =

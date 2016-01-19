@@ -2,8 +2,6 @@ package scalacss.mutable
 
 import scala.annotation.tailrec
 import scalaz.syntax.equal._
-import shapeless._
-import shapeless.ops.hlist.Mapper
 import scalacss._
 import Register.{MacroName, ErrorHandler, NameGen}
 
