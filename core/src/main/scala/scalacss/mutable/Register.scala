@@ -5,7 +5,6 @@ import scalaz.syntax.equal._
 import shapeless._
 import shapeless.ops.hlist.Mapper
 import scalacss._
-import StyleC.{Named, MkUsage}
 import Register.{MacroName, ErrorHandler, NameGen}
 
 /**
@@ -122,14 +121,6 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     val lookup = mutex(build((q, i, styleS) => add(q, i, registerS(styleS)), s.domain))
     val f      = l.get(lookup)
     i => f(i) getOrElse errHandler.badInput(s, i)
-  }
-
-  def registerC[M <: HList](s: StyleC)(implicit cnh: ClassNameHint, m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out =
-    u apply m(s.styles)
-
-  object _registerC extends Poly1 {
-    implicit def s[W]                (implicit h: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
-    implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
   }
 
   def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {

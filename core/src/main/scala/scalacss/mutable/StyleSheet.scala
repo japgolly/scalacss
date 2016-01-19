@@ -4,7 +4,6 @@ import shapeless.HList
 import shapeless.ops.hlist.Mapper
 import scalacss._
 import DslBase.{DslCond, ToStyle}
-import StyleC.MkUsage
 
 /**
  * Mutable StyleSheets provide a context in which many styles can be created using a DSL.
@@ -124,7 +123,7 @@ object StyleSheet {
    *   - Each style is stored in a `val` of type `StyleA`.
    *   - Styles are applied to HTML by setting the `class` attribute of the HTML to the class(es) in a `StyleA`.
    *   - Style class names / CSS selectors are automatically generated.
-   *   - All style types ([[StyleS]], [[StyleF]], [[StyleC]]) are usable.
+   *   - All style types ([[StyleS]], [[StyleF]]) are usable.
    */
   abstract class Inline(protected implicit val register: Register) extends Base with Macros.DslMixin {
     import dsl._
@@ -170,9 +169,6 @@ object StyleSheet {
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
         apply(t:_*)
     }
-
-    protected def styleC[M <: HList](s: StyleC)(implicit m: Mapper.Aux[register._registerC.type, s.S, M], u: MkUsage[M]): u.Out =
-      register.registerC(s)(implicitly, m, u)
 
     @inline final protected def & : Cond = Cond.empty
 
