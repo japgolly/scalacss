@@ -200,6 +200,7 @@ object MyInlineComplexCond extends StyleSheet.Inline {
         ),
 
         unsafeChild(".child")(
+          &.hover(display.block),
           media.maxWidth(100 px)(
             margin(2 px)
           ),
@@ -223,6 +224,7 @@ object MyInlineComplexCond extends StyleSheet.Inline {
         ),
 
         unsafeChild(".row")(
+          &.nthChild(9)(display.block),
           media.maxWidth(100 px)(
             margin(2 px)
           ),
@@ -583,12 +585,20 @@ object InlineTest extends utest.TestSuite {
         |  padding: 0.5ex;
         |}
         |
+        |.manual:hover .child:hover {
+        |  display: block;
+        |}
+        |
         |.manual:hover .child {
         |  margin: 5px;
         |}
         |
         |.manual .child2:hover {
         |  margin: 15px;
+        |}
+        |
+        |.manual:nth-child(5) .row:nth-child(9) {
+        |  display: block;
         |}
         |
         |.manual:nth-child(5) .row {
