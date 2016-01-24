@@ -15,6 +15,10 @@ object ScalatagsTest extends TestSuite {
       padding(0.3 ex, 2 ex)
     )
 
+    val required = style(
+      border(thin, solid, red)
+    )
+
     val bootstrappy = style(addClassName("btn btn-default"))
   }
 
@@ -45,5 +49,10 @@ object ScalatagsTest extends TestSuite {
       assertEq(html, """<button class="btn btn-default"></button>""")
     }
 
+    'multipleStyles {
+      val el = input(`type` := "text", MyStyles.input, MyStyles.required, value := "ah")
+      val html = el.toString()
+      assertEq(html, """<input type="text" class="ScalatagsTest_MyStyles-input ScalatagsTest_MyStyles-required" value="ah" />""")
+    }
   }
 }
