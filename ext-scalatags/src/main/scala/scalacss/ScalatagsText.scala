@@ -5,8 +5,9 @@ import all._
 
 trait ScalatagsTextImplicits {
 
-  implicit final def styleaToTextTag(s: StyleA): Modifier =
-    cls := s.htmlClass
+  implicit final def styleaToTextTag(s: StyleA): new Modifier {
+    def applyTo(t: text.Builder) = t.appendAttr("class", " " + s.htmlClass)
+  }
 
   implicit final def styleTextTagRenderer(implicit s: Renderer[String]): Renderer[TypedTag[String]] =
     new ScalatagsTextRenderer(s)
