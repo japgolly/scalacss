@@ -34,25 +34,29 @@ object ScalatagsTest extends TestSuite {
                        |  padding: 0.3ex 2ex;
                        |}
                        |
+                       |.ScalatagsTest_MyStyles-required {
+                       |  border: thin solid red;
+                       |}
+                       |
                        |</style>""".stripMargin)
     }
 
     'simple {
       val el = input(`type` := "text", MyStyles.input, value := "ah")
       val html = el.toString()
-      assertEq(html, """<input type="text" class="ScalatagsTest_MyStyles-input" value="ah" />""")
+      assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input" value="ah" />""")
     }
 
     'addClassName {
       val el = button(MyStyles.bootstrappy)
       val html = el.toString()
-      assertEq(html, """<button class="btn btn-default"></button>""")
+      assertEq(html, """<button class=" btn btn-default"></button>""")
     }
 
     'multipleStyles {
       val el = input(`type` := "text", MyStyles.input, MyStyles.required, value := "ah")
       val html = el.toString()
-      assertEq(html, """<input type="text" class="ScalatagsTest_MyStyles-input ScalatagsTest_MyStyles-required" value="ah" />""")
+      assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input ScalatagsTest_MyStyles-required" value="ah" />""")
     }
   }
 }

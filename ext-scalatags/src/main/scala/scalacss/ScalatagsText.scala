@@ -1,11 +1,12 @@
 package scalacss
 
 import scalatags.Text._
+import scalatags.text
 import all._
 
 trait ScalatagsTextImplicits {
 
-  implicit final def styleaToTextTag(s: StyleA): new Modifier {
+  implicit final def styleaToTextTag(s: StyleA): Modifier = new Modifier {
     def applyTo(t: text.Builder) = t.appendAttr("class", " " + s.htmlClass)
   }
 
