@@ -45,11 +45,13 @@ object Macros {
     protected def __macroStyleF   (name: String): MStyleF
     protected def __macroKeyframes(name: String): MKeyframes
     protected def __macroKeyframe               : MStyle
+    protected def __macroFontFace               : MFontFace
 
     final protected def style    : MStyle     = macro implStyle
     final protected def styleF   : MStyleF    = macro implStyleF
     final protected def keyframes: MKeyframes = macro implKeyframes
     final protected def keyframe : MStyle     = __macroKeyframe
+    final protected def fontFace : MFontFace  = __macroFontFace
   }
 
   // ===================================================================================================================

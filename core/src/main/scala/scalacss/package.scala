@@ -12,6 +12,11 @@ package object scalacss {
 
   private[scalacss] final val _important = " !important"
 
+  /** Defines the range of unicode characters the font face supports. */
+  case class UnicodeRange(from: Int, to: Int) {
+    override def toString = "U+%x-%x".format(from, to)
+  }
+
   final case class ClassName(value: String)
   implicit def classNameEquality: Equal[ClassName] = Equal.equalA
 
@@ -61,6 +66,13 @@ package object scalacss {
   case class CssKeyframesEntry(name  : KeyframeAnimationName,
                                frames: Map[KeyframeSelector, StyleStream]) extends CssEntry
 
+  case class CssFontFace(fontFamily  : String,
+                         src         : NonEmptyVector[String],
+                         fontStretch : Option[Value],
+                         fontStyle   : Option[Value],
+                         fontWeight  : Option[Value],
+                         unicodeRange: Option[UnicodeRange]) extends CssEntry
+
   object CssStyleEntry {
     implicit val equality: Equal[CssStyleEntry] = {
       val A = Equal[CssMediaQueryO]
@@ -90,8 +102,21 @@ package object scalacss {
     }
   }
 
-  type StyleStream = Stream[CssStyleEntry]
+  object CssFontFace {
+    implicit val equality: Equal[CssFontFace] = {
+      val A = Equal[String]
+      new Equal[CssFontFace] {
+        override val equalIsNatural =
+          A.equalIsNatural
+        override def equal(a: CssFontFace, b: CssFontFace): Boolean =
+          A.equal(a.fontFamily, b.fontFamily)
+      }
+    }
+  }
+
+  type StyleStream    = Stream[CssStyleEntry]
   type KeyframeStream = Stream[CssKeyframesEntry]
+  type FontFaceStream = Stream[CssFontFace]
 
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
@@ -99,8 +124,12 @@ package object scalacss {
   type Css = Stream[CssEntry]
   implicit val cssEquality: Equal[Css] = streamEqual(new Equal[CssEntry] {
     override def equal(a1: CssEntry, a2: CssEntry): Boolean = { (a1, a2) match {
-      case (a: CssStyleEntry, b: CssStyleEntry) => CssStyleEntry.equality.equal(a, b)
-      case (a: CssKeyframesEntry, b: CssKeyframesEntry) => CssKeyframesEntry.equality.equal(a, b)
+      case (a: CssStyleEntry, b: CssStyleEntry) =>
+        CssStyleEntry.equality.equal(a, b)
+      case (a: CssKeyframesEntry, b: CssKeyframesEntry) =>
+        CssKeyframesEntry.equality.equal(a, b)
+      case (a: CssFontFace, b: CssFontFace) =>
+        CssFontFace.equality.equal(a, b)
       case _ => false
     }}})
 
@@ -142,4 +171,64 @@ package object scalacss {
     * @param frames Frame definitions.
     */
   final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSelector, StyleA)])
+
+  /**
+    * Font face declaration
+    *
+    * http://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
+    */
+  final case class FontFace(fontFamily         : String,
+                            src                : NonEmptyVector[String],
+                            fontStretchValue   : Option[Value] = None,
+                            fontStyleValue     : Option[Value] = None,
+                            fontWeightValue    : Option[Value] = None,
+                            unicodeRangeValue  : Option[UnicodeRange] = None) {
+    import FontFace._
+    def fontStretch                      = new FontStretchBuilder(v => copy(fontStretchValue  = Some(v)))
+    def fontStyle                        = new FontStyleBuilder  (v => copy(fontStyleValue    = Some(v)))
+    def fontWeight                       = new FontWeightBuilder (v => copy(fontWeightValue   = Some(v)))
+    def unicodeRange(from: Int, to: Int) = copy(unicodeRangeValue = Some(UnicodeRange(from, to)))
+  }
+
+  object FontFace {
+    final class FontSrcSelector(private val fontFamily: String) extends AnyVal {
+      def src(src: String, additionalSrc: String*): FontFace =
+        FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
+    }
+
+    final class FontStretchBuilder(private val b: Value => FontFace) extends AnyVal {
+      @inline def condensed      = b(Literal.condensed)
+      @inline def expanded       = b(Literal.expanded)
+      @inline def extraCondensed = b(Literal.extraCondensed)
+      @inline def extraExpanded  = b(Literal.extraExpanded)
+      @inline def normal         = b(Literal.normal)
+      @inline def semiCondensed  = b(Literal.semiCondensed)
+      @inline def semiExpanded   = b(Literal.semiExpanded)
+      @inline def ultraCondensed = b(Literal.ultraCondensed)
+      @inline def ultraExpanded  = b(Literal.ultraExpanded)
+    }
+
+    final class FontStyleBuilder(private val b: Value => FontFace) extends AnyVal {
+      @inline def italic  = b(Literal.italic)
+      @inline def normal  = b(Literal.normal)
+      @inline def oblique = b(Literal.oblique)
+    }
+
+    final class FontWeightBuilder(private val b: Value => FontFace) extends AnyVal {
+      @inline def _100    = b("100")
+      @inline def _200    = b("200")
+      @inline def _300    = b("300")
+      @inline def _400    = b("400")
+      @inline def _500    = b("500")
+      @inline def _600    = b("600")
+      @inline def _700    = b("700")
+      @inline def _800    = b("800")
+      @inline def _900    = b("900")
+      @inline def bold    = b(Literal.bold)
+      @inline def bolder  = b(Literal.bolder)
+      @inline def lighter = b(Literal.lighter)
+      @inline def normal  = b(Literal.normal)
+    }
+  }
+
 }

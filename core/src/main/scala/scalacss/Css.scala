@@ -2,14 +2,17 @@ package scalacss
 
 object Css {
 
-  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes])(implicit env: Env): Css =
-    styles(ss) append keyframes(kfs)
+  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes], ff: TraversableOnce[FontFace])(implicit env: Env): Css =
+    styles(ss) append keyframes(kfs) append fontFaces(ff)
 
   def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
     ss.toStream flatMap styleA
 
   def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
     kfs.toStream map keyframes
+
+  def fontFaces(ff: TraversableOnce[FontFace])(implicit env: Env): FontFaceStream =
+    ff.toStream map fontFaces
 
   def className(cn: ClassName): CssSelector =
     "." + cn.value
@@ -25,6 +28,9 @@ object Css {
 
   def keyframes(kfs: Keyframes)(implicit env: Env): CssKeyframesEntry =
     CssKeyframesEntry(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
+
+  def fontFaces(ff: FontFace)(implicit env: Env): CssFontFace =
+    CssFontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)
@@ -55,14 +61,16 @@ object Css {
   type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
   type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
-  def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream) = {
+  def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream, FontFaceStream) = {
     val styles = Stream.newBuilder[CssStyleEntry]
     val animations = Stream.newBuilder[CssKeyframesEntry]
+    val fontFaces = Stream.newBuilder[CssFontFace]
     c.foreach {
       case e: CssStyleEntry => styles += e
       case e: CssKeyframesEntry => animations += e
+      case e: CssFontFace => fontFaces += e
     }
-    (styles.result(), animations.result())
+    (styles.result(), animations.result(), fontFaces.result())
   }
 
   def mapByMediaQuery(c: StyleStream): ByMediaQuery = {

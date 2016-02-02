@@ -996,7 +996,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">MDN</a>
    */
-  final val fontFamily = Attr.real("font-family")
+  object fontFamily extends TypedAttrBase {
+    override val attr = Attr.real("font-family")
+    def apply(a: FontFace): AV = av(a.fontFamily)
+  }
 
   /**
    * The font-feature-settings CSS property allows control over advanced typographic features in OpenType fonts.

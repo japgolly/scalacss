@@ -124,8 +124,6 @@ object StyleSheet {
    *   - All style types ([[StyleS]], [[StyleF]]) are usable.
    */
   abstract class Inline(protected implicit val register: Register) extends Base with Macros.DslMixin {
-    import dsl._
-
             final protected type Domain[A] = scalacss.Domain[A]
     @inline final protected def  Domain    = scalacss.Domain
 
@@ -133,6 +131,7 @@ object StyleSheet {
     override protected def __macroStyleF   (name: String) = new MStyleF(name)
     override protected def __macroKeyframes(name: String) = new MKeyframes(name)
     override protected def __macroKeyframe                = new MKStyle
+    override protected def __macroFontFace                = new MFontFace
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
@@ -166,6 +165,12 @@ object StyleSheet {
 
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
         apply(t:_*)
+    }
+
+    protected class MFontFace extends DslMacros.MFontFace {
+      override def apply(fontFamily: String)(options: FontFace.FontSrcSelector => FontFace): FontFace = {
+        register.registerFontFace(options(new FontFace.FontSrcSelector(fontFamily)))
+      }
     }
 
     @inline final protected def & : Cond = Cond.empty
