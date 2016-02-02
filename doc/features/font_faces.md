@@ -1,14 +1,16 @@
 ## Font faces
 
-ScalaCSS provides support for CSS3 @font-face rule.
+ScalaCSS provides support for CSS3 `@font-face` rule.
 
 ```scala
-def fontFace(fontFamily: String)(options: FontSrcSelector => FontFace): FontFace
+def fontFace(fontFamily: String)(config: FontSrcSelector => FontFace): FontFace
 ```
 
 `fontFace` method takes two arguments:
-* `fontFamily` - name of the font face
-* `options` - method selecting source of the font face and some additional attributes:
+* `fontFamily` - name of the font face.
+* `config` - additional configuration.
+  At a minimum the font sources `.src(…)` must be specified.
+  Next you can specify the following optional attributes:
   * `fontStretch`
   * `fontStyle`
   * `fontWeight`
@@ -19,29 +21,32 @@ def fontFace(fontFamily: String)(options: FontSrcSelector => FontFace): FontFace
 ```scala
 object Demo extends StyleSheet.Inline {
   import dsl._
-  
+
   val ff = fontFace("myFont")(
     _.src("url(font.woff)")
       .fontStretch.expanded
       .fontStyle.italic
       .unicodeRange(0, 5))
+
   val ff2 = fontFace("myFont2")(
     _.src("url(font2.woff)")
       .fontStyle.oblique
       .fontWeight._200)
+
   val ff3 = fontFace("myFont3")(
     _.src("local(HelveticaNeue)", "url(font2.woff)")
       .fontStretch.ultraCondensed
       .fontWeight._200)
+
   val ff4 = fontFace("myFont3")(
     _.src("local(HelveticaNeue)", "url(font2.woff)"))
-  
+
   val myFontText = style(
     fontFamily(ff))
 }
 ```
 
-Rendered CSS gonna look like following:
+which produces this CSS:
 
 ```css
 @font-face {

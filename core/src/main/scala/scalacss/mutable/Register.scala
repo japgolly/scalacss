@@ -32,7 +32,10 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
 
   private def isTaken(className: ClassName): Boolean =
-    mutex(_styles.exists(_.className === className) || _keyframes.exists(f => f.name === className) || _fontFaces.exists(ff => ff.fontFamily == className.value))
+    mutex(
+      _styles.exists(_.className === className)
+        || _keyframes.exists(_.name === className)
+        || _fontFaces.exists(_.fontFamily == className.value))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(

@@ -253,7 +253,7 @@ object DslMacros {
   }
 
   trait MFontFace {
-    def apply(fontFamily: String)(options: FontFace.FontSrcSelector => FontFace): FontFace
+    def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace): FontFace
   }
 
   val defaultStyleFClassNameSuffix: (Any, Int) => String =

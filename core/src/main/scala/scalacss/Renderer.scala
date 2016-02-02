@@ -113,21 +113,29 @@ object StringRenderer {
     start()
     kv("font-family", fontface.fontFamily, true)
     kv("src", fontface.src.toStream.mkString(","), false)
-    if (fontface.fontStretch.isDefined) kv("font-stretch", fontface.fontStretch.get, false)
-    if (fontface.fontStyle.isDefined) kv("font-style", fontface.fontStyle.get, false)
-    if (fontface.fontWeight.isDefined) kv("font-weight", fontface.fontWeight.get, false)
-    if (fontface.unicodeRange.isDefined) kv("unicode-range", fontface.unicodeRange.get.toString, false)
+    for (v <- fontface.fontStretch ) kv("font-stretch" , v         , false)
+    for (v <- fontface.fontStyle   ) kv("font-style"   , v         , false)
+    for (v <- fontface.fontWeight  ) kv("font-weight"  , v         , false)
+    for (v <- fontface.unicodeRange) kv("unicode-range", v.toString, false)
     end()
   }
+
+  private def quoteIfNeeded(sb: StringBuilder, s: String, quote: Boolean): Unit =
+    if (quote && s.contains(" ")) {
+      sb append '"'
+      sb append s
+      sb append '"'
+    } else
+      sb append s
 
   /**
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.
    */
   val formatTiny: Format = sb => {
-    def kv(c: CssKV, wrap: Boolean = false): Unit = {
+    def kv(c: CssKV, quote: Boolean = false): Unit = {
       sb append c.key
       sb append ':'
-      sb append (if (wrap && c.value.contains(" ")) s""""${c.value}"""" else c.value)
+      quoteIfNeeded(sb, c.value, quote)
     }
     FormatSB(
       kfStart  = n         => { sb append "@keyframes "; sb append n; sb append '{' },
@@ -144,7 +152,7 @@ object StringRenderer {
         printFontFace(
           fontface,
           () => sb append "@font-face {",
-          (key: String, value: String, wrap: Boolean) => kv(CssKV(key, value), wrap = wrap),
+          (key: String, value: String, quote: Boolean) => kv(CssKV(key, value), quote),
           () => sb append "}"
         ),
       done     = ()        => ())
@@ -158,14 +166,14 @@ object StringRenderer {
       if (mq.isDefined) sb append indent
     def kfIndent(kf: KeyframeSelectorO): Unit =
       if (kf.isDefined) sb append indent
-    def kv(kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV, wrap: Boolean = false) = {
+    def kv(kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV, quote: Boolean = false) = {
       kfIndent(kf)
       mqIndent(mq)
       sb append indent
       sb append c.key
       sb append ':'
       sb append postColon
-      sb append (if (wrap && c.value.contains(" ")) s""""${c.value}"""" else c.value)
+      quoteIfNeeded(sb, c.value, quote)
       sb append ";\n"
     }
     FormatSB(
@@ -194,7 +202,7 @@ object StringRenderer {
         printFontFace(
           fontface,
           () => sb append "@font-face {\n",
-          (key: String, value: String, wrap: Boolean) => kv(None, None, CssKV(key, value), wrap = wrap),
+          (key: String, value: String, quote: Boolean) => kv(None, None, CssKV(key, value), quote),
           () => sb append "}\n\n"
         ),
       done     = () => ())
