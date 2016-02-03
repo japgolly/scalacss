@@ -1,22 +1,17 @@
 language: scala
+sudo: false
 
 scala:
   - 2.11.7
 
 jdk:
 - oraclejdk7
-- oraclejdk8
 
-cache:
-  directories:
-    - $HOME/.sbt
-    - $HOME/.ivy2/cache
-
-# Tricks to avoid unnecessary cache updates
 script:
-- sbt ++$TRAVIS_SCALA_VERSION test 'set scalaJSStage in coreJs in Test := FullOptStage' core-js/test
-- find $HOME/.sbt -name "*.lock" -exec rm {} +
-- find $HOME/.ivy2 -name "ivydata-*.properties" -exec rm {} +
+- sbt ++$TRAVIS_SCALA_VERSION test:compile test:fastOptJS test:fullOptJS
+- sbt ++$TRAVIS_SCALA_VERSION test
+- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in coreJs in Test := FullOptStage' core-js/test
+
 
 # Use PhantomJS 2
 # https://mediocre.com/forum/topics/phantomjs-2-and-travis-ci-we-beat-our-heads-against-a-wall-so-you-dont-have-to
@@ -25,3 +20,15 @@ install:
   - wget https://s3.amazonaws.com/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -O "$PWD"/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2
   - tar -xvf "$PWD"/travis-phantomjs/phantomjs-2.0.0-ubuntu-12.04.tar.bz2 -C "$PWD"/travis-phantomjs
   - export PATH="$PWD/travis-phantomjs:$PATH"
+
+# Taken from https://github.com/typelevel/cats/blob/master/.travis.yml
+cache:
+  directories:
+  - $HOME/.sbt/0.13/dependency
+  - $HOME/.sbt/boot/scala*
+  - $HOME/.sbt/launchers
+  - $HOME/.ivy2/cache
+before_cache:
+  - find $HOME/.sbt -name "*.lock" -type f -delete
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
+
