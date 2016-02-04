@@ -60,6 +60,8 @@ object ScalaCSS extends Build {
     Project("root", file("."))
       .configure(commonSettings.rootS, preventPublication)
       .aggregate(core, extReact, extScalatags, bench)
+      .settings(
+        scalaJSUseRhino in Global := false)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings

@@ -214,8 +214,7 @@ object Typical {
     CDS.addLibs(Library("com.lihaoyi", "utest", "0.3.1") % scope)
       .jj(_ => testFrameworks += new TestFramework("utest.runner.Framework"))
       .js(_.settings(
-        scalaJSStage in Test := FastOptStage,
-        jsEnv in Test        := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+        jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
 
   def definesMacros: CDS =
     CDS.all(
