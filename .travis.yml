@@ -12,7 +12,7 @@ script:
 - travis_wait 40 sbt ++$TRAVIS_SCALA_VERSION core-js/test:fastOptJS ext-react/test:fastOptJS ext-scalatags-js/test:fastOptJS
 - travis_wait 60 sbt ++$TRAVIS_SCALA_VERSION core-js/test:fullOptJS ext-react/test:fullOptJS ext-scalatags-js/test:fullOptJS
 - sbt ++$TRAVIS_SCALA_VERSION test
-- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in Global := FullOptStage' core-js/test
+- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in Global := FullOptStage' core-js/test ext-react/test ext-scalatags-js/test
 
 
 # Use PhantomJS 2
