@@ -8,7 +8,9 @@ jdk:
 - oraclejdk7
 
 script:
-- sbt ++$TRAVIS_SCALA_VERSION test:compile test:fastOptJS test:fullOptJS
+- sbt ++$TRAVIS_SCALA_VERSION test:compile
+- sbt ++$TRAVIS_SCALA_VERSION test:fastOptJS
+- sbt ++$TRAVIS_SCALA_VERSION test:fullOptJS
 - sbt ++$TRAVIS_SCALA_VERSION test
 - sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in coreJs in Test := FullOptStage' core-js/test
 
