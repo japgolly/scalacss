@@ -129,7 +129,7 @@ object ScalaCSS extends Build {
         cmpJsSizeFull := cmpJsSize(fullOptJS).value
       )
       .configure(addCommandAliases(
-        "cmpJsSize" -> ";clear ;cmpJsSizeFast ;cmpJsSizeFull"
+        "cmpJsSize" -> ";cmpJsSizeFast ;cmpJsSizeFull"
       ))
 
   lazy val benchReactWithout =
