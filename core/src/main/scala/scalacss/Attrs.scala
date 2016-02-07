@@ -1547,7 +1547,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/orphans">MDN</a>
    */
   object orphans extends TypedAttrT1[Integer] {
-    override val attr = Attr.real("orphans")
+    override val attr = Attr.real("orphans", Transform keys CanIUse.widowsOrphans)
   }
 
   /**
@@ -2260,7 +2260,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/widows">MDN</a>
    */
   object widows extends TypedAttrT1[Integer] {
-    override val attr = Attr.real("widows")
+    override val attr = Attr.real("widows", Transform keys CanIUse.widowsOrphans)
   }
 
   /**

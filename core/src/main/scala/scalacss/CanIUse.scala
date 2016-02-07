@@ -556,11 +556,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(Unsupported, FullX, Full),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, FullX, Full))
 
   /**
    * CSS position:fixed
@@ -628,11 +628,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported, PartialX, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Partial, Unsupported),
+    IOSSafari         -> Set(Partial, Unsupported, Full),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(Unsupported, Partial))
+    Safari            -> Set(Unsupported, Partial, Full))
 
   /**
    * CSS3 font-kerning
@@ -695,13 +695,13 @@ object CanIUse {
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported, Unknown),
+    Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     Safari            -> Set(Unsupported))
@@ -788,7 +788,7 @@ object CanIUse {
   def hyphens: Subject = Map(
     AndroidBrowser    -> Set(Unsupported),
     AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(FullX),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
@@ -1338,7 +1338,7 @@ object CanIUse {
    * http://www.w3.org/TR/css3-text/#text-align-last-property
    */
   def textAlignLast: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(Unsupported),
@@ -1516,11 +1516,11 @@ object CanIUse {
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(FullX, Full),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported))
+    Safari            -> Set(Unsupported, Full))
 
   /**
    * Combination of transforms2d & transforms3d.
@@ -1537,7 +1537,7 @@ object CanIUse {
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
-    Firefox           -> Set(FullX, Full, Unsupported),
+    Firefox           -> Set(Full, FullX, Unsupported),
     IE                -> Set(FullX, Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
@@ -1665,6 +1665,30 @@ object CanIUse {
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
     Safari            -> Set(Unsupported, Partial, Full))
+
+  /**
+   * CSS widows & orphans
+   *
+   * CSS properties to control when lines break across pages or columns by defining the amount of lines that must be left before or after the break.
+   *
+   * https://drafts.csswg.org/css-break-3/#widows-orphans
+   */
+  def widowsOrphans: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Unsupported, Unknown),
+    IE                -> Set(Unsupported, Full),
+    IEMobile          -> Set(Full),
+    IOSSafari         -> Set(Unsupported, Full),
+    Opera             -> Set(Full),
+    OperaMini         -> Set(Full),
+    OperaMobile       -> Set(Unsupported, Full),
+    Safari            -> Set(Unsupported, Full))
 
   /**
    * CSS3 word-break
