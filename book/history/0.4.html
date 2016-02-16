@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Inline | ScalaCSS</title>
+        <title>0.4.x | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.1.0">
@@ -27,10 +27,10 @@
         
     
     
-    <link rel="next" href="../features/index.html" />
+    <link rel="next" href="../history/0.3.html" />
     
     
-    <link rel="prev" href="../quickstart/standalone.html" />
+    <link rel="prev" href="../history/index.html" />
     
 
         
@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="1.2" data-basepath=".." data-revision="Tue Feb 16 2016 12:01:49 GMT+1100 (AEDT)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Tue Feb 16 2016 12:01:49 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -99,7 +99,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="quickstart/inline.html">
+        <li class="chapter " data-level="1.2" data-path="quickstart/inline.html">
             
                 
                     <a href="../quickstart/inline.html">
@@ -424,7 +424,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.4.html">
+        <li class="chapter active" data-level="7.1" data-path="history/0.4.html">
             
                 
                     <a href="../history/0.4.html">
@@ -579,95 +579,79 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="quick-start-inline-stylesheets">Quick Start: Inline stylesheets</h2>
-<p>Create styles as follows:</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
-
-<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
-  <span class="hljs-keyword">import</span> dsl._
-
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">common</span> =</span> mixin(
-    backgroundColor.green
-  )
-
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">outer</span> =</span> style(
-    common, <span class="hljs-comment">// Applying our mixin</span>
-    margin(<span class="hljs-number">12</span> px, auto),
-    textAlign.left,
-    cursor.pointer,
-
-    &amp;.hover(
-      cursor.zoomIn
-    ),
-
-    media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px)(
-      width(<span class="hljs-number">400</span> px)
-    )
-  )
-
-  <span class="hljs-comment">/** Style requiring an Int when applied. */</span>
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">indent</span> =</span>
-    styleF.int(<span class="hljs-number">0</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
-      paddingLeft(i * <span class="hljs-number">2.</span>ex)
-    ))
-
-  <span class="hljs-comment">/** Style hooking into Bootstrap. */</span>
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(
-    addClassNames(<span class="hljs-string">&quot;btn&quot;</span>, <span class="hljs-string">&quot;btn-default&quot;</span>)
-  )
-}
-</code></pre>
-<p>To apply a style, you apply the style&apos;s class names to some inline HTML.</p>
-<p>You can see styles&apos; class names like this:</p>
-<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.outer.htmlClass     <span class="hljs-comment">// Returns &quot;MyStyles-outer&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">1</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-1&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">2</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-2&quot;</span>
-<span class="hljs-type">MyStyles</span>.button.htmlClass    <span class="hljs-comment">// Returns &quot;btn btn-default&quot;</span>
-</code></pre>
-<p>And to see the generated CSS:</p>
-<pre><code class="lang-scala">println( <span class="hljs-type">MyStyles</span>.render )
-</code></pre>
-<p>Which prints:</p>
-<pre><code class="lang-css"><span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> green</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">12px</span> auto</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> left</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-outer</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -webkit-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -moz-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -o-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> zoom-in</span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-0</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-1</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">2ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-2</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">4ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-3</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">6ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>) </span>{
-  <span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
-    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">400px</span></span></span>;
-  <span class="hljs-rule">}</span></span>
-}
-</code></pre>
-<p>Or if you&apos;re running in production-mode (see <code>ProdDefaults</code>), you&apos;ll see:</p>
-<div style="padding:16px; background-color: #f7f7f7">
-<code style="word-break:break-all" class="lang-css"><span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value">green</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}<span class="hljs-class">._a0</span><span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}<span class="hljs-class">._a1</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}<span class="hljs-class">._a2</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}<span class="hljs-class">._a3</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}<span class="hljs-class">._a4</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{<span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}</code>
-</div>
+                        <h1 id="0-4-0-commit-log-https-github-com-japgolly-scalacss-compare-v0-3-2-v0-4-0">0.4.0 (<a href="https://github.com/japgolly/scalacss/compare/v0.3.2...v0.4.0" target="_blank">commit log</a>)</h1>
+<ul>
+<li><p><a href="../features/keyframes.html">Animation keyframes are now supported</a>.</p>
+</li>
+<li><p><a href="../features/font_faces.html"><code>@font-face</code> rules are now supported</a>.</p>
+</li>
+<li><p>Fixed generated CSS when combining <code>unsafeChild</code> with nesting and psuedoclasses/media-queries.</p>
+</li>
+<li><p>Removed Shapeless as a dependency.
+<br>Removed <code>StyleC</code>. <em>(Why? See <a href="https://github.com/japgolly/scalacss/issues/48" target="_blank">#48</a>.)</em></p>
+</li>
+</ul>
+<ul>
+<li>New pseudo selectors:<ul>
+<li><code>attr</code></li>
+<li><code>attrExists</code></li>
+<li><code>attrContains</code></li>
+<li><code>attrStartsWith</code></li>
+<li><code>attrEndsWith</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>These pseudo selectors now accept strings (like <code>&quot;2n+1&quot;</code>, <code>odd</code>).
+<br>Invalid strings currently produce runtime errors on startup.<ul>
+<li><code>nthChild</code></li>
+<li><code>nthLastChild</code></li>
+<li><code>nthLastOfType</code></li>
+<li><code>nthOfType</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Added types to enfore syntax rules for these attributes:<ul>
+<li><code>animation-direction</code></li>
+<li><code>animation-fill-mode</code></li>
+<li><code>animation-iteration-count</code></li>
+<li><code>animation-play-state</code></li>
+<li><code>animation-timing-function</code></li>
+<li><code>transition-timing-function</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Support for SVG-specific CSS attributes like:<ul>
+<li><code>clip-rule</code></li>
+<li><code>lighting-color</code></li>
+<li><code>marker-end</code></li>
+<li><code>marker-mid</code></li>
+<li><code>marker-start</code></li>
+<li><code>stroke-width</code></li>
+<li>and more...</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Updated <a href="http://caniuse.com/" target="_blank">caniuse.com</a> data.<ul>
+<li>MS Edge added to browser list.</li>
+<li>New transforms for:<ul>
+<li><code>letter-spacing</code></li>
+<li><code>orphans</code></li>
+<li><code>scroll-behavior</code></li>
+<li><code>widows</code></li>
+<li><code>writing-mode</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Upgrade Scala.JS to 0.6.7.</li>
+</ul>
+<p>Huge thanks to <a href="https://github.com/Starzu" target="_blank">@Starzu</a> and <a href="http://www.avsystem.com/" target="_blank">AVSystem</a> for the contributions to this release.</p>
 
                     
                     </section>
@@ -678,10 +662,10 @@
         </div>
 
         
-        <a href="../quickstart/standalone.html" class="navigation navigation-prev " aria-label="Previous page: Standalone"><i class="fa fa-angle-left"></i></a>
+        <a href="../history/index.html" class="navigation navigation-prev " aria-label="Previous page: History"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../features/index.html" class="navigation navigation-next " aria-label="Next page: Features"><i class="fa fa-angle-right"></i></a>
+        <a href="../history/0.3.html" class="navigation navigation-next " aria-label="Next page: 0.3.x"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

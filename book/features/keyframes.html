@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Inline | ScalaCSS</title>
+        <title>Keyframe Animations | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.1.0">
@@ -27,10 +27,10 @@
         
     
     
-    <link rel="next" href="../features/index.html" />
+    <link rel="next" href="../features/font_faces.html" />
     
     
-    <link rel="prev" href="../quickstart/standalone.html" />
+    <link rel="prev" href="../features/cond.html" />
     
 
         
@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="1.2" data-basepath=".." data-revision="Tue Feb 16 2016 12:01:49 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.3" data-basepath=".." data-revision="Tue Feb 16 2016 12:01:49 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -99,7 +99,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="quickstart/inline.html">
+        <li class="chapter " data-level="1.2" data-path="quickstart/inline.html">
             
                 
                     <a href="../quickstart/inline.html">
@@ -165,7 +165,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="features/keyframes.html">
+        <li class="chapter active" data-level="2.3" data-path="features/keyframes.html">
             
                 
                     <a href="../features/keyframes.html">
@@ -579,95 +579,81 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="quick-start-inline-stylesheets">Quick Start: Inline stylesheets</h2>
-<p>Create styles as follows:</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
-
-<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
+                        <h2 id="keyframe-animations">Keyframe animations</h2>
+<p>The following DSL is available for specifying keyframe animations.</p>
+<table>
+<thead>
+<tr>
+<th>DSL</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>keyframe(...)</code></td>
+<td>It is equivalent of <code>style(...)</code>, but will not produce an indiviual class/entry in the rendered CSS.</td>
+</tr>
+<tr>
+<td><code>keyframes((Percentage[Int], StyleA)*)</code></td>
+<td>Specify a group of keyframes for animation.</td>
+</tr>
+</tbody>
+</table>
+<h5 id="example">Example:</h5>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Demo</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
 
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">common</span> =</span> mixin(
-    backgroundColor.green
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">hello</span> =</span> style(
+    height(<span class="hljs-number">100</span> px),
+    width(<span class="hljs-number">30</span> px))
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">hello2</span> =</span> keyframe(
+    height(<span class="hljs-number">150</span> px),
+    width(<span class="hljs-number">30</span> px))
+
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">kf1</span> =</span> keyframes(
+    (<span class="hljs-number">0</span> %%) -&gt; hello,
+    (<span class="hljs-number">20</span> %%) -&gt; hello2,
+    (<span class="hljs-number">100</span> %%) -&gt; keyframe(
+      height(<span class="hljs-number">200</span> px),
+      width(<span class="hljs-number">60</span> px))
   )
 
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">outer</span> =</span> style(
-    common, <span class="hljs-comment">// Applying our mixin</span>
-    margin(<span class="hljs-number">12</span> px, auto),
-    textAlign.left,
-    cursor.pointer,
-
-    &amp;.hover(
-      cursor.zoomIn
-    ),
-
-    media.not.handheld.landscape.maxWidth(<span class="hljs-number">640</span> px)(
-      width(<span class="hljs-number">400</span> px)
-    )
-  )
-
-  <span class="hljs-comment">/** Style requiring an Int when applied. */</span>
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">indent</span> =</span>
-    styleF.int(<span class="hljs-number">0</span> to <span class="hljs-number">3</span>)(i =&gt; styleS(
-      paddingLeft(i * <span class="hljs-number">2.</span>ex)
-    ))
-
-  <span class="hljs-comment">/** Style hooking into Bootstrap. */</span>
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">button</span> =</span> style(
-    addClassNames(<span class="hljs-string">&quot;btn&quot;</span>, <span class="hljs-string">&quot;btn-default&quot;</span>)
-  )
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">anim1</span> =</span> style(
+    animationName(kf1))
 }
 </code></pre>
-<p>To apply a style, you apply the style&apos;s class names to some inline HTML.</p>
-<p>You can see styles&apos; class names like this:</p>
-<pre><code class="lang-scala"><span class="hljs-type">MyStyles</span>.outer.htmlClass     <span class="hljs-comment">// Returns &quot;MyStyles-outer&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">1</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-1&quot;</span>
-<span class="hljs-type">MyStyles</span>.indent(<span class="hljs-number">2</span>).htmlClass <span class="hljs-comment">// Returns &quot;MyStyles-indent-2&quot;</span>
-<span class="hljs-type">MyStyles</span>.button.htmlClass    <span class="hljs-comment">// Returns &quot;btn btn-default&quot;</span>
-</code></pre>
-<p>And to see the generated CSS:</p>
-<pre><code class="lang-scala">println( <span class="hljs-type">MyStyles</span>.render )
-</code></pre>
-<p>Which prints:</p>
-<pre><code class="lang-css"><span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> green</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"> <span class="hljs-number">12px</span> auto</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value"> left</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> pointer</span></span>;
-<span class="hljs-rule">}</span></span>
+<p>This code will not produce separate CSS for value <code>hello2</code>; its style will only be rendered inside the <code>@keyframes</code> block.</p>
+<p>Rendered CSS gonna look like following:</p>
+<pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">keyframes</span> Demo-kf1 </span>{
+  0% <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">100px</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">30px</span></span></span>;
+  <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-outer</span><span class="hljs-pseudo">:hover</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -webkit-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -moz-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> -o-zoom-in</span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value"> zoom-in</span></span>;
-<span class="hljs-rule">}</span></span>
+  20% <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">150px</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">30px</span></span></span>;
+  <span class="hljs-rule">}</span></span>
 
-<span class="hljs-class">.MyStyles-indent-0</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">0</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-1</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">2ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-2</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">4ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-class">.MyStyles-indent-3</span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"> <span class="hljs-number">6ex</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>) </span>{
-  <span class="hljs-class">.MyStyles-outer</span> <span class="hljs-rules">{
-    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">400px</span></span></span>;
+  100% <span class="hljs-rules">{
+    <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">200px</span></span></span>;
+    <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">60px</span></span></span>;
   <span class="hljs-rule">}</span></span>
 }
+
+<span class="hljs-class">.Demo-hello</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">height</span>:<span class="hljs-value"> <span class="hljs-number">100px</span></span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"> <span class="hljs-number">30px</span></span></span>;
+<span class="hljs-rule">}</span></span>
+
+<span class="hljs-class">.Demo-anim1</span> <span class="hljs-rules">{
+  <span class="hljs-rule"><span class="hljs-attribute">-o-animation-name</span>:<span class="hljs-value"> Keyframes-kf1</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-webkit-animation-name</span>:<span class="hljs-value"> Keyframes-kf1</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">-moz-animation-name</span>:<span class="hljs-value"> Keyframes-kf1</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">animation-name</span>:<span class="hljs-value"> Keyframes-kf1</span></span>;
+<span class="hljs-rule">}</span></span>
 </code></pre>
-<p>Or if you&apos;re running in production-mode (see <code>ProdDefaults</code>), you&apos;ll see:</p>
-<div style="padding:16px; background-color: #f7f7f7">
-<code style="word-break:break-all" class="lang-css"><span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value">green</span></span>;<span class="hljs-rule"><span class="hljs-attribute">margin</span>:<span class="hljs-value"><span class="hljs-number">12px</span> auto</span></span>;<span class="hljs-rule"><span class="hljs-attribute">text-align</span>:<span class="hljs-value">left</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">pointer</span></span></span>}<span class="hljs-class">._a0</span><span class="hljs-pseudo">:hover</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-webkit-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-moz-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">-o-zoom-in</span></span>;<span class="hljs-rule"><span class="hljs-attribute">cursor</span>:<span class="hljs-value">zoom-in</span></span></span>}<span class="hljs-class">._a1</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">0</span></span></span></span>}<span class="hljs-class">._a2</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">2ex</span></span></span></span>}<span class="hljs-class">._a3</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">4ex</span></span></span></span>}<span class="hljs-class">._a4</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">padding-left</span>:<span class="hljs-value"><span class="hljs-number">6ex</span></span></span></span>}<span class="hljs-at_rule">@<span class="hljs-keyword">media</span> not handheld and (orientation:landscape) and (max-width:<span class="hljs-number">640px</span>)</span>{<span class="hljs-class">._a0</span><span class="hljs-rules">{<span class="hljs-rule"><span class="hljs-attribute">width</span>:<span class="hljs-value"><span class="hljs-number">400px</span></span></span></span>}}</code>
-</div>
 
                     
                     </section>
@@ -678,10 +664,10 @@
         </div>
 
         
-        <a href="../quickstart/standalone.html" class="navigation navigation-prev " aria-label="Previous page: Standalone"><i class="fa fa-angle-left"></i></a>
+        <a href="../features/cond.html" class="navigation navigation-prev " aria-label="Previous page: Conditional CSS"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../features/index.html" class="navigation navigation-next " aria-label="Next page: Features"><i class="fa fa-angle-right"></i></a>
+        <a href="../features/font_faces.html" class="navigation navigation-next " aria-label="Next page: Font faces"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
