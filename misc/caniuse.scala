@@ -61,6 +61,7 @@ object Caniuse {
       ,"getcomputedstyle"
       ,"inlineBlock"
       ,"initialValue"
+      ,"inOutOfRange"
       ,"kerningPairsLigatures"
       ,"lineClamp"
       ,"mediaInteraction"
