@@ -111,12 +111,13 @@ object CanIUse2 {
       })
     else
       p.name.fold(dunno)({
-        case "Chrome"  => NonEmptyVector(Chrome)
-        case "Firefox" => NonEmptyVector(Firefox)
-        case "IE"      => NonEmptyVector(IE, IEMobile)
-        case "Opera"   => NonEmptyVector(Opera, OperaMini, OperaMobile)
-        case "Safari"  => NonEmptyVector(IOSSafari, Safari)
-        case _         => dunno
+        case "Chrome"               => NonEmptyVector(Chrome)
+        case "Firefox"              => NonEmptyVector(Firefox)
+        case "IE"                   => NonEmptyVector(IE, IEMobile)
+        case "Opera"                => NonEmptyVector(Opera, OperaMini, OperaMobile)
+        case "Safari"               => NonEmptyVector(IOSSafari, Safari)
+        case n if n endsWith "Edge" => NonEmptyVector(Edge)
+        case _                      => dunno
       })
   }
 

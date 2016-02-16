@@ -15,23 +15,21 @@ object ScalaCSS extends Build {
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.4.0-SNAPSHOT",
+        version            := "0.4.1-SNAPSHOT",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
-        // Needs Shapeless for Scala 2.10
         // crossScalaVersions := Seq("2.10.5", Scala211),
         scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
                                 "-language:postfixOps", "-language:implicitConversions",
                                 "-language:higherKinds", "-language:existentials"),
         updateOptions      := updateOptions.value.withCachedResolution(true))
       .configure(addCommandAliases(
-        "/"   -> "project root",
         "cj"  -> "project core-jvm",
         "cjs" -> "project core-js",
-        "qc"  -> "~ ;clear ;core-jvm/compile",
-        "qtc" -> "~ ;clear ;core-jvm/test:compile",
-        "qt"  -> "~ ;clear ;core-jvm/test"
+        "qc"  -> "~core-jvm/compile",
+        "qtc" -> "~core-jvm/test:compile",
+        "qt"  -> "~core-jvm/test"
       ))
     ) :+ Typical.settings("scalacss")
 
@@ -42,7 +40,7 @@ object ScalaCSS extends Build {
     val concurrent = m("concurrent") > effect
   }
   object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.6.1")
+    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.7.0")
     val core = m("core")
     val test = m("test")
   }
@@ -53,7 +51,6 @@ object ScalaCSS extends Build {
     val extra       = m("extra")
     val extScalaz72 = m("ext-scalaz72")
   }
-  val shapeless = Library("com.chuusai", "shapeless", "2.2.5")
 
 
   // ==============================================================================================
@@ -63,12 +60,14 @@ object ScalaCSS extends Build {
     Project("root", file("."))
       .configure(commonSettings.rootS, preventPublication)
       .aggregate(core, extReact, extScalatags, bench)
+      .settings(
+        scalaJSUseRhino in Global := false)
 
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
       .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
-      .addLibs(scalaz.core, shapeless, nyaya.test % Test)
-      .jj(_ => initialCommands := "import shapeless._, ops.hlist._, syntax.singleton._, scalacss._")
+      .addLibs(scalaz.core, nyaya.test % Test)
+      .jj(_ => initialCommands := "scalacss._")
     )
 
   lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =
@@ -130,7 +129,7 @@ object ScalaCSS extends Build {
         cmpJsSizeFull := cmpJsSize(fullOptJS).value
       )
       .configure(addCommandAliases(
-        "cmpJsSize" -> ";clear ;cmpJsSizeFast ;cmpJsSizeFull"
+        "cmpJsSize" -> ";cmpJsSizeFast ;cmpJsSizeFull"
       ))
 
   lazy val benchReactWithout =

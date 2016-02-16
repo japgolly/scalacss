@@ -43,41 +43,43 @@ object CanIUse {
     val AndroidUC         = Agent(webkit, Map("9.9" -> webkit))
     val BlackberryBrowser = Agent(webkit, Map.empty)
     val Chrome            = Agent(webkit, Map.empty)
+    val Edge              = Agent(ms    , Map.empty)
     val Firefox           = Agent(moz   , Map.empty)
     val IE                = Agent(ms    , Map.empty)
     val IEMobile          = Agent(ms    , Map.empty)
     val IOSSafari         = Agent(webkit, Map.empty)
     val Opera             = Agent(webkit, Map("9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1" -> o))
     val OperaMini         = Agent(o     , Map.empty)
-    val OperaMobile       = Agent(o     , Map("24" -> webkit))
+    val OperaMobile       = Agent(o     , Map("33" -> webkit))
     val Safari            = Agent(webkit, Map.empty)
-    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
+    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
   }
 
   import Agent._
   import Support._
 
   /**
-   * CSS3 Animation
+   * CSS Animation
    *
    * Complex method of animating certain properties of an element
    *
    * http://www.w3.org/TR/css3-animations/
    */
   val animation: Subject = Map(
-    AndroidBrowser    -> Set(PartialX, FullX),
-    AndroidChrome     -> Set(FullX),
+    AndroidBrowser    -> Set(PartialX, FullX, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Full, FullX),
+    OperaMobile       -> Set(Unsupported, Full),
     Safari            -> Set(Unsupported, FullX, Full))
 
   /**
@@ -85,23 +87,24 @@ object CanIUse {
    *
    * The `appearance` property defines how elements (particularly form controls) appear by default. By setting the value to `none` the default appearance can be entirely redefined using other CSS properties.
    *
-   * http://wiki.csswg.org/spec/css4-ui#appearance
+   * https://drafts.csswg.org/css-ui-4/#appearance-switching
    */
   def appearance: Subject = Map(
-    AndroidBrowser    -> Set(FullX),
-    AndroidChrome     -> Set(FullX),
-    AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(FullX),
-    BlackberryBrowser -> Set(FullX),
-    Chrome            -> Set(FullX),
-    Firefox           -> Set(FullX),
-    IE                -> Set(Unsupported, Partial),
+    AndroidBrowser    -> Set(PartialX),
+    AndroidChrome     -> Set(PartialX),
+    AndroidFirefox    -> Set(PartialX),
+    AndroidUC         -> Set(PartialX),
+    BlackberryBrowser -> Set(PartialX),
+    Chrome            -> Set(PartialX),
+    Edge              -> Set(Partial),
+    Firefox           -> Set(PartialX),
+    IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported, Partial),
-    IOSSafari         -> Set(FullX),
-    Opera             -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(PartialX),
+    Opera             -> Set(Unsupported, PartialX),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(FullX))
+    OperaMobile       -> Set(Unsupported, PartialX),
+    Safari            -> Set(PartialX))
 
   /**
    * CSS background-attachment
@@ -117,13 +120,14 @@ object CanIUse {
     AndroidUC         -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Partial, Full),
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Partial, Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Partial, Full, Unsupported),
+    OperaMobile       -> Set(Partial, Full),
     Safari            -> Set(Partial, Full))
 
   /**
@@ -140,6 +144,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, PartialX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -163,6 +168,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -185,14 +191,15 @@ object CanIUse {
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported, Full),
+    Chrome            -> Set(Unsupported, Full, Partial),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial),
-    Opera             -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Full),
+    OperaMobile       -> Set(Unsupported, Partial),
     Safari            -> Set(Unsupported, Partial))
 
   /**
@@ -209,6 +216,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, PartialX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported, Full),
@@ -221,7 +229,7 @@ object CanIUse {
   /**
    * CSS3 Border-radius (rounded corners)
    *
-   * Method of making the border corners round
+   * Method of making the border corners round. Covers support for the shorthand `border-radius` as well as the long-hand properties (e.g. `border-top-left-radius`)
    *
    * http://www.w3.org/TR/css3-background/#the-border-radius
    */
@@ -232,6 +240,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(PartialX, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -255,6 +264,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -278,6 +288,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -301,6 +312,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
@@ -323,7 +335,8 @@ object CanIUse {
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
-    Chrome            -> Set(FullX),
+    Chrome            -> Set(FullX, Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Unknown),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -347,6 +360,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Partial),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -359,7 +373,7 @@ object CanIUse {
   /**
    * CSS Counters
    *
-   * Method of controlling number values in generated content, using the counter-reset and counter-increment properties.
+   * Method of controlling number values in generated content, using the `counter-reset` and `counter-increment` properties.
    *
    * http://www.w3.org/TR/CSS21/generate.html#counters
    */
@@ -370,6 +384,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -387,19 +402,20 @@ object CanIUse {
    * http://dev.w3.org/csswg/css-images-3/#valdef-image-rendering-crisp-edges
    */
   def crispEdges: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, FullX),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, PartialX, FullX),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
+    OperaMobile       -> Set(Unsupported, FullX, Full),
     Safari            -> Set(Unsupported, PartialX, FullX))
 
   /**
@@ -416,6 +432,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -426,9 +443,9 @@ object CanIUse {
     Safari            -> Set(FullX, Full))
 
   /**
-   * CSS3 Cursors (new values)
+   * CSS3 Cursors: zoom-in & zoom-out
    *
-   * Support for `zoom-in` and `zoom-out` values for the CSS3 `cursor` property.
+   * Support for `zoom-in`, `zoom-out` values for the CSS3 `cursor` property.
    *
    * http://www.w3.org/TR/css3-ui/#cursor
    */
@@ -439,8 +456,9 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(FullX, Full),
-    IE                -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full, FullX),
@@ -453,7 +471,7 @@ object CanIUse {
    *
    * Method of customizing the width of the tab character. Only effective using 'white-space: pre' or 'white-space: pre-wrap'.
    *
-   * http://www.w3.org/TR/css3-text/#tab-size1
+   * http://www.w3.org/TR/css3-text/#tab-size
    */
   def css3Tabsize: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Partial),
@@ -462,13 +480,14 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, PartialX),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial),
     Opera             -> Set(Unsupported, PartialX, Partial, Full),
     OperaMini         -> Set(PartialX),
-    OperaMobile       -> Set(Unsupported, PartialX, Partial),
+    OperaMobile       -> Set(Unsupported, PartialX, Full),
     Safari            -> Set(Unsupported, Partial))
 
   /**
@@ -485,6 +504,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(PartialX),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
@@ -508,10 +528,11 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
-    IE                -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -522,7 +543,7 @@ object CanIUse {
    *
    * Method of applying filter effects (like blur, grayscale, brightness, contrast and hue) to elements, previously only possible by using SVG.
    *
-   * http://www.w3.org/TR/filter-effects/
+   * http://www.w3.org/TR/filter-effects-1/
    */
   def filters: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX),
@@ -531,14 +552,15 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX),
+    Edge              -> Set(Unsupported, Partial),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(Unsupported, FullX, Full),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(Unsupported, FullX))
+    Safari            -> Set(Unsupported, FullX, Full))
 
   /**
    * CSS position:fixed
@@ -554,6 +576,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -577,8 +600,9 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(PartialX, Partial, Full),
-    IE                -> Set(Unsupported, PartialX, Full),
+    IE                -> Set(Unsupported, PartialX, Partial),
     IEMobile          -> Set(PartialX, Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
     Opera             -> Set(Unsupported, Full, FullX),
@@ -599,15 +623,16 @@ object CanIUse {
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported, FullX),
-    Chrome            -> Set(Unsupported, PartialX, FullX),
+    Chrome            -> Set(Unsupported, PartialX, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, PartialX, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Partial, Unsupported),
+    IOSSafari         -> Set(Partial, Unsupported, Full),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    Safari            -> Set(Unsupported, Partial))
+    Safari            -> Set(Unsupported, Partial, Full))
 
   /**
    * CSS3 font-kerning
@@ -623,6 +648,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -646,6 +672,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -668,12 +695,13 @@ object CanIUse {
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported, Unknown),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     Safari            -> Set(Unsupported))
@@ -692,6 +720,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
@@ -715,6 +744,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -738,7 +768,8 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, Unknown),
+    Edge              -> Set(PartialX),
+    Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported),
@@ -757,11 +788,12 @@ object CanIUse {
   def hyphens: Subject = Map(
     AndroidBrowser    -> Set(Unsupported),
     AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(FullX),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, FullX),
+    Edge              -> Set(FullX),
+    Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX),
@@ -784,6 +816,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -807,6 +840,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -819,25 +853,50 @@ object CanIUse {
   /**
    * Intrinsic & Extrinsic Sizing
    *
-   * Allows for the heights and widths to be specified in intrinsic values using the `fill-available`, `max-content`, `min-content`, and `fit-content` properties.
+   * Allows for the heights and widths to be specified in intrinsic values using the `fill`, `max-content`, `min-content`, and `fit-content` properties.
    *
    * http://www.w3.org/TR/css3-sizing/
    */
   def intrinsicWidth: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, FullX),
-    AndroidChrome     -> Set(FullX),
+    AndroidBrowser    -> Set(Unsupported, FullX, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(PartialX),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, FullX),
-    Chrome            -> Set(Unsupported, FullX),
+    Chrome            -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, PartialX),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
-    Opera             -> Set(Unsupported, FullX),
+    Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
+    OperaMobile       -> Set(Unsupported, Full),
     Safari            -> Set(Unsupported, PartialX))
+
+  /**
+   * letter-spacing CSS property
+   *
+   * Controls spacing between characters of text (i.e. "tracking" in typographical terms). Not to be confused with kerning.
+   *
+   * http://www.w3.org/TR/CSS2/text.html#propdef-letter-spacing
+   */
+  def letterSpacing: Subject = Map(
+    AndroidBrowser    -> Set(Unknown, Partial, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Partial),
+    BlackberryBrowser -> Set(Partial),
+    Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Full),
+    IE                -> Set(Unknown, Partial, Full),
+    IEMobile          -> Set(Full),
+    IOSSafari         -> Set(Unknown, Full),
+    Opera             -> Set(Unknown, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Partial, Full),
+    Safari            -> Set(Unknown, Partial, Full))
 
   /**
    * CSS Logical Properties
@@ -853,6 +912,7 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, PartialX),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -876,6 +936,7 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Partial),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -899,8 +960,9 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Partial, Full),
-    IE                -> Set(Unsupported, Partial, Full),
+    IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unknown, PartialX),
     Opera             -> Set(Unsupported, PartialX, Full),
@@ -922,14 +984,15 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX),
+    Edge              -> Set(Full),
     Firefox           -> Set(PartialX),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(PartialX, Full),
+    IOSSafari         -> Set(PartialX, Partial),
     Opera             -> Set(Unsupported, Full, PartialX),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full, PartialX),
-    Safari            -> Set(PartialX, Full))
+    Safari            -> Set(PartialX, Partial))
 
   /**
    * CSS3 object-fit/object-position
@@ -945,6 +1008,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -968,6 +1032,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
@@ -991,6 +1056,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1014,6 +1080,7 @@ object CanIUse {
     AndroidUC         -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial),
+    Edge              -> Set(Partial),
     Firefox           -> Set(Partial),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
@@ -1037,6 +1104,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1060,6 +1128,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX),
+    Edge              -> Set(PartialX),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
@@ -1083,6 +1152,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1100,12 +1170,13 @@ object CanIUse {
    * http://www.w3.org/TR/css3-ui/#resize
    */
   def resize: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1114,6 +1185,30 @@ object CanIUse {
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
     Safari            -> Set(Unsupported, Full))
+
+  /**
+   * CSSOM Scroll-behavior
+   *
+   * Method of specifying the scrolling behavior for a scrolling box, when scrolling happens due to navigation or CSSOM scrolling APIs.
+   *
+   * https://drafts.csswg.org/cssom-view/#propdef-scroll-behavior
+   */
+  def scrollBehavior: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    Opera             -> Set(Unsupported),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported),
+    Safari            -> Set(Unsupported))
 
   /**
    * CSS 2.1 selectors
@@ -1129,6 +1224,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1152,6 +1248,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
@@ -1175,6 +1272,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(FullX),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1198,6 +1296,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1221,6 +1320,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1238,17 +1338,18 @@ object CanIUse {
    * http://www.w3.org/TR/css3-text/#text-align-last-property
    */
   def textAlignLast: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Partial),
     Firefox           -> Set(Unsupported, FullX),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     Safari            -> Set(Unsupported))
@@ -1267,6 +1368,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1281,7 +1383,7 @@ object CanIUse {
    *
    * Method of using small symbols next to each glyph to emphasize a run of text, commonly used in East Asian languages. The `text-emphasis` shorthand, and its `text-emphasis-style` and `text-emphasis-color` longhands, can be used to apply marks to the text. The `text-emphasis-position` property, which inherits separately, allows setting the emphasis marks' position with respect to the text.
    *
-   * http://www.w3.org/TR/css-text-decor-3/#text-emphasis
+   * https://drafts.csswg.org/css-text-decor-3/#text-emphasis-property
    */
   def textEmphasis: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, PartialX),
@@ -1290,6 +1392,7 @@ object CanIUse {
     AndroidUC         -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1304,7 +1407,7 @@ object CanIUse {
    *
    * Append ellipsis when text overflows its containing element
    *
-   * http://www.w3.org/TR/css3-ui/#text-overflow0
+   * http://www.w3.org/TR/css3-ui/#text-overflow
    */
   def textOverflow: Subject = Map(
     AndroidBrowser    -> Set(Full),
@@ -1313,6 +1416,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1336,6 +1440,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(FullX),
@@ -1359,6 +1464,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported, Unknown),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
@@ -1382,6 +1488,7 @@ object CanIUse {
     AndroidUC         -> Set(Full),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1405,14 +1512,15 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(FullX, Full),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Unsupported))
+    Safari            -> Set(Unsupported, Full))
 
   /**
    * Combination of transforms2d & transforms3d.
@@ -1428,8 +1536,9 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
-    Firefox           -> Set(FullX, Unsupported, Full),
-    IE                -> Set(Partial, Unsupported, Full, FullX),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Full, FullX, Unsupported),
+    IE                -> Set(FullX, Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Full, Unsupported, FullX),
@@ -1438,9 +1547,9 @@ object CanIUse {
     Safari            -> Set(Unsupported, FullX, Full))
 
   /**
-   * CSS3 Transforms (2D)
+   * CSS3 2D Transforms
    *
-   * Method of transforming an element including rotating, scaling, etc.
+   * Method of transforming an element including rotating, scaling, etc. Includes support for `transform` as well as `transform-origin` properties.
    *
    * http://www.w3.org/TR/css3-2d-transforms/
    */
@@ -1451,6 +1560,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(Full),
@@ -1474,8 +1584,9 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
-    IE                -> Set(Unsupported, Partial, Full),
+    IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
@@ -1497,6 +1608,7 @@ object CanIUse {
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
@@ -1511,7 +1623,7 @@ object CanIUse {
    *
    * Method of preventing text/element selection using CSS.
    *
-   * https://developer.mozilla.org/en-US/docs/CSS/user-select
+   * https://drafts.csswg.org/css-ui-4/#valdef-user-select-none
    */
   def userSelectNone: Subject = Map(
     AndroidBrowser    -> Set(FullX),
@@ -1519,7 +1631,8 @@ object CanIUse {
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
-    Chrome            -> Set(Unknown, FullX),
+    Chrome            -> Set(FullX),
+    Edge              -> Set(FullX),
     Firefox           -> Set(FullX),
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(FullX),
@@ -1543,6 +1656,7 @@ object CanIUse {
     AndroidUC         -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Partial),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
@@ -1553,6 +1667,30 @@ object CanIUse {
     Safari            -> Set(Unsupported, Partial, Full))
 
   /**
+   * CSS widows & orphans
+   *
+   * CSS properties to control when lines break across pages or columns by defining the amount of lines that must be left before or after the break.
+   *
+   * https://drafts.csswg.org/css-break-3/#widows-orphans
+   */
+  def widowsOrphans: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Unsupported, Unknown),
+    IE                -> Set(Unsupported, Full),
+    IEMobile          -> Set(Full),
+    IOSSafari         -> Set(Unsupported, Full),
+    Opera             -> Set(Full),
+    OperaMini         -> Set(Full),
+    OperaMobile       -> Set(Unsupported, Full),
+    Safari            -> Set(Unsupported, Full))
+
+  /**
    * CSS3 word-break
    *
    * Property to prevent or allow words to be broken over multiple lines between letters.
@@ -1560,20 +1698,21 @@ object CanIUse {
    * http://www.w3.org/TR/css3-text/#word-break
    */
   def wordBreak: Subject = Map(
-    AndroidBrowser    -> Set(Partial),
-    AndroidChrome     -> Set(Partial),
+    AndroidBrowser    -> Set(Partial, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
-    Chrome            -> Set(Partial),
+    Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(Partial),
-    Opera             -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    Safari            -> Set(Partial))
+    Safari            -> Set(Partial, Full))
 
   /**
    * CSS3 Overflow-wrap
@@ -1589,6 +1728,7 @@ object CanIUse {
     AndroidUC         -> Set(Partial),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Partial),
     Firefox           -> Set(Unsupported, Partial),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
@@ -1597,5 +1737,29 @@ object CanIUse {
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial, Full),
     Safari            -> Set(Partial, Full))
+
+  /**
+   * CSS writing-mode property
+   *
+   * Property to define whether lines of text are laid out horizontally or vertically and the direction in which blocks progress.
+   *
+   * https://drafts.csswg.org/css-writing-modes-3/#block-flow
+   */
+  def writingMode: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, FullX),
+    AndroidChrome     -> Set(FullX),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(FullX),
+    BlackberryBrowser -> Set(FullX),
+    Chrome            -> Set(Unsupported, Unknown, FullX),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Partial),
+    IEMobile          -> Set(PartialX),
+    IOSSafari         -> Set(Unknown, FullX),
+    Opera             -> Set(Unsupported, FullX),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, FullX),
+    Safari            -> Set(Unknown, FullX))
 
 }

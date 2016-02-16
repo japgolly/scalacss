@@ -18,11 +18,14 @@ or a function in the same format used to create conditions.
 Examples:
 
 ```scala
-&.hover                           // :hover
-&.hover.visited                   // :hover:visited
-&.hover.not(_.visited)            // :hover:not(:visited)
-&.hover.not(_.firstChild.visited) // :hover:not(:first-child:visited)
-&.nthChild(3).not(".debug")       // :nth-child(3):not(.debug)
+&.hover                             // :hover
+&.hover.visited                     // :hover:visited
+&.hover.not(_.visited)              // :hover:not(:visited)
+&.hover.not(_.firstChild.visited)   // :hover:not(:first-child:visited)
+&.nthChild(3).not(".debug")         // :nth-child(3):not(.debug)
+&.nthChild("3n+2")                  // :nth-child(3n+2)
+&.attr("custom-attr", "bla").hover  // [custom-attr="bla"]:hover
+&.attrExists("custom-attr").hover   // [custom-attr]:hover
 ```
 
 

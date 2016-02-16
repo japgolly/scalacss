@@ -2,10 +2,7 @@ package scalacss.mutable
 
 import scala.annotation.tailrec
 import scalaz.syntax.equal._
-import shapeless._
-import shapeless.ops.hlist.Mapper
 import scalacss._
-import StyleC.{Named, MkUsage}
 import Register.{MacroName, ErrorHandler, NameGen}
 
 /**
@@ -19,6 +16,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   var _nameGen  = initNameGen
   var _styles   = Vector.empty[StyleA]
+  var _keyframes = Vector.empty[Keyframes]
+  var _fontFaces = Vector.empty[FontFace]
   var _rendered = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -33,7 +32,10 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
 
   private def isTaken(className: ClassName): Boolean =
-    mutex(_styles.exists(_.className === className))
+    mutex(
+      _styles.exists(_.className === className)
+        || _keyframes.exists(_.name === className)
+        || _fontFaces.exists(_.fontFamily == className.value))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -59,7 +61,6 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     }
 
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
-
     val s =
       if (doesntNeedClassName(s0)) {
         val h = s0.addClassNames.head
@@ -69,7 +70,15 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
     val cn = s.className getOrElse nextName(cnh)
 
-    // Optional side-effects for warnings
+    // Register
+    emitRegistrationWarnings(cn, s.warnings)
+    val a = StyleA(cn, s.addClassNames, s)
+    _styles :+= a
+    a
+  }
+
+  /** Optional side-effects for warnings */
+  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning]): Unit =
     errHandler.warn.foreach { f =>
 
       @inline def warn(s: String): Unit =
@@ -81,14 +90,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       if (isTaken(cn))
         warn("Another style in the register has the same classname.")
 
-      s.warnings foreach (f(cn, _))
+      warnings foreach (f(cn, _))
     }
-
-    // Register
-    val a = StyleA(cn, s.addClassNames, s)
-    _styles :+= a
-    a
-  }
 
   def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
@@ -122,12 +125,20 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
 
-  def registerC[M <: HList](s: StyleC)(implicit cnh: ClassNameHint, m: Mapper.Aux[_registerC.type, s.S, M], u: MkUsage[M]): u.Out =
-    u apply m(s.styles)
+  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
+    val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
+    val kf = keyframes.copy(name = cn)
+    emitRegistrationWarnings(cn, Vector.empty)
+    _keyframes :+= kf
+    kf
+  }
 
-  object _registerC extends Poly1 {
-    implicit def s[W]                (implicit h: ClassNameHint): Case.Aux[Named[W, StyleS],    Named[W, StyleA     ]] = at(_ map registerS)
-    implicit def f[W, I: StyleLookup](implicit h: ClassNameHint): Case.Aux[Named[W, StyleF[I]], Named[W, I => StyleA]] = at(_ map registerF[I])
+  def registerFontFace(fontFace: FontFace)(implicit cnh: ClassNameHint): FontFace = {
+    val cn = macroName(cnh, fontFace.fontFamily).fold(nextName(cnh))(ensureUnique)
+    val ff = fontFace.copy(fontFamily = cn.value)
+    emitRegistrationWarnings(cn, Vector.empty)
+    _fontFaces :+= ff
+    ff
   }
 
   def styles: Vector[StyleA] = mutex {
@@ -135,8 +146,18 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _styles
   }
 
+  def keyframes: Vector[Keyframes] = mutex {
+    _rendered = true
+    _keyframes
+  }
+
+  def fontFaces: Vector[FontFace] = mutex {
+    _rendered = true
+    _fontFaces
+  }
+
   def css(implicit env: Env): Css =
-    Css(styles)
+    Css(styles, keyframes, fontFaces)
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)

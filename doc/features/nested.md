@@ -11,88 +11,16 @@ then <em><strong>the total style fails</strong></em>.
 
 ## StyleC
 
-ScalaCSS has a feature to address this.
+~~ScalaCSS has a feature to address this.
 It's called a composite style, `StyleC`.
-It is a composite of sub-styles, each given unique names.
+It is a composite of sub-styles, each given unique names.~~
 
-In order to apply the total style, ScalaCSS uses the compiler to enforce
-that developers…
+`StyleC` was removed in 0.4.0. *(Why? See [#48](https://github.com/japgolly/scalacss/issues/48).)*
 
-##### 1. Receive all sub-styles.
+There is currently no replacement.
 
-If a total style has 3 sub-styles, the developer must receive all 3 styles.
+Ideas for an appropriate replacement can be discussed in [#71](https://github.com/japgolly/scalacss/issues/71).
 
-If a 3-style composite is modified to add a fourth, all code using the style
-will break until the fourth, new style is received everywhere the style is used.
-
-##### 2. Acknowledge the purpose of each style.
-
-In a type-safe world, it wouldn't feel very safe if you used a composite style
-and were handed a `(StyleA, StyleA, StyleA)`.
-Which one is which? If the order changes in the style definition its going to be
-a problem.
-
-This problem is addressed by the style definition attaching names
-(like tags/labels) to each substyle, then the developer providing the same names
-in order to use it.
-
-This adds a little tedium but it provides an unprecedented level of safety and
-error prevention.
-
-##### Example (using {{book.scalajsReact}}):
-
-Definition:
-```scala
-object Styles extends StyleSheet.Inline {
-  import dsl._
-
-  // This is a style for a container
-  // with a <label> and an <input type=checkbox> in it
-  val example = styleC {
-    val top = styleS(display.block)
-    val lbl = styleS(fontWeight.bold)
-    val chk = styleS(backgroundColor.red, marginLeft(1 ex))
-    top.named('outer) :*: lbl.named('label) :*: chk.named('checkbox)
-  }
-}
-```
-
-Usage:
-```scala
-def featureActiveCheckbox(on: Boolean): ReactElement =
-  Styles.example('outer   )(outerStyle =>
-               _('label   )(labelStyle =>
-               _('checkbox)(inputStyle =>
-    <.div(outerStyle,
-      <.label(labelStyle, "Feature Active:"),
-      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
-  )))
-```
-
-Error prevention: arity
-```scala
-// Forgot outerStyle. Compile error!
-def featureActiveCheckbox(on: Boolean): ReactElement =
-  Styles.example('label   )(labelStyle =>
-               _('checkbox)(inputStyle =>
-    <.div(
-      <.label(labelStyle, "Feature Active:"),
-      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
-  ))
-```
-
-Error prevention: order
-```scala
-// The second style is for the label, not the checkbox. Compile error!
-def featureActiveCheckbox(on: Boolean): ReactElement =
-  Styles.example('outer   )(outerStyle =>
-               _('checkbox)(inputStyle =>
-               _('label   )(labelStyle =>
-    <.div(outerStyle,
-      <.label(labelStyle, "Feature Active:"),
-      <.input(inputStyle, ^.typ := "checkbox", ^.value := on))
-  )))
-```
 
 # Unsafety
 

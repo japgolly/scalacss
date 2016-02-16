@@ -2,7 +2,7 @@
 cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
 
 echo "Downloading licence..."
-curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/LICENSE.txt -o LICENSE-platform.js.txt
+curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/LICENSE -o LICENSE-platform.js.txt
 
 echo "Downloading JS..."
 tmp=/tmp/platformjs-$(date +%Y%m%d-%H%M%S)-$$

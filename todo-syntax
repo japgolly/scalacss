@@ -1,10 +1,5 @@
-animation_direction	 <single_animation_direction>#
-animation_fill_mode	<single_animation_fill_mode>#
-animation_iteration_count	<single_animation_iteration_count>#
 animation_name	<single_animation_name>#
-animation_play_state	<single_animation_play_state>#
 animation	<single_animation_name> || <time> || <timing_function> || <time> || <single_animation_iteration_count> || <single_animation_direction> || <single_animation_fill_mode> || <single_animation_play_state>
-animation_timing_function	 <timing_function>#
 background_attachment	  <attachment>#
 background	[ <bg_layer> , ]* <final_bg_layer>
 background_blend_mode	 <blend_mode>#
@@ -49,6 +44,5 @@ transform	none | <transform_function>+
 transform_origin	[ <percentage> | <length> | left | center | right | top | bottom] | [ [ <percentage> | <length> | left | center | right ] && [ <percentage> | <length> | top | center | bottom ] ] <length>?
 transition	[ none | <single_transition_property> ] || <time> || <timing_function> || <time>
 transition_property	none | <single_transition_property>#  [ ‘,’ <single_transition_property># ]*<br/>
-transition_timing_function	<timing_function>#
 unicode_range	<urange>#
 will_change	auto | <animateable_feature>#

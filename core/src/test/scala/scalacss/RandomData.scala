@@ -7,8 +7,8 @@ import Style.{UnsafeExts, UnsafeExt}
 
 object RandomData {
 
-  val str  = Gen.alphaNumeric.string (32)
-  val str1 = Gen.alphaNumeric.string1(32)
+  val str  = Gen.alphaNumeric.string(0 to 32)
+  val str1 = Gen.alphaNumeric.string(1 to 32)
 
   def nev[A](g: Gen[A])(implicit ss: SizeSpec): Gen[NonEmptyVector[A]] =
     g.vector.flatMap(as => g.map(NonEmptyVector(_, as)))
@@ -33,19 +33,23 @@ object RandomData {
       LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange, ReadOnly, ReadWrite, Required, Target, Valid,
       Visited, After, Before, FirstLetter, FirstLine, Selection)
 
-    val needInt = NonEmptyList[Int => Pseudo](
+    val needNthQuery = NonEmptyList[NthQuery => Pseudo](
       NthChild, NthLastChild, NthLastOfType, NthOfType)
 
     val needStr = NonEmptyList[String => Pseudo](
-      Custom(_, PseudoClass), Custom(_, PseudoElement), Lang, Not(_))
+      Custom(_, PseudoClass), Custom(_, PseudoElement), Lang, Not(_), AttrExists)
+
+    val need2Str = NonEmptyList[(String, String) => Pseudo](
+      Pseudo.Attr, AttrContains, AttrStartsWith, AttrEndsWith)
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
-        objects.size -> Gen.chooseNE(objects),
-        needInt.size -> Gen.chooseNE(needInt).flatMap(Gen.positiveInt.map),
-        needStr.size -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string1(20).map),
-        2            -> Gen.lazily(self.map(Not(_))),
-        1            -> Gen.lazily(self.list1(4).map(_.reduce(_ & _)))
+        objects.size      -> Gen.chooseNE(objects),
+        needNthQuery.size -> Gen.chooseNE(needNthQuery).flatMap(Gen.numeric.string(1 to 20).map),
+        needStr.size      -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string(1 to 20).map),
+        need2Str.size     -> Gen.chooseNE(need2Str).flatMap(x => Gen.alphaNumeric.string(1 to 20).pair.map(t => x(t._1, t._2))),
+        2                 -> Gen.lazily(self.map(Not(_))),
+        1                 -> Gen.lazily(self.list(1 to 4).map(_.reduce(_ & _)))
       )
     self
   }
@@ -54,16 +58,19 @@ object RandomData {
     pseduo.option map (Cond(_, Vector.empty)) // TODO no media queries in random data
 
   val unsafeCssSelEndo: Gen[CssSelector => CssSelector] =
-    Gen.alphaNumeric.string1(8).pair.map {
+    Gen.alphaNumeric.string(1 to 8).pair.map {
       case (a, b) => a + _ + b
     }
 
   def unsafeExt(g: Gen[StyleS]): Gen[UnsafeExt] =
-    Gen.apply2(UnsafeExt)(unsafeCssSelEndo, g)
+    Gen.apply3(UnsafeExt)(unsafeCssSelEndo, cond, g)
+
+  private def sized(from: Int, jvm: Int, js: Int): SizeSpec =
+    from to (jvm `JVM|JS` js)
 
   def unsafeExts(o: Option[Gen[StyleS]]): Gen[UnsafeExts] =
     o.fold[Gen[UnsafeExts]](Gen pure Vector.empty)(g =>
-      unsafeExt(g).vector(8 `JVM|JS` 3))
+      unsafeExt(g).vector(sized(1, 8, 3)))
 
   val warning: Gen[Warning] =
     Gen.apply2(Warning)(cond, str)
@@ -74,11 +81,11 @@ object RandomData {
   val styleS: Gen[StyleS] = {
     def level(next: Option[Gen[StyleS]]): Gen[StyleS] =
       for {
-        data <- cond.mapTo(avs(20 `JVM|JS` 6))(8 `JVM|JS` 3)
+        data <- cond.mapTo(avs(sized(0, 20, 6)))(sized(0, 8, 3))
         exts <- unsafeExts(next)
         cn   <- className.option
         cns  <- className.vector
-        ws   <- warning.vector(20 `JVM|JS` 6)
+        ws   <- warning.vector(sized(0, 20, 6))
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
         new StyleS(data, exts, cn, cns, ws)

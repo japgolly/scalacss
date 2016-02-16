@@ -2,8 +2,17 @@ package scalacss
 
 object Css {
 
-  def apply(styles: TraversableOnce[StyleA])(implicit env: Env): Css =
-    styles.toStream flatMap styleA
+  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes], ff: TraversableOnce[FontFace])(implicit env: Env): Css =
+    styles(ss) append keyframes(kfs) append fontFaces(ff)
+
+  def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
+    ss.toStream flatMap styleA
+
+  def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
+    kfs.toStream map keyframes
+
+  def fontFaces(ff: TraversableOnce[FontFace])(implicit env: Env): FontFaceStream =
+    ff.toStream map fontFaces
 
   def className(cn: ClassName): CssSelector =
     "." + cn.value
@@ -17,36 +26,54 @@ object Css {
   def mediaQuery(c: Cond): CssMediaQueryO =
     NonEmptyVector.option(c.mediaQueries) map Media.css
 
-  def styleA(s: StyleA)(implicit env: Env): Css =
+  def keyframes(kfs: Keyframes)(implicit env: Env): CssKeyframesEntry =
+    CssKeyframesEntry(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
+
+  def fontFaces(ff: FontFace)(implicit env: Env): CssFontFace =
+    CssFontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
+
+  def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)
 
-  def style(sel: CssSelector, s: StyleS)(implicit env: Env): Css = {
-    def main: Css =
+  def style(sel: CssSelector, s: StyleS)(implicit env: Env): StyleStream = {
+    def main: StyleStream =
       s.data.toStream.flatMap {
         case (cond, avs) =>
           val kvs = avs.avStream.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
-          NonEmptyVector.maybe(kvs, Stream.empty[CssEntry]) {c =>
+          NonEmptyVector.maybe(kvs, Stream.empty[CssStyleEntry]) {c =>
             val mq = mediaQuery(cond)
             val s  = selector(sel, cond)
-            Stream(CssEntry(mq, s, c))
+            Stream(CssStyleEntry(mq, s, c))
           }
         }
 
-    def exts: Css =
+    def exts: StyleStream =
       s.unsafeExts.toStream.flatMap(unsafeExt(sel, _))
 
     main append exts
   }
 
-  def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): Css = {
-    val sel = u.sel(root)
+  def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StyleStream = {
+    val sel = u.sel(root + u.cond)
     style(sel, u.style)
   }
 
   type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
   type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
-  def mapByMediaQuery(c: Css): ByMediaQuery = {
+  def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream, FontFaceStream) = {
+    val styles = Stream.newBuilder[CssStyleEntry]
+    val animations = Stream.newBuilder[CssKeyframesEntry]
+    val fontFaces = Stream.newBuilder[CssFontFace]
+    c.foreach {
+      case e: CssStyleEntry => styles += e
+      case e: CssKeyframesEntry => animations += e
+      case e: CssFontFace => fontFaces += e
+    }
+    (styles.result(), animations.result(), fontFaces.result())
+  }
+
+  def mapByMediaQuery(c: StyleStream): ByMediaQuery = {
     val z: ByMediaQuery = Map.empty
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
@@ -55,14 +82,14 @@ object Css {
     }
   }
 
-  def flatten(css: Css): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
-    css.flatMap { case CssEntry(mq, sel, kvs) =>
+  def flatten(css: StyleStream): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
+    css.flatMap { case CssStyleEntry(mq, sel, kvs) =>
       kvs.toStream.map(kv => (mq, sel, kv))
     }
 
   type Flat4 = (CssMediaQueryO, CssSelector, String, String)
-  def flatten4(css: Css): Stream[Flat4] =
-    css.flatMap { case CssEntry(mq, sel, kvs) =>
+  def flatten4(css: StyleStream): Stream[Flat4] =
+    css.flatMap { case CssStyleEntry(mq, sel, kvs) =>
       kvs.toStream.map(kv => (mq, sel, kv.key, kv.value))
     }
 }

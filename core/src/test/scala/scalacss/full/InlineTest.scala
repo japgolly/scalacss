@@ -2,6 +2,7 @@ package scalacss.full
 
 import scala.concurrent.duration._
 import scalacss.Defaults._
+import scalacss.{NonEmptyVector, UnicodeRange}
 
 //object CopyDefaultsForInline extends Defaults
 //import CopyDefaultsForInline._
@@ -77,13 +78,6 @@ object MyInline extends StyleSheet.Inline {
 
   val empty = style(null: String)()
 
-  /** Composite style */
-  val sc = styleC {
-    val o = styleS(border(1 px, solid, black), padding(1 ex))
-    val l = styleS(fontWeight.bold)
-    val c = styleS(margin(4 ex), backgroundColor(c"#eee"))
-    o.named('outer) :*: l.named('label) :*: c.named('checkbox)
-  }
 }
 
 object MyInline2 extends StyleSheet.Inline {
@@ -153,8 +147,132 @@ object MyInline3 extends StyleSheet.Inline {
     innerObject.andAgain.depth2)
 }
 
-  object InlineTest extends utest.TestSuite {
+object MyInlineWithKeyframes extends StyleSheet.Inline {
+  import dsl._
+
+  val s = style(
+    height(100 px),
+    width(30 px)
+  )
+
+  val ks = keyframe(
+    height(150 px),
+    width(30 px)
+  )
+
+  val kf1 = keyframes(
+    (0 %%) -> s,
+    (20 %%) -> ks,
+    (100 %%) -> keyframe(
+      height(200 px),
+      width(60 px)
+    )
+  )
+
+  val animation = style(
+    animationName(kf1),
+    animationDuration(5 seconds),
+    animationDirection.alternate,
+    animationIterationCount.count(5),
+    animationPlayState.running,
+    animationTimingFunction.ease
+  )
+}
+
+object MyInlineComplexCond extends StyleSheet.Inline {
+  import dsl._
+
+  val cond =
+    style("manual")(
+      margin(12 px),
+      padding(0.5 ex),
+
+      &.hover(
+        cursor.zoomIn,
+        media.maxWidth(150 px)(
+          margin(0 px)
+        ),
+
+        unsafeChild(".child")(
+          &.hover(display.block),
+          media.maxWidth(100 px)(
+            margin(2 px)
+          ),
+          margin(5 px)
+        )
+      ),
+
+      unsafeChild(".child2")(
+        &.hover(
+          margin(15 px),
+          media.maxWidth(100 px)(
+            margin(10 px)
+          )
+        )
+      ),
+
+      &.nthChild(5)(
+        cursor.zoomIn,
+        media.maxWidth(150 px)(
+          margin(0 px)
+        ),
+
+        unsafeChild(".row")(
+          &.nthChild(9)(display.block),
+          media.maxWidth(100 px)(
+            margin(2 px)
+          ),
+          margin(5 px)
+        )
+      ),
+
+      unsafeChild(".row2")(
+        &.nthChild(15)(
+          margin(15 px),
+          media.maxWidth(100 px)(
+            margin(10 px)
+          )
+        )
+      ),
+
+      &.attr("some-attribute", "true") (
+        &.after (
+          padding(5 px)
+        )
+      )
+    )
+}
+
+object MyInlineWithFontFace extends StyleSheet.Inline {
+  import dsl._
+
+  val ff = fontFace("myFont")(
+    _.src("url(font.woff)")
+      .fontStretch.expanded
+      .fontStyle.italic
+      .unicodeRange(0, 5))
+  val ff2 = fontFace("myFont2")(
+    _.src("url(font2.woff)")
+      .fontStyle.oblique
+      .fontWeight._200)
+  val ff3 = fontFace("myFont3")(
+    _.src("local(HelveticaNeue)", "url(font2.woff)")
+      .fontStretch.ultraCondensed
+      .fontWeight._200)
+  val ff4 = fontFace("myFont3")(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+
+  val myFontText = style(
+    fontFamily(ff)
+  )
+
+  val myFontText2 = style(
+    fontFamily(ff3)
+  )
+}
+
+object InlineTest extends utest.TestSuite {
   import utest._
+
   import scalacss.TestUtil._
 
   def norm(css: String) = css.trim
@@ -163,9 +281,9 @@ object MyInline3 extends StyleSheet.Inline {
     'css1 - assertEq(norm(MyInline.render), norm(
       """
         |.manual:not(:first-child):visited {
-        |  -o-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
         |  -moz-animation-delay: 60s,50ms;
+        |  -o-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
@@ -188,9 +306,9 @@ object MyInline3 extends StyleSheet.Inline {
         |  -webkit-text-decoration-line: underline overline;
         |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
-        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |}
         |
@@ -216,20 +334,6 @@ object MyInline3 extends StyleSheet.Inline {
         |.MyInline-condMixinP:hover {
         |  display: block;
         |  color: red;
-        |}
-        |
-        |.MyInline-0002 {
-        |  border: 1px solid black;
-        |  padding: 1ex;
-        |}
-        |
-        |.MyInline-0003 {
-        |  font-weight: bold;
-        |}
-        |
-        |.MyInline-0004 {
-        |  margin: 4ex;
-        |  background-color: #eee;
         |}
         |
         |@media not handheld and (orientation:landscape) and (color) {
@@ -402,15 +506,168 @@ object MyInline3 extends StyleSheet.Inline {
       'innerObject_1 - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
       'innerObject_2 - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
 
-      'styleC {
-        import shapeless.syntax.singleton._
-        val classNames =
-          MyInline.sc('outer)(o =>
-                      _('label)(l =>
-                        _('checkbox)(c =>
-                          List(o, l, c).map(_.htmlClass))))
-        assertEq(classNames, List("MyInline-0002", "MyInline-0003", "MyInline-0004"))
-      }
     }
+
+    'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
+       |@keyframes MyInlineWithKeyframes-kf1 {
+       |  0% {
+       |    height: 100px;
+       |    width: 30px;
+       |  }
+       |
+       |  20% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  100% {
+       |    height: 200px;
+       |    width: 60px;
+       |  }
+       |
+       |}
+       |
+       |.MyInlineWithKeyframes-s {
+       |  height: 100px;
+       |  width: 30px;
+       |}
+       |
+       |.MyInlineWithKeyframes-animation {
+       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
+       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
+       |  -o-animation-name: MyInlineWithKeyframes-kf1;
+       |  animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-duration: 5s;
+       |  -moz-animation-duration: 5s;
+       |  -o-animation-duration: 5s;
+       |  animation-duration: 5s;
+       |  -webkit-animation-direction: alternate;
+       |  -moz-animation-direction: alternate;
+       |  -o-animation-direction: alternate;
+       |  animation-direction: alternate;
+       |  -webkit-animation-iteration-count: 5;
+       |  -moz-animation-iteration-count: 5;
+       |  -o-animation-iteration-count: 5;
+       |  animation-iteration-count: 5;
+       |  -webkit-animation-play-state: running;
+       |  -moz-animation-play-state: running;
+       |  -o-animation-play-state: running;
+       |  animation-play-state: running;
+       |  -webkit-animation-timing-function: ease;
+       |  -moz-animation-timing-function: ease;
+       |  -o-animation-timing-function: ease;
+       |  animation-timing-function: ease;
+       |}
+     """.stripMargin))
+
+    'complexCond - assertEq(norm(MyInlineComplexCond.render), norm(
+      """.manual[some-attribute="true"]::after {
+        |  padding: 5px;
+        |}
+        |
+        |.manual:hover {
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual:nth-child(5) {
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual {
+        |  margin: 12px;
+        |  padding: 0.5ex;
+        |}
+        |
+        |.manual:hover .child:hover {
+        |  display: block;
+        |}
+        |
+        |.manual:hover .child {
+        |  margin: 5px;
+        |}
+        |
+        |.manual .child2:hover {
+        |  margin: 15px;
+        |}
+        |
+        |.manual:nth-child(5) .row:nth-child(9) {
+        |  display: block;
+        |}
+        |
+        |.manual:nth-child(5) .row {
+        |  margin: 5px;
+        |}
+        |
+        |.manual .row2:nth-child(15) {
+        |  margin: 15px;
+        |}
+        |
+        |@media (max-width:150px) {
+        |  .manual:nth-child(5) {
+        |    margin: 0;
+        |  }
+        |  .manual:hover {
+        |    margin: 0;
+        |  }
+        |}
+        |
+        |@media (max-width:100px) {
+        |  .manual:hover .child {
+        |    margin: 2px;
+        |  }
+        |  .manual .child2:hover {
+        |    margin: 10px;
+        |  }
+        |  .manual:nth-child(5) .row {
+        |    margin: 2px;
+        |  }
+        |  .manual .row2:nth-child(15) {
+        |    margin: 10px;
+        |  }
+        |}
+      """.stripMargin))
+
+    'fontFaces - assertEq(norm(MyInlineWithFontFace.render), norm("""
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-myFont;
+         |  src: url(font.woff);
+         |  font-stretch: expanded;
+         |  font-style: italic;
+         |  unicode-range: U+0-5;
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-myFont2;
+         |  src: url(font2.woff);
+         |  font-style: oblique;
+         |  font-weight: 200;
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-myFont3;
+         |  src: local(HelveticaNeue),url(font2.woff);
+         |  font-stretch: ultra-condensed;
+         |  font-weight: 200;
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-myFont3-2;
+         |  src: local(HelveticaNeue),url(font2.woff);
+         |}
+         |
+         |.MyInlineWithFontFace-myFontText {
+         |  font-family: MyInlineWithFontFace-myFont;
+         |}
+         |
+         |.MyInlineWithFontFace-myFontText2 {
+         |  font-family: MyInlineWithFontFace-myFont3;
+         |}
+       """.stripMargin))
   }
 }
