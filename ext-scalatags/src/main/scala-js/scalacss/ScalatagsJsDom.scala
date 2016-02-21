@@ -8,7 +8,9 @@ import all._
 trait ScalatagsJsDomImplicits {
 
   implicit final def styleaToJsDomTag(s: StyleA): Modifier = new Modifier {
-    def applyTo(t: dom.Element) = s.htmlClass.split(' ').foreach(cn => t.classList.add(cn))
+    def applyTo(t: dom.Element) =
+      for (cn <- s.classNameIterator)
+        t.classList.add(cn.value)
   }
 
   implicit final def styleJsDomTagRenderer(implicit s: Renderer[String]): Renderer[TypedTag[HTMLStyleElement]] =
