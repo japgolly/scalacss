@@ -15,7 +15,7 @@ object ScalaCSS extends Build {
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.4.1-SNAPSHOT",
+        version            := "0.4.1",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
