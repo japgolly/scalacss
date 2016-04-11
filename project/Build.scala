@@ -9,13 +9,13 @@ import Typical.{settings => _, _}
 
 object ScalaCSS extends Build {
 
-  val Scala211 = "2.11.7"
+  val Scala211 = "2.11.8"
 
   val commonSettings: CDS =
     CDS.all(
       _.settings(
         organization       := "com.github.japgolly.scalacss",
-        version            := "0.4.1-SNAPSHOT",
+        version            := "0.4.1",
         homepage           := Some(url("https://github.com/japgolly/scalacss")),
         licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
         scalaVersion       := Scala211,
@@ -34,7 +34,7 @@ object ScalaCSS extends Build {
     ) :+ Typical.settings("scalacss")
 
   object scalaz {
-    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.2.0").myJsFork("scalaz") //.jsVersion(_+"-2")
+    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.2.1")
     val core       = m("core")
     val effect     = m("effect") > core
     val concurrent = m("concurrent") > effect
@@ -45,7 +45,7 @@ object ScalaCSS extends Build {
     val test = m("test")
   }
   object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.10.3"
+    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.11.0"
     val core        = m("core")
     val test        = m("test")
     val extra       = m("extra")
@@ -84,8 +84,24 @@ object ScalaCSS extends Build {
       .dependsOn(coreJs)
       .settings(
         libraryDependencies ++= Seq(react.core, react.test % "test"),
-        jsDependencies += "org.webjars.npm" % "react"     % "0.14.0" % "test" / "react-with-addons.js" commonJSName "React"    minified "react-with-addons.min.js",
-        jsDependencies += "org.webjars.npm" % "react-dom" % "0.14.0" % "test" / "react-dom.js"         commonJSName "ReactDOM" minified "react-dom.min.js" dependsOn "react-with-addons.js")
+        jsDependencies ++= Seq(
+
+          "org.webjars.bower" % "react" % "15.0.1" % "test"
+            /        "react.js"
+            minified "react.min.js"
+            commonJSName "React",
+
+          "org.webjars.bower" % "react" % "15.0.1" % "test"
+            /         "react-dom.js"
+            minified  "react-dom.min.js"
+            dependsOn "react.js"
+            commonJSName "ReactDOM",
+
+          "org.webjars.bower" % "react" % "15.0.1" % "test"
+            /         "react-dom-server.js"
+            minified  "react-dom-server.min.js"
+            dependsOn "react-dom.js"
+            commonJSName "ReactDOMServer"))
 
   // ==============================================================================================
   private def benchModule(name: String, dir: File => File) =

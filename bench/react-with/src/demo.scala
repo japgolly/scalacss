@@ -59,6 +59,6 @@ object Demo {
           <.button("Add #", s.items.length + 1)
         )
       )
-    ).buildU
+    ).build
 
 }

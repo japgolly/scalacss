@@ -60,7 +60,7 @@ object ReactTest extends TestSuite {
   override val tests = TestSuite {
 
     'styleReactElement {
-      val html = React.renderToStaticMarkup(MyStyles.render[ReactElement])
+      val html = ReactDOMServer.renderToStaticMarkup(MyStyles.render[ReactElement])
       assertStyle(html, expectedStyleTag1)
     }
 
@@ -71,13 +71,13 @@ object ReactTest extends TestSuite {
 
     'simple {
       val el = <.input(^.`type` := "text", MyStyles.input, ^.defaultValue := "ah")
-      val html = React.renderToStaticMarkup(el)
+      val html = ReactDOMServer.renderToStaticMarkup(el)
       assertEq(html, """<input type="text" class="ReactTest_MyStyles-input" value="ah"/>""")
     }
 
     'addClassName {
       val el = <.button(MyStyles.bootstrappy)
-      val html = React.renderToStaticMarkup(el)
+      val html = ReactDOMServer.renderToStaticMarkup(el)
       assertEq(html, """<button class="btn btn-default"></button>""")
     }
 
