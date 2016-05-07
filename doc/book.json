@@ -3,6 +3,6 @@
   "variables": {
     "issue": "https://github.com/japgolly/scalacss/issues/",
     "scalajsReact": "[scalajs-react](https://github.com/japgolly/scalajs-react)",
-    "ver": "0.4.0"
+    "ver": "0.4.1"
   }
 }
