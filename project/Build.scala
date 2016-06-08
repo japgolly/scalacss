@@ -1,9 +1,10 @@
 import sbt._
 import Keys._
 import com.typesafe.sbt.pgp.PgpKeys._
-import org.scalajs.sbtplugin.ScalaJSPlugin
+import org.scalajs.sbtplugin.{ScalaJSPlugin, ScalaJSPluginInternal, Stage}
 import ScalaJSPlugin._
-import ScalaJSPlugin.autoImport._
+import ScalaJSPlugin.autoImport.{crossProject => _, _}
+import ScalaJSPluginInternal.stageKeys
 import Dialect._
 import Typical.{settings => _, _}
 
@@ -68,6 +69,8 @@ object ScalaCSS extends Build {
       .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
       .addLibs(scalaz.core, nyaya.test % Test)
       .jj(_ => initialCommands := "scalacss._")
+      .js(_.settings(
+        libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.0"))
     )
 
   lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =
@@ -104,18 +107,27 @@ object ScalaCSS extends Build {
             commonJSName "ReactDOMServer"))
 
   // ==============================================================================================
-  private def benchModule(name: String, dir: File => File) =
+  private def benchModule(name: String, dir: File => File): Project =
     Project(name, dir(file("bench")))
       .configure(commonSettings.rootS, preventPublication)
+      .settings(scalaSource in Compile := baseDirectory.value / "src")
 
-  private def benchReactModule(name: String, dir: File => File) =
+  private def benchModuleJS(name: String, dir: File => File): Project =
     benchModule("bench-" + name, dir)
       .enablePlugins(ScalaJSPlugin)
-      .settings(
-        scalaSource in Compile := baseDirectory.value / "src",
-        libraryDependencies ++= Seq(react.extra, react.extScalaz72))
 
-  val intfmt = java.text.NumberFormat.getIntegerInstance
+  lazy val bench =
+    benchModule("bench", identity)
+      .aggregate(benchReactWith, benchReactWithout, benchBig)
+      .settings(
+        jsSizes       := jsSizesTask.value,
+        cmpJsSizeFast := cmpJsSize(fastOptJS).value,
+        cmpJsSizeFull := cmpJsSize(fullOptJS).value)
+      .configure(addCommandAliases(
+        "cmpJsSize" -> ";cmpJsSizeFast ;cmpJsSizeFull"
+      ))
+
+  // --------------------------------------------------------------------------------------
 
   val cmpJsSizeFast = TaskKey[Unit]("cmpJsSizeFast", "Compare JS sizes (using fastOptJS).")
   val cmpJsSizeFull = TaskKey[Unit]("cmpJsSizeFull", "Compare JS sizes (using fullOptJS).")
@@ -127,31 +139,55 @@ object ScalaCSS extends Build {
     val d = y - x
     printf(
       """
-        | Without: %10s
-        |    With: %10s
-        |Increase: %10s (+%.0f%%)
+        | Without: %,10d
+        |    With: %,10d
+        |Increase: %,10d (+%.0f%%)
         |
         |""".stripMargin,
-      intfmt format x,
-      intfmt format y,
-      intfmt format d, d.toDouble / x * 100)
+      x, y, d, d.toDouble / x * 100)
   }
 
-  lazy val bench =
-    benchModule("bench", identity)
-      .aggregate(benchReactWith, benchReactWithout)
-      .settings(
-        cmpJsSizeFast := cmpJsSize(fastOptJS).value,
-        cmpJsSizeFull := cmpJsSize(fullOptJS).value
-      )
-      .configure(addCommandAliases(
-        "cmpJsSize" -> ";cmpJsSizeFast ;cmpJsSizeFull"
-      ))
-
   lazy val benchReactWithout =
-    benchReactModule("react-without", _ / "react-without")
+    benchModuleJS("react-without", _ / "react-without")
+      .settings(libraryDependencies ++= Seq(react.extra, react.extScalaz72))
 
   lazy val benchReactWith =
-    benchReactModule("react-with", _ / "react-with")
+    benchModuleJS("react-with", _ / "react-with")
       .dependsOn(extReact)
+      .settings(libraryDependencies ++= Seq(react.extra, react.extScalaz72))
+
+  // --------------------------------------------------------------------------------------
+
+  val jsSizes = TaskKey[Unit]("jsSizes", "Print JS sizes.")
+
+  def gzipLength(in: File): Long = {
+    import java.io._
+    import java.util.zip._
+    val bos = new ByteArrayOutputStream()
+    try {
+      val gzip = new GZIPOutputStream(bos) { this.`def`.setLevel(Deflater.BEST_COMPRESSION) }
+      try
+        IO.transfer(in, gzip)
+      finally
+        gzip.close()
+    } finally
+      bos.close()
+    bos.toByteArray.length
+  }
+
+  def jsSizesTask = Def.task[Unit] {
+    def report(name: String, f: Attributed[File]): Unit =
+      printf("%,11d → %,9d - %s\n", f.data.length, gzipLength(f.data), name)
+    val header = "JS Sizes"
+    println()
+    println(header)
+    println("=" * header.length)
+    report("bench-big (fast)", (stageKeys(Stage.FastOpt) in Compile in benchBig).value)
+    report("bench-big (full)", (stageKeys(Stage.FullOpt) in Compile in benchBig).value)
+    println()
+  }
+
+  lazy val benchBig =
+    benchModuleJS("big", _ / "big")
+      .dependsOn(coreJs)
 }
