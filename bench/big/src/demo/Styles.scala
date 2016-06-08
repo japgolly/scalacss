@@ -1,7 +1,8 @@
 package demo
 
+import japgolly.univeq.UnivEq
 import scalacss.Defaults._
-import scalacss.{PseudoElement, Pseudo, StyleS}
+import scalacss.{Pseudo, PseudoElement, StyleS}
 
 sealed trait Live
 case object Live extends Live
@@ -24,10 +25,16 @@ object DragToReorder {
   case object Normal extends Status
   case object DragSource extends Status
   case object Tombstone extends Status
+  implicit def univEq: UnivEq[Status] = UnivEq.derive
 }
 
 object Styles extends StyleSheet.Inline {
   import dsl._
+
+  implicit def univEqLive    : UnivEq[Live]     = UnivEq.derive
+  implicit def univEqValidity: UnivEq[Validity] = UnivEq.derive
+  implicit def univEqEnabled : UnivEq[Enabled]  = UnivEq.derive
+  implicit def univEqOn      : UnivEq[On]       = UnivEq.derive
 
   /** Domains */
   object D {
@@ -242,6 +249,7 @@ object Styles extends StyleSheet.Inline {
       case object DeadRow extends Status
       case object `N/A` extends Status
       val domain = Domain.ofValues[Status](Normal, DeadRow, `N/A`)
+      implicit def univEq: UnivEq[Status] = UnivEq.derive
     }
 
     val cell = styleF(CellStatus.domain){ status =>

@@ -1,8 +1,7 @@
 package scalacss
 
+import japgolly.univeq._
 import scala.annotation.tailrec
-import scalaz.{Equal, Need, Order}
-import scalaz.std.string.stringInstance
 
 /**
  * A style attribute.
@@ -16,7 +15,7 @@ import scalaz.std.string.stringInstance
 sealed abstract class Attr(val id: String, val gen: Attr.Gen) {
   override final def hashCode = id.##
   override final def equals(t: Any) = t match {
-    case b: Attr => b.id == id
+    case b: Attr => b.id ==* id
     case _       => false
   }
   override final def toString = id
@@ -52,7 +51,7 @@ final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyVecto
 object Attr {
   type Gen = Env => Value => Vector[CssKV]
 
-  implicit val order: Order[Attr] = Order.orderBy(_.id)
+  implicit def univEq: UnivEq[Attr] = UnivEq.force
 
   def genSimple(css: String): Gen =
     _ => v => Vector1(CssKV(css, v))
@@ -165,12 +164,12 @@ object AttrCmp {
   case object Same    extends Conflict
   case object Overlap extends Conflict
 
-  implicit val equality: Equal[AttrCmp] = Equal.equalA
+  implicit def univEq: UnivEq[AttrCmp] = UnivEq.derive
 
   type Fn = (Attr, Attr) => AttrCmp
 
   val byEquality: Fn =
-    (a, b) => if (Equal[Attr].equal(a, b)) Same else Unrelated
+    (a, b) => if (a ==* b) Same else Unrelated
 
   val byRealAttrs: Fn =
     (x, y) => {

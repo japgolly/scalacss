@@ -1,7 +1,6 @@
 package scalacss
 
 import scala.runtime.AbstractFunction1
-import scalaz.Monoid
 
 /**
  * A high-level style, that can describe a subject and its children in a variety of conditions.
@@ -86,12 +85,6 @@ object StyleS {
 
   val empty: StyleS =
     data(Map.empty)
-
-  implicit def styleSMonoid(implicit c: Compose): Monoid[StyleS] =
-    new Monoid[StyleS] {
-      override def zero                            = empty
-      override def append(a: StyleS, b: => StyleS) = a compose b
-    }
 }
 
 /**

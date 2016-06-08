@@ -1,8 +1,7 @@
 package scalacss
 
+import japgolly.univeq.UnivEq
 import scala.collection.GenTraversableOnce
-import scalaz.{Order, Equal}
-import scalaz.std.vector.{vectorEqual, vectorOrder}
 
 final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   override def toString = "NonEmpty" + whole.toString
@@ -64,7 +63,7 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
 
 // =====================================================================================================================
 
-object NonEmptyVector extends NonEmptyVectorImplicits0 {
+object NonEmptyVector {
   def one[A](h: A): NonEmptyVector[A] =
     new NonEmptyVector(h, Vector.empty)
 
@@ -92,11 +91,6 @@ object NonEmptyVector extends NonEmptyVectorImplicits0 {
   def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
     maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
 
-  implicit def equality[A: Equal]: Equal[NonEmptyVector[A]] =
-    vectorEqual[A].contramap(_.whole)
-}
-
-trait NonEmptyVectorImplicits0 {
-  implicit def order[A: Order]: Order[NonEmptyVector[A]] =
-    vectorOrder[A].contramap(_.whole)
+  implicit def univEq[A: UnivEq]: UnivEq[NonEmptyVector[A]] =
+    UnivEq.force
 }

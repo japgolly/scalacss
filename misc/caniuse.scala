@@ -256,6 +256,8 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+import japgolly.univeq.UnivEq
+
 object $obj {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -268,6 +270,7 @@ object $obj {
     case object Full        extends Support
     case object PartialX    extends Support
     case object FullX       extends Support
+    implicit def univEq: UnivEq[Support] = UnivEq.derive
   }
 
   sealed abstract class Prefix(val name: String) {
@@ -275,6 +278,7 @@ object $obj {
   }
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
+    implicit def univEq: UnivEq[Prefix] = UnivEq.derive
     val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
   }
 
@@ -283,6 +287,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
+    implicit def univEq: UnivEq[Agent] = UnivEq.derive
     val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 

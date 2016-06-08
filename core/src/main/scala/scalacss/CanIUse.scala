@@ -8,6 +8,8 @@ package scalacss
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+import japgolly.univeq.UnivEq
+
 object CanIUse {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -20,6 +22,7 @@ object CanIUse {
     case object Full        extends Support
     case object PartialX    extends Support
     case object FullX       extends Support
+    implicit def univEq: UnivEq[Support] = UnivEq.derive
   }
 
   sealed abstract class Prefix(val name: String) {
@@ -30,6 +33,7 @@ object CanIUse {
     case object ms     extends Prefix("ms")
     case object o      extends Prefix("o")
     case object webkit extends Prefix("webkit")
+    implicit def univEq: UnivEq[Prefix] = UnivEq.derive
     val values = NonEmptyVector[Prefix](moz, ms, o, webkit)
   }
 
@@ -53,6 +57,7 @@ object CanIUse {
     val OperaMobile       = Agent(o     , Map("33" -> webkit))
     val Safari            = Agent(webkit, Map.empty)
     val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari)
+    implicit def univEq: UnivEq[Agent] = UnivEq.derive
   }
 
   import Agent._

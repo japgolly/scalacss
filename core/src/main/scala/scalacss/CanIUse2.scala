@@ -1,6 +1,5 @@
 package scalacss
 
-import scalaz.Memo
 import scalacss.{Literal => L}
 import CanIUse._
 import Support._
@@ -37,7 +36,7 @@ object CanIUse2 {
 
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
-    Memo.mutableHashMapMemo {s =>
+    memo { s =>
       val ps = subjectPrefixes(s).toVector.map(Some.apply)
       val np = s.exists(_._2.exists(d => !needsPrefix(d)))
       if (np) ps :+ None else ps

@@ -1,10 +1,11 @@
 package scalacss.mutable
 
+import scalaz.Equal
+import scalaz.std.option.optionEqual
+import scalaz.std.vector.vectorEqual
 import utest._
 import scalacss.TestUtil._
 import scalacss.DevDefaults.{StyleSheet => _, _}
-
-import scalaz.Equal
 
 class BlarrrrStyle extends StyleSheet.Inline {
   import dsl._

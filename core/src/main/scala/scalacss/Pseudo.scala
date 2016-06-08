@@ -1,27 +1,25 @@
 package scalacss
 
-import scalaz.{Equal, ISet, Monoid, Order, Ordering, Semigroup}
-import scalaz.std.string.stringInstance
-import scalaz.std.tuple._
-import scalaz.syntax.equal._
+import japgolly.univeq._
+import scala.collection.immutable.SortedSet
 
 // TODO Rename PseudoXxxxx (selector probably)
 
 /** http://www.w3.org/TR/selectors/#selector-syntax */
-sealed class PseudoType(val priority: Short)
+sealed abstract class PseudoType(val priority: Short)
 case object PseudoAttr    extends PseudoType(0)
 case object PseudoClass   extends PseudoType(1)
 case object PseudoElement extends PseudoType(2)
 
 object PseudoType {
+  implicit def univEq: UnivEq[PseudoType] = UnivEq.derive
+
   // Class comes before Element: http://www.w3.org/TR/selectors/#selector-syntax
-  implicit val psuedoTypeOrder: Order[PseudoType] = new Order[PseudoType] {
-    def order(x: PseudoType, y: PseudoType): Ordering = {
-      if (x == y) Ordering.EQ
-      else if (x.priority < y.priority) Ordering.LT
-      else Ordering.GT
+  implicit val ordering: Ordering[PseudoType] =
+    new Ordering[PseudoType] {
+      def compare(x: PseudoType, y: PseudoType): Int =
+        x.priority - y.priority
     }
-  }
 }
 
 /**
@@ -42,10 +40,10 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
       case (a, b: Pseudo1) if a contains b => a
       case (a: Pseudo1, b) if b contains a => b
       // Append
-      case (a: Pseudo1     , b: Pseudo1     ) => Composite(a, ISet singleton b)
-      case (p: Pseudo1     , Composite(h, t)) => Composite(p, t insert h)
-      case (Composite(h, t), p: Pseudo1     ) => Composite(p, t insert h)
-      case (Composite(a, b), Composite(c, d)) => Composite(a, b union d insert c)
+      case (a: Pseudo1     , b: Pseudo1     ) => Composite(a, SortedSet.empty[Pseudo1] + b)
+      case (p: Pseudo1     , Composite(h, t)) => Composite(p, t + h)
+      case (Composite(h, t), p: Pseudo1     ) => Composite(p, t + h)
+      case (Composite(a, b), Composite(c, d)) => Composite(a, b ++ d + c)
     }
 
   @inline final def &(p: Pseudo): Pseudo =
@@ -61,29 +59,27 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 */
 sealed abstract class Pseudo1(override val cssValue: String, val pseudoType: PseudoType) extends Pseudo {
   override def contains(p: Pseudo1) =
-    this === p
+    this ==* p
 }
 
 object Pseudo {
-  implicit val pseudoTC: Semigroup[Pseudo] with Equal[Pseudo] =
-    new Semigroup[Pseudo] with Equal[Pseudo] {
-      override def equalIsNatural                  = true
-      override def equal (a: Pseudo, b: Pseudo)    = a == b
-      override def append(a: Pseudo, b: => Pseudo) = a & b
+  implicit val order: Ordering[Pseudo1] =
+    new Ordering[Pseudo1] {
+      def compare(x: Pseudo1, y: Pseudo1): Int = {
+        val n = PseudoType.ordering.compare(x.pseudoType, y.pseudoType)
+        if (n ==* 0)
+          x.cssValue compareTo y.cssValue
+        else
+          n
+      }
     }
 
-  implicit val optionPseudoTC: Monoid[Option[Pseudo]] =
-    scalaz.std.option.optionMonoid
-
-  implicit val psuedo1Order: Order[Pseudo1] =
-    Order.orderBy[Pseudo1, (PseudoType, String)](p => (p.pseudoType, p.cssValue))
-
-  final case class Composite private[scalacss](h: Pseudo1, t: ISet[Pseudo1]) extends Pseudo {
+  final case class Composite private[scalacss](h: Pseudo1, t: SortedSet[Pseudo1]) extends Pseudo {
     override lazy val cssValue =
-      (t insert h).foldLeft("")(_ + _.cssValue)
+      (t + h).foldLeft("")(_ + _.cssValue)
 
     override def contains(p: Pseudo1) =
-      (h === p) || (t contains p)
+      (h ==* p) || (t contains p)
   }
 
   final case class Custom(override val cssValue: String, override val pseudoType: PseudoType) extends Pseudo1(cssValue, pseudoType)
@@ -206,7 +202,7 @@ object Pseudo {
     val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
   }
 
-  abstract class NthChildBase(cls: String, query: NthQuery) extends Pseudo1(s":$cls($query)", PseudoClass) {
+  sealed abstract class NthChildBase(cls: String, query: NthQuery) extends Pseudo1(s":$cls($query)", PseudoClass) {
     require(
       NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches(),
       s"Invalid NthQuery: '$query'")
@@ -273,21 +269,22 @@ object Pseudo {
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Pseudo1("::selection", PseudoElement)
 
-
-  class AttrSelector(name: String, value: String, op: String) extends Pseudo1(s"""[$name$op"$value"]""", PseudoAttr)
-
   /** Selects all elements with a name attribute. */
-  case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoAttr)
+  final case class AttrExists(name: String) extends Pseudo1(s"[$name]", PseudoAttr)
+
+  final case class AttrSelector(name: String, value: String, op: String) extends Pseudo1(s"""[$name$op"$value"]""", PseudoAttr)
 
   /** Selects all elements with a name="value". */
-  case class Attr(name: String, value: String) extends AttrSelector(name, value, "=")
+  def Attr(name: String, value: String) = AttrSelector(name, value, "=")
 
   /** Selects all elements with a name containing the word value. */
-  case class AttrContains(name: String, value: String) extends AttrSelector(name, value, "~=")
+  def AttrContains(name: String, value: String) = AttrSelector(name, value, "~=")
 
   /** Selects all elements with a name starting with value. */
-  case class AttrStartsWith(name: String, value: String) extends AttrSelector(name, value, "|=")
+  def AttrStartsWith(name: String, value: String) = AttrSelector(name, value, "|=")
 
   /** Selects all elements with a name ends with value. */
-  case class AttrEndsWith(name: String, value: String) extends AttrSelector(name, value, "$=")
+  def AttrEndsWith(name: String, value: String) = AttrSelector(name, value, "$=")
+
+  implicit def univEq: UnivEq[Pseudo1] = UnivEq.derive
 }

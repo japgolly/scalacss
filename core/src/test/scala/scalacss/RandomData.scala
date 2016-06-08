@@ -20,7 +20,7 @@ object RandomData {
     str1
 
   val av: Gen[AV] =
-    Gen.apply2(AV)(attr, value)
+    Gen.apply2(AV.apply)(attr, value)
 
   def avs(implicit ss: SizeSpec): Gen[AVs] =
     nev(av).map(n => AVs(n.head, n.tail: _*))
@@ -76,7 +76,7 @@ object RandomData {
     Gen.apply2(Warning)(cond, str)
 
   val className: Gen[ClassName] =
-    str1 map ClassName
+    str1 map ClassName.apply
 
   val styleS: Gen[StyleS] = {
     def level(next: Option[Gen[StyleS]]): Gen[StyleS] =

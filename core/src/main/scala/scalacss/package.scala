@@ -1,9 +1,6 @@
-import scalaz.Equal
-import scalaz.std.stream.streamEqual
-import scalaz.std.option.optionEqual
+import japgolly.univeq._
 
 package object scalacss {
-  private[this] implicit def stringEqual: Equal[String] = Equal.equalA
 
   /**
    * A CSS value, like `"none"`, `"solid 3px black"`.
@@ -16,9 +13,14 @@ package object scalacss {
   case class UnicodeRange(from: Int, to: Int) {
     override def toString = "U+%x-%x".format(from, to)
   }
+  object UnicodeRange {
+    implicit def univEq: UnivEq[UnicodeRange] = UnivEq.derive
+  }
 
   final case class ClassName(value: String)
-  implicit def classNameEquality: Equal[ClassName] = Equal.equalA
+  object ClassName {
+    implicit def univEq: UnivEq[ClassName] = UnivEq.derive
+  }
 
   /**
    * Describes the context of a number of CSS attribute-value pairs.
@@ -34,7 +36,7 @@ package object scalacss {
    */
   final case class CssKV(key: String, value: String)
   object CssKV {
-    implicit val equality: Equal[CssKV] = Equal.equalA
+    implicit def univEq: UnivEq[CssKV] = UnivEq.derive
 
     final class Lens(val get: CssKV => String, val set: (CssKV, String) => CssKV)
     val key   = new Lens(_.key  , (a, b) => CssKV(b, a.value))
@@ -73,46 +75,10 @@ package object scalacss {
                          fontWeight  : Option[Value],
                          unicodeRange: Option[UnicodeRange]) extends CssEntry
 
-  object CssStyleEntry {
-    implicit val equality: Equal[CssStyleEntry] = {
-      val A = Equal[CssMediaQueryO]
-      val B = Equal[CssSelector]
-      val C = Equal[NonEmptyVector[CssKV]]
-      new Equal[CssStyleEntry] {
-        override val equalIsNatural = A.equalIsNatural
-        override def equal(a: CssStyleEntry, b: CssStyleEntry): Boolean =
-          B.equal(a.sel, b.sel) &&
-          A.equal(a.mq, b.mq) &&
-          C.equal(a.content, b.content)
-      }
-    }
-  }
-
-  object CssKeyframesEntry {
-    implicit val equality: Equal[CssKeyframesEntry] = {
-      val A = Equal[KeyframeAnimationName]
-      val B = Equal[StyleStream]
-      new Equal[CssKeyframesEntry] {
-        override val equalIsNatural = A.equalIsNatural
-        override def equal(a: CssKeyframesEntry, b: CssKeyframesEntry): Boolean =
-          A.equal(a.name, b.name) &&
-          a.frames.size == b.frames.size &&
-          a.frames.keys.forall(k => b.frames.get(k).exists(B.equal(a.frames(k), _)))
-      }
-    }
-  }
-
-  object CssFontFace {
-    implicit val equality: Equal[CssFontFace] = {
-      val A = Equal[String]
-      new Equal[CssFontFace] {
-        override val equalIsNatural =
-          A.equalIsNatural
-        override def equal(a: CssFontFace, b: CssFontFace): Boolean =
-          A.equal(a.fontFamily, b.fontFamily)
-      }
-    }
-  }
+  implicit def univEqCssStyleEntry    : UnivEq[CssStyleEntry    ] = UnivEq.derive
+  implicit def univEqCssKeyframesEntry: UnivEq[CssKeyframesEntry] = UnivEq.derive
+  implicit def univEqCssFontFace      : UnivEq[CssFontFace      ] = UnivEq.derive
+  implicit def univEqCssEntry         : UnivEq[CssEntry         ] = UnivEq.derive
 
   type StyleStream    = Stream[CssStyleEntry]
   type KeyframeStream = Stream[CssKeyframesEntry]
@@ -122,16 +88,7 @@ package object scalacss {
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
   type Css = Stream[CssEntry]
-  implicit val cssEquality: Equal[Css] = streamEqual(new Equal[CssEntry] {
-    override def equal(a1: CssEntry, a2: CssEntry): Boolean = { (a1, a2) match {
-      case (a: CssStyleEntry, b: CssStyleEntry) =>
-        CssStyleEntry.equality.equal(a, b)
-      case (a: CssKeyframesEntry, b: CssKeyframesEntry) =>
-        CssKeyframesEntry.equality.equal(a, b)
-      case (a: CssFontFace, b: CssFontFace) =>
-        CssFontFace.equality.equal(a, b)
-      case _ => false
-    }}})
+  implicit def univEqCss: UnivEq[Css] = UnivEq.univEqStream
 
   type WarningMsg = String
   final case class Warning(cond: Cond, msg: WarningMsg)
@@ -234,4 +191,32 @@ package object scalacss {
     }
   }
 
+  // TODO Move all of this to .internal
+
+  def Need[A](a: => A) = new Need(() => a)
+  final class Need[+A](thunk: () => A) {
+    private[this] var _thunk = thunk
+    lazy val value: A = {
+      val t = _thunk
+      _thunk = null
+      t()
+    }
+  }
+
+  def optionAppend[A](oa: Option[A], ob: Option[A])(f: (A, A) => A): Option[A] =
+    (oa, ob) match {
+      case (None   , None   ) => None
+      case (Some(a), None   ) => Some(a)
+      case (None   , Some(b)) => Some(b)
+      case (Some(a), Some(b)) => Some(f(a, b))
+    }
+
+  def memo[A: UnivEq, B](f: A => B): A => B = {
+    val m = scala.collection.mutable.HashMap.empty[A, B]
+    a => m.get(a).getOrElse {
+      val b = f(a)
+      m.update(a, b)
+      b
+    }
+  }
 }

@@ -1,6 +1,5 @@
 package scalacss
 
-import scalaz.{\/, -\/, \/-}
 import Style.{UnsafeExt, UnsafeExts}
 import ValueT._
 
@@ -9,15 +8,15 @@ object DslBase {
 
   // media.
   object MediaQueryEmpty extends TypeAOps[Query] with FeatureOps[Query] {
-    override protected def F = f => new Query(\/-(f), Vector.empty)
-    override protected def T = t => new Query(-\/(Just(t)), Vector.empty)
+    override protected def F = f => new Query(Right(f), Vector.empty)
+    override protected def T = t => new Query(Left(Just(t)), Vector.empty)
     def not  = new MediaQueryNeedType(Not)
     def only = new MediaQueryNeedType(Only)
   }
 
   // media.{not,only}
   final class MediaQueryNeedType(f: TypeA => TypeExpr) extends TypeAOps[Query] {
-    override protected def T = t => new Query(-\/(f(t)), Vector.empty)
+    override protected def T = t => new Query(Left(f(t)), Vector.empty)
   }
 
   final class DslInt(private val self: Int) extends AnyVal {
@@ -227,7 +226,7 @@ object DslMacros {
   }
 
   trait MStyleF2 {
-    protected def create[I](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
+    protected def create[I: StyleLookup](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
 
     final def bool(f: Boolean => StyleS): Boolean => StyleA =
       create(None, Domain.boolean, f, defaultStyleFClassNameSuffixB)
@@ -241,11 +240,11 @@ object DslMacros {
     /** Manually specify a name */
     final def apply(name: String): MStyleF2 =
       new MStyleF2 {
-        override protected def create[I](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
+        override protected def create[I: StyleLookup](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
           MStyleF.this.create(Some(name), d, f, classNameSuffix)
       }
 
-    final def apply[I](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+    final def apply[I: StyleLookup](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
       create(None, d, f, classNameSuffix)
   }
 
@@ -274,7 +273,7 @@ object Dsl extends DslBase {
     style(t: _*)
 
   def style(className: String)(t: ToStyle*)(implicit c: Compose): StyleS =
-    style(t: _*).copy(className = Option(className) map ClassName)
+    style(t: _*).copy(className = Option(className) map ClassName.apply)
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =
     if (t.isEmpty) StyleS.empty

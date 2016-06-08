@@ -1,6 +1,6 @@
 package scalacss
 
-import scalaz.{==>>, Order}
+import japgolly.univeq.UnivEq
 
 trait StyleLookup[I] {
   type T
@@ -9,18 +9,7 @@ trait StyleLookup[I] {
   def get: T => I => Option[StyleA]
 }
 
-trait StyleLookupLowPri {
-
-  implicit def order[I: Order]: StyleLookup[I] =
-    new StyleLookup[I] {
-      override type T    = I ==>> StyleA
-      override def empty = ==>>.empty
-      override def add   = _.insert(_, _)
-      override def get   = _.lookup
-    }
-}
-
-object StyleLookup extends StyleLookupLowPri {
+object StyleLookup {
 
   implicit val boolean: StyleLookup[Boolean] =
     new StyleLookup[Boolean] {
@@ -38,7 +27,7 @@ object StyleLookup extends StyleLookupLowPri {
         }
     }
 
-  implicit def scalaMap[I]: StyleLookup[I] =
+  implicit def scalaMap[I: UnivEq]: StyleLookup[I] =
     new StyleLookup[I] {
       override type T    = Map[I, StyleA]
       override def empty = Map.empty

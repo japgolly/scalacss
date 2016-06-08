@@ -6,17 +6,10 @@ import scala.io.AnsiColor._
 
 object TestUtil extends TestUtil
 
-trait TestUtil
-  extends scalaz.std.StringInstances
-     with scalaz.std.StreamInstances
-     with scalaz.std.VectorInstances
-     with scalaz.std.SetInstances
-     with scalaz.std.TupleInstances
-     with scalaz.std.OptionInstances
-     with scalaz.std.AnyValInstances
-     with scalaz.std.ListInstances {
+trait TestUtil extends japgolly.univeq.UnivEqExports {
 
-  implicit def      avEquality: Equal[AV]      = Equal.equal((a, b) => a.attr === b.attr && a.value === b.value)
+  implicit def equalFromUnivEq[A: UnivEq]: Equal[A] = Equal.equalA
+
   implicit def warningEquality: Equal[Warning] = Equal.equalA
 
   def NDomain = nyaya.test.Domain

@@ -1,6 +1,5 @@
 package scalacss
 
-import scalaz.Need
 import scalacss.{Literal => L}
 import L.{Typed => LT}
 import ValueT._

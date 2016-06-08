@@ -34,6 +34,7 @@ object ScalaCSS extends Build {
       ))
     ) :+ Typical.settings("scalacss")
 
+  val univeq = Library("com.github.japgolly.univeq", "univeq", "1.0.1")
   object scalaz {
     private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.2.1")
     val core       = m("core")
@@ -67,7 +68,7 @@ object ScalaCSS extends Build {
   lazy val (core, coreJvm, coreJs) =
     crossDialectProject("core", commonSettings
       .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
-      .addLibs(scalaz.core, nyaya.test % Test)
+      .addLibs(univeq, scalaz.core % Test, nyaya.test % Test)
       .jj(_ => initialCommands := "scalacss._")
       .js(_.settings(
         libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.0"))
@@ -77,7 +78,7 @@ object ScalaCSS extends Build {
     crossDialectProject("ext-scalatags", commonSettings
       .configure(utestSettings())
       .dependsOn(coreJvm, coreJs)
-      .addLibs(Library("com.lihaoyi", "scalatags", "0.5.0"))
+      .addLibs(Library("com.lihaoyi", "scalatags", "0.5.0"), scalaz.core % Test)
     )
 
   lazy val extReact =
@@ -87,6 +88,7 @@ object ScalaCSS extends Build {
       .dependsOn(coreJs)
       .settings(
         libraryDependencies ++= Seq(react.core, react.test % "test"),
+        libraryDependencies ++= (scalaz.core % Test)(JS),
         jsDependencies ++= Seq(
 
           "org.webjars.bower" % "react" % "15.0.1" % "test"

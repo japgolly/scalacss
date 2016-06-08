@@ -1,7 +1,7 @@
 package scalacss.mutable
 
+import japgolly.univeq._
 import scala.annotation.tailrec
-import scalaz.syntax.equal._
 import scalacss._
 import Register.{MacroName, ErrorHandler, NameGen}
 
@@ -33,8 +33,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   private def isTaken(className: ClassName): Boolean =
     mutex(
-      _styles.exists(_.className === className)
-        || _keyframes.exists(_.name === className)
+      _styles.exists(_.className ==* className)
+        || _keyframes.exists(_.name ==* className)
         || _fontFaces.exists(_.fontFamily == className.value))
 
   private def ensureUnique(cn: ClassName): ClassName =

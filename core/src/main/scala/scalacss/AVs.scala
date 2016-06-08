@@ -1,7 +1,7 @@
 package scalacss
 
+import japgolly.univeq._
 import scala.collection.GenTraversable
-import scalaz.Equal
 
 /**
  * An Attribute-and-Value pair.
@@ -15,6 +15,9 @@ final case class AV(attr: Attr, value: Value) {
 
   def apply(env: Env) =
     attr.gen(env)(value)
+}
+object AV {
+  implicit def univEq: UnivEq[AV] = UnivEq.derive
 }
 
 /**
@@ -50,7 +53,10 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
 
   private def addHead(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
     addf(a, f,
-      e => if (e.isEmpty) a +: order else NonEmptyVector(a, order.whole.filterNot(Equal[Attr].equal(a, _))))
+      e => if (e.isEmpty)
+        a +: order
+      else
+        NonEmptyVector(a, order.whole.filterNot(a ==* _)))
 
   def +:(av: AV): AVs =
     addHead(av.attr, NonEmptyVector(av.value, _))

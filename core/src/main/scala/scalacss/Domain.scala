@@ -1,7 +1,6 @@
 package scalacss
 
 import scala.collection.immutable.NumericRange
-import scalaz.{Functor, \/-, -\/, \/}
 
 
 // Note: This file is copied from Nyaya.
@@ -21,10 +20,10 @@ trait Domain[A] {
   def option: Domain[Option[A]] =
     new Domain.OptionT(this)
 
-  def either[B](b: Domain[B]): Domain[Either[A, B]] =
-    (this +++ b).map(_.toEither)
+  @inline def either[B](b: Domain[B]): Domain[Either[A, B]] =
+    this +++ b
 
-  def +++[B](b: Domain[B]): Domain[A \/ B] =
+  def +++[B](b: Domain[B]): Domain[Either[A, B]] =
     new Domain.Disjunction(this, b)
 
   def ***[B](b: Domain[B]): Domain[(A, B)] =
@@ -42,10 +41,6 @@ trait Domain[A] {
 
 object Domain {
 
-  implicit val domainInstance: Functor[Domain] = new Functor[Domain] {
-    override def map[A, B](fa: Domain[A])(f: A => B): Domain[B] = fa map f
-  }
-
   final class Mapped[A, B](u: Domain[A], f: A => B) extends Domain[B] {
     override val size = u.size
     override def apply(i: Int) = f(u(i))
@@ -56,10 +51,10 @@ object Domain {
     override def apply(i: Int) = if (i == 0) None else Some(u(i - 1))
   }
 
-  final class Disjunction[A, B](a: Domain[A], b: Domain[B]) extends Domain[A \/ B] {
+  final class Disjunction[A, B](a: Domain[A], b: Domain[B]) extends Domain[Either[A, B]] {
     private[this] val as = a.size
     override val size = as + b.size
-    override def apply(i: Int) = if (i < as) -\/(a(i)) else \/-(b(i - as))
+    override def apply(i: Int) = if (i < as) Left(a(i)) else Right(b(i - as))
   }
 
   final class Pair[A, B](a: Domain[A], b: Domain[B]) extends Domain[(A, B)] {

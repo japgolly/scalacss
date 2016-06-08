@@ -1,7 +1,6 @@
 package scalacss
 
-import scalaz.{Equal, \/}
-import scalaz.syntax.equal._
+import japgolly.univeq._
 import scalacss.{Resolution => Res}
 
 object Media {
@@ -81,18 +80,14 @@ object Media {
   case class Only(t: TypeA) extends TypeExpr
   case class Not (t: TypeA) extends TypeExpr
 
-  // Hmmm, well this will never be true when false, it shouldn't be false when true.
-  // Should really use Shapeless' typeclass derivation here...
-  implicit def queryEquality: Equal[Query] = Equal.equalA
-
-  case class Query(head: TypeExpr \/ Feature, tail: Vector[Feature]) extends FeatureOps[Query] {
+  case class Query(head: Either[TypeExpr, Feature], tail: Vector[Feature]) extends FeatureOps[Query] {
     override protected def F = f => new Query(head, tail :+ f)
 
     override def toString =
       css(NonEmptyVector one this)
 
     def +:(qs: Vector[Query]): Vector[Query] =
-      if (qs.exists(_ === this)) qs else qs :+ this
+      if (qs.exists(_ ==* this)) qs else qs :+ this
 
     def +(q2: Query): Vector[Query] =
       Vector1(this) +: q2
@@ -100,6 +95,19 @@ object Media {
     def &(q2: Query): Cond =
       Cond(None, this + q2)
   }
+
+  implicit def univEqScanValue              : UnivEq[ScanValue        ] = UnivEq.derive
+  implicit def univEqOrientationValue       : UnivEq[OrientationValue ] = UnivEq.derive
+  implicit def univEqValueExpr   [T: UnivEq]: UnivEq[ValueExpr[T]     ] = UnivEq.derive
+  implicit def univEqTypeA                  : UnivEq[TypeA            ] = UnivEq.derive
+  implicit def univEqTypeExpr               : UnivEq[TypeExpr         ] = UnivEq.derive
+//implicit def univEqHeight                 : UnivEq[Height        [_]] = UnivEq.force
+//implicit def univEqWidth                  : UnivEq[Width         [_]] = UnivEq.force
+//implicit def univEqDeviceHeight           : UnivEq[DeviceHeight  [_]] = UnivEq.force
+//implicit def univEqDeviceWidth            : UnivEq[DeviceWidth   [_]] = UnivEq.force
+//implicit def univEqResolution             : UnivEq[Resolution    [_]] = UnivEq.force
+  implicit def univEqFeature                : UnivEq[Feature          ] = UnivEq.force // depends on N in Width, etc.
+  implicit def univEqQuery                  : UnivEq[Query            ] = UnivEq.derive
 
   trait TypeAOps[Out] {
     protected def T: TypeA => Out
