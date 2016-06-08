@@ -213,21 +213,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-attachment">MDN</a>
    */
-  final val backgroundAttachment = Attr.real("background-attachment", Transform keys CanIUse.backgroundAttachment)
+  final def backgroundAttachment = Attr.real("background-attachment", Transform keys CanIUse.backgroundAttachment)
 
   /**
    * The background-blend-mode CSS property describes how the element's background images should blend with each other and the element's background color.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-blend-mode">MDN</a>
    */
-  final val backgroundBlendMode = Attr.real("background-blend-mode")
+  final def backgroundBlendMode = Attr.real("background-blend-mode")
 
   /**
    * Technical review completed. Editorial review completed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip">MDN</a>
    */
-  final val backgroundClip = Attr.real("background-clip")
+  final def backgroundClip = Attr.real("background-clip")
 
   /**
    * The background-color CSS property sets the background color of an element, either through a color value or the keyword transparent.
@@ -243,35 +243,35 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-image">MDN</a>
    */
-  final val backgroundImage = Attr.real("background-image", CanIUse2.backgroundImageTransforms)
+  final def backgroundImage = Attr.real("background-image", CanIUse2.backgroundImageTransforms)
 
   /**
    * The background-origin CSS property determines the background positioning area, that is the position of the origin of an image specified using the background-image CSS property.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-origin">MDN</a>
    */
-  final val backgroundOrigin = Attr.real("background-origin")
+  final def backgroundOrigin = Attr.real("background-origin")
 
   /**
    * The background-position CSS property sets the initial position, relative to the background position layer defined by background-origin for each defined background image.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-position">MDN</a>
    */
-  final val backgroundPosition = Attr.real("background-position")
+  final def backgroundPosition = Attr.real("background-position")
 
   /**
    * The background-repeat CSS property defines how background images are repeated. A background image can be repeated along the horizontal axis, the vertical axis, both axes, or not repeated at all.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-repeat">MDN</a>
    */
-  final val backgroundRepeat = Attr.real("background-repeat")
+  final def backgroundRepeat = Attr.real("background-repeat")
 
   /**
    * The background-size CSS property specifies the size of the background images. The size of the image can be fully constrained or only partially in order to preserve its intrinsic ratio.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size">MDN</a>
    */
-  final val backgroundSize = Attr.real("background-size")
+  final def backgroundSize = Attr.real("background-size")
 
   /**
    * The border-bottom-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-bottom are more convenient and preferable.
@@ -334,35 +334,35 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-outset">MDN</a>
    */
-  final val borderImageOutset = Attr.real("border-image-outset", Transform keys CanIUse.borderImage)
+  final def borderImageOutset = Attr.real("border-image-outset", Transform keys CanIUse.borderImage)
 
   /**
    * The border-image-repeat CSS property defines how the middle part of a border image is handled so that it can match the size of the border. It has a one-value syntax that describes the behavior of all the sides, and a two-value syntax that sets a different value for the horizontal and vertical behavior.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-repeat">MDN</a>
    */
-  final val borderImageRepeat = Attr.real("border-image-repeat", Transform keys CanIUse.borderImage)
+  final def borderImageRepeat = Attr.real("border-image-repeat", Transform keys CanIUse.borderImage)
 
   /**
    * The border-image-slice CSS property divides the image specified by border-image-source in nine regions: the four corners, the four edges and the middle. It does this by specifying 4 inwards offsets.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-slice">MDN</a>
    */
-  final val borderImageSlice = Attr.real("border-image-slice", Transform keys CanIUse.borderImage)
+  final def borderImageSlice = Attr.real("border-image-slice", Transform keys CanIUse.borderImage)
 
   /**
    * The border-image-source CSS property defines the &lt;image> to use instead of the style of the border. If this property is set to none, the style defined by border-style is used instead.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-source">MDN</a>
    */
-  final val borderImageSource = Attr.real("border-image-source", Transform keys CanIUse.borderImage)
+  final def borderImageSource = Attr.real("border-image-source", Transform keys CanIUse.borderImage)
 
   /**
    * The border-image-width CSS property defines the width of the border. If specified, it overrides the border-width property.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image-width">MDN</a>
    */
-  final val borderImageWidth = Attr.real("border-image-width", Transform keys CanIUse.borderImage)
+  final def borderImageWidth = Attr.real("border-image-width", Transform keys CanIUse.borderImage)
 
   /**
    * The border-left-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-left are more convenient and preferable.
@@ -500,14 +500,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-box-reflect">MDN</a>
    */
-  final val boxReflect = Attr.real("box-reflect", Transform keys CanIUse.reflections)
+  final def boxReflect = Attr.real("box-reflect", Transform keys CanIUse.reflections)
 
   /**
    * The box-shadow CSS property describes one or more shadow effects as a comma-separated list.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow">MDN</a>
    */
-  final val boxShadow = Attr.real("box-shadow", Transform keys CanIUse.boxshadow)
+  final def boxShadow = Attr.real("box-shadow", Transform keys CanIUse.boxshadow)
 
   /**
    * The box-sizing CSS property is used to alter the default CSS box model used to calculate widths and heights of elements. It is possible to use this property to emulate the behavior of browsers that do not correctly support the CSS box model specification.
@@ -617,7 +617,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clip-path">MDN</a>
    */
-  final val clipPath = Attr.real("clip-path", Transform keys CanIUse.clipPath)
+  final def clipPath = Attr.real("clip-path", Transform keys CanIUse.clipPath)
 
   /**
    * The CSS color property sets the foreground color of an element's text content, and its decorations. It doesn't affect any other characteristic of the element; it should really be called text-color and would have been named so, save for historical reasons and its appearance in CSS Level 1.
@@ -712,21 +712,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/content">MDN</a>
    */
-  final val content = Attr.real("content")
+  final def content = Attr.real("content")
 
   /**
    * The counter-increment CSS property is used to increase the value of CSS Counters by a given value. The counter's value can be reset using the counter-reset CSS property.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-increment">MDN</a>
    */
-  final val counterIncrement = Attr.real("counter-increment", Transform keys CanIUse.counters)
+  final def counterIncrement = Attr.real("counter-increment", Transform keys CanIUse.counters)
 
   /**
    * The counter-reset CSS property is used to reset CSS Counters to a given value.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-reset">MDN</a>
    */
-  final val counterReset = Attr.real("counter-reset", Transform keys CanIUse.counters)
+  final def counterReset = Attr.real("counter-reset", Transform keys CanIUse.counters)
 
   /**
    * The cursor CSS property specifies the mouse cursor displayed when the mouse pointer is over an element.
@@ -910,14 +910,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/filter">MDN</a>
    */
-  final val filter = Attr.real("filter", Transform keys CanIUse.filters)
+  final def filter = Attr.real("filter", Transform keys CanIUse.filters)
 
   /**
    * The CSS flex-basis property specifies the flex basis which is the initial main size of a flex item. The property determines the size of the content-box unless specified otherwise using box-sizing.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis">MDN</a>
    */
-  final val flexBasis = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
+  final def flexBasis = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
 
   /**
    * The CSS flex-direction property specifies how flex items are placed in the flex container defining the main axis and the direction (normal or reversed).
@@ -982,14 +982,14 @@ object Attrs {
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/flow-from">WPD</a>
    */
-  final val flowFrom = Attr.real("flow-from", Transform keys CanIUse.regions)
+  final def flowFrom = Attr.real("flow-from", Transform keys CanIUse.regions)
 
   /**
    * Diverts the selected element's content into a named flow, used to thread content through different layout regions specified by flow-from.
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/flow-into">WPD</a>
    */
-  final val flowInto = Attr.real("flow-into", Transform keys CanIUse.regions)
+  final def flowInto = Attr.real("flow-into", Transform keys CanIUse.regions)
 
   /**
    * The font-family CSS property allows for a prioritized list of font family names and/or generic family names to be specified for the selected element. Unlike most other CSS properties, values are separated by a comma to indicate that they are alternatives. The browser will select the first font on the list that is installed on the computer, or that can be downloaded using the information provided by a @font-face at-rule.
@@ -1006,7 +1006,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings">MDN</a>
    */
-  final val fontFeatureSettings = Attr.real("font-feature-settings", Transform keys CanIUse.fontFeature)
+  final def fontFeatureSettings = Attr.real("font-feature-settings", Transform keys CanIUse.fontFeature)
 
   /**
    * The font-kerning CSS property controls the usage of the kerning information; that is, it controls how letters are spaced. The kerning information is stored in the font, and if the font is well-kerned, this feature allows spacing between characters to be very similar, whatever the characters are.
@@ -1025,7 +1025,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-language-override">MDN</a>
    */
-  final val fontLanguageOverride = Attr.real("font-language-override")
+  final def fontLanguageOverride = Attr.real("font-language-override")
 
   /**
    * The font-size CSS property specifies the size of the font – specifically the desired height of glyphs from the font. Setting the font size may, in turn, change the size of other items, since it is used to compute the value of em and ex length units.
@@ -1090,14 +1090,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis">MDN</a>
    */
-  final val fontSynthesis = Attr.real("font-synthesis")
+  final def fontSynthesis = Attr.real("font-synthesis")
 
   /**
    * The font-variant-alternates CSS property controls the usage of alternate glyphs associated to alternative names defined in @font-feature-values.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-alternates">MDN</a>
    */
-  final val fontVariantAlternates = Attr.real("font-variant-alternates")
+  final def fontVariantAlternates = Attr.real("font-variant-alternates")
 
   /**
    * The font-variant-caps CSS property controls the usage of alternate glyphs for capital letters. Scripts can have capital letter glyphs of different sizes, the normal uppercase glyphs, small capital glyphs, and petite capital glyphs. This property controls which alternate glyphs to use.
@@ -1120,21 +1120,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-east-asian">MDN</a>
    */
-  final val fontVariantEastAsian = Attr.real("font-variant-east-asian")
+  final def fontVariantEastAsian = Attr.real("font-variant-east-asian")
 
   /**
    * The font-variant-ligatures CSS property controls which ligatures and contextual forms are used in textual content of the elements it applies to. This leads to more harmonized forms in the resulting text.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-ligatures">MDN</a>
    */
-  final val fontVariantLigatures = Attr.real("font-variant-ligatures")
+  final def fontVariantLigatures = Attr.real("font-variant-ligatures")
 
   /**
    * The font-variant-numeric CSS property controls the usage of alternate glyphs for numbers, fractions, and ordinal markers.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-numeric">MDN</a>
    */
-  final val fontVariantNumeric = Attr.real("font-variant-numeric")
+  final def fontVariantNumeric = Attr.real("font-variant-numeric")
 
   /**
    * The font-variant-position CSS property controls the usage of alternate glyphs of smaller size positioned as superscript or subscript regarding the baseline of the font, which is set unchanged. These glyphs are likely to be used in &lt;sub> and &lt;sup> elements.
@@ -1175,77 +1175,77 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-columns">MDN</a>
    */
-  final val gridAutoColumns = Attr.real("grid-auto-columns", Transform keys CanIUse.grid)
+  final def gridAutoColumns = Attr.real("grid-auto-columns", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-flow">MDN</a>
    */
-  final val gridAutoFlow = Attr.real("grid-auto-flow", Transform keys CanIUse.grid)
+  final def gridAutoFlow = Attr.real("grid-auto-flow", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-position">MDN</a>
    */
-  final val gridAutoPosition = Attr.real("grid-auto-position", Transform keys CanIUse.grid)
+  final def gridAutoPosition = Attr.real("grid-auto-position", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-rows">MDN</a>
    */
-  final val gridAutoRows = Attr.real("grid-auto-rows", Transform keys CanIUse.grid)
+  final def gridAutoRows = Attr.real("grid-auto-rows", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-start">MDN</a>
    */
-  final val gridColumnStart = Attr.real("grid-column-start", Transform keys CanIUse.grid)
+  final def gridColumnStart = Attr.real("grid-column-start", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-column-end">MDN</a>
    */
-  final val gridColumnEnd = Attr.real("grid-column-end", Transform keys CanIUse.grid)
+  final def gridColumnEnd = Attr.real("grid-column-end", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-start">MDN</a>
    */
-  final val gridRowStart = Attr.real("grid-row-start", Transform keys CanIUse.grid)
+  final def gridRowStart = Attr.real("grid-row-start", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-row-end">MDN</a>
    */
-  final val gridRowEnd = Attr.real("grid-row-end", Transform keys CanIUse.grid)
+  final def gridRowEnd = Attr.real("grid-row-end", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas">MDN</a>
    */
-  final val gridTemplateAreas = Attr.real("grid-template-areas", Transform keys CanIUse.grid)
+  final def gridTemplateAreas = Attr.real("grid-template-areas", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-rows">MDN</a>
    */
-  final val gridTemplateRows = Attr.real("grid-template-rows", Transform keys CanIUse.grid)
+  final def gridTemplateRows = Attr.real("grid-template-rows", Transform keys CanIUse.grid)
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns">MDN</a>
    */
-  final val gridTemplateColumns = Attr.real("grid-template-columns", Transform keys CanIUse.grid)
+  final def gridTemplateColumns = Attr.real("grid-template-columns", Transform keys CanIUse.grid)
 
   /**
    * The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element.
@@ -1286,14 +1286,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/image-resolution">MDN</a>
    */
-  final val imageResolution = Attr.real("image-resolution")
+  final def imageResolution = Attr.real("image-resolution")
 
   /**
    * The image-orientation CSS property describes how to correct the default orientation of an image.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/image-orientation">MDN</a>
    */
-  final val imageOrientation = Attr.real("image-orientation")
+  final def imageOrientation = Attr.real("image-orientation")
 
   /**
    * The ime-mode CSS property controls the state of the input method editor for text fields.
@@ -1381,7 +1381,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-image">MDN</a>
    */
-  final val listStyleImage = Attr.real("list-style-image")
+  final def listStyleImage = Attr.real("list-style-image")
 
   /**
    * The list-style-position CSS property specifies the position of the marker box in the principal block box.
@@ -1399,7 +1399,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style-type">MDN</a>
    */
-  final val listStyleType = Attr.real("list-style-type")
+  final def listStyleType = Attr.real("list-style-type")
 
   /**
    * The margin-bottom CSS property of an element sets the margin space required on the bottom of an element. A negative value is also allowed.
@@ -1442,14 +1442,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/marks">MDN</a>
    */
-  final val marks = Attr.real("marks")
+  final def marks = Attr.real("marks")
 
   /**
    * The documentation about this has not yet been written; please consider contributing!
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/mask">MDN</a>
    */
-  final val mask = Attr.real("mask", Transform keys CanIUse.masks)
+  final def mask = Attr.real("mask", Transform keys CanIUse.masks)
   // TODO mask is shorthand - missing mask properties: http://www.w3.org/TR/css-masking/
 
   /**
@@ -1457,7 +1457,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/mask-type">MDN</a>
    */
-  final val maskType = Attr.real("mask-type", Transform keys CanIUse.masks)
+  final def maskType = Attr.real("mask-type", Transform keys CanIUse.masks)
 
   /**
    * The max-height CSS property is used to set the maximum height of a given element. It prevents the used value of the height property from becoming larger than the value specified for max-height.
@@ -1500,7 +1500,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode">MDN</a>
    */
-  final val mixBlendMode = Attr.real("mix-blend-mode")
+  final def mixBlendMode = Attr.real("mix-blend-mode")
 
   /**
    * The object-fit CSS property specifies how the contents of a replaced element should be fitted to the box established by its used height and width.
@@ -1521,7 +1521,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/object-position">MDN</a>
    */
-  final val objectPosition = Attr.real("object-position")
+  final def objectPosition = Attr.real("object-position")
 
   /**
    * The opacity CSS property specifies the transparency of an element, that is, the degree to which the background behind the element is overlaid.
@@ -1606,7 +1606,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap">MDN</a>
    */
-  final val overflowWrap = Attr.real("overflow-wrap")
+  final def overflowWrap = Attr.real("overflow-wrap")
 
   /**
    * The overflow-x CSS property specifies whether to clip content, render a scroll bar or display overflow content of a block-level element, when it overflows at the left and right edges.
@@ -1724,14 +1724,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective-origin">MDN</a>
    */
-  final val perspectiveOrigin = Attr.real("perspective-origin", Transform keys CanIUse.transforms)
+  final def perspectiveOrigin = Attr.real("perspective-origin", Transform keys CanIUse.transforms)
 
   /**
    * The CSS property pointer-events allows authors to control under what circumstances (if any) a particular graphic element can become the target of mouse events. When this property is unspecified, the same characteristics of the visiblePainted value apply to SVG content.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">MDN</a>
    */
-  final val pointerEvents = Attr.real("pointer-events")
+  final def pointerEvents = Attr.real("pointer-events")
 
   /**
    * The position CSS property chooses alternative rules for positioning elements, designed to be useful for scripted animation effects.
@@ -1773,7 +1773,7 @@ object Attrs {
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/region-fragment">WPD</a>
    */
-  final val regionFragment = Attr.real("region-fragment", Transform keys CanIUse.regions)
+  final def regionFragment = Attr.real("region-fragment", Transform keys CanIUse.regions)
 
   /**
    * The resize CSS property lets you control the resizability of an element.
@@ -1819,7 +1819,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ruby-merge">MDN</a>
    */
-  final val rubyMerge = Attr.real("ruby-merge")
+  final def rubyMerge = Attr.real("ruby-merge")
 
   /**
    * The ruby-position CSS property defines the position of a ruby element relatives to its base element. It can be position over the element (over), under it (under), or between the characters, on their right side (inter-character).
@@ -1867,7 +1867,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/shape-outside">MDN</a>
    */
-  final val shapeOutside = Attr.real("shape-outside", Transform keys CanIUse.shapes)
+  final def shapeOutside = Attr.real("shape-outside", Transform keys CanIUse.shapes)
 
   /**
    * The table-layout CSS property defines the algorithm to be used to layout the table cells, rows, and columns.
@@ -1885,7 +1885,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/tab-size">MDN</a>
    */
-  final val tabSize = Attr.real("tab-size", Transform keys CanIUse.css3Tabsize)
+  final def tabSize = Attr.real("tab-size", Transform keys CanIUse.css3Tabsize)
 
   /**
    * The text-align CSS property describes how inline content like text is aligned in its parent block element. text-align does not control the alignment of block elements itself, only their inline content.
@@ -1926,7 +1926,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-combine-upright">MDN</a>
    */
-  final val textCombineUpright = Attr.real("text-combine-upright")
+  final def textCombineUpright = Attr.real("text-combine-upright")
 
   /**
    * The text-decoration-color CSS property sets the color used when drawing underlines, overlines, or strike-throughs specified by text-decoration-line. This is the preferred way to color these text decorations, rather than using combinations of other HTML elements.
@@ -1979,21 +1979,21 @@ object Attrs {
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis-color">WPD</a>
    */
-  final val textEmphasisColor = Attr.real("text-emphasis-color", Transform keys CanIUse.textEmphasis)
+  final def textEmphasisColor = Attr.real("text-emphasis-color", Transform keys CanIUse.textEmphasis)
 
   /**
    * This property describes where emphasis marks are drawn at.
    *
    * @see <a href="http://www.w3.org/TR/css-text-decor-3/#text-emphasis-position">w3.org</a>
    */
-  final val textEmphasisPosition = Attr.real("text-emphasis-position", Transform keys CanIUse.textEmphasis)
+  final def textEmphasisPosition = Attr.real("text-emphasis-position", Transform keys CanIUse.textEmphasis)
 
   /**
    * The text-emphasis-style property applies special emphasis marks to an element's text.
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis-style">WPD</a>
    */
-  final val textEmphasisStyle = Attr.real("text-emphasis-style", Transform keys CanIUse.textEmphasis)
+  final def textEmphasisStyle = Attr.real("text-emphasis-style", Transform keys CanIUse.textEmphasis)
 
   /**
    * The text-indent CSS property specifies how much horizontal space should be left before the beginning of the first line of the text content of an element. Horizontal spacing is with respect to the left (or right, for right-to-left layout) edge of the containing block element's box.
@@ -2028,21 +2028,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow">MDN</a>
    */
-  final val textOverflow = Attr.real("text-overflow", Transform keys CanIUse.textOverflow)
+  final def textOverflow = Attr.real("text-overflow", Transform keys CanIUse.textOverflow)
 
   /**
    * The text-rendering CSS property provides information to the rendering engine about what to optimize for when rendering text. The browser makes trade-offs among speed, legibility, and geometric precision. The text-rendering property is an SVG property that is not defined in any CSS standard. However, Gecko and WebKit browsers let you apply this property to HTML and XML content on Windows, Mac OS X and Linux.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-rendering">MDN</a>
    */
-  final val textRendering = Attr.real("text-rendering")
+  final def textRendering = Attr.real("text-rendering")
 
   /**
    * The text-shadow CSS property adds shadows to text. It accepts a comma-separated list of shadows to be applied to the text and text-decorations of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow">MDN</a>
    */
-  final val textShadow = Attr.real("text-shadow", Transform keys CanIUse.textshadow)
+  final def textShadow = Attr.real("text-shadow", Transform keys CanIUse.textshadow)
 
   /**
    * On mobile devices, the text-size-adjust CSS property allows Web authors to control if and how the text-inflating algorithm is applied to the textual content of the element it is applied to.
@@ -2060,14 +2060,14 @@ object Attrs {
    *
    * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-color">Safari CSS Reference</a>
    */
-  final val textStrokeColor = Attr.real("text-stroke-color", Transform keys CanIUse.textStroke)
+  final def textStrokeColor = Attr.real("text-stroke-color", Transform keys CanIUse.textStroke)
 
   /**
    * Apple extension. Specifies the width for the text outline.
    *
    * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-width">Safari CSS Reference</a>
    */
-  final val textStrokeWidth = Attr.real("text-stroke-width", Transform keys CanIUse.textStroke)
+  final def textStrokeWidth = Attr.real("text-stroke-width", Transform keys CanIUse.textStroke)
 
   /**
    * The text-transform CSS property specifies how to capitalize an element's text. It can be used to make text appear in all-uppercase or all-lowercase, or with each word capitalized.
@@ -2112,21 +2112,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action">MDN</a>
    */
-  final val touchAction = Attr.real("touch-action", Transform keys CanIUse.touchAction)
+  final def touchAction = Attr.real("touch-action", Transform keys CanIUse.touchAction)
 
   /**
    * The CSS transform property lets you modify the coordinate space of the CSS visual formatting model. Using it, elements can be translated, rotated, scaled, and skewed according to the values set.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN</a>
    */
-  final val transform = Attr.real("transform", Transform keys CanIUse.transforms)
+  final def transform = Attr.real("transform", Transform keys CanIUse.transforms)
 
   /**
    * The transform-origin CSS property lets you modify the origin for transformations of an element. For example, the transform-origin of the rotate() function is the centre of rotation. (This property is applied by first translating the element by the negated value of the property, then applying the element's transform, then translating by the property value.)
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform-origin">MDN</a>
    */
-  final val transformOrigin = Attr.real("transform-origin", Transform keys CanIUse.transforms)
+  final def transformOrigin = Attr.real("transform-origin", Transform keys CanIUse.transforms)
 
   /**
    * The transform-style CSS property determines if the children of the element are positioned in the 3D-space or are flattened in the plane of the element.
@@ -2162,7 +2162,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-property">MDN</a>
    */
-  final val transitionProperty = Attr.real("transition-property", Transform keys CanIUse.transitions)
+  final def transitionProperty = Attr.real("transition-property", Transform keys CanIUse.transitions)
 
   /**
    * The CSS transition-timing-function property is used to describe how the intermediate values of the CSS properties being affected by a transition effect are calculated. This in essence lets you establish an acceleration curve, so that the speed of the transition can vary over its duration.
@@ -2202,14 +2202,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range">MDN</a>
    */
-  final val unicodeRange = Attr.real("unicode-range")
+  final def unicodeRange = Attr.real("unicode-range")
 
   /**
    * Controls the actual Selection operation. This doesn't have any effect on content loaded as chrome, except in textboxes. A similar property 'user-focus' was proposed in early drafts of a predecessor of css3-ui but was rejected by the working group.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/user-select">MDN</a>
    */
-  final val userSelect = Attr.real("user-select", Transform keys CanIUse.userSelectNone)
+  final def userSelect = Attr.real("user-select", Transform keys CanIUse.userSelectNone)
 
   /**
    * The vertical-align CSS property specifies the vertical alignment of an inline or table-cell box.
@@ -2277,7 +2277,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/will-change">MDN</a>
    */
-  final val willChange = Attr.real("will-change")
+  final def willChange = Attr.real("will-change")
 
   /**
    * The word-break CSS property is used to specify how (or if) to break lines within words.
@@ -2352,7 +2352,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">MDN</a>
    */
-  final val animation = Attr.alias("animation", Transform keys CanIUse.animation)(_(
+  final def animation = Attr.alias("animation", Transform keys CanIUse.animation)(_(
     animationName, animationDuration, animationTimingFunction, animationDelay, animationIterationCount,
     animationDirection, animationFillMode, animationPlayState))
 
@@ -2361,7 +2361,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background">MDN</a>
    */
-  final val background = Attr.alias("background", CanIUse2.backgroundImageTransforms)(_(
+  final def background = Attr.alias("background", CanIUse2.backgroundImageTransforms)(_(
     backgroundClip, backgroundColor, backgroundImage, backgroundOrigin, backgroundPosition, backgroundRepeat,
     backgroundSize, backgroundAttachment))
 
@@ -2493,7 +2493,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-image">MDN</a>
    */
-  final val borderImage = Attr.alias("border-image", Transform keys CanIUse.borderImage)(_(
+  final def borderImage = Attr.alias("border-image", Transform keys CanIUse.borderImage)(_(
     borderImageOutset, borderImageRepeat, borderImageSlice, borderImageSource, borderImageWidth))
 
   /**
@@ -2662,7 +2662,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/columns">MDN</a>
    */
-  final val columns = Attr.alias("columns", Transform keys CanIUse.multicolumn)(_(
+  final def columns = Attr.alias("columns", Transform keys CanIUse.multicolumn)(_(
     columnWidth, columnCount))
 
   /**
@@ -2680,7 +2680,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex">MDN</a>
    */
-  final val flex = Attr.alias("flex", Transform keys CanIUse.flexbox)(_(
+  final def flex = Attr.alias("flex", Transform keys CanIUse.flexbox)(_(
     flexGrow, flexShrink, flexBasis))
 
   /**
@@ -2688,7 +2688,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-flow">MDN</a>
    */
-  final val flexFlow = Attr.alias("flex-flow", Transform keys CanIUse.flexbox)(_(
+  final def flexFlow = Attr.alias("flex-flow", Transform keys CanIUse.flexbox)(_(
     flexDirection, flexWrap))
 
   /**
@@ -2696,7 +2696,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font">MDN</a>
    */
-  final val font = Attr.alias("font")(_(
+  final def font = Attr.alias("font")(_(
     fontStyle, fontVariant, fontWeight, fontSize, lineHeight, fontFamily))
 
   /**
@@ -2704,38 +2704,38 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant">MDN</a>
    */
-  final val fontVariant = Attr.alias("font-variant")(_(
+  final def fontVariant = Attr.alias("font-variant")(_(
     fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric,
     fontVariantPosition))
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#grid-shorthand">css3-grid-layout#grid</a>
    */
-  final val grid = Attr.alias("grid", Transform keys CanIUse.grid)(_(
+  final def grid = Attr.alias("grid", Transform keys CanIUse.grid)(_(
     gridTemplate, gridAutoFlow, gridAutoColumns, gridAutoRows))
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#common-uses">css3-grid-layout#common-uses</a>
    */
-  final val gridArea = Attr.alias("grid-area", Transform keys CanIUse.grid)(_(
+  final def gridArea = Attr.alias("grid-area", Transform keys CanIUse.grid)(_(
     gridColumn, gridRow))
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#placement-shorthands">css3-grid-layout#placement-shorthands</a>
    */
-  final val gridColumn = Attr.alias("grid-column", Transform keys CanIUse.grid)(_(
+  final def gridColumn = Attr.alias("grid-column", Transform keys CanIUse.grid)(_(
     gridColumnStart, gridColumnEnd))
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#placement-shorthands">css3-grid-layout#placement-shorthands</a>
    */
-  final val gridRow = Attr.alias("grid-row", Transform keys CanIUse.grid)(_(
+  final def gridRow = Attr.alias("grid-row", Transform keys CanIUse.grid)(_(
     gridRowStart, gridRowEnd))
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#propdef-grid-template">css3-grid-layout#grid-template</a>
    */
-  final val gridTemplate = Attr.alias("grid-template", Transform keys CanIUse.grid)(_(
+  final def gridTemplate = Attr.alias("grid-template", Transform keys CanIUse.grid)(_(
     gridTemplateAreas, gridTemplateColumns, gridTemplateRows))
 
   /**
@@ -2752,7 +2752,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style">MDN</a>
    */
-  final val listStyle = Attr.alias("list-style")(_(
+  final def listStyle = Attr.alias("list-style")(_(
     listStyleType, listStyleImage, listStylePosition))
 
   /**
@@ -2947,7 +2947,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-decoration">MDN</a>
    */
-  final val textDecoration = Attr.alias("text-decoration", Transform keys CanIUse.textDecoration)(_(
+  final def textDecoration = Attr.alias("text-decoration", Transform keys CanIUse.textDecoration)(_(
     textDecorationColor, textDecorationLine, textDecorationStyle))
 
   /**
@@ -2957,7 +2957,7 @@ object Attrs {
    *
    * @see <a href="https://docs.webplatform.org/wiki/css/properties/text-emphasis">WPD</a>
    */
-  final val textEmphasis = Attr.alias("text-emphasis", Transform keys CanIUse.textEmphasis)(_(
+  final def textEmphasis = Attr.alias("text-emphasis", Transform keys CanIUse.textEmphasis)(_(
     textEmphasisColor, textEmphasisStyle)) // Not textEmphasisPosition
 
   /**
@@ -2965,7 +2965,7 @@ object Attrs {
    *
    * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266-_webkit_text_stroke">Safari CSS Reference</a>
    */
-  final val textStroke = Attr.alias("text-stroke", Transform keys CanIUse.textStroke)(_(
+  final def textStroke = Attr.alias("text-stroke", Transform keys CanIUse.textStroke)(_(
     textStrokeColor, textStrokeWidth))
 
   /**
@@ -2973,7 +2973,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition">MDN</a>
    */
-  final val transition = Attr.alias("transition", Transform keys CanIUse.transitions)(_(
+  final def transition = Attr.alias("transition", Transform keys CanIUse.transitions)(_(
     transitionProperty, transitionDuration, transitionTimingFunction, transitionDelay))
 
   /* =================================================================================================================
@@ -2985,21 +2985,21 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/clip-rule">MDN</a>
     */
-  final val svgClipRule = Attr.real("clip-rule")
+  final def svgClipRule = Attr.real("clip-rule")
 
   /**
     * The enable-background is only applicable to container elements and specifies how the SVG user agents manages the accumulation of the background image.
     *
     * @see <a href="http://www.w3.org/TR/SVG/filters.html#EnableBackgroundProperty">w3.org</a>
     */
-  final val svgEnableBackground = Attr.real("enable-background")
+  final def svgEnableBackground = Attr.real("enable-background")
 
   /**
     * The flood-color attribute indicates what color to use to flood the current filter primitive subregion defined through the <feflood> element. The keyword currentColor and ICC colors can be specified in the same manner as within a <paint> specification for the fill and stroke attributes.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/flood-color">MDN</a>
     */
-  final val svgFloodColor = Attr.real("flood-color")
+  final def svgFloodColor = Attr.real("flood-color")
 
   /**
     * The flood-opacity attribute indicates the opacity value to use across the current filter primitive subregion defined through the <feflood> element.
@@ -3042,28 +3042,28 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color-interpolation">MDN</a>
     */
-  final val svgColorInterpolation = Attr.real("color-interpolation")
+  final def svgColorInterpolation = Attr.real("color-interpolation")
 
   /**
     * The color-interpolation-filters attribute specifies the color space for imaging operations performed via filter effects.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color-interpolation-filters">MDN</a>
     */
-  final val svgColorInterpolationFilters = Attr.real("color-interpolation-filters")
+  final def svgColorInterpolationFilters = Attr.real("color-interpolation-filters")
 
   /**
     * The color-profile attribute is used to define which color profile a raster image included through the <image> element should use.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color-profile">MDN</a>
     */
-  final val svgColorProfile = Attr.real("color-profile")
+  final def svgColorProfile = Attr.real("color-profile")
 
   /**
     * The color-rendering attribute provides a hint to the SVG user agent about how to optimize its color interpolation and compositing operations.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/color-rendering">MDN</a>
     */
-  final val svgColorRendering = Attr.real("color-rendering")
+  final def svgColorRendering = Attr.real("color-rendering")
 
   /**
     * The fill attribute can be used to maintain the value of an animation after the active duration of an animation element ends.
@@ -3071,7 +3071,7 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill">MDN</a>
     */
-  final val svgFill = Attr.real("fill")
+  final def svgFill = Attr.real("fill")
 
   /**
     * This attribute specifies the opacity of the color or the content the current object is filled with.
@@ -3087,35 +3087,35 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill-rule">MDN</a>
     */
-  final val svgFillRule = Attr.real("fill-rule")
+  final def svgFillRule = Attr.real("fill-rule")
 
   /**
     * The marker-end defines the arrowhead or polymarker that will be drawn at the final vertex of the given <path> element or basic shape.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-end">MDN</a>
     */
-  final val svgMarkerEnd = Attr.real("marker-end")
+  final def svgMarkerEnd = Attr.real("marker-end")
 
   /**
     * The marker-mid defines the arrowhead or polymarker that shall be drawn at every vertex other than the first and last vertex of the given <path> element or basic shape.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-mid">MDN</a>
     */
-  final val svgMarkerMid = Attr.real("marker-mid")
+  final def svgMarkerMid = Attr.real("marker-mid")
 
   /**
     * The marker-start attribute defines the arrowhead or polymarker that will be drawn at the first vertex of the given <path> element or basic shape.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/marker-start">MDN</a>
     */
-  final val svgMarkerStart = Attr.real("marker-start")
+  final def svgMarkerStart = Attr.real("marker-start")
 
   /**
     * The creator of SVG content might want to provide a hint about what tradeoffs to make as the browser renders <path> element or basic shapes. The shape-rendering attribute provides these hints.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/shape-rendering">MDN</a>
     */
-  final val svgShapeRendering = Attr.real("shape-rendering")
+  final def svgShapeRendering = Attr.real("shape-rendering")
 
   /**
     * The stroke attribute defines the color of the outline on a given graphical element. The default value for the stroke attribute is none.
@@ -3131,35 +3131,35 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharray">MDN</a>
     */
-  final val svgStrokeDashArray = Attr.real("stroke-dasharray")
+  final def svgStrokeDashArray = Attr.real("stroke-dasharray")
 
   /**
     * The stroke-dashoffset attribute specifies the distance into the dash pattern to start the dash.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset">MDN</a>
     */
-  final val svgStrokeDashOffset = Attr.real("stroke-dashoffset")
+  final def svgStrokeDashOffset = Attr.real("stroke-dashoffset")
 
   /**
     * The stroke-linecap attribute specifies the shape to be used at the end of open subpaths when they are stroked.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap">MDN</a>
     */
-  final val svgStrokeLineCap = Attr.real("stroke-linecap")
+  final def svgStrokeLineCap = Attr.real("stroke-linecap")
 
   /**
     * The stroke-linejoin attribute specifies the shape to be used at the corners of paths or basic shapes when they are stroked.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin">MDN</a>
     */
-  final val svgStrokeLineJoin = Attr.real("stroke-linejoin")
+  final def svgStrokeLineJoin = Attr.real("stroke-linejoin")
 
   /**
     * The stroke-miterlimit imposes a limit on the ratio of the miter length to the stroke-width.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-miterlimit">MDN</a>
     */
-  final val svgStrokeMiterLimit = Attr.real("stroke-miterlimit")
+  final def svgStrokeMiterLimit = Attr.real("stroke-miterlimit")
 
   /**
     * The stroke-opacity attribute specifies the opacity of the outline on the current object. Its default value is 1.
@@ -3175,56 +3175,56 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-width">MDN</a>
     */
-  final val svgStrokeWidth = Attr.real("stroke-width")
+  final def svgStrokeWidth = Attr.real("stroke-width")
 
   /**
     * The alignment-baseline attribute specifies how an object is aligned with respect to its parent.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/alignment-baseline">MDN</a>
     */
-  final val svgAlignmentBaseline = Attr.real("alignment-baseline")
+  final def svgAlignmentBaseline = Attr.real("alignment-baseline")
 
   /**
     * The baseline-shift attribute allows repositioning of the dominant-baseline relative to the dominant-baseline of the parent text content element.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/baseline-shift">MDN</a>
     */
-  final val svgBaselineShift = Attr.real("baseline-shift")
+  final def svgBaselineShift = Attr.real("baseline-shift")
 
   /**
     * The dominant-baseline attribute is used to determine or re-determine a scaled-baseline-table.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/dominant-baseline">MDN</a>
     */
-  final val svgDominantBaseline = Attr.real("dominant-baseline")
+  final def svgDominantBaseline = Attr.real("dominant-baseline")
 
   /**
     * This property is applied only to text written in a horizontal ‘writing-mode’.
     *
     * @see <a href="http://www.w3.org/TR/SVG/text.html#GlyphOrientationHorizontalProperty">w3.org</a>
     */
-  final val svgGlyphOrientationHorizontal = Attr.real("glyph-orientation-horizontal")
+  final def svgGlyphOrientationHorizontal = Attr.real("glyph-orientation-horizontal")
 
   /**
     * This property is applied only to text written in a vertical ‘writing-mode’.
     *
     * @see <a href="http://www.w3.org/TR/SVG/text.html#GlyphOrientationVerticalProperty">w3.org</a>
     */
-  final val svgGlyphOrientationVertical = Attr.real("glyph-orientation-vertical")
+  final def svgGlyphOrientationVertical = Attr.real("glyph-orientation-vertical")
 
   /**
     * The kerning attribute indicates whether the browser should adjust inter-glyph spacing based on kerning tables
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/kerning">MDN</a>
     */
-  final val svgKerning = Attr.real("kerning")
+  final def svgKerning = Attr.real("kerning")
 
   /**
     * The text-anchor attribute is used to align (start-, middle- or end-alignment) a string of text relative to a given point.
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/text-anchor">MDN</a>
     */
-  final val svgTextAnchor = Attr.real("text-anchor")
+  final def svgTextAnchor = Attr.real("text-anchor")
 
 //  /**
 //   * xxxxxxxx
