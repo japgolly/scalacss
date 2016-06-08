@@ -107,10 +107,12 @@ object StyleSheet {
         styleS(unsafeChild(sel)(t: _*))
     }
 
-    @inline final protected def & : Cond = Cond.empty
+    @inline final protected def & : Cond =
+      Cond.empty
 
     /** Create a child style. */
-    @inline final protected def &(sel: CssSelector): NestedStringOps = new NestedStringOps(sel)
+    @inline final protected def &(sel: CssSelector): NestedStringOps =
+      new NestedStringOps(sel)
   }
 
 
@@ -173,7 +175,8 @@ object StyleSheet {
       }
     }
 
-    @inline final protected def & : Cond = Cond.empty
+    @inline final protected def & : Cond =
+      Cond.empty
 
     /**
      * Objects in Scala are lazy. If you put styles in inner objects you need to make sure they're initialised before

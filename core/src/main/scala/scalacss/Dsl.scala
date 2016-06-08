@@ -25,42 +25,42 @@ object DslBase {
   }
 
   final class DslNum[N](val self: N) extends AnyVal {
-    @inline private def mkUnit(u: LengthUnit): Length[N] =
+    private def mkUnit(u: LengthUnit): Length[N] =
       Length(self, u)
 
     /** Centimeters. */
-    @inline def cm = mkUnit(LengthUnit.cm)
+    def cm = mkUnit(LengthUnit.cm)
 
     /**
      * This unit represents the width, or more precisely the advance measure, of the glyph '0' (zero, the Unicode
      * character U+0030) in the element's font.
      */
-    @inline def ch = mkUnit(LengthUnit.ch)
+    def ch = mkUnit(LengthUnit.ch)
 
     /**
      * This unit represents the calculated font-size of the element.
      * If used on the `font-size` property itself, it represents the inherited `font-size` of the element.
      */
-    @inline def em = mkUnit(LengthUnit.em)
+    def em = mkUnit(LengthUnit.em)
 
     /**
      * This unit represents the x-height of the element's font.
      * On fonts with the 'x' letter, this is generally the height of lowercase letters in the font;
      * 1ex ≈ 0.5em in many fonts.
      */
-    @inline def ex = mkUnit(LengthUnit.ex)
+    def ex = mkUnit(LengthUnit.ex)
 
     /** Inches (1in = 2.54 cm). */
-    @inline def in = mkUnit(LengthUnit.in)
+    def in = mkUnit(LengthUnit.in)
 
     /** Millimeters. */
-    @inline def mm = mkUnit(LengthUnit.mm)
+    def mm = mkUnit(LengthUnit.mm)
 
     /** Picas (1pc = 12pt). */
-    @inline def pc = mkUnit(LengthUnit.pc)
+    def pc = mkUnit(LengthUnit.pc)
 
     /** Points (1pt = 1/72 of 1in). */
-    @inline def pt = mkUnit(LengthUnit.pt)
+    def pt = mkUnit(LengthUnit.pt)
 
     /**
      * Pixel. Relative to the viewing device.
@@ -68,44 +68,44 @@ object DslBase {
      * For printers and very high resolution screens one CSS pixel implies multiple device pixels, so that the number
      * of pixel per inch stays around 96.
      */
-    @inline def px = mkUnit(LengthUnit.px)
+    def px = mkUnit(LengthUnit.px)
 
     /**
      * This unit represents the `font-size` of the root element (e.g. the `font-size` of the `&lt;html&gt;` element).
      * When used on the `font-size` on this root element, it represents its initial value.
      */
-    @inline def rem = mkUnit(LengthUnit.rem)
+    def rem = mkUnit(LengthUnit.rem)
 
     /** 1/100th of the height of the viewport. */
-    @inline def vh = mkUnit(LengthUnit.vh)
+    def vh = mkUnit(LengthUnit.vh)
 
     /** 1/100th of the minimum value between the height and the width of the viewport. */
-    @inline def vmin = mkUnit(LengthUnit.vmin)
+    def vmin = mkUnit(LengthUnit.vmin)
 
     /** 1/100th of the maximum value between the height and the width of the viewport. */
-    @inline def vmax = mkUnit(LengthUnit.vmax)
+    def vmax = mkUnit(LengthUnit.vmax)
 
     /** 1/100th of the width of the viewport. */
-    @inline def vw = mkUnit(LengthUnit.vw)
+    def vw = mkUnit(LengthUnit.vw)
 
     /** Size as a percentage. */
-    @inline def %% = Percentage(self)
+    def %% = Percentage(self)
 
     /** Dots per inch */
-    @inline def dpi  = Resolution(self, ResolutionUnit.dpi)
+    def dpi  = Resolution(self, ResolutionUnit.dpi)
 
     /** Dots per centimeter */
-    @inline def dpcm = Resolution(self, ResolutionUnit.dpcm)
+    def dpcm = Resolution(self, ResolutionUnit.dpcm)
 
     /**
      * This unit represents the number of dots per px unit. Due to the 1:96 fixed ratio of CSS in to CSS px, 1dppx is
      * equivalent to 96dpi, that corresponds to the default resolution of images displayed in CSS as defined by
      * image-resolution.
      */
-    @inline def dppx = Resolution(self, ResolutionUnit.dppx)
+    def dppx = Resolution(self, ResolutionUnit.dppx)
 
-    @inline def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
-    @inline def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
+    def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
+    def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
   }
 
   //final class DslStr(val self: String) extends AnyVal {
@@ -120,9 +120,9 @@ object DslBase {
 
   /** Typed attributes */
   final class DslAttrT(val self: TypedAttrBase) extends AnyVal {
-    @inline def :=!(value: Value)    : AV = AV(self, value)
-    @inline def :=!(value: ValueT[_]): AV = AV(self, value.value)
-    @inline def :=!(value: Literal)  : AV = AV(self, value.value)
+    def :=!(value: Value)    : AV = AV(self, value)
+    def :=!(value: ValueT[_]): AV = AV(self, value.value)
+    def :=!(value: Literal)  : AV = AV(self, value.value)
 
     @deprecated("Using := bypasses the type-safety of a typed attribute. Use the attribute's methods for type-safety, or :=! to bypass without warning.","always")
     @inline def :=(value: Value)    : AV = AV(self, value)
@@ -133,8 +133,8 @@ object DslBase {
   }
 
   final class DslAV(val self: AV) extends AnyVal {
-    @inline def &(b: AV) : AVs = AVs(self) + b
-    @inline def &(b: AVs): AVs = self +: b
+    def &(b: AV) : AVs = AVs(self) + b
+    def &(b: AVs): AVs = self +: b
   }
 
   final class DslAVs(val self: AVs) extends AnyVal {
@@ -143,7 +143,8 @@ object DslBase {
   }
 
   final class DslCond(c: Cond, b: DslBase) {
-    @inline def apply(t: ToStyle*)(implicit u: Compose): StyleS = c applyToStyle b.mixin(t: _*)
+    def apply(t: ToStyle*)(implicit u: Compose): StyleS =
+      c applyToStyle b.mixin(t: _*)
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -168,22 +169,22 @@ abstract class DslBase
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-  @inline implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x, this)
+          implicit final def DslCond[C <% Cond](x: C): DslCond = new DslCond(x, this)
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
-  @inline implicit final def CondPseudo    (x: Pseudo)     : Cond = Cond(Some(x), Vector.empty)
-  @inline implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, Vector1(x))
+          implicit final def CondPseudo    (x: Pseudo)     : Cond = Cond(Some(x), Vector.empty)
+          implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, Vector1(x))
 
-  @inline implicit final def ToStyleToAV           (x: ToAV)      : ToStyle = ToStyleAV(x.av)
-  @inline implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(AVs(x))
+          implicit final def ToStyleToAV           (x: ToAV)      : ToStyle = ToStyleAV(x.av)
+          implicit final def ToStyleAV             (x: AV)        : ToStyle = ToStyleAVs(AVs(x))
           implicit final def ToStyleAVs            (x: AVs)       : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
           implicit final def ToStyleCAV [C <% Cond](x: (C, AV))   : ToStyle = new ToStyle(StyleS.data1(x._1, AVs(x._2)))
           implicit final def ToStyleCAVs[C <% Cond](x: (C, AVs))  : ToStyle = new ToStyle(StyleS.data1(x._1, x._2))
-  @inline implicit final def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
+          implicit final def ToStyleUnsafeExt      (x: UnsafeExt) : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts     (x: UnsafeExts): ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS         (x: StyleS)    : ToStyle = new ToStyle(x)
-  @inline implicit final def ToStyleStyleA         (x: StyleA)    : ToStyle = new ToStyle(x.style)
+          implicit final def ToStyleStyleA         (x: StyleA)    : ToStyle = new ToStyle(x.style)
 
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 
@@ -204,13 +205,13 @@ abstract class DslBase
   def unsafeRoot(sel: String)(t: ToStyle*)(implicit c: Compose): Style.UnsafeExt =
     unsafeExt(_ => sel)(t: _*)
 
-  @inline def mixin(t: ToStyle*)(implicit c: Compose) =
+  def mixin(t: ToStyle*)(implicit c: Compose) =
     styleS(t: _*)(c)
 
-  @inline def mixinIf(b: Boolean)(t: ToStyle*)(implicit c: Compose): StyleS =
+  def mixinIf(b: Boolean)(t: ToStyle*)(implicit c: Compose): StyleS =
     if (b) styleS(t: _*)(c) else StyleS.empty
 
-  @inline def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
+  def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
     styleS((if (b) t else f): _*)(c)
 
   @inline implicit def colourLiteralMacro(sc: StringContext) =

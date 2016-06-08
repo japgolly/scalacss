@@ -81,7 +81,7 @@ object CanIUse2 {
 
   def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
     val tgt = l.get(kv)
-    @inline def nop = Vector1(kv)
+    def nop = Vector1(kv)
     if (prefixed(tgt))
       nop
     else
@@ -91,10 +91,10 @@ object CanIUse2 {
             l.set(kv, apply(p)))))
   }
 
-  @inline def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
+  def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
     runPlan(pp, pa, CssKV.key, kv)
 
-  @inline def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
+  def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
     runPlan(pp, pa, CssKV.value, kv)
 
   def prefixesForPlatform(p: Env.Platform[Option]): Set[Prefix] =
@@ -102,7 +102,7 @@ object CanIUse2 {
 
   def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
     import Agent._
-    @inline def dunno = Agent.values
+    def dunno = Agent.values
     if (p.toString.toLowerCase contains "android")
       p.name.fold(dunno)({
         case "Chrome"  => NonEmptyVector(AndroidChrome)

@@ -89,7 +89,7 @@ object AttrTest extends TestSuite {
     }
 
     'borderRadius{
-      @inline implicit def ToAVToAV(x: ToAV): AV = x.av
+      implicit def ToAVToAV(x: ToAV): AV = x.av
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
       test(borderRadius(px(3)), "3px")
       test(borderRadius(px(3))(px(5)), "3px / 5px")

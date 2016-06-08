@@ -24,7 +24,7 @@ final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: Length
     if (s == "0") "0" else s + u.value
   }
 
-  @inline def *(m: N)(implicit N: Numeric[N]): Length[N] =
+  def *(m: N)(implicit N: Numeric[N]): Length[N] =
     copy(n = N.times(this.n, m))
 }
 
@@ -45,7 +45,7 @@ object ResolutionUnit {
 final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: ResolutionUnit) {
   def value = n.toString + u.value
 
-  @inline def *(m: N)(implicit N: Numeric[N]): Resolution[N] =
+  def *(m: N)(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.times(this.n, m))
 }
 

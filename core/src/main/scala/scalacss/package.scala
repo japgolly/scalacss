@@ -157,7 +157,7 @@ package object scalacss {
   }
 
   /** Faster than Vector(a) */
-  @inline private[scalacss] def Vector1[A](a: A): Vector[A] =
+  private[scalacss] def Vector1[A](a: A): Vector[A] =
     Vector.empty :+ a
 
   /**
@@ -200,37 +200,37 @@ package object scalacss {
     }
 
     final class FontStretchBuilder(private val b: Value => FontFace) extends AnyVal {
-      @inline def condensed      = b(Literal.condensed)
-      @inline def expanded       = b(Literal.expanded)
-      @inline def extraCondensed = b(Literal.extraCondensed)
-      @inline def extraExpanded  = b(Literal.extraExpanded)
-      @inline def normal         = b(Literal.normal)
-      @inline def semiCondensed  = b(Literal.semiCondensed)
-      @inline def semiExpanded   = b(Literal.semiExpanded)
-      @inline def ultraCondensed = b(Literal.ultraCondensed)
-      @inline def ultraExpanded  = b(Literal.ultraExpanded)
+      def condensed      = b(Literal.condensed)
+      def expanded       = b(Literal.expanded)
+      def extraCondensed = b(Literal.extraCondensed)
+      def extraExpanded  = b(Literal.extraExpanded)
+      def normal         = b(Literal.normal)
+      def semiCondensed  = b(Literal.semiCondensed)
+      def semiExpanded   = b(Literal.semiExpanded)
+      def ultraCondensed = b(Literal.ultraCondensed)
+      def ultraExpanded  = b(Literal.ultraExpanded)
     }
 
     final class FontStyleBuilder(private val b: Value => FontFace) extends AnyVal {
-      @inline def italic  = b(Literal.italic)
-      @inline def normal  = b(Literal.normal)
-      @inline def oblique = b(Literal.oblique)
+      def italic  = b(Literal.italic)
+      def normal  = b(Literal.normal)
+      def oblique = b(Literal.oblique)
     }
 
     final class FontWeightBuilder(private val b: Value => FontFace) extends AnyVal {
-      @inline def _100    = b("100")
-      @inline def _200    = b("200")
-      @inline def _300    = b("300")
-      @inline def _400    = b("400")
-      @inline def _500    = b("500")
-      @inline def _600    = b("600")
-      @inline def _700    = b("700")
-      @inline def _800    = b("800")
-      @inline def _900    = b("900")
-      @inline def bold    = b(Literal.bold)
-      @inline def bolder  = b(Literal.bolder)
-      @inline def lighter = b(Literal.lighter)
-      @inline def normal  = b(Literal.normal)
+      def _100    = b("100")
+      def _200    = b("200")
+      def _300    = b("300")
+      def _400    = b("400")
+      def _500    = b("500")
+      def _600    = b("600")
+      def _700    = b("700")
+      def _800    = b("800")
+      def _900    = b("900")
+      def bold    = b(Literal.bold)
+      def bolder  = b(Literal.bolder)
+      def lighter = b(Literal.lighter)
+      def normal  = b(Literal.normal)
     }
   }
 

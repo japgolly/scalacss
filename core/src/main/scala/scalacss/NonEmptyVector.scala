@@ -25,19 +25,19 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
     tail foreach f
   }
 
-  @inline def mapTail[B >: A](f: Vector[A] => Vector[B]): NonEmptyVector[B] =
+  def mapTail[B >: A](f: Vector[A] => Vector[B]): NonEmptyVector[B] =
     NonEmptyVector(head, f(tail))
 
-  @inline def :+[B >: A](a: B): NonEmptyVector[B] =
+  def :+[B >: A](a: B): NonEmptyVector[B] =
     mapTail(_ :+ a)
 
-  @inline def +:[B >: A](a: B): NonEmptyVector[B] =
+  def +:[B >: A](a: B): NonEmptyVector[B] =
     NonEmptyVector(a, head +: tail)
 
-  @inline def ++[B >: A](as: GenTraversableOnce[B]): NonEmptyVector[B] =
+  def ++[B >: A](as: GenTraversableOnce[B]): NonEmptyVector[B] =
     mapTail(_ ++ as)
 
-  @inline def ++[B >: A](b: NonEmptyVector[B]): NonEmptyVector[B] =
+  def ++[B >: A](b: NonEmptyVector[B]): NonEmptyVector[B] =
     ++(b.whole)
 
   def ++:[B >: A](as: Vector[B]): NonEmptyVector[B] =
@@ -58,20 +58,20 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   def reduceMapLeft1[B](f: A => B)(g: (B, B) => B): B =
     foldMapLeft1(f)((b, a) => g(b, f(a)))
 
-  @inline def toSet[B >: A] = whole.toSet[B]
-  @inline def toStream      = whole.toStream
+  def toSet[B >: A] = whole.toSet[B]
+  def toStream      = whole.toStream
 }
 
 // =====================================================================================================================
 
 object NonEmptyVector extends NonEmptyVectorImplicits0 {
-  @inline def one[A](h: A): NonEmptyVector[A] =
+  def one[A](h: A): NonEmptyVector[A] =
     new NonEmptyVector(h, Vector.empty)
 
-  @inline def apply[A](h: A, t: A*): NonEmptyVector[A] =
+  def apply[A](h: A, t: A*): NonEmptyVector[A] =
     apply(h, t.toVector)
 
-  @inline def apply[A](h: A, t: Vector[A]): NonEmptyVector[A] =
+  def apply[A](h: A, t: Vector[A]): NonEmptyVector[A] =
     new NonEmptyVector(h, t)
 
   def endOV[A](init: Option[Vector[A]], last: A): NonEmptyVector[A] =
@@ -86,10 +86,10 @@ object NonEmptyVector extends NonEmptyVectorImplicits0 {
     else
       new NonEmptyVector(init.head, init.tail :+ last)
 
-  @inline def maybe[A, B](v: Vector[A], empty: => B)(f: NonEmptyVector[A] => B): B =
+  def maybe[A, B](v: Vector[A], empty: => B)(f: NonEmptyVector[A] => B): B =
     if (v.isEmpty) empty else f(NonEmptyVector(v.head, v.tail))
 
-  @inline def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
+  def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
     maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
 
   implicit def equality[A: Equal]: Equal[NonEmptyVector[A]] =

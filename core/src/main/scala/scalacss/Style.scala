@@ -77,11 +77,11 @@ final case class StyleS(data         : Map[Cond, AVs],
 
 object StyleS {
   /** Helper method for common case where only data is specified. */
-  @inline def data(d: Map[Cond, AVs]): StyleS =
+  def data(d: Map[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
 
   /** Helper method for common case where only one condition is specified. */
-  @inline def data1(c: Cond, avs: AVs): StyleS =
+  def data1(c: Cond, avs: AVs): StyleS =
     data(Map.empty.updated(c, avs))
 
   val empty: StyleS =

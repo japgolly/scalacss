@@ -13,7 +13,7 @@ final case class AV(attr: Attr, value: Value) {
     else
       copy(value = this.value + _important)
 
-  @inline def apply(env: Env) =
+  def apply(env: Env) =
     attr.gen(env)(value)
 }
 

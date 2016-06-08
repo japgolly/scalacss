@@ -28,7 +28,7 @@ object StyleLookup extends StyleLookupLowPri {
       override def empty = new Array[StyleA](2)
       override def add   = (t, b, s) => { t(ind(b)) = s; t }
 
-      @inline def ind(b: Boolean) = if (b) 1 else 0
+      def ind(b: Boolean) = if (b) 1 else 0
 
       override def get =
         array => {

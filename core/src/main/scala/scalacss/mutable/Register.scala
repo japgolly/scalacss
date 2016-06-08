@@ -81,7 +81,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning]): Unit =
     errHandler.warn.foreach { f =>
 
-      @inline def warn(s: String): Unit =
+      def warn(s: String): Unit =
         f(cn, Warning(Cond.empty, s))
 
       if (_rendered)

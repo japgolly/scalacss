@@ -19,7 +19,7 @@ object JsEnv {
     PlatformJs.value.fold(Env.empty)(p =>
       Env(platform(p), Media.empty(None)))
 
-  @inline private implicit def undefToOption[A](a: UndefOr[A]): Option[A] =
+  private implicit def undefToOption[A](a: UndefOr[A]): Option[A] =
     a.toOption.flatMap(Option(_))
 
   def platform(p: PlatformJs): Platform[Option] = {

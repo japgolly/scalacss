@@ -174,18 +174,18 @@ object Media {
   }
 
   // Ensure string concat doesn't accidentally call toString on something stupid.
-  @inline private implicit class StringExt(val _s: String) extends AnyVal {
-    @inline def ~(b: String) = _s + b
+  private implicit class StringExt(val _s: String) extends AnyVal {
+    def ~(b: String) = _s + b
   }
 
-  @inline private final def media = "@media "
-  @inline private final def `:`   = ":"
-  @inline private final def and   = " and "
-  @inline private final def `,`   = ", "
-  @inline private final def `(`   = "("
-  @inline private final def `)`   = ")"
-  @inline private final def min   = "min-"
-  @inline private final def max   = "max-"
+  private final def media = "@media "
+  private final def `:`   = ":"
+  private final def and   = " and "
+  private final def `,`   = ", "
+  private final def `(`   = "("
+  private final def `)`   = ")"
+  private final def min   = "min-"
+  private final def max   = "max-"
 
   private def paren(c: String): String =
     `(` ~ c ~ `)`
