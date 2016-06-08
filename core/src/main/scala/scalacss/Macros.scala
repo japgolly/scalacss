@@ -167,7 +167,7 @@ object Macros {
     }
   }
 
-  class ColourLiteral(val sc: StringContext) extends AnyVal {
+  class ColourLiteral(private val sc: StringContext) extends AnyVal {
     /** c"#fc6" provides a validates Color */
     def c(args: Any*): Color = macro ColorLiteral.impl
   }

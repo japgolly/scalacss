@@ -20,11 +20,11 @@ object DslBase {
     override protected def T = t => new Query(-\/(f(t)), Vector.empty)
   }
 
-  final class DslInt(val self: Int) extends AnyVal {
+  final class DslInt(private val self: Int) extends AnyVal {
     def :/:(y: Int) = Ratio(self, y)
   }
 
-  final class DslNum[N](val self: N) extends AnyVal {
+  final class DslNum[N](private val self: N) extends AnyVal {
     private def mkUnit(u: LengthUnit): Length[N] =
       Length(self, u)
 
@@ -112,14 +112,14 @@ object DslBase {
   //}
 
   /** Untyped attributes */
-  final class DslAttr(val self: Attr) extends AnyVal {
+  final class DslAttr(private val self: Attr) extends AnyVal {
     @inline def :=(value: Value)    : AV = AV(self, value)
     @inline def :=(value: ValueT[_]): AV = AV(self, value.value)
     @inline def :=(value: Literal)  : AV = AV(self, value.value)
   }
 
   /** Typed attributes */
-  final class DslAttrT(val self: TypedAttrBase) extends AnyVal {
+  final class DslAttrT(private val self: TypedAttrBase) extends AnyVal {
     def :=!(value: Value)    : AV = AV(self, value)
     def :=!(value: ValueT[_]): AV = AV(self, value.value)
     def :=!(value: Literal)  : AV = AV(self, value.value)
@@ -132,12 +132,12 @@ object DslBase {
     @inline def :=(value: Literal)  : AV = AV(self, value.value)
   }
 
-  final class DslAV(val self: AV) extends AnyVal {
+  final class DslAV(private val self: AV) extends AnyVal {
     def &(b: AV) : AVs = AVs(self) + b
     def &(b: AVs): AVs = self +: b
   }
 
-  final class DslAVs(val self: AVs) extends AnyVal {
+  final class DslAVs(private val self: AVs) extends AnyVal {
     @inline def &(b: AV) : AVs = self + b
     @inline def &(b: AVs): AVs = self ++ b
   }

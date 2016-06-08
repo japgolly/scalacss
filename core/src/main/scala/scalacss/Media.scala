@@ -174,7 +174,7 @@ object Media {
   }
 
   // Ensure string concat doesn't accidentally call toString on something stupid.
-  private implicit class StringExt(val _s: String) extends AnyVal {
+  private implicit class StringExt(private val _s: String) extends AnyVal {
     def ~(b: String) = _s + b
   }
 
