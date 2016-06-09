@@ -16,8 +16,9 @@ import Env._
 object JsEnv {
 
   def value: Env =
-    PlatformJs.value.fold(Env.empty)(p =>
-      Env(platform(p), Media.empty(None)))
+    Env.empty
+//    PlatformJs.value.fold(Env.empty)(p =>
+//      Env(platform(p), Media.empty(None)))
 
   private implicit def undefToOption[A](a: UndefOr[A]): Option[A] =
     a.toOption.flatMap(Option(_))
