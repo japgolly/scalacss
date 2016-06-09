@@ -6,7 +6,7 @@ import ScalaJSPlugin.autoImport._
 import ScalaJSPluginInternal.stageKeys
 import Lib._
 
-object ScalaCSS extends Build {
+object ScalaCssBuild {
 
   private val ghProject = "scalacss"
 
@@ -75,8 +75,6 @@ object ScalaCSS extends Build {
       _.settings(jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-  override def rootProject = Some(root)
 
   lazy val root =
     Project("root", file("."))
