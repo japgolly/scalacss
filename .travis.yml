@@ -8,13 +8,9 @@ jdk:
 - oraclejdk7
 
 script:
-- >-
-  sbt ++$TRAVIS_SCALA_VERSION
-  test:compile
-  core-js/test:fastOptJS ext-react/test:fastOptJS ext-scalatags-js/test:fastOptJS
-  core-js/test:fullOptJS ext-react/test:fullOptJS ext-scalatags-js/test:fullOptJS
+- sbt ++$TRAVIS_SCALA_VERSION test:compile JS/test:fastOptJS JS/test:fullOptJS
 - sbt ++$TRAVIS_SCALA_VERSION test
-- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in Global := FullOptStage' core-js/test ext-react/test ext-scalatags-js/test
+- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in Global := FullOptStage' JS/test
 - sbt ++$TRAVIS_SCALA_VERSION cmpJsSize jsSizes
 
 
