@@ -14,7 +14,7 @@ val extScalatagsJVM   = ScalaCssBuild.extScalatagsJVM
 val extScalatagsJS    = ScalaCssBuild.extScalatagsJS
 val extReact          = ScalaCssBuild.extReact
 
-val bench             = ScalaCssBuild.bench
-val benchReactWithout = ScalaCssBuild.benchReactWithout
-val benchReactWith    = ScalaCssBuild.benchReactWith
-val benchBig          = ScalaCssBuild.benchBig
+val bench             = BenchBuild.bench
+val benchReactWithout = BenchBuild.benchReactWithout
+val benchReactWith    = BenchBuild.benchReactWith
+val benchBig          = BenchBuild.benchBig
