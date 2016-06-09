@@ -1,16 +1,17 @@
 import sbt._
 import Keys._
-import Dialect._
+import Lib._
 
 object Gen {
 
-  def attrAliases: CDS = {
+  def attrAliases: PE = {
     val r1 = """.*(?: val .*Attr[ \.]| extends ).*""".r.pattern
     val r2 = """^\s*(?://|\*).*""".r.pattern
     val r3 = """.*(?:override|private| val +values).*""".r.pattern
     val r4 = """^.* (?:object|val) +| *=.+| +extends.*""".r
     val r5 = """^[a-z].*""".r.pattern
-    CDS.jj(_ =>
+
+    (_: Project).configure(_.settings(
       sourceGenerators in Compile <+= (sourceDirectory in Compile, sourceManaged in Compile) map { (src, tgt) =>
         val attrs =
           IO.readLines(src / "scala/japgolly/scalacss/Attrs.scala").toStream
@@ -35,7 +36,7 @@ object Gen {
 
         genFile :: Nil
       }
-    )
+    ))
   }
 
 }
