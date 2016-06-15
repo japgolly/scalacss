@@ -1,5 +1,4 @@
 import org.scalajs.dom.{console, document}
-import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 import japgolly.scalajs.react._, vdom.prefix_<^._, ScalazReact._
 

@@ -40,7 +40,7 @@ ScalaCSS allows you to catch them and handle them immediately.
 Conflict is detected whenever styles and/or attributes are composed.
 How conflict should be handled is determined by the `Compose` class.
 It's implicitly required to build a style with more than one attribute
-but often invisible because [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala)
+but often invisible because [DefaultSettings.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/defaults/DefaultSettings.scala)
 provides an instance.
 
 By customising your `Compose` instance you can

@@ -1,7 +1,7 @@
 In CSS each attribute has its own syntax describing its legal value(s).
 In ScalaCSS most CSS attributes have their value syntaxes encoded, but not all.
 
-You can browse defined attributes in [Attrs.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Attrs.scala).
+You can browse defined attributes in [Attrs.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/internal/Attrs.scala).
 
 ## Untyped
 

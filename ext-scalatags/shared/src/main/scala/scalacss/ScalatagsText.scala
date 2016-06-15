@@ -3,6 +3,7 @@ package scalacss
 import scalatags.Text._
 import scalatags.text
 import all._
+import scalacss.internal.{Css, Renderer}
 
 trait ScalatagsTextImplicits {
 

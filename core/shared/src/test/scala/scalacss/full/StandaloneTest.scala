@@ -35,8 +35,8 @@ object MyStandalone extends StyleSheet.Standalone {
 }
 
 object StandaloneTest extends utest.TestSuite {
-  import scalacss.TestUtil._
   import utest._
+  import scalacss.test.TestUtil._
 
   override val tests = TestSuite {
     def norm(css: String) = css.trim

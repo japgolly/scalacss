@@ -1,6 +1,6 @@
 ## Global Registry
 
-[mutable.GlobalRegistry](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/mutable/GlobalRegistry.scala)
+[mutable.GlobalRegistry](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/internal/mutable/GlobalRegistry.scala)
 is an optional convenience for working with inline stylesheets.
 
 Ideally inline stylesheet modules should either be merged into a single app-wide object,
@@ -26,7 +26,7 @@ class BoxStyles extends StyleSheet.Inline {
 ```
 
 ```scala
-import scalacss.mutable.GlobalRegistry
+import scalacss.internal.mutable.GlobalRegistry
 
 def onStartup(): Unit = {
   // Register styles

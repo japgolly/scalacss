@@ -4,6 +4,7 @@ import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLStyleElement
 import scalatags.JsDom._
 import all._
+import scalacss.internal.{Css, Renderer}
 
 trait ScalatagsJsDomImplicits {
 

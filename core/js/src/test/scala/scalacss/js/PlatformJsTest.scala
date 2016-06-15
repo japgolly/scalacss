@@ -1,22 +1,19 @@
 package scalacss.js
 
-import utest._
-import scalacss._
-import TestUtil._
-
 import scala.scalajs.js.annotation.JSExport
+import utest._
 
 @JSExport("PlatformJsTest")
 object PlatformJsTest extends TestSuite {
 
   @JSExport("test")
-  def test: Unit = {
+  def test(): Unit = {
     println(PlatformJs.value)
-    println(JsEnv.value.platform)
-    println(JsEnv.value.media)
+    println(PlatformJsEnv.value.map(_.platform))
+    println(PlatformJsEnv.value.map(_.media))
   }
 
   override val tests = TestSuite {
-    test
+    test()
   }
 }

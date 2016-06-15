@@ -1,13 +1,13 @@
 package scalacss
 
+import japgolly.scalajs.react._, vdom.prefix_<^._
 import org.scalajs.dom.raw.HTMLStyleElement
 import org.scalajs.dom.document
 import utest._
 import scalacss.TestUtil._
-import japgolly.scalajs.react._, vdom.prefix_<^._
+import scalacss.internal.mutable.StyleSheetRegistry
 import Defaults._
 import ScalaCssReact._
-import mutable.StyleSheetRegistry
 
 object ReactTest extends TestSuite {
 

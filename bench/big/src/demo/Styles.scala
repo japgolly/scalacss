@@ -2,7 +2,6 @@ package demo
 
 import japgolly.univeq.UnivEq
 import scalacss.Defaults._
-import scalacss.{Pseudo, PseudoElement, StyleS}
 
 sealed trait Live
 case object Live extends Live
@@ -72,7 +71,7 @@ object Styles extends StyleSheet.Inline {
   private def deadColumnLabel(live: Live) =
     mixinIf(live == Dead)(textDecoration := ^.lineThrough)
 
-  private val hasTitle = Pseudo.Custom("[title]", PseudoElement)
+  private val hasTitle = Pseudo.Custom("[title]", PseudoType.Element)
 
   private val hoverShowsInfo = hasTitle(cursor.help)
 

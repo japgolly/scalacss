@@ -2,7 +2,6 @@ package scalacss.full
 
 import scala.concurrent.duration._
 import scalacss.Defaults._
-import scalacss.{NonEmptyVector, UnicodeRange}
 
 //object CopyDefaultsForInline extends Defaults
 //import CopyDefaultsForInline._
@@ -272,8 +271,7 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
 
 object InlineTest extends utest.TestSuite {
   import utest._
-
-  import scalacss.TestUtil._
+  import scalacss.test.TestUtil._
 
   def norm(css: String) = css.trim
 

@@ -77,3 +77,33 @@ object MyInline extends StyleSheet.Inline {
 
 ```
 
+## Universal Equality
+
+Inputs to a `styleF` are stored in a standard Scala `Map` so they require sensible hashcodes and universal equality.
+
+This won't work:
+
+```scala
+class MyBlob(val blobIsHappy: Boolean)
+
+val domain = Domain.ofValues(new Blob(true), new Blob(false))
+
+styleF("blobs")(domain)(blob => styleS(…))
+```
+
+In order to make the above example work, we:
+* Provide working hashcode & universal equality. Easiest is to make `MyBlob` a `case class`.
+* Provide an implicit `UnivEq[MyBlob]` instance. This tells the compiler that `MyBlob` is safe to be stored in a `Map`.
+
+```scala
+import japgolly.univeq._
+
+case class MyBlob(blobIsHappy: Boolean)
+object MyBlob {
+  implicit def univEq: UnivEq[MyBlob] = UnivEq.derive
+}
+
+val domain = Domain.ofValues(Blob(true), Blob(false))
+
+styleF("blobs")(domain)(blob => styleS(…))
+```

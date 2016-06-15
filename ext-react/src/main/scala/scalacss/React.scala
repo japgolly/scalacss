@@ -2,9 +2,8 @@ package scalacss
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import org.scalajs.dom.raw.HTMLStyleElement
-import scalacss.mutable.{StyleSheetRegistry, StyleSheet}
-import scalacss.js._
+import scalacss.defaults.PlatformExports
+import scalacss.internal.{Css, Renderer}
 
 object ScalaCssReactFns {
   def createStyleTag(styleStr: String): ReactElement =
@@ -24,21 +23,12 @@ object ScalaCssReactFns {
  */
 object ScalaCssReact extends ScalaCssReactImplicits
 
-trait ScalaCssReactImplicits {
+trait ScalaCssReactImplicits extends PlatformExports {
   import ScalaCssReactFns._
 
   implicit final def styleaToTagMod(s: StyleA): TagMod =
     ^.className := s.htmlClass
 
-  implicit final def inlineSSReactExt(ss: StyleSheet.Inline) =
-    new InlineSSReactExt(ss)
-
-  implicit final def styleSheetRegistryReactExt(r: StyleSheetRegistry) =
-    new StyleSheetRegistryReactExt(r)
-
   implicit final def cssReactElementRenderer(implicit s: Renderer[String]): Renderer[ReactElement] =
     new ReactElementRenderer(s)
-
-  implicit final def cssStyleElementRenderer(implicit s: Renderer[String]): Renderer[HTMLStyleElement] =
-    new StyleElementRenderer(s)
 }
