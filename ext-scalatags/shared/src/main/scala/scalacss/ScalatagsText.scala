@@ -4,11 +4,12 @@ import scalatags.Text._
 import scalatags.text
 import all._
 import scalacss.internal.{Css, Renderer}
+import scalatags.text.Builder
 
 trait ScalatagsTextImplicits {
 
   implicit final def styleaToTextTag(s: StyleA): Modifier = new Modifier {
-    def applyTo(t: text.Builder) = t.appendAttr("class", " " + s.htmlClass)
+    def applyTo(t: text.Builder) = t.appendAttr("class", Builder.GenericAttrValueSource(" " + s.htmlClass))
   }
 
   implicit final def styleTextTagRenderer(implicit s: Renderer[String]): Renderer[TypedTag[String]] =
