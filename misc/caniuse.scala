@@ -38,7 +38,10 @@ object Caniuse {
       ,"atCounterStyle"
       ,"backdropFilter"
       ,"backgroundPositionXY"
+      ,"caseInsensitive"
+      ,"containment"
       ,"crossFade"
+      ,"css3Attr"
       ,"css3Colors"
       ,"css3Cursors"
       ,"cssBackgroundblendmode"
@@ -48,39 +51,51 @@ object Caniuse {
       ,"cssGencontent"
       ,"cssImageOrientation"
       ,"currentcolor"
+      ,"defaultPseudo"
+      ,"descendantGtgt"
       ,"devicepixelratio"
+      ,"dirPseudo"
       ,"elementFunction"
       ,"exclusions"
       ,"filterFunction"
       ,"firstLetter"
+      ,"focusWithin"
       ,"fontface"
       ,"fontLoading"
       ,"fontSmooth"
       ,"fontUnicodeRange"
       ,"fontVariantAlternates"
       ,"getcomputedstyle"
+      ,"has"
       ,"inlineBlock"
       ,"initialValue"
       ,"inOutOfRange"
+      ,"indeterminatePseudo"
       ,"kerningPairsLigatures"
       ,"lineClamp"
+      ,"matchesPseudo"
       ,"mediaInteraction"
       ,"mediaqueries"
       ,"minmaxwh"
       ,"mixblendmode"
       ,"motionPaths"
       ,"multibackgrounds"
+      ,"notSelList"
+      ,"nthChildOf"
+      ,"optionalPseudo"
       ,"placeholder"
       ,"placeholderShown"
       ,"pointerEvents"
       ,"rem"
       ,"revertValue"
+      ,"scrollbar"
       ,"snappoints"
       ,"styleScoped"
       ,"svgCss"
       ,"table"
       ,"ttf"
       ,"unsetValue"
+      ,"variables"
       ,"variables"
       ,"willChange"
       ,"zoom"
@@ -102,6 +117,7 @@ object Caniuse {
       case "ie_mob"  => "IEMobile"
       case "and_uc"  => "AndroidUC"
       case "edge"    => "Edge"
+      case "samsung" => "Samsung"
       case x         => sys error s"Unrecognised agent: '$x'"
     }
 
@@ -171,8 +187,8 @@ object Caniuse {
 
     // ====================================================================================================
     val obj = "CanIUse"
-    val pkg = "scalacss"
-    val fout = s"../core/src/main/scala/${pkg.replace('.','/')}/$obj.scala"
+    val pkg = "scalacss.internal"
+    val fout = s"../core/shared/src/main/scala/${pkg.replace('.','/')}/$obj.scala"
 
     val fmtstr: String => String =
       s => s""""$s""""
@@ -256,6 +272,8 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+import japgolly.univeq.UnivEq
+
 object $obj {
   type VerStr  = String
   type Subject = Map[Agent, Set[Support]]
@@ -268,6 +286,7 @@ object $obj {
     case object Full        extends Support
     case object PartialX    extends Support
     case object FullX       extends Support
+    implicit def univEq: UnivEq[Support] = UnivEq.derive
   }
 
   sealed abstract class Prefix(val name: String) {
@@ -275,6 +294,7 @@ object $obj {
   }
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
+    implicit def univEq: UnivEq[Prefix] = UnivEq.derive
     val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
   }
 
@@ -283,6 +303,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
+    implicit def univEq: UnivEq[Agent] = UnivEq.derive
     val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 

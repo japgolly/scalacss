@@ -1,157 +1,153 @@
 import sbt._
 import Keys._
-import com.typesafe.sbt.pgp.PgpKeys._
 import org.scalajs.sbtplugin.ScalaJSPlugin
-import ScalaJSPlugin._
 import ScalaJSPlugin.autoImport._
-import Dialect._
-import Typical.{settings => _, _}
+import Lib._
 
-object ScalaCSS extends Build {
+object ScalaCssBuild {
 
-  val Scala211 = "2.11.8"
+  private val ghProject = "scalacss"
 
-  val commonSettings: CDS =
-    CDS.all(
-      _.settings(
-        organization       := "com.github.japgolly.scalacss",
-        version            := "0.4.2-SNAPSHOT",
-        homepage           := Some(url("https://github.com/japgolly/scalacss")),
-        licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-        scalaVersion       := Scala211,
-        // crossScalaVersions := Seq("2.10.5", Scala211),
-        scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
-                                "-language:postfixOps", "-language:implicitConversions",
-                                "-language:higherKinds", "-language:existentials"),
-        updateOptions      := updateOptions.value.withCachedResolution(true))
-      .configure(addCommandAliases(
-        "cj"  -> "project core-jvm",
-        "cjs" -> "project core-js",
-        "qc"  -> "~core-jvm/compile",
-        "qtc" -> "~core-jvm/test:compile",
-        "qt"  -> "~core-jvm/test"
-      ))
-    ) :+ Typical.settings("scalacss")
+  private val publicationSettings =
+    Lib.publicationSettings(ghProject)
 
-  object scalaz {
-    private def m(n: String) = Library("org.scalaz", "scalaz-"+n, "7.2.1")
-    val core       = m("core")
-    val effect     = m("effect") > core
-    val concurrent = m("concurrent") > effect
-  }
-  object nyaya {
-    private def m(n: String) = Library("com.github.japgolly.nyaya", "nyaya-"+n, "0.7.0")
-    val core = m("core")
-    val test = m("test")
-  }
-  object react {
-    private def m(n: String) = "com.github.japgolly.scalajs-react" %%%! n % "0.11.0"
-    val core        = m("core")
-    val test        = m("test")
-    val extra       = m("extra")
-    val extScalaz72 = m("ext-scalaz72")
+  object Ver {
+    final val MTest         = "0.4.3"
+    final val Nyaya         = "0.7.2"
+    final val ReactJs       = "15.3.1"
+    final val Scala211      = "2.11.8"
+    final val ScalaJsDom    = "0.9.1"
+    final val ScalaJsReact  = "0.11.1"
+    final val Scalatags     = "0.6.0"
+    final val Scalaz        = "7.2.5"
+    final val UnivEq        = "1.0.1"
   }
 
+  val commonSettings = ConfigureBoth(
+    _.settings(
+      organization       := "com.github.japgolly.scalacss",
+      version            := "0.5.0",
+      homepage           := Some(url("https://github.com/japgolly/scalacss")),
+      licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+      scalaVersion       := Ver.Scala211,
+      // crossScalaVersions := Seq("2.10.5", Scala211),
+      scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
+                              "-language:postfixOps", "-language:implicitConversions",
+                              "-language:higherKinds", "-language:existentials"),
+      shellPrompt in ThisBuild := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      triggeredMessage         := Watched.clearWhenTriggered,
+      incOptions               := incOptions.value.withNameHashing(true),
+      updateOptions            := updateOptions.value.withCachedResolution(true))
+    .configure(
+      addCommandAliases(
+        "/"   -> "project root",
+        "L"   -> "root/publishLocal",
+        "C"   -> "root/clean",
+        "T"   -> ";root/clean;root/test",
+        "TL"  -> ";T;L",
+        "c"   -> "compile",
+        "tc"  -> "test:compile",
+        "t"   -> "test",
+        "to"  -> "test-only",
+        "tq"  -> "test-quick",
+        "cc"  -> ";clean;compile",
+        "ctc" -> ";clean;test:compile",
+        "ct"  -> ";clean;test")))
+    .jsConfigure(
+      _.settings(scalaJSUseRhino := false))
 
-  // ==============================================================================================
-  override def rootProject = Some(root)
+  def definesMacros = ConfigureBoth(
+    _.settings(
+      scalacOptions += "-language:experimental.macros",
+      libraryDependencies ++= Seq(
+        "org.scala-lang" % "scala-reflect" % Ver.Scala211,
+        // "org.scala-lang" % "scala-library" % Ver.Scala211,
+        "org.scala-lang" % "scala-compiler" % Ver.Scala211 % "provided")))
+
+  def utestSettings = ConfigureBoth(
+    _.settings(
+      libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % "test",
+      testFrameworks      += new TestFramework("utest.runner.Framework")))
+    .jsConfigure(
+      // Not mandatory; just faster.
+      _.settings(jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   lazy val root =
     Project("root", file("."))
-      .configure(commonSettings.rootS, preventPublication)
-      .aggregate(core, extReact, extScalatags, bench)
-      .settings(
-        scalaJSUseRhino in Global := false)
+      .configure(commonSettings.jvm, preventPublication)
+      .aggregate(rootJVM, rootJS, BenchBuild.bench)
 
-  lazy val (core, coreJvm, coreJs) =
-    crossDialectProject("core", commonSettings
-      .configure(definesMacros, utestSettings()) //, Gen.attrAliases)
-      .addLibs(scalaz.core, nyaya.test % Test)
-      .jj(_ => initialCommands := "scalacss._")
-    )
+  lazy val rootJVM =
+    Project("JVM", file(".rootJVM"))
+      .configure(commonSettings.jvm, preventPublication)
+      .aggregate(coreJVM, extScalatagsJVM)
 
-  lazy val (extScalatags, extScalatagsJvm, extScalatagsJs) =
-    crossDialectProject("ext-scalatags", commonSettings
-      .configure(utestSettings())
-      .dependsOn(coreJvm, coreJs)
-      .addLibs(Library("com.lihaoyi", "scalatags", "0.5.0"))
-    )
+  lazy val rootJS =
+    Project("JS", file(".rootJS"))
+      .configure(commonSettings.jvm, preventPublication)
+      .aggregate(coreJS, extScalatagsJS, extReact)
 
-  lazy val extReact =
-    Project("ext-react", file("ext-react"))
-      .enablePlugins(ScalaJSPlugin)
-      .configure(commonSettings.jsS, utestSettings().jsS)
-      .dependsOn(coreJs)
-      .settings(
-        libraryDependencies ++= Seq(react.core, react.test % "test"),
-        jsDependencies ++= Seq(
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-          "org.webjars.bower" % "react" % "15.0.1" % "test"
-            /        "react.js"
-            minified "react.min.js"
-            commonJSName "React",
+  lazy val coreJVM = core.jvm
+  lazy val coreJS  = core.js
+  lazy val core = crossProject
+    .configure(
+      commonSettings,
+      publicationSettings,
+      definesMacros,
+      //, Gen.attrAliases
+      utestSettings)
+    .settings(
+      libraryDependencies ++= Seq(
+        "com.github.japgolly.univeq" %%% "univeq"      % Ver.UnivEq,
+        "com.github.japgolly.nyaya"  %%% "nyaya-gen"   % Ver.Nyaya  % "test",
+        "com.github.japgolly.nyaya"  %%% "nyaya-prop"  % Ver.Nyaya  % "test",
+        "com.github.japgolly.nyaya"  %%% "nyaya-test"  % Ver.Nyaya  % "test",
+        "org.scalaz"                 %%% "scalaz-core" % Ver.Scalaz % "test"))
+    .jsSettings(
+      libraryDependencies += "org.scala-js" %%% "scalajs-dom" % Ver.ScalaJsDom)
+    .jvmSettings(
+      initialCommands := "import scalacss._")
 
-          "org.webjars.bower" % "react" % "15.0.1" % "test"
-            /         "react-dom.js"
-            minified  "react-dom.min.js"
-            dependsOn "react.js"
-            commonJSName "ReactDOM",
+  lazy val extScalatagsJVM = extScalatags.jvm
+  lazy val extScalatagsJS  = extScalatags.js
+  lazy val extScalatags = crossProject
+    .in(file("ext-scalatags"))
+    .configure(commonSettings, publicationSettings)
+    .dependsOn(core)
+    .configure(utestSettings)
+    .settings(
+      libraryDependencies ++= Seq(
+        "com.lihaoyi" %%% "scalatags"   % Ver.Scalatags,
+        "org.scalaz"  %%% "scalaz-core" % Ver.Scalaz % "test"))
 
-          "org.webjars.bower" % "react" % "15.0.1" % "test"
-            /         "react-dom-server.js"
-            minified  "react-dom-server.min.js"
-            dependsOn "react-dom.js"
-            commonJSName "ReactDOMServer"))
-
-  // ==============================================================================================
-  private def benchModule(name: String, dir: File => File) =
-    Project(name, dir(file("bench")))
-      .configure(commonSettings.rootS, preventPublication)
-
-  private def benchReactModule(name: String, dir: File => File) =
-    benchModule("bench-" + name, dir)
-      .enablePlugins(ScalaJSPlugin)
-      .settings(
-        scalaSource in Compile := baseDirectory.value / "src",
-        libraryDependencies ++= Seq(react.extra, react.extScalaz72))
-
-  val intfmt = java.text.NumberFormat.getIntegerInstance
-
-  val cmpJsSizeFast = TaskKey[Unit]("cmpJsSizeFast", "Compare JS sizes (using fastOptJS).")
-  val cmpJsSizeFull = TaskKey[Unit]("cmpJsSizeFull", "Compare JS sizes (using fullOptJS).")
-  def cmpJsSize(js: TaskKey[Attributed[sbt.File]]) = Def.task {
-    val a = (js in Compile in benchReactWithout).value.data
-    val b = (js in Compile in benchReactWith   ).value.data
-    val x = a.length()
-    val y = b.length()
-    val d = y - x
-    printf(
-      """
-        | Without: %10s
-        |    With: %10s
-        |Increase: %10s (+%.0f%%)
-        |
-        |""".stripMargin,
-      intfmt format x,
-      intfmt format y,
-      intfmt format d, d.toDouble / x * 100)
-  }
-
-  lazy val bench =
-    benchModule("bench", identity)
-      .aggregate(benchReactWith, benchReactWithout)
-      .settings(
-        cmpJsSizeFast := cmpJsSize(fastOptJS).value,
-        cmpJsSizeFull := cmpJsSize(fullOptJS).value
-      )
-      .configure(addCommandAliases(
-        "cmpJsSize" -> ";cmpJsSizeFast ;cmpJsSizeFull"
-      ))
-
-  lazy val benchReactWithout =
-    benchReactModule("react-without", _ / "react-without")
-
-  lazy val benchReactWith =
-    benchReactModule("react-with", _ / "react-with")
-      .dependsOn(extReact)
+  lazy val extReact = project
+    .in(file("ext-react"))
+    .enablePlugins(ScalaJSPlugin)
+    .configure(commonSettings.js, publicationSettings.js, utestSettings.js)
+    .dependsOn(coreJS)
+    .settings(
+      libraryDependencies ++= Seq(
+        "com.github.japgolly.scalajs-react" %%% "core"        % Ver.ScalaJsReact,
+        "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % "test",
+        "org.scalaz"                        %%% "scalaz-core" % Ver.Scalaz       % "test"),
+      jsDependencies ++= Seq(
+        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+          /        "react-with-addons.js"
+          minified "react-with-addons.min.js"
+          commonJSName "React",
+        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+          /         "react-dom.js"
+          minified  "react-dom.min.js"
+          dependsOn "react-with-addons.js"
+          commonJSName "ReactDOM",
+        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+          /         "react-dom-server.js"
+          minified  "react-dom-server.min.js"
+          dependsOn "react-dom.js"
+          commonJSName "ReactDOMServer"),
+      requiresDOM := true)
 }

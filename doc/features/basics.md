@@ -32,7 +32,7 @@ scalacOptions ++= Seq("-Xelide-below", "OFF")
 _Note: `-Xelide-below OFF` doesn't turn eliding off, it means "elide everything". There must've been painting going on in the building with no windows open when that was named._
 
 Defaults aren't mandatory, you're free to customise as needed.
-(See [Defaults.scala](https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/Defaults.scala).)
+(See [DefaultSettings.scala](https://github.com/japgolly/scalacss/blob/master/core/shared/src/main/scala/scalacss/defaults/DefaultSettings.scala).)
 
 ## StyleSheets
 
@@ -62,4 +62,3 @@ To create a style module,
 
 * [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala)
 * [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala)
-
