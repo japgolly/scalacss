@@ -1893,7 +1893,8 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align",
-      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value))
+      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value) *
+      Transform.values(CanIUse.textJustify)(L.justify))
     def center      = av(L.center)
     def end         = avl(L.end)
     def justify     = av(L.justify)
