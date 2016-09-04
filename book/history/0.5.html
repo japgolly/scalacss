@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="7.1" data-basepath=".." data-revision="Sun Sep 04 2016 14:51:57 GMT+1000 (AEST)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Sun Sep 04 2016 22:28:34 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -622,7 +622,7 @@ If you use <code>styleF</code> with custom data types, see the new section at th
 <li>Defaults no longer use PlatformJS to determine autoprefixing rules. By default, all prefixes will be generated.
 You can re-enable this in your own defaults if you want to keep using PlatformJS.</li>
 <li>Remove <code>scalacss.ext.CssReset</code>. It wasn&apos;t advertised and isn&apos;t appropriate here.</li>
-<li>Refactor to expose less internal API.</li>
+<li>Refactor to expose less internal API. Everything now lives in <code>scalacss.internal</code> with <code>scalacss._</code> being a curated list of exports.</li>
 <li>Upgrade dependencies:<ul>
 <li>Scala.JS 0.6.12.</li>
 <li>Scalatags 0.6.0.</li>
