@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Getting Started | ScalaCSS</title>
+        <title>0.5.x | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.1.0">
@@ -27,10 +27,10 @@
         
     
     
-    <link rel="next" href="../features/cond.html" />
+    <link rel="next" href="../history/0.4.html" />
     
     
-    <link rel="prev" href="../features/index.html" />
+    <link rel="prev" href="../history/index.html" />
     
 
         
@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.1" data-basepath=".." data-revision="Sun Sep 04 2016 14:51:57 GMT+1000 (AEST)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Sun Sep 04 2016 14:51:57 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -135,7 +135,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="2.1" data-path="features/basics.html">
+        <li class="chapter " data-level="2.1" data-path="features/basics.html">
             
                 
                     <a href="../features/basics.html">
@@ -424,7 +424,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.5.html">
+        <li class="chapter active" data-level="7.1" data-path="history/0.5.html">
             
                 
                     <a href="../history/0.5.html">
@@ -594,109 +594,43 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h2 id="settings">Settings</h2>
-<p>The first thing you&apos;ll want to do is import some settings by using one of these <code>import</code> statements:</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._     <span class="hljs-comment">// Choose dev or prod</span>
-<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">DevDefaults</span>._  <span class="hljs-comment">// Always use dev settings</span>
-<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ProdDefaults</span>._ <span class="hljs-comment">// Always use prod settings</span>
-</code></pre>
-<p>This provides two sets of sensible settings: development and production.</p>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Dev</th>
-<th>Prod</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Style conflicts</td>
-<td>Keep both sides of conflict. <br> Issue warnings.</td>
-<td>Keep both sides of conflict.</td>
-</tr>
-<tr>
-<td>Error handling</td>
-<td>Print to <code>stderr</code></td>
-<td>Ignore</td>
-</tr>
-<tr>
-<td>Class name generation</td>
-<td><code>.&lt;class&gt;-&lt;val&gt;</code> <br> Eg. <code>.MyStyles-outer</code></td>
-<td><code>._a0</code> <br> <code>._a1</code> <br> etc</td>
-</tr>
-<tr>
-<td>CSS output</td>
-<td>Pretty-print. <br> Indents, spaces, newlines.</td>
-<td>Minified. <br> No whitespace.</td>
-</tr>
-</tbody>
-</table>
-<p><code>Defaults</code> will choose a mode to use based on its <code>devMode: Boolean</code> method
-which uses
-<a href="http://www.scala-lang.org/api/current/scala/annotation/elidable.html" target="_blank">elision</a>
-to determine production-mode.</p>
-<p>For instance, in my production SBT settings I generally have:</p>
-<pre><code class="lang-scala"><span class="hljs-comment">// Prod settings</span>
-scalacOptions ++= <span class="hljs-type">Seq</span>(<span class="hljs-string">&quot;-Xelide-below&quot;</span>, <span class="hljs-string">&quot;OFF&quot;</span>)
-</code></pre>
-<p><em>Note: <code>-Xelide-below OFF</code> doesn&apos;t turn eliding off, it means &quot;elide everything&quot;. There must&apos;ve been painting going on in the building with no windows open when that was named.</em></p>
-<p>Defaults aren&apos;t mandatory, you&apos;re free to customise as needed.
-(See <a href="https://github.com/japgolly/scalacss/blob/master/core/shared/src/main/scala/scalacss/defaults/DefaultSettings.scala" target="_blank">DefaultSettings.scala</a>.)</p>
-<h2 id="stylesheets">StyleSheets</h2>
-<p>Styles, attributes, values, nearly everything in ScalaCSS is immutable.
-When you&apos;re declaring a large module of styles, it&apos;s very inconvenient to have
-to manually collate all styles you declare.
-<code>mutable.StyleSheet</code> exists for this purpose. Subclass it, create your styles
-and they will be registered automatically so that you can turn them all into
-CSS at once.</p>
-<p>Stylesheets come in two different flavours: standalone and inline.</p>
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Standalone</th>
-<th>Inline</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Purpose</td>
-<td>Generating a CSS file.</td>
-<td>Styling in a Scala or Scala.JS webapp.</td>
-</tr>
-<tr>
-<td>CSS Selectors <br> (class names)</td>
-<td>Mandatory. <br> You need to specify.</td>
-<td>Optional. <br> Generated when not provided.</td>
-</tr>
-<tr>
-<td>Usable style types</td>
-<td>Static only: <code>StyleS</code></td>
-<td>All types: <code>StyleS</code>, <a href="stylef.html"><code>StyleF</code></a>, <a href="nested.html"><code>StyleC</code></a>.</td>
-</tr>
-<tr>
-<td>Return type after creation</td>
-<td>Unit</td>
-<td><code>StyleA</code> (<code>A</code> = Applicable)</td>
-</tr>
-<tr>
-<td>Declaration style</td>
-<td><code>&quot;div.box&quot; - ...</code></td>
-<td><code>val box = style(...)</code></td>
-</tr>
-</tbody>
-</table>
-<p>To create a style module,</p>
-<ol>
-<li>Create an <code>object</code> that extends <code>StyleSheet.Standalone</code> or <code>StyleSheet.Inline</code>.</li>
-<li>Inside the object, import the DSL by typing <code>import dsl._</code>.</li>
-<li>Following the examples, just start typing and if you&apos;re using an IDE with auto-complete, you&apos;ll be guided towards type-safe styles.</li>
-</ol>
-<h5 id="full-examples">Full examples:</h5>
+                        <h1 id="0-5-0-commit-log-https-github-com-japgolly-scalacss-compare-v0-4-1-v0-5-0">0.5.0 (<a href="https://github.com/japgolly/scalacss/compare/v0.4.1...v0.5.0" target="_blank">commit log</a>)</h1>
+<h4 id="most-significant-changes">Most significant changes</h4>
 <ul>
-<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala" target="_blank">StandaloneTest.scala</a></li>
-<li><a href="https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala" target="_blank">InlineTest.scala</a></li>
+<li><p>Drastically reduce size of output JS.</p>
+<ul>
+<li><code>fastOptJS</code> reduced by ~590k</li>
+<li><code>fullOptJS</code> reduced by ~140k</li>
+</ul>
+</li>
+<li><p>Remove Scalaz as a dependency.</p>
+</li>
+</ul>
+<h4 id="other-changes">Other changes</h4>
+<ul>
+<li>Allow decimal percentages in keyframe rules.</li>
+<li>Add negation to length &amp; resolutions.</li>
+<li>Add division to length &amp; resolutions.</li>
+<li>The following JS-only methods have been moved from the <code>ext-react</code> module to the <code>core</code> module.<ul>
+<li><code>createStyleElement</code></li>
+<li><code>installStyle</code></li>
+<li><code>&lt;style&gt;.addToDocument()</code></li>
+</ul>
+</li>
+<li>There is now a compile-time check that <code>styleF</code> inputs are safe to be stored in a <code>Map</code> (which is (by default) what ScalaCss does under-the-hood).
+If you use <code>styleF</code> with custom data types, see the new section at the end of <a href="../features/stylef.html">Functional Styles</a>.</li>
+<li>Defaults no longer use PlatformJS to determine autoprefixing rules. By default, all prefixes will be generated.
+You can re-enable this in your own defaults if you want to keep using PlatformJS.</li>
+<li>Remove <code>scalacss.ext.CssReset</code>. It wasn&apos;t advertised and isn&apos;t appropriate here.</li>
+<li>Refactor to expose less internal API.</li>
+<li>Upgrade dependencies:<ul>
+<li>Scala.JS 0.6.12.</li>
+<li>Scalatags 0.6.0.</li>
+<li>scalajs-react 0.11.1</li>
+<li>scala-js-dom 0.9.1</li>
+</ul>
+</li>
+<li>Update caniuse data to latest.</li>
 </ul>
 
                     
@@ -708,10 +642,10 @@ CSS at once.</p>
         </div>
 
         
-        <a href="../features/index.html" class="navigation navigation-prev " aria-label="Previous page: Features"><i class="fa fa-angle-left"></i></a>
+        <a href="../history/index.html" class="navigation navigation-prev " aria-label="Previous page: History"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../features/cond.html" class="navigation navigation-next " aria-label="Next page: Conditional CSS"><i class="fa fa-angle-right"></i></a>
+        <a href="../history/0.4.html" class="navigation navigation-next " aria-label="Next page: 0.4.x"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>

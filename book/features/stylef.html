@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.5" data-basepath=".." data-revision="Sun May 08 2016 09:44:14 GMT+1000 (AEST)">
+    <div class="book" data-level="2.5" data-basepath=".." data-revision="Sun Sep 04 2016 14:51:57 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -424,13 +424,28 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.4.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.5.html">
+            
+                
+                    <a href="../history/0.5.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.5.x
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.4.html">
             
                 
                     <a href="../history/0.4.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
                         0.4.x
                     </a>
@@ -439,13 +454,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.2" data-path="history/0.3.html">
+        <li class="chapter " data-level="7.3" data-path="history/0.3.html">
             
                 
                     <a href="../history/0.3.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.2.</b>
+                            <b>7.3.</b>
                         
                         0.3.x
                     </a>
@@ -454,13 +469,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.3" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.4" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.3.</b>
+                            <b>7.4.</b>
                         
                         0.2.0
                     </a>
@@ -644,6 +659,31 @@ styleF(<span class="hljs-string">&quot;manual&quot;</span>).int(range)(i =&gt; s
       ...
     ))
 }
+</code></pre>
+<h2 id="universal-equality">Universal Equality</h2>
+<p>Inputs to a <code>styleF</code> are stored in a standard Scala <code>Map</code> so they require sensible hashcodes and universal equality.</p>
+<p>This won&apos;t work:</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyBlob</span>(</span><span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">blobIsHappy</span>:</span> <span class="hljs-type">Boolean</span>)
+
+<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">domain</span> =</span> <span class="hljs-type">Domain</span>.ofValues(<span class="hljs-keyword">new</span> <span class="hljs-type">Blob</span>(<span class="hljs-literal">true</span>), <span class="hljs-keyword">new</span> <span class="hljs-type">Blob</span>(<span class="hljs-literal">false</span>))
+
+styleF(<span class="hljs-string">&quot;blobs&quot;</span>)(domain)(blob =&gt; styleS(&#x2026;))
+</code></pre>
+<p>In order to make the above example work, we:</p>
+<ul>
+<li>Provide working hashcode &amp; universal equality. Easiest is to make <code>MyBlob</code> a <code>case class</code>.</li>
+<li>Provide an implicit <code>UnivEq[MyBlob]</code> instance. This tells the compiler that <code>MyBlob</code> is safe to be stored in a <code>Map</code>.</li>
+</ul>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> japgolly.univeq._
+
+<span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyBlob</span>(</span>blobIsHappy: <span class="hljs-type">Boolean</span>)
+<span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyBlob</span> {</span>
+  <span class="hljs-keyword">implicit</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">univEq</span>:</span> <span class="hljs-type">UnivEq</span>[<span class="hljs-type">MyBlob</span>] = <span class="hljs-type">UnivEq</span>.derive
+}
+
+<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">domain</span> =</span> <span class="hljs-type">Domain</span>.ofValues(<span class="hljs-type">Blob</span>(<span class="hljs-literal">true</span>), <span class="hljs-type">Blob</span>(<span class="hljs-literal">false</span>))
+
+styleF(<span class="hljs-string">&quot;blobs&quot;</span>)(domain)(blob =&gt; styleS(&#x2026;))
 </code></pre>
 
                     

@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.11" data-basepath=".." data-revision="Sun May 08 2016 09:44:14 GMT+1000 (AEST)">
+    <div class="book" data-level="2.11" data-basepath=".." data-revision="Sun Sep 04 2016 14:51:57 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -424,13 +424,28 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.4.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.5.html">
+            
+                
+                    <a href="../history/0.5.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.5.x
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.4.html">
             
                 
                     <a href="../history/0.4.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
                         0.4.x
                     </a>
@@ -439,13 +454,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.2" data-path="history/0.3.html">
+        <li class="chapter " data-level="7.3" data-path="history/0.3.html">
             
                 
                     <a href="../history/0.3.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.2.</b>
+                            <b>7.3.</b>
                         
                         0.3.x
                     </a>
@@ -454,13 +469,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.3" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.4" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.3.</b>
+                            <b>7.4.</b>
                         
                         0.2.0
                     </a>
@@ -580,7 +595,7 @@
                     <section class="normal" id="section-">
                     
                         <h2 id="global-registry">Global Registry</h2>
-<p><a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/mutable/GlobalRegistry.scala" target="_blank">mutable.GlobalRegistry</a>
+<p><a href="https://github.com/japgolly/scalacss/blob/master/core/src/main/scala/scalacss/internal/mutable/GlobalRegistry.scala" target="_blank">mutable.GlobalRegistry</a>
 is an optional convenience for working with inline stylesheets.</p>
 <p>Ideally inline stylesheet modules should either be merged into a single app-wide object,
 or passed around like normal dependencies.</p>
@@ -598,7 +613,7 @@ and have client-code retrieve modules from the global registry by type.</p>
     border(<span class="hljs-number">1</span> px, solid, black))
 }
 </code></pre>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.mutable.<span class="hljs-type">GlobalRegistry</span>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.internal.mutable.<span class="hljs-type">GlobalRegistry</span>
 
 <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">onStartup</span>(</span>): <span class="hljs-type">Unit</span> = {
   <span class="hljs-comment">// Register styles</span>
