@@ -120,6 +120,7 @@ object ScalaCssBuild {
     .dependsOn(core)
     .configure(utestSettings)
     .settings(
+      moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
         "com.lihaoyi" %%% "scalatags"   % Ver.Scalatags,
         "org.scalaz"  %%% "scalaz-core" % Ver.Scalaz % "test"))
@@ -130,6 +131,7 @@ object ScalaCssBuild {
     .configure(commonSettings.js, publicationSettings.js, utestSettings.js)
     .dependsOn(coreJS)
     .settings(
+      moduleName := "ext-react",
       libraryDependencies ++= Seq(
         "com.github.japgolly.scalajs-react" %%% "core"        % Ver.ScalaJsReact,
         "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % "test",
