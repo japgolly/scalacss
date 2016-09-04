@@ -32,7 +32,7 @@ package object internal {
    * This is the name of a `@keyframes` group.
    */
   type KeyframeAnimationName = ClassName
-  type KeyframeSelector      = Percentage[Int]
+  type KeyframeSelector      = Percentage[_]
 
   type StyleStream    = Stream[CssEntry.Style]
   type KeyframeStream = Stream[CssEntry.Keyframes]

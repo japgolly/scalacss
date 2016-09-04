@@ -267,7 +267,7 @@ object DslMacros {
   }
 
   trait MKeyframes {
-    def apply(frames: (Percentage[Int], StyleA)*): Keyframes
+    def apply(frames: (KeyframeSelector, StyleA)*): Keyframes
   }
 
   trait MFontFace {

@@ -146,6 +146,7 @@ final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
 }
 object Percentage {
   implicit def univEq[N: UnivEq]: UnivEq[Percentage[N]] = UnivEq.derive
+  implicit def univEqX: UnivEq[Percentage[_]] = UnivEq.force // TODO This isn't actually true...
 }
 
 sealed abstract class ResolutionUnit(val value: String)
