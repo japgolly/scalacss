@@ -8,10 +8,14 @@ import Pseudo._
 object UsageTest extends TestSuite {
   implicit def composition = Compose.safe
 
+  val thing = 2.ex
+
   val s1 =
     style(
       margin(12.px),
-      padding(-(2.ex)),
+      paddingTop(-thing),
+      paddingLeft(thing * 2),
+      paddingRight(thing / 4),
 
       Hover(
         fontWeight.normal,
@@ -40,7 +44,9 @@ object UsageTest extends TestSuite {
         """
           |.a1 {
           |  margin: 12px;
-          |  padding: -2ex;
+          |  padding-top: -2ex;
+          |  padding-left: 4ex;
+          |  padding-right: 0.5ex;
           |}
           |
           |.a1:hover {

@@ -131,6 +131,9 @@ final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: Length
   def *(m: N)(implicit N: Numeric[N]): Length[N] =
     copy(n = N.times(this.n, m))
 
+  def /(m: Double)(implicit N: Numeric[N]): Length[Double] =
+    copy(n = N.toDouble(n) / m)
+
   def unary_-(implicit N: Numeric[N]): Length[N] =
     copy(n = N.negate(this.n))
 }
@@ -162,6 +165,9 @@ final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: Re
 
   def *(m: N)(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.times(this.n, m))
+
+  def /(m: Double)(implicit N: Numeric[N]): Resolution[Double] =
+    copy(n = N.toDouble(n) / m, u)
 
   def unary_-(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.negate(this.n), u)
