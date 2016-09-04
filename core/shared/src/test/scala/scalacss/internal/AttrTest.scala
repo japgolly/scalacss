@@ -62,7 +62,7 @@ object AttrTest extends TestSuite {
     'keyPrefixes {
       def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
       test(textAlign,    "text-align")
-      test(borderRadius, "border-radius", "-moz-border-radius", "-webkit-border-radius")
+      test(borderRadius, "border-radius", "-moz-border-radius")
       test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
     }
 

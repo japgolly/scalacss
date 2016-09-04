@@ -50,8 +50,8 @@ object DefaultsTest extends TestSuite {
           |
           |.DefaultsTest_Dev_SS-style2 {
           |  cursor: pointer;
-          |  cursor: -webkit-zoom-in;
           |  cursor: -moz-zoom-in;
+          |  cursor: -webkit-zoom-in;
           |  cursor: -o-zoom-in;
           |  cursor: zoom-in;
           |}
@@ -95,7 +95,7 @@ object DefaultsTest extends TestSuite {
     def test(): Unit =
       assertEq(css1 +  css2,
         "._a0{margin:12px;margin-left:6px}" +
-        "._a1{cursor:pointer;cursor:-webkit-zoom-in;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
+        "._a1{cursor:pointer;cursor:-moz-zoom-in;cursor:-webkit-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
         "._a2{background-color:#333}" +
         "._a3{background-color:#666}" +
         "._b0{width:inherit}"
