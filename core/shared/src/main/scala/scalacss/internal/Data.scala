@@ -130,6 +130,9 @@ final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: Length
 
   def *(m: N)(implicit N: Numeric[N]): Length[N] =
     copy(n = N.times(this.n, m))
+
+  def unary_-(implicit N: Numeric[N]): Length[N] =
+    copy(n = N.negate(this.n))
 }
 object Length {
   implicit def univEq[N: UnivEq]: UnivEq[Length[N]] = UnivEq.derive
@@ -159,6 +162,9 @@ final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: Re
 
   def *(m: N)(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.times(this.n, m))
+
+  def unary_-(implicit N: Numeric[N]): Resolution[N] =
+    copy(n = N.negate(this.n), u)
 }
 
 final case class Ratio(x: Int, y: Int) {

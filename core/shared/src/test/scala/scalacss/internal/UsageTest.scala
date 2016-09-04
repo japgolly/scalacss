@@ -11,7 +11,7 @@ object UsageTest extends TestSuite {
   val s1 =
     style(
       margin(12.px),
-      padding(2.ex),
+      padding(-(2.ex)),
 
       Hover(
         fontWeight.normal,
@@ -40,7 +40,7 @@ object UsageTest extends TestSuite {
         """
           |.a1 {
           |  margin: 12px;
-          |  padding: 2ex;
+          |  padding: -2ex;
           |}
           |
           |.a1:hover {
