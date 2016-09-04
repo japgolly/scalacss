@@ -26,7 +26,7 @@ object ScalaCssBuild {
   val commonSettings = ConfigureBoth(
     _.settings(
       organization       := "com.github.japgolly.scalacss",
-      version            := "0.5.0-SNAPSHOT",
+      version            := "0.5.0",
       homepage           := Some(url("https://github.com/japgolly/scalacss")),
       licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion       := Ver.Scala211,
