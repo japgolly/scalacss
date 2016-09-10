@@ -60,5 +60,5 @@ To create a style module,
 
 ##### Full examples:
 
-* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/StandaloneTest.scala)
-* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/src/test/scala/scalacss/full/InlineTest.scala)
+* [StandaloneTest.scala](https://github.com/japgolly/scalacss/blob/master/core/shared/src/test/scala/scalacss/full/StandaloneTest.scala)
+* [InlineTest.scala](https://github.com/japgolly/scalacss/blob/master/core/shared/src/test/scala/scalacss/full/InlineTest.scala)
