@@ -12,21 +12,21 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.4.3"
-    final val Nyaya         = "0.7.2"
-    final val ReactJs       = "15.3.1"
+    final val MTest         = "0.4.4"
+    final val Nyaya         = "0.8.0"
+    final val ReactJs       = "15.3.2"
     final val Scala211      = "2.11.8"
     final val ScalaJsDom    = "0.9.1"
     final val ScalaJsReact  = "0.11.1"
-    final val Scalatags     = "0.6.0"
-    final val Scalaz        = "7.2.5"
+    final val Scalatags     = "0.6.2"
+    final val Scalaz        = "7.2.7"
     final val UnivEq        = "1.0.1"
   }
 
   val commonSettings = ConfigureBoth(
     _.settings(
       organization       := "com.github.japgolly.scalacss",
-      version            := "0.5.0",
+      version            := "0.5.1-SNAPSHOT",
       homepage           := Some(url("https://github.com/japgolly/scalacss")),
       licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion       := Ver.Scala211,
@@ -53,8 +53,6 @@ object ScalaCssBuild {
         "cc"  -> ";clean;compile",
         "ctc" -> ";clean;test:compile",
         "ct"  -> ";clean;test")))
-    .jsConfigure(
-      _.settings(scalaJSUseRhino := false))
 
   def definesMacros = ConfigureBoth(
     _.settings(
@@ -94,7 +92,7 @@ object ScalaCssBuild {
   lazy val coreJVM = core.jvm
   lazy val coreJS  = core.js
   lazy val core = crossProject
-    .configure(
+    .configureCross(
       commonSettings,
       publicationSettings,
       definesMacros,
@@ -116,9 +114,9 @@ object ScalaCssBuild {
   lazy val extScalatagsJS  = extScalatags.js
   lazy val extScalatags = crossProject
     .in(file("ext-scalatags"))
-    .configure(commonSettings, publicationSettings)
+    .configureCross(commonSettings, publicationSettings)
     .dependsOn(core)
-    .configure(utestSettings)
+    .configureCross(utestSettings)
     .settings(
       moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
