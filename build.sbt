@@ -1,6 +1,8 @@
 name      := "ScalaCSS"
 startYear := Some(2015)
 
+version in ThisBuild := "0.5.1"
+
 val root              = ScalaCssBuild.root
 val rootJVM           = ScalaCssBuild.rootJVM
 val rootJS            = ScalaCssBuild.rootJS
