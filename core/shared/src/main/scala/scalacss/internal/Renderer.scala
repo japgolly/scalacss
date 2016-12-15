@@ -51,7 +51,7 @@ object StringRenderer {
 
   type KeyframeSelectorO = Option[KeyframeSelector]
 
-  case class FormatSB(kfStart : String                                     => Unit,
+  case class FormatSB(kfStart : (String, String)                           => Unit,
                       kfsStart: Value                                      => Unit,
                       mqStart : CssMediaQuery                              => Unit,
                       selStart: (CssMediaQueryO, CssSelector)              => Unit,
@@ -80,15 +80,17 @@ object StringRenderer {
           e.mq foreach mqEnd
 
         case e: CssEntry.Keyframes =>
-          kfStart(e.name.value)
-          for ((sel, styles) <- e.frames) {
-            kfsStart(sel.value)
-            val selO = Some(sel)
-            for (s <- styles)
-              printCssKV(selO, s.mq, s.content)
-            kfsEnd(sel)
+          Seq("-webkit-", "-moz-", "-o-", "").foreach { p => 
+            kfStart(p, e.name.value)
+            for ((sel, styles) <- e.frames) {
+              kfsStart(sel.value)
+              val selO = Some(sel)
+              for (s <- styles)
+                printCssKV(selO, s.mq, s.content)
+              kfsEnd(sel)
+            }
+            kfEnd(e.name)
           }
-          kfEnd(e.name)
 
         case e: CssEntry.FontFace =>
           ff(e)
@@ -138,7 +140,7 @@ object StringRenderer {
       quoteIfNeeded(sb, c.value, quote)
     }
     FormatSB(
-      kfStart  = n         => { sb append "@keyframes "; sb append n; sb append '{' },
+      kfStart  = (p, n)    => { sb append s"@${p}keyframes "; sb append n; sb append '{' },
       kfsStart = s         => { sb append s; sb append '{' },
       mqStart  = m         => { sb append m; sb append '{' },
       selStart = (_, s)    => { sb append s; sb append '{' },
@@ -177,7 +179,7 @@ object StringRenderer {
       sb append ";\n"
     }
     FormatSB(
-      kfStart  = n => { sb append "@keyframes "; sb append n; sb append " {\n" },
+      kfStart  = (p, n) => { sb append s"@${p}keyframes "; sb append n; sb append " {\n" },
       kfsStart = s => { sb append indent; sb append s; sb append " {\n" },
       mqStart  = mq => {
                    sb append mq

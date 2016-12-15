@@ -40,6 +40,57 @@ This code will not produce separate CSS for value `hello2`; its style will only 
 Rendered CSS gonna look like following:
 
 ```css
+@-webkit-keyframes Demo-kf1 {
+  0% {
+    height: 100px;
+    width: 30px;
+  }
+
+  20% {
+    height: 150px;
+    width: 30px;
+  }
+
+  100% {
+    height: 200px;
+    width: 60px;
+  }
+}
+
+@-moz-keyframes Demo-kf1 {
+  0% {
+    height: 100px;
+    width: 30px;
+  }
+
+  20% {
+    height: 150px;
+    width: 30px;
+  }
+
+  100% {
+    height: 200px;
+    width: 60px;
+  }
+}
+
+@-o-keyframes Demo-kf1 {
+  0% {
+    height: 100px;
+    width: 30px;
+  }
+
+  20% {
+    height: 150px;
+    width: 30px;
+  }
+
+  100% {
+    height: 200px;
+    width: 60px;
+  }
+}
+
 @keyframes Demo-kf1 {
   0% {
     height: 100px;

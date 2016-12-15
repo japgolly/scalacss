@@ -506,6 +506,60 @@ object InlineTest extends utest.TestSuite {
     }
 
     'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
+       |@-webkit-keyframes MyInlineWithKeyframes-kf1 {
+       |  0% {
+       |    height: 100px;
+       |    width: 30px;
+       |  }
+       |
+       |  20.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  100% {
+       |    height: 200px;
+       |    width: 60px;
+       |  }
+       |
+       |}
+       |
+       |@-moz-keyframes MyInlineWithKeyframes-kf1 {
+       |  0% {
+       |    height: 100px;
+       |    width: 30px;
+       |  }
+       |
+       |  20.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  100% {
+       |    height: 200px;
+       |    width: 60px;
+       |  }
+       |
+       |}
+       |
+       |@-o-keyframes MyInlineWithKeyframes-kf1 {
+       |  0% {
+       |    height: 100px;
+       |    width: 30px;
+       |  }
+       |
+       |  20.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  100% {
+       |    height: 200px;
+       |    width: 60px;
+       |  }
+       |
+       |}
+       |
        |@keyframes MyInlineWithKeyframes-kf1 {
        |  0% {
        |    height: 100px;
