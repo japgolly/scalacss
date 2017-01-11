@@ -35,7 +35,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     mutex(
       _styles.exists(_.className ==* className)
         || _keyframes.exists(_.name ==* className)
-        || _fontFaces.exists(_.fontFamily == className.value))
+        || _fontFaces.exists(_.fontFamily ==* className.value))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -134,7 +134,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   }
 
   def registerFontFace(fontFace: FontFace)(implicit cnh: ClassNameHint): FontFace = {
-    val cn = macroName(cnh, fontFace.fontFamily).fold(nextName(cnh))(ensureUnique)
+    val cn = macroName(cnh, fontFace.fontFamily).fold(nextName(cnh))(if (fontFace.uniqueName) ensureUnique else identity)
     val ff = fontFace.copy(fontFamily = cn.value)
     emitRegistrationWarnings(cn, Vector.empty)
     _fontFaces :+= ff

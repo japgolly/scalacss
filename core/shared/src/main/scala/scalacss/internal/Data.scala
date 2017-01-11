@@ -50,6 +50,7 @@ final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSel
   * http://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
   */
 final case class FontFace(fontFamily         : String,
+                          uniqueName         : Boolean,
                           src                : NonEmptyVector[String],
                           fontStretchValue   : Option[Value] = None,
                           fontStyleValue     : Option[Value] = None,
@@ -63,9 +64,9 @@ final case class FontFace(fontFamily         : String,
 }
 
 object FontFace {
-  final class FontSrcSelector(private val fontFamily: String) extends AnyVal {
+  final class FontSrcSelector(val fontFamily: String, val uniqueName: Boolean) {
     def src(src: String, additionalSrc: String*): FontFace =
-      FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
+      FontFace(fontFamily, uniqueName, NonEmptyVector(src, additionalSrc.toVector))
   }
 
   final class FontStretchBuilder(private val b: Value => FontFace) extends AnyVal {
