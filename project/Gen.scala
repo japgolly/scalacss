@@ -12,7 +12,9 @@ object Gen {
     val r5 = """^[a-z].*""".r.pattern
 
     (_: Project).configure(_.settings(
-      sourceGenerators in Compile <+= (sourceDirectory in Compile, sourceManaged in Compile) map { (src, tgt) =>
+      sourceGenerators in Compile += Def.task {
+        val src = (sourceDirectory in Compile).value
+        val tgt = (sourceManaged in Compile).value
         val attrs =
           IO.readLines(src / "scala/japgolly/scalacss/Attrs.scala").toStream
             .filter   (r1.matcher(_).matches)
@@ -35,7 +37,7 @@ object Gen {
         IO.write(genFile, attrAliases)
 
         genFile :: Nil
-      }
+      }.taskValue
     ))
   }
 
