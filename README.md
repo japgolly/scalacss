@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/japgolly/scalacss.svg?branch=master)](https://travis-ci.org/japgolly/scalacss)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/japgolly/scalacss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Latest version](https://index.scala-lang.org/japgolly/scalacss/core/latest.svg?color=orange)](https://index.scala-lang.org/japgolly/scalacss/core)
 
 ScalaCSS aims to bring type-safety and clarity to
 * creating CSS
