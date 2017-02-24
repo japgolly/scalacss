@@ -1,7 +1,5 @@
-import sbt._
-import Keys._
-import org.scalajs.sbtplugin.ScalaJSPlugin
-import ScalaJSPlugin.autoImport._
+import sbt._, Keys._
+import org.scalajs.sbtplugin.ScalaJSPlugin, ScalaJSPlugin.autoImport._
 import Lib._
 
 object ScalaCssBuild {
@@ -12,15 +10,15 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.4.4"
+    final val MTest         = "0.4.5"
     final val Nyaya         = "0.8.1"
     final val ReactJs       = "15.3.2"
     final val Scala211      = "2.11.8"
-    final val Scala212      = "2.12.0"
+    final val Scala212      = "2.12.1"
     final val ScalaJsDom    = "0.9.1"
     final val ScalaJsReact  = "0.11.3"
-    final val Scalatags     = "0.6.2"
-    final val Scalaz        = "7.2.7"
+    final val Scalatags     = "0.6.3"
+    final val Scalaz        = "7.2.9"
     final val UnivEq        = "1.0.2"
   }
 
@@ -29,7 +27,7 @@ object ScalaCssBuild {
       organization       := "com.github.japgolly.scalacss",
       homepage           := Some(url("https://github.com/japgolly/scalacss")),
       licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion       := Ver.Scala211,
+      scalaVersion       := Ver.Scala212,
       crossScalaVersions := Seq(Ver.Scala211, Ver.Scala212),
       scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
                               "-language:postfixOps", "-language:implicitConversions",
