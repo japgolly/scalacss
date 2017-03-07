@@ -226,7 +226,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip">MDN</a>
    */
-  final def backgroundClip = Attr.real("background-clip")
+  object backgroundClip extends TypedAttrBase with BackgroundClipDecorationOps {
+    override val attr = Attr.real("background-clip", Transform keys CanIUse.backgroundImgOpts)
+
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with BackgroundClipDecorationOps {
+      override def av: AV = AV(attr, v)
+      override protected def next(v: Value): Accum = new Accum(s"${this.v} $v")
+    }
+  }
+  trait BackgroundClipDecorationOps {
+    protected def next(v: Value): backgroundClip.Accum
+    final def contentBox: backgroundClip.Accum = next(Literal.contentBox)
+    final def paddingBox: backgroundClip.Accum = next(Literal.paddingBox)
+    final def borderBox: backgroundClip.Accum = next(Literal.borderBox)
+  }
 
   /**
    * The background-color CSS property sets the background color of an element, either through a color value or the keyword transparent.
