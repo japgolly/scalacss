@@ -259,6 +259,8 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
       .fontStretch.ultraCondensed
       .fontWeight._200)
   val ff4 = fontFace("myFont3")(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+  val ff5 = fontFace(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+  val ff6 = fontFace(_.src("local(HelveticaNeue)", "url(font.woff)"))
 
   val myFontText = style(
     fontFamily(ff)
@@ -654,8 +656,18 @@ object InlineTest extends utest.TestSuite {
          |}
          |
          |@font-face {
-         |  font-family: MyInlineWithFontFace-myFont3-2;
+         |  font-family: MyInlineWithFontFace-myFont3;
          |  src: local(HelveticaNeue),url(font2.woff);
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-scalacss-generic;
+         |  src: local(HelveticaNeue),url(font2.woff);
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-scalacss-generic-2;
+         |  src: local(HelveticaNeue),url(font.woff);
          |}
          |
          |.MyInlineWithFontFace-myFontText {

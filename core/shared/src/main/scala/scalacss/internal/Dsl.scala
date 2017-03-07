@@ -271,6 +271,7 @@ object DslMacros {
   }
 
   trait MFontFace {
+    def apply(config: FontFace.FontSrcSelector => FontFace): FontFace
     def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace): FontFace
   }
 
