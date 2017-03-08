@@ -1,0 +1,9 @@
+{
+  "name"    : "scalacss",
+  "private" : true,
+  "license" : "UNLICENSED",
+
+  "dependencies": {
+    "gitbook-cli" : "*"
+  }
+}
