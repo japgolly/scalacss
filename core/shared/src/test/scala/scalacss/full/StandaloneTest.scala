@@ -40,7 +40,7 @@ object StandaloneTest extends utest.TestSuite {
 
   override val tests = TestSuite {
     def norm(css: String) = css.trim
-    assertEq(norm(MyStandalone.render), norm(
+    assertMultiline(norm(MyStandalone.render), norm(
       """
         |div.std {
         |  margin: 12px auto;
