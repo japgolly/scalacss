@@ -1,6 +1,6 @@
 package scalacss
 
-import japgolly.scalajs.react._, vdom.prefix_<^._
+import japgolly.scalajs.react._, vdom.html_<^._
 import org.scalajs.dom.raw.HTMLStyleElement
 import org.scalajs.dom.document
 import utest._
@@ -60,7 +60,7 @@ object ReactTest extends TestSuite {
   override val tests = TestSuite {
 
     'styleReactElement {
-      val html = ReactDOMServer.renderToStaticMarkup(MyStyles.render[ReactElement])
+      val html = ReactDOMServer.renderToStaticMarkup(MyStyles.render[VdomElement])
       assertStyle(html, expectedStyleTag1)
     }
 

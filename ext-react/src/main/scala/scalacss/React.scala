@@ -1,15 +1,14 @@
 package scalacss
 
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.prefix_<^._
+import japgolly.scalajs.react.vdom.html_<^._
 import scalacss.defaults.PlatformExports
 import scalacss.internal.{Css, Renderer}
 
 object ScalaCssReactFns {
-  def createStyleTag(styleStr: String): ReactElement =
+  def createStyleTag(styleStr: String): VdomElement =
     <.styleTag(^.`type` := "text/css", styleStr)
 
-  class ReactElementRenderer(s: Renderer[String]) extends Renderer[ReactElement] {
+  class ReactElementRenderer(s: Renderer[String]) extends Renderer[VdomElement] {
     override def apply(css: Css) = createStyleTag(s(css))
   }
 }
@@ -26,9 +25,9 @@ object ScalaCssReact extends ScalaCssReactImplicits
 trait ScalaCssReactImplicits extends PlatformExports {
   import ScalaCssReactFns._
 
-  implicit final def styleaToTagMod(s: StyleA): TagMod =
+  implicit final def scalacssStyleaToTagMod(s: StyleA): TagMod =
     ^.className := s.htmlClass
 
-  implicit final def cssReactElementRenderer(implicit s: Renderer[String]): Renderer[ReactElement] =
+  implicit final def scalacssReactElementRenderer(implicit s: Renderer[String]): Renderer[VdomElement] =
     new ReactElementRenderer(s)
 }
