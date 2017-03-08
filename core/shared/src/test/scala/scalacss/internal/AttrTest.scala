@@ -8,6 +8,7 @@ import scalacss.test.TestUtil._
 import AttrCmp.{Overlap, Unrelated}
 import Attrs._
 import ValueT.Rules._
+import Dsl.ToAVToAV
 
 object AttrTest extends TestSuite {
 
@@ -88,8 +89,16 @@ object AttrTest extends TestSuite {
       test(textIndent(length, hanging, eachLine), "3px hanging each-line")
     }
 
+    'backgroundClip {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      test(backgroundClip.paddingBox                        , "padding-box")
+      test(backgroundClip.borderBox                         , "border-box")
+      test(backgroundClip.contentBox                        , "content-box")
+      test(backgroundClip.contentBox.paddingBox             , "content-box padding-box")
+      test(backgroundClip.contentBox.paddingBox.av.important, "content-box padding-box !important")
+    }
+
     'borderRadius{
-      implicit def ToAVToAV(x: ToAV): AV = x.av
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
       test(borderRadius(px(3)), "3px")
       test(borderRadius(px(3))(px(5)), "3px / 5px")

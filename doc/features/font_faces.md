@@ -3,11 +3,12 @@
 ScalaCSS provides support for CSS3 `@font-face` rule.
 
 ```scala
+def fontFace                    (config: FontSrcSelector => FontFace): FontFace
 def fontFace(fontFamily: String)(config: FontSrcSelector => FontFace): FontFace
 ```
 
 `fontFace` method takes two arguments:
-* `fontFamily` - name of the font face.
+* `fontFamily` - name of the font face. *(Optional)*
 * `config` - additional configuration.
   At a minimum the font sources `.src(…)` must be specified.
   Next you can specify the following optional attributes:
@@ -38,9 +39,6 @@ object Demo extends StyleSheet.Inline {
       .fontStretch.ultraCondensed
       .fontWeight._200)
 
-  val ff4 = fontFace("myFont3")(
-    _.src("local(HelveticaNeue)", "url(font2.woff)"))
-
   val myFontText = style(
     fontFamily(ff))
 }
@@ -50,7 +48,7 @@ which produces this CSS:
 
 ```css
 @font-face {
-  font-family: MyInlineWithFontFace-myFont;
+  font-family: myFont;
   src: url(font.woff);
   font-stretch: expanded;
   font-style: italic;
@@ -58,22 +56,17 @@ which produces this CSS:
 }
 
 @font-face {
-  font-family: MyInlineWithFontFace-myFont2;
+  font-family: myFont2;
   src: url(font2.woff);
   font-style: oblique;
   font-weight: 200;
 }
 
 @font-face {
-  font-family: MyInlineWithFontFace-myFont3;
+  font-family: myFont3;
   src: local(HelveticaNeue),url(font2.woff);
   font-stretch: ultra-condensed;
   font-weight: 200;
-}
-
-@font-face {
-  font-family: MyInlineWithFontFace-myFont3-2;
-  src: local(HelveticaNeue),url(font2.woff);
 }
 
 .MyInlineWithFontFace-myFontText {

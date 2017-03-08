@@ -1,6 +1,6 @@
 import org.scalajs.dom.{console, document}
 import scala.scalajs.js.annotation.JSExport
-import japgolly.scalajs.react._, vdom.prefix_<^._, ScalazReact._
+import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
 import scalacss.Defaults._
 import scalacss.ScalaCssReact._
@@ -19,14 +19,14 @@ object Demo {
   @JSExport("main")
   def main(): Unit = {
     MyStyles.addToDocument()
-    ReactDOM.render(TodoApp(), document getElementById "todo")
+    TodoApp().renderIntoDOM(document getElementById "todo")
     console.log("hello")
   }
 
-  val TodoList = ReactComponentB[List[String]]("TodoList")
+  val TodoList = ScalaComponent.build[List[String]]("TodoList")
     .render_P(props => {
       def createItem(itemText: String) = <.li(itemText)
-      <.ul(props map createItem)
+      <.ul(props.map(createItem): _*)
     })
     .build
 
@@ -34,26 +34,26 @@ object Demo {
 
   val ST = ReactS.Fix[State]
 
-  def acceptChange(e: ReactEventI) =
+  def acceptChange(e: ReactEventFromInput) =
     ST.mod(_.copy(text = e.target.value))
 
-  def handleSubmit(e: ReactEventI) = (
+  def handleSubmit(e: ReactEventFromInput) = (
     ST.retM(e.preventDefaultCB)
 
     >>
     ST.mod(s => State(s.items :+ s.text, "")).liftCB
   )
 
-  val TodoApp = ReactComponentB[Unit]("TodoApp")
+  val TodoApp = ScalaComponent.build[Unit]("TodoApp")
     .initialState(State(Nil, ""))
     .renderS(($,s) =>
       <.div(
         MyStyles.outer,
         <.h3("TODO"),
         TodoList(s.items),
-        <.form(^.onSubmit ==> $._runState(handleSubmit))(
+        <.form(^.onSubmit ==> $.runStateFn(handleSubmit))(
           <.input(
-            ^.onChange ==> $._runState(acceptChange),
+            ^.onChange ==> $.runStateFn(acceptChange),
             ^.value := s.text),
           <.button("Add #", s.items.length + 1)
         )

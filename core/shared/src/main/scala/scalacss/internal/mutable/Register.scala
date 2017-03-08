@@ -17,7 +17,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   var _nameGen   = initNameGen
   var _styles    = Vector.empty[StyleA]
   var _keyframes = Vector.empty[Keyframes]
-  var _fontFaces = Vector.empty[FontFace]
+  var _fontFaces = Vector.empty[FontFace[String]]
   var _rendered  = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -34,8 +34,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   private def isTaken(className: ClassName): Boolean =
     mutex(
       _styles.exists(_.className ==* className)
-        || _keyframes.exists(_.name ==* className)
-        || _fontFaces.exists(_.fontFamily == className.value))
+        || _keyframes.exists(_.name ==* className))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -133,10 +132,10 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     kf
   }
 
-  def registerFontFace(fontFace: FontFace)(implicit cnh: ClassNameHint): FontFace = {
-    val cn = macroName(cnh, fontFace.fontFamily).fold(nextName(cnh))(ensureUnique)
-    val ff = fontFace.copy(fontFamily = cn.value)
-    emitRegistrationWarnings(cn, Vector.empty)
+  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = {
+    // This allows duplicate fontFamily names to be specified
+    val finalFamilyName = fontFace.fontFamily.getOrElse(nextName(cnh).value)
+    val ff = fontFace.copy(fontFamily = finalFamilyName)
     _fontFaces :+= ff
     ff
   }
@@ -151,7 +150,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _keyframes
   }
 
-  def fontFaces: Vector[FontFace] = mutex {
+  def fontFaces: Vector[FontFace[String]] = mutex {
     _rendered = true
     _fontFaces
   }

@@ -259,14 +259,12 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
       .fontStretch.ultraCondensed
       .fontWeight._200)
   val ff4 = fontFace("myFont3")(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+  val ff5 = fontFace(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+  val ff6 = fontFace(_.src("local(HelveticaNeue)", "url(font.woff)"))
 
-  val myFontText = style(
-    fontFamily(ff)
-  )
-
-  val myFontText2 = style(
-    fontFamily(ff3)
-  )
+  val myFontText = style(fontFamily(ff))
+  val myFontText2 = style(fontFamily(ff3))
+  val myFontText3 = style(fontFamily(ff6))
 }
 
 object InlineTest extends utest.TestSuite {
@@ -276,7 +274,7 @@ object InlineTest extends utest.TestSuite {
   def norm(css: String) = css.trim
 
   override def tests = TestSuite {
-    'css1 - assertEq(norm(MyInline.render), norm(
+    'css1 - assertMultiline(norm(MyInline.render), norm(
       """
         |.manual:not(:first-child):visited {
         |  -moz-animation-delay: 60s,50ms;
@@ -367,7 +365,7 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'css2 - assertEq(norm(MyInline2.render), norm(
+    'css2 - assertMultiline(norm(MyInline2.render), norm(
       """
         |.MyInline2-sb2 {
         |  margin-top: inherit;
@@ -416,7 +414,7 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'css3 - assertEq(norm(MyInline3.render), norm(
+    'css3 - assertMultiline(norm(MyInline3.render), norm(
       """
         |.MyInline3-dup1b {
         |  word-break: break-all;
@@ -505,7 +503,7 @@ object InlineTest extends utest.TestSuite {
 
     }
 
-    'keyframes - assertEq(norm(MyInlineWithKeyframes.render), norm("""
+    'keyframes - assertMultiline(norm(MyInlineWithKeyframes.render), norm("""
        |@keyframes MyInlineWithKeyframes-kf1 {
        |  0% {
        |    height: 100px;
@@ -557,7 +555,7 @@ object InlineTest extends utest.TestSuite {
        |}
      """.stripMargin))
 
-    'complexCond - assertEq(norm(MyInlineComplexCond.render), norm(
+    'complexCond - assertMultiline(norm(MyInlineComplexCond.render), norm(
       """.manual[some-attribute="true"]::after {
         |  padding: 5px;
         |}
@@ -630,9 +628,9 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'fontFaces - assertEq(norm(MyInlineWithFontFace.render), norm("""
+    'fontFaces - assertMultiline(norm(MyInlineWithFontFace.render), norm("""
          |@font-face {
-         |  font-family: MyInlineWithFontFace-myFont;
+         |  font-family: myFont;
          |  src: url(font.woff);
          |  font-stretch: expanded;
          |  font-style: italic;
@@ -640,30 +638,44 @@ object InlineTest extends utest.TestSuite {
          |}
          |
          |@font-face {
-         |  font-family: MyInlineWithFontFace-myFont2;
+         |  font-family: myFont2;
          |  src: url(font2.woff);
          |  font-style: oblique;
          |  font-weight: 200;
          |}
          |
          |@font-face {
-         |  font-family: MyInlineWithFontFace-myFont3;
+         |  font-family: myFont3;
          |  src: local(HelveticaNeue),url(font2.woff);
          |  font-stretch: ultra-condensed;
          |  font-weight: 200;
          |}
          |
          |@font-face {
-         |  font-family: MyInlineWithFontFace-myFont3-2;
+         |  font-family: myFont3;
          |  src: local(HelveticaNeue),url(font2.woff);
          |}
          |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-0001;
+         |  src: local(HelveticaNeue),url(font2.woff);
+         |}
+         |
+         |@font-face {
+         |  font-family: MyInlineWithFontFace-0002;
+         |  src: local(HelveticaNeue),url(font.woff);
+         |}
+         |
          |.MyInlineWithFontFace-myFontText {
-         |  font-family: MyInlineWithFontFace-myFont;
+         |  font-family: myFont;
          |}
          |
          |.MyInlineWithFontFace-myFontText2 {
-         |  font-family: MyInlineWithFontFace-myFont3;
+         |  font-family: myFont3;
+         |}
+         |
+         |.MyInlineWithFontFace-myFontText3 {
+         |  font-family: MyInlineWithFontFace-0002;
          |}
        """.stripMargin))
   }

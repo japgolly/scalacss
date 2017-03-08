@@ -49,26 +49,26 @@ final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSel
   *
   * http://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
   */
-final case class FontFace(fontFamily         : String,
-                          src                : NonEmptyVector[String],
-                          fontStretchValue   : Option[Value] = None,
-                          fontStyleValue     : Option[Value] = None,
-                          fontWeightValue    : Option[Value] = None,
-                          unicodeRangeValue  : Option[UnicodeRange] = None) {
+final case class FontFace[FF](fontFamily         : FF,
+                              src                : NonEmptyVector[String],
+                              fontStretchValue   : Option[Value] = None,
+                              fontStyleValue     : Option[Value] = None,
+                              fontWeightValue    : Option[Value] = None,
+                              unicodeRangeValue  : Option[UnicodeRange] = None) {
   import FontFace._
-  def fontStretch                      = new FontStretchBuilder(v => copy(fontStretchValue  = Some(v)))
-  def fontStyle                        = new FontStyleBuilder  (v => copy(fontStyleValue    = Some(v)))
-  def fontWeight                       = new FontWeightBuilder (v => copy(fontWeightValue   = Some(v)))
+  def fontStretch                      = new FontStretchBuilder[FF](v => copy(fontStretchValue  = Some(v)))
+  def fontStyle                        = new FontStyleBuilder  [FF](v => copy(fontStyleValue    = Some(v)))
+  def fontWeight                       = new FontWeightBuilder [FF](v => copy(fontWeightValue   = Some(v)))
   def unicodeRange(from: Int, to: Int) = copy(unicodeRangeValue = Some(UnicodeRange(from, to)))
 }
 
 object FontFace {
-  final class FontSrcSelector(private val fontFamily: String) extends AnyVal {
-    def src(src: String, additionalSrc: String*): FontFace =
+  final class FontSrcSelector(val fontFamily: Option[String]) extends AnyVal {
+    def src(src: String, additionalSrc: String*): FontFace[Option[String]] =
       FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
   }
 
-  final class FontStretchBuilder(private val b: Value => FontFace) extends AnyVal {
+  final class FontStretchBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
     def condensed      = b(Literal.condensed)
     def expanded       = b(Literal.expanded)
     def extraCondensed = b(Literal.extraCondensed)
@@ -80,13 +80,13 @@ object FontFace {
     def ultraExpanded  = b(Literal.ultraExpanded)
   }
 
-  final class FontStyleBuilder(private val b: Value => FontFace) extends AnyVal {
+  final class FontStyleBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
     def italic  = b(Literal.italic)
     def normal  = b(Literal.normal)
     def oblique = b(Literal.oblique)
   }
 
-  final class FontWeightBuilder(private val b: Value => FontFace) extends AnyVal {
+  final class FontWeightBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
     def _100    = b("100")
     def _200    = b("200")
     def _300    = b("300")

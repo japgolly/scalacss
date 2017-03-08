@@ -2,7 +2,7 @@ package scalacss.internal
 
 object Css {
 
-  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes], ff: TraversableOnce[FontFace])(implicit env: Env): Css =
+  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes], ff: TraversableOnce[FontFace[String]])(implicit env: Env): Css =
     styles(ss) append keyframes(kfs) append fontFaces(ff)
 
   def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
@@ -11,7 +11,7 @@ object Css {
   def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
     kfs.toStream map keyframes
 
-  def fontFaces(ff: TraversableOnce[FontFace])(implicit env: Env): FontFaceStream =
+  def fontFaces(ff: TraversableOnce[FontFace[String]])(implicit env: Env): FontFaceStream =
     ff.toStream map fontFaces
 
   def className(cn: ClassName): CssSelector =
@@ -29,7 +29,7 @@ object Css {
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes =
     CssEntry.Keyframes(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
 
-  def fontFaces(ff: FontFace)(implicit env: Env): CssEntry.FontFace =
+  def fontFaces(ff: FontFace[String])(implicit env: Env): CssEntry.FontFace =
     CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =

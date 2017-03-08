@@ -55,6 +55,7 @@ object BenchBuild {
     benchModuleJS("react-without", _ / "react-without")
       .settings(
         libraryDependencies ++= Seq(
+          "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact,
           "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
           "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
           "org.scalaz"                        %%% "scalaz-core"  % Ver.Scalaz))
@@ -64,6 +65,7 @@ object BenchBuild {
       .dependsOn(extReact)
       .settings(
         libraryDependencies ++= Seq(
+          "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact,
           "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
           "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
           "org.scalaz"                        %%% "scalaz-core"  % Ver.Scalaz))
