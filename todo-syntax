@@ -3,7 +3,6 @@ animation	<single_animation_name> || <time> || <timing_function> || <time> || <s
 background_attachment	  <attachment>#
 background	[ <bg_layer> , ]* <final_bg_layer>
 background_blend_mode	 <blend_mode>#
-background_clip	<box>#
 background_image	<bg_image>#
 background_origin	<box>#
 background_position	 <position>#
