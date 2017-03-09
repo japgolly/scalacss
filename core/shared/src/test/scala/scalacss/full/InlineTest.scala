@@ -1,7 +1,7 @@
 package scalacss.full
 
 import scala.concurrent.duration._
-import scalacss.Defaults._
+import scalacss.DevDefaults._
 
 //object CopyDefaultsForInline extends Defaults
 //import CopyDefaultsForInline._

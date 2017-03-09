@@ -1,7 +1,7 @@
 package demo
 
 import scala.scalajs.js.annotation.JSExport
-import scalacss.Defaults._
+import CssDefaults._
 
 @JSExport("Main")
 object Main {

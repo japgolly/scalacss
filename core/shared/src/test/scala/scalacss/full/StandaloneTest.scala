@@ -1,6 +1,6 @@
 package scalacss.full
 
-import scalacss.Defaults._
+import scalacss.DevDefaults._
 
 //object CopyDefaultsForStandalone extends Defaults
 //import CopyDefaultsForStandalone._

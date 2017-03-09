@@ -1,10 +1,21 @@
 package scalacss.elision
 
+import scala.language.experimental.macros
 import scala.annotation.elidable
 import utest._
 import scalacss._
+import scalacss.internal.Platform
 
 object DefaultsTest extends TestSuite {
+
+  def assert(ok: Boolean, msg: String) =
+    if (!ok) fail(msg)
+
+  def fail(msg: String) = {
+    val e = new java.lang.AssertionError(msg)
+    e.setStackTrace(Array.empty)
+    throw e
+  }
 
   override def tests = TestSuite {
 
@@ -12,10 +23,10 @@ object DefaultsTest extends TestSuite {
       var on = false
       @elidable(elidable.ASSERTION)
       def test(): Unit = on = true
-      assert(!on)
+      assert(!on, "ELISION")
     }
 
-    'defaults -
-      assert(Defaults.cssSettings eq defaults.DefaultSettings.Prod)
+    'platform - assert(!Platform.DevMode, "PLATFORM")
+    'defaults - assert(devOrProdDefaults eq ProdDefaults, "DEFAULTS")
   }
 }

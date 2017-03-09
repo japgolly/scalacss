@@ -30,15 +30,9 @@ object DefaultSettings {
     override implicit def cssComposition         : Compose          = Compose.trust
   }
 
-  @inline def instance: Settings =
+  def devOrProd: Settings =
     if (Platform.DevMode)
       Dev
     else
       Prod
-
-  object DevOrProd extends DevOrProd
-  trait DevOrProd extends Settings.Delegate {
-    override protected[scalacss] def cssSettings: Settings =
-      DefaultSettings.instance
-  }
 }
