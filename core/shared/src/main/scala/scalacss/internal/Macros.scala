@@ -6,52 +6,53 @@ import scala.reflect.NameTransformer
 
 object Macros {
 
-  private def name(c: Context): String = {
-    val localName = c.internal.enclosingOwner.name.toString.trim
+  object Dsl {
 
-    // `style()` instead of `val x = style()` results in "<local OuterClass>"
-    if (localName startsWith "<")
-      ""
-    else {
+    private def name(c: Context): String = {
+      val localName = c.internal.enclosingOwner.name.toString.trim
 
-      // Try to extract a name, relative to the stylesheet class
-      val className = c.prefix.actualType.typeSymbol.fullName
-      val fullName  = c.internal.enclosingOwner.fullName
-      if ((fullName.length > className.length + 1) && fullName.startsWith(className + ".")) {
-        val relName = fullName.substring(className.length + 1).replace('.', '-')
-        NameTransformer decode relName
-      } else
+      // `style()` instead of `val x = style()` results in "<local OuterClass>"
+      if (localName startsWith "<")
+        ""
+      else {
 
-        // Default to local name
-        NameTransformer decode localName
+        // Try to extract a name, relative to the stylesheet class
+        val className = c.prefix.actualType.typeSymbol.fullName
+        val fullName  = c.internal.enclosingOwner.fullName
+        if ((fullName.length > className.length + 1) && fullName.startsWith(className + ".")) {
+          val relName = fullName.substring(className.length + 1).replace('.', '-')
+          NameTransformer decode relName
+        } else
+
+          // Default to local name
+          NameTransformer decode localName
+      }
     }
-  }
 
-  private def impl[A](c: Context, method: String): c.Expr[A] = {
-    import c.universe._
-    c.Expr(Apply(Ident(TermName(method)), Literal(Constant(name(c))) :: Nil))
-  }
+    private def impl[A](c: Context, method: String): c.Expr[A] = {
+      import c.universe._
+      c.Expr(Apply(Ident(TermName(method)), Literal(Constant(name(c))) :: Nil))
+    }
 
-  // ===================================================================================================================
+    import DslMacros._
 
-  import DslMacros._
+    def implStyle    (c: Context): c.Expr[MStyle    ] = impl(c, "__macroStyle")
+    def implStyleF   (c: Context): c.Expr[MStyleF   ] = impl(c, "__macroStyleF")
+    def implKeyframes(c: Context): c.Expr[MKeyframes] = impl(c, "__macroKeyframes")
 
-  def implStyle    (c: Context): c.Expr[MStyle    ] = impl(c, "__macroStyle")
-  def implStyleF   (c: Context): c.Expr[MStyleF   ] = impl(c, "__macroStyleF")
-  def implKeyframes(c: Context): c.Expr[MKeyframes] = impl(c, "__macroKeyframes")
+    trait Mixin {
+      protected def __macroStyle    (name: String): MStyle
+      protected def __macroStyleF   (name: String): MStyleF
+      protected def __macroKeyframes(name: String): MKeyframes
+      protected def __macroKeyframe               : MStyle
+      protected def __macroFontFace               : MFontFace
 
-  trait DslMixin {
-    protected def __macroStyle    (name: String): MStyle
-    protected def __macroStyleF   (name: String): MStyleF
-    protected def __macroKeyframes(name: String): MKeyframes
-    protected def __macroKeyframe               : MStyle
-    protected def __macroFontFace               : MFontFace
-
-    final protected def style    : MStyle     = macro implStyle
-    final protected def styleF   : MStyleF    = macro implStyleF
-    final protected def keyframes: MKeyframes = macro implKeyframes
-    final protected def keyframe : MStyle     = __macroKeyframe
-    final protected def fontFace : MFontFace  = __macroFontFace
+      final protected def style    : MStyle     = macro implStyle
+      final protected def styleF   : MStyleF    = macro implStyleF
+      final protected def keyframes: MKeyframes = macro implKeyframes
+      final protected def keyframe : MStyle     = __macroKeyframe
+      final protected def fontFace : MFontFace  = __macroFontFace
+    }
   }
 
   // ===================================================================================================================
