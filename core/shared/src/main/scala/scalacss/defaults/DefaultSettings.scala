@@ -38,7 +38,7 @@ object DefaultSettings {
 
   object DevOrProd extends DevOrProd
   trait DevOrProd extends Settings.Delegate {
-    override protected def cssSettings: Settings =
+    override protected[scalacss] def cssSettings: Settings =
       DefaultSettings.instance
   }
 }

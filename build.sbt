@@ -9,7 +9,8 @@ val rootJS            = ScalaCssBuild.rootJS
 
 val coreJVM           = ScalaCssBuild.coreJVM
 val coreJS            = ScalaCssBuild.coreJS
-
+val elisionTestJVM    = ScalaCssBuild.elisionTestJVM
+val elisionTestJS     = ScalaCssBuild.elisionTestJS
 val extScalatagsJVM   = ScalaCssBuild.extScalatagsJVM
 val extScalatagsJS    = ScalaCssBuild.extScalatagsJS
 val extReact          = ScalaCssBuild.extReact

@@ -7,8 +7,9 @@ import scalacss.test.TestUtil._
 object DefaultsTest extends TestSuite {
 
   override val tests = TestSuite {
-    'dev  - Dev .test()
-    'prod - Prod.test()
+    'default - assert(Defaults.cssSettings eq defaults.DefaultSettings.Dev)
+    'dev     - Dev .test()
+    'prod    - Prod.test()
   }
 
   class SharedStyles(implicit reg: StyleSheet.Register) extends StyleSheet.Inline {

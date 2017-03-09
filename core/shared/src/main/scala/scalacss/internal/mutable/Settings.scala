@@ -27,7 +27,7 @@ object Settings {
     override implicit def cssEnv                  = cssSettings.cssEnv
     override implicit def cssRegister             = cssSettings.cssRegister
 
-    protected def cssSettings: Settings
+    protected[scalacss] def cssSettings: Settings
   }
 
 //  class DelegateTo(override protected val cssSettings: Settings) extends Delegate
