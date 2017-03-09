@@ -12,7 +12,7 @@ object ScalaCssBuild {
   object Ver {
     final val MTest         = "0.4.5"
     final val Nyaya         = "0.8.1"
-    final val ReactJs       = "15.3.2"
+    final val ReactJs       = "15.4.2"
     final val Scala211      = "2.11.8"
     final val Scala212      = "2.12.1"
     final val ScalaJsDom    = "0.9.1"
