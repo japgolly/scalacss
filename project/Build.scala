@@ -12,7 +12,7 @@ object ScalaCssBuild {
   object Ver {
     final val MTest         = "0.4.5"
     final val Nyaya         = "0.8.1"
-    final val ReactJs       = "15.3.2"
+    final val ReactJs       = "15.4.2"
     final val Scala211      = "2.11.8"
     final val Scala212      = "2.12.1"
     final val ScalaJsDom    = "0.9.1"
@@ -78,12 +78,12 @@ object ScalaCssBuild {
   lazy val rootJVM =
     Project("JVM", file(".rootJVM"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJVM, extScalatagsJVM)
+      .aggregate(coreJVM, elisionTestJVM, extScalatagsJVM)
 
   lazy val rootJS =
     Project("JS", file(".rootJS"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJS, extScalatagsJS, extReact)
+      .aggregate(coreJS, elisionTestJS, extScalatagsJS, extReact)
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -107,6 +107,17 @@ object ScalaCssBuild {
       libraryDependencies += "org.scala-js" %%% "scalajs-dom" % Ver.ScalaJsDom)
     .jvmSettings(
       initialCommands := "import scalacss._")
+
+  lazy val elisionTestJVM = elisionTest.jvm
+  lazy val elisionTestJS  = elisionTest.js
+  lazy val elisionTest = crossProject
+    .in(file("elision-test"))
+    .configureCross(commonSettings, utestSettings)
+    .configureAll(preventPublication)
+    .dependsOn(core)
+    .settings(
+      scalacOptions ++= Seq("-Xelide-below", "OFF")
+    )
 
   lazy val extScalatagsJVM = extScalatags.jvm
   lazy val extScalatagsJS  = extScalatags.js

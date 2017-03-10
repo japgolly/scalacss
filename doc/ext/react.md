@@ -29,9 +29,18 @@
 
 ## Example
 
-MyStyles.scala
+example/package.scala
 ```scala
-import scalacss.Defaults._
+package object example {
+  val CssSettings = scalacss.devOrProdDefaults
+}
+```
+
+example/MyStyles.scala
+```scala
+package example
+
+import CssSettings._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -43,13 +52,15 @@ object MyStyles extends StyleSheet.Inline {
 }
 ```
 
-MyApp.scala
+example/MyApp.scala
 ```scala
+package example
+
 import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom.{alert, document}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import scalacss.Defaults._
+import CssSettings._
 import scalacss.ScalaCssReact._
 
 object MyApp {

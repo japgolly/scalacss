@@ -2,7 +2,10 @@ import org.scalajs.dom.{console, document}
 import scala.scalajs.js.annotation.JSExport
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
-import scalacss.Defaults._
+object Temp {
+  val CssSettings = scalacss.devOrProdDefaults
+}
+import Temp.CssSettings._
 import scalacss.ScalaCssReact._
 
 object MyStyles extends StyleSheet.Inline {

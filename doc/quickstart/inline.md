@@ -3,7 +3,7 @@
 Create styles as follows:
 
 ```scala
-import scalacss.Defaults._
+import scalacss.DevDefaults._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
