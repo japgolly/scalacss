@@ -31,7 +31,7 @@ ScalaCSS integrates with Scalatags in both `Text` and `JsDom` modes.
 example/package.scala
 ```scala
 package object example {
-  val CssDefaults = scalacss.devOrProdDefaults
+  val CssSettings = scalacss.devOrProdDefaults
 }
 ```
 
@@ -39,7 +39,7 @@ example/MyStyles.scala
 ```scala
 package example
 
-import CssDefaults._
+import CssSettings._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -55,7 +55,7 @@ example/MyApp.scala
 ```scala
 package example
 
-import CssDefaults._
+import CssSettings._
 import scalacss.ScalatagsCss._
 import scalatags.Text._
 import scalatags.Text.all._

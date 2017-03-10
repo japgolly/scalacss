@@ -1,3 +1,3 @@
 package object demo {
-  val CssDefaults = scalacss.devOrProdDefaults
+  val CssSettings = scalacss.devOrProdDefaults
 }

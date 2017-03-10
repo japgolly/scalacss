@@ -7,8 +7,8 @@ import scalacss.DevDefaults._  // Always use dev settings
 import scalacss.ProdDefaults._ // Always use prod settings
 
 // This will choose between dev/prod depending on your scalac `-Xelide-below` setting
-val CssDefaults = scalacss.devOrProdDefaults
-import CssDefaults._
+val CssSettings = scalacss.devOrProdDefaults
+import CssSettings._
 ```
 
 This provides two sets of sensible settings: development and production.

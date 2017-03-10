@@ -3,9 +3,9 @@ import scala.scalajs.js.annotation.JSExport
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
 object Temp {
-  val CssDefaults = scalacss.devOrProdDefaults
+  val CssSettings = scalacss.devOrProdDefaults
 }
-import Temp.CssDefaults._
+import Temp.CssSettings._
 import scalacss.ScalaCssReact._
 
 object MyStyles extends StyleSheet.Inline {

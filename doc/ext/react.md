@@ -32,7 +32,7 @@
 example/package.scala
 ```scala
 package object example {
-  val CssDefaults = scalacss.devOrProdDefaults
+  val CssSettings = scalacss.devOrProdDefaults
 }
 ```
 
@@ -40,7 +40,7 @@ example/MyStyles.scala
 ```scala
 package example
 
-import CssDefaults._
+import CssSettings._
 
 object MyStyles extends StyleSheet.Inline {
   import dsl._
@@ -60,7 +60,7 @@ import scala.scalajs.js.annotation.JSExport
 import org.scalajs.dom.{alert, document}
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.prefix_<^._
-import CssDefaults._
+import CssSettings._
 import scalacss.ScalaCssReact._
 
 object MyApp {
