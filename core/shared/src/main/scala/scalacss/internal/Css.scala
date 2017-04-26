@@ -39,7 +39,7 @@ object Css {
     def main: StyleStream =
       s.data.toStream.flatMap {
         case (cond, avs) =>
-          val kvs = avs.avStream.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
+          val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
           NonEmptyVector.maybe(kvs, Stream.empty[CssEntry.Style]) {c =>
             val mq = mediaQuery(cond)
             val s  = selector(sel, cond)

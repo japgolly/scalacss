@@ -45,6 +45,9 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   def whole: Vector[A] =
     head +: tail
 
+  def iterator: Iterator[A] =
+    whole.iterator
+
   def reverse: NonEmptyVector[A] =
     if (tail.isEmpty) this else NonEmptyVector.end(tail.reverse, head)
 

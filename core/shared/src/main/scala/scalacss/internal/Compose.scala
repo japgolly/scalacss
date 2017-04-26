@@ -124,11 +124,11 @@ object Compose {
 //          s"(${showA(a)}: ${showV(vs)})"
           s"${showA(a)}: ${showV(vs)}"
         def showAVs(avs: AVs): String = {
-          val s = avs.toStream.map(showAVt)
+          val s = avs.iterator.map(showAVt)
 //          if (s.lengthCompare(1) == 0) s.head else s.mkString("{ ", ", ", " }")
           s.mkString("{", ", ", "}")
         }
-        hi.toStream
+        hi.iterator
           .map(t => s"{${showAVt(t)}} conflicts with ${showAVs(lo)}")
           .toVector
       }

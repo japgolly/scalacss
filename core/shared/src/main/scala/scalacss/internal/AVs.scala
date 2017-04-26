@@ -24,7 +24,7 @@ object AV {
  * One or more ordered attributes, each with one or more ordered values.
  */
 final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr, NonEmptyVector[Value]]) {
-  override def toString = toStream.mkString("AVs(", ", ", ")")
+  override def toString = iterator.mkString("AVs(", ", ", ")")
 
   def +(av: AV): AVs =
     add(av.attr, av.value)
@@ -33,7 +33,7 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
     avs.foldLeft(this)(_ + _)
 
   def ++(avs: AVs): AVs =
-    avs.toStream.foldLeft(this)((q, t) => q.addAll(t._1, t._2))
+    avs.iterator.foldLeft(this)((q, t) => q.addAll(t._1, t._2))
 
   def add(a: Attr, v: Value): AVs =
     addTail(a, NonEmptyVector.end(_, v))
@@ -74,11 +74,11 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
   def modify(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
     addTail(a, f)
 
-  def toStream: Stream[(Attr, NonEmptyVector[Value])] =
-    order.toStream.map(a => (a, data(a)))
+  def iterator: Iterator[(Attr, NonEmptyVector[Value])] =
+    order.iterator.map(a => (a, data(a)))
 
-  def avStream: Stream[AV] =
-    toStream.flatMap(t => t._2.toStream.map(AV(t._1, _)))
+  def avIterator: Iterator[AV] =
+    iterator.flatMap(t => t._2.iterator.map(AV(t._1, _)))
 }
 
 object AVs {

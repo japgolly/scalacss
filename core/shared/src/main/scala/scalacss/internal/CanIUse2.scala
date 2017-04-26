@@ -43,7 +43,7 @@ object CanIUse2 {
     }
 
   val prefixed: String => Boolean = {
-    val p = Prefix.values.toStream.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
+    val p = Prefix.values.iterator.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
     in => p.matcher(in).matches
   }
 

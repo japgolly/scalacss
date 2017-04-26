@@ -94,12 +94,12 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
-      domain.toStream.foldLeft(l.empty)((q, i) =>
+      domain.iterator.foldLeft(l.empty)((q, i) =>
         add(q, i, s f i)))
 
   def registerF2[I](s: StyleF[I], manualName: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
-      domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
+      domain.iterator.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
         val cn = ClassName(manualName + "-" + toCN(i, index))
         val style = (s f i).copy(className = Some(cn))
         add(q, i, style)
@@ -108,7 +108,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   def registerFM[I](s: StyleF[I], nameFromMacro: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
-      domain.toStream.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
+      domain.iterator.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
         var style = s f i
         if (style.className.isEmpty && (nameFromMacro ne null))
           for (cn <- macroName(cnh, nameFromMacro, toCN(i, index)))
@@ -283,7 +283,7 @@ object Register { // ===========================================================
           this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.msg}")
         })
       override def badInput[I](s: StyleF[I], i: I): Nothing = {
-        val legal = s.domain.toStream.mkString(",")
+        val legal = s.domain.iterator.mkString(",")
         val err = s"[CSS ERROR] Invalid StyleF input: [$i]. Legal values are {$legal}."
         this.println(err)
         throw new java.lang.IllegalArgumentException(err)
