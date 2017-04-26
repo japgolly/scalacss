@@ -56,8 +56,6 @@ object Styles extends StyleSheet.Inline {
   private val dragHnd = style(
     color(c"#000"))
 
-  private val empty = style()
-
   private val hasErrorBackground =
     backgroundColor(c"#fee")
 

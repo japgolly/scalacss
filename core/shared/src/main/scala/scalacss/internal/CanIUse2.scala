@@ -29,8 +29,8 @@ object CanIUse2 {
     a => Set(a.prefix) ++ a.prefixExceptions.values
 
   def subjectPrefixes(s: Subject): Set[Prefix] =
-    s.toStream
-      .filter{ case (a, d) => d exists needsPrefix }
+    s.iterator
+      .filter(_._2 exists needsPrefix)
       .map(ad => agentPrefixes(ad._1))
       .foldLeft(Set.empty[Prefix])(_ ++ _)
 

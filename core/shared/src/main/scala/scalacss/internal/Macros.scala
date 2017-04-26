@@ -83,7 +83,7 @@ object Macros {
       import c.universe._
 
       c.prefix.tree match {
-        case Apply(_, List(Apply(_, List(l @Literal(Constant(text0: String)))))) =>
+        case Apply(_, List(Apply(_, List(Literal(Constant(text0: String)))))) =>
 
           def fail(reason: String = null): Nothing = {
             var err = s"""Invalid colour literal: "$text0"."""
