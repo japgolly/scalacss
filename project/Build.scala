@@ -26,7 +26,7 @@ object ScalaCssBuild {
     "-deprecation",
     "-unchecked",
     // "-Ywarn-dead-code",
-    "-Ywarn-unused",
+    // "-Ywarn-unused",
     // "-Ywarn-value-discard",
     "-feature",
     "-language:postfixOps",
@@ -46,7 +46,7 @@ object ScalaCssBuild {
       scalacOptions in Test    --= Seq("-Ywarn-unused"),
       shellPrompt in ThisBuild  := ((s: State) => Project.extract(s).currentRef.project + "> "),
       triggeredMessage          := Watched.clearWhenTriggered,
-      incOptions                := incOptions.value.withNameHashing(true),
+      incOptions                := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
       updateOptions             := updateOptions.value.withCachedResolution(true))
     .configure(
       addCommandAliases(
