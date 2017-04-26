@@ -22,20 +22,32 @@ object ScalaCssBuild {
     final val UnivEq        = "1.0.2"
   }
 
+  def scalacFlags = Seq(
+    "-deprecation",
+    "-unchecked",
+    // "-Ywarn-dead-code",
+    "-Ywarn-unused",
+    // "-Ywarn-value-discard",
+    "-feature",
+    "-language:postfixOps",
+    "-language:implicitConversions",
+    "-language:higherKinds",
+    "-language:existentials")
+
   val commonSettings = ConfigureBoth(
     _.settings(
-      organization       := "com.github.japgolly.scalacss",
-      homepage           := Some(url("https://github.com/japgolly/scalacss")),
-      licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion       := Ver.Scala212,
-      crossScalaVersions := Seq(Ver.Scala211, Ver.Scala212),
-      scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
-                              "-language:postfixOps", "-language:implicitConversions",
-                              "-language:higherKinds", "-language:existentials"),
-      shellPrompt in ThisBuild := ((s: State) => Project.extract(s).currentRef.project + "> "),
-      triggeredMessage         := Watched.clearWhenTriggered,
-      incOptions               := incOptions.value.withNameHashing(true),
-      updateOptions            := updateOptions.value.withCachedResolution(true))
+      organization              := "com.github.japgolly.scalacss",
+      homepage                  := Some(url("https://github.com/japgolly/scalacss")),
+      licenses                  += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+      scalaVersion              := Ver.Scala212,
+      crossScalaVersions        := Seq(Ver.Scala211, Ver.Scala212),
+      scalacOptions            ++= scalacFlags,
+      scalacOptions in Compile ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
+      scalacOptions in Test    --= Seq("-Ywarn-unused"),
+      shellPrompt in ThisBuild  := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      triggeredMessage          := Watched.clearWhenTriggered,
+      incOptions                := incOptions.value.withNameHashing(true),
+      updateOptions             := updateOptions.value.withCachedResolution(true))
     .configure(
       addCommandAliases(
         "/"   -> "project root",
@@ -51,6 +63,9 @@ object ScalaCssBuild {
         "cc"  -> ";clean;compile",
         "ctc" -> ";clean;test:compile",
         "ct"  -> ";clean;test")))
+
+  def byScalaVersion[A](f: PartialFunction[(Int, Int), Seq[A]]): Def.Initialize[Seq[A]] =
+    Def.setting(CrossVersion.partialVersion(scalaVersion.value).flatMap(f.lift).getOrElse(Nil))
 
   def definesMacros = ConfigureBoth(
     _.settings(
