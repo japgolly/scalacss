@@ -61,7 +61,6 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
     foldMapLeft1(f)((b, a) => g(b, f(a)))
 
   def toSet[B >: A] = whole.toSet[B]
-  def toStream      = whole.toStream
 }
 
 // =====================================================================================================================
