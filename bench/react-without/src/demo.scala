@@ -1,18 +1,15 @@
 import org.scalajs.dom.{console, document}
-import scala.scalajs.js
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.JSApp
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
-@JSExport("Demo")
-object Demo {
+object Demo extends JSApp {
 
-  @JSExport("main")
-  def main(): Unit = {
+  override def main(): Unit = {
     TodoApp().renderIntoDOM(document getElementById "todo")
     console.log("hello")
   }
 
-  val TodoList = ScalaComponent.build[List[String]]("TodoList")
+  val TodoList = ScalaComponent.builder[List[String]]("TodoList")
     .render_P(props => {
       def createItem(itemText: String) = <.li(itemText)
       <.ul(props.map(createItem): _*)
@@ -28,12 +25,11 @@ object Demo {
 
   def handleSubmit(e: ReactEventFromInput) = (
     ST.retM(e.preventDefaultCB)
-
     >>
     ST.mod(s => State(s.items :+ s.text, "")).liftCB
   )
 
-  val TodoApp = ScalaComponent.build[Unit]("TodoApp")
+  val TodoApp = ScalaComponent.builder[Unit]("TodoApp")
     .initialState(State(Nil, ""))
     .renderS(($,s) =>
       <.div(

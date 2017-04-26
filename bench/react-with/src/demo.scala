@@ -1,5 +1,5 @@
 import org.scalajs.dom.{console, document}
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.JSApp
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
 object Temp {
@@ -16,17 +16,15 @@ object MyStyles extends StyleSheet.Inline {
     margin(12 px))
 }
 
-@JSExport("Demo")
-object Demo {
+object Demo extends JSApp {
 
-  @JSExport("main")
-  def main(): Unit = {
+  override def main(): Unit = {
     MyStyles.addToDocument()
     TodoApp().renderIntoDOM(document getElementById "todo")
     console.log("hello")
   }
 
-  val TodoList = ScalaComponent.build[List[String]]("TodoList")
+  val TodoList = ScalaComponent.builder[List[String]]("TodoList")
     .render_P(props => {
       def createItem(itemText: String) = <.li(itemText)
       <.ul(props.map(createItem): _*)
@@ -47,7 +45,7 @@ object Demo {
     ST.mod(s => State(s.items :+ s.text, "")).liftCB
   )
 
-  val TodoApp = ScalaComponent.build[Unit]("TodoApp")
+  val TodoApp = ScalaComponent.builder[Unit]("TodoApp")
     .initialState(State(Nil, ""))
     .renderS(($,s) =>
       <.div(
