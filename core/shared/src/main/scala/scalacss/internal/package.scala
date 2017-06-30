@@ -34,15 +34,15 @@ package object internal {
   type KeyframeAnimationName = ClassName
   type KeyframeSelector      = Percentage[_]
 
-  type StyleStream    = Stream[CssEntry.Style]
-  type KeyframeStream = Stream[CssEntry.Keyframes]
-  type FontFaceStream = Stream[CssEntry.FontFace]
+  type StyleStream    = Vector[CssEntry.Style]
+  type KeyframeStream = List[CssEntry.Keyframes]
+  type FontFaceStream = List[CssEntry.FontFace]
 
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
-  type Css = Stream[CssEntry]
-  implicit def univEqCss: UnivEq[Css] = UnivEq.univEqStream
+  type Css = Vector[CssEntry]
+  implicit def univEqCss: UnivEq[Css] = UnivEq.univEqVector
 
   type WarningMsg = String
   final case class Warning(cond: Cond, msg: WarningMsg)

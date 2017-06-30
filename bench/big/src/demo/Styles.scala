@@ -1,7 +1,7 @@
 package demo
 
 import japgolly.univeq.UnivEq
-import scalacss.Defaults._
+import CssSettings._
 
 sealed trait Live
 case object Live extends Live
@@ -55,8 +55,6 @@ object Styles extends StyleSheet.Inline {
 
   private val dragHnd = style(
     color(c"#000"))
-
-  private val empty = style()
 
   private val hasErrorBackground =
     backgroundColor(c"#fee")

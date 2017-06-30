@@ -45,6 +45,9 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   def whole: Vector[A] =
     head +: tail
 
+  def iterator: Iterator[A] =
+    whole.iterator
+
   def reverse: NonEmptyVector[A] =
     if (tail.isEmpty) this else NonEmptyVector.end(tail.reverse, head)
 
@@ -58,7 +61,6 @@ final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
     foldMapLeft1(f)((b, a) => g(b, f(a)))
 
   def toSet[B >: A] = whole.toSet[B]
-  def toStream      = whole.toStream
 }
 
 // =====================================================================================================================

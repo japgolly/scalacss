@@ -2,8 +2,8 @@ language: scala
 sudo: false
 
 scala:
-  - 2.11.8
-  - 2.12.0
+  - 2.11.11
+  - 2.12.2
 
 jdk:
 - oraclejdk8
@@ -11,7 +11,7 @@ jdk:
 script:
 - sbt ++$TRAVIS_SCALA_VERSION test:compile JS/test:fastOptJS JS/test:fullOptJS
 - sbt ++$TRAVIS_SCALA_VERSION test
-- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in Global := FullOptStage' JS/test
+- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in ThisBuild := FullOptStage' JS/test
 - sbt ++$TRAVIS_SCALA_VERSION cmpJsSize jsSizes
 
 
@@ -24,13 +24,12 @@ install:
   - export PATH="$PWD/travis-phantomjs:$PATH"
 
 # Taken from https://github.com/typelevel/cats/blob/master/.travis.yml
+before_cache:
+  - find $HOME/.sbt -name "*.lock" -type f -delete
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
 cache:
   directories:
   - $HOME/.sbt/0.13/dependency
   - $HOME/.sbt/boot/scala*
   - $HOME/.sbt/launchers
   - $HOME/.ivy2/cache
-before_cache:
-  - find $HOME/.sbt -name "*.lock" -type f -delete
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
-

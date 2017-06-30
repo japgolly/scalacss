@@ -2,17 +2,25 @@ package scalacss.internal
 
 object Css {
 
-  def apply(ss: TraversableOnce[StyleA], kfs: TraversableOnce[Keyframes], ff: TraversableOnce[FontFace[String]])(implicit env: Env): Css =
-    styles(ss) append keyframes(kfs) append fontFaces(ff)
+  def apply(ss: TraversableOnce[StyleA],
+            kfs: TraversableOnce[Keyframes],
+            ff: TraversableOnce[FontFace[String]])
+           (implicit env: Env): Css = {
+    val b = Vector.newBuilder[CssEntry]
+    b ++= styles(ss)
+    b ++= keyframes(kfs)
+    b ++= fontFaces(ff)
+    b.result()
+  }
 
   def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
-    ss.toStream flatMap styleA
+    ss.toIterator.flatMap(styleA).toVector
 
   def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
-    kfs.toStream map keyframes
+    kfs.toIterator.map(keyframes).toList
 
-  def fontFaces(ff: TraversableOnce[FontFace[String]])(implicit env: Env): FontFaceStream =
-    ff.toStream map fontFaces
+  def fontFaces(ff: TraversableOnce[FontFace[String]]): FontFaceStream =
+    ff.toIterator.map(fontFaces).toList
 
   def className(cn: ClassName): CssSelector =
     "." + cn.value
@@ -29,28 +37,28 @@ object Css {
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes =
     CssEntry.Keyframes(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
 
-  def fontFaces(ff: FontFace[String])(implicit env: Env): CssEntry.FontFace =
+  def fontFaces(ff: FontFace[String]): CssEntry.FontFace =
     CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)
 
   def style(sel: CssSelector, s: StyleS)(implicit env: Env): StyleStream = {
-    def main: StyleStream =
-      s.data.toStream.flatMap {
+    def main: Iterator[CssEntry.Style] =
+      s.data.iterator.flatMap {
         case (cond, avs) =>
-          val kvs = avs.avStream.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
-          NonEmptyVector.maybe(kvs, Stream.empty[CssEntry.Style]) {c =>
+          val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
+          NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>
             val mq = mediaQuery(cond)
-            val s  = selector(sel, cond)
-            Stream(CssEntry.Style(mq, s, c))
+            val s = selector(sel, cond)
+            CssEntry.Style(mq, s, c) :: Nil
           }
         }
 
-    def exts: StyleStream =
-      s.unsafeExts.toStream.flatMap(unsafeExt(sel, _))
+    def exts: Iterator[CssEntry.Style] =
+      s.unsafeExts.toIterator.flatMap(unsafeExt(sel, _))
 
-    main append exts
+    (main ++ exts).toVector
   }
 
   def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StyleStream = {
@@ -62,9 +70,9 @@ object Css {
   type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
 
   def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream, FontFaceStream) = {
-    val styles = Stream.newBuilder[CssEntry.Style]
-    val animations = Stream.newBuilder[CssEntry.Keyframes]
-    val fontFaces = Stream.newBuilder[CssEntry.FontFace]
+    val styles = Vector.newBuilder[CssEntry.Style]
+    val animations = List.newBuilder[CssEntry.Keyframes]
+    val fontFaces = List.newBuilder[CssEntry.FontFace]
     c.foreach {
       case e: CssEntry.Style => styles += e
       case e: CssEntry.Keyframes => animations += e
@@ -82,14 +90,14 @@ object Css {
     }
   }
 
-  def flatten(css: StyleStream): Stream[(CssMediaQueryO, CssSelector, CssKV)] =
+  def flatten(css: StyleStream): Vector[(CssMediaQueryO, CssSelector, CssKV)] =
     css.flatMap { case CssEntry.Style(mq, sel, kvs) =>
-      kvs.toStream.map(kv => (mq, sel, kv))
+      kvs.iterator.map(kv => (mq, sel, kv))
     }
 
   type Flat4 = (CssMediaQueryO, CssSelector, String, String)
-  def flatten4(css: StyleStream): Stream[Flat4] =
+  def flatten4(css: StyleStream): Vector[Flat4] =
     css.flatMap { case CssEntry.Style(mq, sel, kvs) =>
-      kvs.toStream.map(kv => (mq, sel, kv.key, kv.value))
+      kvs.iterator.map(kv => (mq, sel, kv.key, kv.value))
     }
 }

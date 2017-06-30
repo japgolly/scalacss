@@ -108,15 +108,16 @@ object StringRenderer {
 
   def printFontFace(fontface: CssEntry.FontFace,
                     start   : ()                        => Unit,
-                    kv      : (String, String, Boolean) => Unit, //Key, value, wrap
+                    kv1     : (String, String, Boolean) => Unit, //Key, value, wrap
+                    kvn     : (String, String, Boolean) => Unit, //Key, value, wrap
                     end     : ()                        => Unit) = {
     start()
-    kv("font-family", fontface.fontFamily, true)
-    kv("src", fontface.src.toStream.mkString(","), false)
-    for (v <- fontface.fontStretch ) kv("font-stretch" , v         , false)
-    for (v <- fontface.fontStyle   ) kv("font-style"   , v         , false)
-    for (v <- fontface.fontWeight  ) kv("font-weight"  , v         , false)
-    for (v <- fontface.unicodeRange) kv("unicode-range", v.toString, false)
+    kv1("font-family", fontface.fontFamily, true)
+    kvn("src", fontface.src.whole.mkString(","), false)
+    for (v <- fontface.fontStretch ) kvn("font-stretch" , v         , false)
+    for (v <- fontface.fontStyle   ) kvn("font-style"   , v         , false)
+    for (v <- fontface.fontWeight  ) kvn("font-weight"  , v         , false)
+    for (v <- fontface.unicodeRange) kvn("unicode-range", v.toString, false)
     end()
   }
 
@@ -153,6 +154,7 @@ object StringRenderer {
           fontface,
           () => sb append "@font-face {",
           (key: String, value: String, quote: Boolean) => kv(CssKV(key, value), quote),
+          (key: String, value: String, quote: Boolean) => { sb append ';'; kv(CssKV(key, value), quote) },
           () => sb append "}"
         ),
       done     = ()        => ())
@@ -202,6 +204,7 @@ object StringRenderer {
         printFontFace(
           fontface,
           () => sb append "@font-face {\n",
+          (key: String, value: String, quote: Boolean) => kv(None, None, CssKV(key, value), quote),
           (key: String, value: String, quote: Boolean) => kv(None, None, CssKV(key, value), quote),
           () => sb append "}\n\n"
         ),

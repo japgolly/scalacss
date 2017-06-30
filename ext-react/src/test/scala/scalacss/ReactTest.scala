@@ -6,7 +6,7 @@ import org.scalajs.dom.document
 import utest._
 import scalacss.TestUtil._
 import scalacss.internal.mutable.StyleSheetRegistry
-import Defaults._
+import DevDefaults._
 import ScalaCssReact._
 
 object ReactTest extends TestSuite {

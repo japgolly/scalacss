@@ -1,13 +1,11 @@
 package demo
 
-import scala.scalajs.js.annotation.JSExport
-import scalacss.Defaults._
+import scala.scalajs.js.JSApp
+import CssSettings._
 
-@JSExport("Main")
-object Main {
+object Main extends JSApp {
 
-  @JSExport("main")
-  def main(): Unit = {
+  override def main(): Unit = {
     Styles.addToDocument()
     println(Styles.blahtable.colp.className)
   }

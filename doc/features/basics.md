@@ -3,9 +3,12 @@
 The first thing you'll want to do is import some settings by using one of these `import` statements:
 
 ```scala
-import scalacss.Defaults._     // Choose dev or prod
 import scalacss.DevDefaults._  // Always use dev settings
 import scalacss.ProdDefaults._ // Always use prod settings
+
+// This will choose between dev/prod depending on your scalac `-Xelide-below` setting
+val CssSettings = scalacss.devOrProdDefaults
+import CssSettings._
 ```
 
 This provides two sets of sensible settings: development and production.

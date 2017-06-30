@@ -125,7 +125,7 @@ object StyleSheet {
    *   - Style class names / CSS selectors are automatically generated.
    *   - All style types ([[StyleS]], [[StyleF]]) are usable.
    */
-  abstract class Inline(protected implicit val cssRegister: Register) extends Base with Macros.DslMixin {
+  abstract class Inline(protected implicit val cssRegister: Register) extends Base with Macros.Dsl.Mixin {
 
     override protected def __macroStyle    (name: String) = new MStyle (name)
     override protected def __macroStyleF   (name: String) = new MStyleF(name)

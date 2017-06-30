@@ -1,12 +1,11 @@
 package scalacss.js
 
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.annotation.JSExportTopLevel
 import utest._
 
-@JSExport("PlatformJsTest")
 object PlatformJsTest extends TestSuite {
 
-  @JSExport("test")
+  @JSExportTopLevel("testPlatformJs")
   def test(): Unit = {
     println(PlatformJs.value)
     println(PlatformJsEnv.value.map(_.platform))

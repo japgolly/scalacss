@@ -35,8 +35,8 @@ trait Domain[A] {
   def triple: Domain[(A, A, A)] =
     this *** pair map (t => (t._1, t._2._1, t._2._2))
 
-  def toStream: Stream[A] =
-    (0 until size).toStream.map(apply)
+  def iterator: Iterator[A] =
+    (0 until size).iterator.map(apply)
 }
 
 object Domain {

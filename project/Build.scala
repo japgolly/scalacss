@@ -12,30 +12,42 @@ object ScalaCssBuild {
   object Ver {
     final val MTest         = "0.4.5"
     final val Nyaya         = "0.8.1"
-    final val ReactJs       = "15.3.2"
-    final val Scala211      = "2.11.8"
-    final val Scala212      = "2.12.1"
+    final val ReactJs       = "15.5.4"
+    final val Scala211      = "2.11.11"
+    final val Scala212      = "2.12.2"
     final val ScalaJsDom    = "0.9.1"
-    final val ScalaJsReact  = "1.0.0-RC1"
-    final val Scalatags     = "0.6.3"
-    final val Scalaz        = "7.2.9"
+    final val ScalaJsReact  = "1.0.0"
+    final val Scalatags     = "0.6.5"
+    final val Scalaz        = "7.2.11"
     final val UnivEq        = "1.0.2"
   }
 
+  def scalacFlags = Seq(
+    "-deprecation",
+    "-unchecked",
+    // "-Ywarn-dead-code",
+    // "-Ywarn-unused",
+    // "-Ywarn-value-discard",
+    "-feature",
+    "-language:postfixOps",
+    "-language:implicitConversions",
+    "-language:higherKinds",
+    "-language:existentials")
+
   val commonSettings = ConfigureBoth(
     _.settings(
-      organization       := "com.github.japgolly.scalacss",
-      homepage           := Some(url("https://github.com/japgolly/scalacss")),
-      licenses           += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion       := Ver.Scala212,
-      crossScalaVersions := Seq(Ver.Scala211, Ver.Scala212),
-      scalacOptions     ++= Seq("-deprecation", "-unchecked", "-feature",
-                              "-language:postfixOps", "-language:implicitConversions",
-                              "-language:higherKinds", "-language:existentials"),
-      shellPrompt in ThisBuild := ((s: State) => Project.extract(s).currentRef.project + "> "),
-      triggeredMessage         := Watched.clearWhenTriggered,
-      incOptions               := incOptions.value.withNameHashing(true),
-      updateOptions            := updateOptions.value.withCachedResolution(true))
+      organization              := "com.github.japgolly.scalacss",
+      homepage                  := Some(url("https://github.com/japgolly/scalacss")),
+      licenses                  += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+      scalaVersion              := Ver.Scala212,
+      crossScalaVersions        := Seq(Ver.Scala211, Ver.Scala212),
+      scalacOptions            ++= scalacFlags,
+      scalacOptions in Compile ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
+      scalacOptions in Test    --= Seq("-Ywarn-unused"),
+      shellPrompt in ThisBuild  := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      triggeredMessage          := Watched.clearWhenTriggered,
+      incOptions                := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
+      updateOptions             := updateOptions.value.withCachedResolution(true))
     .configure(
       addCommandAliases(
         "/"   -> "project root",
@@ -51,6 +63,9 @@ object ScalaCssBuild {
         "cc"  -> ";clean;compile",
         "ctc" -> ";clean;test:compile",
         "ct"  -> ";clean;test")))
+
+  def byScalaVersion[A](f: PartialFunction[(Int, Int), Seq[A]]): Def.Initialize[Seq[A]] =
+    Def.setting(CrossVersion.partialVersion(scalaVersion.value).flatMap(f.lift).getOrElse(Nil))
 
   def definesMacros = ConfigureBoth(
     _.settings(
@@ -78,12 +93,12 @@ object ScalaCssBuild {
   lazy val rootJVM =
     Project("JVM", file(".rootJVM"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJVM, extScalatagsJVM)
+      .aggregate(coreJVM, elisionTestJVM, extScalatagsJVM)
 
   lazy val rootJS =
     Project("JS", file(".rootJS"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJS, extScalatagsJS, extReact)
+      .aggregate(coreJS, elisionTestJS, extScalatagsJS, extReact)
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -107,6 +122,17 @@ object ScalaCssBuild {
       libraryDependencies += "org.scala-js" %%% "scalajs-dom" % Ver.ScalaJsDom)
     .jvmSettings(
       initialCommands := "import scalacss._")
+
+  lazy val elisionTestJVM = elisionTest.jvm
+  lazy val elisionTestJS  = elisionTest.js
+  lazy val elisionTest = crossProject
+    .in(file("elision-test"))
+    .configureCross(commonSettings, utestSettings)
+    .configureAll(preventPublication)
+    .dependsOn(core)
+    .settings(
+      scalacOptions ++= Seq("-Xelide-below", "OFF")
+    )
 
   lazy val extScalatagsJVM = extScalatags.jvm
   lazy val extScalatagsJS  = extScalatags.js

@@ -52,7 +52,7 @@ object RegisterTest extends TestSuite {
     }
 
     'registerF {
-      def test[I](f: I => StyleA, d: Stream[I]): Unit = {
+      def test[I](f: I => StyleA, d: List[I]): Unit = {
         d.foreach { i =>
           assert(f(i) eq f(i))
         }
@@ -63,8 +63,8 @@ object RegisterTest extends TestSuite {
       val fi: Int     => StyleA = reg registerF sfi
       val css = stylesToCssMap(reg.styles)
       assertEq(css.size, 2 + 4)
-      test(fb, Domain.boolean.toStream)
-      test(fi, sfid.toStream)
+      test(fb, Domain.boolean.iterator.toList)
+      test(fi, sfid.iterator.toList)
     }
 
   }

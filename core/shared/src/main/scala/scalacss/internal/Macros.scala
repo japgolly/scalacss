@@ -3,55 +3,57 @@ package scalacss.internal
 import java.util.regex.Pattern
 import scala.reflect.macros.blackbox.Context
 import scala.reflect.NameTransformer
+import scalacss.defaults.Exports
 
 object Macros {
 
-  private def name(c: Context): String = {
-    val localName = c.internal.enclosingOwner.name.toString.trim
+  object Dsl {
 
-    // `style()` instead of `val x = style()` results in "<local OuterClass>"
-    if (localName startsWith "<")
-      ""
-    else {
+    private def name(c: Context): String = {
+      val localName = c.internal.enclosingOwner.name.toString.trim
 
-      // Try to extract a name, relative to the stylesheet class
-      val className = c.prefix.actualType.typeSymbol.fullName
-      val fullName  = c.internal.enclosingOwner.fullName
-      if ((fullName.length > className.length + 1) && fullName.startsWith(className + ".")) {
-        val relName = fullName.substring(className.length + 1).replace('.', '-')
-        NameTransformer decode relName
-      } else
+      // `style()` instead of `val x = style()` results in "<local OuterClass>"
+      if (localName startsWith "<")
+        ""
+      else {
 
-        // Default to local name
-        NameTransformer decode localName
+        // Try to extract a name, relative to the stylesheet class
+        val className = c.prefix.actualType.typeSymbol.fullName
+        val fullName  = c.internal.enclosingOwner.fullName
+        if ((fullName.length > className.length + 1) && fullName.startsWith(className + ".")) {
+          val relName = fullName.substring(className.length + 1).replace('.', '-')
+          NameTransformer decode relName
+        } else
+
+          // Default to local name
+          NameTransformer decode localName
+      }
     }
-  }
 
-  private def impl[A](c: Context, method: String): c.Expr[A] = {
-    import c.universe._
-    c.Expr(Apply(Ident(TermName(method)), Literal(Constant(name(c))) :: Nil))
-  }
+    private def impl[A](c: Context, method: String): c.Expr[A] = {
+      import c.universe._
+      c.Expr(Apply(Ident(TermName(method)), Literal(Constant(name(c))) :: Nil))
+    }
 
-  // ===================================================================================================================
+    import DslMacros._
 
-  import DslMacros._
+    def implStyle    (c: Context): c.Expr[MStyle    ] = impl(c, "__macroStyle")
+    def implStyleF   (c: Context): c.Expr[MStyleF   ] = impl(c, "__macroStyleF")
+    def implKeyframes(c: Context): c.Expr[MKeyframes] = impl(c, "__macroKeyframes")
 
-  def implStyle    (c: Context): c.Expr[MStyle    ] = impl(c, "__macroStyle")
-  def implStyleF   (c: Context): c.Expr[MStyleF   ] = impl(c, "__macroStyleF")
-  def implKeyframes(c: Context): c.Expr[MKeyframes] = impl(c, "__macroKeyframes")
+    trait Mixin {
+      protected def __macroStyle    (name: String): MStyle
+      protected def __macroStyleF   (name: String): MStyleF
+      protected def __macroKeyframes(name: String): MKeyframes
+      protected def __macroKeyframe               : MStyle
+      protected def __macroFontFace               : MFontFace
 
-  trait DslMixin {
-    protected def __macroStyle    (name: String): MStyle
-    protected def __macroStyleF   (name: String): MStyleF
-    protected def __macroKeyframes(name: String): MKeyframes
-    protected def __macroKeyframe               : MStyle
-    protected def __macroFontFace               : MFontFace
-
-    final protected def style    : MStyle     = macro implStyle
-    final protected def styleF   : MStyleF    = macro implStyleF
-    final protected def keyframes: MKeyframes = macro implKeyframes
-    final protected def keyframe : MStyle     = __macroKeyframe
-    final protected def fontFace : MFontFace  = __macroFontFace
+      final protected def style    : MStyle     = macro implStyle
+      final protected def styleF   : MStyleF    = macro implStyleF
+      final protected def keyframes: MKeyframes = macro implKeyframes
+      final protected def keyframe : MStyle     = __macroKeyframe
+      final protected def fontFace : MFontFace  = __macroFontFace
+    }
   }
 
   // ===================================================================================================================
@@ -81,7 +83,7 @@ object Macros {
       import c.universe._
 
       c.prefix.tree match {
-        case Apply(_, List(Apply(_, List(l @Literal(Constant(text0: String)))))) =>
+        case Apply(_, List(Apply(_, List(Literal(Constant(text0: String)))))) =>
 
           def fail(reason: String = null): Nothing = {
             var err = s"""Invalid colour literal: "$text0"."""
@@ -170,5 +172,17 @@ object Macros {
   class ColourLiteral(private val sc: StringContext) extends AnyVal {
     /** c"#fc6" provides a validates Color */
     def c(args: Any*): Color = macro ColorLiteral.impl
+  }
+
+  // ===================================================================================================================
+
+  def devOrProdDefaults(c: Context): c.Expr[Exports with mutable.Settings] = {
+    import c.universe._
+    c.Expr[Exports with mutable.Settings](q"""
+      if (_root_.scalacss.internal.Platform.DevMode)
+        _root_.scalacss.DevDefaults
+      else
+        _root_.scalacss.ProdDefaults
+       """)
   }
 }

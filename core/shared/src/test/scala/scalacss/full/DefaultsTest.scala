@@ -2,13 +2,17 @@ package scalacss.full
 
 import utest._
 import scalacss._
+import scalacss.internal.Platform
 import scalacss.test.TestUtil._
 
 object DefaultsTest extends TestSuite {
 
   override val tests = TestSuite {
-    'dev  - Dev .test()
-    'prod - Prod.test()
+    'platform - assert(Platform.DevMode)
+    'defaults - assert(devOrProdDefaults eq DevDefaults)
+
+    'dev     - Dev .test()
+    'prod    - Prod.test()
   }
 
   class SharedStyles(implicit reg: StyleSheet.Register) extends StyleSheet.Inline {

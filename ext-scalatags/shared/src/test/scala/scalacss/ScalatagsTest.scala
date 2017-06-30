@@ -2,7 +2,7 @@ package scalacss
 
 import utest._
 import scalacss.TestUtil._
-import Defaults._
+import DevDefaults._
 import ScalatagsCss._
 
 object ScalatagsTest extends TestSuite {
