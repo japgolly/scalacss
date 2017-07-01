@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.4" data-basepath=".." data-revision="Thu Nov 10 2016 22:13:03 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.4" data-basepath=".." data-revision="Sat Jul 01 2017 10:17:31 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -596,11 +596,12 @@
                     
                         <h2 id="font-faces">Font faces</h2>
 <p>ScalaCSS provides support for CSS3 <code>@font-face</code> rule.</p>
-<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fontFace</span>(</span>fontFamily: <span class="hljs-type">String</span>)(config: <span class="hljs-type">FontSrcSelector</span> =&gt; <span class="hljs-type">FontFace</span>): <span class="hljs-type">FontFace</span>
+<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fontFace</span>                    (</span>config: <span class="hljs-type">FontSrcSelector</span> =&gt; <span class="hljs-type">FontFace</span>): <span class="hljs-type">FontFace</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fontFace</span>(</span>fontFamily: <span class="hljs-type">String</span>)(config: <span class="hljs-type">FontSrcSelector</span> =&gt; <span class="hljs-type">FontFace</span>): <span class="hljs-type">FontFace</span>
 </code></pre>
 <p><code>fontFace</code> method takes two arguments:</p>
 <ul>
-<li><code>fontFamily</code> - name of the font face.</li>
+<li><code>fontFamily</code> - name of the font face. <em>(Optional)</em></li>
 <li><code>config</code> - additional configuration.
 At a minimum the font sources <code>.src(&#x2026;)</code> must be specified.
 Next you can specify the following optional attributes:<ul>
@@ -631,16 +632,13 @@ Next you can specify the following optional attributes:<ul>
       .fontStretch.ultraCondensed
       .fontWeight._200)
 
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">ff4</span> =</span> fontFace(<span class="hljs-string">&quot;myFont3&quot;</span>)(
-    _.src(<span class="hljs-string">&quot;local(HelveticaNeue)&quot;</span>, <span class="hljs-string">&quot;url(font2.woff)&quot;</span>))
-
   <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">myFontText</span> =</span> style(
     fontFamily(ff))
 }
 </code></pre>
 <p>which produces this CSS:</p>
 <pre><code class="lang-css"><span class="hljs-at_rule">@<span class="hljs-keyword">font-face</span></span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> MyInlineWithFontFace-myFont</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> myFont</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">src</span>:<span class="hljs-value"> <span class="hljs-function">url</span>(font.woff)</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-stretch</span>:<span class="hljs-value"> expanded</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-style</span>:<span class="hljs-value"> italic</span></span>;
@@ -648,22 +646,17 @@ Next you can specify the following optional attributes:<ul>
 <span class="hljs-rule">}</span></span>
 
 <span class="hljs-at_rule">@<span class="hljs-keyword">font-face</span></span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> MyInlineWithFontFace-myFont2</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> myFont2</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">src</span>:<span class="hljs-value"> <span class="hljs-function">url</span>(font2.woff)</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-style</span>:<span class="hljs-value"> oblique</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-weight</span>:<span class="hljs-value"> <span class="hljs-number">200</span></span></span>;
 <span class="hljs-rule">}</span></span>
 
 <span class="hljs-at_rule">@<span class="hljs-keyword">font-face</span></span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> MyInlineWithFontFace-myFont3</span></span>;
+  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> myFont3</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">src</span>:<span class="hljs-value"> <span class="hljs-function">local</span>(HelveticaNeue),<span class="hljs-function">url</span>(font2.woff)</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-stretch</span>:<span class="hljs-value"> ultra-condensed</span></span>;
   <span class="hljs-rule"><span class="hljs-attribute">font-weight</span>:<span class="hljs-value"> <span class="hljs-number">200</span></span></span>;
-<span class="hljs-rule">}</span></span>
-
-<span class="hljs-at_rule">@<span class="hljs-keyword">font-face</span></span> <span class="hljs-rules">{
-  <span class="hljs-rule"><span class="hljs-attribute">font-family</span>:<span class="hljs-value"> MyInlineWithFontFace-myFont3-<span class="hljs-number">2</span></span></span>;
-  <span class="hljs-rule"><span class="hljs-attribute">src</span>:<span class="hljs-value"> <span class="hljs-function">local</span>(HelveticaNeue),<span class="hljs-function">url</span>(font2.woff)</span></span>;
 <span class="hljs-rule">}</span></span>
 
 <span class="hljs-class">.MyInlineWithFontFace-myFontText</span> <span class="hljs-rules">{

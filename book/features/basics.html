@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.1" data-basepath=".." data-revision="Thu Nov 10 2016 22:13:03 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.1" data-basepath=".." data-revision="Sat Jul 01 2017 10:17:31 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -596,9 +596,12 @@
                     
                         <h2 id="settings">Settings</h2>
 <p>The first thing you&apos;ll want to do is import some settings by using one of these <code>import</code> statements:</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._     <span class="hljs-comment">// Choose dev or prod</span>
-<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">DevDefaults</span>._  <span class="hljs-comment">// Always use dev settings</span>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">DevDefaults</span>._  <span class="hljs-comment">// Always use dev settings</span>
 <span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ProdDefaults</span>._ <span class="hljs-comment">// Always use prod settings</span>
+
+<span class="hljs-comment">// This will choose between dev/prod depending on your scalac `-Xelide-below` setting</span>
+<span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">CssSettings</span> =</span> scalacss.devOrProdDefaults
+<span class="hljs-keyword">import</span> <span class="hljs-type">CssSettings</span>._
 </code></pre>
 <p>This provides two sets of sensible settings: development and production.</p>
 <table>

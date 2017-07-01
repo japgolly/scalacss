@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="7.1" data-basepath=".." data-revision="Thu Nov 10 2016 22:13:03 GMT+1100 (AEDT)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Sat Jul 01 2017 10:17:31 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -641,6 +641,41 @@ You can re-enable this in your own defaults if you want to keep using PlatformJS
 <li>Scalatags 0.6.2.</li>
 <li>UnivEq 1.0.2.</li>
 </ul>
+</li>
+</ul>
+<h1 id="0-5-3-rc1-commit-log-https-github-com-japgolly-scalacss-compare-v0-5-1-v0-5-3-rc1">0.5.3-RC1 (<a href="https://github.com/japgolly/scalacss/compare/v0.5.1...v0.5.3-RC1" target="_blank">commit log</a>)</h1>
+<p>(Skipping 0.5.2 due to botched release)</p>
+<ul>
+<li><code>background-clip</code> now has type-safe DSL.</li>
+<li><code>FontFace</code> names are now optional.
+When specified they are never modified and duplication is allowed.
+When not specified, they are given a unique name.</li>
+<li>Upgrade dependencies:<ul>
+<li>Scala.JS 0.6.14.</li>
+<li>Scalatags 0.6.3.</li>
+<li>Scalaz 7.2.9.</li>
+<li>scalajs-react 1.0.0-RC1.</li>
+</ul>
+</li>
+</ul>
+<h1 id="0-5-3-commit-log-https-github-com-japgolly-scalacss-compare-v0-5-3-rc1-v0-5-3">0.5.3 (<a href="https://github.com/japgolly/scalacss/compare/v0.5.3-RC1...v0.5.3" target="_blank">commit log</a>)</h1>
+<ul>
+<li><p><code>scalacss.Defaults</code> was broken in that it always pointed to dev settings and never chose prod settings.
+This has been deprecated and replaced with <code>scalacss.devOrProdDefaults</code>. Unfortunately you can no longer
+import its members directly and must instead, store it in a <code>val</code> somewhere in your project first.</p>
+</li>
+<li><p>Upgrade dependencies:</p>
+<ul>
+<li>Scala to 2.11.11 &amp; 2.12.2.</li>
+<li>Scala.JS 0.6.15.</li>
+<li>Scalatags 0.6.5.</li>
+<li>Scalaz 7.2.11.</li>
+<li>scalajs-react 1.0.0.</li>
+</ul>
+</li>
+<li><p>Compile for Scala 2.12 with <code>-opt:l:method</code></p>
+</li>
+<li><p>Replace all instance of <code>Stream</code> with <code>List</code>, <code>Vector</code> or <code>Iterator</code></p>
 </li>
 </ul>
 

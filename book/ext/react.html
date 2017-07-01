@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="3.1" data-basepath=".." data-revision="Thu Nov 10 2016 22:13:03 GMT+1100 (AEDT)">
+    <div class="book" data-level="3.1" data-basepath=".." data-revision="Sat Jul 01 2017 10:17:31 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -597,7 +597,7 @@
                         <h2 id="-scalajs-react-https-github-com-japgolly-scalajs-react"><a href="https://github.com/japgolly/scalajs-react" target="_blank">scalajs-react</a></h2>
 <ol>
 <li><p>Add this to your SBT build:</p>
-<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-react&quot;</span> % <span class="hljs-string">&quot;0.5.1&quot;</span></code></pre>
+<pre><code class="lang-scala">libraryDependencies += <span class="hljs-string">&quot;com.github.japgolly.scalacss&quot;</span> %%% <span class="hljs-string">&quot;ext-react&quot;</span> % <span class="hljs-string">&quot;0.5.3&quot;</span></code></pre>
 </li>
 <li><p>Add this to Scala where you want ScalaCSS to integrate with your React code.</p>
 <pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ScalaCssReact</span>._
@@ -619,8 +619,15 @@ create the inline styles by calling <code>.addToDocument()</code> on your styles
 </li>
 </ol>
 <h2 id="example">Example</h2>
-<p>MyStyles.scala</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
+<p>example/package.scala</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">package</span> <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">example</span> {</span>
+  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">CssSettings</span> =</span> scalacss.devOrProdDefaults
+}
+</code></pre>
+<p>example/MyStyles.scala</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">package</span> example
+
+<span class="hljs-keyword">import</span> <span class="hljs-type">CssSettings</span>._
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyStyles</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
   <span class="hljs-keyword">import</span> dsl._
@@ -631,12 +638,14 @@ create the inline styles by calling <code>.addToDocument()</code> on your styles
   )
 }
 </code></pre>
-<p>MyApp.scala</p>
-<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scala.scalajs.js.annotation.<span class="hljs-type">JSExport</span>
+<p>example/MyApp.scala</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">package</span> example
+
+<span class="hljs-keyword">import</span> scala.scalajs.js.annotation.<span class="hljs-type">JSExport</span>
 <span class="hljs-keyword">import</span> org.scalajs.dom.{alert, document}
 <span class="hljs-keyword">import</span> japgolly.scalajs.react._
 <span class="hljs-keyword">import</span> japgolly.scalajs.react.vdom.prefix_&lt;^._
-<span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">Defaults</span>._
+<span class="hljs-keyword">import</span> <span class="hljs-type">CssSettings</span>._
 <span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ScalaCssReact</span>._
 
 <span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">MyApp</span> {</span>
