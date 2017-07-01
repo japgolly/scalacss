@@ -1,9 +1,7 @@
 {
-  "name"    : "scalacss",
-  "private" : true,
-  "license" : "UNLICENSED",
-
-  "dependencies": {
-    "gitbook-cli" : "*"
+  "name": "ScalaCSS",
+  "private": true,
+  "devDependencies": {
+    "gitbook-cli": "^2.3.0"
   }
 }
