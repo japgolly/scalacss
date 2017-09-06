@@ -1011,7 +1011,8 @@ object Attrs {
    */
   object fontFamily extends TypedAttrBase {
     override val attr = Attr.real("font-family")
-    def apply(a: FontFace[String]): AV = av(a.fontFamily)
+    def apply(a: FontFace[String]): AV = apply(a.fontFamily)
+    def apply(familyName: String): AV = av(familyName)
   }
 
   /**
