@@ -35,7 +35,7 @@ trait TypedLiteralAliases {
   final def start                                                           = Typed.start
   final def end                                                             = Typed.end
   final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
-  final def steps(steps: Int, direction: TimingFunctionDirection)           = new Typed.steps(steps, direction)
+  final def steps(steps: Int, direction: TimingFunctionDirection = end)     = new Typed.steps(steps, direction)
   final def linear                                                          = Typed.linear
   final def ease                                                            = Typed.ease
   final def easeIn                                                          = Typed.easeIn
