@@ -3,6 +3,9 @@ startYear := Some(2015)
 
 version in ThisBuild := "0.5.4-SNAPSHOT"
 
+// Mutability & NameGen causes occasional test failures
+parallelExecution in ThisBuild := false
+
 val root              = ScalaCssBuild.root
 val rootJVM           = ScalaCssBuild.rootJVM
 val rootJS            = ScalaCssBuild.rootJS
