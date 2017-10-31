@@ -250,9 +250,17 @@ object Register { // ===========================================================
     private[this] var _nextShortPrefix = 0
 
     def nextShortPrefix(): String = {
-      val p = ('a' + _nextShortPrefix).toChar.toString
+      val p = toAlphabet(_nextShortPrefix)
       _nextShortPrefix += 1
       p
+    }
+
+    private[this] def toAlphabet(i: Int): String = {
+      val quot = i / 26
+      val rem = i % 26
+      val letter = ('a' + rem).toChar
+      if (quot == 0) letter.toString
+      else toAlphabet(quot - 1) + letter
     }
 
     def short(prefix  : String      = "_",
@@ -266,6 +274,8 @@ object Register { // ===========================================================
 
     def short8: NameGen =
       short("\u00a2", alphabet = nmchar8)
+
+    private[mutable] def resetNextShortPrefix() = _nextShortPrefix = 0
   }
 
   // ===================================================================================================================
