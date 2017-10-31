@@ -10,15 +10,15 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.4.5"
+    final val MTest         = "0.6.0"
     final val Nyaya         = "0.8.1"
     final val ReactJs       = "15.5.4"
     final val Scala211      = "2.11.11"
-    final val Scala212      = "2.12.2"
+    final val Scala212      = "2.12.4"
     final val ScalaJsDom    = "0.9.1"
-    final val ScalaJsReact  = "1.0.0"
+    final val ScalaJsReact  = "1.1.1"
     final val Scalatags     = "0.6.5"
-    final val Scalaz        = "7.2.11"
+    final val Scalaz        = "7.2.16"
     final val UnivEq        = "1.0.2"
   }
 
@@ -80,8 +80,7 @@ object ScalaCssBuild {
       libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % "test",
       testFrameworks      += new TestFramework("utest.runner.Framework")))
     .jsConfigure(
-      // Not mandatory; just faster.
-      _.settings(jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+      _.settings(jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv))
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -172,6 +171,5 @@ object ScalaCssBuild {
           /         "react-dom-server.js"
           minified  "react-dom-server.min.js"
           dependsOn "react-dom.js"
-          commonJSName "ReactDOMServer"),
-      requiresDOM := true)
+          commonJSName "ReactDOMServer"))
 }
