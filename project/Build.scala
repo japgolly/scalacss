@@ -10,7 +10,7 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.6.0"
+    final val MTest         = "0.5.4"
     final val Nyaya         = "0.8.1"
     final val ReactJs       = "15.5.4"
     final val Scala211      = "2.11.11"
