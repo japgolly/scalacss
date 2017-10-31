@@ -185,15 +185,15 @@ object Attrs {
    */
   object animationTimingFunction extends TypedAttrBase {
     override val attr: Attr = Attr.real("animation-timing-function", Transform keys CanIUse.animation)
-    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) = avl(new LT.cubicBezier(x1, y1, x2, y2))
-    def steps(steps: Int, direction: LT.TimingFunctionDirection)    = avl(new LT.steps(steps, direction))
-    def linear                                                      = avl(LT.linear)
-    def ease                                                        = avl(LT.ease)
-    def easeIn                                                      = avl(LT.easeIn)
-    def easeInOut                                                   = avl(LT.easeInOut)
-    def easeOut                                                     = avl(LT.easeOut)
-    def stepStart                                                   = avl(LT.stepStart)
-    def stepEnd                                                     = avl(LT.stepEnd)
+    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
+    def linear                                                            = avl(LT.linear)
+    def ease                                                              = avl(LT.ease)
+    def easeIn                                                            = avl(LT.easeIn)
+    def easeInOut                                                         = avl(LT.easeInOut)
+    def easeOut                                                           = avl(LT.easeOut)
+    def stepStart                                                         = avl(LT.stepStart)
+    def stepEnd                                                           = avl(LT.stepEnd)
   }
 
   /**
@@ -2185,15 +2185,15 @@ object Attrs {
    */
   object transitionTimingFunction extends TypedAttrBase {
     override val attr: Attr = Attr.real("transition-timing-function", Transform keys CanIUse.transitions)
-    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)   = avl(new LT.cubicBezier(x1, y1, x2, y2))
-    def steps(steps: Int, direction: LT.TimingFunctionDirection)      = avl(new LT.steps(steps, direction))
-    def linear                                                        = avl(LT.linear)
-    def ease                                                          = avl(LT.ease)
-    def easeIn                                                        = avl(LT.easeIn)
-    def easeInOut                                                     = avl(LT.easeInOut)
-    def easeOut                                                       = avl(LT.easeOut)
-    def stepStart                                                     = avl(LT.stepStart)
-    def stepEnd                                                       = avl(LT.stepEnd)
+    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
+    def linear                                                            = avl(LT.linear)
+    def ease                                                              = avl(LT.ease)
+    def easeIn                                                            = avl(LT.easeIn)
+    def easeInOut                                                         = avl(LT.easeInOut)
+    def easeOut                                                           = avl(LT.easeOut)
+    def stepStart                                                         = avl(LT.stepStart)
+    def stepEnd                                                           = avl(LT.stepEnd)
   }
 
   /**
