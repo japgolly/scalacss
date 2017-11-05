@@ -20,7 +20,7 @@ object ScalaCssBuild {
     final val Scala212      = "2.12.4"
     final val ScalaJsDom    = "0.9.1"
     final val ScalaJsReact  = "1.1.1"
-    final val Scalatags     = "0.6.5"
+    final val Scalatags     = "0.6.7"
     final val Scalaz        = "7.2.16"
     final val UnivEq        = "1.0.2"
   }
