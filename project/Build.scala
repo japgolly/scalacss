@@ -1,5 +1,8 @@
 import sbt._, Keys._
 import org.scalajs.sbtplugin.ScalaJSPlugin, ScalaJSPlugin.autoImport._
+import com.typesafe.sbt.pgp.PgpKeys
+import sbtrelease.ReleasePlugin.autoImport._
+import xerial.sbt.Sonatype.autoImport._
 import Lib._
 
 object ScalaCssBuild {
@@ -36,18 +39,22 @@ object ScalaCssBuild {
 
   val commonSettings = ConfigureBoth(
     _.settings(
-      organization              := "com.github.japgolly.scalacss",
-      homepage                  := Some(url("https://github.com/japgolly/scalacss")),
-      licenses                  += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion              := Ver.Scala212,
-      crossScalaVersions        := Seq(Ver.Scala211, Ver.Scala212),
-      scalacOptions            ++= scalacFlags,
-      scalacOptions in Compile ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
-      scalacOptions in Test    --= Seq("-Ywarn-unused"),
-      shellPrompt in ThisBuild  := ((s: State) => Project.extract(s).currentRef.project + "> "),
-      triggeredMessage          := Watched.clearWhenTriggered,
-      incOptions                := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
-      updateOptions             := updateOptions.value.withCachedResolution(true))
+      organization                  := "com.github.japgolly.scalacss",
+      homepage                      := Some(url("https://github.com/japgolly/scalacss")),
+      licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+      scalaVersion                  := Ver.Scala212,
+      crossScalaVersions            := Seq(Ver.Scala211, Ver.Scala212),
+      scalacOptions                ++= scalacFlags,
+      scalacOptions in Compile     ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
+      scalacOptions in Test        --= Seq("-Ywarn-unused"),
+      shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
+      updateOptions                 := updateOptions.value.withCachedResolution(true),
+      releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+      releaseTagComment             := s"v${(version in ThisBuild).value}",
+      releaseVcsSign                := true,
+			sonatypeProfileName           := "com.github.japgolly",
+      triggeredMessage              := Watched.clearWhenTriggered)
     .configure(
       addCommandAliases(
         "/"   -> "project root",
