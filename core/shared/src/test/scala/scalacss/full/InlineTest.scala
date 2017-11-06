@@ -56,7 +56,7 @@ object MyInline extends StyleSheet.Inline {
         borderColor(c"#080")
       ),
 
-      gridTemplateAreas("main side"),
+      gridTemplateAreas("main side")
     )
 
   val `it's a mixin!` = mixin(color.brown)
