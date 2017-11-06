@@ -1244,7 +1244,10 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-areas">MDN</a>
    */
-  final def gridTemplateAreas = Attr.real("grid-template-areas", Transform keys CanIUse.grid)
+  object gridTemplateAreas extends TypedAttrBase {
+    override val attr = Attr.real("grid-template-areas", Transform keys CanIUse.grid)
+    def apply(s1: String, sn: String*) = av((s1 +: sn).map("\"" + _ + "\"").mkString(" "))
+  }
 
   /**
    * The documentation about this has not yet been written; please consider contributing!

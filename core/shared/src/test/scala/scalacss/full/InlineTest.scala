@@ -54,7 +54,9 @@ object MyInline extends StyleSheet.Inline {
       ),
       unsafeRoot(".DEBUG")(
         borderColor(c"#080")
-      )
+      ),
+
+      gridTemplateAreas("main side"),
     )
 
   val `it's a mixin!` = mixin(color.brown)
@@ -305,6 +307,8 @@ object InlineTest extends utest.TestSuite {
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
+        |  -ms-grid-template-areas: "main side";
+        |  grid-template-areas: "main side";
         |}
         |
         |.manual nav.debug {
