@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import scala.collection.{mutable => scm}
 import scala.runtime.AbstractFunction1
 
 /**
@@ -48,7 +49,7 @@ object Style {
  * @param addClassNames Additional class names to be appended to the resulting [[StyleA]].
  *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
-final case class StyleS(data         : Map[Cond, AVs],
+final case class StyleS(data         : scm.LinkedHashMap[Cond, AVs],
                         unsafeExts   : Style.UnsafeExts,
                         className    : Option[ClassName],
                         addClassNames: Vector[ClassName],
@@ -76,15 +77,15 @@ final case class StyleS(data         : Map[Cond, AVs],
 
 object StyleS {
   /** Helper method for common case where only data is specified. */
-  def data(d: Map[Cond, AVs]): StyleS =
+  def data(d: scm.LinkedHashMap[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
 
   /** Helper method for common case where only one condition is specified. */
   def data1(c: Cond, avs: AVs): StyleS =
-    data(Map.empty.updated(c, avs))
+    data(scm.LinkedHashMap(c -> avs))
 
   val empty: StyleS =
-    data(Map.empty)
+    data(scm.LinkedHashMap.empty)
 }
 
 /**

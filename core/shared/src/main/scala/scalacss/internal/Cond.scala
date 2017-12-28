@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import scala.collection.{mutable => scm}
+
 /**
  * Condition under which CSS is applicable.
  */
@@ -23,10 +25,11 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
       b.mediaQueries.foldLeft(mediaQueries)(_ +: _))
 
   def applyToStyle(s: StyleS): StyleS = {
-    val d = s.data.foldLeft(Map.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
+    val d = s.data.foldLeft(scm.LinkedHashMap.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
       val newCond = this & oldCond
       val newValue = q.get(newCond).fold(av)(_ ++ av)
-      q.updated(newCond, newValue)
+      q.update(newCond, newValue)
+      q
     }
 
     val u = s.unsafeExts.map(e =>

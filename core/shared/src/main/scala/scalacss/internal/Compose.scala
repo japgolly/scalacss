@@ -45,10 +45,12 @@ final case class Compose(rules: Compose.Rules) {
     }
 
     val newData =
-      b.data.foldLeft(a.data) { case (data, (cond, newAVs)) =>
-        data.updated(cond,
+      b.data.foldLeft(scala.collection.mutable.LinkedHashMap(a.data.toSeq:_*)) { case (data, (cond, newAVs)) =>
+        data.update(cond,
           data.get(cond).fold(newAVs)(oldAVs =>
-            mergeAVs(cond, newAVs, into = oldAVs)))}
+            mergeAVs(cond, newAVs, into = oldAVs)))
+        data
+      }
 
     val exts = a.unsafeExts ++ b.unsafeExts
 
