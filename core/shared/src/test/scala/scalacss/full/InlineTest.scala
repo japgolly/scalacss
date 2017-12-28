@@ -278,25 +278,6 @@ object InlineTest extends utest.TestSuite {
   override def tests = TestSuite {
     'css1 - assertMultiline(norm(MyInline.render), norm(
       """
-        |.manual:not(:first-child):visited {
-        |  -moz-animation-delay: 60s,50ms;
-        |  -webkit-animation-delay: 60s,50ms;
-        |  -o-animation-delay: 60s,50ms;
-        |  animation-delay: 60s,50ms;
-        |  font-weight: bold;
-        |  font: inherit;
-        |}
-        |
-        |.manual:hover {
-        |  font-weight: normal;
-        |  line-height: 1em;
-        |  padding: 0;
-        |  cursor: -moz-zoom-in;
-        |  cursor: -webkit-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: zoom-in;
-        |}
-        |
         |.manual {
         |  margin: 12px;
         |  padding: 0.5ex;
@@ -309,6 +290,25 @@ object InlineTest extends utest.TestSuite {
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |  -ms-grid-template-areas: "main side";
         |  grid-template-areas: "main side";
+        |}
+        |
+        |.manual:hover {
+        |  font-weight: normal;
+        |  line-height: 1em;
+        |  padding: 0;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -webkit-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual:not(:first-child):visited {
+        |  -moz-animation-delay: 60s,50ms;
+        |  -webkit-animation-delay: 60s,50ms;
+        |  -o-animation-delay: 60s,50ms;
+        |  animation-delay: 60s,50ms;
+        |  font-weight: bold;
+        |  font: inherit;
         |}
         |
         |.manual nav.debug {
@@ -335,17 +335,17 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  .manual {
-        |    padding-left: 500px;
-        |    padding-right: 500px;
-        |  }
-        |}
-        |
         |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
         |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  .manual {
+        |    padding-left: 500px;
+        |    padding-right: 500px;
         |  }
         |}
         |
@@ -560,8 +560,9 @@ object InlineTest extends utest.TestSuite {
      """.stripMargin))
 
     'complexCond - assertMultiline(norm(MyInlineComplexCond.render), norm(
-      """.manual[some-attribute="true"]::after {
-        |  padding: 5px;
+      """.manual {
+        |  margin: 12px;
+        |  padding: 0.5ex;
         |}
         |
         |.manual:hover {
@@ -578,9 +579,8 @@ object InlineTest extends utest.TestSuite {
         |  cursor: zoom-in;
         |}
         |
-        |.manual {
-        |  margin: 12px;
-        |  padding: 0.5ex;
+        |.manual[some-attribute="true"]::after {
+        |  padding: 5px;
         |}
         |
         |.manual:hover .child:hover {
@@ -608,10 +608,10 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |@media (max-width:150px) {
-        |  .manual:nth-child(5) {
+        |  .manual:hover {
         |    margin: 0;
         |  }
-        |  .manual:hover {
+        |  .manual:nth-child(5) {
         |    margin: 0;
         |  }
         |}

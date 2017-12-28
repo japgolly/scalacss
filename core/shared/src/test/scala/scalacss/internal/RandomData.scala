@@ -88,7 +88,8 @@ object RandomData {
         ws   <- warning.vector(sized(0, 20, 6))
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
-        new StyleS(data, exts, cn, cns, ws)
+        val lData = scala.collection.mutable.LinkedHashMap(data.toSeq:_*)
+        new StyleS(lData, exts, cn, cns, ws)
       }
     level(Some(level(Some(level(None)))))
   }

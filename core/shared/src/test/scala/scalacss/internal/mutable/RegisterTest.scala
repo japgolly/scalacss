@@ -9,7 +9,7 @@ import Register._
 object RegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
-    StyleS.data(Map(Cond.empty -> AVs(av, avs: _*)))
+    StyleS.data(scala.collection.mutable.LinkedHashMap(Cond.empty -> AVs(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))
