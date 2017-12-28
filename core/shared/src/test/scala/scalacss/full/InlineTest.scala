@@ -269,6 +269,18 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
   val myFontText3 = style(fontFamily(ff6))
 }
 
+object MyInlineWithRawFontFamily extends StyleSheet.Inline {
+  import dsl._
+
+  val myFont1 = style( fontFamily("verdana") )
+  val myFont2 = style( fontFamily("comic-sans") )
+  val myFont3 = style(
+    fontFamily("times-new-roman"),
+    backgroundColor( Color("#ffff00") )
+  )
+}
+
+
 object InlineTest extends utest.TestSuite {
   import utest._
   import scalacss.test.TestUtil._
@@ -682,5 +694,22 @@ object InlineTest extends utest.TestSuite {
          |  font-family: MyInlineWithFontFace-0002;
          |}
        """.stripMargin))
+
+    'fontFamilies - assertMultiline( norm(MyInlineWithRawFontFamily.render), norm(
+      """
+        |.MyInlineWithRawFontFamily-myFont1 {
+        |  font-family: verdana;
+        |}
+        |
+        |.MyInlineWithRawFontFamily-myFont2 {
+        |  font-family: comic-sans;
+        |}
+        |
+        |.MyInlineWithRawFontFamily-myFont3 {
+        |  font-family: times-new-roman;
+        |  background-color: #ffff00;
+        |}
+      """.stripMargin))
+
   }
 }
