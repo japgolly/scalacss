@@ -164,6 +164,9 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
   val kf1 = keyframes(
     (0 %%) -> s,
     (20.5 %%) -> ks,
+    (25.5 %%) -> ks,
+    (30.5 %%) -> ks,
+    (35.5 %%) -> ks,
     (100 %%) -> keyframe(
       height(200 px),
       width(60 px)
@@ -515,6 +518,21 @@ object InlineTest extends utest.TestSuite {
        |  }
        |
        |  20.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  25.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  30.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  35.5% {
        |    height: 150px;
        |    width: 30px;
        |  }
