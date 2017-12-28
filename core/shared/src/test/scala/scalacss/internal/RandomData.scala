@@ -2,8 +2,10 @@ package scalacss.internal
 
 import nyaya.gen._
 import nyaya.util._
+
 import scalaz.NonEmptyList
-import Style.{UnsafeExts, UnsafeExt}
+import Style.{UnsafeExt, UnsafeExts}
+import scala.collection.immutable.ListMap
 
 object RandomData {
 
@@ -88,7 +90,8 @@ object RandomData {
         ws   <- warning.vector(sized(0, 20, 6))
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
-        new StyleS(data, exts, cn, cns, ws)
+        val lData = ListMap(data.toSeq:_*)
+        new StyleS(lData, exts, cn, cns, ws)
       }
     level(Some(level(Some(level(None)))))
   }
