@@ -185,6 +185,7 @@ object Literal extends TypedLiteralAliases {
   def expanded           : Value = "expanded"
   def extraCondensed     : Value = "extra-condensed"
   def extraExpanded      : Value = "extra-expanded"
+  def fade               : Value = "fade"
   def fill               : Value = "fill"
   def fillAvailable      : Value = "fill-available"
   def firstBaseline      : Value = "first baseline"
