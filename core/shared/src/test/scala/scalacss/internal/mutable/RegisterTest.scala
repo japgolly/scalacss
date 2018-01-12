@@ -1,15 +1,17 @@
 package scalacss.internal.mutable
 
 import utest._
+
 import scalacss.internal._
 import scalacss.test.TestUtil._
 import Attrs._
 import Register._
+import scala.collection.immutable.ListMap
 
 object RegisterTest extends TestSuite {
 
   def styleS(av: AV, avs: AV*) =
-    StyleS.data(Map(Cond.empty -> AVs(av, avs: _*)))
+    StyleS.data(ListMap(Cond.empty -> AVs(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))
