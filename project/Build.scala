@@ -25,17 +25,22 @@ object ScalaCssBuild {
     final val UnivEq        = "1.0.2"
   }
 
-  def scalacFlags = Seq(
-    "-deprecation",
-    "-unchecked",
-    // "-Ywarn-dead-code",
-    // "-Ywarn-unused",
-    // "-Ywarn-value-discard",
-    "-feature",
-    "-language:postfixOps",
-    "-language:implicitConversions",
-    "-language:higherKinds",
-    "-language:existentials")
+  def scalacFlags = Def.setting(
+    Seq(
+      "-deprecation",
+      "-unchecked",
+      // "-Ywarn-dead-code",
+      // "-Ywarn-unused",
+      // "-Ywarn-value-discard",
+      "-feature",
+      "-language:postfixOps",
+      "-language:implicitConversions",
+      "-language:higherKinds",
+      "-language:existentials")
+    ++ (scalaVersion.value match {
+      case x if x startsWith "2.11." => "-target:jvm-1.6" :: Nil
+      case x if x startsWith "2.12." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
+    }))
 
   val commonSettings = ConfigureBoth(
     _.settings(
@@ -44,11 +49,10 @@ object ScalaCssBuild {
       licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion                  := Ver.Scala212,
       crossScalaVersions            := Seq(Ver.Scala211, Ver.Scala212),
-      scalacOptions                ++= scalacFlags,
-      scalacOptions in Compile     ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
+      scalacOptions                ++= scalacFlags.value,
       scalacOptions in Test        --= Seq("-Ywarn-unused"),
       shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
-      incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
+   // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
       updateOptions                 := updateOptions.value.withCachedResolution(true),
       releasePublishArtifactsAction := PgpKeys.publishSigned.value,
       releaseTagComment             := s"v${(version in ThisBuild).value}",
@@ -70,9 +74,6 @@ object ScalaCssBuild {
         "cc"  -> ";clean;compile",
         "ctc" -> ";clean;test:compile",
         "ct"  -> ";clean;test")))
-
-  def byScalaVersion[A](f: PartialFunction[(Int, Int), Seq[A]]): Def.Initialize[Seq[A]] =
-    Def.setting(CrossVersion.partialVersion(scalaVersion.value).flatMap(f.lift).getOrElse(Nil))
 
   def definesMacros = ConfigureBoth(
     _.settings(
