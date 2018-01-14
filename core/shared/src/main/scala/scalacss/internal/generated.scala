@@ -507,6 +507,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def captionSide = Attrs.captionSide
   /**
+    * The `caret-color` property allows the color to be set of the caret (blinking text insertion pointer) in an editable text area.
+    *
+    * https://www.w3.org/TR/css-ui-3/#caret-color
+    */
+  @inline final def caretColor = Attrs.caretColor
+  /**
    * The clear CSS property specifies whether an element can be next to floating elements that precede it or must be moved down (cleared) below them.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear">MDN</a>
@@ -795,6 +801,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def fontVariantPosition = Attrs.fontVariantPosition
   /**
+    * This property provides low-level control over OpenType or TrueType font variations. It is intended as a way of providing access to font variations that are not widely used but are needed for a particular use case.
+    *
+    * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
+    */
+  @inline final def fontVariantionSettings = Attrs.fontVariantionSettings
+  /**
    * The font-weight CSS property specifies the weight or boldness of the font. However, some fonts are not available in all weights; some are available only on normal and bold.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight">MDN</a>
@@ -887,6 +899,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def gridTemplateRows = Attrs.gridTemplateRows
   /**
+    * Allows some punctuation characters from start (or the end) of text elements to be placed "outside" of the box in order to preserve the reading flow.
+    *
+    * https://drafts.csswg.org/css-text-3/#hanging-punctuation-property
+    */
+  @inline final def hangingPunctuation = Attrs.hangingPunctuation
+  /**
    * The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/height">MDN</a>
@@ -922,6 +940,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ime-mode">MDN</a>
    */
   @inline final def imeMode = Attrs.imeMode
+  /**
+    * This property specifies styling for dropped, raised, and sunken initial letters.
+    *
+    * https://www.w3.org/TR/css-inline/#initial-letter-styling
+    */
+  @inline final def initialLetter = Attrs.initialLetter
   /**
    * The inline-size CSS property defines the horizontal or vertical size of an element's block depending on it's writing mode. It corresponds to the width or the height property depending on the value defined for writing-mode.
    *
@@ -1205,6 +1229,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def overflow = Attrs.overflow
   /**
+    * Scroll anchoring aims to be the default mode of behavior when launched, so that users benefit from it even on legacy content. overflow-anchor can disable scroll anchoring in part or all of a webpage (opt out), or exclude portions of the DOM from the anchor node selection algorithm.
+    *
+    * https://drafts.csswg.org/css-scroll-anchoring/#propdef-overflow-anchor
+    */
+  @inline final def overflowAnchor = Attrs.overflowAnchor
+  /**
    * REDIRECT https://developer.mozilla.org/en-US/docs/CSS/word-wrap
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap">MDN</a>
@@ -1222,6 +1252,24 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y">MDN</a>
    */
   @inline final def overflowY = Attrs.overflowY
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  @inline final def overscrollBehavior = Attrs.overscrollBehavior
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  @inline final def overscrollBehaviorX = Attrs.overscrollBehaviorX
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  @inline final def overscrollBehaviorY = Attrs.overscrollBehaviorY
   /**
    * The padding CSS property sets the required padding space on all sides of an element. The padding area is the space between the content of the element and its border. Negative values are not allowed.
    *

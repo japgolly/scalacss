@@ -46,6 +46,10 @@ object Attrs {
     boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
     textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect,
 
+    // 0.5.5
+    caretColor, fontVariantionSettings, hangingPunctuation, initialLetter,
+    overscrollBehavior, overscrollBehaviorX, overscrollBehaviorY,
+
     // =================================================================================================================
     // ==================================== SVG Attributes =============================================================
     // =================================================================================================================
@@ -277,7 +281,12 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-repeat">MDN</a>
    */
-  final def backgroundRepeat = Attr.real("background-repeat")
+  object backgroundRepeat extends TypedAttrT2[RepeatStyle] with RepeatStyleOps {
+    override val attr = Attr.real("background-repeat")
+//      Transform.valueKeywords(CanIUse.backgroundRepeatRoundSpace)(LT.round.value, LT.space.value))
+    def repeatX = av("repeat-x")
+    def repeatY = av("repeat-y")
+  }
 
   /**
    * The background-size CSS property specifies the size of the background images. The size of the image can be fully constrained or only partially in order to preserve its intrinsic ratio.
@@ -600,6 +609,16 @@ object Attrs {
   }
 
   /**
+    * The `caret-color` property allows the color to be set of the caret (blinking text insertion pointer) in an editable text area.
+    *
+    * https://www.w3.org/TR/css-ui-3/#caret-color
+    */
+  object caretColor extends TypedAttr_Color {
+    override val attr = Attr.real("caret-color", Transform keys CanIUse.caretColor)
+    def auto = avl(LT.auto)
+  }
+
+  /**
    * The clear CSS property specifies whether an element can be next to floating elements that precede it or must be moved down (cleared) below them.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear">MDN</a>
@@ -877,12 +896,16 @@ object Attrs {
    */
   object display extends TypedAttrBase {
     override val attr = Attr.real("display",
-      Transform.values(CanIUse.flexbox)(L.flex, L.inlineFlex) *
-      Transform.values(CanIUse.grid   )(L.grid, L.inlineGrid))
+      Transform.values(CanIUse.displayContents)(L.contents) *
+      Transform.values(CanIUse.flowRoot       )(L.flowRoot) *
+      Transform.values(CanIUse.runIn          )(L.runIn) *
+      Transform.values(CanIUse.flexbox        )(L.flex, L.inlineFlex) *
+      Transform.values(CanIUse.grid           )(L.grid, L.inlineGrid))
 
     def block             = av(L.block)
     def contents          = av(L.contents)
     def flex              = av(L.flex)
+    def flowRoot          = av(L.flowRoot)
     def grid              = av(L.grid)
     def inline            = av(L.inline)
     def inlineBlock       = av(L.inlineBlock)
@@ -1010,8 +1033,9 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-family">MDN</a>
    */
   object fontFamily extends TypedAttrBase {
-    override val attr = Attr.real("font-family")
+    override val attr = Attr.real("font-family", Transform.values(CanIUse.fontFamilySystemUi)(L.systemUI))
     def apply(a: FontFace[String]): AV = av(a.fontFamily)
+    def systemUI = av(L.systemUI)
   }
 
   /**
@@ -1162,6 +1186,13 @@ object Attrs {
   }
 
   /**
+    * This property provides low-level control over OpenType or TrueType font variations. It is intended as a way of providing access to font variations that are not widely used but are needed for a particular use case.
+    *
+    * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
+    */
+  final def fontVariantionSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
+
+  /**
    * The font-weight CSS property specifies the weight or boldness of the font. However, some fonts are not available in all weights; some are available only on normal and bold.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight">MDN</a>
@@ -1264,6 +1295,29 @@ object Attrs {
   final def gridTemplateColumns = Attr.real("grid-template-columns", Transform keys CanIUse.grid)
 
   /**
+    * Allows some punctuation characters from start (or the end) of text elements to be placed "outside" of the box in order to preserve the reading flow.
+    *
+    * https://drafts.csswg.org/css-text-3/#hanging-punctuation-property
+    */
+  object hangingPunctuation extends TypedAttrBase {
+    override val attr = Attr.real("hanging-punctuation", Transform keys CanIUse.hangingPunctuation)
+    // Value:	none | [ first || [ force-end | allow-end ] || last ]
+    def none              = avl(LT.none)
+    def first             = av("first")
+    def last              = av("last")
+    def firstLast         = av("first last")
+    def forceEnd          = av("force-end")
+    def firstForceEnd     = av("first force-end")
+    def forceEndLast      = av("force-end last")
+    def firstForceEndLast = av("first force-end last")
+    def allowEnd          = av("allow-end")
+    def firstAllowEnd     = av("first allow-end")
+    def allowEndLast      = av("allow-end last")
+    def firstAllowEndLast = av("first allow-end last")
+
+  }
+
+  /**
    * The height CSS property specifies the height of the content area of an element. The content area is inside the padding, border, and margin of the element.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/height">MDN</a>
@@ -1323,6 +1377,18 @@ object Attrs {
     def disabled = av(L.disabled)
     def inactive = av(L.inactive)
     def normal   = av(L.normal)
+  }
+
+  /**
+    * This property specifies styling for dropped, raised, and sunken initial letters.
+    *
+    * https://www.w3.org/TR/css-inline/#initial-letter-styling
+    */
+  object initialLetter extends TypedAttrBase {
+    override val attr = Attr.real("initial-letter", Transform keys CanIUse.initialLetter)
+    def normal                                 : AV = av(L.normal)
+    def apply(size: ValueT[Number])            : AV = av(size.value)
+    def apply(size: ValueT[Number], lines: Int): AV = av(s"${size.value} $lines")
   }
 
   /**
@@ -1525,7 +1591,7 @@ object Attrs {
    */
   object objectFit extends TypedAttrBase {
     override val attr = Attr.real("object-fit", Transform keys CanIUse.objectFit)
-    def contain   = av(L.contain)
+    def contain   = avl(LT.contain)
     def cover     = av(L.cover)
     def fill      = av(L.fill)
     def none      = avl(LT.none)
@@ -1615,6 +1681,44 @@ object Attrs {
     def hidden  = avl(LT.hidden)
     def scroll  = av(L.scroll)
     def visible = av(L.visible)
+  }
+
+  /**
+    * Scroll anchoring aims to be the default mode of behavior when launched, so that users benefit from it even on legacy content. overflow-anchor can disable scroll anchoring in part or all of a webpage (opt out), or exclude portions of the DOM from the anchor node selection algorithm.
+    *
+    * https://drafts.csswg.org/css-scroll-anchoring/#propdef-overflow-anchor
+    */
+  object overflowAnchor extends TypedAttrBase {
+    override val attr = Attr.real("overflow-anchor", Transform keys CanIUse.overflowAnchor)
+    def none: AV = avl(LT.none)
+    def auto: AV = avl(LT.auto)
+  }
+
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  object overscrollBehavior extends TypedAttrT2[OverflowBehaviour] with OverflowBehaviourOps {
+    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overflowAnchor)
+  }
+
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  object overscrollBehaviorX extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
+    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overflowAnchor)
+  }
+
+  /**
+    * Specifies how a scroll container element must behave when scrolling.
+    *
+    * https://wicg.github.io/overscroll-behavior/
+    */
+  object overscrollBehaviorY extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
+    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overflowAnchor)
   }
 
   /**
@@ -2018,7 +2122,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-indent">MDN</a>
    */
   object textIndent extends TypedAttrBase with ZeroLit {
-    override val attr = Attr.real("text-indent") // TODO There should be a CanIUse for hanging|each-line
+    override val attr = Attr.real("text-indent", Transform keys CanIUse.textIndent)
     def apply(v: ValueT[LenPct])                                         : AV = av(v.value)
     def apply(v: ValueT[LenPct], h: LT.hanging.type)                     : AV = av(s"${v.value} ${h.value}")
     def apply(v: ValueT[LenPct], h: LT.eachLine.type)                    : AV = av(s"${v.value} ${h.value}")
@@ -2031,7 +2135,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-orientation">MDN</a>
    */
   object textOrientation extends TypedAttrBase {
-    override val attr = Attr.real("text-orientation")
+    override val attr = Attr.real("text-orientation", Transform keys CanIUse.textOrientation)
     def mixed               = av(L.mixed)
     def sideways            = av(L.sideways)
     def sidewaysLeft        = av(L.sidewaysLeft)
