@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="7.1" data-basepath=".." data-revision="Sat Jul 01 2017 10:17:31 GMT+1000 (AEST)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Mon Jan 15 2018 21:00:22 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -678,6 +678,51 @@ import its members directly and must instead, store it in a <code>val</code> som
 <li><p>Replace all instance of <code>Stream</code> with <code>List</code>, <code>Vector</code> or <code>Iterator</code></p>
 </li>
 </ul>
+<h1 id="0-5-4-commit-log-https-github-com-japgolly-scalacss-compare-v0-5-3-v0-5-4">0.5.4 (<a href="https://github.com/japgolly/scalacss/compare/v0.5.3...v0.5.4" target="_blank">commit log</a>)</h1>
+<ul>
+<li><code>grid-template-areas</code> now has type-safe DSL and produces correct CSS.</li>
+<li>Bugfix when adding &gt; 26 separate stylesheets (thanks <code>@an-tex</code> &amp; <code>@vmarc</code>)</li>
+<li>Timing functions using <code>.steps</code> now default to <code>direction=end</code> when unspecified. (thanks <code>@Myrddin27</code>)</li>
+<li>Upgrade dependencies:<ul>
+<li>Scala 2.12.4</li>
+<li>Scala.JS 0.6.19</li>
+<li>Scalatags 0.6.7</li>
+<li>Scalaz 7.2.16</li>
+<li>scalajs-react 1.1.1</li>
+</ul>
+</li>
+</ul>
+<h1 id="0-5-5-commit-log-https-github-com-japgolly-scalacss-compare-v0-5-4-v0-5-5">0.5.5 (<a href="https://github.com/japgolly/scalacss/compare/v0.5.4...v0.5.5" target="_blank">commit log</a>)</h1>
+<ul>
+<li>CSS rules rendering in the same order as defined in the Scala code.</li>
+<li>New CSS attributes:<ul>
+<li><code>caret-color</code></li>
+<li><code>font-variantion-settings</code></li>
+<li><code>hanging-punctuation</code></li>
+<li><code>initial-letter</code></li>
+<li><code>overscroll-behavior</code></li>
+<li><code>overscroll-behavior-x</code></li>
+<li><code>overscroll-behavior-y</code></li>
+</ul>
+</li>
+<li>New CSS values:<ul>
+<li><code>display: flow-root</code></li>
+<li><code>font-family: system-ui</code></li>
+</ul>
+</li>
+<li>Type-safety added to CSS attributes:<ul>
+<li><code>background-repeat</code></li>
+</ul>
+</li>
+<li>Upgrade dependencies:<ul>
+<li>scala-js-dom 0.9.4</li>
+</ul>
+</li>
+</ul>
+<p>If you like what I do
+&#x2014;my OSS libraries, my contributions to other OSS libs, <a href="https://japgolly.blogspot.com" target="_blank">my programming blog</a>&#x2014;
+and you&apos;d like to support me, more content, more lib maintenance, <a href="https://www.patreon.com/japgolly" target="_blank">please become a patron</a>!
+I do all my OSS work unpaid so showing your support will make a big difference.</p>
 
                     
                     </section>
