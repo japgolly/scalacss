@@ -129,6 +129,12 @@ object MyInline3 extends StyleSheet.Inline {
   val dup2b = style("MyInline3-dup2c-2")(verticalAlign.middle)
   val dup2c = style(verticalAlign.bottom)
 
+  val attr01 = style(backgroundRepeat.noRepeat)
+  val attr02 = style(backgroundRepeat(round))
+  val attr03 = style(backgroundRepeat(repeat, space))
+  val attr04 = style(initialLetter(3))
+  val attr05 = style(initialLetter(3.2, 5))
+
   object innerObject {
 
     val mybool =
@@ -292,8 +298,8 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.manual:not(:first-child):visited {
-        |  -moz-animation-delay: 60s,50ms;
         |  -webkit-animation-delay: 60s,50ms;
+        |  -moz-animation-delay: 60s,50ms;
         |  -o-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
@@ -443,6 +449,26 @@ object InlineTest extends utest.TestSuite {
         |  vertical-align: bottom;
         |}
         |
+        |.MyInline3-attr01 {
+        |  background-repeat: no-repeat;
+        |}
+        |
+        |.MyInline3-attr02 {
+        |  background-repeat: round;
+        |}
+        |
+        |.MyInline3-attr03 {
+        |  background-repeat: repeat space;
+        |}
+        |
+        |.MyInline3-attr04 {
+        |  initial-letter: 3;
+        |}
+        |
+        |.MyInline3-attr05 {
+        |  initial-letter: 3.2 5;
+        |}
+        |
         |.blah-t {
         |  background-color: green;
         |  max-width: 80ex;
@@ -550,28 +576,28 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
-       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
+       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -o-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
-       |  -moz-animation-duration: 5s;
        |  -webkit-animation-duration: 5s;
+       |  -moz-animation-duration: 5s;
        |  -o-animation-duration: 5s;
        |  animation-duration: 5s;
-       |  -moz-animation-direction: alternate;
        |  -webkit-animation-direction: alternate;
+       |  -moz-animation-direction: alternate;
        |  -o-animation-direction: alternate;
        |  animation-direction: alternate;
-       |  -moz-animation-iteration-count: 5;
        |  -webkit-animation-iteration-count: 5;
+       |  -moz-animation-iteration-count: 5;
        |  -o-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
-       |  -moz-animation-play-state: running;
        |  -webkit-animation-play-state: running;
+       |  -moz-animation-play-state: running;
        |  -o-animation-play-state: running;
        |  animation-play-state: running;
-       |  -moz-animation-timing-function: ease;
        |  -webkit-animation-timing-function: ease;
+       |  -moz-animation-timing-function: ease;
        |  -o-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}

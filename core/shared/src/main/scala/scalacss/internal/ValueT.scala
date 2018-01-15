@@ -47,18 +47,20 @@ object ValueT {
    */
   sealed trait ValueClass
 
-  sealed trait Integer    extends ValueClass
-  sealed trait Number     extends ValueClass
-  sealed trait Time       extends ValueClass
-  sealed trait Len        extends ValueClass
-  sealed trait Pct        extends ValueClass
-  sealed trait LenPct     extends ValueClass
-  sealed trait LenPctAuto extends ValueClass
-  sealed trait LenPctNum  extends ValueClass
-  sealed trait BrWidth    extends ValueClass
-  sealed trait BrStyle    extends ValueClass
-  sealed trait Color      extends ValueClass
-  sealed trait WidStyCol  extends ValueClass
+  sealed trait Integer           extends ValueClass
+  sealed trait Number            extends ValueClass
+  sealed trait Time              extends ValueClass
+  sealed trait Len               extends ValueClass
+  sealed trait Pct               extends ValueClass
+  sealed trait LenPct            extends ValueClass
+  sealed trait LenPctAuto        extends ValueClass
+  sealed trait LenPctNum         extends ValueClass
+  sealed trait BrWidth           extends ValueClass
+  sealed trait BrStyle           extends ValueClass
+  sealed trait Color             extends ValueClass
+  sealed trait WidStyCol         extends ValueClass
+  sealed trait RepeatStyle       extends ValueClass
+  sealed trait OverflowBehaviour extends ValueClass
 
 
   // =========
@@ -117,18 +119,21 @@ object ValueT {
         case _                    => d.toSeconds + "s"
       })
 
-    @inline implicit def ruleLenPct_L                               : LenPct     <=< Len          = Rule.retype
-    @inline implicit def ruleLenPct_P                               : LenPct     <=< Pct          = Rule.retype
-    @inline implicit def ruleLenPctAuto_LP                          : LenPctAuto <=< LenPct       = Rule.retype
-    @inline implicit def ruleLenPctAuto_A                           : LenPctAuto <== LT.auto.type = Rule.literal
-    @inline implicit def ruleLenPctNum_LP                           : LenPctNum  <=< LenPct       = Rule.retype
-    @inline implicit def ruleLenPctNum_N                            : LenPctNum  <=< Number       = Rule.retype
-    @inline implicit def ruleBrWidth_1                              : BrWidth    <=< Len          = Rule.retype
-    @inline implicit def ruleBrWidth_2[L <: Literal with LT.BrWidth]: BrWidth    <== L            = Rule.literal
-    @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle    <== L            = Rule.literal
-    @inline implicit def ruleWidStyCol_W                            : WidStyCol  <=< BrWidth      = Rule.retype
-    @inline implicit def ruleWidStyCol_S                            : WidStyCol  <=< BrStyle      = Rule.retype
-    @inline implicit def ruleWidStyCol_C                            : WidStyCol  <=< Color        = Rule.retype
+    @inline implicit def ruleLenPct_L     : LenPct      <=< Len          = Rule.retype
+    @inline implicit def ruleLenPct_P     : LenPct      <=< Pct          = Rule.retype
+    @inline implicit def ruleLenPctAuto_LP: LenPctAuto  <=< LenPct       = Rule.retype
+    @inline implicit def ruleLenPctAuto_A : LenPctAuto  <== LT.auto.type = Rule.literal
+    @inline implicit def ruleLenPctNum_LP : LenPctNum   <=< LenPct       = Rule.retype
+    @inline implicit def ruleLenPctNum_N  : LenPctNum   <=< Number       = Rule.retype
+    @inline implicit def ruleBrWidth_1    : BrWidth     <=< Len          = Rule.retype
+    @inline implicit def ruleWidStyCol_W  : WidStyCol   <=< BrWidth      = Rule.retype
+    @inline implicit def ruleWidStyCol_S  : WidStyCol   <=< BrStyle      = Rule.retype
+    @inline implicit def ruleWidStyCol_C  : WidStyCol   <=< Color        = Rule.retype
+
+    @inline implicit def ruleBrWidth_2[L <: Literal with LT.BrWidth]: BrWidth <== L = Rule.literal
+    @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
+    @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
+    @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
 
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
@@ -332,6 +337,21 @@ object ValueT {
     final def ridge  = avl(LT.ridge)
     final def inset  = avl(LT.inset)
     final def outset = avl(LT.outset)
+  }
+
+  trait RepeatStyleOps {
+    this: TypedAttrBase =>
+    def repeat  : AV = avl(LT.repeat)
+    def space   : AV = avl(LT.space)
+    def round   : AV = avl(LT.round)
+    def noRepeat: AV = avl(LT.noRepeat)
+  }
+
+  trait OverflowBehaviourOps {
+    this: TypedAttrBase =>
+    def none   : AV = avl(LT.none)
+    def auto   : AV = avl(LT.auto)
+    def contain: AV = avl(LT.contain)
   }
 
   trait ColourOps extends ColorOps[AV] {

@@ -43,6 +43,11 @@ trait TypedLiteralAliases {
   final def easeOut                                                         = Typed.easeOut
   final def stepStart                                                       = Typed.stepStart
   final def stepEnd                                                         = Typed.stepEnd
+  final def repeat                                                          = Typed.repeat
+  final def space                                                           = Typed.space
+  final def round                                                           = Typed.round
+  final def noRepeat                                                        = Typed.noRepeat
+  final def contain                                                         = Typed.contain
 }
 
 /**
@@ -62,7 +67,6 @@ object Literal extends TypedLiteralAliases {
 
     class count(n: Int) extends Literal(n.toString)
 
-    object auto     extends Literal("auto")
     object hanging  extends Literal("hanging")
     object eachLine extends Literal("each-line")
 
@@ -80,7 +84,6 @@ object Literal extends TypedLiteralAliases {
 
     // <br-style>
     sealed trait BrStyle
-    object none   extends Literal("none")   with BrStyle
     object hidden extends Literal("hidden") with BrStyle
     object dotted extends Literal("dotted") with BrStyle
     object dashed extends Literal("dashed") with BrStyle
@@ -91,21 +94,36 @@ object Literal extends TypedLiteralAliases {
     object inset  extends Literal("inset")  with BrStyle
     object outset extends Literal("outset") with BrStyle
 
+    // <overflow-behaviour>
+    sealed trait OverflowBehaviour { def value: Value }
+    object auto    extends Literal("auto")    with OverflowBehaviour
+    object contain extends Literal("contain") with OverflowBehaviour
+
+    // <repeat-style>
+    sealed trait RepeatStyle { def value: Value }
+    object repeat   extends Literal("repeat")    with RepeatStyle
+    object space    extends Literal("space")     with RepeatStyle
+    object round    extends Literal("round")     with RepeatStyle
+    object noRepeat extends Literal("no-repeat") with RepeatStyle
+
     // <timing-function>
     sealed trait TimingFunctionDirection { def value: Value }
     object start  extends Literal("start") with TimingFunctionDirection
-    object end    extends Literal("end") with TimingFunctionDirection
+    object end    extends Literal("end")   with TimingFunctionDirection
 
     sealed trait TimingFunction
     class cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) extends Literal(s"cubic-bezier($x1, $y1, $x2, $y2)") with TimingFunction
     class steps(steps: Int, direction: TimingFunctionDirection)       extends Literal(s"steps($steps, ${direction.value})") with TimingFunction
-    object linear     extends Literal("linear") with TimingFunction
-    object ease       extends Literal("ease") with TimingFunction
-    object easeIn     extends Literal("ease-in") with TimingFunction
+    object linear     extends Literal("linear")      with TimingFunction
+    object ease       extends Literal("ease")        with TimingFunction
+    object easeIn     extends Literal("ease-in")     with TimingFunction
     object easeInOut  extends Literal("ease-in-out") with TimingFunction
-    object easeOut    extends Literal("ease-out") with TimingFunction
-    object stepStart  extends Literal("step-start") with TimingFunction
-    object stepEnd    extends Literal("step-end") with TimingFunction
+    object easeOut    extends Literal("ease-out")    with TimingFunction
+    object stepStart  extends Literal("step-start")  with TimingFunction
+    object stepEnd    extends Literal("step-end")    with TimingFunction
+
+    // Multi-purpose
+    object none extends Literal("none") with BrStyle with OverflowBehaviour
   }
 
   def absolute           : Value = "absolute"
@@ -149,7 +167,6 @@ object Literal extends TypedLiteralAliases {
   def column             : Value = "column"
   def columnReverse      : Value = "column-reverse"
   def condensed          : Value = "condensed"
-  def contain            : Value = "contain"
   def containFloats      : Value = "contain-floats"
   def content            : Value = "content"
   def contentBox         : Value = "content-box"
@@ -177,6 +194,7 @@ object Literal extends TypedLiteralAliases {
   def flexEnd            : Value = "flex-end"
   def flexStart          : Value = "flex-start"
   def flip               : Value = "flip"
+  def flowRoot           : Value = "flow-root"
   def forwards           : Value = "forwards"
   def fromImage          : Value = "from-image"
   def fullWidth          : Value = "full-width"
@@ -256,10 +274,8 @@ object Literal extends TypedLiteralAliases {
   def preWrap            : Value = "pre-wrap"
   def progress           : Value = "progress"
   def relative           : Value = "relative"
-  def repeat             : Value = "repeat"
   def reverse            : Value = "reverse"
   def right              : Value = "right"
-  def round              : Value = "round"
   def row                : Value = "row"
   def rowResize          : Value = "row-resize"
   def rowReverse         : Value = "row-reverse"
@@ -299,6 +315,7 @@ object Literal extends TypedLiteralAliases {
   def sub                : Value = "sub"
   def super_             : Value = "super"
   def swResize           : Value = "sw-resize"
+  def systemUI           : Value = "system-ui"
   def table              : Value = "table"
   def tableCell          : Value = "table-cell"
   def tableColumn        : Value = "table-column"
