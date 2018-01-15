@@ -48,7 +48,8 @@ final case class Compose(rules: Compose.Rules) {
       b.data.foldLeft(a.data) { case (data, (cond, newAVs)) =>
         data.updated(cond,
           data.get(cond).fold(newAVs)(oldAVs =>
-            mergeAVs(cond, newAVs, into = oldAVs)))}
+            mergeAVs(cond, newAVs, into = oldAVs)))
+      }
 
     val exts = a.unsafeExts ++ b.unsafeExts
 

@@ -1,5 +1,8 @@
 import sbt._, Keys._
 import org.scalajs.sbtplugin.ScalaJSPlugin, ScalaJSPlugin.autoImport._
+import com.typesafe.sbt.pgp.PgpKeys
+import sbtrelease.ReleasePlugin.autoImport._
+import xerial.sbt.Sonatype.autoImport._
 import Lib._
 
 object ScalaCssBuild {
@@ -10,44 +13,52 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.4.5"
+    final val MTest         = "0.6.3"
     final val Nyaya         = "0.8.1"
     final val ReactJs       = "15.5.4"
     final val Scala211      = "2.11.11"
-    final val Scala212      = "2.12.2"
-    final val ScalaJsDom    = "0.9.1"
-    final val ScalaJsReact  = "1.0.0"
-    final val Scalatags     = "0.6.5"
-    final val Scalaz        = "7.2.11"
+    final val Scala212      = "2.12.4"
+    final val ScalaJsDom    = "0.9.4"
+    final val ScalaJsReact  = "1.1.1"
+    final val Scalatags     = "0.6.7"
+    final val Scalaz        = "7.2.18"
     final val UnivEq        = "1.0.2"
   }
 
-  def scalacFlags = Seq(
-    "-deprecation",
-    "-unchecked",
-    // "-Ywarn-dead-code",
-    // "-Ywarn-unused",
-    // "-Ywarn-value-discard",
-    "-feature",
-    "-language:postfixOps",
-    "-language:implicitConversions",
-    "-language:higherKinds",
-    "-language:existentials")
+  def scalacFlags = Def.setting(
+    Seq(
+      "-deprecation",
+      "-unchecked",
+      // "-Ywarn-dead-code",
+      // "-Ywarn-unused",
+      // "-Ywarn-value-discard",
+      "-feature",
+      "-language:postfixOps",
+      "-language:implicitConversions",
+      "-language:higherKinds",
+      "-language:existentials")
+    ++ (scalaVersion.value match {
+      case x if x startsWith "2.11." => "-target:jvm-1.6" :: Nil
+      case x if x startsWith "2.12." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
+    }))
 
   val commonSettings = ConfigureBoth(
     _.settings(
-      organization              := "com.github.japgolly.scalacss",
-      homepage                  := Some(url("https://github.com/japgolly/scalacss")),
-      licenses                  += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion              := Ver.Scala212,
-      crossScalaVersions        := Seq(Ver.Scala211, Ver.Scala212),
-      scalacOptions            ++= scalacFlags,
-      scalacOptions in Compile ++= byScalaVersion { case (2, 12) => Seq("-opt:l:method") }.value,
-      scalacOptions in Test    --= Seq("-Ywarn-unused"),
-      shellPrompt in ThisBuild  := ((s: State) => Project.extract(s).currentRef.project + "> "),
-      triggeredMessage          := Watched.clearWhenTriggered,
-      incOptions                := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
-      updateOptions             := updateOptions.value.withCachedResolution(true))
+      organization                  := "com.github.japgolly.scalacss",
+      homepage                      := Some(url("https://github.com/japgolly/scalacss")),
+      licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
+      scalaVersion                  := Ver.Scala212,
+      crossScalaVersions            := Seq(Ver.Scala211, Ver.Scala212),
+      scalacOptions                ++= scalacFlags.value,
+      scalacOptions in Test        --= Seq("-Ywarn-unused"),
+      shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
+   // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
+      updateOptions                 := updateOptions.value.withCachedResolution(true),
+      releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+      releaseTagComment             := s"v${(version in ThisBuild).value}",
+      releaseVcsSign                := true,
+			sonatypeProfileName           := "com.github.japgolly",
+      triggeredMessage              := Watched.clearWhenTriggered)
     .configure(
       addCommandAliases(
         "/"   -> "project root",
@@ -64,9 +75,6 @@ object ScalaCssBuild {
         "ctc" -> ";clean;test:compile",
         "ct"  -> ";clean;test")))
 
-  def byScalaVersion[A](f: PartialFunction[(Int, Int), Seq[A]]): Def.Initialize[Seq[A]] =
-    Def.setting(CrossVersion.partialVersion(scalaVersion.value).flatMap(f.lift).getOrElse(Nil))
-
   def definesMacros = ConfigureBoth(
     _.settings(
       scalacOptions += "-language:experimental.macros",
@@ -80,8 +88,7 @@ object ScalaCssBuild {
       libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % "test",
       testFrameworks      += new TestFramework("utest.runner.Framework")))
     .jsConfigure(
-      // Not mandatory; just faster.
-      _.settings(jsEnv in Test := new PhantomJS2Env(scalaJSPhantomJSClassLoader.value)))
+      _.settings(jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv))
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -172,6 +179,5 @@ object ScalaCssBuild {
           /         "react-dom-server.js"
           minified  "react-dom-server.min.js"
           dependsOn "react-dom.js"
-          commonJSName "ReactDOMServer"),
-      requiresDOM := true)
+          commonJSName "ReactDOMServer"))
 }

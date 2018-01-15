@@ -153,5 +153,11 @@ object AttrTest extends TestSuite {
       'ie      - test("IE")     ("-ms-flex",                "flex")
       'safari  - test("Safari") ("-webkit-flex",            "flex")
     }
+
+    'gridTemplateAreas {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(gridTemplateAreas("a b"), """ "a b" """)
+      test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
+    }
   }
 }

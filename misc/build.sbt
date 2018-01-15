@@ -1,8 +1,7 @@
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.4"
 
-libraryDependencies += "io.argonaut" %% "argonaut" % "6.1-M5" exclude("org.scala-lang", "scala-compiler")
-
-libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.1.1"
+libraryDependencies += "io.argonaut" %% "argonaut-scalaz" % "6.2"
+libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.2.18"
 
 scalacOptions ++= Seq(
   "-unchecked", "-deprecation",

@@ -54,7 +54,9 @@ object MyInline extends StyleSheet.Inline {
       ),
       unsafeRoot(".DEBUG")(
         borderColor(c"#080")
-      )
+      ),
+
+      gridTemplateAreas("main side")
     )
 
   val `it's a mixin!` = mixin(color.brown)
@@ -127,6 +129,12 @@ object MyInline3 extends StyleSheet.Inline {
   val dup2b = style("MyInline3-dup2c-2")(verticalAlign.middle)
   val dup2c = style(verticalAlign.bottom)
 
+  val attr01 = style(backgroundRepeat.noRepeat)
+  val attr02 = style(backgroundRepeat(round))
+  val attr03 = style(backgroundRepeat(repeat, space))
+  val attr04 = style(initialLetter(3))
+  val attr05 = style(initialLetter(3.2, 5))
+
   object innerObject {
 
     val mybool =
@@ -162,6 +170,9 @@ object MyInlineWithKeyframes extends StyleSheet.Inline {
   val kf1 = keyframes(
     (0 %%) -> s,
     (20.5 %%) -> ks,
+    (25.5 %%) -> ks,
+    (30.5 %%) -> ks,
+    (35.5 %%) -> ks,
     (100 %%) -> keyframe(
       height(200 px),
       width(60 px)
@@ -276,15 +287,6 @@ object InlineTest extends utest.TestSuite {
   override def tests = TestSuite {
     'css1 - assertMultiline(norm(MyInline.render), norm(
       """
-        |.manual:not(:first-child):visited {
-        |  -moz-animation-delay: 60s,50ms;
-        |  -webkit-animation-delay: 60s,50ms;
-        |  -o-animation-delay: 60s,50ms;
-        |  animation-delay: 60s,50ms;
-        |  font-weight: bold;
-        |  font: inherit;
-        |}
-        |
         |.manual:hover {
         |  font-weight: normal;
         |  line-height: 1em;
@@ -293,6 +295,15 @@ object InlineTest extends utest.TestSuite {
         |  cursor: -webkit-zoom-in;
         |  cursor: -o-zoom-in;
         |  cursor: zoom-in;
+        |}
+        |
+        |.manual:not(:first-child):visited {
+        |  -webkit-animation-delay: 60s,50ms;
+        |  -moz-animation-delay: 60s,50ms;
+        |  -o-animation-delay: 60s,50ms;
+        |  animation-delay: 60s,50ms;
+        |  font-weight: bold;
+        |  font: inherit;
         |}
         |
         |.manual {
@@ -305,6 +316,8 @@ object InlineTest extends utest.TestSuite {
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
+        |  -ms-grid-template-areas: "main side";
+        |  grid-template-areas: "main side";
         |}
         |
         |.manual nav.debug {
@@ -331,17 +344,17 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  .manual {
-        |    padding-left: 500px;
-        |    padding-right: 500px;
-        |  }
-        |}
-        |
         |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
         |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
+        |  }
+        |}
+        |
+        |@media not handheld and (orientation:landscape) and (color) {
+        |  .manual {
+        |    padding-left: 500px;
+        |    padding-right: 500px;
         |  }
         |}
         |
@@ -436,6 +449,26 @@ object InlineTest extends utest.TestSuite {
         |  vertical-align: bottom;
         |}
         |
+        |.MyInline3-attr01 {
+        |  background-repeat: no-repeat;
+        |}
+        |
+        |.MyInline3-attr02 {
+        |  background-repeat: round;
+        |}
+        |
+        |.MyInline3-attr03 {
+        |  background-repeat: repeat space;
+        |}
+        |
+        |.MyInline3-attr04 {
+        |  initial-letter: 3;
+        |}
+        |
+        |.MyInline3-attr05 {
+        |  initial-letter: 3.2 5;
+        |}
+        |
         |.blah-t {
         |  background-color: green;
         |  max-width: 80ex;
@@ -515,6 +548,21 @@ object InlineTest extends utest.TestSuite {
        |    width: 30px;
        |  }
        |
+       |  25.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  30.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
+       |  35.5% {
+       |    height: 150px;
+       |    width: 30px;
+       |  }
+       |
        |  100% {
        |    height: 200px;
        |    width: 60px;
@@ -528,36 +576,37 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
-       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
+       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -o-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
-       |  -moz-animation-duration: 5s;
        |  -webkit-animation-duration: 5s;
+       |  -moz-animation-duration: 5s;
        |  -o-animation-duration: 5s;
        |  animation-duration: 5s;
-       |  -moz-animation-direction: alternate;
        |  -webkit-animation-direction: alternate;
+       |  -moz-animation-direction: alternate;
        |  -o-animation-direction: alternate;
        |  animation-direction: alternate;
-       |  -moz-animation-iteration-count: 5;
        |  -webkit-animation-iteration-count: 5;
+       |  -moz-animation-iteration-count: 5;
        |  -o-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
-       |  -moz-animation-play-state: running;
        |  -webkit-animation-play-state: running;
+       |  -moz-animation-play-state: running;
        |  -o-animation-play-state: running;
        |  animation-play-state: running;
-       |  -moz-animation-timing-function: ease;
        |  -webkit-animation-timing-function: ease;
+       |  -moz-animation-timing-function: ease;
        |  -o-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
 
     'complexCond - assertMultiline(norm(MyInlineComplexCond.render), norm(
-      """.manual[some-attribute="true"]::after {
-        |  padding: 5px;
+      """.manual {
+        |  margin: 12px;
+        |  padding: 0.5ex;
         |}
         |
         |.manual:hover {
@@ -574,9 +623,8 @@ object InlineTest extends utest.TestSuite {
         |  cursor: zoom-in;
         |}
         |
-        |.manual {
-        |  margin: 12px;
-        |  padding: 0.5ex;
+        |.manual[some-attribute="true"]::after {
+        |  padding: 5px;
         |}
         |
         |.manual:hover .child:hover {
@@ -604,10 +652,10 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |@media (max-width:150px) {
-        |  .manual:nth-child(5) {
+        |  .manual:hover {
         |    margin: 0;
         |  }
-        |  .manual:hover {
+        |  .manual:nth-child(5) {
         |    margin: 0;
         |  }
         |}

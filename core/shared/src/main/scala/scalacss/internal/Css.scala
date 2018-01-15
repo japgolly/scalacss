@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import scala.collection.immutable.ListMap
+
 object Css {
 
   def apply(ss: TraversableOnce[StyleA],
@@ -35,7 +37,7 @@ object Css {
     NonEmptyVector.option(c.mediaQueries) map Media.css
 
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes =
-    CssEntry.Keyframes(kfs.name, kfs.frames.iterator.map(s => (s._1, styleA(s._2))).toMap)
+    CssEntry.Keyframes(kfs.name, ListMap(kfs.frames.map(s => (s._1, styleA(s._2))):_*))
 
   def fontFaces(ff: FontFace[String]): CssEntry.FontFace =
     CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
@@ -67,7 +69,7 @@ object Css {
   }
 
   type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
-  type ByMediaQuery       = Map[CssMediaQueryO, ValuesByMediaQuery]
+  type ByMediaQuery       = ListMap[CssMediaQueryO, ValuesByMediaQuery]
 
   def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream, FontFaceStream) = {
     val styles = Vector.newBuilder[CssEntry.Style]
@@ -82,7 +84,7 @@ object Css {
   }
 
   def mapByMediaQuery(c: StyleStream): ByMediaQuery = {
-    val z: ByMediaQuery = Map.empty
+    val z: ByMediaQuery = ListMap.empty
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
       val k = e.mq
