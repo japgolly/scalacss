@@ -159,7 +159,6 @@ object AttrTest extends TestSuite {
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
-
     'pointerEvents {
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
       test(pointerEvents.auto,    "auto")
@@ -167,6 +166,28 @@ object AttrTest extends TestSuite {
       test(pointerEvents.inherit, "inherit")
       test(pointerEvents.initial, "initial")
       test(pointerEvents.unset,   "unset")
+    }
+    'justifyContent {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(justifyContent.center       , "center")
+      test(justifyContent.start        , "start")
+      test(justifyContent.end          , "end")
+      test(justifyContent.flexStart    , "flex-start")
+      test(justifyContent.flexEnd      , "flex-end")
+      test(justifyContent.left         , "left")
+      test(justifyContent.right        , "right")
+      test(justifyContent.baseline     , "baseline")
+      test(justifyContent.firstBaseline, "first baseline")
+      test(justifyContent.lastBaseline , "last baseline")
+      test(justifyContent.spaceBetween , "space-between")
+      test(justifyContent.spaceAround  , "space-around")
+      test(justifyContent.spaceEvenly  , "space-evenly")
+      test(justifyContent.stretch      , "stretch")
+      test(justifyContent.safeCenter   , "safe center")
+      test(justifyContent.unsafeCenter , "unsafe center")
+      test(justifyContent.inherit      , "inherit")
+      test(justifyContent.initial      , "initial")
+      test(justifyContent.unset        , "unset")
     }
   }
 }
