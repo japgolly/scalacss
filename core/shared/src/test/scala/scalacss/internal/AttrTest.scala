@@ -159,5 +159,14 @@ object AttrTest extends TestSuite {
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
+
+    'pointerEvents {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(pointerEvents.auto,    "auto")
+      test(pointerEvents.none,    "none")
+      test(pointerEvents.inherit, "inherit")
+      test(pointerEvents.initial, "initial")
+      test(pointerEvents.unset,   "unset")
+    }
   }
 }

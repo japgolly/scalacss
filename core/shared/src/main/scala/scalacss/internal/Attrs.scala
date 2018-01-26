@@ -1851,7 +1851,11 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">MDN</a>
    */
-  final def pointerEvents = Attr.real("pointer-events")
+  object pointerEvents extends TypedAttrBase {
+    override val attr = Attr.real("pointer-events")
+    def auto = avl(LT.auto)
+    def none = avl(LT.none)
+  }
 
   /**
    * The position CSS property chooses alternative rules for positioning elements, designed to be useful for scripted animation effects.
