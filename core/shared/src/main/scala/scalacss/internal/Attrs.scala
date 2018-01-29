@@ -2164,7 +2164,12 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow">MDN</a>
    */
-  final def textOverflow = Attr.real("text-overflow", Transform keys CanIUse.textOverflow)
+  object textOverflow extends TypedAttrBase {
+    override val attr = Attr.real("text-overflow")
+    def ellipsis           = av(L.ellipsis)
+    def clip               = av(L.clip)
+    def fade               = av(L.fade)
+  }
 
   /**
    * The text-rendering CSS property provides information to the rendering engine about what to optimize for when rendering text. The browser makes trade-offs among speed, legibility, and geometric precision. The text-rendering property is an SVG property that is not defined in any CSS standard. However, Gecko and WebKit browsers let you apply this property to HTML and XML content on Windows, Mac OS X and Linux.

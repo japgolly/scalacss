@@ -159,6 +159,7 @@ object AttrTest extends TestSuite {
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
+
     'pointerEvents {
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
       test(pointerEvents.auto,    "auto")
@@ -167,6 +168,7 @@ object AttrTest extends TestSuite {
       test(pointerEvents.initial, "initial")
       test(pointerEvents.unset,   "unset")
     }
+
     'justifyContent {
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
       test(justifyContent.center       , "center")
@@ -188,6 +190,13 @@ object AttrTest extends TestSuite {
       test(justifyContent.inherit      , "inherit")
       test(justifyContent.initial      , "initial")
       test(justifyContent.unset        , "unset")
+    }
+
+    'textOverflow {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      test(textOverflow.ellipsis                    , "ellipsis")
+      test(textOverflow.clip                        , "clip")
+      test(textOverflow.fade                        , "fade")
     }
   }
 }
