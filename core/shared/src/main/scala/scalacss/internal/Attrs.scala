@@ -1,8 +1,8 @@
 package scalacss.internal
 
+import scalacss.internal.Literal.{Typed => LT}
+import scalacss.internal.ValueT._
 import scalacss.internal.{Literal => L}
-import L.{Typed => LT}
-import ValueT._
 
 object Attrs {
 
@@ -2345,7 +2345,14 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/user-select">MDN</a>
    */
-  final def userSelect = Attr.real("user-select", Transform keys CanIUse.userSelectNone)
+  object userSelect extends TypedAttrBase {
+    override val attr = Attr.real("user-select", Transform keys CanIUse.userSelectNone)
+    def auto = avl(LT.auto)
+    def text = av(L.text)
+    def none = avl(LT.none)
+    def contain = avl(LT.contain)
+    def all = av(L.all)
+  }
 
   /**
    * The vertical-align CSS property specifies the vertical alignment of an inline or table-cell box.

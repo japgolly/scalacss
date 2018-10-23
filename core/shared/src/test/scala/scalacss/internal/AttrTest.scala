@@ -3,12 +3,12 @@ package scalacss.internal
 import nyaya.gen._
 import nyaya.prop._
 import nyaya.test.PropTest._
-import utest._
+import scalacss.internal.AttrCmp.{Overlap, Unrelated}
+import scalacss.internal.Attrs._
+import scalacss.internal.Dsl.ToAVToAV
+import scalacss.internal.ValueT.Rules._
 import scalacss.test.TestUtil._
-import AttrCmp.{Overlap, Unrelated}
-import Attrs._
-import ValueT.Rules._
-import Dsl.ToAVToAV
+import utest._
 
 object AttrTest extends TestSuite {
 
@@ -188,6 +188,17 @@ object AttrTest extends TestSuite {
       test(justifyContent.inherit      , "inherit")
       test(justifyContent.initial      , "initial")
       test(justifyContent.unset        , "unset")
+    }
+    'userSelect {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(userSelect.auto, "auto")
+      test(userSelect.text, "text")
+      test(userSelect.none, "none")
+      test(userSelect.contain, "contain")
+      test(userSelect.all, "all")
+      test(userSelect.inherit, "inherit")
+      test(userSelect.initial, "initial")
+      test(userSelect.unset, "unset")
     }
   }
 }
