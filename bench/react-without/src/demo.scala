@@ -2,9 +2,9 @@ import org.scalajs.dom.{console, document}
 import scala.scalajs.js.JSApp
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
-object Demo extends JSApp {
+object Demo {
 
-  override def main(): Unit = {
+  def main(args: Array[String]): Unit = {
     TodoApp().renderIntoDOM(document getElementById "todo")
     console.log("hello")
   }

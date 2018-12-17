@@ -4,6 +4,7 @@ import com.typesafe.sbt.pgp.PgpKeys
 import sbtrelease.ReleasePlugin.autoImport._
 import xerial.sbt.Sonatype.autoImport._
 import Lib._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object ScalaCssBuild {
 
@@ -19,7 +20,7 @@ object ScalaCssBuild {
     final val Scala211      = "2.11.11"
     final val Scala212      = "2.12.4"
     final val ScalaJsDom    = "0.9.4"
-    final val ScalaJsReact  = "1.1.1"
+    final val ScalaJsReact  = "1.3.1"
     final val Scalatags     = "0.6.7"
     final val Scalaz        = "7.2.18"
     final val UnivEq        = "1.0.2"

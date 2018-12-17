@@ -10,7 +10,7 @@
 .idea*
 projectFilesBackup*
 target
-
+node_modules
 doc/_book
 
 project/sjsincoptbench.sbt
