@@ -1,10 +1,15 @@
-import sbt._, Keys._
-import org.scalajs.sbtplugin.ScalaJSPlugin, ScalaJSPlugin.autoImport._
+import sbt._
+import sbt.Keys._
 import com.typesafe.sbt.pgp.PgpKeys
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
+import org.scalajs.sbtplugin.ScalaJSPlugin
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{crossProject => _, CrossType => _, _}
+import sbtcrossproject.CrossPlugin.autoImport._
 import sbtrelease.ReleasePlugin.autoImport._
+import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import xerial.sbt.Sonatype.autoImport._
 import Lib._
-import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object ScalaCssBuild {
 
@@ -14,16 +19,16 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.6.3"
+    final val MTest         = "0.6.7"
     final val Nyaya         = "0.8.1"
     final val ReactJs       = "15.5.4"
     final val Scala211      = "2.11.11"
-    final val Scala212      = "2.12.4"
-    final val ScalaJsDom    = "0.9.4"
+    final val Scala212      = "2.12.8"
+    final val ScalaJsDom    = "0.9.6"
     final val ScalaJsReact  = "1.3.1"
-    final val Scalatags     = "0.6.7"
+    final val Scalatags     = "0.6.8"
     final val Scalaz        = "7.2.18"
-    final val UnivEq        = "1.0.2"
+    final val UnivEq        = "1.0.5"
   }
 
   def scalacFlags = Def.setting(
@@ -57,24 +62,7 @@ object ScalaCssBuild {
       updateOptions                 := updateOptions.value.withCachedResolution(true),
       releasePublishArtifactsAction := PgpKeys.publishSigned.value,
       releaseTagComment             := s"v${(version in ThisBuild).value}",
-      releaseVcsSign                := true,
-			sonatypeProfileName           := "com.github.japgolly",
-      triggeredMessage              := Watched.clearWhenTriggered)
-    .configure(
-      addCommandAliases(
-        "/"   -> "project root",
-        "L"   -> "root/publishLocal",
-        "C"   -> "root/clean",
-        "T"   -> ";root/clean;root/test",
-        "TL"  -> ";T;L",
-        "c"   -> "compile",
-        "tc"  -> "test:compile",
-        "t"   -> "test",
-        "to"  -> "test-only",
-        "tq"  -> "test-quick",
-        "cc"  -> ";clean;compile",
-        "ctc" -> ";clean;test:compile",
-        "ct"  -> ";clean;test")))
+      releaseVcsSign                := true))
 
   def definesMacros = ConfigureBoth(
     _.settings(
@@ -112,7 +100,7 @@ object ScalaCssBuild {
 
   lazy val coreJVM = core.jvm
   lazy val coreJS  = core.js
-  lazy val core = crossProject
+  lazy val core = crossProject(JSPlatform, JVMPlatform)
     .configureCross(
       commonSettings,
       publicationSettings,
@@ -133,10 +121,10 @@ object ScalaCssBuild {
 
   lazy val elisionTestJVM = elisionTest.jvm
   lazy val elisionTestJS  = elisionTest.js
-  lazy val elisionTest = crossProject
+  lazy val elisionTest = crossProject(JSPlatform, JVMPlatform)
     .in(file("elision-test"))
     .configureCross(commonSettings, utestSettings)
-    .configureAll(preventPublication)
+    .configure(preventPublication)
     .dependsOn(core)
     .settings(
       scalacOptions ++= Seq("-Xelide-below", "OFF")
@@ -144,7 +132,7 @@ object ScalaCssBuild {
 
   lazy val extScalatagsJVM = extScalatags.jvm
   lazy val extScalatagsJS  = extScalatags.js
-  lazy val extScalatags = crossProject
+  lazy val extScalatags = crossProject(JSPlatform, JVMPlatform)
     .in(file("ext-scalatags"))
     .configureCross(commonSettings, publicationSettings)
     .dependsOn(core)

@@ -6,8 +6,10 @@
 .*.swp
 .*.swo
 .*.swn
-.metadata
 .idea*
+.bloop
+.metals
+.vscode
 projectFilesBackup*
 target
 node_modules
