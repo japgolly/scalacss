@@ -31,6 +31,7 @@ object AttrTest extends TestSuite {
 
   def px(n: Int) = Length(n, LengthUnit.px)
   val length = px(3)
+  val pct = Percentage(5)
   val style = Literal.Typed.dashed
   val colour = Color.green
 
@@ -159,6 +160,23 @@ object AttrTest extends TestSuite {
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
+
+    'rowGap {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(rowGap.normal, "normal")
+      test(rowGap(Literal.Typed.normal), "normal")
+      test(rowGap.`0`, "0")
+      test(rowGap(pct), "5%")
+      test(rowGap(length), "3px")
+    }
+
+    'gap {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(gap.normal, "normal")
+      test(gap(Literal.Typed.normal, Literal.Typed.`0`), "normal 0")
+      test(gap(pct, length), "5% 3px")
+    }
+
     'pointerEvents {
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
       test(pointerEvents.auto,    "auto")

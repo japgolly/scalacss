@@ -50,6 +50,9 @@ object Attrs {
     caretColor, fontVariantionSettings, hangingPunctuation, initialLetter,
     overscrollBehavior, overscrollBehaviorX, overscrollBehaviorY,
 
+    // 0.5.6
+    gap, rowGap,
+
     // =================================================================================================================
     // ==================================== SVG Attributes =============================================================
     // =================================================================================================================
@@ -123,7 +126,7 @@ object Attrs {
    */
   object animationDirection extends TypedAttrBase {
     override val attr: Attr = Attr.real("animation-direction", Transform keys CanIUse.animation)
-    def normal            = av(L.normal)
+    def normal            = avl(LT.normal)
     def reverse           = av(L.reverse)
     def alternate         = av(L.alternate)
     def alternateReverse  = av(L.alternateReverse)
@@ -686,9 +689,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-gap">MDN</a>
    */
-  object columnGap extends TypedAttrT1[Len] with ZeroLit {
+  object columnGap extends TypedAttrT1[GapStyle] with GapStyleOps {
     override val attr = Attr.real("column-gap", Transform keys CanIUse.multicolumn)
-    def normal = av(L.normal)
   }
 
   /**
@@ -1054,7 +1056,7 @@ object Attrs {
     override val attr = Attr.real("font-kerning", Transform keys CanIUse.fontKerning)
     def auto   = avl(LT.auto)
     def none   = avl(LT.none)
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
   }
 
   /**
@@ -1103,7 +1105,7 @@ object Attrs {
     def expanded       = av(L.expanded)
     def extraCondensed = av(L.extraCondensed)
     def extraExpanded  = av(L.extraExpanded)
-    def normal         = av(L.normal)
+    def normal         = avl(LT.normal)
     def semiCondensed  = av(L.semiCondensed)
     def semiExpanded   = av(L.semiExpanded)
     def ultraCondensed = av(L.ultraCondensed)
@@ -1118,7 +1120,7 @@ object Attrs {
   object fontStyle extends TypedAttrBase {
     override val attr = Attr.real("font-style")
     def italic  = av(L.italic)
-    def normal  = av(L.normal)
+    def normal  = avl(LT.normal)
     def oblique = av(L.oblique)
   }
 
@@ -1145,7 +1147,7 @@ object Attrs {
     override val attr = Attr.real("font-variant-caps")
     def allPetiteCaps = av(L.allPetiteCaps)
     def allSmallCaps  = av(L.allSmallCaps)
-    def normal        = av(L.normal)
+    def normal        = avl(LT.normal)
     def petiteCaps    = av(L.petiteCaps)
     def smallCaps     = av(L.smallCaps)
     def titlingCaps   = av(L.titlingCaps)
@@ -1180,7 +1182,7 @@ object Attrs {
    */
   object fontVariantPosition extends TypedAttrBase {
     override val attr = Attr.real("font-variant-position")
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
     def sub    = av(L.sub)
     def super_ = av(L.super_)
   }
@@ -1211,7 +1213,7 @@ object Attrs {
     def bold    = av(L.bold)
     def bolder  = av(L.bolder)
     def lighter = av(L.lighter)
-    def normal  = av(L.normal)
+    def normal  = avl(LT.normal)
   }
 
   /**
@@ -1376,7 +1378,7 @@ object Attrs {
     def auto     = avl(LT.auto)
     def disabled = av(L.disabled)
     def inactive = av(L.inactive)
-    def normal   = av(L.normal)
+    def normal   = avl(LT.normal)
   }
 
   /**
@@ -1386,7 +1388,7 @@ object Attrs {
     */
   object initialLetter extends TypedAttrBase {
     override val attr = Attr.real("initial-letter", Transform keys CanIUse.initialLetter)
-    def normal                                 : AV = av(L.normal)
+    def normal                                 : AV = avl(LT.normal)
     def apply(size: ValueT[Number])            : AV = av(size.value)
     def apply(size: ValueT[Number], lines: Int): AV = av(s"${size.value} $lines")
   }
@@ -1443,7 +1445,7 @@ object Attrs {
    */
   object letterSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("letter-spacing", Transform keys CanIUse.letterSpacing)
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
   }
 
   /**
@@ -1455,7 +1457,7 @@ object Attrs {
     override val attr = Attr.real("line-break")
     def auto   = avl(LT.auto)
     def loose  = av(L.loose)
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
     def strict = av(L.strict)
   }
 
@@ -1466,7 +1468,7 @@ object Attrs {
    */
   object lineHeight extends TypedAttrT1[LenPctNum] with ZeroLit {
     override val attr = Attr.real("line-height")
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
   }
 
   /**
@@ -1937,6 +1939,15 @@ object Attrs {
   }
 
   /**
+   * The row-gap CSS property sets the size of the gap (gutter) between an element's grid rows.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap">MDN</a>
+   */
+  object rowGap extends TypedAttrT1[GapStyle] with GapStyleOps {
+    override val attr = Attr.real("row-gap", Transform keys CanIUse.multicolumn)
+  }
+
+  /**
    * The ruby-align CSS property defines the distribution of the different ruby elements over the base.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ruby-align">MDN</a>
@@ -2329,7 +2340,7 @@ object Attrs {
     def embed           = av(L.embed)
     def isolate         = av(L.isolate)
     def isolateOverride = av(L.isolateOverride)
-    def normal          = av(L.normal)
+    def normal          = avl(LT.normal)
     def plaintext       = av(L.plaintext)
   }
 
@@ -2390,7 +2401,7 @@ object Attrs {
    */
   object whiteSpace extends TypedAttrBase {
     override val attr = Attr.real("white-space")
-    def normal   = av(L.normal)
+    def normal   = avl(LT.normal)
     def nowrap   = av(L.nowrap)
     def pre      = av(L.pre)
     def preLine = av(L.preLine)
@@ -2431,7 +2442,7 @@ object Attrs {
     override val attr = Attr.real("word-break", Transform keys CanIUse.wordBreak)
     def breakAll = av(L.breakAll)
     def keepAll  = av(L.keepAll)
-    def normal    = av(L.normal)
+    def normal    = avl(LT.normal)
   }
 
   /**
@@ -2441,7 +2452,7 @@ object Attrs {
    */
   object wordSpacing extends TypedAttrT1[Len] with ZeroLit {
     override val attr = Attr.real("word-spacing")
-    def normal = av(L.normal)
+    def normal = avl(LT.normal)
   }
 
   /**
@@ -2452,7 +2463,7 @@ object Attrs {
   object wordWrap extends TypedAttrBase {
     override val attr = Attr.real("word-wrap", Transform keys CanIUse.wordwrap)
     def breakWord = av(L.breakWord)
-    def normal     = av(L.normal)
+    def normal     = avl(LT.normal)
   }
 
   /**
@@ -2850,6 +2861,18 @@ object Attrs {
   final def fontVariant = Attr.alias("font-variant")(_(
     fontVariantAlternates, fontVariantCaps, fontVariantEastAsian, fontVariantLigatures, fontVariantNumeric,
     fontVariantPosition))
+
+  /**
+   * The gap CSS property sets the gaps (gutters) between rows and columns. It is a shorthand for row-gap and column-gap.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/gap">MDN</a>
+   */
+  object gap extends TypedAttrBase with GapStyleOps {
+    override val attr = Attr.alias("gap")(_(columnGap, rowGap))
+    type T = ValueT[GapStyle]
+    def apply(both: T)       : AV = av(both.value)
+    def apply(row: T, col: T): AV = av(concat(" ", row, col))
+  }
 
   /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#grid-shorthand">css3-grid-layout#grid</a>

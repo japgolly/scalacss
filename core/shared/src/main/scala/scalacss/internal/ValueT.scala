@@ -47,6 +47,7 @@ object ValueT {
    */
   sealed trait ValueClass
 
+  // Note: only ValueClass. Use the implicit rules below in place of subtyping.
   sealed trait Integer           extends ValueClass
   sealed trait Number            extends ValueClass
   sealed trait Time              extends ValueClass
@@ -61,7 +62,7 @@ object ValueT {
   sealed trait WidStyCol         extends ValueClass
   sealed trait RepeatStyle       extends ValueClass
   sealed trait OverflowBehaviour extends ValueClass
-
+  sealed trait GapStyle          extends ValueClass
 
   // =========
   //   Rules
@@ -134,6 +135,10 @@ object ValueT {
     @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
     @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
     @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
+
+    @inline implicit def ruleGapStyle_l[L <: Literal with LT.GapStyle]: GapStyle <== L = Rule.literal
+    @inline implicit def ruleGapStyle_L: GapStyle <=< Len = Rule.retype
+    @inline implicit def ruleGapStyle_P: GapStyle <=< Pct = Rule.retype
 
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
@@ -337,6 +342,11 @@ object ValueT {
     final def ridge  = avl(LT.ridge)
     final def inset  = avl(LT.inset)
     final def outset = avl(LT.outset)
+  }
+
+  trait GapStyleOps extends ZeroLit {
+    this: TypedAttrBase =>
+    final def normal = avl(LT.normal)
   }
 
   trait RepeatStyleOps {

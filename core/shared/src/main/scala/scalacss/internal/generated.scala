@@ -813,6 +813,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def fontWeight = Attrs.fontWeight
   /**
+   * The gap CSS property sets the gaps (gutters) between rows and columns. It is a shorthand for row-gap and column-gap.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/gap">MDN</a>
+   */
+  @inline final def gap = Attrs.gap
+  /**
    * @see <a href="http://www.w3.org/TR/css3-grid-layout/#grid-shorthand">css3-grid-layout#grid</a>
    */
   @inline final def grid = Attrs.grid
@@ -1390,6 +1396,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/right">MDN</a>
    */
   @inline final def right = Attrs.right
+  /**
+   * The row-gap CSS property sets the size of the gap (gutter) between an element's grid rows.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap">MDN</a>
+   */
+  @inline final def rowGap = Attrs.rowGap
   /**
    * The ruby-align CSS property defines the distribution of the different ruby elements over the base.
    *
