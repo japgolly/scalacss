@@ -73,7 +73,7 @@ object FontFace {
     def expanded       = b(Literal.expanded)
     def extraCondensed = b(Literal.extraCondensed)
     def extraExpanded  = b(Literal.extraExpanded)
-    def normal         = b(Literal.normal)
+    def normal         = b(Literal.Typed.normal.value)
     def semiCondensed  = b(Literal.semiCondensed)
     def semiExpanded   = b(Literal.semiExpanded)
     def ultraCondensed = b(Literal.ultraCondensed)
@@ -82,7 +82,7 @@ object FontFace {
 
   final class FontStyleBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
     def italic  = b(Literal.italic)
-    def normal  = b(Literal.normal)
+    def normal  = b(Literal.Typed.normal.value)
     def oblique = b(Literal.oblique)
   }
 
@@ -99,7 +99,7 @@ object FontFace {
     def bold    = b(Literal.bold)
     def bolder  = b(Literal.bolder)
     def lighter = b(Literal.lighter)
-    def normal  = b(Literal.normal)
+    def normal  = b(Literal.Typed.normal.value)
   }
 }
 

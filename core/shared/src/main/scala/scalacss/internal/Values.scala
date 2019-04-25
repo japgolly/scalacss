@@ -12,42 +12,42 @@ trait TypedLiteralAliases {
   import Literal.Typed
   import scalacss.internal.Literal.Typed.TimingFunctionDirection
 
-  final def inherit                                                         = Typed.inherit
-  final def initial                                                         = Typed.initial
-  final def unset                                                           = Typed.unset
   final def `0`                                                             = Typed.`0`
   final def auto                                                            = Typed.auto
-  final def hanging                                                         = Typed.hanging
-  final def eachLine                                                        = Typed.eachLine
-  final def thin                                                            = Typed.thin
-  final def medium                                                          = Typed.medium
-  final def thick                                                           = Typed.thick
-  final def none                                                            = Typed.none
-  final def hidden                                                          = Typed.hidden
-  final def dotted                                                          = Typed.dotted
-  final def dashed                                                          = Typed.dashed
-  final def solid                                                           = Typed.solid
-  final def double                                                          = Typed.double
-  final def groove                                                          = Typed.groove
-  final def ridge                                                           = Typed.ridge
-  final def inset                                                           = Typed.inset
-  final def outset                                                          = Typed.outset
-  final def start                                                           = Typed.start
-  final def end                                                             = Typed.end
+  final def contain                                                         = Typed.contain
   final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
-  final def steps(steps: Int, direction: TimingFunctionDirection = end)     = new Typed.steps(steps, direction)
-  final def linear                                                          = Typed.linear
+  final def dashed                                                          = Typed.dashed
+  final def dotted                                                          = Typed.dotted
+  final def double                                                          = Typed.double
+  final def eachLine                                                        = Typed.eachLine
   final def ease                                                            = Typed.ease
   final def easeIn                                                          = Typed.easeIn
   final def easeInOut                                                       = Typed.easeInOut
   final def easeOut                                                         = Typed.easeOut
-  final def stepStart                                                       = Typed.stepStart
-  final def stepEnd                                                         = Typed.stepEnd
-  final def repeat                                                          = Typed.repeat
-  final def space                                                           = Typed.space
-  final def round                                                           = Typed.round
+  final def end                                                             = Typed.end
+  final def groove                                                          = Typed.groove
+  final def hanging                                                         = Typed.hanging
+  final def hidden                                                          = Typed.hidden
+  final def inherit                                                         = Typed.inherit
+  final def initial                                                         = Typed.initial
+  final def inset                                                           = Typed.inset
+  final def linear                                                          = Typed.linear
+  final def medium                                                          = Typed.medium
+  final def none                                                            = Typed.none
   final def noRepeat                                                        = Typed.noRepeat
-  final def contain                                                         = Typed.contain
+  final def outset                                                          = Typed.outset
+  final def repeat                                                          = Typed.repeat
+  final def ridge                                                           = Typed.ridge
+  final def round                                                           = Typed.round
+  final def solid                                                           = Typed.solid
+  final def space                                                           = Typed.space
+  final def start                                                           = Typed.start
+  final def stepEnd                                                         = Typed.stepEnd
+  final def steps(steps: Int, direction: TimingFunctionDirection = end)     = new Typed.steps(steps, direction)
+  final def stepStart                                                       = Typed.stepStart
+  final def thick                                                           = Typed.thick
+  final def thin                                                            = Typed.thin
+  final def unset                                                           = Typed.unset
 }
 
 /**
@@ -121,6 +121,10 @@ object Literal extends TypedLiteralAliases {
     object easeOut    extends Literal("ease-out")    with TimingFunction
     object stepStart  extends Literal("step-start")  with TimingFunction
     object stepEnd    extends Literal("step-end")    with TimingFunction
+
+    // gap
+    sealed trait GapStyle
+    object normal extends Literal("normal") with GapStyle
 
     // Multi-purpose
     object none extends Literal("none") with BrStyle with OverflowBehaviour
@@ -248,7 +252,6 @@ object Literal extends TypedLiteralAliases {
   def noCloseQuote       : Value = "no-close-quote"
   def noDrop             : Value = "no-drop"
   def noOpenQuote        : Value = "no-open-quote"
-  def normal             : Value = "normal"
   def notAllowed         : Value = "not-allowed"
   def nowrap             : Value = "nowrap"
   def nResize            : Value = "n-resize"
