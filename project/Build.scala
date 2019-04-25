@@ -8,7 +8,6 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{crossProject => _, CrossT
 import sbtcrossproject.CrossPlugin.autoImport._
 import sbtrelease.ReleasePlugin.autoImport._
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
-import xerial.sbt.Sonatype.autoImport._
 import Lib._
 
 object ScalaCssBuild {
