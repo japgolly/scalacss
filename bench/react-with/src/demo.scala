@@ -16,9 +16,9 @@ object MyStyles extends StyleSheet.Inline {
     margin(12 px))
 }
 
-object Demo extends JSApp {
+object Demo {
 
-  override def main(): Unit = {
+  def main(args: Array[String]): Unit = {
     MyStyles.addToDocument()
     TodoApp().renderIntoDOM(document getElementById "todo")
     console.log("hello")

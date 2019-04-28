@@ -3,12 +3,12 @@ package scalacss.internal
 import nyaya.gen._
 import nyaya.prop._
 import nyaya.test.PropTest._
-import utest._
+import scalacss.internal.AttrCmp.{Overlap, Unrelated}
+import scalacss.internal.Attrs._
+import scalacss.internal.Dsl.ToAVToAV
+import scalacss.internal.ValueT.Rules._
 import scalacss.test.TestUtil._
-import AttrCmp.{Overlap, Unrelated}
-import Attrs._
-import ValueT.Rules._
-import Dsl.ToAVToAV
+import utest._
 
 object AttrTest extends TestSuite {
 
@@ -31,6 +31,7 @@ object AttrTest extends TestSuite {
 
   def px(n: Int) = Length(n, LengthUnit.px)
   val length = px(3)
+  val pct = Percentage(5)
   val style = Literal.Typed.dashed
   val colour = Color.green
 
@@ -158,6 +159,64 @@ object AttrTest extends TestSuite {
       def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
+    }
+
+    'rowGap {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(rowGap.normal, "normal")
+      test(rowGap(Literal.Typed.normal), "normal")
+      test(rowGap.`0`, "0")
+      test(rowGap(pct), "5%")
+      test(rowGap(length), "3px")
+    }
+
+    'gap {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(gap.normal, "normal")
+      test(gap(Literal.Typed.normal, Literal.Typed.`0`), "normal 0")
+      test(gap(pct, length), "5% 3px")
+    }
+
+    'pointerEvents {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(pointerEvents.auto,    "auto")
+      test(pointerEvents.none,    "none")
+      test(pointerEvents.inherit, "inherit")
+      test(pointerEvents.initial, "initial")
+      test(pointerEvents.unset,   "unset")
+    }
+    'justifyContent {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(justifyContent.center       , "center")
+      test(justifyContent.start        , "start")
+      test(justifyContent.end          , "end")
+      test(justifyContent.flexStart    , "flex-start")
+      test(justifyContent.flexEnd      , "flex-end")
+      test(justifyContent.left         , "left")
+      test(justifyContent.right        , "right")
+      test(justifyContent.baseline     , "baseline")
+      test(justifyContent.firstBaseline, "first baseline")
+      test(justifyContent.lastBaseline , "last baseline")
+      test(justifyContent.spaceBetween , "space-between")
+      test(justifyContent.spaceAround  , "space-around")
+      test(justifyContent.spaceEvenly  , "space-evenly")
+      test(justifyContent.stretch      , "stretch")
+      test(justifyContent.safeCenter   , "safe center")
+      test(justifyContent.unsafeCenter , "unsafe center")
+      test(justifyContent.inherit      , "inherit")
+      test(justifyContent.initial      , "initial")
+      test(justifyContent.unset        , "unset")
+    }
+    'userSelect {
+      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      test(userSelect.auto, "auto")
+      test(userSelect.text, "text")
+      test(userSelect.none, "none")
+      test(userSelect.contain, "contain")
+      test(userSelect.all, "all")
+      test(userSelect.inherit, "inherit")
+      test(userSelect.initial, "initial")
+      test(userSelect.unset, "unset")
     }
   }
 }

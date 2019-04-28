@@ -5,6 +5,7 @@ import ScalaJSPlugin.autoImport._
 import ScalaJSPluginInternal.stageKeys
 import Lib._
 import ScalaCssBuild._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object BenchBuild {
 
@@ -16,6 +17,7 @@ object BenchBuild {
   private def benchModuleJS(name: String, dir: File => File): Project =
     benchModule("bench-" + name, dir)
       .configure(commonSettings.js)
+      .settings(scalaJSUseMainModuleInitializer := true)
       .enablePlugins(ScalaJSPlugin)
 
   lazy val bench =
