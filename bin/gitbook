@@ -1,5 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
 [ -e ~/.bash_profile ] && source ~/.bash_profile # for NVM
+[ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
 nvm use --delete-prefix 6 --silent
 nvm exec 6 ./node_modules/.bin/gitbook "$@"
