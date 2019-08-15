@@ -69,7 +69,7 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
 
   def filterKeys(f: Attr => Boolean): Option[AVs] =
     NonEmptyVector.option(order.whole.filter(f))
-      .map(o => new AVs(o, data filterKeys f))
+      .map(o => new AVs(o, data.view.filterKeys(f).toMap))
 
   def modify(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
     addTail(a, f)
