@@ -18,15 +18,16 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.6.7"
-    final val Nyaya         = "0.8.1"
+    final val MTest         = "0.7.1"
+    final val Nyaya         = "0.9.0-RC1"
+    //final val ReactJs       = "16.7.0"
     final val ReactJs       = "15.5.4"
-    final val Scala211      = "2.11.11"
     final val Scala212      = "2.12.8"
+    final val Scala213      = "2.13.0"
     final val ScalaJsDom    = "0.9.7"
-    final val ScalaJsReact  = "1.3.1"
+    final val ScalaJsReact  = "1.4.3-SNAPSHOT" //FIXME We need a RC for it
     final val Scalatags     = "0.6.8"
-    final val Scalaz        = "7.2.18"
+    final val Scalaz        = "7.2.28"
     final val UnivEq        = "1.0.6"
   }
 
@@ -43,8 +44,8 @@ object ScalaCssBuild {
       "-language:higherKinds",
       "-language:existentials")
     ++ (scalaVersion.value match {
-      case x if x startsWith "2.11." => "-target:jvm-1.6" :: Nil
       case x if x startsWith "2.12." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
+      case x if x startsWith "2.13." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
     }))
 
   val commonSettings = ConfigureBoth(
@@ -52,8 +53,8 @@ object ScalaCssBuild {
       organization                  := "com.github.japgolly.scalacss",
       homepage                      := Some(url("https://github.com/japgolly/scalacss")),
       licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion                  := Ver.Scala212,
-      crossScalaVersions            := Seq(Ver.Scala211, Ver.Scala212),
+      scalaVersion                  := Ver.Scala213,
+      crossScalaVersions            := Seq(Ver.Scala213, Ver.Scala212),
       scalacOptions                ++= scalacFlags.value,
       scalacOptions in Test        --= Seq("-Ywarn-unused"),
       shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
