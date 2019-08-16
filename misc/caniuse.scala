@@ -314,6 +314,7 @@ object $obj {
   final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
+    implicit def univEqMap: UnivEq[Map[VerStr, Prefix]] = UnivEq.force //FIXME REMOVE after PR https://github.com/japgolly/univeq/pull/23
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
     val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
