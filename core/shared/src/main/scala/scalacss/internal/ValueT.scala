@@ -116,8 +116,8 @@ object ValueT {
       Rule(d => d.unit match {
         case TimeUnit.MICROSECONDS
            | TimeUnit.MILLISECONDS
-           | TimeUnit.NANOSECONDS => d.toMillis + "ms"
-        case _                    => d.toSeconds + "s"
+           | TimeUnit.NANOSECONDS => d.toMillis.toString + "ms"
+        case _                    => d.toSeconds.toString + "s"
       })
 
     @inline implicit def ruleLenPct_L     : LenPct      <=< Len          = Rule.retype

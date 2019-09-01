@@ -19,14 +19,14 @@ object DefaultsTest extends TestSuite {
 
   override def tests = TestSuite {
 
-    'elision {
+    "elision" - {
       var on = false
       @elidable(elidable.ASSERTION)
       def test(): Unit = on = true
       assert(!on, "ELISION")
     }
 
-    'platform - assert(!Platform.DevMode, "PLATFORM")
-    'defaults - assert(devOrProdDefaults eq ProdDefaults, "DEFAULTS")
+    "platform" - assert(!Platform.DevMode, "PLATFORM")
+    "defaults" - assert(devOrProdDefaults eq ProdDefaults, "DEFAULTS")
   }
 }

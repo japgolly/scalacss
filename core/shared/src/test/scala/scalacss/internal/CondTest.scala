@@ -6,14 +6,14 @@ import scalacss.test.TestUtil._
 object CondTest extends TestSuite {
 
   override val tests = TestSuite {
-    'pseudo {
+    "pseudo" - {
       import Pseudo._
-      'not {
+      "not" - {
         assertEq(Not("div").cssValue, ":not(div)")
         assertEq(Not(Link).cssValue, ":not(:link)")
       }
 
-      'attrSelectors {
+      "attrSelectors" - {
         assertEq(AttrExists("custom-attr").cssValue, "[custom-attr]")
         assertEq(Attr("custom-attr", "bla").cssValue, "[custom-attr=\"bla\"]")
         assertEq(AttrContains("custom-attr", "bla").cssValue, "[custom-attr~=\"bla\"]")
@@ -21,7 +21,7 @@ object CondTest extends TestSuite {
         assertEq(AttrEndsWith("custom-attr", "bla").cssValue, "[custom-attr$=\"bla\"]")
       }
 
-      'elementClassOrder {
+      "elementClassOrder" - {
         assertEq(Before.&(Hover).attrExists("custom-attr").cssValue, "[custom-attr]:hover::before")
         assertEq(Hover.attr("custom-attr", "bla").&(Before).cssValue, "[custom-attr=\"bla\"]:hover::before")
         assertEq(AttrEndsWith("custom-attr", "bla").&(Hover).&(Before).cssValue, "[custom-attr$=\"bla\"]:hover::before")
@@ -34,7 +34,7 @@ object CondTest extends TestSuite {
         assertEq(Hover.&(Before).cssValue, ":hover::before")
       }
 
-      'brokenNthChildQueries {
+      "brokenNthChildQueries" - {
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n+k").cssValue }
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2x+1").cssValue }
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n+-1").cssValue }

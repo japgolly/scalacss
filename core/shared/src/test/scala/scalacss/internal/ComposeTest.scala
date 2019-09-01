@@ -80,10 +80,10 @@ object ComposeTest extends TestSuite {
   }
 
   override val tests = TestSuite {
-    'props   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
-    'issue25 - Issue25.test()
+    "props"   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
+    "issue25" - Issue25.test()
 
-    'values {
+    "values" - {
       import Dsl._
       implicit def c = Compose.safe
 
@@ -92,22 +92,22 @@ object ComposeTest extends TestSuite {
         assertEq(s.warnings.map(_.msg), ws.toVector)
       }
 
-      'idempotency {
+      "idempotency" - {
         val a = style(display.block)
         test(a compose a)(AV(display, "block"))()
       }
 
-      'sameKey -
+      "sameKey" -
         test(style(display.block) compose style(display.inline))(
           AV(display, "block"), AV(display, "inline")
         )("{display: inline} conflicts with {display: block}")
 
-      'marginN1 -
+      "marginN1" -
         test(style(margin.auto) compose style(marginLeft.`0`))(
           AV(margin, "auto"), AV(marginLeft, "0")
         )("{margin-left: 0} conflicts with {margin: auto}")
 
-      'margin1N -
+      "margin1N" -
         test(style(marginLeft.`0`) compose style(margin.auto))(
           AV(marginLeft, "0"), AV(margin, "auto")
         )("{margin: auto} conflicts with {margin-left: 0}")

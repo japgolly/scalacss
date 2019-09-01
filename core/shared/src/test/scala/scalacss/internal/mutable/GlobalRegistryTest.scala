@@ -31,14 +31,14 @@ object GlobalRegistryTest extends TestSuite {
   gr.register(blar)
 
   override def tests = TestSuite {
-    'get {
+    "get" - {
       assertEq(gr[S1], Some(s1))
       assertEq(gr[BlarrrrStyle], Some(blar))
     }
-    'missing {
+    "missing" - {
       assertEq(gr[S2].isEmpty, true)
     }
-    'onRegistration {
+    "onRegistration" - {
       assertEq(postreg, Vector(s1, blar))
     }
   }

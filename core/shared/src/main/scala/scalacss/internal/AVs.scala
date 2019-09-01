@@ -1,7 +1,6 @@
 package scalacss.internal
 
 import japgolly.univeq._
-import scala.collection.GenTraversable
 
 /**
  * An Attribute-and-Value pair.
@@ -29,7 +28,7 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
   def +(av: AV): AVs =
     add(av.attr, av.value)
 
-  def ++(avs: GenTraversable[AV]): AVs =
+  def ++(avs: Iterable[AV]): AVs =
     avs.foldLeft(this)(_ + _)
 
   def ++(avs: AVs): AVs =
@@ -69,7 +68,7 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
 
   def filterKeys(f: Attr => Boolean): Option[AVs] =
     NonEmptyVector.option(order.whole.filter(f))
-      .map(o => new AVs(o, data.view.filterKeys(f).toMap))
+      .map(o => new AVs(o, data.iterator.filter(kv => f(kv._1)).toMap))
 
   def modify(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
     addTail(a, f)

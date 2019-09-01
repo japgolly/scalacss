@@ -59,7 +59,6 @@ object CanIUse {
     val QQBrowser         = Agent(webkit, Map.empty)
     val Safari            = Agent(webkit, Map.empty)
     val Samsung           = Agent(webkit, Map.empty)
-    implicit def univEqMap: UnivEq[Map[VerStr, Prefix]] = UnivEq.force //FIXME REMOVE after PR https://github.com/japgolly/univeq/pull/23
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
     val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BaiduBrowser, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, QQBrowser, Safari, Samsung)
   }

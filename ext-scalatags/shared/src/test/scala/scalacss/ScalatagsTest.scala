@@ -27,7 +27,7 @@ object ScalatagsTest extends TestSuite {
 
   override val tests = TestSuite {
 
-    'styleTag {
+    "styleTag" - {
       val html = MyStyles.render[T].toString()
       assertEq(html, """<style type="text/css">.ScalatagsTest_MyStyles-input {
                        |  font-weight: bold;
@@ -41,19 +41,19 @@ object ScalatagsTest extends TestSuite {
                        |</style>""".stripMargin)
     }
 
-    'simple {
+    "simple" - {
       val el = input(`type` := "text", MyStyles.input, value := "ah")
       val html = el.toString()
       assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input" value="ah" />""")
     }
 
-    'addClassName {
+    "addClassName" - {
       val el = button(MyStyles.bootstrappy)
       val html = el.toString()
       assertEq(html, """<button class=" btn btn-default"></button>""")
     }
 
-    'multipleStyles {
+    "multipleStyles" - {
       val el = input(`type` := "text", MyStyles.input, MyStyles.required, value := "ah")
       val html = el.toString()
       assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input ScalatagsTest_MyStyles-required" value="ah" />""")

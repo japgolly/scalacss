@@ -9,7 +9,7 @@ import scala.runtime.AbstractFunction1
  * ==Types==
  *
  *   - [[StyleS]]: Static.    `{s}`
- *   - [[StyleF]]: Function.  `{i ⇒ s}`
+ *   - [[StyleF]]: Function.  `{i => s}`
  *   - [[StyleA]]: Applicable. `class="…"`
  */
 sealed trait Style

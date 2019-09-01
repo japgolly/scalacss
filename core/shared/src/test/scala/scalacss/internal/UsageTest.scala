@@ -37,7 +37,7 @@ object UsageTest extends TestSuite {
     )
 
   override val tests = TestSuite {
-    'maintest {
+    "maintest" - {
       val css = StringRenderer defaultPretty Css.style(".a1", s1)(Env.empty)
       // println(css)
       assertEq(css.trim,

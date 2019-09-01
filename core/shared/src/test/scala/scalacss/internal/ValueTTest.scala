@@ -16,7 +16,7 @@ object ValueTTest extends TestSuite {
 
   override val tests = TestSuite {
 
-    'valueClasses {
+    "valueClasses" - {
       def test[C <: ValueClass](v: ValueT[C]): Unit = ()
 //      def test[C <: ValueClass] = new {
 //        def apply[A](v: A)(implicit ev: A => ValueT[C]): Unit = ()
@@ -28,7 +28,7 @@ object ValueTTest extends TestSuite {
 //        def apply[From](f: From)(implicit r: From ==> C): Unit = ()
 //      }
 
-      'Len {
+      "Len" - {
                       test[Len](inherit)
         compileError("test[Len](1)")
         compileError("test[Len](1.5)")
@@ -44,7 +44,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'Pct {
+      "Pct" - {
                       test[Pct](inherit)
         compileError("test[Pct](1)")
         compileError("test[Pct](1.5)")
@@ -60,7 +60,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'Integer {
+      "Integer" - {
                       test[Integer](inherit)
                       test[Integer](1)
         compileError("test[Integer](1.5)")
@@ -76,7 +76,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'Number {
+      "Number" - {
                       test[Number](inherit)
                       test[Number](1)
                       test[Number](1.5)
@@ -92,7 +92,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'LenPct {
+      "LenPct" - {
                       test[LenPct](inherit)
         compileError("test[LenPct](1)")
         compileError("test[LenPct](1.5)")
@@ -108,7 +108,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'LenPctAuto {
+      "LenPctAuto" - {
                       test[LenPctAuto](inherit)
         compileError("test[LenPctAuto](1)")
         compileError("test[LenPctAuto](1.5)")
@@ -124,7 +124,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'LenPctNum {
+      "LenPctNum" - {
                       test[LenPctNum](inherit)
                       test[LenPctNum](1)
                       test[LenPctNum](1.5)
@@ -140,7 +140,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'BrWidth {
+      "BrWidth" - {
                       test[BrWidth](inherit)
         compileError("test[BrWidth](1)")
         compileError("test[BrWidth](1.5)")
@@ -156,7 +156,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'BrStyle {
+      "BrStyle" - {
                       test[BrStyle](inherit)
         compileError("test[BrStyle](1)")
         compileError("test[BrStyle](1.5)")
@@ -172,7 +172,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'WidStyCol {
+      "WidStyCol" - {
                       test[WidStyCol](inherit)
         compileError("test[WidStyCol](1)")
         compileError("test[WidStyCol](1.5)")
@@ -188,7 +188,7 @@ object ValueTTest extends TestSuite {
         ()
       }
 
-      'Time {
+      "Time" - {
                       test[Time](inherit)
         compileError("test[Time](1)")
         compileError("test[Time](1.5)")

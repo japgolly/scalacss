@@ -34,8 +34,6 @@ object CanIUse2 {
       .map(ad => agentPrefixes(ad._1))
       .foldLeft(Set.empty[Prefix])(_ ++ _)
 
-  implicit def univEqMap: japgolly.univeq.UnivEq[Subject] = japgolly.univeq.UnivEq.force //FIXME REMOVE after PR https://github.com/japgolly/univeq/pull/23
-
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
     memo { s =>

@@ -18,35 +18,34 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest         = "0.7.1"
-    final val Nyaya         = "0.9.0-RC1"
-    //final val ReactJs       = "16.7.0"
-    final val ReactJs       = "15.5.4"
-    final val Scala212      = "2.12.8"
-    final val Scala213      = "2.13.0"
-    final val ScalaJsDom    = "0.9.7"
-    final val ScalaJsReact  = "1.4.3-SNAPSHOT" //FIXME We need a RC for it
-    final val Scalatags     = "0.7.0"
-    final val Scalaz        = "7.2.28"
-    final val UnivEq        = "1.1.0-SNAPSHOT"
+    final val MTest           = "0.7.1"
+    final val Nyaya           = "0.9.0-RC1"
+    //final val ReactJs         = "16.7.0"
+    final val ReactJs         = "15.5.4"
+    final val Scala212        = "2.12.8"
+    final val Scala213        = "2.13.0"
+    final val ScalaCollCompat = "2.1.2"
+    final val ScalaJsDom      = "0.9.7"
+    final val ScalaJsReact    = "1.5.0-RC1"
+    final val Scalatags       = "0.7.0"
+    final val Scalaz          = "7.2.28"
+    final val UnivEq          = "1.1.0-RC3"
   }
 
-  def scalacFlags = Def.setting(
+  def scalacFlags =
     Seq(
       "-deprecation",
       "-unchecked",
-      // "-Ywarn-dead-code",
-      // "-Ywarn-unused",
-      // "-Ywarn-value-discard",
       "-feature",
       "-language:postfixOps",
       "-language:implicitConversions",
       "-language:higherKinds",
-      "-language:existentials")
-    ++ (scalaVersion.value match {
-      case x if x startsWith "2.12." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
-      case x if x startsWith "2.13." => "-target:jvm-1.8" :: "-opt:l:method" :: Nil
-    }))
+      "-language:existentials",
+      "-opt:l:inline",
+      "-opt-inline-from:scalacss.**")
+      // "-Ywarn-dead-code",
+      // "-Ywarn-unused",
+      // "-Ywarn-value-discard",
 
   val commonSettings = ConfigureBoth(
     _.settings(
@@ -55,7 +54,7 @@ object ScalaCssBuild {
       licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion                  := Ver.Scala213,
       crossScalaVersions            := Seq(Ver.Scala213, Ver.Scala212),
-      scalacOptions                ++= scalacFlags.value,
+      scalacOptions                ++= scalacFlags,
       scalacOptions in Test        --= Seq("-Ywarn-unused"),
       shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
    // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
@@ -77,7 +76,7 @@ object ScalaCssBuild {
       libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % "test",
       testFrameworks      += new TestFramework("utest.runner.Framework")))
     .jsConfigure(
-      _.settings(jsEnv := new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv))
+      _.settings(jsEnv := new JSDOMNodeJSEnv))
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -109,11 +108,12 @@ object ScalaCssBuild {
       utestSettings)
     .settings(
       libraryDependencies ++= Seq(
-        "com.github.japgolly.univeq" %%% "univeq"      % Ver.UnivEq,
-        "com.github.japgolly.nyaya"  %%% "nyaya-gen"   % Ver.Nyaya  % "test",
-        "com.github.japgolly.nyaya"  %%% "nyaya-prop"  % Ver.Nyaya  % "test",
-        "com.github.japgolly.nyaya"  %%% "nyaya-test"  % Ver.Nyaya  % "test",
-        "org.scalaz"                 %%% "scalaz-core" % Ver.Scalaz % "test"))
+        "com.github.japgolly.univeq" %%% "univeq"                  % Ver.UnivEq,
+        "com.github.japgolly.nyaya"  %%% "nyaya-gen"               % Ver.Nyaya  % "test",
+        "com.github.japgolly.nyaya"  %%% "nyaya-prop"              % Ver.Nyaya  % "test",
+        "com.github.japgolly.nyaya"  %%% "nyaya-test"              % Ver.Nyaya  % "test",
+        "org.scala-lang.modules"     %%% "scala-collection-compat" % Ver.ScalaCollCompat,
+        "org.scalaz"                 %%% "scalaz-core"             % Ver.Scalaz % "test"))
     .jsSettings(
       libraryDependencies += "org.scala-js" %%% "scalajs-dom" % Ver.ScalaJsDom)
     .jvmSettings(

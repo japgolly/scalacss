@@ -9,7 +9,7 @@ import scalacss.test.TestUtil._
 object NameGenTest extends TestSuite {
 
   override val tests = TestSuite {
-    'nameGenUniqueAndAscii {
+    "nameGenUniqueAndAscii" - {
       val classesAmount = 1000
       val classNames = (1 to classesAmount).map(_ => NameGen.short().next(ClassNameHint("placeholder"))._1.value)
       val uniqueClassNames = classNames.toSet
