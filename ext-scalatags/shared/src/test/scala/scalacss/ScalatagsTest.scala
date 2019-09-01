@@ -56,7 +56,7 @@ object ScalatagsTest extends TestSuite {
     "multipleStyles" - {
       val el = input(`type` := "text", MyStyles.input, MyStyles.required, value := "ah")
       val html = el.toString()
-      assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input ScalatagsTest_MyStyles-required" value="ah" />""")
+      assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input  ScalatagsTest_MyStyles-required" value="ah" />""")
     }
   }
 }
