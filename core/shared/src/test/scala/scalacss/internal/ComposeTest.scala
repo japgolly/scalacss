@@ -56,7 +56,7 @@ object ComposeTest extends TestSuite {
       val css = SampleStyles.renderA[String].trim
       assertEq(SampleStyles.outer.htmlClass, "TEST-outer")
       assertEq(SampleStyles.inner.htmlClass, "TEST-inner")
-      assertEq(css,
+      assertMultiline(css,
         """
           |.TEST-other:hover {
           |  font-weight: 200;

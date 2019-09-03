@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import scala.collection.immutable.SortedSet
 import Media.{Orientation, Scan}
 
 object Env {
@@ -79,6 +80,6 @@ import Env._
 final case class Env(platform: Platform[Option],
                      media   : Media[Option]) {
 
-  val prefixWhitelist: Set[CanIUse.Prefix] =
+  val prefixWhitelist: SortedSet[CanIUse.Prefix] =
     CanIUse2.prefixesForPlatform(platform)
 }

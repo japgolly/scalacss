@@ -306,6 +306,7 @@ object $obj {
   object Prefix {
     ${prefixes map fmtpref mkString "\n    "}
     implicit def univEq: UnivEq[Prefix] = UnivEq.derive
+    implicit val ordering: Ordering[Prefix] = Ordering.by(_.name)
     val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
   }
 
