@@ -1,14 +1,13 @@
 package scalacss.internal.mutable
 
+import japgolly.microlibs.testutil.TestUtil._
+import scala.collection.immutable.ListMap
+import scalacss.internal._
 import utest._
 
-import scalacss.internal._
-import scalacss.test.TestUtil._
-import Attrs._
-import Register._
-import scala.collection.immutable.ListMap
-
 object RegisterTest extends TestSuite {
+  import Attrs._
+  import Register._
 
   def styleS(av: AV, avs: AV*) =
     StyleS.data(ListMap(Cond.empty -> AVs(av, avs: _*)))

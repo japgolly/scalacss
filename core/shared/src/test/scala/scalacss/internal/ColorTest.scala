@@ -1,7 +1,7 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import utest._
-import scalacss.test.TestUtil._
 
 object ColorTest extends TestSuite {
   import Macros.Color

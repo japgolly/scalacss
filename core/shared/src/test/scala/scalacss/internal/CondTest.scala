@@ -1,7 +1,7 @@
 package scalacss.internal
 
 import utest._
-import scalacss.test.TestUtil._
+import japgolly.microlibs.testutil.TestUtil._
 
 object CondTest extends TestSuite {
 

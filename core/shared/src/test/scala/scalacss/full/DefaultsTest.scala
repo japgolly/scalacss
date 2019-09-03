@@ -1,9 +1,9 @@
 package scalacss.full
 
-import utest._
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss._
 import scalacss.internal.Platform
-import scalacss.test.TestUtil._
+import utest._
 
 object DefaultsTest extends TestSuite {
 

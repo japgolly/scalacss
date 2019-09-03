@@ -1,12 +1,12 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import nyaya.prop._
 import nyaya.test.PropTest._
 import utest._
-import scalacss.test.TestUtil._
-import Compose.{Rules => R}
 
 object ComposeTest extends TestSuite {
+  import Compose.{Rules => R}
 
   type TT = (StyleS, StyleS)
 

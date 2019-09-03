@@ -279,8 +279,8 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
 }
 
 object InlineTest extends utest.TestSuite {
+  import japgolly.microlibs.testutil.TestUtil._
   import utest._
-  import scalacss.test.TestUtil._
 
   def norm(css: String) = css.trim
 

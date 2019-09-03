@@ -1,11 +1,11 @@
 package scalacss.internal.mutable
 
+import japgolly.microlibs.testutil.TestUtil._
+import scalacss.defaults.DefaultSettings.Dev._
 import scalaz.Equal
 import scalaz.std.option.optionEqual
 import scalaz.std.vector.vectorEqual
 import utest._
-import scalacss.defaults.DefaultSettings.Dev._
-import scalacss.test.TestUtil._
 
 class BlarrrrStyle extends StyleSheet.Inline {
   import dsl._

@@ -1,10 +1,9 @@
 package scalacss.internal.mutable
 
-import utest._
-
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss.internal.ClassNameHint
 import scalacss.internal.mutable.Register.NameGen
-import scalacss.test.TestUtil._
+import utest._
 
 object NameGenTest extends TestSuite {
 

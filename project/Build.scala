@@ -18,6 +18,7 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
+    val Microlibs       = "2.0-RC1"
     val MTest           = "0.7.1"
     val Nyaya           = "0.9.0-RC1"
   //val ReactJs         = "16.7.0"
@@ -74,8 +75,10 @@ object ScalaCssBuild {
 
   def utestSettings = ConfigureBoth(
     _.settings(
-      libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % Test,
-      testFrameworks      := Seq(new TestFramework("utest.runner.Framework"))))
+      libraryDependencies ++= Seq(
+        "com.lihaoyi"                   %%% "utest"     % Ver.MTest     % Test,
+        "com.github.japgolly.microlibs" %%% "test-util" % Ver.Microlibs % Test),
+      testFrameworks := Seq(new TestFramework("utest.runner.Framework"))))
     .jsConfigure(
       _.settings(jsEnv := new JSDOMNodeJSEnv))
 

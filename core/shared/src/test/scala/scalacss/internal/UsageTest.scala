@@ -1,11 +1,12 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import utest._
-import scalacss.test.TestUtil._
-import Dsl._
-import Pseudo._
 
 object UsageTest extends TestSuite {
+  import Dsl._
+  import Pseudo._
+
   implicit def composition = Compose.safe
 
   val thing = 2.ex

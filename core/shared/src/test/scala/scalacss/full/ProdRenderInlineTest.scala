@@ -3,8 +3,8 @@ package scalacss.full
 import scalacss.ProdDefaults._
 
 object ProdRenderInlineTest extends utest.TestSuite {
+  import japgolly.microlibs.testutil.TestUtil._
   import utest._
-  import scalacss.test.TestUtil._
 
   def test(_actual: String, _expect: String): Unit = {
     def norm(css: String) = css.trim

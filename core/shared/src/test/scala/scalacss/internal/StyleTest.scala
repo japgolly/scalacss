@@ -1,8 +1,8 @@
 package scalacss.internal
 
-import utest._
-import scalacss.test.TestUtil._
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss.DevDefaults._
+import utest._
 
 object StyleTest extends TestSuite {
 

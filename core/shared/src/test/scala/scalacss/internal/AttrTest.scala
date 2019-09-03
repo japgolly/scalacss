@@ -1,13 +1,14 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import nyaya.gen._
 import nyaya.prop._
+import nyaya.test.{Domain => NDomain}
 import nyaya.test.PropTest._
 import scalacss.internal.AttrCmp.{Overlap, Unrelated}
 import scalacss.internal.Attrs._
 import scalacss.internal.Dsl.ToAVToAV
 import scalacss.internal.ValueT.Rules._
-import scalacss.test.TestUtil._
 import utest._
 
 object AttrTest extends TestSuite {
