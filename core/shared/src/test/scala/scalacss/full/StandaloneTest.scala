@@ -79,15 +79,15 @@ object StandaloneTest extends utest.TestSuite {
         |  padding-left: 6ex;
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
-        |  div.std {
-        |    width: 600px;
-        |  }
-        |}
-        |
         |@media not handheld and (orientation:landscape) and (color) {
         |  div.std {
         |    width: 500px;
+        |  }
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
+        |  div.std {
+        |    width: 600px;
         |  }
         |}
       """.stripMargin))

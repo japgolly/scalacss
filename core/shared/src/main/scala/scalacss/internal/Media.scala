@@ -83,8 +83,13 @@ object Media {
   case class Query(head: Either[TypeExpr, Feature], tail: Vector[Feature]) extends FeatureOps[Query] {
     override protected def F = f => new Query(head, tail :+ f)
 
+    private[scalacss] val cssSuffix: String = {
+      val z = head.fold(cssTypeExpr, cssFeature)
+      tail.foldLeft(z)(_ ~ and ~ cssFeature(_))
+    }
+
     override def toString =
-      css(NonEmptyVector one this)
+      Media.css(NonEmptyVector one this)
 
     def +:(qs: Vector[Query]): Vector[Query] =
       if (qs.exists(_ ==* this)) qs else qs :+ this
@@ -242,13 +247,8 @@ object Media {
     case Only(t) => "only " ~ t.value // Applies to whole Query. Don't wrap in parenthesis.
   }
 
-  def cssQuery(q: Query): String = {
-    val z = q.head.fold(cssTypeExpr, cssFeature)
-    q.tail.foldLeft(z)(_ ~ and ~ cssFeature(_))
-  }
-
   def cssQueries(qs: NonEmptyVector[Query]): String =
-    qs.reduceMapLeft1(cssQuery)(_ ~ `,` ~ _)
+    qs.reduceMapLeft1(_.cssSuffix)(_ ~ `,` ~ _)
 
   def css(qs: NonEmptyVector[Query]): CssMediaQuery =
     media ~ cssQueries(qs)

@@ -287,6 +287,20 @@ object InlineTest extends utest.TestSuite {
   override def tests = Tests {
     "css1" - assertMultiline(norm(MyInline.render), norm(
       """
+        |.manual {
+        |  margin: 12px;
+        |  padding: 0.5ex;
+        |  cursor: pointer;
+        |  -moz-text-decoration-line: underline overline;
+        |  text-decoration-line: underline overline;
+        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
+        |  background-image: radial-gradient(5em circle at top left, yellow, blue);
+        |  -ms-grid-template-areas: "main side";
+        |  grid-template-areas: "main side";
+        |}
+        |
         |.manual:hover {
         |  font-weight: normal;
         |  line-height: 1em;
@@ -304,20 +318,6 @@ object InlineTest extends utest.TestSuite {
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
-        |}
-        |
-        |.manual {
-        |  margin: 12px;
-        |  padding: 0.5ex;
-        |  cursor: pointer;
-        |  -moz-text-decoration-line: underline overline;
-        |  text-decoration-line: underline overline;
-        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: radial-gradient(5em circle at top left, yellow, blue);
-        |  -ms-grid-template-areas: "main side";
-        |  grid-template-areas: "main side";
         |}
         |
         |.manual nav.debug {
@@ -344,17 +344,17 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .manual {
-        |    margin-top: 10em;
-        |    margin-bottom: 10em;
-        |  }
-        |}
-        |
         |@media not handheld and (orientation:landscape) and (color) {
         |  .manual {
         |    padding-left: 500px;
         |    padding-right: 500px;
+        |  }
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  .manual {
+        |    margin-top: 10em;
+        |    margin-bottom: 10em;
         |  }
         |}
         |
@@ -627,24 +627,24 @@ object InlineTest extends utest.TestSuite {
         |  padding: 5px;
         |}
         |
-        |.manual:hover .child:hover {
-        |  display: block;
-        |}
-        |
         |.manual:hover .child {
         |  margin: 5px;
+        |}
+        |
+        |.manual:hover .child:hover {
+        |  display: block;
         |}
         |
         |.manual .child2:hover {
         |  margin: 15px;
         |}
         |
-        |.manual:nth-child(5) .row:nth-child(9) {
-        |  display: block;
-        |}
-        |
         |.manual:nth-child(5) .row {
         |  margin: 5px;
+        |}
+        |
+        |.manual:nth-child(5) .row:nth-child(9) {
+        |  display: block;
         |}
         |
         |.manual .row2:nth-child(15) {

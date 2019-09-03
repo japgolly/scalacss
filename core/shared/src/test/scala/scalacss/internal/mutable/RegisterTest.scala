@@ -1,7 +1,7 @@
 package scalacss.internal.mutable
 
 import japgolly.microlibs.testutil.TestUtil._
-import scala.collection.immutable.ListMap
+import scala.collection.immutable.SortedMap
 import scalacss.internal._
 import utest._
 
@@ -10,7 +10,7 @@ object RegisterTest extends TestSuite {
   import Register._
 
   def styleS(av: AV, avs: AV*) =
-    StyleS.data(ListMap(Cond.empty -> AVs(av, avs: _*)))
+    StyleS.data(SortedMap(Cond.empty -> AVs(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))

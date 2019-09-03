@@ -58,13 +58,13 @@ object ComposeTest extends TestSuite {
       assertEq(SampleStyles.inner.htmlClass, "TEST-inner")
       assertMultiline(css,
         """
-          |.TEST-other:hover {
-          |  font-weight: 200;
-          |}
-          |
           |.TEST-other {
           |  border-collapse: collapse;
           |  font-weight: 100;
+          |}
+          |
+          |.TEST-other:hover {
+          |  font-weight: 200;
           |}
           |
           |.TEST-outer {
