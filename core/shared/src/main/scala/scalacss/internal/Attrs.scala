@@ -73,12 +73,21 @@ object Attrs {
    */
   object alignContent extends TypedAttrBase {
     override val attr = Attr.real("align-content", Transform keys CanIUse.flexbox)
-    def center       = av(L.center)
-    def flexEnd      = av(L.flexEnd)
-    def flexStart    = av(L.flexStart)
-    def spaceAround  = av(L.spaceAround)
-    def spaceBetween = av(L.spaceBetween)
-    def stretch      = av(L.stretch)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def spaceAround   = av(L.spaceAround)
+    def spaceBetween  = av(L.spaceBetween)
+    def spaceEvenly   = av(L.spaceEvenly)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**
@@ -88,11 +97,21 @@ object Attrs {
    */
   object alignItems extends TypedAttrBase {
     override val attr = Attr.real("align-items", Transform keys CanIUse.flexbox)
-    def baseline  = av(L.baseline)
-    def center    = av(L.center)
-    def flexEnd   = av(L.flexEnd)
-    def flexStart = av(L.flexStart)
-    def stretch   = av(L.stretch)
+    def auto          = avl(LT.auto)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def selfEnd       = av(L.selfEnd)
+    def selfStart     = av(L.selfStart)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**
@@ -102,12 +121,21 @@ object Attrs {
    */
   object alignSelf extends TypedAttrBase {
     override val attr = Attr.real("align-self", Transform keys CanIUse.flexbox)
-    def auto      = avl(LT.auto)
-    def baseline  = av(L.baseline)
-    def center    = av(L.center)
-    def flexEnd   = av(L.flexEnd)
-    def flexStart = av(L.flexStart)
-    def stretch   = av(L.stretch)
+    def auto          = avl(LT.auto)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def selfEnd       = av(L.selfEnd)
+    def selfStart     = av(L.selfStart)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**

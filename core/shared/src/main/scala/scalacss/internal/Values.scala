@@ -297,6 +297,8 @@ object Literal extends TypedLiteralAliases {
   def scroll             : Value = "scroll"
   def semiCondensed      : Value = "semi-condensed"
   def semiExpanded       : Value = "semi-expanded"
+  def selfEnd            : Value = "self-end"
+  def selfStart          : Value = "self-start"
   def separate           : Value = "separate"
   def seResize           : Value = "se-resize"
   def show               : Value = "show"
