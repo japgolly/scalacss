@@ -61,10 +61,10 @@ package object internal {
 
   def memo[A: UnivEq, B](f: A => B): A => B = {
     val m = scala.collection.mutable.HashMap.empty[A, B]
-    a => m.get(a).getOrElse {
+    a => m.getOrElse(a, {
       val b = f(a)
       m.update(a, b)
       b
-    }
+    })
   }
 }

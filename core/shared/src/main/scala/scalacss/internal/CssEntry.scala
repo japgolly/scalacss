@@ -1,7 +1,6 @@
 package scalacss.internal
 
 import japgolly.univeq.UnivEq
-
 import scala.collection.immutable.ListMap
 
 sealed trait CssEntry
@@ -22,9 +21,8 @@ object CssEntry {
                       fontWeight  : Option[Value],
                       unicodeRange: Option[UnicodeRange]) extends CssEntry
 
-  implicit def univEqStyle         : UnivEq[Style    ]     = UnivEq.derive
-  implicit def univEqKeyframes     : UnivEq[Keyframes]     = UnivEq.derive
-  implicit def univEqFontFace      : UnivEq[FontFace ]     = UnivEq.derive
-  implicit def univEq              : UnivEq[CssEntry ]     = UnivEq.derive
-  implicit def univLM[K: UnivEq, V]: UnivEq[ListMap[K, V]] = UnivEq.force
+  @inline implicit def univEqStyle    : UnivEq[Style    ] = UnivEq.derive
+  @inline implicit def univEqKeyframes: UnivEq[Keyframes] = UnivEq.derive
+  @inline implicit def univEqFontFace : UnivEq[FontFace ] = UnivEq.derive
+  @inline implicit def univEq         : UnivEq[CssEntry ] = UnivEq.derive
 }

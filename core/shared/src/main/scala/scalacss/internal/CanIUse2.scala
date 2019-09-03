@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import scala.collection.immutable.SortedSet
 import scalacss.internal.{Literal => L}
 import CanIUse._
 import Support._
@@ -25,14 +26,17 @@ object CanIUse2 {
     case Unknown                      => false
   }
 
-  def agentPrefixes: Agent => Set[Prefix] =
-    a => Set(a.prefix) ++ a.prefixExceptions.values
+  private[this] val emptyPrefixSet: SortedSet[Prefix] =
+    SortedSet.empty[Prefix]
 
-  def subjectPrefixes(s: Subject): Set[Prefix] =
+  def agentPrefixes: Agent => SortedSet[Prefix] =
+    a => emptyPrefixSet + a.prefix ++ a.prefixExceptions.values
+
+  def subjectPrefixes(s: Subject): SortedSet[Prefix] =
     s.iterator
       .filter(_._2 exists needsPrefix)
       .map(ad => agentPrefixes(ad._1))
-      .foldLeft(Set.empty[Prefix])(_ ++ _)
+      .foldLeft(emptyPrefixSet)(_ ++ _)
 
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
@@ -96,7 +100,7 @@ object CanIUse2 {
   def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
     runPlan(pp, pa, CssKV.value, kv)
 
-  def prefixesForPlatform(p: Env.Platform[Option]): Set[Prefix] =
+  def prefixesForPlatform(p: Env.Platform[Option]): SortedSet[Prefix] =
     agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)
 
   def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {

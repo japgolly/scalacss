@@ -1,15 +1,15 @@
 package scalacss.internal
 
-import utest._
-import scalacss.test.TestUtil._
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss.DevDefaults._
+import utest._
 
 object StyleTest extends TestSuite {
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
-    'styleA {
-      'addOperator {
+    "styleA" - {
+      "addOperator" - {
         import Dsl._
 
         val s1 = StyleA(ClassName("s1"), Vector("c1", "c2", "c3").map(ClassName.apply), style(backgroundColor.blue))

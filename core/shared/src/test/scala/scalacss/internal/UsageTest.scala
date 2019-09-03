@@ -1,11 +1,12 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import utest._
-import scalacss.test.TestUtil._
-import Dsl._
-import Pseudo._
 
 object UsageTest extends TestSuite {
+  import Dsl._
+  import Pseudo._
+
   implicit def composition = Compose.safe
 
   val thing = 2.ex
@@ -36,8 +37,8 @@ object UsageTest extends TestSuite {
       )
     )
 
-  override val tests = TestSuite {
-    'maintest {
+  override def tests = Tests {
+    "maintest" - {
       val css = StringRenderer defaultPretty Css.style(".a1", s1)(Env.empty)
       // println(css)
       assertEq(css.trim,

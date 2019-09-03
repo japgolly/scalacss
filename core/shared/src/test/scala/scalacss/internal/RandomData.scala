@@ -2,10 +2,9 @@ package scalacss.internal
 
 import nyaya.gen._
 import nyaya.util._
-
+import scala.collection.immutable.SortedMap
 import scalaz.NonEmptyList
 import Style.{UnsafeExt, UnsafeExts}
-import scala.collection.immutable.ListMap
 
 object RandomData {
 
@@ -39,10 +38,10 @@ object RandomData {
       NthChild, NthLastChild, NthLastOfType, NthOfType)
 
     val needStr = NonEmptyList[String => Pseudo](
-      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang, Not(_), AttrExists)
+      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang, new Not(_), AttrExists)
 
     val need2Str = NonEmptyList[(String, String) => Pseudo](
-      Pseudo.Attr, AttrContains, AttrStartsWith, AttrEndsWith)
+      Pseudo.Attr _, AttrContains _, AttrStartsWith _, AttrEndsWith _)
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
@@ -90,7 +89,7 @@ object RandomData {
         ws   <- warning.vector(sized(0, 20, 6))
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
-        val lData = ListMap(data.toSeq:_*)
+        val lData = SortedMap(data.toSeq:_*)
         new StyleS(lData, exts, cn, cns, ws)
       }
     level(Some(level(Some(level(None)))))
