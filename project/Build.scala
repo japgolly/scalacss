@@ -42,6 +42,7 @@ object ScalaCssBuild {
       "-language:higherKinds",
       "-language:existentials",
       "-opt:l:inline",
+      "-opt-inline-from:japgolly.univeq.**",
       "-opt-inline-from:scalacss.**")
       // "-Ywarn-dead-code",
       // "-Ywarn-unused",
