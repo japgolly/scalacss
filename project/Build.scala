@@ -18,18 +18,18 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    final val MTest           = "0.7.1"
-    final val Nyaya           = "0.9.0-RC1"
-    //final val ReactJs         = "16.7.0"
-    final val ReactJs         = "15.5.4"
-    final val Scala212        = "2.12.8"
-    final val Scala213        = "2.13.0"
-    final val ScalaCollCompat = "2.1.2"
-    final val ScalaJsDom      = "0.9.7"
-    final val ScalaJsReact    = "1.5.0-RC1"
-    final val Scalatags       = "0.7.0"
-    final val Scalaz          = "7.2.28"
-    final val UnivEq          = "1.1.0-RC3"
+    val MTest           = "0.7.1"
+    val Nyaya           = "0.9.0-RC1"
+  //val ReactJs         = "16.7.0"
+    val ReactJs         = "15.5.4"
+    val Scala212        = "2.12.8"
+    val Scala213        = "2.13.0"
+    val ScalaCollCompat = "2.1.2"
+    val ScalaJsDom      = "0.9.7"
+    val ScalaJsReact    = "1.5.0-RC1"
+    val Scalatags       = "0.7.0"
+    val Scalaz          = "7.2.28"
+    val UnivEq          = "1.1.0-RC3"
   }
 
   def scalacFlags =
@@ -70,12 +70,12 @@ object ScalaCssBuild {
       libraryDependencies ++= Seq(
         "org.scala-lang" % "scala-reflect" % scalaVersion.value,
         // "org.scala-lang" % "scala-library" % scalaVersion.value,
-        "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided")))
+        "org.scala-lang" % "scala-compiler" % scalaVersion.value % Provided)))
 
   def utestSettings = ConfigureBoth(
     _.settings(
-      libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % "test",
-      testFrameworks      += new TestFramework("utest.runner.Framework")))
+      libraryDependencies += "com.lihaoyi" %%% "utest" % Ver.MTest % Test,
+      testFrameworks      := Seq(new TestFramework("utest.runner.Framework"))))
     .jsConfigure(
       _.settings(jsEnv := new JSDOMNodeJSEnv))
 
@@ -105,16 +105,15 @@ object ScalaCssBuild {
       commonSettings,
       publicationSettings,
       definesMacros,
-      //, Gen.attrAliases
       utestSettings)
     .settings(
       libraryDependencies ++= Seq(
         "com.github.japgolly.univeq" %%% "univeq"                  % Ver.UnivEq,
-        "com.github.japgolly.nyaya"  %%% "nyaya-gen"               % Ver.Nyaya  % "test",
-        "com.github.japgolly.nyaya"  %%% "nyaya-prop"              % Ver.Nyaya  % "test",
-        "com.github.japgolly.nyaya"  %%% "nyaya-test"              % Ver.Nyaya  % "test",
         "org.scala-lang.modules"     %%% "scala-collection-compat" % Ver.ScalaCollCompat,
-        "org.scalaz"                 %%% "scalaz-core"             % Ver.Scalaz % "test"))
+        "com.github.japgolly.nyaya"  %%% "nyaya-gen"               % Ver.Nyaya  % Test,
+        "com.github.japgolly.nyaya"  %%% "nyaya-prop"              % Ver.Nyaya  % Test,
+        "com.github.japgolly.nyaya"  %%% "nyaya-test"              % Ver.Nyaya  % Test,
+        "org.scalaz"                 %%% "scalaz-core"             % Ver.Scalaz % Test))
     .jsSettings(
       libraryDependencies += "org.scala-js" %%% "scalajs-dom" % Ver.ScalaJsDom)
     .jvmSettings(
@@ -142,7 +141,7 @@ object ScalaCssBuild {
       moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
         "com.lihaoyi" %%% "scalatags"   % Ver.Scalatags,
-        "org.scalaz"  %%% "scalaz-core" % Ver.Scalaz % "test"))
+        "org.scalaz"  %%% "scalaz-core" % Ver.Scalaz % Test))
 
   lazy val extReact = project
     .in(file("ext-react"))
@@ -153,19 +152,19 @@ object ScalaCssBuild {
       moduleName := "ext-react",
       libraryDependencies ++= Seq(
         "com.github.japgolly.scalajs-react" %%% "core"        % Ver.ScalaJsReact,
-        "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % "test",
-        "org.scalaz"                        %%% "scalaz-core" % Ver.Scalaz       % "test"),
+        "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % Test,
+        "org.scalaz"                        %%% "scalaz-core" % Ver.Scalaz       % Test),
       jsDependencies ++= Seq(
-        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+        "org.webjars.bower" % "react" % Ver.ReactJs % Test
           /        "react-with-addons.js"
           minified "react-with-addons.min.js"
           commonJSName "React",
-        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+        "org.webjars.bower" % "react" % Ver.ReactJs % Test
           /         "react-dom.js"
           minified  "react-dom.min.js"
           dependsOn "react-with-addons.js"
           commonJSName "ReactDOM",
-        "org.webjars.bower" % "react" % Ver.ReactJs % "test"
+        "org.webjars.bower" % "react" % Ver.ReactJs % Test
           /         "react-dom-server.js"
           minified  "react-dom-server.min.js"
           dependsOn "react-dom.js"
