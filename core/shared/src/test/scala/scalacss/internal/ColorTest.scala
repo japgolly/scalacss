@@ -7,7 +7,7 @@ object ColorTest extends TestSuite {
   import Macros.Color
   import Dsl._
 
-  override def tests = TestSuite {
+  override def tests = Tests {
 
     "valid" - {
       def test(c: Color, expect: String) =

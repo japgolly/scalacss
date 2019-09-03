@@ -38,7 +38,7 @@ object StandaloneTest extends utest.TestSuite {
   import utest._
   import scalacss.test.TestUtil._
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     def norm(css: String) = css.trim
     assertMultiline(norm(MyStandalone.render), norm(
       """

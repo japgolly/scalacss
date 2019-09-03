@@ -12,7 +12,7 @@ object PlatformJsTest extends TestSuite {
     println(PlatformJsEnv.value.map(_.media))
   }
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     test()
   }
 }

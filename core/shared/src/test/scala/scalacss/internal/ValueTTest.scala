@@ -14,7 +14,7 @@ object ValueTTest extends TestSuite {
   val ms  = 3 milliseconds
   import Dsl.inherit
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
     "valueClasses" - {
       def test[C <: ValueClass](v: ValueT[C]): Unit = ()

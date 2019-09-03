@@ -57,7 +57,7 @@ object ReactTest extends TestSuite {
     assertEq(fix(actual), fix(expect))
   }
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
     "styleReactElement" - {
       val html = ReactDOMServer.renderToStaticMarkup(MyStyles.render[VdomElement])

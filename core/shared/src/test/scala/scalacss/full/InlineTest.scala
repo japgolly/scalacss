@@ -284,7 +284,7 @@ object InlineTest extends utest.TestSuite {
 
   def norm(css: String) = css.trim
 
-  override def tests = TestSuite {
+  override def tests = Tests {
     "css1" - assertMultiline(norm(MyInline.render), norm(
       """
         |.manual:hover {

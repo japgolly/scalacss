@@ -6,7 +6,7 @@ import scalacss.DevDefaults._
 
 object StyleTest extends TestSuite {
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
     "styleA" - {
       "addOperator" - {

@@ -36,7 +36,7 @@ object UsageTest extends TestSuite {
       )
     )
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     "maintest" - {
       val css = StringRenderer defaultPretty Css.style(".a1", s1)(Env.empty)
       // println(css)

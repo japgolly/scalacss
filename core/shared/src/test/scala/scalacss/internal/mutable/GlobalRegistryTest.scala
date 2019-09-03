@@ -30,7 +30,7 @@ object GlobalRegistryTest extends TestSuite {
   gr.onRegistration(postreg :+= _)
   gr.register(blar)
 
-  override def tests = TestSuite {
+  override def tests = Tests {
     "get" - {
       assertEq(gr[S1], Some(s1))
       assertEq(gr[BlarrrrStyle], Some(blar))

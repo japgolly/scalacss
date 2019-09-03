@@ -25,7 +25,7 @@ object ScalatagsTest extends TestSuite {
   type T = scalatags.Text.TypedTag[String]
   import scalatags.Text.all._
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
     "styleTag" - {
       val html = MyStyles.render[T].toString()

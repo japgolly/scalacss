@@ -7,7 +7,7 @@ import scalacss.test.TestUtil._
 
 object DefaultsTest extends TestSuite {
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     "platform" - assert(Platform.DevMode)
     "defaults" - assert(devOrProdDefaults eq DevDefaults)
 

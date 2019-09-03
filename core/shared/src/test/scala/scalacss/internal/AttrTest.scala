@@ -41,7 +41,7 @@ object AttrTest extends TestSuite {
     assertEq(x, y)
   }
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     "laws1" - laws1.mustBeProvedBy(builtInAttrs)
     "laws2" - laws2.mustBeProvedBy(builtInAttrPairs)
 //    'laws3 - Attr.laws3.mustBeSatisfiedBy(builtInAttrTriplets)

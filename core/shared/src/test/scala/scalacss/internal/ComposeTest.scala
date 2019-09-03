@@ -79,7 +79,7 @@ object ComposeTest extends TestSuite {
     }
   }
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     "props"   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
     "issue25" - Issue25.test()
 

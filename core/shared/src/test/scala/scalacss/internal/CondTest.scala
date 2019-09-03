@@ -5,7 +5,7 @@ import scalacss.test.TestUtil._
 
 object CondTest extends TestSuite {
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     "pseudo" - {
       import Pseudo._
       "not" - {

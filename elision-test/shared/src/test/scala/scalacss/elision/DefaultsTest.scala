@@ -17,7 +17,7 @@ object DefaultsTest extends TestSuite {
     throw e
   }
 
-  override def tests = TestSuite {
+  override def tests = Tests {
 
     "elision" - {
       var on = false
