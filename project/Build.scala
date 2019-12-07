@@ -26,7 +26,7 @@ object ScalaCssBuild {
     val Scala212        = "2.12.8"
     val Scala213        = "2.13.0"
     val ScalaCollCompat = "2.1.2"
-    val ScalaJsDom      = "0.9.7"
+    val ScalaJsDom      = "0.9.8"
     val ScalaJsReact    = "1.5.0-RC1"
     val Scalatags       = "0.7.0"
     val Scalaz          = "7.2.28"
