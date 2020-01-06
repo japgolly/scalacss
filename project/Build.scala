@@ -18,7 +18,7 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    val Microlibs       = "2.0-RC1"
+    val Microlibs       = "2.0"
     val MTest           = "0.7.1"
     val Nyaya           = "0.9.0-RC1"
   //val ReactJs         = "16.7.0"
