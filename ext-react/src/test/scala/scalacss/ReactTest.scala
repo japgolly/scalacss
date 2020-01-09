@@ -57,31 +57,31 @@ object ReactTest extends TestSuite {
     assertEq(fix(actual), fix(expect))
   }
 
-  override val tests = TestSuite {
+  override def tests = Tests {
 
-    'styleReactElement {
+    "styleReactElement" - {
       val html = ReactDOMServer.renderToStaticMarkup(MyStyles.render[VdomElement])
       assertStyle(html, expectedStyleTag1)
     }
 
-    'styleHtmlElement {
+    "styleHtmlElement" - {
       val html = MyStyles.render[HTMLStyleElement].outerHTML
       assertStyle(html, expectedStyleTag1)
     }
 
-    'simple {
+    "simple" - {
       val el = <.input(^.`type` := "text", MyStyles.input, ^.defaultValue := "ah")
       val html = ReactDOMServer.renderToStaticMarkup(el)
       assertEq(html, """<input type="text" class="ReactTest_MyStyles-input" value="ah"/>""")
     }
 
-    'addClassName {
+    "addClassName" - {
       val el = <.button(MyStyles.bootstrappy)
       val html = ReactDOMServer.renderToStaticMarkup(el)
       assertEq(html, """<button class="btn btn-default"></button>""")
     }
 
-    'addToDocumentOnRegistration {
+    "addToDocumentOnRegistration" - {
       val registry = new StyleSheetRegistry
       registry.register(MyStyles, MyStyles2)
       def count = document.head.childElementCount

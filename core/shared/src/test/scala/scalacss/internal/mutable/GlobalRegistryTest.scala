@@ -1,11 +1,11 @@
 package scalacss.internal.mutable
 
+import japgolly.microlibs.testutil.TestUtil._
+import scalacss.defaults.DefaultSettings.Dev._
 import scalaz.Equal
 import scalaz.std.option.optionEqual
 import scalaz.std.vector.vectorEqual
 import utest._
-import scalacss.defaults.DefaultSettings.Dev._
-import scalacss.test.TestUtil._
 
 class BlarrrrStyle extends StyleSheet.Inline {
   import dsl._
@@ -30,15 +30,15 @@ object GlobalRegistryTest extends TestSuite {
   gr.onRegistration(postreg :+= _)
   gr.register(blar)
 
-  override def tests = TestSuite {
-    'get {
+  override def tests = Tests {
+    "get" - {
       assertEq(gr[S1], Some(s1))
       assertEq(gr[BlarrrrStyle], Some(blar))
     }
-    'missing {
+    "missing" - {
       assertEq(gr[S2].isEmpty, true)
     }
-    'onRegistration {
+    "onRegistration" - {
       assertEq(postreg, Vector(s1, blar))
     }
   }

@@ -279,45 +279,45 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
 }
 
 object InlineTest extends utest.TestSuite {
+  import japgolly.microlibs.testutil.TestUtil._
   import utest._
-  import scalacss.test.TestUtil._
 
   def norm(css: String) = css.trim
 
-  override def tests = TestSuite {
-    'css1 - assertMultiline(norm(MyInline.render), norm(
+  override def tests = Tests {
+    "css1" - assertMultiline(norm(MyInline.render), norm(
       """
-        |.manual:hover {
-        |  font-weight: normal;
-        |  line-height: 1em;
-        |  padding: 0;
-        |  cursor: -moz-zoom-in;
-        |  cursor: -webkit-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: zoom-in;
-        |}
-        |
-        |.manual:not(:first-child):visited {
-        |  -webkit-animation-delay: 60s,50ms;
-        |  -moz-animation-delay: 60s,50ms;
-        |  -o-animation-delay: 60s,50ms;
-        |  animation-delay: 60s,50ms;
-        |  font-weight: bold;
-        |  font: inherit;
-        |}
-        |
         |.manual {
         |  margin: 12px;
         |  padding: 0.5ex;
         |  cursor: pointer;
         |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
+        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
-        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |  -ms-grid-template-areas: "main side";
         |  grid-template-areas: "main side";
+        |}
+        |
+        |.manual:hover {
+        |  font-weight: normal;
+        |  line-height: 1em;
+        |  padding: 0;
+        |  cursor: -moz-zoom-in;
+        |  cursor: -o-zoom-in;
+        |  cursor: -webkit-zoom-in;
+        |  cursor: zoom-in;
+        |}
+        |
+        |.manual:not(:first-child):visited {
+        |  -moz-animation-delay: 60s,50ms;
+        |  -o-animation-delay: 60s,50ms;
+        |  -webkit-animation-delay: 60s,50ms;
+        |  animation-delay: 60s,50ms;
+        |  font-weight: bold;
+        |  font: inherit;
         |}
         |
         |.manual nav.debug {
@@ -344,17 +344,17 @@ object InlineTest extends utest.TestSuite {
         |  color: red;
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
-        |  .manual {
-        |    margin-top: 10em;
-        |    margin-bottom: 10em;
-        |  }
-        |}
-        |
         |@media not handheld and (orientation:landscape) and (color) {
         |  .manual {
         |    padding-left: 500px;
         |    padding-right: 500px;
+        |  }
+        |}
+        |
+        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |  .manual {
+        |    margin-top: 10em;
+        |    margin-bottom: 10em;
         |  }
         |}
         |
@@ -378,7 +378,7 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'css2 - assertMultiline(norm(MyInline2.render), norm(
+    "css2" - assertMultiline(norm(MyInline2.render), norm(
       """
         |.MyInline2-sb2 {
         |  margin-top: inherit;
@@ -427,7 +427,7 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'css3 - assertMultiline(norm(MyInline3.render), norm(
+    "css3" - assertMultiline(norm(MyInline3.render), norm(
       """
         |.MyInline3-dup1b {
         |  word-break: break-all;
@@ -488,55 +488,55 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'classnames {
-      'manual - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
+    "classnames" - {
+      "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
-      'manualF - {
+      "manualF" - {
         assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
         assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
       }
 
-      'everythingOk {
+      "everythingOk" - {
         assertEq(MyInline2.everythingOk(true) .htmlClass, "MyInline2-everythingOk-t")
         assertEq(MyInline2.everythingOk(false).htmlClass, "MyInline2-everythingOk-f")
       }
 
-      'indent {
+      "indent" - {
         assertEq(MyInline2.indent(2).htmlClass, "MyInline2-indent-2")
         assertEq(MyInline2.indent(3).htmlClass, "MyInline2-indent-3")
         assertEq(MyInline2.indent(4).htmlClass, "MyInline2-indent-4")
       }
 
-      'opbool {
+      "opbool" - {
         assertEq(MyInline2.opbool(None)       .htmlClass, "MyInline2-opbool-1")
         assertEq(MyInline2.opbool(Some(true)) .htmlClass, "MyInline2-opbool-2")
         assertEq(MyInline2.opbool(Some(false)).htmlClass, "MyInline2-opbool-3")
       }
 
-      'sb1 - assertEq(MyInline2.sb1.htmlClass, "btn btn-default")
-      'sb2 - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
+      "sb1" - assertEq(MyInline2.sb1.htmlClass, "btn btn-default")
+      "sb2" - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
 
-      'empty - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+      "empty" - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
 
-      'wth - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
+      "wth" - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
 
-      'dup1 - {
+      "dup1" - {
         assertEq(MyInline3.dup1a.htmlClass, "MyInline3-dup1b")
         assertEq(MyInline3.dup1b.htmlClass, "MyInline3-dup1b-2")
       }
 
-      'dup2 - {
+      "dup2" - {
         assertEq(MyInline3.dup2a.htmlClass, "MyInline3-dup2c")
         assertEq(MyInline3.dup2b.htmlClass, "MyInline3-dup2c-2")
         assertEq(MyInline3.dup2c.htmlClass, "MyInline3-dup2c-3")
       }
 
-      'innerObject_1 - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
-      'innerObject_2 - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+      "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
+      "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
 
     }
 
-    'keyframes - assertMultiline(norm(MyInlineWithKeyframes.render), norm("""
+    "keyframes" - assertMultiline(norm(MyInlineWithKeyframes.render), norm("""
        |@keyframes MyInlineWithKeyframes-kf1 {
        |  0% {
        |    height: 100px;
@@ -576,34 +576,34 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
-       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  -moz-animation-name: MyInlineWithKeyframes-kf1;
        |  -o-animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
-       |  -webkit-animation-duration: 5s;
        |  -moz-animation-duration: 5s;
        |  -o-animation-duration: 5s;
+       |  -webkit-animation-duration: 5s;
        |  animation-duration: 5s;
-       |  -webkit-animation-direction: alternate;
        |  -moz-animation-direction: alternate;
        |  -o-animation-direction: alternate;
+       |  -webkit-animation-direction: alternate;
        |  animation-direction: alternate;
-       |  -webkit-animation-iteration-count: 5;
        |  -moz-animation-iteration-count: 5;
        |  -o-animation-iteration-count: 5;
+       |  -webkit-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
-       |  -webkit-animation-play-state: running;
        |  -moz-animation-play-state: running;
        |  -o-animation-play-state: running;
+       |  -webkit-animation-play-state: running;
        |  animation-play-state: running;
-       |  -webkit-animation-timing-function: ease;
        |  -moz-animation-timing-function: ease;
        |  -o-animation-timing-function: ease;
+       |  -webkit-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
 
-    'complexCond - assertMultiline(norm(MyInlineComplexCond.render), norm(
+    "complexCond" - assertMultiline(norm(MyInlineComplexCond.render), norm(
       """.manual {
         |  margin: 12px;
         |  padding: 0.5ex;
@@ -611,15 +611,15 @@ object InlineTest extends utest.TestSuite {
         |
         |.manual:hover {
         |  cursor: -moz-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: -o-zoom-in;
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:nth-child(5) {
         |  cursor: -moz-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: -o-zoom-in;
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
@@ -627,24 +627,24 @@ object InlineTest extends utest.TestSuite {
         |  padding: 5px;
         |}
         |
-        |.manual:hover .child:hover {
-        |  display: block;
-        |}
-        |
         |.manual:hover .child {
         |  margin: 5px;
+        |}
+        |
+        |.manual:hover .child:hover {
+        |  display: block;
         |}
         |
         |.manual .child2:hover {
         |  margin: 15px;
         |}
         |
-        |.manual:nth-child(5) .row:nth-child(9) {
-        |  display: block;
-        |}
-        |
         |.manual:nth-child(5) .row {
         |  margin: 5px;
+        |}
+        |
+        |.manual:nth-child(5) .row:nth-child(9) {
+        |  display: block;
         |}
         |
         |.manual .row2:nth-child(15) {
@@ -676,7 +676,7 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
-    'fontFaces - assertMultiline(norm(MyInlineWithFontFace.render), norm("""
+    "fontFaces" - assertMultiline(norm(MyInlineWithFontFace.render), norm("""
          |@font-face {
          |  font-family: myFont;
          |  src: url(font.woff);

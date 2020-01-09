@@ -42,7 +42,7 @@ object Test {
   type UnsafeChildren = Map[String, StaticStyle]
 
   // --------------------------------------------------------------------------
-  // FR-02: I ⇒ Style
+  // FR-02: I => Style
 
   case class StyleFnT[I](f: I => StaticStyle, d: Domain[I]) extends SingleStyle
   case class StyleFnP[I](f: I => StaticStyle) { // Doesn't really need own class. Just (I => Style) => Domain => StyleFnT
@@ -126,9 +126,9 @@ object Test {
   def compose[  B](a: StaticStyle, b: StyleFnP[B])(implicit m: Merger): StyleFnP[B] = ???
   def compose[A  ](a: StyleFnT[A], b: StaticStyle)(implicit m: Merger): StyleFnT[A] = ???
   def compose[A,B](a: StyleFnT[A], b: StyleFnT[B])(implicit m: Merger): StyleFnT[(A,B)] = ???
-  def compose[A,B](a: StyleFnT[A], b: StyleFnP[B])(implicit m: Merger): Domain[B] ⇒ StyleFnT[(A,B)] = ???
+  def compose[A,B](a: StyleFnT[A], b: StyleFnP[B])(implicit m: Merger): Domain[B] => StyleFnT[(A,B)] = ???
   def compose[A  ](a: StyleFnP[A], b: StaticStyle)(implicit m: Merger): StyleFnP[A] = ???
-  def compose[A,B](a: StyleFnP[A], b: StyleFnT[B])(implicit m: Merger): Domain[A] ⇒ StyleFnT[(A,B)] = ???
+  def compose[A,B](a: StyleFnP[A], b: StyleFnT[B])(implicit m: Merger): Domain[A] => StyleFnT[(A,B)] = ???
   def compose[A,B](a: StyleFnP[A], b: StyleFnP[B])(implicit m: Merger): (Domain[A], Domain[B]) => StyleFnT[(A,B)] = ???
 
   implicit val recommendMerger = Merger.concat and Merger.warn

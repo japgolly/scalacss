@@ -1,12 +1,12 @@
 package scalacss.internal
 
+import japgolly.microlibs.testutil.TestUtil._
 import nyaya.prop._
 import nyaya.test.PropTest._
 import utest._
-import scalacss.test.TestUtil._
-import Compose.{Rules => R}
 
 object ComposeTest extends TestSuite {
+  import Compose.{Rules => R}
 
   type TT = (StyleS, StyleS)
 
@@ -56,15 +56,15 @@ object ComposeTest extends TestSuite {
       val css = SampleStyles.renderA[String].trim
       assertEq(SampleStyles.outer.htmlClass, "TEST-outer")
       assertEq(SampleStyles.inner.htmlClass, "TEST-inner")
-      assertEq(css,
+      assertMultiline(css,
         """
-          |.TEST-other:hover {
-          |  font-weight: 200;
-          |}
-          |
           |.TEST-other {
           |  border-collapse: collapse;
           |  font-weight: 100;
+          |}
+          |
+          |.TEST-other:hover {
+          |  font-weight: 200;
           |}
           |
           |.TEST-outer {
@@ -79,11 +79,11 @@ object ComposeTest extends TestSuite {
     }
   }
 
-  override val tests = TestSuite {
-    'props   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
-    'issue25 - Issue25.test()
+  override def tests = Tests {
+    "props"   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
+    "issue25" - Issue25.test()
 
-    'values {
+    "values" - {
       import Dsl._
       implicit def c = Compose.safe
 
@@ -92,22 +92,22 @@ object ComposeTest extends TestSuite {
         assertEq(s.warnings.map(_.msg), ws.toVector)
       }
 
-      'idempotency {
+      "idempotency" - {
         val a = style(display.block)
         test(a compose a)(AV(display, "block"))()
       }
 
-      'sameKey -
+      "sameKey" -
         test(style(display.block) compose style(display.inline))(
           AV(display, "block"), AV(display, "inline")
         )("{display: inline} conflicts with {display: block}")
 
-      'marginN1 -
+      "marginN1" -
         test(style(margin.auto) compose style(marginLeft.`0`))(
           AV(margin, "auto"), AV(marginLeft, "0")
         )("{margin-left: 0} conflicts with {margin: auto}")
 
-      'margin1N -
+      "margin1N" -
         test(style(marginLeft.`0`) compose style(margin.auto))(
           AV(marginLeft, "0"), AV(margin, "auto")
         )("{margin: auto} conflicts with {margin-left: 0}")

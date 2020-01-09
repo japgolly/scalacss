@@ -53,6 +53,9 @@ object Attrs {
     // 0.5.6
     gap, rowGap,
 
+    // 0.6.0
+    justifySelf, placeSelf,
+
     // =================================================================================================================
     // ==================================== SVG Attributes =============================================================
     // =================================================================================================================
@@ -73,12 +76,21 @@ object Attrs {
    */
   object alignContent extends TypedAttrBase {
     override val attr = Attr.real("align-content", Transform keys CanIUse.flexbox)
-    def center       = av(L.center)
-    def flexEnd      = av(L.flexEnd)
-    def flexStart    = av(L.flexStart)
-    def spaceAround  = av(L.spaceAround)
-    def spaceBetween = av(L.spaceBetween)
-    def stretch      = av(L.stretch)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def spaceAround   = av(L.spaceAround)
+    def spaceBetween  = av(L.spaceBetween)
+    def spaceEvenly   = av(L.spaceEvenly)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**
@@ -88,11 +100,21 @@ object Attrs {
    */
   object alignItems extends TypedAttrBase {
     override val attr = Attr.real("align-items", Transform keys CanIUse.flexbox)
-    def baseline  = av(L.baseline)
-    def center    = av(L.center)
-    def flexEnd   = av(L.flexEnd)
-    def flexStart = av(L.flexStart)
-    def stretch   = av(L.stretch)
+    def auto          = avl(LT.auto)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def selfEnd       = av(L.selfEnd)
+    def selfStart     = av(L.selfStart)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**
@@ -102,12 +124,21 @@ object Attrs {
    */
   object alignSelf extends TypedAttrBase {
     override val attr = Attr.real("align-self", Transform keys CanIUse.flexbox)
-    def auto      = avl(LT.auto)
-    def baseline  = av(L.baseline)
-    def center    = av(L.center)
-    def flexEnd   = av(L.flexEnd)
-    def flexStart = av(L.flexStart)
-    def stretch   = av(L.stretch)
+    def auto          = avl(LT.auto)
+    def baseline      = av(L.baseline)
+    def center        = av(L.center)
+    def end           = avl(LT.end)
+    def firstBaseline = av(L.firstBaseline)
+    def flexEnd       = av(L.flexEnd)
+    def flexStart     = av(L.flexStart)
+    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
+    def safeCenter    = av(L.safeCenter)
+    def selfEnd       = av(L.selfEnd)
+    def selfStart     = av(L.selfStart)
+    def start         = avl(LT.start)
+    def stretch       = av(L.stretch)
+    def unsafeCenter  = av(L.unsafeCenter)
   }
 
   /**
@@ -1418,13 +1449,37 @@ object Attrs {
     def flexEnd       = av(L.flexEnd)
     def left          = av(L.left)
     def right         = av(L.right)
-    def baseline      = av(L.baseline)
-    def firstBaseline = av(L.firstBaseline)
-    def lastBaseline  = av(L.lastBaseline)
+    def normal        = avl(LT.normal)
     def spaceBetween  = av(L.spaceBetween)
     def spaceAround   = av(L.spaceAround)
     def spaceEvenly   = av(L.spaceEvenly)
     def stretch       = av(L.stretch)
+    def safeCenter    = av(L.safeCenter)
+    def unsafeCenter  = av(L.unsafeCenter)
+  }
+
+  /**
+   * The CSS justify-self property sets the way a box is justified inside its alignment container along the appropriate axis.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-self">MDN</a>
+   */
+  object justifySelf extends TypedAttrBase {
+    override val attr = Attr.real("justify-self", Transform keys CanIUse.grid)
+    def auto          = avl(LT.auto)
+    def normal        = avl(LT.normal)
+    def stretch       = av(L.stretch)
+    def center        = av(L.center)
+    def start         = avl(L.start)
+    def end           = avl(L.end)
+    def flexStart     = av(L.flexStart)
+    def flexEnd       = av(L.flexEnd)
+    def selfStart     = av(L.selfStart)
+    def selfEnd       = av(L.selfEnd)
+    def left          = av(L.left)
+    def right         = av(L.right)
+    def baseline      = av(L.baseline)
+    def firstBaseline = av(L.firstBaseline)
+    def lastBaseline  = av(L.lastBaseline)
     def safeCenter    = av(L.safeCenter)
     def unsafeCenter  = av(L.unsafeCenter)
   }
@@ -3106,6 +3161,30 @@ object Attrs {
    */
   object paddingInlineStart extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = Attr.alias("padding-inline-start")(_(padding))
+  }
+
+  /**
+   * The place-self CSS property is a shorthand property sets both the align-self and justify-self properties. The first value is the align-self property value, the second the justify-self one. If the second value is not present, the first value is also used for it.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/palce-self">MDN</a>
+   */
+  object placeSelf extends TypedAttrBase {
+    override val attr = Attr.alias("place-self")(_(alignSelf, justifySelf))
+    def autoCenter         = av("auto center")
+    def normalStart        = av("normal start")
+    def centerNormal       = av("center normal")
+    def startAuto          = av("start auto")
+    def endNormal          = av("end normal")
+    def selfStartAuto      = av("self-start auto")
+    def selfEndNormal      = av("self-end normal")
+    def flexStartAuto      = av("flex-start auto")
+    def flexEndNormal      = av("flex-end normal")
+    def leftAuto           = av("left auto")
+    def rightNormal        = av("right normal")
+    def baselineNormal     = av("baseline normal")
+    def firstBaselineAuto  = av("first baseline auto")
+    def lastBaselineNormal = av("last baseline normal")
+    def stretchAuto        = av("stretch auto")
   }
 
   /**

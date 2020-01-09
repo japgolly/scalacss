@@ -1,17 +1,16 @@
 package scalacss.internal.mutable
 
+import japgolly.microlibs.testutil.TestUtil._
+import scala.collection.immutable.SortedMap
+import scalacss.internal._
 import utest._
 
-import scalacss.internal._
-import scalacss.test.TestUtil._
-import Attrs._
-import Register._
-import scala.collection.immutable.ListMap
-
 object RegisterTest extends TestSuite {
+  import Attrs._
+  import Register._
 
   def styleS(av: AV, avs: AV*) =
-    StyleS.data(ListMap(Cond.empty -> AVs(av, avs: _*)))
+    StyleS.data(SortedMap(Cond.empty -> AVs(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))
@@ -35,11 +34,11 @@ object RegisterTest extends TestSuite {
   def stylesToCssMap(s: Vector[StyleA]) =
     Css.styles(s).map(e => (e.sel, e.content)).toMap
 
-  override val tests = TestSuite {
+  override def tests = Tests {
     val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.noisy)
     implicit def cnh = ClassNameHint("blah")
 
-    'registerS {
+    "registerS" - {
       val a1 = reg registerS ss1
       val a2 = reg registerS ss2
       val a3 = reg registerS ss3
@@ -53,7 +52,7 @@ object RegisterTest extends TestSuite {
       assertEq(css.size, 4)
     }
 
-    'registerF {
+    "registerF" - {
       def test[I](f: I => StyleA, d: List[I]): Unit = {
         d.foreach { i =>
           assert(f(i) eq f(i))

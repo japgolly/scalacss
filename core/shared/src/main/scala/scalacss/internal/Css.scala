@@ -1,12 +1,13 @@
 package scalacss.internal
 
+import scala.collection.compat._
 import scala.collection.immutable.ListMap
 
 object Css {
 
-  def apply(ss: TraversableOnce[StyleA],
-            kfs: TraversableOnce[Keyframes],
-            ff: TraversableOnce[FontFace[String]])
+  def apply(ss: IterableOnce[StyleA],
+            kfs: IterableOnce[Keyframes],
+            ff: IterableOnce[FontFace[String]])
            (implicit env: Env): Css = {
     val b = Vector.newBuilder[CssEntry]
     b ++= styles(ss)
@@ -15,14 +16,14 @@ object Css {
     b.result()
   }
 
-  def styles(ss: TraversableOnce[StyleA])(implicit env: Env): StyleStream =
-    ss.toIterator.flatMap(styleA).toVector
+  def styles(ss: IterableOnce[StyleA])(implicit env: Env): StyleStream =
+    ss.iterator.flatMap(styleA).toVector
 
-  def keyframes(kfs: TraversableOnce[Keyframes])(implicit env: Env): KeyframeStream =
-    kfs.toIterator.map(keyframes).toList
+  def keyframes(kfs: IterableOnce[Keyframes])(implicit env: Env): KeyframeStream =
+    kfs.iterator.map(keyframes).toList
 
-  def fontFaces(ff: TraversableOnce[FontFace[String]]): FontFaceStream =
-    ff.toIterator.map(fontFaces).toList
+  def fontFaces(ff: IterableOnce[FontFace[String]]): FontFaceStream =
+    ff.iterator.map(fontFaces).toList
 
   def className(cn: ClassName): CssSelector =
     "." + cn.value
@@ -58,7 +59,7 @@ object Css {
         }
 
     def exts: Iterator[CssEntry.Style] =
-      s.unsafeExts.toIterator.flatMap(unsafeExt(sel, _))
+      s.unsafeExts.iterator.flatMap(unsafeExt(sel, _))
 
     (main ++ exts).toVector
   }

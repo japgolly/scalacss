@@ -1,18 +1,18 @@
 package scalacss.full
 
-import utest._
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss._
 import scalacss.internal.Platform
-import scalacss.test.TestUtil._
+import utest._
 
 object DefaultsTest extends TestSuite {
 
-  override val tests = TestSuite {
-    'platform - assert(Platform.DevMode)
-    'defaults - assert(devOrProdDefaults eq DevDefaults)
+  override def tests = Tests {
+    "platform" - assert(Platform.DevMode)
+    "defaults" - assert(devOrProdDefaults eq DevDefaults)
 
-    'dev     - Dev .test()
-    'prod    - Prod.test()
+    "dev"     - Dev .test()
+    "prod"    - Prod.test()
   }
 
   class SharedStyles(implicit reg: StyleSheet.Register) extends StyleSheet.Inline {
@@ -45,7 +45,7 @@ object DefaultsTest extends TestSuite {
     def norm(css: String) = css.trim
 
     def test(): Unit =
-      assertEq(norm(css), norm(
+      assertMultiline(norm(css), norm(
         """
           |.DefaultsTest_Dev_SS-style1 {
           |  margin: 12px;
@@ -55,8 +55,8 @@ object DefaultsTest extends TestSuite {
           |.DefaultsTest_Dev_SS-style2 {
           |  cursor: pointer;
           |  cursor: -moz-zoom-in;
-          |  cursor: -webkit-zoom-in;
           |  cursor: -o-zoom-in;
+          |  cursor: -webkit-zoom-in;
           |  cursor: zoom-in;
           |}
           |
@@ -99,7 +99,7 @@ object DefaultsTest extends TestSuite {
     def test(): Unit =
       assertEq(css1 +  css2,
         "._a0{margin:12px;margin-left:6px}" +
-        "._a1{cursor:pointer;cursor:-moz-zoom-in;cursor:-webkit-zoom-in;cursor:-o-zoom-in;cursor:zoom-in}" +
+        "._a1{cursor:pointer;cursor:-moz-zoom-in;cursor:-o-zoom-in;cursor:-webkit-zoom-in;cursor:zoom-in}" +
         "._a2{background-color:#333}" +
         "._a3{background-color:#666}" +
         "._b0{width:inherit}"

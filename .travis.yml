@@ -2,16 +2,16 @@ language: scala
 sudo: false
 
 scala:
-  - 2.11.11
-  - 2.12.8
+  - 2.13.1
+  - 2.12.10
 
 jdk:
-- oraclejdk8
+  - openjdk8
 
 install:
   - . $HOME/.nvm/nvm.sh
-  - nvm install 7
-  - nvm use 7
+  - nvm install 12
+  - nvm use 12
   - export NODE_PATH="$(npm config get prefix)"/lib/node_modules
   - npm install
   - npm install jsdom source-map-support
@@ -22,13 +22,13 @@ script:
 - sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in ThisBuild := FullOptStage' JS/test
 - sbt ++$TRAVIS_SCALA_VERSION cmpJsSize jsSizes
 
-# Taken from https://github.com/typelevel/cats/blob/master/.travis.yml
 before_cache:
-  - find $HOME/.sbt -name "*.lock" -type f -delete
+  - rm -f $HOME/.ivy2/.sbt.ivy.lock
   - find $HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
+  - find $HOME/.sbt -name "*.lock" -type f -delete
 cache:
   directories:
-  - $HOME/.sbt/0.13/dependency
-  - $HOME/.sbt/boot/scala*
-  - $HOME/.sbt/launchers
-  - $HOME/.ivy2/cache
+    - $HOME/.coursier
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+

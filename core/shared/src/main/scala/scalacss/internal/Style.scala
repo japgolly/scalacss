@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import scala.collection.immutable.ListMap
+import scala.collection.immutable.SortedMap
 import scala.runtime.AbstractFunction1
 
 /**
@@ -9,7 +9,7 @@ import scala.runtime.AbstractFunction1
  * ==Types==
  *
  *   - [[StyleS]]: Static.    `{s}`
- *   - [[StyleF]]: Function.  `{i ⇒ s}`
+ *   - [[StyleF]]: Function.  `{i => s}`
  *   - [[StyleA]]: Applicable. `class="…"`
  */
 sealed trait Style
@@ -49,7 +49,7 @@ object Style {
  * @param addClassNames Additional class names to be appended to the resulting [[StyleA]].
  *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
-final case class StyleS(data         : ListMap[Cond, AVs],
+final case class StyleS(data         : SortedMap[Cond, AVs],
                         unsafeExts   : Style.UnsafeExts,
                         className    : Option[ClassName],
                         addClassNames: Vector[ClassName],
@@ -77,15 +77,15 @@ final case class StyleS(data         : ListMap[Cond, AVs],
 
 object StyleS {
   /** Helper method for common case where only data is specified. */
-  def data(d: ListMap[Cond, AVs]): StyleS =
+  def data(d: SortedMap[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
 
   /** Helper method for common case where only one condition is specified. */
   def data1(c: Cond, avs: AVs): StyleS =
-    data(ListMap(c -> avs))
+    data(empty.data.updated(c, avs))
 
   val empty: StyleS =
-    data(ListMap.empty)
+    data(SortedMap.empty)
 }
 
 /**

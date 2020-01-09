@@ -34,6 +34,7 @@ object CanIUse {
     case object o      extends Prefix("o")
     case object webkit extends Prefix("webkit")
     implicit def univEq: UnivEq[Prefix] = UnivEq.derive
+    implicit val ordering: Ordering[Prefix] = Ordering.by(_.name)
     val values = NonEmptyVector[Prefix](moz, ms, o, webkit)
   }
 

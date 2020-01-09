@@ -17,16 +17,16 @@ object DefaultsTest extends TestSuite {
     throw e
   }
 
-  override def tests = TestSuite {
+  override def tests = Tests {
 
-    'elision {
+    "elision" - {
       var on = false
       @elidable(elidable.ASSERTION)
       def test(): Unit = on = true
       assert(!on, "ELISION")
     }
 
-    'platform - assert(!Platform.DevMode, "PLATFORM")
-    'defaults - assert(devOrProdDefaults eq ProdDefaults, "DEFAULTS")
+    "platform" - assert(!Platform.DevMode, "PLATFORM")
+    "defaults" - assert(devOrProdDefaults eq ProdDefaults, "DEFAULTS")
   }
 }
