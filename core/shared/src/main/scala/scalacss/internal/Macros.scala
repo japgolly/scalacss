@@ -72,12 +72,14 @@ object Macros {
     private def pct = s"$dbl%"
 
     private val ws   = "\\s+".r
-    private val hex  = Pattern compile """^#(?:[0-9a-fA-F]{3}){1,2}$"""
     private val rgbI = cssFnRegex("rgb",  int, int, int)
     private val rgbP = cssFnRegex("rgb",  pct, pct, pct)
     private val rgba = cssFnRegex("rgba", int, int, int, dbl)
     private val hsl  = cssFnRegex("hsl",  int, pct, pct)
     private val hsla = cssFnRegex("hsla", int, pct, pct, dbl)
+
+    private def isHex: Char => Boolean =
+      c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')
 
     def impl(c: Context)(args: c.Expr[Any]*): c.Expr[Color] = {
       import c.universe._
@@ -99,10 +101,11 @@ object Macros {
 
           def validateHex: Boolean =
             (text.charAt(0) == '#') && {
-              if (hex.matcher(text).matches)
-                pass
-              else
-                fail("Hex notation must be either #RRGGBB and #RGB.")
+              val v = text.drop(1)
+              v.length match {
+                case (3 | 6 | 4 | 8) if v.forall(isHex) => pass
+                case _                                  => fail("Hex notation must be #RGB, #RRGGBB, #RGBA, or #RRGGBBAA.")
+              }
             }
 
           type V = String => Unit
