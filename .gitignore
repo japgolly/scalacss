@@ -1,0 +1,15 @@
+.*.swn
+.*.swo
+.*.swp
+.~*
+.bloop
+.idea
+.idea_modules
+.metals
+*.bak
+*.log
+*.pid
+*.tmp
+~*
+project/metals.sbt
+target
