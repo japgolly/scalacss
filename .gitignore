@@ -16,3 +16,4 @@ node_modules
 doc/_book
 
 project/sjsincoptbench.sbt
+project/metals.sbt
