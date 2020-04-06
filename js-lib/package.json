@@ -1,0 +1,13 @@
+{
+  "name": "scalacss",
+  "version": "2",
+  "private": true,
+  "dependencies": {
+    "autoprefixer": "9.7.5",
+    "postcss": "7.0.27"
+  },
+  "devDependencies": {
+    "webpack": "4.42.1",
+    "webpack-cli": "3.3.11"
+  }
+}

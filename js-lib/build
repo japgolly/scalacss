@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+cd "$(dirname "$0")"
+[ $# -ne 0 ] && echo "Usage: $0" && exit 1
+
+target=output
+webpack="node_modules/.bin/webpack --color --display-reasons --display-modules --progress --config"
+
+rm -rf $target
+mkdir $target
+$webpack webpack.js || exit $?
+dos2unix $target/*.js
+echo
+ls -l $target
