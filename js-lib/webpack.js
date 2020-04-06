@@ -22,7 +22,6 @@ const config = {
   resolveLoader: { modules: [NodeModules] },
 
   mode: 'production',
-  target: 'node',
 
   performance: {
     hints: false
