@@ -5,7 +5,7 @@ const
   WebpackMerge = require('webpack-merge'),
   NodeModules  = Path.resolve(__dirname, 'node_modules');
 
-const prod = false;
+const prod = true;
 
 const mainConfig = {
 
