@@ -1,14 +1,22 @@
 package scalacss.core.macros
 
-import japgolly.scalagraal._
 import japgolly.scalagraal.GraalJs._
+import japgolly.scalagraal._
 import java.util.function.Consumer
 import org.graalvm.polyglot.Value
-import scala.concurrent.{Await, Future, Promise}
 import scala.concurrent.duration._
+import scala.concurrent.{Await, Future, Promise}
 import scala.util.Try
 
 object Wip {
+
+//  private val _ctx = Context.newBuilder("js")
+//    .allowAllAccess(true)
+//    .allowExperimentalOptions(true)
+//    .option("js.commonjs-require", "true")
+//    .option("js.commonjs-require-cwd", "/home/golly/projects/public/scalacss/js-lib/node_modules")
+//    .option("js.commonjs-core-modules-replacements", "./rules/at-rule-no-unknown:stylelint/lib/rules/at-rule-no-unknown")
+//    .build()
 
   private val ctx = ContextSync.fixedContext()
 
@@ -24,10 +32,19 @@ object Wip {
   evalOrThrow(initExpr)
 
 
+  implicit class ValueExt(private val self: Value) extends AnyVal {
+    def arrayElements(): Iterator[Value] =
+      (0L until self.getArraySize).iterator.map(self.getArrayElement(_))
+  }
+
+
   implicit def exprParamValueFn: ExprParam.ValueFn[Value] = ExprParam.RawValueFn // TODO wtf! this should be in SG
   implicit def exprParamJ[A]: ExprParam.ValueFn[Consumer[A]] = ExprParam.RawValueFn // TODO wtf! this should be in SG
 
   final class AsyncFunctionFailed(val failure: Value) extends RuntimeException(s"AsyncFunctionFailed: $failure")
+
+  def exprAsync(expr: Expr[Value]): Expr[Future[Value]] =
+    exprAsync(expr, identity)
 
   def exprAsync[A](expr: Expr[Value], f: Value => A): Expr[Future[A]] =
     for {
@@ -40,13 +57,30 @@ object Wip {
 
   private val timeout = 3.seconds
 
-  private val mainExpr = Expr.compileFnCall1[String]("main")(e => exprAsync(e, _.asString))
+  private val mainExpr = Expr.compileFnCall1[String]("main")(e => exprAsync(e))
 
   // TODO don't forget thread-safety
 
-  def main(css: String): String = {
-    val future = evalOrThrow(mainExpr(css))
+  def main(cssIn: String): String = {
+    val future = evalOrThrow(mainExpr(cssIn))
     val result = Await.result(future, timeout)
-    result
+    val cssOut = result.getMember("css").asString()
+    val warnings = result.getMember("warnings").arrayElements().map(_.asString()).toVector
+
+    for (w <- warnings)
+      println(s"${Console.YELLOW}WARNING: $w${Console.RESET}")
+
+    cssOut
+  }
+
+  object Implicits {
+
+    implicit class Blah(val sc: StringContext) extends AnyVal {
+      def css(args: Any*) = {
+        val str = sc.s(args: _*).stripMargin('|').trim
+        main(str)
+      }
+    }
+
   }
 }

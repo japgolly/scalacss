@@ -1,0 +1,25 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+diff="diff -u5 --ignore-all-space --text"
+oldSuffix="orig.js"
+newSuffix="js"
+npm=../node_modules
+
+for row in $(<files.csv); do
+  name="${row%,*}"
+  file="${row#*,}"
+  patch="$name.patch"
+  old="$npm/$file.$oldSuffix"
+  new="$npm/$file.$newSuffix"
+  echo "$patch <-- $file.{$oldSuffix => $newSuffix}"
+
+  $diff "$old" "$new" \
+    | sed -e '1,2s/\t.*//' \
+    > "$patch" \
+    || [ $? -eq 1 ]
+
+done
+
+echo "Done."

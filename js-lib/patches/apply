@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+cd "$(dirname "$0")"
+
+oldSuffix="orig.js"
+newSuffix="js"
+npm=../node_modules
+
+for row in $(<files.csv); do
+  name="${row%,*}"
+  file="${row#*,}"
+  patch="$name.patch"
+  old="$npm/$file.$oldSuffix"
+  new="$npm/$file.$newSuffix"
+  #echo "$patch --> $file.$newSuffix"
+
+  [ -e "$old" ] || cp "$new" "$old"
+
+  cp "$old" "$new"
+  patch -u --forward --ignore-whitespace "$new" "$patch"
+
+done
+
+echo "Done."

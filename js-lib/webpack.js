@@ -2,9 +2,12 @@ const
   Path         = require('path'),
   TerserPlugin = require('terser-webpack-plugin'),
   Webpack      = require('webpack'),
+  WebpackMerge = require('webpack-merge'),
   NodeModules  = Path.resolve(__dirname, 'node_modules');
 
-const config = {
+const prod = false;
+
+const mainConfig = {
 
   entry: {
     'scalacss': [
@@ -20,6 +23,32 @@ const config = {
 
   resolve: { modules: [NodeModules] },
   resolveLoader: { modules: [NodeModules] },
+
+  target: 'web',
+  node: {
+    fs: 'empty',
+    path: true,
+  },
+
+  resolve: {
+    alias: {
+      cosmiconfig: Path.resolve(__dirname, 'src/hacks/cosmiconfig'),
+    },
+  },
+
+
+  externals: {
+    module: "module",
+  },
+
+  bail: true,
+};
+
+const devConfig = {
+  mode: 'development',
+};
+
+const prodConfig = {
 
   mode: 'production',
 
@@ -45,7 +74,8 @@ const config = {
     }),
   ],
 
-  bail: true,
 };
+
+const config = WebpackMerge(mainConfig, prod ? prodConfig : devConfig)
 
 module.exports = config;

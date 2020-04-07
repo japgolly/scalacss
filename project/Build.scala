@@ -102,7 +102,8 @@ object ScalaCssBuild {
     .settings(
       libraryDependencies ++= Seq(
         "com.github.japgolly.scala-graal" %% "core"   % Ver.ScalaGraal,
-        "com.github.japgolly.univeq"      %% "univeq" % Ver.UnivEq))
+        "com.github.japgolly.univeq"      %% "univeq" % Ver.UnivEq,
+        "org.scala-lang.modules"          %% "scala-collection-compat" % Ver.ScalaCollCompat))
 
   lazy val coreJVM = core.jvm
   lazy val coreJS  = core.js

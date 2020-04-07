@@ -1,0 +1,22 @@
+--- ../node_modules/stylelint/lib/requireRule.orig.js
++++ ../node_modules/stylelint/lib/requireRule.js
+@@ -1,16 +1,17 @@
+ 'use strict';
+ 
+-const importLazy = require('import-lazy')(require);
++const importLazy = require('import-lazy');
++
+ const rules = require('./rules');
+ 
+ /**
+  * @param {string} ruleName
+  * @returns {false|any}
+  */
+ module.exports = function (ruleName) {
+ 	if (rules.includes(ruleName)) {
+-		return importLazy(`./rules/${ruleName}`);
++		return importLazy(() => require(`stylelint/lib/rules/${ruleName}`))();
+ 	}
+ 
+ 	return false;
+ };
