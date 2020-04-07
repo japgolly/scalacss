@@ -25,12 +25,12 @@ object ScalaCssBuild {
     val ReactJs         = "15.5.4"
     val Scala212        = "2.12.10"
     val Scala213        = "2.13.1"
-    val ScalaCollCompat = "2.1.3"
+    val ScalaCollCompat = "2.1.4"
     val ScalaJsDom      = "0.9.8"
-    val ScalaJsReact    = "1.6.0"
-    val Scalatags       = "0.8.3"
+    val ScalaJsReact    = "1.5.0"
+    val Scalatags       = "0.8.6"
     val Scalaz          = "7.2.30"
-    val UnivEq          = "1.1.0"
+    val UnivEq          = "1.2.0"
   }
 
   def scalacFlags =
