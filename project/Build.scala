@@ -2,10 +2,12 @@ import sbt._
 import sbt.Keys._
 import com.typesafe.sbt.pgp.PgpKeys
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
 import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{crossProject => _, CrossType => _, _}
-import sbtcrossproject.CrossPlugin.autoImport._
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, _}
 import sbtrelease.ReleasePlugin.autoImport._
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import Lib._
@@ -18,19 +20,19 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    val Microlibs       = "2.0"
-    val MTest           = "0.7.1"
-    val Nyaya           = "0.9.0"
+    val Microlibs       = "2.3"
+    val MTest           = "0.7.4"
+    val Nyaya           = "0.9.2"
   //val ReactJs         = "16.7.0"
     val ReactJs         = "15.5.4"
     val Scala212        = "2.12.10"
     val Scala213        = "2.13.1"
-    val ScalaCollCompat = "2.1.4"
+    val ScalaCollCompat = "2.1.6"
     val ScalaJsDom      = "0.9.8"
-    val ScalaJsReact    = "1.5.0"
-    val Scalatags       = "0.8.6"
+    val ScalaJsReact    = "1.6.1"
+    val Scalatags       = "0.9.0"
     val Scalaz          = "7.2.30"
-    val UnivEq          = "1.2.0"
+    val UnivEq          = "1.2.1"
   }
 
   def scalacFlags =
@@ -148,7 +150,7 @@ object ScalaCssBuild {
 
   lazy val extReact = project
     .in(file("ext-react"))
-    .enablePlugins(ScalaJSPlugin)
+    .enablePlugins(ScalaJSPlugin, JSDependenciesPlugin)
     .configure(commonSettings.js, publicationSettings.js, utestSettings.js)
     .dependsOn(coreJS)
     .settings(
