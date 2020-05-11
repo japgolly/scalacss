@@ -2,10 +2,12 @@ import sbt._
 import sbt.Keys._
 import com.typesafe.sbt.pgp.PgpKeys
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
 import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport.{crossProject => _, CrossType => _, _}
-import sbtcrossproject.CrossPlugin.autoImport._
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, _}
 import sbtrelease.ReleasePlugin.autoImport._
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import Lib._
@@ -19,7 +21,7 @@ object ScalaCssBuild {
 
   object Ver {
     val Microlibs       = "2.3"
-    val MTest           = "0.7.1"
+    val MTest           = "0.7.4"
     val Nyaya           = "0.9.2"
     val ReactJs         = "16.13.1"
     val Scala212        = "2.12.11"
@@ -147,7 +149,7 @@ object ScalaCssBuild {
 
   lazy val extReact = project
     .in(file("ext-react"))
-    .enablePlugins(ScalaJSPlugin)
+    .enablePlugins(ScalaJSPlugin, JSDependenciesPlugin)
     .configure(commonSettings.js, publicationSettings.js, utestSettings.js)
     .dependsOn(coreJS)
     .settings(

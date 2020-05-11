@@ -1,5 +1,4 @@
 import org.scalajs.dom.{console, document}
-import scala.scalajs.js.JSApp
 import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
 object Demo {

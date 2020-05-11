@@ -1,12 +1,28 @@
 language: scala
 sudo: false
 
-scala:
-  - 2.13.2
-  - 2.12.11
+jobs:
+  include:
 
-jdk:
-  - openjdk8
+    - name: 'Scala 2.12 / Scala.JS 0.6 / Java 8'
+      scala: 2.12.11
+      jdk: openjdk8
+      env: SCALAJS_VERSION=0.6.32
+
+    - name: 'Scala 2.13 / Scala.JS 0.6 / Java 8'
+      scala: 2.13.2
+      jdk: openjdk8
+      env: SCALAJS_VERSION=0.6.32
+
+    - name: 'Scala 2.12 / Scala.JS 1.0 / Java 11'
+      scala: 2.12.11
+      jdk: openjdk11
+      env: SCALAJS_VERSION=
+
+    - name: 'Scala 2.13 / Scala.JS 1.0 / Java 11'
+      scala: 2.13.2
+      jdk: openjdk11
+      env: SCALAJS_VERSION=
 
 install:
   - . $HOME/.nvm/nvm.sh
@@ -17,10 +33,10 @@ install:
   - npm install jsdom source-map-support
 
 script:
-- sbt ++$TRAVIS_SCALA_VERSION test:compile JS/test:fastOptJS JS/test:fullOptJS
-- sbt ++$TRAVIS_SCALA_VERSION test
-- sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in ThisBuild := FullOptStage' JS/test
-- sbt ++$TRAVIS_SCALA_VERSION cmpJsSize jsSizes
+  - sbt ++$TRAVIS_SCALA_VERSION test:compile JS/test:fastOptJS JS/test:fullOptJS
+  - sbt ++$TRAVIS_SCALA_VERSION test
+  - sbt ++$TRAVIS_SCALA_VERSION 'set scalaJSStage in ThisBuild := FullOptStage' JS/test
+  - sbt ++$TRAVIS_SCALA_VERSION cmpJsSize jsSizes
 
 before_cache:
   - rm -f $HOME/.ivy2/.sbt.ivy.lock

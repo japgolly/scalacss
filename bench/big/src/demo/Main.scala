@@ -1,6 +1,5 @@
 package demo
 
-import scala.scalajs.js.JSApp
 import CssSettings._
 
 object Main {

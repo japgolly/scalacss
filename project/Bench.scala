@@ -2,7 +2,6 @@ import sbt._
 import Keys._
 import org.scalajs.sbtplugin.{ScalaJSPlugin, ScalaJSPluginInternal, Stage}
 import ScalaJSPlugin.autoImport._
-import ScalaJSPluginInternal.stageKeys
 import Lib._
 import ScalaCssBuild._
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
@@ -98,8 +97,8 @@ object BenchBuild {
     println()
     println(header)
     println("=" * header.length)
-    report("bench-big (fast)", (stageKeys(Stage.FastOpt) in Compile in benchBig).value)
-    report("bench-big (full)", (stageKeys(Stage.FullOpt) in Compile in benchBig).value)
+    report("bench-big (fast)", (fastOptJS in Compile in benchBig).value)
+    report("bench-big (full)", (fullOptJS in Compile in benchBig).value)
     println()
   }
 
