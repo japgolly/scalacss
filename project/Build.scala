@@ -18,13 +18,13 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    val Microlibs       = "2.0"
+    val Microlibs       = "2.3"
     val MTest           = "0.7.1"
     val Nyaya           = "0.9.2"
     val ReactJs         = "16.13.1"
-    val Scala212        = "2.12.10"
-    val Scala213        = "2.13.1"
-    val ScalaCollCompat = "2.1.4"
+    val Scala212        = "2.12.11"
+    val Scala213        = "2.13.2"
+    val ScalaCollCompat = "2.1.6"
     val ScalaJsDom      = "1.0.0"
     val ScalaJsReact    = "1.7.0"
     val Scalatags       = "0.9.1"

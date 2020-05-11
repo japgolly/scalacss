@@ -2,16 +2,16 @@ language: scala
 sudo: false
 
 scala:
-  - 2.13.1
-  - 2.12.10
+  - 2.13.2
+  - 2.12.11
 
 jdk:
   - openjdk8
 
 install:
   - . $HOME/.nvm/nvm.sh
-  - nvm install 12
-  - nvm use 12
+  - nvm install 14
+  - nvm use 14
   - export NODE_PATH="$(npm config get prefix)"/lib/node_modules
   - npm install
   - npm install jsdom source-map-support
