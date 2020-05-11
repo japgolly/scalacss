@@ -9,6 +9,10 @@ package scalacss.internal
  *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
 final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], style: StyleS) {
+
+  def selector: String =
+    "." + className.value
+
   def classNameIterator: Iterator[ClassName] =
     Iterator.single(className) ++ addClassNames
 

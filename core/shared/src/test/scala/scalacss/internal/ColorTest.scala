@@ -13,8 +13,10 @@ object ColorTest extends TestSuite {
       def test(c: Color, expect: String) =
         assertEq(c.value, expect)
 
-      "hex3" - test(c"#f09"   , "#f09")
-      "hex6" - test(c"#abc105", "#abc105")
+      "hex3" - test(c"#f09"     , "#f09")
+      "hex4" - test(c"#f0a9"    , "#f0a9")
+      "hex6" - test(c"#abc105"  , "#abc105")
+      "hex8" - test(c"#abc105f3", "#abc105f3")
 
       "rgbI" - test(c"rgb(0,128,255)",    "rgb(0,128,255)")
       "rgbP" - test(c"rgb(0%,50%,100%)",  "rgb(0%,50%,100%)")
@@ -39,13 +41,13 @@ object ColorTest extends TestSuite {
       }
 
       "hex" - {
-        def test(e: CompileError): Unit = assertErrorContains(e, "Hex notation must be either")
+        def test(e: CompileError): Unit = assertErrorContains(e, "Hex notation must be")
         "0" - test(compileError(""" c"#" """))
         "1" - test(compileError(""" c"#f" """))
         "2" - test(compileError(""" c"#00" """))
-        "4" - test(compileError(""" c"#1234" """))
         "5" - test(compileError(""" c"#12345" """))
         "7" - test(compileError(""" c"#1234567" """))
+        "9" - test(compileError(""" c"#123456789" """))
         "g" - test(compileError(""" c"#00g" """))
         "G" - test(compileError(""" c"#G00" """))
       }
