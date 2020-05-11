@@ -21,13 +21,12 @@ object ScalaCssBuild {
     val Microlibs       = "2.0"
     val MTest           = "0.7.1"
     val Nyaya           = "0.9.2"
-  //val ReactJs         = "16.7.0"
-    val ReactJs         = "15.5.4"
+    val ReactJs         = "16.13.1"
     val Scala212        = "2.12.10"
     val Scala213        = "2.13.1"
     val ScalaCollCompat = "2.1.4"
     val ScalaJsDom      = "1.0.0"
-    val ScalaJsReact    = "1.5.0"
+    val ScalaJsReact    = "1.7.0"
     val Scalatags       = "0.9.1"
     val Scalaz          = "7.2.30"
     val UnivEq          = "1.2.1"
@@ -158,18 +157,21 @@ object ScalaCssBuild {
         "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % Test,
         "org.scalaz"                        %%% "scalaz-core" % Ver.Scalaz       % Test),
       jsDependencies ++= Seq(
-        "org.webjars.bower" % "react" % Ver.ReactJs % Test
-          /        "react-with-addons.js"
-          minified "react-with-addons.min.js"
+
+        "org.webjars.npm" % "react" % Ver.ReactJs % Test
+          /        "umd/react.development.js"
+          minified "umd/react.production.min.js"
           commonJSName "React",
-        "org.webjars.bower" % "react" % Ver.ReactJs % Test
-          /         "react-dom.js"
-          minified  "react-dom.min.js"
-          dependsOn "react-with-addons.js"
+
+        "org.webjars.npm" % "react-dom" % Ver.ReactJs % Test
+          /         "umd/react-dom.development.js"
+          minified  "umd/react-dom.production.min.js"
+          dependsOn "umd/react.development.js"
           commonJSName "ReactDOM",
-        "org.webjars.bower" % "react" % Ver.ReactJs % Test
-          /         "react-dom-server.js"
-          minified  "react-dom-server.min.js"
-          dependsOn "react-dom.js"
+
+        "org.webjars.npm" % "react-dom" % Ver.ReactJs % Test
+          /         "umd/react-dom-server.browser.development.js"
+          minified  "umd/react-dom-server.browser.production.min.js"
+          dependsOn "umd/react-dom.development.js"
           commonJSName "ReactDOMServer"))
 }

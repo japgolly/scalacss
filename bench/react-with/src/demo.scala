@@ -24,7 +24,7 @@ object Demo {
     console.log("hello")
   }
 
-  val TodoList = ScalaComponent.builder[List[String]]("TodoList")
+  val TodoList = ScalaComponent.builder[List[String]]
     .render_P(props => {
       def createItem(itemText: String) = <.li(itemText)
       <.ul(props.map(createItem): _*)
@@ -45,7 +45,7 @@ object Demo {
     ST.mod(s => State(s.items :+ s.text, "")).liftCB
   )
 
-  val TodoApp = ScalaComponent.builder[Unit]("TodoApp")
+  val TodoApp = ScalaComponent.builder[Unit]
     .initialState(State(Nil, ""))
     .renderS(($,s) =>
       <.div(
