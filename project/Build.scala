@@ -30,7 +30,7 @@ object ScalaCssBuild {
     val ScalaJsDom      = "1.0.0"
     val ScalaJsReact    = "1.7.0"
     val Scalatags       = "0.9.1"
-    val Scalaz          = "7.2.30"
+    val Scalaz          = "7.3.1"
     val UnivEq          = "1.2.1"
   }
 
