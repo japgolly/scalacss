@@ -18,6 +18,6 @@ addSbtPlugin("org.scala-js"       % "sbt-scalajs"              % scalaJSVersion)
     Nil
   else
     Seq(
-      addSbtPlugin("org.scala-js" % "sbt-jsdependencies" % "1.0.0")
+      addSbtPlugin("org.scala-js" % "sbt-jsdependencies" % "1.0.1")
     )
 }
