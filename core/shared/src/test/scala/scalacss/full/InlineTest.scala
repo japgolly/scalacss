@@ -374,7 +374,7 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media (max-width:100px) {
+        |@media (max-width:0100px) {
         |  .MyInline-medianess {
         |    color: brown;
         |  }
@@ -448,19 +448,19 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media (min-width:576px) {
+        |@media (min-width:0576px) {
         |  .MyInline2-mediaOrdering {
         |    margin: 2px;
         |  }
         |}
         |
-        |@media (min-width:768px) {
+        |@media (min-width:0768px) {
         |  .MyInline2-mediaOrdering {
         |    margin: 3px;
         |  }
         |}
         |
-        |@media (min-width:992px) {
+        |@media (min-width:0992px) {
         |  .MyInline2-mediaOrdering {
         |    margin: 4px;
         |  }
@@ -697,7 +697,7 @@ object InlineTest extends utest.TestSuite {
         |  margin: 15px;
         |}
         |
-        |@media (max-width:150px) {
+        |@media (max-width:0150px) {
         |  .manual:hover {
         |    margin: 0;
         |  }
@@ -706,7 +706,7 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media (max-width:100px) {
+        |@media (max-width:0100px) {
         |  .manual:hover .child {
         |    margin: 2px;
         |  }

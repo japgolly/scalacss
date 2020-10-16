@@ -10,6 +10,47 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
     Css.selector("", this)
 
+  // def toStringForSorting = {
+  //   import Media._
+  //   def valueExpr2String(value: ValueExpr[Length[Any]]): String = {
+  //     def length2String(l: Length[Any]): String = {
+  //       l.u.value + {l.n match {
+  //         case i:Int => "%06d".format(i)
+  //         case d:Double => "%013.6f".format(d)
+  //         case stg => stg
+  //       }}
+  //     }
+  //     value match {
+  //       case Eql(l) => length2String(l)
+  //       case Min(l) => length2String(l)
+  //       case Max(l) => length2String(l)
+  //     }
+  //   }
+  //   val aux = this.mediaQueries.map{
+  //     case Media.Query(Right(headRight), aTail: Vector[Media.Feature]) =>
+  //       headRight match {
+  //         // case Color(bits) => 
+  //         // case ColorIndex(index) =>
+  //         // case AspectRatio(ratio) =>
+  //         case Media.Height(length) => "Height(" + valueExpr2String(length) + ")"
+  //         case Media.Width(length) => "Width(" + valueExpr2String(length) + ")"
+  //         // case DeviceAspectRatio(ratio) =>
+  //         // case DeviceHeight(length) =>
+  //         // case DeviceWidth(length) =>
+  //         // case Monochrome(bitsPerPx) =>
+  //         // case scalacss.internal.Media.Resolution(res) =>
+  //         // case Orientation(value) =>
+  //         // case Scan(value) =>
+  //         // case Grid(value) =>
+  //         case e => e.toString
+  //       }
+  //       s"Query(Right($headRight), $aTail)"
+  //     case any => any.toString
+  //   }
+
+  //   aux + Css.selector("", this)
+  // }
+
   private[Cond] val sortKey: String = {
     var s = "" // remember, this is JS
     for (p <- pseudo) s += p.cssValue
@@ -53,46 +94,6 @@ object Cond {
   val empty: Cond =
     Cond(None, Vector.empty)
 
-  implicit val ordering: Ordering[Cond] = {
-    import Media._
-
-    implicit val orderingValueExpr:Ordering[ValueExpr[Length[Any]]] = 
-    Ordering[(Int, (String, Double, String))].on[ValueExpr[Length[Any]]]{ value => 
-      def lengthAux(length: Length[Any]) = length match {
-        case Length(n: Double, u: LengthUnit) => (u.value, n, n.toString)
-        case Length(n: Int, u: LengthUnit) => (u.value, n.toDouble, n.toString)
-        case Length(n, u: LengthUnit) => (u.value, Double.NegativeInfinity, n.toString)
-      }
-      value match {
-        case Eql(l) => (1, lengthAux(l))
-        case Min(l) => (2, lengthAux(l))
-        case Max(l) => (3, lengthAux(l))
-      }
-    }
-
-    implicit val orderingQuery:Ordering[Query] = new Ordering[Query] {
-      override def compare(a:Query, b:Query): Int = (a, b) match {
-        case (Query(Right(aHeadRight), aTail: Vector[Feature]), Query(Right(bHeadRight), bTail: Vector[Feature])) =>
-          val compareHeads = (aHeadRight, bHeadRight) match {
-            case (aFeature: Width[Any @unchecked], bFeature: Width[Any @unchecked]) =>
-              orderingValueExpr.compare(aFeature.length, bFeature.length)
-            case (aa, bb) =>
-              aa.toString compare bb.toString
-          }
-          if (compareHeads != 0) compareHeads else { aTail.toString compare aTail.toString }
-        case (aa, bb) => aa.toString compare bb.toString
-      }
-    }
-
-    implicit val orderingMediaVec:Ordering[Vector[Media.Query]] = new Ordering[Vector[Query]] {
-      override def compare(a:Vector[Query], b:Vector[Query]): Int = {
-        a.sorted.zip(b.sorted)
-        .find(e => orderingQuery.compare(e._1,e._2) != 0)
-        .map(e => orderingQuery.compare(e._1,e._2))
-        .getOrElse(a.size.compare(b.size))
-      }
-    }
-
-    Ordering[(Vector[Media.Query], String)].on(e => (e.mediaQueries, e.pseudo.toString))
-  }
+  implicit val ordering: Ordering[Cond] = 
+   Ordering.by(_.toString)
 }

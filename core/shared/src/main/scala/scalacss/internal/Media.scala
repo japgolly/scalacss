@@ -206,12 +206,26 @@ object Media {
   private def opt[T](ov: Option[T], name: String)(implicit tc: T => String): String =
     ov.fold(name)(name ~ `:` ~ _)
 
-  private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String =
-    e match {
-      case Eql(t) =>       name ~ `:` ~ t
-      case Min(t) => min ~ name ~ `:` ~ t
-      case Max(t) => max ~ name ~ `:` ~ t
+  // private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String = {
+  //   implicit def cssLength2(l: Length[_]): String = l.value2
+  //   e match {
+  //     case Eql(t) =>       name ~ `:` ~ t
+  //     case Min(t) => min ~ name ~ `:` ~ t
+  //     case Max(t) => max ~ name ~ `:` ~ t
+  //   }
+  // }
+
+  private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String = {
+    def t2String(t: T): String = t match {
+      case length: Length[_] => length.value0
+      case stg => stg
     }
+    e match {
+      case Eql(t) =>       name ~ `:` ~ t2String(t)
+      case Min(t) => min ~ name ~ `:` ~ t2String(t)
+      case Max(t) => max ~ name ~ `:` ~ t2String(t)
+    }
+  }
 
   private def cssValueExprO[T](o: Option[ValueExpr[T]], name: String)(implicit tc: T => String): String =
     o.fold(name)(cssValueExpr(_, name))

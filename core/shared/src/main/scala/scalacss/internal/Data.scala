@@ -127,6 +127,17 @@ final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: Length
     val s = n.toString
     if (s == "0") "0" else s + u.value
   }
+  def value0 = {
+    val s = n.toString
+    val aux: String = n match {
+      case i:Int => "%04d".format(i)
+      case d:Double => 
+        val aux = (d - d.toInt)
+        "%04d%s".format(d.toInt, if (aux == 0) "" else aux.toString.drop(1))
+      case stg => s
+    }
+    if (s == "0") "0" else (aux + u.value)
+  }
 
   def *(m: N)(implicit N: Numeric[N]): Length[N] =
     copy(n = N.times(this.n, m))
