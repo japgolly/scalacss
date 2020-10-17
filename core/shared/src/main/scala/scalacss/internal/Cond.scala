@@ -10,47 +10,6 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
     Css.selector("", this)
 
-  // def toStringForSorting = {
-  //   import Media._
-  //   def valueExpr2String(value: ValueExpr[Length[Any]]): String = {
-  //     def length2String(l: Length[Any]): String = {
-  //       l.u.value + {l.n match {
-  //         case i:Int => "%06d".format(i)
-  //         case d:Double => "%013.6f".format(d)
-  //         case stg => stg
-  //       }}
-  //     }
-  //     value match {
-  //       case Eql(l) => length2String(l)
-  //       case Min(l) => length2String(l)
-  //       case Max(l) => length2String(l)
-  //     }
-  //   }
-  //   val aux = this.mediaQueries.map{
-  //     case Media.Query(Right(headRight), aTail: Vector[Media.Feature]) =>
-  //       headRight match {
-  //         // case Color(bits) => 
-  //         // case ColorIndex(index) =>
-  //         // case AspectRatio(ratio) =>
-  //         case Media.Height(length) => "Height(" + valueExpr2String(length) + ")"
-  //         case Media.Width(length) => "Width(" + valueExpr2String(length) + ")"
-  //         // case DeviceAspectRatio(ratio) =>
-  //         // case DeviceHeight(length) =>
-  //         // case DeviceWidth(length) =>
-  //         // case Monochrome(bitsPerPx) =>
-  //         // case scalacss.internal.Media.Resolution(res) =>
-  //         // case Orientation(value) =>
-  //         // case Scan(value) =>
-  //         // case Grid(value) =>
-  //         case e => e.toString
-  //       }
-  //       s"Query(Right($headRight), $aTail)"
-  //     case any => any.toString
-  //   }
-
-  //   aux + Css.selector("", this)
-  // }
-
   private[Cond] val sortKey: String = {
     var s = "" // remember, this is JS
     for (p <- pseudo) s += p.cssValue
@@ -94,6 +53,6 @@ object Cond {
   val empty: Cond =
     Cond(None, Vector.empty)
 
-  implicit val ordering: Ordering[Cond] = 
-   Ordering.by(_.toString)
+  implicit val ordering: Ordering[Cond] =
+    Ordering.by(_.toString)
 }
