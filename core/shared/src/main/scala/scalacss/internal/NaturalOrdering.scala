@@ -13,6 +13,8 @@ package scalacss.internal
     - In compareRight()
       - reuse ca/cb vars between loops
       - avoid multiple, identical calls to Character.isDigit
+      - rather than accept substrings and count cr_i{a,b} from 0, use the full
+        strings and start counting cr_i{a,b} from i{a,b}
 
  -------------------------------------------------------------------------------
 
@@ -43,26 +45,22 @@ object NaturalOrdering extends Ordering[String] {
   override def compare(a: String, b: String): Int = {
 
     // Variables for compareRight
-    var cr_bias: Int    = 0
-    var cr_ia  : Int    = 0
-    var cr_ib  : Int    = 0
-    var cr_ca  : Char   = 0
-    var cr_cb  : Char   = 0
-    var cr_a   : String = null
-    var cr_b   : String = null
+    var cr_bias: Int  = 0
+    var cr_ia  : Int  = 0
+    var cr_ib  : Int  = 0
+    var cr_ca  : Char = 0
+    var cr_cb  : Char = 0
 
     @inline def compareRight(): Int = {
       cr_bias = 0
-      cr_ia   = 0
-      cr_ib   = 0
 
       // The longest run of digits wins. That aside, the greatest
       // value wins, but we can't know that it will until we've scanned
       // both numbers to know that they have the same magnitude, so we
       // remember it in BIAS.
       while (true) {
-        cr_ca = charAt(cr_a, cr_ia)
-        cr_cb = charAt(cr_b, cr_ib)
+        cr_ca = charAt(a, cr_ia)
+        cr_cb = charAt(b, cr_ib)
         if (!Character.isDigit(cr_ca)) {
           return if (Character.isDigit(cr_cb)) -1 else cr_bias
         } else if (!Character.isDigit(cr_cb))
@@ -122,8 +120,8 @@ object NaturalOrdering extends Ordering[String] {
 
       // process run of digits
       if (Character.isDigit(ca) && Character.isDigit(cb)) {
-        cr_a = a.substring(ia)
-        cr_b = b.substring(ib)
+        cr_ia = ia
+        cr_ib = ib
         result = compareRight()
         if (result != 0)
           return result
