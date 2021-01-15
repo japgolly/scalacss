@@ -5,7 +5,7 @@
         
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>0.3.x | ScalaCSS</title>
+        <title>0.7.x | ScalaCSS</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 2.1.0">
@@ -27,10 +27,10 @@
         
     
     
-    <link rel="next" href="../history/0.2.html" />
+    <link rel="next" href="../history/0.6.html" />
     
     
-    <link rel="prev" href="../history/0.4.html" />
+    <link rel="prev" href="../history/index.html" />
     
 
         
@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="7.5" data-basepath=".." data-revision="Fri Jan 15 2021 14:39:32 GMT+1100 (AEDT)">
+    <div class="book" data-level="7.1" data-basepath=".." data-revision="Fri Jan 15 2021 14:39:32 GMT+1100 (AEDT)">
     
 
 <div class="book-summary">
@@ -424,7 +424,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.7.html">
+        <li class="chapter active" data-level="7.1" data-path="history/0.7.html">
             
                 
                     <a href="../history/0.7.html">
@@ -484,7 +484,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="7.5" data-path="history/0.3.html">
+        <li class="chapter " data-level="7.5" data-path="history/0.3.html">
             
                 
                     <a href="../history/0.3.html">
@@ -624,117 +624,24 @@
                 
                     <section class="normal" id="section-">
                     
-                        <h1 id="0-3-2-commit-log-https-github-com-japgolly-scalacss-compare-v0-3-1-v0-3-2">0.3.2 (<a href="https://github.com/japgolly/scalacss/compare/v0.3.1...v0.3.2" target="_blank">commit log</a>)</h1>
+                        <h1 id="0-7-0-commit-log-https-github-com-japgolly-scalacss-compare-v0-6-1-v0-7-0">0.7.0 (<a href="https://github.com/japgolly/scalacss/compare/v0.6.1...v0.7.0" target="_blank">commit log</a>)</h1>
 <ul>
-<li>Upgrade Scala to 2.11.7.</li>
-<li>Upgrade Scala.JS to 0.6.5.</li>
-<li>Upgrade Nyaya to 0.6.1.</li>
-<li>Upgrade Scalaz to 7.2.0.</li>
-<li>Upgrade scalajs-react to 0.10.3.</li>
+<li><p>Bugfix for <a href="https://github.com/japgolly/scalacss/issues/228" target="_blank">#228: Media query is sorted wrong</a></p>
+</li>
+<li><p>Improve DSL for the <code>content</code> property and make it escape values itself.</p>
+</li>
+<li><p>Drop support for Scala.JS 0.6.x</p>
+</li>
+<li><p>Upgrade dependencies</p>
+<ul>
+<li>scala-collection-compat 2.3.2</li>
+<li>scala-js 1.3.1</li>
+<li>scala-js-dom 1.1.0</li>
+<li>scala-js-react 1.7.7</li>
+<li>Scalatags 0.9.2</li>
+<li>UnivEq 1.3.0</li>
 </ul>
-<h1 id="0-3-1-commit-log-https-github-com-japgolly-scalacss-compare-v0-3-0-v0-3-1">0.3.1 (<a href="https://github.com/japgolly/scalacss/compare/v0.3.0...v0.3.1" target="_blank">commit log</a>)</h1>
-<ul>
-<li>Upgrade Scala.JS to 0.6.4.</li>
-<li>Upgrade scalajs-react to 0.10.0</li>
-<li>Fix licence in build.</li>
-</ul>
-<h1 id="0-3-0-commit-log-https-github-com-japgolly-scalacss-compare-v0-2-0-v0-3-0">0.3.0 (<a href="https://github.com/japgolly/scalacss/compare/v0.2.0...v0.3.0" target="_blank">commit log</a>)</h1>
-<h5 id="breaking-changes">Breaking changes</h5>
-<ul>
-<li>Psuedo selector <code>.not(&lt;fn&gt;)</code> now uses the same syntax as creation.
-<br>Instead of <code>&amp;.not(_.Visited)</code> you now use <code>&amp;.not(_.visited)</code></li>
-<li>DSL <code>boolStyle</code> has been replaced with <code>styleF.bool</code>.</li>
-<li>DSL <code>intStyle</code> has been replaced with <code>styleF.int</code>.</li>
-<li>DSL <code>&quot;&lt;string&gt;.color&quot;</code> removed due to addition of compiler-checked colour literals. (see below)</li>
-<li>DSL <code>&amp;(cond)</code> and <code>&amp;(mediaQuery)</code> removed as styles can now be applied directly.
-<br>See <a href="../features/cond.html">Conditional CSS</a> for the legal syntax.</li>
-</ul>
-<pre><code class="lang-sh"><span class="hljs-comment"># Migration aid</span>
-find . -type f -name <span class="hljs-string">&apos;*.scala&apos;</span> -exec perl -pi <span class="hljs-operator">-e</span> <span class="hljs-string">&apos;s/(?&lt;!\w)boolStyle\(/styleF.bool(/g&apos;</span> {} +
-find . -type f -name <span class="hljs-string">&apos;*.scala&apos;</span> -exec perl -pi <span class="hljs-operator">-e</span> <span class="hljs-string">&apos;s/(?&lt;!\w)intStyle\(/styleF.int(/g&apos;</span> {} +
-find . -type f -name <span class="hljs-string">&apos;*.scala&apos;</span> -exec perl -pi <span class="hljs-operator">-e</span> <span class="hljs-string">&apos;s/(&quot;.+?&quot;).color/c$1/g&apos;</span> {} +
-</code></pre>
-<h5 id="new">New</h5>
-<ul>
-<li><p>Styles are now automatically named according to their variable name.</p>
-<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">AdminPage</span> <span class="hljs-keyword"><span class="hljs-keyword">extends</span></span> <span class="hljs-title">StyleSheet</span>.<span class="hljs-title">Inline</span> {</span>
-  <span class="hljs-keyword">import</span> dsl._
-
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">header</span> =</span> style(display.block)
-
-  <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">hasError</span> =</span>
-    styleF.bool(ok =&gt; styleS(
-      backgroundColor(<span class="hljs-keyword">if</span> (ok) green <span class="hljs-keyword">else</span> red)))
-}
-</code></pre>
-<p>will generate</p>
-<pre><code class="lang-css"><span class="hljs-class">.AdminPage-header</span>     <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">display</span>:<span class="hljs-value"> block </span></span></span>}
-<span class="hljs-class">.AdminPage-hasError-t</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> green </span></span></span>}
-<span class="hljs-class">.AdminPage-hasError-f</span> <span class="hljs-rules">{ <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> red </span></span></span>}
-</code></pre>
-<p>Note: Class names are still overridable, same as before.
-<br>Note: <code>ProdDefaults</code> favours short, meaningless names and so disables this behaviour.</p>
 </li>
-<li><p>New option in <code>Defaults</code> called <code>registerMacroName</code>.
-<br>Typically either <code>MacroName.Use</code> or <code>MacroName.Ignore</code>.</p>
-</li>
-<li><p>Colour literals are now checked at compile-time.
-Instead of</p>
-<pre><code class="lang-scala">backgroundColor(<span class="hljs-string">&quot;#fc9&quot;</span>)
-</code></pre>
-<p>you must now prefix colour literals with a <code>c</code>, like this:</p>
-<pre><code class="lang-scala">backgroundColor(c<span class="hljs-string">&quot;#fc9&quot;</span>)
-</code></pre>
-<p>An invalid colour literal will result an a compiler error, example:</p>
-<pre><code class="lang-scala">backgroundColor(c<span class="hljs-string">&quot;#ffcc99&quot;</span>) <span class="hljs-comment">// ok</span>
-backgroundColor(c<span class="hljs-string">&quot;#ffcc9&quot;</span>) <span class="hljs-comment">// 5 digits = compiler error</span>
-</code></pre>
-<p>This works for colour functions too, even though we have Scala DSL for that.
-These are also valid if you prefer this representation:</p>
-<pre><code class="lang-scala">backgroundColor(c<span class="hljs-string">&quot;hsl(200, 20%, 10%)&quot;</span>)
-backgroundColor(c<span class="hljs-string">&quot;rgb(0%, 20%, 10%)&quot;</span>)
-backgroundColor(c<span class="hljs-string">&quot;rgba(0, 0, 0, 0.5)&quot;</span>)
-backgroundColor(c<span class="hljs-string">&quot;rgb(30, 30, 300)&quot;</span>) <span class="hljs-comment">// 300 is too large = compiler error</span>
-<span class="hljs-comment">// etc</span>
-</code></pre>
-</li>
-<li><p>If you want to bypass colour literal validation, you can use <code>Color()</code>:</p>
-<pre><code class="lang-scala">backgroundColor(<span class="hljs-type">Color</span>(<span class="hljs-string">&quot;i break you css!&quot;</span>))
-</code></pre>
-</li>
-<li><p>DSL: <code>grey(int)</code> for greyscale colours.</p>
-</li>
-<li><p>Style functions (<code>styleF</code>) can now have manually-specified names; they will be suffixed as required.</p>
-<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">s</span> =</span> styleF(<span class="hljs-string">&quot;manual&quot;</span>).bool(b =&gt; ...)
-</code></pre>
-</li>
-<li><p>Conditions can be applied to anything usable in a style, including mixins and <code>unsafeChild</code>.</p>
-</li>
-<li><p>Resolution unit: <code>dppx</code> (dots-per-px).</p>
-</li>
-<li><p>Inline stylesheets: new helper <code>initInnerObjects()</code>. From the scaladoc:</p>
-<blockquote>
-<p>Objects in Scala are lazy. If you put styles in inner objects you need to make sure they&apos;re initialised before
-your styles are rendered.
-To do so, call this at the end of your stylesheet with one style from each inner object.</p>
-</blockquote>
-<p>There is an example in <a href="../gotchas.html">Gotchas</a>.</p>
-</li>
-<li><p>React module: Add <code>GlobalRegistry.addToDocumentOnRegistration()</code> to workaround an
-<a href="https://github.com/japgolly/scalacss/issues/43" target="_blank">IE limitation</a>.</p>
-</li>
-</ul>
-<h5 id="fixes">Fixes</h5>
-<ul>
-<li>Ensure correct order of pseudo elements &amp; classes.</li>
-<li>Generate media-query CSS after non-media-query CSS.</li>
-</ul>
-<h5 id="dependency-upgrades">Dependency upgrades:</h5>
-<ul>
-<li>ScalaJS to 0.6.3.</li>
-<li>Scalaz to 7.1.3.</li>
-<li>scalajs-react to 0.9.1.</li>
-<li>Shapeless to 2.2.2.</li>
 </ul>
 
                     
@@ -746,10 +653,10 @@ To do so, call this at the end of your stylesheet with one style from each inner
         </div>
 
         
-        <a href="../history/0.4.html" class="navigation navigation-prev " aria-label="Previous page: 0.4.x"><i class="fa fa-angle-left"></i></a>
+        <a href="../history/index.html" class="navigation navigation-prev " aria-label="Previous page: History"><i class="fa fa-angle-left"></i></a>
         
         
-        <a href="../history/0.2.html" class="navigation navigation-next " aria-label="Next page: 0.2.0"><i class="fa fa-angle-right"></i></a>
+        <a href="../history/0.6.html" class="navigation navigation-next " aria-label="Next page: 0.6.x"><i class="fa fa-angle-right"></i></a>
         
     </div>
 </div>
