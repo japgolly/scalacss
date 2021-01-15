@@ -1,28 +1,11 @@
 language: scala
 sudo: false
 
-jobs:
-  include:
+scala:
+  - 2.12.13
+  - 2.13.4
 
-    - name: 'Scala 2.12 / Scala.JS 0.6 / Java 8'
-      scala: 2.12.13
-      jdk: openjdk8
-      env: SCALAJS_VERSION=0.6.32
-
-    - name: 'Scala 2.13 / Scala.JS 0.6 / Java 8'
-      scala: 2.13.4
-      jdk: openjdk8
-      env: SCALAJS_VERSION=0.6.32
-
-    - name: 'Scala 2.12 / Scala.JS 1.0 / Java 11'
-      scala: 2.12.13
-      jdk: openjdk11
-      env: SCALAJS_VERSION=
-
-    - name: 'Scala 2.13 / Scala.JS 1.0 / Java 11'
-      scala: 2.13.4
-      jdk: openjdk11
-      env: SCALAJS_VERSION=
+jdk: openjdk8
 
 install:
   - . $HOME/.nvm/nvm.sh
