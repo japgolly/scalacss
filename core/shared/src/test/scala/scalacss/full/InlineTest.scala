@@ -49,8 +49,8 @@ object MyInline extends StyleSheet.Inline {
       ),
 
       unsafeRoot("blockquote:before, blockquote:after")(
-        content := "''",
-        content := none
+        content.string(""),
+        content.none
       ),
       unsafeRoot(".DEBUG")(
         borderColor(c"#080")

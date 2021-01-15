@@ -76,6 +76,13 @@ object AttrTest extends TestSuite {
       test(cursor.zoomIn, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
     }
 
+    "content" - {
+      "e" - assertEq(content.string("").value, "''")
+      "s" - assertEq(content.string("abc 123").value, "'abc 123'")
+      "q" - assertEq(content.string("""ok " ' \ Δ cool""").value, """'ok " \0027 \005C \0394 cool'""")
+      "u" - assertEq(content.url("http://www.example.com/test.png").value, "url('http://www.example.com/test.png')")
+    }
+
     "border" - {
       assertEq(border(length).value, "3px")
       assertEq(border(length, style).value, "3px dashed")
