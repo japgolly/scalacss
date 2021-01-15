@@ -777,7 +777,52 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/content">MDN</a>
    */
-  final def content = Attr.real("content")
+  object content extends TypedAttrBase {
+    override val attr = Attr.real("content")
+
+    def none         = avl(LT.none)
+    def normal       = avl(LT.normal)
+    def openQuote    = av(L.openQuote)
+    def closeQuote   = av(L.closeQuote)
+    def noOpenQuote  = av(L.noOpenQuote)
+    def noCloseQuote = av(L.noCloseQuote)
+
+    // TODO content still missing a bunch of combinations
+
+    private def escape(input: String): String = {
+      // fast in JS, speed doesn't matter in JVM for this case
+      var newStr = "'"
+      var i = 0
+      while (i < input.length) {
+        val c = input.charAt(i)
+
+        @inline def escape =
+          c match {
+            case '\\' | '\'' => true
+            case _           => c.toInt > 127
+          }
+
+        val add =
+          if (escape)
+            "\\%04X".format(c.toInt)
+          else
+            c.toString
+
+        newStr += add
+        i += 1
+      }
+
+      newStr + "'"
+    }
+
+    /** @param content Content string (unescaped). This will be escaped as required.
+     */
+    def string(content: String) =
+      av(escape(content))
+
+    def url(url: String) =
+      av("url(" + escape(url) + ")")
+  }
 
   /**
    * The counter-increment CSS property is used to increase the value of CSS Counters by a given value. The counter's value can be reset using the counter-reset CSS property.

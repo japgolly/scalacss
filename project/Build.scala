@@ -1,6 +1,6 @@
 import sbt._
 import sbt.Keys._
-import com.typesafe.sbt.pgp.PgpKeys
+import com.jsuereth.sbtpgp.PgpKeys
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
@@ -20,18 +20,18 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    val Microlibs       = "2.3"
-    val MTest           = "0.7.4"
+    val Microlibs       = "2.5"
+    val MTest           = "0.7.5"
     val Nyaya           = "0.9.2"
-    val ReactJs         = "16.13.1"
-    val Scala212        = "2.12.11"
-    val Scala213        = "2.13.2"
-    val ScalaCollCompat = "2.1.6"
-    val ScalaJsDom      = "1.0.0"
-    val ScalaJsReact    = "1.7.0"
-    val Scalatags       = "0.9.1"
+    val ReactJs         = "16.14.0"
+    val Scala212        = "2.12.13"
+    val Scala213        = "2.13.4"
+    val ScalaCollCompat = "2.3.2"
+    val ScalaJsDom      = "1.1.0"
+    val ScalaJsReact    = "1.7.7"
+    val Scalatags       = "0.9.2"
     val Scalaz          = "7.2.30"
-    val UnivEq          = "1.2.1"
+    val UnivEq          = "1.3.0"
   }
 
   def scalacFlags =
@@ -158,6 +158,8 @@ object ScalaCssBuild {
         "com.github.japgolly.scalajs-react" %%% "core"        % Ver.ScalaJsReact,
         "com.github.japgolly.scalajs-react" %%% "test"        % Ver.ScalaJsReact % Test,
         "org.scalaz"                        %%% "scalaz-core" % Ver.Scalaz       % Test),
+      dependencyOverrides += "org.webjars.npm" % "js-tokens" % "3.0.2", // https://github.com/webjars/webjars/issues/1789
+      dependencyOverrides += "org.webjars.npm" % "scheduler" % "0.12.0-alpha.3",
       jsDependencies ++= Seq(
 
         "org.webjars.npm" % "react" % Ver.ReactJs % Test

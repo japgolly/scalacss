@@ -49,8 +49,8 @@ object MyInline extends StyleSheet.Inline {
       ),
 
       unsafeRoot("blockquote:before, blockquote:after")(
-        content := "''",
-        content := none
+        content.string(""),
+        content.none
       ),
       unsafeRoot(".DEBUG")(
         borderColor(c"#080")
@@ -117,6 +117,21 @@ object MyInline2 extends StyleSheet.Inline {
     }
 
   val `what the hell??` = style(visibility.hidden)
+
+  /** Media query ordering */
+  val xs = media.minWidth(0.px)
+  val sm = media.minWidth(576.px)
+  val md = media.minWidth(768.px)
+  val lg = media.minWidth(992.px)
+  val xl = media.minWidth(1200.px)
+
+  val mediaOrdering = style(
+    xs(margin(1 px)),
+    sm(margin(2 px)),
+    md(margin(3 px)),
+    lg(margin(4 px)),
+    xl(margin(5 px))
+  )
 }
 
 object MyInline3 extends StyleSheet.Inline {
@@ -424,6 +439,36 @@ object InlineTest extends utest.TestSuite {
         |
         |.MyInline2-what_the_hell__ {
         |  visibility: hidden;
+        |}
+        |
+        |@media (min-width:0) {
+        |  .MyInline2-mediaOrdering {
+        |    margin: 1px;
+        |  }
+        |}
+        |
+        |@media (min-width:576px) {
+        |  .MyInline2-mediaOrdering {
+        |    margin: 2px;
+        |  }
+        |}
+        |
+        |@media (min-width:768px) {
+        |  .MyInline2-mediaOrdering {
+        |    margin: 3px;
+        |  }
+        |}
+        |
+        |@media (min-width:992px) {
+        |  .MyInline2-mediaOrdering {
+        |    margin: 4px;
+        |  }
+        |}
+        |
+        |@media (min-width:1200px) {
+        |  .MyInline2-mediaOrdering {
+        |    margin: 5px;
+        |  }
         |}
       """.stripMargin))
 

@@ -20,7 +20,7 @@ Most requirements are satisfied; some will be addressed a little later.
 
 * [Quick Start](https://japgolly.github.io/scalacss/book/quickstart/index.html)
 * [Features](https://japgolly.github.io/scalacss/book/features/index.html)
-* [Changelog](https://japgolly.github.io/scalacss/book/history/0.5.html)
+* [Changelog](https://japgolly.github.io/scalacss/book/history/0.7.html)
 
 # Support
 If you like what I do

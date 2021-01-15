@@ -971,6 +971,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def justifyContent = Attrs.justifyContent
   /**
+   * The CSS justify-self property sets the way a box is justified inside its alignment container along the appropriate axis.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-self">MDN</a>
+   */
+  @inline final def justifySelf = Attrs.justifySelf
+  /**
    * The left CSS property specifies part of the position of positioned elements.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/left">MDN</a>
@@ -1360,6 +1366,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/perspective-origin">MDN</a>
    */
   @inline final def perspectiveOrigin = Attrs.perspectiveOrigin
+  /**
+   * The place-self CSS property is a shorthand property sets both the align-self and justify-self properties. The first value is the align-self property value, the second the justify-self one. If the second value is not present, the first value is also used for it.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/palce-self">MDN</a>
+   */
+  @inline final def placeSelf = Attrs.placeSelf
   /**
    * The CSS property pointer-events allows authors to control under what circumstances (if any) a particular graphic element can become the target of mouse events. When this property is unspecified, the same characteristics of the visiblePainted value apply to SVG content.
    *

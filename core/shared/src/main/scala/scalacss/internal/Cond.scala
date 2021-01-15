@@ -54,5 +54,5 @@ object Cond {
     Cond(None, Vector.empty)
 
   implicit val ordering: Ordering[Cond] =
-    Ordering.by(_.toString)
+    Ordering.by[Cond, String](_.toString)(NaturalOrdering)
 }
