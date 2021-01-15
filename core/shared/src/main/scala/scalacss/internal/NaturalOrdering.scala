@@ -9,6 +9,7 @@ package scalacss.internal
     - In compare()
       - inline compareRight() and extract its variables for reuse
       - Add `else` before `if (ca == 0 && cb == 0)`
+      - replace `ca<cb` and `cb<ca` comparisons, with a subtraction and cmp != 0
 
     - In compareRight()
       - reuse ca/cb vars between loops
@@ -131,11 +132,9 @@ object NaturalOrdering extends Ordering[String] {
         // will want to call strcmp to break the tie.
         return nza - nzb
 
-      if (ca < cb)
-        return -1
-
-      if (ca > cb)
-        return 1
+      result = ca - cb
+      if (result != 0)
+        return result
 
       ia += 1
       ib += 1
