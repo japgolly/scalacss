@@ -20,18 +20,18 @@ object ScalaCssBuild {
     Lib.publicationSettings(ghProject)
 
   object Ver {
-    val Microlibs       = "2.5"
-    val MTest           = "0.7.5"
-    val Nyaya           = "0.9.2"
+    val Microlibs       = "2.6"
+    val MTest           = "0.7.10"
+    val Nyaya           = "0.10.0"
     val ReactJs         = "16.14.0"
-    val Scala212        = "2.12.13"
-    val Scala213        = "2.13.4"
-    val ScalaCollCompat = "2.3.2"
+    val Scala212        = "2.12.14"
+    val Scala213        = "2.13.6"
+    val ScalaCollCompat = "2.4.4"
     val ScalaJsDom      = "1.1.0"
     val ScalaJsReact    = "1.7.7"
-    val Scalatags       = "0.9.2"
-    val Scalaz          = "7.2.30"
-    val UnivEq          = "1.3.0"
+    val Scalatags       = "0.9.4"
+    val Scalaz          = "7.2.32"
+    val UnivEq          = "1.4.0"
   }
 
   def scalacFlags =
