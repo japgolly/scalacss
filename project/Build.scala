@@ -24,8 +24,7 @@ object ScalaCssBuild {
     val MTest           = "0.7.10"
     val Nyaya           = "0.10.0"
     val ReactJs         = "16.14.0"
-    val Scala212        = "2.12.14"
-    val Scala213        = "2.13.6"
+    val Scala2          = "2.13.6"
     val ScalaCollCompat = "2.4.4"
     val ScalaJsDom      = "1.1.0"
     val ScalaJsReact    = "1.7.7"
@@ -55,8 +54,8 @@ object ScalaCssBuild {
       organization                  := "com.github.japgolly.scalacss",
       homepage                      := Some(url("https://github.com/japgolly/scalacss")),
       licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
-      scalaVersion                  := Ver.Scala213,
-      crossScalaVersions            := Seq(Ver.Scala213, Ver.Scala212),
+      scalaVersion                  := Ver.Scala2,
+      crossScalaVersions            := Seq(Ver.Scala2),
       scalacOptions                ++= scalacFlags,
       scalacOptions in Test        --= Seq("-Ywarn-unused"),
       shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
