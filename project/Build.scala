@@ -25,7 +25,7 @@ object ScalaCssBuild {
     val Nyaya           = "0.10.0"
     val ReactJs         = "16.14.0"
     val Scala2          = "2.13.6"
-    val ScalaCollCompat = "2.4.4"
+    val ScalaCollCompat = "2.5.0"
     val ScalaJsDom      = "1.1.0"
     val ScalaJsReact    = "1.7.7"
     val Scalatags       = "0.9.4"
