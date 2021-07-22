@@ -22,7 +22,7 @@ object ScalaCssBuild {
   object Ver {
     val Microlibs       = "2.6"
     val MTest           = "0.7.10"
-    val Nyaya           = "0.10.0"
+    val Nyaya           = "0.11.0"
     val ReactJs         = "16.14.0"
     val Scala2          = "2.13.6"
     val ScalaCollCompat = "2.4.4"
