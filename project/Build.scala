@@ -30,7 +30,7 @@ object ScalaCssBuild {
     val ScalaJsReact    = "1.7.7"
     val Scalatags       = "0.9.4"
     val Scalaz          = "7.2.32"
-    val UnivEq          = "1.4.0"
+    val UnivEq          = "1.5.0"
   }
 
   def scalacFlags =
