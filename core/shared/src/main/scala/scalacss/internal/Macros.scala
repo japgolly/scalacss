@@ -1,8 +1,8 @@
 package scalacss.internal
 
 import java.util.regex.Pattern
-import scala.reflect.macros.blackbox.Context
 import scala.reflect.NameTransformer
+import scala.reflect.macros.blackbox.Context
 import scalacss.defaults.Exports
 
 object Macros {

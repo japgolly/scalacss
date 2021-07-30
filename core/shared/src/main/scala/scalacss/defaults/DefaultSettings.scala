@@ -1,8 +1,8 @@
 package scalacss.defaults
 
 import scalacss.internal._
+import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 import scalacss.internal.mutable._
-import Register.{ErrorHandler, NameGen, MacroName}
 
 object DefaultSettings {
 

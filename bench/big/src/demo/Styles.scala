@@ -1,7 +1,7 @@
 package demo
 
+import demo.CssSettings._
 import japgolly.univeq.UnivEq
-import CssSettings._
 
 sealed trait Live
 case object Live extends Live

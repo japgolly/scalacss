@@ -1,7 +1,7 @@
 package scalacss.internal
 
-import Style.{UnsafeExt, UnsafeExts}
-import ValueT._
+import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
+import scalacss.internal.ValueT._
 
 object DslBase {
   import Media.{Resolution => _, _}

@@ -1,10 +1,10 @@
 package scalacss.internal
 
-import scala.concurrent.duration._
-import utest._
-import ValueT._
-import ValueT.Rules._
 import scala.annotation.nowarn
+import scala.concurrent.duration._
+import scalacss.internal.ValueT.Rules._
+import scalacss.internal.ValueT._
+import utest._
 
 object ValueTTest extends TestSuite {
 

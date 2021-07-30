@@ -1,8 +1,8 @@
 package scalacss.internal
 
 import japgolly.univeq.UnivEq
-import scala.collection.compat._
 import scala.annotation.nowarn
+import scala.collection.compat._
 
 final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   override def toString = "NonEmpty" + whole.toString

@@ -1,8 +1,8 @@
 package scalacss.internal
 
 import japgolly.univeq._
-import scalacss.internal.{Resolution => Res}
 import scala.annotation.nowarn
+import scalacss.internal.{Resolution => Res}
 
 object Media {
 

@@ -1,8 +1,8 @@
 package scalacss.internal.mutable
 
-import scalacss.internal._
-import DslBase.{DslCond, ToStyle}
 import scala.annotation.nowarn
+import scalacss.internal.DslBase.{DslCond, ToStyle}
+import scalacss.internal._
 
 /**
  * Mutable StyleSheets provide a context in which many styles can be created using a DSL.

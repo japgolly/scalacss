@@ -1,10 +1,9 @@
 package scalacss.elision
 
-import scala.annotation.elidable
-import utest._
+import scala.annotation.{elidable, nowarn}
 import scalacss._
 import scalacss.internal.Platform
-import scala.annotation.nowarn
+import utest._
 
 object DefaultsTest extends TestSuite {
 

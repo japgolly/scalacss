@@ -1,5 +1,6 @@
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.{console, document}
-import japgolly.scalajs.react._, vdom.html_<^._
 
 object Temp {
   val CssSettings = scalacss.devOrProdDefaults

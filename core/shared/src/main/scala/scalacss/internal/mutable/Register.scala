@@ -3,7 +3,7 @@ package scalacss.internal.mutable
 import japgolly.univeq._
 import scala.annotation.tailrec
 import scalacss.internal._
-import Register.{MacroName, ErrorHandler, NameGen}
+import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
 /**
  * TODO Doc & test MutableRegister and friends inc. Style[FC]

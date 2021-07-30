@@ -1,9 +1,9 @@
 package scalacss.internal
 
 import scala.collection.immutable.SortedSet
+import scalacss.internal.CanIUse.Support._
+import scalacss.internal.CanIUse._
 import scalacss.internal.{Literal => L}
-import CanIUse._
-import Support._
 
 /**
  * Derivations of the raw data in [[CanIUse]].

@@ -1,7 +1,7 @@
 package scalacss.js
 
-import scalajs.js._
 import scala.annotation.nowarn
+import scala.scalajs.js._
 
 object PlatformJs {
 

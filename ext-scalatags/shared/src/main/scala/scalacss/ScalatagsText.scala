@@ -1,9 +1,9 @@
 package scalacss
 
-import scalatags.Text._
-import scalatags.text
-import all._
 import scalacss.internal.{Css, Renderer}
+import scalatags.Text._
+import scalatags.Text.all._
+import scalatags.text
 import scalatags.text.Builder
 
 trait ScalatagsTextImplicits {

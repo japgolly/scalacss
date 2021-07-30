@@ -3,8 +3,8 @@ package scalacss.internal
 import japgolly.microlibs.testutil.TestUtil._
 import nyaya.gen._
 import nyaya.prop._
-import nyaya.test.{Domain => NDomain}
 import nyaya.test.PropTest._
+import nyaya.test.{Domain => NDomain}
 import scalacss.internal.AttrCmp.{Overlap, Unrelated}
 import scalacss.internal.Attrs._
 import scalacss.internal.Dsl.ToAVToAV

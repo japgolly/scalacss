@@ -1,7 +1,7 @@
 package scalacss.internal
 
 import scala.collection.immutable.SortedSet
-import Media.{Orientation, Scan}
+import scalacss.internal.Media.{Orientation, Scan}
 
 object Env {
 

@@ -1,9 +1,9 @@
 package scalacss
 
+import scala.annotation.nowarn
+import scala.io.AnsiColor._
 import scalaz.Equal
 import scalaz.syntax.equal._
-import scala.io.AnsiColor._
-import scala.annotation.nowarn
 
 object TestUtil extends TestUtil
 

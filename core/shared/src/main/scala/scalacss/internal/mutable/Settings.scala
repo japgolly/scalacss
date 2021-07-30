@@ -1,7 +1,7 @@
 package scalacss.internal.mutable
 
 import scalacss.internal._
-import Register.{ErrorHandler, NameGen, MacroName}
+import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
 trait Settings {
            def cssRegisterNameGen     : NameGen

@@ -1,6 +1,6 @@
 package demo
 
-import CssSettings._
+import demo.CssSettings._
 
 object Main {
 

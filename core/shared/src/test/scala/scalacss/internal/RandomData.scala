@@ -3,8 +3,8 @@ package scalacss.internal
 import nyaya.gen._
 import nyaya.util._
 import scala.collection.immutable.SortedMap
+import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
 import scalaz.NonEmptyList
-import Style.{UnsafeExt, UnsafeExts}
 
 object RandomData {
 
