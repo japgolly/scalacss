@@ -2,6 +2,7 @@ import sbt._
 import Keys._
 import org.scalajs.sbtplugin.{ScalaJSPlugin, ScalaJSPluginInternal, Stage}
 import ScalaJSPlugin.autoImport._
+import Dependencies._
 import Lib._
 import ScalaCssBuild._
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
@@ -56,20 +57,24 @@ object BenchBuild {
     benchModuleJS("react-without", _ / "react-without")
       .settings(
         libraryDependencies ++= Seq(
-          "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact,
-          "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
-          "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
-          "org.scalaz"                        %%% "scalaz-core"  % Ver.Scalaz))
+          Dep.scalaJsReactCore.value,
+          Dep.scalaJsReactExtra.value,
+          Dep.scalaJsReactScalaz.value,
+          Dep.scalaz.value,
+        ),
+      )
 
   lazy val benchReactWith =
     benchModuleJS("react-with", _ / "react-with")
       .dependsOn(extReact)
       .settings(
         libraryDependencies ++= Seq(
-          "com.github.japgolly.scalajs-react" %%% "core"         % Ver.ScalaJsReact,
-          "com.github.japgolly.scalajs-react" %%% "extra"        % Ver.ScalaJsReact,
-          "com.github.japgolly.scalajs-react" %%% "ext-scalaz72" % Ver.ScalaJsReact,
-          "org.scalaz"                        %%% "scalaz-core"  % Ver.Scalaz))
+          Dep.scalaJsReactCore.value,
+          Dep.scalaJsReactExtra.value,
+          Dep.scalaJsReactScalaz.value,
+          Dep.scalaz.value,
+        ),
+      )
 
   // --------------------------------------------------------------------------------------
 
