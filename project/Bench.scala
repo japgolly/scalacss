@@ -58,9 +58,6 @@ object BenchBuild {
       .settings(
         libraryDependencies ++= Seq(
           Dep.scalaJsReactCore.value,
-          Dep.scalaJsReactExtra.value,
-          Dep.scalaJsReactScalaz.value,
-          Dep.scalaz.value,
         ),
       )
 
@@ -70,9 +67,6 @@ object BenchBuild {
       .settings(
         libraryDependencies ++= Seq(
           Dep.scalaJsReactCore.value,
-          Dep.scalaJsReactExtra.value,
-          Dep.scalaJsReactScalaz.value,
-          Dep.scalaz.value,
         ),
       )
 
