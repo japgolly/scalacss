@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import japgolly.univeq.UnivEq
+import scala.annotation.nowarn
 
 trait StyleLookup[I] {
   type T
@@ -27,6 +28,7 @@ object StyleLookup {
         }
     }
 
+  @nowarn("cat=unused")
   implicit def scalaMap[I: UnivEq]: StyleLookup[I] =
     new StyleLookup[I] {
       override type T    = Map[I, StyleA]

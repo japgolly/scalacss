@@ -108,7 +108,7 @@ object Styles extends StyleSheet.Inline {
       backgroundColor(c"#ffe"))
 
     object sortCriteriaEditor {
-      val inconclusiveCriterionRow = styleF(D.on)(o => styleS(
+      val inconclusiveCriterionRow = styleF(D.on)(_ => styleS(
         backgroundColor(c"#e2e2e2"),
         marginBottom(0.7 ex),
         paddingRight(1 ex)))

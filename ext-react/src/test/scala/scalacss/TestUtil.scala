@@ -3,11 +3,13 @@ package scalacss
 import scalaz.Equal
 import scalaz.syntax.equal._
 import scala.io.AnsiColor._
+import scala.annotation.nowarn
 
 object TestUtil extends TestUtil
 
 trait TestUtil extends japgolly.univeq.UnivEqExports {
 
+  @nowarn("cat=unused")
   implicit def equalFromUnivEq[A: UnivEq]: Equal[A] = Equal.equalA
 
   def assertEq[A: Equal](actual: A, expect: A): Unit =
@@ -20,10 +22,10 @@ trait TestUtil extends japgolly.univeq.UnivEqExports {
     if (actual ≠ expect) {
       println()
       name.foreach(n => println(s">>>>>>> $n"))
-      var as = actual.toString
-      var es = expect.toString
+      val as = actual.toString
+      val es = expect.toString
       var pre = "["
-      var post = "]"
+      val post = "]"
       if ((as + es) contains "\n") {
         pre = "↙[\n"
       }

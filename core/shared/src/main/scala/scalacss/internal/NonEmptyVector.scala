@@ -2,6 +2,7 @@ package scalacss.internal
 
 import japgolly.univeq.UnivEq
 import scala.collection.compat._
+import scala.annotation.nowarn
 
 final class NonEmptyVector[+A](val head: A, val tail: Vector[A]) {
   override def toString = "NonEmpty" + whole.toString
@@ -93,6 +94,7 @@ object NonEmptyVector {
   def option[A](v: Vector[A]): Option[NonEmptyVector[A]] =
     maybe[A, Option[NonEmptyVector[A]]](v, None)(Some.apply)
 
+  @nowarn("cat=unused")
   implicit def univEq[A: UnivEq]: UnivEq[NonEmptyVector[A]] =
     UnivEq.force
 }

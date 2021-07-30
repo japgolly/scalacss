@@ -2,6 +2,7 @@ package scalacss.internal.mutable
 
 import scalacss.internal._
 import DslBase.{DslCond, ToStyle}
+import scala.annotation.nowarn
 
 /**
  * Mutable StyleSheets provide a context in which many styles can be created using a DSL.
@@ -185,6 +186,7 @@ object StyleSheet {
      * your styles are rendered.
      * To do so, call this at the end of your stylesheet with one style from each inner object.
      */
+    @nowarn("cat=unused")
     protected def initInnerObjects(a: StyleA*) = ()
   }
 }

@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import japgolly.univeq.UnivEq
+import scala.annotation.nowarn
 
 final case class ClassName(value: String)
 object ClassName {
@@ -138,6 +139,7 @@ final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: Length
     copy(n = N.negate(this.n))
 }
 object Length {
+  @nowarn("cat=unused")
   implicit def univEq[N: UnivEq]: UnivEq[Length[N]] = UnivEq.derive
 }
 
@@ -145,6 +147,7 @@ final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
   def value: Value = n.toString + "%"
 }
 object Percentage {
+  @nowarn("cat=unused")
   implicit def univEq[N: UnivEq]: UnivEq[Percentage[N]] = UnivEq.derive
   implicit def univEqX: UnivEq[Percentage[_]] = UnivEq.force // TODO This isn't actually true...
 }

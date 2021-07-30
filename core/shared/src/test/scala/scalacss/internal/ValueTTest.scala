@@ -1,10 +1,10 @@
 package scalacss.internal
 
 import scala.concurrent.duration._
-import scala.language.reflectiveCalls
 import utest._
 import ValueT._
 import ValueT.Rules._
+import scala.annotation.nowarn
 
 object ValueTTest extends TestSuite {
 
@@ -17,6 +17,7 @@ object ValueTTest extends TestSuite {
   override def tests = Tests {
 
     "valueClasses" - {
+      @nowarn("cat=unused")
       def test[C <: ValueClass](v: ValueT[C]): Unit = ()
 //      def test[C <: ValueClass] = new {
 //        def apply[A](v: A)(implicit ev: A => ValueT[C]): Unit = ()

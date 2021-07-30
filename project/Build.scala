@@ -31,10 +31,11 @@ object ScalaCssBuild {
       "-language:existentials",
       "-opt:l:inline",
       "-opt-inline-from:japgolly.univeq.**",
-      "-opt-inline-from:scalacss.**")
-      // "-Ywarn-dead-code",
-      // "-Ywarn-unused",
+      "-opt-inline-from:scalacss.**",
+      "-Ywarn-dead-code",
+      "-Ywarn-unused",
       // "-Ywarn-value-discard",
+    )
 
   val commonSettings = ConfigureBoth(
     _.settings(
@@ -44,7 +45,6 @@ object ScalaCssBuild {
       scalaVersion                  := Ver.scala2,
       crossScalaVersions            := Seq(Ver.scala2),
       scalacOptions                ++= scalacFlags,
-      Test / scalacOptions         --= Seq("-Ywarn-unused"),
       ThisBuild / shellPrompt       := ((s: State) => Project.extract(s).currentRef.project + "> "),
    // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
       updateOptions                 := updateOptions.value.withCachedResolution(true),

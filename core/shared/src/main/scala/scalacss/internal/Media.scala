@@ -2,6 +2,7 @@ package scalacss.internal
 
 import japgolly.univeq._
 import scalacss.internal.{Resolution => Res}
+import scala.annotation.nowarn
 
 object Media {
 
@@ -103,6 +104,7 @@ object Media {
 
   implicit def univEqScanValue              : UnivEq[ScanValue        ] = UnivEq.derive
   implicit def univEqOrientationValue       : UnivEq[OrientationValue ] = UnivEq.derive
+  @nowarn("cat=unused")
   implicit def univEqValueExpr   [T: UnivEq]: UnivEq[ValueExpr[T]     ] = UnivEq.derive
   implicit def univEqTypeA                  : UnivEq[TypeA            ] = UnivEq.derive
   implicit def univEqTypeExpr               : UnivEq[TypeExpr         ] = UnivEq.derive

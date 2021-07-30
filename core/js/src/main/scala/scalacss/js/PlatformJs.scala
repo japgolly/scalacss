@@ -1,7 +1,7 @@
 package scalacss.js
 
 import scalajs.js._
-
+import scala.annotation.nowarn
 
 object PlatformJs {
 
@@ -31,6 +31,7 @@ object PlatformJs {
  * https://github.com/bestiejs/platform.js/blob/master/doc/README.md#readme
  */
 @native
+@nowarn
 trait PlatformJs extends Object {
   val description : UndefOr[String]       = native
   val layout      : UndefOr[String]       = native
@@ -44,6 +45,7 @@ trait PlatformJs extends Object {
 }
 
 @native
+@nowarn
 trait PlatformJsOS extends Object {
   val architecture: UndefOr[Int]    = native
   val family      : UndefOr[String] = native

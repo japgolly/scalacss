@@ -1,10 +1,10 @@
 package scalacss.elision
 
-import scala.language.experimental.macros
 import scala.annotation.elidable
 import utest._
 import scalacss._
 import scalacss.internal.Platform
+import scala.annotation.nowarn
 
 object DefaultsTest extends TestSuite {
 
@@ -21,8 +21,11 @@ object DefaultsTest extends TestSuite {
 
     "elision" - {
       var on = false
+
       @elidable(elidable.ASSERTION)
+      @nowarn("cat=unused")
       def test(): Unit = on = true
+
       assert(!on, "ELISION")
     }
 
