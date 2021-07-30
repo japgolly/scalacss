@@ -32,13 +32,13 @@ object Macros {
       }
 
       val isStyleSheet: Symbol => Boolean = {
-        val mss = TypeRepr.of[mutable.StyleSheet.Inline]
+        val ss = TypeRepr.of[mutable.StyleSheet.Base]
         sym =>
           try {
             sym.tree match {
               case ClassDef(_, _, parents, _, _) =>
                 parents.exists {
-                  case p: TypeTree => p.tpe <:< mss
+                  case p: TypeTree => (p.tpe <:< ss)
                   case _           => false
                 }
               case _ => false
