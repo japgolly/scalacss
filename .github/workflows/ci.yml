@@ -42,7 +42,11 @@ jobs:
 
       - name: Build and test
         shell: bash
-        run: sbt ++${{ matrix.scala }} test 'set scalaJSStage in ThisBuild := FullOptStage' JS/test
+        run: sbt ++${{ matrix.scala }} test
+
+      - name: Test fullOptJS
+        shell: bash
+        run: sbt ++${{ matrix.scala }} 'set ThisBuild / scalaJSStage := FullOptStage' JS/test
 
       - name: Show JS sizes
         shell: bash
