@@ -1,6 +1,5 @@
 package scalacss.internal
 
-import scala.collection.compat._
 import scala.collection.immutable.ListMap
 
 object Css {
