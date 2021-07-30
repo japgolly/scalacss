@@ -107,7 +107,7 @@ object ScalaCssBuild {
         Dep.nyayaGen.value % Test,
         Dep.nyayaProp.value % Test,
         Dep.nyayaTest.value % Test,
-        Dep.scalaz.value % Test,
+        Dep.cats.value % Test,
       ),
     )
     .jsSettings(
@@ -139,7 +139,7 @@ object ScalaCssBuild {
       moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
         Dep.scalatags.value,
-        Dep.scalaz.value % Test,
+        Dep.cats.value % Test,
       ),
     )
 
@@ -154,7 +154,7 @@ object ScalaCssBuild {
       libraryDependencies ++= Seq(
         Dep.scalaJsReactCore.value,
         Dep.scalaJsReactTest.value % Test,
-        Dep.scalaz.value % Test,
+        Dep.cats.value % Test,
       ),
     )
 }

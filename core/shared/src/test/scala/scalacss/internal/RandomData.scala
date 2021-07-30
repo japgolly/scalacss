@@ -1,10 +1,10 @@
 package scalacss.internal
 
+import cats.data.NonEmptyList
 import nyaya.gen._
 import nyaya.util._
 import scala.collection.immutable.SortedMap
 import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
-import scalaz.NonEmptyList
 
 object RandomData {
 
@@ -29,18 +29,18 @@ object RandomData {
   val pseduo: Gen[Pseudo] = {
     import Pseudo._
 
-    val objects = NonEmptyList[Pseudo](
+    val objects = NonEmptyList.of[Pseudo](
       Active, Checked, Disabled, Empty, Enabled, FirstChild, FirstOfType, Focus, Hover, InRange, Invalid, LastChild,
       LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange, ReadOnly, ReadWrite, Required, Target, Valid,
       Visited, After, Before, FirstLetter, FirstLine, Selection)
 
-    val needNthQuery = NonEmptyList[NthQuery => Pseudo](
+    val needNthQuery = NonEmptyList.of[NthQuery => Pseudo](
       NthChild, NthLastChild, NthLastOfType, NthOfType)
 
-    val needStr = NonEmptyList[String => Pseudo](
+    val needStr = NonEmptyList.of[String => Pseudo](
       Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang, new Not(_), AttrExists)
 
-    val need2Str = NonEmptyList[(String, String) => Pseudo](
+    val need2Str = NonEmptyList.of[(String, String) => Pseudo](
       Pseudo.Attr _, AttrContains _, AttrStartsWith _, AttrEndsWith _)
 
     lazy val self: Gen[Pseudo] =

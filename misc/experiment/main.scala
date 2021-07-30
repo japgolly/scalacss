@@ -23,7 +23,7 @@ object Test {
   type KV    = (Key, Value)
   type KVs   = NonEmptyList[KV]
 
-  implicit val keyEquality: Equal[Key] = Equal.equalRef // (or by humanName? in which case maybe rename to id/key?)
+  implicit val keyEquality: Eq[Key] = Equal.equalRef // (or by humanName? in which case maybe rename to id/key?)
   sealed trait KeyComparison
   case object SameKey         extends KeyComparison
   case object FullOverride    extends KeyComparison // margin fully overrides margin-left

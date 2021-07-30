@@ -1,25 +1,25 @@
 package scalacss
 
+import cats.Eq
+import cats.syntax.eq._
 import scala.annotation.nowarn
 import scala.io.AnsiColor._
-import scalaz.Equal
-import scalaz.syntax.equal._
 
 object TestUtil extends TestUtil
 
 trait TestUtil extends japgolly.univeq.UnivEqExports {
 
   @nowarn("cat=unused")
-  implicit def equalFromUnivEq[A: UnivEq]: Equal[A] = Equal.equalA
+  implicit def equalFromUnivEq[A: UnivEq]: Eq[A] = Eq.fromUniversalEquals
 
-  def assertEq[A: Equal](actual: A, expect: A): Unit =
+  def assertEq[A: Eq](actual: A, expect: A): Unit =
     assertEq(None, actual, expect)
 
-  def assertEq[A: Equal](name: String, actual: A, expect: A): Unit =
+  def assertEq[A: Eq](name: String, actual: A, expect: A): Unit =
     assertEq(Some(name), actual, expect)
 
-  def assertEq[A: Equal](name: Option[String], actual: A, expect: A): Unit =
-    if (actual ≠ expect) {
+  def assertEq[A: Eq](name: Option[String], actual: A, expect: A): Unit =
+    if (actual =!= expect) {
       println()
       name.foreach(n => println(s">>>>>>> $n"))
       val as = actual.toString
