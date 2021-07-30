@@ -145,8 +145,9 @@ object ScalaCssBuild {
 
   lazy val extReact = project
     .in(file("ext-react"))
-    .enablePlugins(ScalaJSPlugin, JSDependenciesPlugin)
+    .enablePlugins(ScalaJSPlugin)
     .configure(commonSettings.js, publicationSettings.js, utestSettings.js)
+    .configure(addReactJsDependencies(Test))
     .dependsOn(coreJS)
     .settings(
       moduleName := "ext-react",
@@ -155,24 +156,5 @@ object ScalaCssBuild {
         Dep.scalaJsReactTest.value % Test,
         Dep.scalaz.value % Test,
       ),
-      dependencyOverrides += "org.webjars.npm" % "js-tokens" % "3.0.2", // https://github.com/webjars/webjars/issues/1789
-      dependencyOverrides += "org.webjars.npm" % "scheduler" % "0.12.0-alpha.3",
-      jsDependencies ++= Seq(
-
-        "org.webjars.npm" % "react" % Ver.reactJs % Test
-          /        "umd/react.development.js"
-          minified "umd/react.production.min.js"
-          commonJSName "React",
-
-        "org.webjars.npm" % "react-dom" % Ver.reactJs % Test
-          /         "umd/react-dom.development.js"
-          minified  "umd/react-dom.production.min.js"
-          dependsOn "umd/react.development.js"
-          commonJSName "ReactDOM",
-
-        "org.webjars.npm" % "react-dom" % Ver.reactJs % Test
-          /         "umd/react-dom-server.browser.development.js"
-          minified  "umd/react-dom-server.browser.production.min.js"
-          dependsOn "umd/react-dom.development.js"
-          commonJSName "ReactDOMServer"))
+    )
 }

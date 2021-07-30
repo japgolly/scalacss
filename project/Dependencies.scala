@@ -1,6 +1,8 @@
 import sbt._
 import sbt.Keys._
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
+import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
 
 object Dependencies {
 
@@ -39,4 +41,27 @@ object Dependencies {
     val utest              = Def.setting("com.lihaoyi"                       %%% "utest"                   % Ver.utest)
   }
 
+  def addReactJsDependencies(scope: Configuration): Project => Project =
+    _.enablePlugins(JSDependenciesPlugin)
+      .settings(
+        jsDependencies ++= Seq(
+
+          "org.webjars.npm" % "react" % Ver.reactJs % scope
+            /        "umd/react.development.js"
+            minified "umd/react.production.min.js"
+            commonJSName "React",
+
+          "org.webjars.npm" % "react-dom" % Ver.reactJs % scope
+            /         "umd/react-dom.development.js"
+            minified  "umd/react-dom.production.min.js"
+            dependsOn "umd/react.development.js"
+            commonJSName "ReactDOM",
+
+          "org.webjars.npm" % "react-dom" % Ver.reactJs % scope
+            /         "umd/react-dom-server.browser.development.js"
+            minified  "umd/react-dom-server.browser.production.min.js"
+            dependsOn "umd/react-dom.development.js"
+            commonJSName "ReactDOMServer",
+        ),
+      )
 }
