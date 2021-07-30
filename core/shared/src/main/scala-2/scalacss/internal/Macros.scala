@@ -185,7 +185,7 @@ object Macros {
   // ===================================================================================================================
 
   trait DevOrProdDefaults {
-    def devOrProdDefaults: Exports with Settings =
+    def devOrProdDefaults: Exports with mutable.Settings =
       macro Macros.devOrProdDefaults
   }
 

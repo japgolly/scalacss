@@ -2,7 +2,6 @@ package object scalacss
     extends scalacss.defaults.Exports
        with internal.Macros.DevOrProdDefaults {
 
-  import internal.mutable.Settings
   import defaults.{DefaultSettings, Exports}
 
   object DevDefaults  extends Exports with DefaultSettings.Dev
