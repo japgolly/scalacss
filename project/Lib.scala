@@ -71,4 +71,21 @@ object Lib {
 
   def preventPublication: PE =
     _.settings(publish / skip := true)
+
+  def onlyScala2(p: Project) = {
+    def clearWhenDisabled[A](key: SettingKey[Seq[A]]) =
+      Def.setting[Seq[A]] {
+        val disabled = scalaVersion.value.startsWith("3")
+        val as = key.value
+        if (disabled) Nil else as
+      }
+    p.settings(
+      libraryDependencies                  := clearWhenDisabled(libraryDependencies).value,
+      Compile / unmanagedSourceDirectories := clearWhenDisabled(Compile / unmanagedSourceDirectories).value,
+      Test / unmanagedSourceDirectories    := clearWhenDisabled(Test / unmanagedSourceDirectories).value,
+      publish / skip                       :=  ((publish / skip).value || scalaVersion.value.startsWith("3")),
+      Test / test                           := { if (scalaVersion.value.startsWith("2")) (Test / test).value },
+    )
+  }
+
 }

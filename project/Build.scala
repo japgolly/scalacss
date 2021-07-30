@@ -139,7 +139,7 @@ object ScalaCssBuild {
   lazy val elisionTest = crossProject(JSPlatform, JVMPlatform)
     .in(file("elision-test"))
     .configureCross(commonSettings, utestSettings)
-    .configure(preventPublication)
+    .configure(preventPublication, onlyScala2)
     .dependsOn(core)
     .settings(
       scalacOptions ++= Seq("-Xelide-below", "OFF"),
@@ -149,9 +149,9 @@ object ScalaCssBuild {
   lazy val extScalatagsJS  = extScalatags.js
   lazy val extScalatags = crossProject(JSPlatform, JVMPlatform)
     .in(file("ext-scalatags"))
-    .configureCross(commonSettings, publicationSettings)
     .dependsOn(core)
-    .configureCross(utestSettings)
+    .configureCross(commonSettings, publicationSettings, utestSettings)
+    .configure(onlyScala2)
     .settings(
       moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
@@ -170,6 +170,7 @@ object ScalaCssBuild {
       moduleName := "ext-react",
       libraryDependencies ++= Seq(
         Dep.scalaJsReactCoreGen.value % Provided,
+        Dep.scalaJsReactDummy.value % Provided,
         Dep.scalaJsReactTest.value % Test,
         Dep.cats.value % Test,
       ),

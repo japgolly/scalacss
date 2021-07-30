@@ -34,6 +34,7 @@ object Dependencies {
     val scalaJsDom          = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom cross CrossVersion.for3Use2_13)
     val scalaJsReactCore    = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)
     val scalaJsReactCoreGen = Def.setting("com.github.japgolly.scalajs-react" %%% "core-generic"            % Ver.scalaJsReact)
+    val scalaJsReactDummy   = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)
     val scalaJsReactTest    = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
     val scalaReflect        = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
     val scalatags           = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags cross CrossVersion.for3Use2_13)
