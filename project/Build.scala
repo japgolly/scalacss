@@ -152,7 +152,7 @@ object ScalaCssBuild {
     .settings(
       moduleName := "ext-react",
       libraryDependencies ++= Seq(
-        Dep.scalaJsReactCore.value,
+        Dep.scalaJsReactCoreGen.value % Provided,
         Dep.scalaJsReactTest.value % Test,
         Dep.cats.value % Test,
       ),
