@@ -18,7 +18,7 @@ object Dependencies {
     // Internal
     val microlibs       = "2.6"
     val nyaya           = "0.10.0"
-    val reactJs         = "16.14.0"
+    val reactJs         = "17.0.2"
     val scalaz          = "7.2.32"
     val utest           = "0.7.10"
   }
