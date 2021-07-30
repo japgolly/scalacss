@@ -31,8 +31,6 @@ object Dependencies {
     val scalaCompiler      = Def.setting("org.scala-lang"                      % "scala-compiler"          % scalaVersion.value)
     val scalaJsDom         = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom)
     val scalaJsReactCore   = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)
-    val scalaJsReactExtra  = Def.setting("com.github.japgolly.scalajs-react" %%% "extra"                   % Ver.scalaJsReact)
-    val scalaJsReactScalaz = Def.setting("com.github.japgolly.scalajs-react" %%% "ext-scalaz72"            % Ver.scalaJsReact)
     val scalaJsReactTest   = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
     val scalaReflect       = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
     val scalatags          = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags)
