@@ -29,14 +29,14 @@ object RegisterTest extends TestSuite {
     assertEq(l, l.distinct)
   }
 
-  implicit def env = Env.empty
+  implicit def env: Env = Env.empty
 
   def stylesToCssMap(s: Vector[StyleA]) =
     Css.styles(s).map(e => (e.sel, e.content)).toMap
 
   override def tests = Tests {
     val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.noisy)
-    implicit def cnh = ClassNameHint("blah")
+    implicit def cnh: ClassNameHint = ClassNameHint("blah")
 
     "registerS" - {
       val a1 = reg registerS ss1

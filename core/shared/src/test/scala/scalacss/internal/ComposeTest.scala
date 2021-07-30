@@ -85,7 +85,7 @@ object ComposeTest extends TestSuite {
 
     "values" - {
       import Dsl._
-      implicit def c = Compose.safe
+      implicit def c: Compose = Compose.safe
 
       def test(s: StyleS)(avs: AV*)(ws: String*): Unit = {
         assertEq(s.data(Cond.empty).avIterator.toVector, avs.toVector)

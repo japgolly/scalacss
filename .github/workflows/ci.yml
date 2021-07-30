@@ -13,12 +13,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - java: 8
-            scala: 2.13.6
-          - java: 11
-            scala: 2.13.6
           - java: 16
             scala: 2.13.6
+          - java: 8
+            scala: 3.0.1
 
     steps:
       - name: Git checkout

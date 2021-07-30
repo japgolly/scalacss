@@ -1,7 +1,7 @@
 package scalacss.js
 
 import scala.annotation.nowarn
-import scala.scalajs.js._
+import scala.scalajs.js
 
 object PlatformJs {
 
@@ -16,38 +16,38 @@ object PlatformJs {
   /**
    * Returns `undefined` in NodeJS unit tests.
    */
-  lazy val value: UndefOr[PlatformJs] =
+  lazy val value: js.UndefOr[PlatformJs] =
     try {
-      eval(sourceCode)
-      Dynamic.global.platform.asInstanceOf[UndefOr[PlatformJs]]
+      js.eval(sourceCode)
+      js.Dynamic.global.platform.asInstanceOf[js.UndefOr[PlatformJs]]
     } catch {
       case e: Throwable =>
         e.printStackTrace(System.err)
-        undefined
+        js.undefined
     }
 }
 
 /**
  * https://github.com/bestiejs/platform.js/blob/master/doc/README.md#readme
  */
-@native
+@js.native
 @nowarn
-trait PlatformJs extends Object {
-  val description : UndefOr[String]       = native
-  val layout      : UndefOr[String]       = native
-  val manufacturer: UndefOr[String]       = native
-  val name        : UndefOr[String]       = native
-  val prerelease  : UndefOr[String]       = native
-  val product     : UndefOr[String]       = native
-  val ua          : UndefOr[String]       = native
-  val version     : UndefOr[String]       = native
-  val os          : UndefOr[PlatformJsOS] = native
+trait PlatformJs extends js.Object {
+  val description : js.UndefOr[String]       = js.native
+  val layout      : js.UndefOr[String]       = js.native
+  val manufacturer: js.UndefOr[String]       = js.native
+  val name        : js.UndefOr[String]       = js.native
+  val prerelease  : js.UndefOr[String]       = js.native
+  val product     : js.UndefOr[String]       = js.native
+  val ua          : js.UndefOr[String]       = js.native
+  val version     : js.UndefOr[String]       = js.native
+  val os          : js.UndefOr[PlatformJsOS] = js.native
 }
 
-@native
+@js.native
 @nowarn
-trait PlatformJsOS extends Object {
-  val architecture: UndefOr[Int]    = native
-  val family      : UndefOr[String] = native
-  val version     : UndefOr[String] = native
+trait PlatformJsOS extends js.Object {
+  val architecture: js.UndefOr[Int]    = js.native
+  val family      : js.UndefOr[String] = js.native
+  val version     : js.UndefOr[String] = js.native
 }

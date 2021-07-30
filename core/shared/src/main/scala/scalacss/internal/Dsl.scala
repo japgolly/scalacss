@@ -10,8 +10,8 @@ object DslBase {
   object MediaQueryEmpty extends TypeAOps[Query] with FeatureOps[Query] {
     override protected def F = f => new Query(Right(f), Vector.empty)
     override protected def T = t => new Query(Left(Just(t)), Vector.empty)
-    def not  = new MediaQueryNeedType(Not)
-    def only = new MediaQueryNeedType(Only)
+    def not  = new MediaQueryNeedType(Not.apply)
+    def only = new MediaQueryNeedType(Only.apply)
   }
 
   // media.{not,only}
@@ -154,6 +154,7 @@ import DslBase._
 // =====================================================================================================================
 abstract class DslBase
   extends AttrAliasesAndValueTRules
+     with Macros.Dsl.Base
      with TypedLiteralAliases
      with ColorOps[ValueT[Color]] {
 
@@ -186,7 +187,7 @@ abstract class DslBase
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-          implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(x, this)
+          implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(f(x), this)
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
@@ -196,8 +197,8 @@ abstract class DslBase
           implicit final def ToStyleToAV      (x: ToAV)                           : ToStyle = ToStyleAV(x.av)
           implicit final def ToStyleAV        (x: AV)                             : ToStyle = ToStyleAVs(AVs(x))
           implicit final def ToStyleAVs       (x: AVs)                            : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
-          implicit final def ToStyleCAV [C]   (x: (C, AV)) (implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(x._1, AVs(x._2)))
-          implicit final def ToStyleCAVs[C]   (x: (C, AVs))(implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(x._1, x._2))
+          implicit final def ToStyleCAV [C]   (x: (C, AV)) (implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(f(x._1), AVs(x._2)))
+          implicit final def ToStyleCAVs[C]   (x: (C, AVs))(implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(f(x._1), x._2))
           implicit final def ToStyleUnsafeExt (x: UnsafeExt)                      : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts(x: UnsafeExts)                     : ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS    (x: StyleS)                         : ToStyle = new ToStyle(x)
@@ -230,9 +231,6 @@ abstract class DslBase
 
   def mixinIfElse(b: Boolean)(t: ToStyle*)(f: ToStyle*)(implicit c: Compose): StyleS =
     styleS((if (b) t else f): _*)(c)
-
-  @inline implicit def colourLiteralMacro(sc: StringContext) =
-    new Macros.ColourLiteral(sc)
 }
 
 // =====================================================================================================================

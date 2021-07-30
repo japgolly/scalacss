@@ -20,22 +20,28 @@ object ScalaCssBuild {
   private val publicationSettings =
     Lib.publicationSettings(ghProject)
 
-  def scalacFlags =
-    Seq(
-      "-deprecation",
-      "-unchecked",
-      "-feature",
-      "-language:postfixOps",
-      "-language:implicitConversions",
-      "-language:higherKinds",
-      "-language:existentials",
-      "-opt:l:inline",
-      "-opt-inline-from:japgolly.univeq.**",
-      "-opt-inline-from:scalacss.**",
-      "-Ywarn-dead-code",
-      "-Ywarn-unused",
-      // "-Ywarn-value-discard",
-    )
+  def scalacCommonFlags = Seq(
+    "-deprecation",
+    "-unchecked",
+    "-feature",
+    "-language:postfixOps",
+    "-language:implicitConversions",
+    "-language:higherKinds",
+    "-language:existentials",
+  )
+
+  def scalac2Flags = Seq(
+    "-opt:l:inline",
+    "-opt-inline-from:japgolly.univeq.**",
+    "-opt-inline-from:scalacss.**",
+    "-Ywarn-dead-code",
+    "-Ywarn-unused",
+    // "-Ywarn-value-discard",
+  )
+
+  def scalac3Flags = Seq(
+    "-source", "3.0-migration",
+  )
 
   val commonSettings = ConfigureBoth(
     _.settings(
@@ -43,9 +49,10 @@ object ScalaCssBuild {
       homepage                      := Some(url("https://github.com/japgolly/scalacss")),
       licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion                  := Ver.scala2,
-      crossScalaVersions            := Seq(Ver.scala2),
-      scalacOptions                ++= scalacFlags,
-      ThisBuild / shellPrompt       := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      crossScalaVersions            := Seq(Ver.scala2, Ver.scala3),
+      scalacOptions                ++= scalacCommonFlags,
+      scalacOptions                ++= scalac2Flags.filter(_ => scalaVersion.value.startsWith("2")),
+      scalacOptions                ++= scalac3Flags.filter(_ => scalaVersion.value.startsWith("3")),
    // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
       updateOptions                 := updateOptions.value.withCachedResolution(true),
       releasePublishArtifactsAction := PgpKeys.publishSigned.value,
@@ -54,11 +61,21 @@ object ScalaCssBuild {
 
   def definesMacros = ConfigureBoth(
     _.settings(
-      scalacOptions += "-language:experimental.macros",
-      libraryDependencies ++= Seq(
-        Dep.scalaReflect.value,
-        Dep.scalaCompiler.value % Provided,
-      ),
+      scalacOptions ++= {
+        if (scalaVersion.value.startsWith("2"))
+          "-language:experimental.macros" :: Nil
+        else
+          Nil
+      },
+      libraryDependencies ++=  {
+        if (scalaVersion.value.startsWith("2"))
+          List(
+            Dep.scalaReflect.value,
+            Dep.scalaCompiler.value % Provided,
+          )
+        else
+          Nil
+      },
     )
   )
 

@@ -9,6 +9,11 @@ object Macros {
 
   object Dsl {
 
+    trait Base {
+      @inline final implicit def colourLiteralMacro(sc: StringContext): Macros.ColourLiteral =
+        new Macros.ColourLiteral(sc)
+    }
+
     private def name(c: Context): String = {
       val localName = c.internal.enclosingOwner.name.toString.trim
 
@@ -178,6 +183,11 @@ object Macros {
   }
 
   // ===================================================================================================================
+
+  trait DevOrProdDefaults {
+    def devOrProdDefaults: Exports with Settings =
+      macro Macros.devOrProdDefaults
+  }
 
   def devOrProdDefaults(c: Context): c.Expr[Exports with mutable.Settings] = {
     import c.universe._

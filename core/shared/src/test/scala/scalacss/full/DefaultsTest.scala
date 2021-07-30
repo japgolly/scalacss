@@ -17,7 +17,7 @@ object DefaultsTest extends TestSuite {
 
   class SharedStyles(implicit reg: StyleSheet.Register) extends StyleSheet.Inline {
     import dsl._
-    implicit def compose = CssComposer.trust
+    implicit def compose: CssComposer = CssComposer.trust
     val header = style(backgroundColor(c"#333"))
     val footer = style(backgroundColor(c"#666"))
   }
@@ -39,7 +39,7 @@ object DefaultsTest extends TestSuite {
       val shared = new SharedStyles
     }
 
-    implicit def cssEnv = CssEnv.empty
+    implicit def cssEnv: CssEnv = CssEnv.empty
     val css = SS.render[String]
 
     def norm(css: String) = css.trim
@@ -92,7 +92,7 @@ object DefaultsTest extends TestSuite {
       val blah = style(width.inherit)
     }
 
-    implicit def cssEnv = CssEnv.empty
+    implicit def cssEnv: CssEnv = CssEnv.empty
     val css1 = SS1.render[String]
     val css2 = SS2.render[String]
 

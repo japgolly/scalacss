@@ -1,6 +1,8 @@
 name      := "ScalaCSS"
 startYear := Some(2015)
 
+ThisBuild / shellPrompt := ((s: State) => Project.extract(s).currentRef.project + "> ")
+
 // Mutability & NameGen causes occasional test failures
 ThisBuild / parallelExecution := false
 

@@ -53,24 +53,22 @@ object Lib {
     .jsConfigure(
       sourceMapsToGithub(ghProject))
 
-  def sourceMapsToGithub(ghProject: String): PE =
+  def sourceMapsToGithub(ghProject: String): Project => Project =
     p => p.settings(
-      scalacOptions ++= (if (isSnapshot.value) Seq.empty else Seq({
-        val a = p.base.toURI.toString.replaceFirst("[^/]+/?$", "")
-        val g = s"https://raw.githubusercontent.com/japgolly/$ghProject"
-        s"-P:scalajs:mapSourceURI:$a->$g/v${version.value}/"
-      }))
+      scalacOptions ++= {
+        val isDotty = scalaVersion.value startsWith "3"
+        val ver     = version.value
+        if (isSnapshot.value)
+          Nil
+        else {
+          val a = p.base.toURI.toString.replaceFirst("[^/]+/?$", "")
+          val g = s"https://raw.githubusercontent.com/japgolly/$ghProject"
+          val flag = if (isDotty) "-scalajs-mapSourceURI" else "-P:scalajs:mapSourceURI"
+          s"$flag:$a->$g/v$ver/" :: Nil
+        }
+      }
     )
 
   def preventPublication: PE =
-    _.settings(
-      publish / skip     := true,
-      publish            := (()),
-      publishLocal       := (()),
-      publishSigned      := (()),
-      publishLocalSigned := (()),
-      publishArtifact    := false,
-      publishTo          := Some(Resolver.file("Unused transient repository", target.value / "fakepublish")),
-      packagedArtifacts  := Map.empty)
-    // .disablePlugins(plugins.IvyPlugin)
+    _.settings(publish / skip := true)
 }
