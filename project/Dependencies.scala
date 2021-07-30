@@ -11,9 +11,9 @@ object Dependencies {
     // Exported
     val scala2          = "2.13.6"
     val scalaJsDom      = "1.1.0"
-    val scalaJsReact    = "1.7.7"
+    val scalaJsReact    = "2.0.0-RC2"
     val scalatags       = "0.9.4"
-    val univEq          = "1.4.0"
+    val univEq          = "1.5.0"
 
     // Internal
     val cats            = "2.6.1"
