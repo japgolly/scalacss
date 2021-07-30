@@ -11,7 +11,7 @@ object BenchBuild {
   private def benchModule(name: String, dir: File => File): Project =
     Project(name, dir(file("bench")))
       .configure(preventPublication)
-      .settings(scalaSource in Compile := baseDirectory.value / "src")
+      .settings(Compile / scalaSource := baseDirectory.value / "src")
 
   private def benchModuleJS(name: String, dir: File => File): Project =
     benchModule("bench-" + name, dir)
@@ -37,8 +37,8 @@ object BenchBuild {
   val cmpJsSizeFast = TaskKey[Unit]("cmpJsSizeFast", "Compare JS sizes (using fastOptJS).")
   val cmpJsSizeFull = TaskKey[Unit]("cmpJsSizeFull", "Compare JS sizes (using fullOptJS).")
   def cmpJsSize(js: TaskKey[Attributed[sbt.File]]) = Def.task {
-    val a = (js in Compile in benchReactWithout).value.data
-    val b = (js in Compile in benchReactWith   ).value.data
+    val a = (benchReactWithout / Compile / js).value.data
+    val b = (benchReactWith    / Compile / js).value.data
     val x = a.length()
     val y = b.length()
     val d = y - x
@@ -97,8 +97,8 @@ object BenchBuild {
     println()
     println(header)
     println("=" * header.length)
-    report("bench-big (fast)", (fastOptJS in Compile in benchBig).value)
-    report("bench-big (full)", (fullOptJS in Compile in benchBig).value)
+    report("bench-big (fast)", (benchBig / Compile / fastOptJS).value)
+    report("bench-big (full)", (benchBig / Compile / fullOptJS).value)
     println()
   }
 

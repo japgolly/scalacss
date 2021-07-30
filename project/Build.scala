@@ -57,12 +57,12 @@ object ScalaCssBuild {
       scalaVersion                  := Ver.Scala2,
       crossScalaVersions            := Seq(Ver.Scala2),
       scalacOptions                ++= scalacFlags,
-      scalacOptions in Test        --= Seq("-Ywarn-unused"),
-      shellPrompt in ThisBuild      := ((s: State) => Project.extract(s).currentRef.project + "> "),
+      Test / scalacOptions         --= Seq("-Ywarn-unused"),
+      ThisBuild / shellPrompt       := ((s: State) => Project.extract(s).currentRef.project + "> "),
    // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
       updateOptions                 := updateOptions.value.withCachedResolution(true),
       releasePublishArtifactsAction := PgpKeys.publishSigned.value,
-      releaseTagComment             := s"v${(version in ThisBuild).value}",
+      releaseTagComment             := s"v${(ThisBuild / version).value}",
       releaseVcsSign                := true))
 
   def definesMacros = ConfigureBoth(

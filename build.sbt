@@ -2,7 +2,7 @@ name      := "ScalaCSS"
 startYear := Some(2015)
 
 // Mutability & NameGen causes occasional test failures
-parallelExecution in ThisBuild := false
+ThisBuild / parallelExecution := false
 
 val root              = ScalaCssBuild.root
 val rootJVM           = ScalaCssBuild.rootJVM
