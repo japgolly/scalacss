@@ -8,7 +8,6 @@ object Dependencies {
 
     // Exported
     val scala2          = "2.13.6"
-    val scalaCollCompat = "2.4.4" // TODO: Remove
     val scalaJsDom      = "1.1.0"
     val scalaJsReact    = "1.7.7"
     val scalatags       = "0.9.4"
@@ -27,7 +26,6 @@ object Dependencies {
     val nyayaGen           = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-gen"               % Ver.nyaya)
     val nyayaProp          = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-prop"              % Ver.nyaya)
     val nyayaTest          = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-test"              % Ver.nyaya)
-    val scalaCollCompat    = Def.setting("org.scala-lang.modules"            %%% "scala-collection-compat" % Ver.scalaCollCompat)
     val scalaCompiler      = Def.setting("org.scala-lang"                      % "scala-compiler"          % scalaVersion.value)
     val scalaJsDom         = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom)
     val scalaJsReactCore   = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)

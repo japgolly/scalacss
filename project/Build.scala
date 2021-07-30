@@ -104,7 +104,6 @@ object ScalaCssBuild {
     .settings(
       libraryDependencies ++= Seq(
         Dep.univEq.value,
-        Dep.scalaCollCompat.value,
         Dep.nyayaGen.value % Test,
         Dep.nyayaProp.value % Test,
         Dep.nyayaTest.value % Test,
