@@ -28,7 +28,7 @@ object PseudoType {
 sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
   import Pseudo._
 
-  val cssValue: String
+  def cssValue: String
 
   // apply() is used by Dsl
   final def modSelector(sel: CssSelector): CssSelector =

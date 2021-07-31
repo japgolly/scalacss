@@ -1,8 +1,8 @@
 package scalacss.js
 
-import scalajs.js.UndefOr
+import scala.scalajs.js.UndefOr
 import scalacss.internal.Env
-import Env._
+import scalacss.internal.Env._
 
 /**
  * Uses [[PlatformJs]] to derive an [[Env]] instance.

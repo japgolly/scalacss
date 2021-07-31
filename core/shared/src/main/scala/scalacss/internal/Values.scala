@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import ValueT._
+import scalacss.internal.ValueT._
 
 /** A ''typed'' literal. */
 abstract class Literal(final val value: Value) {

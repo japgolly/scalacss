@@ -1,7 +1,7 @@
 package scalacss.internal.mutable
 
 import scalacss.internal._
-import Register.{ErrorHandler, NameGen, MacroName}
+import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
 trait Settings {
            def cssRegisterNameGen     : NameGen
@@ -19,13 +19,13 @@ trait Settings {
 
 object Settings {
   trait Delegate extends Settings {
-    override          def cssRegisterNameGen      = cssSettings.cssRegisterNameGen
-    override          def cssRegisterMacroName    = cssSettings.cssRegisterMacroName
-    override          def cssRegisterErrorHandler = cssSettings.cssRegisterErrorHandler
-    override implicit def cssStringRenderer       = cssSettings.cssStringRenderer
-    override implicit def cssComposition          = cssSettings.cssComposition
-    override implicit def cssEnv                  = cssSettings.cssEnv
-    override implicit def cssRegister             = cssSettings.cssRegister
+    override          def cssRegisterNameGen     : NameGen          = cssSettings.cssRegisterNameGen
+    override          def cssRegisterMacroName   : MacroName        = cssSettings.cssRegisterMacroName
+    override          def cssRegisterErrorHandler: ErrorHandler     = cssSettings.cssRegisterErrorHandler
+    override implicit def cssStringRenderer      : Renderer[String] = cssSettings.cssStringRenderer
+    override implicit def cssComposition         : Compose          = cssSettings.cssComposition
+    override implicit def cssEnv                 : Env              = cssSettings.cssEnv
+    override implicit def cssRegister            : Register         = cssSettings.cssRegister
 
     protected[scalacss] def cssSettings: Settings
   }

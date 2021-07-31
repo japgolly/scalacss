@@ -1,10 +1,10 @@
 package scalacss.internal
 
+import cats.data.NonEmptyList
 import nyaya.gen._
 import nyaya.util._
 import scala.collection.immutable.SortedMap
-import scalaz.NonEmptyList
-import Style.{UnsafeExt, UnsafeExts}
+import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
 
 object RandomData {
 
@@ -29,18 +29,22 @@ object RandomData {
   val pseduo: Gen[Pseudo] = {
     import Pseudo._
 
-    val objects = NonEmptyList[Pseudo](
+    val objects = NonEmptyList.of[Pseudo](
       Active, Checked, Disabled, Empty, Enabled, FirstChild, FirstOfType, Focus, Hover, InRange, Invalid, LastChild,
       LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange, ReadOnly, ReadWrite, Required, Target, Valid,
       Visited, After, Before, FirstLetter, FirstLine, Selection)
 
-    val needNthQuery = NonEmptyList[NthQuery => Pseudo](
-      NthChild, NthLastChild, NthLastOfType, NthOfType)
+    val needNthQuery = NonEmptyList.of[NthQuery => Pseudo](
+      NthChild.apply,
+      NthLastChild.apply,
+      NthLastOfType.apply,
+      NthOfType.apply,
+    )
 
-    val needStr = NonEmptyList[String => Pseudo](
-      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang, new Not(_), AttrExists)
+    val needStr = NonEmptyList.of[String => Pseudo](
+      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang.apply, new Not(_), AttrExists.apply)
 
-    val need2Str = NonEmptyList[(String, String) => Pseudo](
+    val need2Str = NonEmptyList.of[(String, String) => Pseudo](
       Pseudo.Attr _, AttrContains _, AttrStartsWith _, AttrEndsWith _)
 
     lazy val self: Gen[Pseudo] =
@@ -64,7 +68,7 @@ object RandomData {
     }
 
   def unsafeExt(g: Gen[StyleS]): Gen[UnsafeExt] =
-    Gen.apply3(UnsafeExt)(unsafeCssSelEndo, cond, g)
+    Gen.apply3(UnsafeExt.apply)(unsafeCssSelEndo, cond, g)
 
   private def sized(from: Int, jvm: Int, js: Int): SizeSpec =
     from to (jvm `JVM|JS` js)
@@ -74,7 +78,7 @@ object RandomData {
       unsafeExt(g).vector(sized(1, 8, 3)))
 
   val warning: Gen[Warning] =
-    Gen.apply2(Warning)(cond, str)
+    Gen.apply2(Warning.apply)(cond, str)
 
   val className: Gen[ClassName] =
     str1 map ClassName.apply

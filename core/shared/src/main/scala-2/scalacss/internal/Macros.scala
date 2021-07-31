@@ -1,13 +1,17 @@
 package scalacss.internal
 
 import java.util.regex.Pattern
-import scala.reflect.macros.blackbox.Context
 import scala.reflect.NameTransformer
-import scalacss.defaults.Exports
+import scala.reflect.macros.blackbox.Context
 
 object Macros {
 
   object Dsl {
+
+    trait Base {
+      @inline final implicit def colourLiteralMacro(sc: StringContext): Macros.ColourLiteral =
+        new Macros.ColourLiteral(sc)
+    }
 
     private def name(c: Context): String = {
       val localName = c.internal.enclosingOwner.name.toString.trim
@@ -175,17 +179,5 @@ object Macros {
   class ColourLiteral(private val sc: StringContext) extends AnyVal {
     /** c"#fc6" provides a validates Color */
     def c(args: Any*): Color = macro ColorLiteral.impl
-  }
-
-  // ===================================================================================================================
-
-  def devOrProdDefaults(c: Context): c.Expr[Exports with mutable.Settings] = {
-    import c.universe._
-    c.Expr[Exports with mutable.Settings](q"""
-      if (_root_.scalacss.internal.Platform.DevMode)
-        _root_.scalacss.DevDefaults
-      else
-        _root_.scalacss.ProdDefaults
-       """)
   }
 }

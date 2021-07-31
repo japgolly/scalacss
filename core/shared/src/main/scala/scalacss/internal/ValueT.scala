@@ -2,8 +2,8 @@ package scalacss.internal
 
 import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.FiniteDuration
+import scalacss.internal.Literal.{Typed => LT}
 import scalacss.internal.{Literal => L}
-import L.{Typed => LT}
 
 trait ToAV {
   def av: AV

@@ -12,5 +12,5 @@ final class Mutex {
 }
 
 object Mutex {
-  implicit val mutex = new Mutex
+  implicit val mutex: Mutex = new Mutex
 }

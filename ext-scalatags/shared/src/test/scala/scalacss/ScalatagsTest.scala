@@ -1,9 +1,9 @@
 package scalacss
 
-import utest._
+import scalacss.DevDefaults._
+import scalacss.ScalatagsCss._
 import scalacss.TestUtil._
-import DevDefaults._
-import ScalatagsCss._
+import utest._
 
 object ScalatagsTest extends TestSuite {
 

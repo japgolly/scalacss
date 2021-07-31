@@ -1,6 +1,7 @@
 package scalacss
 
 import japgolly.univeq._
+import scala.annotation.nowarn
 
 package object internal {
 
@@ -59,6 +60,7 @@ package object internal {
       case (Some(a), Some(b)) => Some(f(a, b))
     }
 
+  @nowarn("cat=unused")
   def memo[A: UnivEq, B](f: A => B): A => B = {
     val m = scala.collection.mutable.HashMap.empty[A, B]
     a => m.getOrElse(a, {

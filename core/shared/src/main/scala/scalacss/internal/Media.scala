@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import japgolly.univeq._
+import scala.annotation.nowarn
 import scalacss.internal.{Resolution => Res}
 
 object Media {
@@ -103,6 +104,7 @@ object Media {
 
   implicit def univEqScanValue              : UnivEq[ScanValue        ] = UnivEq.derive
   implicit def univEqOrientationValue       : UnivEq[OrientationValue ] = UnivEq.derive
+  @nowarn("cat=unused")
   implicit def univEqValueExpr   [T: UnivEq]: UnivEq[ValueExpr[T]     ] = UnivEq.derive
   implicit def univEqTypeA                  : UnivEq[TypeA            ] = UnivEq.derive
   implicit def univEqTypeExpr               : UnivEq[TypeExpr         ] = UnivEq.derive
@@ -204,13 +206,13 @@ object Media {
     `(` ~ c ~ `)`
 
   private def opt[T](ov: Option[T], name: String)(implicit tc: T => String): String =
-    ov.fold(name)(name ~ `:` ~ _)
+    ov.fold(name)(name ~ `:` ~ tc(_))
 
   private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String =
     e match {
-      case Eql(t) =>       name ~ `:` ~ t
-      case Min(t) => min ~ name ~ `:` ~ t
-      case Max(t) => max ~ name ~ `:` ~ t
+      case Eql(t) =>       name ~ `:` ~ tc(t)
+      case Min(t) => min ~ name ~ `:` ~ tc(t)
+      case Max(t) => max ~ name ~ `:` ~ tc(t)
     }
 
   private def cssValueExprO[T](o: Option[ValueExpr[T]], name: String)(implicit tc: T => String): String =

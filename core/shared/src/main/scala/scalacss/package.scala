@@ -1,5 +1,7 @@
-package object scalacss extends scalacss.defaults.Exports  {
-  import internal.mutable.Settings
+package object scalacss
+    extends scalacss.defaults.Exports
+       with internal.ModeMacros.DevOrProdDefaults {
+
   import defaults.{DefaultSettings, Exports}
 
   object DevDefaults  extends Exports with DefaultSettings.Dev
@@ -11,7 +13,4 @@ package object scalacss extends scalacss.defaults.Exports  {
     "\n    3. val CssSettings = scalacss.devOrProdDefaults; import CssSettings._",
     "0.5.3")
   object Defaults extends Exports with DefaultSettings.Dev
-
-  def devOrProdDefaults: Exports with Settings =
-    macro internal.Macros.devOrProdDefaults
 }

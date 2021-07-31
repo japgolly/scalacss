@@ -1,11 +1,13 @@
 import sbt._
 import Keys._
 import com.jsuereth.sbtpgp.PgpKeys._
+import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbtcrossproject.CrossPlugin.autoImport._
 import sbtcrossproject.CrossProject
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import xerial.sbt.Sonatype.autoImport._
+import Dependencies._
 
 object Lib {
   type CPE = CrossProject => CrossProject
@@ -53,24 +55,71 @@ object Lib {
     .jsConfigure(
       sourceMapsToGithub(ghProject))
 
-  def sourceMapsToGithub(ghProject: String): PE =
+  def sourceMapsToGithub(ghProject: String): Project => Project =
     p => p.settings(
-      scalacOptions ++= (if (isSnapshot.value) Seq.empty else Seq({
-        val a = p.base.toURI.toString.replaceFirst("[^/]+/?$", "")
-        val g = s"https://raw.githubusercontent.com/japgolly/$ghProject"
-        s"-P:scalajs:mapSourceURI:$a->$g/v${version.value}/"
-      }))
+      scalacOptions ++= {
+        val isDotty = scalaVersion.value startsWith "3"
+        val ver     = version.value
+        if (isSnapshot.value)
+          Nil
+        else {
+          val a = p.base.toURI.toString.replaceFirst("[^/]+/?$", "")
+          val g = s"https://raw.githubusercontent.com/japgolly/$ghProject"
+          val flag = if (isDotty) "-scalajs-mapSourceURI" else "-P:scalajs:mapSourceURI"
+          s"$flag:$a->$g/v$ver/" :: Nil
+        }
+      }
     )
 
   def preventPublication: PE =
+    _.settings(publish / skip := true)
+
+  def onlyScala2(p: Project) = {
+    def clearWhenDisabled[A](key: SettingKey[Seq[A]]) =
+      Def.setting[Seq[A]] {
+        val disabled = scalaVersion.value.startsWith("3")
+        val as = key.value
+        if (disabled) Nil else as
+      }
+    p.settings(
+      libraryDependencies                  := clearWhenDisabled(libraryDependencies).value,
+      Compile / unmanagedSourceDirectories := clearWhenDisabled(Compile / unmanagedSourceDirectories).value,
+      Test / unmanagedSourceDirectories    := clearWhenDisabled(Test / unmanagedSourceDirectories).value,
+      publish / skip                       :=  ((publish / skip).value || scalaVersion.value.startsWith("3")),
+      Test / test                           := { if (scalaVersion.value.startsWith("2")) (Test / test).value },
+    )
+  }
+
+  def definesMacros = ConfigureBoth(
     _.settings(
-      publish / skip     := true,
-      publish            := (()),
-      publishLocal       := (()),
-      publishSigned      := (()),
-      publishLocalSigned := (()),
-      publishArtifact    := false,
-      publishTo          := Some(Resolver.file("Unused transient repository", target.value / "fakepublish")),
-      packagedArtifacts  := Map.empty)
-    // .disablePlugins(plugins.IvyPlugin)
+      scalacOptions ++= {
+        if (scalaVersion.value.startsWith("2"))
+          "-language:experimental.macros" :: Nil
+        else
+          Nil
+      },
+      libraryDependencies ++=  {
+        if (scalaVersion.value.startsWith("2"))
+          List(
+            Dep.scalaReflect.value,
+            Dep.scalaCompiler.value % Provided,
+          )
+        else
+          Nil
+      },
+    )
+  )
+
+  def utestSettings = ConfigureBoth(
+    _.settings(
+      libraryDependencies ++= Seq(
+        Dep.utest.value % Test,
+        Dep.microlibsTestUtil.value % Test,
+      ),
+      testFrameworks := Seq(new TestFramework("utest.runner.Framework")),
+    )
+  ).jsConfigure(
+    _.settings(jsEnv := new JSDOMNodeJSEnv)
+  )
+
 }

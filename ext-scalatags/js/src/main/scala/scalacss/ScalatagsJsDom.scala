@@ -2,9 +2,9 @@ package scalacss
 
 import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLStyleElement
-import scalatags.JsDom._
-import all._
 import scalacss.internal.{Css, Renderer}
+import scalatags.JsDom._
+import scalatags.JsDom.all._
 
 trait ScalatagsJsDomImplicits {
 

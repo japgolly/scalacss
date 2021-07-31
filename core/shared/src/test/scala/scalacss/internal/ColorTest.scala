@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import japgolly.microlibs.testutil.TestUtil._
+import scala.annotation.nowarn
 import utest._
 
 object ColorTest extends TestSuite {
@@ -34,11 +35,10 @@ object ColorTest extends TestSuite {
     }
 
     "invalid" - {
+      @nowarn("cat=unused")
       def assertFailure(e: CompileError) = ()
-      def assertErrorContains(e: CompileError, frag: String): Unit = {
-        val err = e.msg
-        assert(err contains frag)
-      }
+      def assertErrorContains(e: CompileError, frag: String): Unit =
+        assertContains(e.msg, frag)
 
       "hex" - {
         def test(e: CompileError): Unit = assertErrorContains(e, "Hex notation must be")

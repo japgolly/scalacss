@@ -1,5 +1,6 @@
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.{console, document}
-import japgolly.scalajs.react._, vdom.html_<^._, ScalazReact._
 
 object Temp {
   val CssSettings = scalacss.devOrProdDefaults
@@ -32,32 +33,33 @@ object Demo {
 
   case class State(items: List[String], text: String)
 
-  val ST = ReactS.Fix[State]
+  final class Backend($: BackendScope[Unit, State]) {
 
-  def acceptChange(e: ReactEventFromInput) =
-    ST.mod(_.copy(text = e.target.value))
+    def acceptChange(e: ReactEventFromInput) =
+      $.modState(_.copy(text = e.target.value))
 
-  def handleSubmit(e: ReactEventFromInput) = (
-    ST.retM(e.preventDefaultCB)
+    def handleSubmit(e: ReactEventFromInput) =
+      e.preventDefaultCB >> $.modState(s => State(s.items :+ s.text, ""))
 
-    >>
-    ST.mod(s => State(s.items :+ s.text, "")).liftCB
-  )
-
-  val TodoApp = ScalaComponent.builder[Unit]
-    .initialState(State(Nil, ""))
-    .renderS(($,s) =>
+    def render(s: State): VdomNode =
       <.div(
         MyStyles.outer,
         <.h3("TODO"),
         TodoList(s.items),
-        <.form(^.onSubmit ==> $.runStateFn(handleSubmit))(
+        <.form(
+          ^.onSubmit ==> handleSubmit,
           <.input(
-            ^.onChange ==> $.runStateFn(acceptChange),
-            ^.value := s.text),
-          <.button("Add #", s.items.length + 1)
+            ^.onChange ==> acceptChange,
+            ^.value := s.text,
+          ),
+          <.button("Add #", s.items.length + 1),
         )
       )
-    ).build
+  }
+
+  val TodoApp = ScalaComponent.builder[Unit]
+    .initialState(State(Nil, ""))
+    .renderBackend[Backend]
+    .build
 
 }

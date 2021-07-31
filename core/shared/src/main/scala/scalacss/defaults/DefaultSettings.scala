@@ -1,8 +1,8 @@
 package scalacss.defaults
 
 import scalacss.internal._
+import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 import scalacss.internal.mutable._
-import Register.{ErrorHandler, NameGen, MacroName}
 
 object DefaultSettings {
 
@@ -29,10 +29,4 @@ object DefaultSettings {
     override implicit def cssStringRenderer      : Renderer[String] = StringRenderer.formatTiny
     override implicit def cssComposition         : Compose          = Compose.trust
   }
-
-  def devOrProd: Settings =
-    if (Platform.DevMode)
-      Dev
-    else
-      Prod
 }

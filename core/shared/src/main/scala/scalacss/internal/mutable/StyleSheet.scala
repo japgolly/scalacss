@@ -1,7 +1,8 @@
 package scalacss.internal.mutable
 
+import scala.annotation.nowarn
+import scalacss.internal.DslBase.{DslCond, ToStyle}
 import scalacss.internal._
-import DslBase.{DslCond, ToStyle}
 
 /**
  * Mutable StyleSheets provide a context in which many styles can be created using a DSL.
@@ -37,7 +38,9 @@ object StyleSheet {
 
       @inline final def Color(literal: String) = scalacss.internal.Color(literal)
 
-      @inline implicit final def toCondOps[C](x: C)(implicit f: C => Cond) = new CondOps(x)
+      @inline implicit final def toCondOps[C](x: C)(implicit f: C => Cond): CondOps =
+        new CondOps(f(x))
+
       final class CondOps(val cond: Cond) {
         @inline def - = new DslCond(cond, dsl)
       }
@@ -185,6 +188,7 @@ object StyleSheet {
      * your styles are rendered.
      * To do so, call this at the end of your stylesheet with one style from each inner object.
      */
+    @nowarn("cat=unused")
     protected def initInnerObjects(a: StyleA*) = ()
   }
 }
