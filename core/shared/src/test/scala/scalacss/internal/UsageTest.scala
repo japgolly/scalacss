@@ -7,7 +7,7 @@ object UsageTest extends TestSuite {
   import Dsl._
   import Pseudo._
 
-  implicit def composition = Compose.safe
+  implicit def composition: Compose = Compose.safe
 
   val thing = 2.ex
 

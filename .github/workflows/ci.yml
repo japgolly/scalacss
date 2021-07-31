@@ -13,12 +13,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - java: 8
-            scala: 2.13.6
-          - java: 11
-            scala: 2.13.6
           - java: 16
-            scala: 2.13.6
+            scala: 2
+          - java: 8
+            scala: 3
 
     steps:
       - name: Git checkout
@@ -42,12 +40,8 @@ jobs:
 
       - name: Build and test
         shell: bash
-        run: sbt ++${{ matrix.scala }} test
-
-      - name: Test fullOptJS
-        shell: bash
-        run: sbt ++${{ matrix.scala }} 'set ThisBuild / scalaJSStage := FullOptStage' JS/test
+        run: bin/ci ${{ matrix.scala }}
 
       - name: Show JS sizes
         shell: bash
-        run: sbt ++${{ matrix.scala }} cmpJsSize jsSizes
+        run: sbt "++$(bin/get_scala_version ${{ matrix.scala }})" cmpJsSize jsSizes

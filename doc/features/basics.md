@@ -6,7 +6,10 @@ The first thing you'll want to do is import some settings by using one of these 
 import scalacss.DevDefaults._  // Always use dev settings
 import scalacss.ProdDefaults._ // Always use prod settings
 
-// This will choose between dev/prod depending on your scalac `-Xelide-below` setting
+// This will choose between dev/prod depending on:
+//   1. `sbt -Dscalacss.mode=dev` or `sbt -Dscalacss.mode=prod`
+//   2. Defaults to dev-mode unless in `fullOptJS`
+//
 val CssSettings = scalacss.devOrProdDefaults
 import CssSettings._
 ```
@@ -19,20 +22,6 @@ Style conflicts       | Keep both sides of conflict. <br/> Issue warnings. | Kee
 Error handling        | Print to `stderr` | Ignore
 Class name generation | `.<class>-<val>` <br/> Eg. `.MyStyles-outer` | `._a0` <br/> `._a1` <br/> etc
 CSS output            | Pretty-print. <br/> Indents, spaces, newlines. | Minified. <br/> No whitespace.
-
-`Defaults` will choose a mode to use based on its `devMode: Boolean` method
-which uses
-[elision](http://www.scala-lang.org/api/current/scala/annotation/elidable.html)
-to determine production-mode.
-
-For instance, in my production SBT settings I generally have:
-
-```scala
-// Prod settings
-scalacOptions ++= Seq("-Xelide-below", "OFF")
-```
-
-_Note: `-Xelide-below OFF` doesn't turn eliding off, it means "elide everything". There must've been painting going on in the building with no windows open when that was named._
 
 Defaults aren't mandatory, you're free to customise as needed.
 (See [DefaultSettings.scala](https://github.com/japgolly/scalacss/blob/master/core/shared/src/main/scala/scalacss/defaults/DefaultSettings.scala).)

@@ -12,5 +12,5 @@ final class Mutex {
 }
 
 object Mutex {
-  implicit def mutex = new Mutex
+  implicit def mutex: Mutex = new Mutex
 }

@@ -38,7 +38,9 @@ object StyleSheet {
 
       @inline final def Color(literal: String) = scalacss.internal.Color(literal)
 
-      @inline implicit final def toCondOps[C](x: C)(implicit f: C => Cond) = new CondOps(x)
+      @inline implicit final def toCondOps[C](x: C)(implicit f: C => Cond): CondOps =
+        new CondOps(f(x))
+
       final class CondOps(val cond: Cond) {
         @inline def - = new DslCond(cond, dsl)
       }

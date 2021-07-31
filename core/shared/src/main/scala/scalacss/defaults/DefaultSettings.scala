@@ -29,10 +29,4 @@ object DefaultSettings {
     override implicit def cssStringRenderer      : Renderer[String] = StringRenderer.formatTiny
     override implicit def cssComposition         : Compose          = Compose.trust
   }
-
-  def devOrProd: Settings =
-    if (Platform.DevMode)
-      Dev
-    else
-      Prod
 }
