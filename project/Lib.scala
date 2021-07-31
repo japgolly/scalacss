@@ -1,11 +1,13 @@
 import sbt._
 import Keys._
 import com.jsuereth.sbtpgp.PgpKeys._
+import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbtcrossproject.CrossPlugin.autoImport._
 import sbtcrossproject.CrossProject
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import xerial.sbt.Sonatype.autoImport._
+import Dependencies._
 
 object Lib {
   type CPE = CrossProject => CrossProject
@@ -87,5 +89,37 @@ object Lib {
       Test / test                           := { if (scalaVersion.value.startsWith("2")) (Test / test).value },
     )
   }
+
+  def definesMacros = ConfigureBoth(
+    _.settings(
+      scalacOptions ++= {
+        if (scalaVersion.value.startsWith("2"))
+          "-language:experimental.macros" :: Nil
+        else
+          Nil
+      },
+      libraryDependencies ++=  {
+        if (scalaVersion.value.startsWith("2"))
+          List(
+            Dep.scalaReflect.value,
+            Dep.scalaCompiler.value % Provided,
+          )
+        else
+          Nil
+      },
+    )
+  )
+
+  def utestSettings = ConfigureBoth(
+    _.settings(
+      libraryDependencies ++= Seq(
+        Dep.utest.value % Test,
+        Dep.microlibsTestUtil.value % Test,
+      ),
+      testFrameworks := Seq(new TestFramework("utest.runner.Framework")),
+    )
+  ).jsConfigure(
+    _.settings(jsEnv := new JSDOMNodeJSEnv)
+  )
 
 }

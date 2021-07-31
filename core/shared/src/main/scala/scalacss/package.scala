@@ -1,6 +1,6 @@
 package object scalacss
     extends scalacss.defaults.Exports
-       with internal.Macros.DevOrProdDefaults {
+       with internal.ModeMacros.DevOrProdDefaults {
 
   import defaults.{DefaultSettings, Exports}
 

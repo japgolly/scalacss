@@ -4,7 +4,6 @@ import com.jsuereth.sbtpgp.PgpKeys
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
-import org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, _}
@@ -59,38 +58,6 @@ object ScalaCssBuild {
       releaseTagComment             := s"v${(ThisBuild / version).value}",
       releaseVcsSign                := true))
 
-  def definesMacros = ConfigureBoth(
-    _.settings(
-      scalacOptions ++= {
-        if (scalaVersion.value.startsWith("2"))
-          "-language:experimental.macros" :: Nil
-        else
-          Nil
-      },
-      libraryDependencies ++=  {
-        if (scalaVersion.value.startsWith("2"))
-          List(
-            Dep.scalaReflect.value,
-            Dep.scalaCompiler.value % Provided,
-          )
-        else
-          Nil
-      },
-    )
-  )
-
-  def utestSettings = ConfigureBoth(
-    _.settings(
-      libraryDependencies ++= Seq(
-        Dep.utest.value % Test,
-        Dep.microlibsTestUtil.value % Test,
-      ),
-      testFrameworks := Seq(new TestFramework("utest.runner.Framework")),
-    )
-  ).jsConfigure(
-    _.settings(jsEnv := new JSDOMNodeJSEnv)
-  )
-
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   lazy val root =
@@ -101,12 +68,12 @@ object ScalaCssBuild {
   lazy val rootJVM =
     Project("JVM", file(".rootJVM"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJVM, elisionTestJVM, extScalatagsJVM)
+      .aggregate(coreJVM, extScalatagsJVM)
 
   lazy val rootJS =
     Project("JS", file(".rootJS"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJS, elisionTestJS, extScalatagsJS, extReact)
+      .aggregate(coreJS, extScalatagsJS, extReact)
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -132,17 +99,6 @@ object ScalaCssBuild {
     )
     .jvmSettings(
       initialCommands := "import scalacss._",
-    )
-
-  lazy val elisionTestJVM = elisionTest.jvm
-  lazy val elisionTestJS  = elisionTest.js
-  lazy val elisionTest = crossProject(JSPlatform, JVMPlatform)
-    .in(file("elision-test"))
-    .configureCross(commonSettings, utestSettings)
-    .configure(preventPublication, onlyScala2)
-    .dependsOn(core)
-    .settings(
-      scalacOptions ++= Seq("-Xelide-below", "OFF"),
     )
 
   lazy val extScalatagsJVM = extScalatags.jvm

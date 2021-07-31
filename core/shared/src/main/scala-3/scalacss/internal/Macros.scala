@@ -1,10 +1,9 @@
 package scalacss.internal
 
 import java.util.regex.Pattern
-import scala.quoted._
-import scalacss.defaults.Exports
 import scala.language.`3.0`
 import scala.reflect.NameTransformer
+import scala.quoted._
 
 object Macros {
 
@@ -238,15 +237,5 @@ object Macros {
       else
         Option(errorResult).getOrElse(Left("Invalid colour: \"" + text0 + "\""))
     }
-  }
-
-  // ===================================================================================================================
-
-  trait DevOrProdDefaults {
-    inline final def devOrProdDefaults: Exports with mutable.Settings =
-      if (scalacss.internal.Platform.DevMode)
-        scalacss.DevDefaults
-      else
-        scalacss.ProdDefaults
   }
 }

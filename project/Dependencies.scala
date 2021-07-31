@@ -25,21 +25,22 @@ object Dependencies {
   }
 
   object Dep {
-    val cats                = Def.setting("org.typelevel"                     %%% "cats-core"               % Ver.cats)
-    val microlibsTestUtil   = Def.setting("com.github.japgolly.microlibs"     %%% "test-util"               % Ver.microlibs)
-    val nyayaGen            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-gen"               % Ver.nyaya)
-    val nyayaProp           = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-prop"              % Ver.nyaya)
-    val nyayaTest           = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-test"              % Ver.nyaya)
-    val scalaCompiler       = Def.setting("org.scala-lang"                      % "scala-compiler"          % scalaVersion.value)
-    val scalaJsDom          = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom cross CrossVersion.for3Use2_13)
-    val scalaJsReactCore    = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)
-    val scalaJsReactCoreGen = Def.setting("com.github.japgolly.scalajs-react" %%% "core-generic"            % Ver.scalaJsReact)
-    val scalaJsReactDummy   = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)
-    val scalaJsReactTest    = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
-    val scalaReflect        = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
-    val scalatags           = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags cross CrossVersion.for3Use2_13)
-    val univEq              = Def.setting("com.github.japgolly.univeq"        %%% "univeq"                  % Ver.univEq)
-    val utest               = Def.setting("com.lihaoyi"                       %%% "utest"                   % Ver.utest)
+    val cats                 = Def.setting("org.typelevel"                     %%% "cats-core"               % Ver.cats)
+    val microlibsCompileTime = Def.setting("com.github.japgolly.microlibs"     %%% "compile-time"            % Ver.microlibs)
+    val microlibsTestUtil    = Def.setting("com.github.japgolly.microlibs"     %%% "test-util"               % Ver.microlibs)
+    val nyayaGen             = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-gen"               % Ver.nyaya)
+    val nyayaProp            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-prop"              % Ver.nyaya)
+    val nyayaTest            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-test"              % Ver.nyaya)
+    val scalaCompiler        = Def.setting("org.scala-lang"                      % "scala-compiler"          % scalaVersion.value)
+    val scalaJsDom           = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom cross CrossVersion.for3Use2_13)
+    val scalaJsReactCore     = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)
+    val scalaJsReactCoreGen  = Def.setting("com.github.japgolly.scalajs-react" %%% "core-generic"            % Ver.scalaJsReact)
+    val scalaJsReactDummy    = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)
+    val scalaJsReactTest     = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
+    val scalaReflect         = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
+    val scalatags            = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags cross CrossVersion.for3Use2_13)
+    val univEq               = Def.setting("com.github.japgolly.univeq"        %%% "univeq"                  % Ver.univEq)
+    val utest                = Def.setting("com.lihaoyi"                       %%% "utest"                   % Ver.utest)
   }
 
   def addReactJsDependencies(scope: Configuration): Project => Project =
