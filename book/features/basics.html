@@ -38,7 +38,7 @@
     <body>
         
         
-    <div class="book" data-level="2.1" data-basepath=".." data-revision="Fri Jan 15 2021 14:39:32 GMT+1100 (AEDT)">
+    <div class="book" data-level="2.1" data-basepath=".." data-revision="Sat Jul 31 2021 11:06:43 GMT+1000 (AEST)">
     
 
 <div class="book-summary">
@@ -424,13 +424,28 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="7.1" data-path="history/0.7.html">
+        <li class="chapter " data-level="7.1" data-path="history/0.8.html">
+            
+                
+                    <a href="../history/0.8.html">
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.1.</b>
+                        
+                        0.8.x
+                    </a>
+                
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="history/0.7.html">
             
                 
                     <a href="../history/0.7.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.1.</b>
+                            <b>7.2.</b>
                         
                         0.7.x
                     </a>
@@ -439,13 +454,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.2" data-path="history/0.6.html">
+        <li class="chapter " data-level="7.3" data-path="history/0.6.html">
             
                 
                     <a href="../history/0.6.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.2.</b>
+                            <b>7.3.</b>
                         
                         0.6.x
                     </a>
@@ -454,13 +469,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.3" data-path="history/0.5.html">
+        <li class="chapter " data-level="7.4" data-path="history/0.5.html">
             
                 
                     <a href="../history/0.5.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.3.</b>
+                            <b>7.4.</b>
                         
                         0.5.x
                     </a>
@@ -469,13 +484,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.4" data-path="history/0.4.html">
+        <li class="chapter " data-level="7.5" data-path="history/0.4.html">
             
                 
                     <a href="../history/0.4.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.4.</b>
+                            <b>7.5.</b>
                         
                         0.4.x
                     </a>
@@ -484,13 +499,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.5" data-path="history/0.3.html">
+        <li class="chapter " data-level="7.6" data-path="history/0.3.html">
             
                 
                     <a href="../history/0.3.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.5.</b>
+                            <b>7.6.</b>
                         
                         0.3.x
                     </a>
@@ -499,13 +514,13 @@
             
         </li>
     
-        <li class="chapter " data-level="7.6" data-path="history/0.2.html">
+        <li class="chapter " data-level="7.7" data-path="history/0.2.html">
             
                 
                     <a href="../history/0.2.html">
                         <i class="fa fa-check"></i>
                         
-                            <b>7.6.</b>
+                            <b>7.7.</b>
                         
                         0.2.0
                     </a>
@@ -629,7 +644,10 @@
 <pre><code class="lang-scala"><span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">DevDefaults</span>._  <span class="hljs-comment">// Always use dev settings</span>
 <span class="hljs-keyword">import</span> scalacss.<span class="hljs-type">ProdDefaults</span>._ <span class="hljs-comment">// Always use prod settings</span>
 
-<span class="hljs-comment">// This will choose between dev/prod depending on your scalac `-Xelide-below` setting</span>
+<span class="hljs-comment">// This will choose between dev/prod depending on:</span>
+<span class="hljs-comment">//   1. `sbt -Dscalacss.mode=dev` or `sbt -Dscalacss.mode=prod`</span>
+<span class="hljs-comment">//   2. Defaults to dev-mode unless in `fullOptJS`</span>
+<span class="hljs-comment">//</span>
 <span class="hljs-function"><span class="hljs-keyword">val</span> <span class="hljs-title">CssSettings</span> =</span> scalacss.devOrProdDefaults
 <span class="hljs-keyword">import</span> <span class="hljs-type">CssSettings</span>._
 </code></pre>
@@ -665,15 +683,6 @@
 </tr>
 </tbody>
 </table>
-<p><code>Defaults</code> will choose a mode to use based on its <code>devMode: Boolean</code> method
-which uses
-<a href="http://www.scala-lang.org/api/current/scala/annotation/elidable.html" target="_blank">elision</a>
-to determine production-mode.</p>
-<p>For instance, in my production SBT settings I generally have:</p>
-<pre><code class="lang-scala"><span class="hljs-comment">// Prod settings</span>
-scalacOptions ++= <span class="hljs-type">Seq</span>(<span class="hljs-string">&quot;-Xelide-below&quot;</span>, <span class="hljs-string">&quot;OFF&quot;</span>)
-</code></pre>
-<p><em>Note: <code>-Xelide-below OFF</code> doesn&apos;t turn eliding off, it means &quot;elide everything&quot;. There must&apos;ve been painting going on in the building with no windows open when that was named.</em></p>
 <p>Defaults aren&apos;t mandatory, you&apos;re free to customise as needed.
 (See <a href="https://github.com/japgolly/scalacss/blob/master/core/shared/src/main/scala/scalacss/defaults/DefaultSettings.scala" target="_blank">DefaultSettings.scala</a>.)</p>
 <h2 id="stylesheets">StyleSheets</h2>
