@@ -93,6 +93,7 @@ object Attrs {
     def unsafeCenter  = av(L.unsafeCenter)
   }
 
+
   /**
    * The CSS align-items property aligns flex items of the current flex line the same way as justify-content but in the perpendicular direction.
    *
@@ -1502,6 +1503,33 @@ object Attrs {
     def safeCenter    = av(L.safeCenter)
     def unsafeCenter  = av(L.unsafeCenter)
   }
+
+  /**
+   * The CSS justify-items property defines the default justify-self for all items of the box, giving them all a default way of justifying each box along the appropriate axis.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items">MDN</a>
+   */
+  object justifyItems extends TypedAttrBase {
+    override val attr = Attr.real("justify-items", Transform keys CanIUse.grid)
+    def auto          = avl(LT.auto)
+    def normal        = avl(LT.normal)
+    def stretch       = av(L.stretch)
+    def center        = av(L.center)
+    def start         = avl(L.start)
+    def end           = avl(L.end)
+    def flexStart     = av(L.flexStart)
+    def flexEnd       = av(L.flexEnd)
+    def selfStart     = av(L.selfStart)
+    def selfEnd       = av(L.selfEnd)
+    def left          = av(L.left)
+    def right         = av(L.right)
+    def baseline      = av(L.baseline)
+    def firstBaseline = av(L.firstBaseline)
+    def lastBaseline  = av(L.lastBaseline)
+    def safeCenter    = av(L.safeCenter)
+    def unsafeCenter  = av(L.unsafeCenter)
+  }
+
 
   /**
    * The CSS justify-self property sets the way a box is justified inside its alignment container along the appropriate axis.
