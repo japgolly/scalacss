@@ -1,7 +1,6 @@
 package scalacss.defaults
 
-import org.scalajs.dom.document
-import org.scalajs.dom.raw.HTMLStyleElement
+import org.scalajs.dom.{HTMLStyleElement, document}
 import scalacss.internal.mutable.{StyleSheet, StyleSheetRegistry}
 import scalacss.internal.{Css, Env, Renderer}
 
