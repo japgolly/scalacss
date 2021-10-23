@@ -1,10 +1,11 @@
 name := "ScalaCSS"
 
-ThisBuild / homepage     := Some(url("https://github.com/japgolly/scalacss"))
-ThisBuild / licenses     += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0"))
-ThisBuild / organization := "com.github.japgolly.scalacss"
-ThisBuild / shellPrompt  := ((s: State) => Project.extract(s).currentRef.project + "> ")
-ThisBuild / startYear    := Some(2015)
+ThisBuild / homepage      := Some(url("https://github.com/japgolly/scalacss"))
+ThisBuild / licenses      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0"))
+ThisBuild / organization  := "com.github.japgolly.scalacss"
+ThisBuild / shellPrompt   := ((s: State) => Project.extract(s).currentRef.project + "> ")
+ThisBuild / startYear     := Some(2015)
+ThisBuild / versionScheme := Some("early-semver")
 
 // Mutability & NameGen causes occasional test failures
 ThisBuild / parallelExecution := false

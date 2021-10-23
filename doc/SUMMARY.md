@@ -23,6 +23,7 @@
 * [Requirements](reqs.md)
 * [Developing](dev.md)
 * [History](history/index.md)
+  * [1.0.x](history/1.0.md)
   * [0.8.x](history/0.8.md)
   * [0.7.x](history/0.7.md)
   * [0.6.x](history/0.6.md)
