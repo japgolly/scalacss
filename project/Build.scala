@@ -44,9 +44,6 @@ object ScalaCssBuild {
 
   val commonSettings = ConfigureBoth(
     _.settings(
-      organization                  := "com.github.japgolly.scalacss",
-      homepage                      := Some(url("https://github.com/japgolly/scalacss")),
-      licenses                      += ("Apache-2.0", url("http://opensource.org/licenses/Apache-2.0")),
       scalaVersion                  := Ver.scala2,
       crossScalaVersions            := Seq(Ver.scala2, Ver.scala3),
       scalacOptions                ++= scalacCommonFlags,
@@ -73,7 +70,7 @@ object ScalaCssBuild {
   lazy val rootJS =
     Project("JS", file(".rootJS"))
       .configure(commonSettings.jvm, preventPublication)
-      .aggregate(coreJS, extScalatagsJS, extReact)
+      .aggregate(coreJS, extReact, extScalatagsJS)
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -107,7 +104,6 @@ object ScalaCssBuild {
     .in(file("ext-scalatags"))
     .dependsOn(core)
     .configureCross(commonSettings, publicationSettings, utestSettings)
-    .configure(onlyScala2)
     .settings(
       moduleName := "ext-scalatags",
       libraryDependencies ++= Seq(
@@ -115,6 +111,7 @@ object ScalaCssBuild {
         Dep.cats.value % Test,
       ),
     )
+    .configure(onlyScala2)
 
   lazy val extReact = project
     .in(file("ext-react"))
