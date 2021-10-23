@@ -2,8 +2,7 @@ package scalacss.external
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import org.scalajs.dom.document
-import org.scalajs.dom.raw.HTMLStyleElement
+import org.scalajs.dom.{HTMLStyleElement, document}
 import scalacss.ScalaCssReact._
 import scalacss.TestUtil._
 import scalacss.internal.mutable.StyleSheetRegistry

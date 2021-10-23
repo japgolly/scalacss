@@ -11,14 +11,14 @@ object Dependencies {
     // Exported
     val scala2          = "2.13.6"
     val scala3          = "3.0.1"
-    val scalaJsDom      = "1.1.0"
-    val scalaJsReact    = "2.0.0-RC2"
-    val scalatags       = "0.9.4"
-    val univEq          = "1.5.0"
+    val scalaJsDom      = "2.0.0"
+    val scalaJsReact    = "2.0.0-RC4"
+    val scalatags       = "0.10.0"
+    val univEq          = "2.0.0"
 
     // Internal
     val cats            = "2.6.1"
-    val microlibs       = "3.0"
+    val microlibs       = "4.0.0"
     val nyaya           = "0.11.0"
     val reactJs         = "17.0.2"
     val utest           = "0.7.10"
@@ -32,7 +32,7 @@ object Dependencies {
     val nyayaProp            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-prop"              % Ver.nyaya)
     val nyayaTest            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-test"              % Ver.nyaya)
     val scalaCompiler        = Def.setting("org.scala-lang"                      % "scala-compiler"          % scalaVersion.value)
-    val scalaJsDom           = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom cross CrossVersion.for3Use2_13)
+    val scalaJsDom           = Def.setting("org.scala-js"                      %%% "scalajs-dom"             % Ver.scalaJsDom)
     val scalaJsReactCore     = Def.setting("com.github.japgolly.scalajs-react" %%% "core"                    % Ver.scalaJsReact)
     val scalaJsReactCoreGen  = Def.setting("com.github.japgolly.scalajs-react" %%% "core-generic"            % Ver.scalaJsReact)
     val scalaJsReactDummy    = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)

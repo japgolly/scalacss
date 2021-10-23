@@ -1,7 +1,7 @@
 package scalacss
 
 import org.scalajs.dom
-import org.scalajs.dom.raw.HTMLStyleElement
+import org.scalajs.dom.HTMLStyleElement
 import scalacss.internal.{Css, Renderer}
 import scalatags.JsDom._
 import scalatags.JsDom.all._
