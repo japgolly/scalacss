@@ -17,7 +17,7 @@ object Dependencies {
     val univEq          = "2.0.0"
 
     // Internal
-    val cats            = "2.6.1"
+    val cats            = "2.7.0"
     val microlibs       = "4.0.0"
     val nyaya           = "1.0.0"
     val reactJs         = "17.0.2"
