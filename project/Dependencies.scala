@@ -20,7 +20,7 @@ object Dependencies {
     val cats            = "2.6.1"
     val microlibs       = "4.0.0"
     val nyaya           = "1.0.0"
-    val reactJs         = "17.0.2"
+    val reactJs         = "18.1.0"
     val utest           = "0.7.10"
   }
 
