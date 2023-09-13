@@ -9,7 +9,7 @@ object Dependencies {
   object Ver {
 
     // Exported
-    val scala2          = "2.13.6"
+    val scala2          = "2.13.12"
     val scala3          = "3.0.1"
     val scalaJsDom      = "2.0.0"
     val scalaJsReact    = "2.0.0"
