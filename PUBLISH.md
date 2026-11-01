@@ -1,15 +1,19 @@
-* scala-cli bin/generate-aliases
+* `scala-cli bin/generate-aliases`
 
-* bin/generate-caniuse
+* ~~bin/generate-caniuse~~
 
-* bin/generate-platformjs
+* ~~bin/generate-platformjs~~
 
-* Version in `project/Build.scala`
+* Update latest version in `doc/book.json`
 
-* Lastest version in `doc/book.json`
+* Ensure latest changelog linked in `SUMMARY.md`
 
 * Changelog link in `README.md`
 
-* Publish library.
+* Tag and push to Github
 
-* Publish book.
+* Publish book:
+  ```sh
+  git co gh-pages
+  ./update-gh-pages.sh
+  ```
