@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write # for action-gh-release
+
+env:
+  SBT: sbt -J-Xmx3G -DCI=1
+
+jobs:
+
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - java: 17
+            scala: 2
+          - java: 8
+            scala: 3
+    name: Scala v${{ matrix.scala }} / Java v${{ matrix.java }}
+    steps:
+
+      - name: Git checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Scala
+        uses: japgolly/setup-everything-scala@v4.1
+        with:
+          java-version: adoptium@1.${{ matrix.java }}
+          node-version: 26
+
+      - name: Build and test
+        shell: bash
+        run: bin/ci ${{ matrix.scala }}
+
+  release:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v7
+
+      - name: Setup Scala
+        uses: japgolly/setup-everything-scala@v4.1
+        with:
+          java-version: adoptium@1.8
+          node-version: 26
+
+      - name: Release
+        run: $SBT ci-release
+        env:
+          PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
