@@ -26,7 +26,7 @@ object ModeMacros {
     import quotes.reflect._
 
     def fail(msg: String): Nothing =
-      report.throwError(msg)
+      report.errorAndAbort(msg)
 
     type S = Exports with mutable.Settings
     val expr: Expr[S] =

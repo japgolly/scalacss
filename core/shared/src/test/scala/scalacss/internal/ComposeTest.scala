@@ -46,7 +46,7 @@ object ComposeTest extends TestSuite {
     import scalacss.defaults.Exports._
     import scalacss.defaults.DefaultSettings.Dev._
     object SampleStyles extends StyleSheet.Inline {
-      override implicit val classNameHint = ClassNameHint("TEST")
+      override implicit val classNameHint: ClassNameHint = ClassNameHint("TEST")
       import dsl._
       val other = style(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
       val outer = style(fontWeight.bold)

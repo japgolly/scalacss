@@ -1,7 +1,6 @@
 package scalacss.internal
 
 import japgolly.microlibs.testutil.TestUtil._
-import scala.annotation.nowarn
 import utest._
 
 object ColorTest extends TestSuite {
@@ -35,7 +34,6 @@ object ColorTest extends TestSuite {
     }
 
     "invalid" - {
-      @nowarn("cat=unused")
       def assertFailure(e: CompileError) = ()
       def assertErrorContains(e: CompileError, frag: String): Unit =
         assertContains(e.msg, frag)

@@ -124,7 +124,7 @@ object Macros {
     def impl(sc: Expr[StringContext])(using Quotes): Expr[Color] = {
       import quotes.reflect._
 
-      import report.{throwError => fail}
+      import report.{errorAndAbort => fail}
 
       val arg: Expr[String] =
         sc match {
@@ -149,7 +149,7 @@ object Macros {
           val l = Inlined(None, Nil, Literal(StringConstant(c))).asExprOf[String]
           Inlined(None, Nil, '{ Color($l) }.asTerm).asExprOf[Color]
         case Left(e) =>
-          report.throwError(e)
+          report.errorAndAbort(e)
       }
     }
 

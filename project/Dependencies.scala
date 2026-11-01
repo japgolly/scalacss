@@ -9,19 +9,19 @@ object Dependencies {
   object Ver {
 
     // Exported
-    val scala2          = "2.13.6"
-    val scala3          = "3.0.1"
-    val scalaJsDom      = "2.0.0"
-    val scalaJsReact    = "2.0.0"
-    val scalatags       = "0.10.0"
-    val univEq          = "2.0.0"
+    val scala2          = "2.13.18"
+    val scala3          = "3.3.9"
+    val scalaJsDom      = "2.8.1"
+    val scalaJsReact    = "2.1.4"
+    val scalatags       = "0.13.1"
+    val univEq          = "2.1.0"
 
     // Internal
-    val cats            = "2.6.1"
-    val microlibs       = "4.0.0"
-    val nyaya           = "1.0.0"
+    val cats            = "2.13.0"
+    val microlibs       = "4.3.0"
+    val nyaya           = "1.2.0"
     val reactJs         = "17.0.2"
-    val utest           = "0.7.10"
+    val utest           = "0.8.4"
   }
 
   object Dep {
