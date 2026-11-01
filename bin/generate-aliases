@@ -1,4 +1,4 @@
-#!/bin/env scala
+#!/usr/bin/env scala
 
 val infile  = "core/shared/src/main/scala/scalacss/internal/Attrs.scala"
 val outfile = "core/shared/src/main/scala/scalacss/internal/generated.scala"

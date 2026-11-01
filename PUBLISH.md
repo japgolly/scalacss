@@ -1,4 +1,4 @@
-* bin/generate-aliases
+* scala-cli bin/generate-aliases
 
 * bin/generate-caniuse
 

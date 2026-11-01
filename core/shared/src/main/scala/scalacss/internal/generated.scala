@@ -971,6 +971,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def justifyContent = Attrs.justifyContent
   /**
+   * The CSS justify-items property defines the default justify-self for all items of the box, giving them all a default way of justifying each box along the appropriate axis.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-items">MDN</a>
+   */
+  @inline final def justifyItems = Attrs.justifyItems
+  /**
    * The CSS justify-self property sets the way a box is justified inside its alignment container along the appropriate axis.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-self">MDN</a>
