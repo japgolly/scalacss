@@ -1,7 +1,6 @@
 #!/bin/bash
-cd "$(dirname "$(readlink -e "$0")")" || exit 1
+cd "$(dirname "$0")" || exit 1
 
 colour=never ./todo-list \
   | cut -d/ -f1 | sed '/^$/d' | awk '{print; print "∑"}' | sort | uniq -c \
   | awk '{if (match($0,/∑/)) t=$0; else print} END{print t}'
-

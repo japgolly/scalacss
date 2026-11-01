@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "$(readlink -e "$0")")" || exit 1
+cd "$(dirname "$0")" || exit 1
 
 n=css_toc
 
@@ -23,4 +23,3 @@ cat $n.html \
  */
 val ".camelCase." = Attr.simple(\"$3\")"
 !e' | tee $n.out1
-
