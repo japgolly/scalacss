@@ -46,7 +46,6 @@ object CanIUse {
     val AndroidChrome     = Agent(webkit, Map.empty)
     val AndroidFirefox    = Agent(moz   , Map.empty)
     val AndroidUC         = Agent(webkit, Map("15.5" -> webkit))
-    val BaiduBrowser      = Agent(webkit, Map.empty)
     val BlackberryBrowser = Agent(webkit, Map.empty)
     val Chrome            = Agent(webkit, Map.empty)
     val Edge              = Agent(webkit, Map("12,13,14,15,16,17,18" -> ms))
@@ -54,15 +53,13 @@ object CanIUse {
     val IE                = Agent(ms    , Map.empty)
     val IEMobile          = Agent(ms    , Map.empty)
     val IOSSafari         = Agent(webkit, Map.empty)
-    val KaiOSBrowser      = Agent(moz   , Map.empty)
     val Opera             = Agent(webkit, Map("9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1" -> o))
     val OperaMini         = Agent(o     , Map.empty)
     val OperaMobile       = Agent(o     , Map("80" -> webkit))
-    val QQBrowser         = Agent(webkit, Map.empty)
     val Safari            = Agent(webkit, Map.empty)
     val Samsung           = Agent(webkit, Map.empty)
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
-    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BaiduBrowser, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, KaiOSBrowser, Opera, OperaMini, OperaMobile, QQBrowser, Safari, Samsung)
+    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari, Samsung)
   }
 
   import Agent._
@@ -80,7 +77,6 @@ object CanIUse {
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -88,11 +84,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -108,7 +102,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -116,11 +109,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, PartialX, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -136,7 +127,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unknown),
     Chrome            -> Set(Unknown, FullX, Full),
     Edge              -> Set(Unsupported, Full),
@@ -144,11 +134,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unknown, FullX, Full),
-    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unknown, FullX, Full),
     Samsung           -> Set(Unknown, FullX, Full))
 
@@ -164,7 +152,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, FullX, Full),
     Edge              -> Set(Partial, PartialX, FullX, Full),
@@ -172,11 +159,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported, Partial),
     IOSSafari         -> Set(PartialX, Full),
-    KaiOSBrowser      -> Set(PartialX, Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(PartialX),
     Safari            -> Set(PartialX, Full),
     Samsung           -> Set(PartialX, Full))
 
@@ -192,7 +177,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -200,11 +184,9 @@ object CanIUse {
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Partial),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full, Unsupported),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -220,7 +202,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(FullX, Full),
@@ -228,11 +209,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unknown, Full),
-    QQBrowser         -> Set(FullX),
     Safari            -> Set(Unsupported, PartialX, Partial, Full),
     Samsung           -> Set(FullX, Full))
 
@@ -248,7 +227,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Full),
@@ -256,11 +234,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Full))
 
@@ -276,7 +252,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -284,11 +259,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -304,7 +277,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -312,11 +284,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -332,7 +302,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full, Partial),
     Edge              -> Set(Unsupported, Full),
@@ -340,11 +309,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -360,7 +327,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Full, Partial, PartialX),
     Edge              -> Set(Full),
@@ -368,11 +334,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported, Full),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Full, Partial, PartialX),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(PartialX, Partial, Full),
     Samsung           -> Set(Partial, Full))
 
@@ -388,7 +352,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -396,11 +359,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Full))
 
@@ -416,7 +377,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX, Full),
     Edge              -> Set(Unsupported, PartialX, Full),
@@ -424,11 +384,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, PartialX),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Unsupported, Full, PartialX),
-    QQBrowser         -> Set(PartialX),
     Safari            -> Set(Unsupported, PartialX),
     Samsung           -> Set(PartialX))
 
@@ -444,7 +402,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -452,11 +409,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(PartialX, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -472,7 +427,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
@@ -480,11 +434,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -500,7 +452,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Unsupported),
     Edge              -> Set(Unsupported),
@@ -508,11 +459,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(FullX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, FullX),
     Samsung           -> Set(FullX, Unsupported))
 
@@ -528,7 +477,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -536,11 +484,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -556,7 +502,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -564,11 +509,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -584,7 +527,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -592,11 +534,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -612,7 +552,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -620,11 +559,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -640,7 +577,6 @@ object CanIUse {
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -648,11 +584,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX, Partial),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, PartialX, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Unsupported, PartialX, Partial),
     Samsung           -> Set(PartialX, Partial))
 
@@ -668,7 +602,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unknown),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unknown),
-    BaiduBrowser      -> Set(Unknown),
     BlackberryBrowser -> Set(Unknown),
     Chrome            -> Set(Unknown, FullX),
     Edge              -> Set(Unsupported, FullX),
@@ -676,11 +609,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unknown),
     IOSSafari         -> Set(Unknown, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Unknown))
 
@@ -696,7 +627,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -704,11 +634,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -724,7 +652,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full, Partial),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -732,11 +659,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -752,7 +677,6 @@ object CanIUse {
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -760,11 +684,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -780,7 +702,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -788,11 +709,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -808,7 +727,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -816,11 +734,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -836,7 +752,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -844,11 +759,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -864,7 +777,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -872,11 +784,9 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, PartialX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, PartialX, Full),
     Samsung           -> Set(Full))
 
@@ -892,7 +802,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -900,11 +809,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported))
 
@@ -920,7 +827,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -928,11 +834,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Full))
 
@@ -948,7 +852,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Unsupported, Full),
@@ -956,11 +859,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Unsupported))
 
@@ -976,7 +877,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -984,11 +884,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Unsupported))
 
@@ -1004,7 +902,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1012,11 +909,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(PartialX),
     Opera             -> Set(Unsupported, PartialX, Partial, Full),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -1032,7 +927,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(PartialX, Unsupported),
@@ -1040,11 +934,9 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported))
 
@@ -1060,7 +952,6 @@ object CanIUse {
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -1068,11 +959,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Unsupported, Full),
-    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Unsupported, Partial),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -1088,7 +977,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1096,11 +984,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1116,7 +1002,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(Unsupported),
@@ -1124,11 +1009,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported))
 
@@ -1144,7 +1027,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -1152,11 +1034,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -1172,7 +1052,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -1180,11 +1059,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(FullX, Full))
 
@@ -1200,7 +1077,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -1208,11 +1084,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -1228,7 +1102,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
     Edge              -> Set(Full),
@@ -1236,11 +1109,9 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX, Partial),
     IEMobile          -> Set(PartialX, Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(PartialX, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -1256,7 +1127,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1264,11 +1134,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1284,7 +1152,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1292,11 +1159,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1312,7 +1177,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1320,11 +1184,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(FullX),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1340,7 +1202,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1348,11 +1209,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Unknown, Partial, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1368,7 +1227,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, PartialX, FullX, Full),
     Edge              -> Set(Full),
@@ -1376,11 +1234,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(FullX, Full))
 
@@ -1396,7 +1252,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1404,11 +1259,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -1424,7 +1277,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1432,11 +1284,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1452,7 +1302,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1460,11 +1309,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported, Partial),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported))
 
@@ -1480,7 +1327,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -1488,11 +1334,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1508,7 +1352,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Unknown),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1516,11 +1359,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1536,7 +1377,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX, Full),
     Edge              -> Set(Partial, Full),
@@ -1544,11 +1384,9 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(Unsupported, PartialX),
     IOSSafari         -> Set(Unsupported, Partial),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, PartialX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full, PartialX),
     Samsung           -> Set(PartialX, Full))
 
@@ -1564,7 +1402,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -1572,11 +1409,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -1592,7 +1427,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
     Edge              -> Set(Full),
@@ -1600,11 +1434,9 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, PartialX, FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full, Partial, PartialX),
     Samsung           -> Set(Full))
 
@@ -1620,7 +1452,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(PartialX, Full),
@@ -1628,11 +1459,9 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1648,7 +1477,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(Unsupported),
@@ -1656,11 +1484,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported))
 
@@ -1676,7 +1502,6 @@ object CanIUse {
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(Unsupported),
@@ -1684,11 +1509,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported))
 
@@ -1704,7 +1527,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(FullX, Partial, Full),
@@ -1712,11 +1534,9 @@ object CanIUse {
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Unsupported, Partial, Full))
 
@@ -1732,7 +1552,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1740,11 +1559,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1760,7 +1577,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX, Full),
     Edge              -> Set(Unsupported, PartialX, Full),
@@ -1768,11 +1584,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Unsupported, Full, PartialX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(PartialX),
     Safari            -> Set(Partial, Unsupported, Full, PartialX),
     Samsung           -> Set(PartialX, Full))
 
@@ -1788,7 +1602,6 @@ object CanIUse {
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -1796,11 +1609,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, PartialX),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -1816,7 +1627,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1824,11 +1634,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full, PartialX, Partial),
-    KaiOSBrowser      -> Set(PartialX, Partial),
     Opera             -> Set(Full, Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full, PartialX, Partial),
     Samsung           -> Set(FullX, Full))
 
@@ -1844,7 +1652,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -1852,11 +1659,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Partial, Full))
 
@@ -1872,7 +1677,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1880,11 +1684,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -1900,7 +1702,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Full),
@@ -1908,11 +1709,9 @@ object CanIUse {
     IE                -> Set(Unknown, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unknown, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unknown, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unknown, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -1928,7 +1727,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -1936,11 +1734,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Full, PartialX, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(PartialX, Partial, Full),
     Samsung           -> Set(PartialX, Partial, Full))
 
@@ -1956,7 +1752,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Full),
     Edge              -> Set(Unsupported, Partial, Full, PartialX),
@@ -1964,11 +1759,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(PartialX, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(PartialX),
     Safari            -> Set(Unsupported, PartialX, Full),
     Samsung           -> Set(PartialX, Full))
 
@@ -1984,7 +1777,6 @@ object CanIUse {
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -1992,11 +1784,9 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2014,7 +1804,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2022,11 +1811,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2042,7 +1829,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -2050,11 +1836,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unknown, PartialX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, Full, Partial),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(PartialX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, PartialX, Full),
     Samsung           -> Set(Partial, Full))
 
@@ -2070,7 +1854,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(PartialX),
     Chrome            -> Set(PartialX, Partial),
     Edge              -> Set(Full, Partial),
@@ -2078,11 +1861,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    KaiOSBrowser      -> Set(PartialX),
     Opera             -> Set(Unsupported, Full, PartialX, Partial),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full, Partial),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(PartialX, Partial, Full),
     Samsung           -> Set(PartialX, Partial))
 
@@ -2098,7 +1879,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -2106,11 +1886,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Partial, Full))
 
@@ -2126,7 +1904,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -2134,11 +1911,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(FullX),
     OperaMobile       -> Set(Unsupported, FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -2154,7 +1929,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -2162,11 +1936,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -2182,7 +1954,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Partial, Full),
@@ -2190,11 +1961,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -2210,7 +1979,6 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -2218,11 +1986,9 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial, Full),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Partial, Full))
 
@@ -2239,7 +2005,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2247,11 +2012,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2267,7 +2030,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unknown),
     Chrome            -> Set(Unknown, Full, Unsupported),
     Edge              -> Set(Unsupported, Full),
@@ -2275,11 +2037,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unknown, Full, Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unknown, Full, Unsupported),
     Samsung           -> Set(Full))
 
@@ -2295,7 +2055,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -2303,11 +2062,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2323,7 +2080,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -2331,11 +2087,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial),
-    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unknown, Full, Partial),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Partial),
     Samsung           -> Set(Partial, Full))
 
@@ -2351,7 +2105,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2359,11 +2112,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2379,7 +2130,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -2387,11 +2137,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, PartialX, Full),
     IEMobile          -> Set(PartialX, Full),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2407,7 +2155,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2415,11 +2162,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2435,7 +2180,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2443,11 +2187,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2463,7 +2205,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Unknown, Partial, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2471,11 +2212,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unknown, Partial, Full),
-    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unknown, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unknown, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -2491,7 +2230,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(FullX),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
     Edge              -> Set(Unsupported, FullX),
@@ -2499,11 +2237,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(FullX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
     Safari            -> Set(Unsupported, FullX),
     Samsung           -> Set(FullX))
 
@@ -2519,7 +2255,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX),
     Edge              -> Set(PartialX, Unsupported),
@@ -2527,11 +2262,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, FullX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, FullX),
     Samsung           -> Set(Unsupported))
 
@@ -2547,7 +2280,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -2555,11 +2287,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -2575,7 +2305,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
@@ -2583,11 +2312,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, PartialX, FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -2603,7 +2330,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Full),
     Edge              -> Set(Unsupported, Full),
@@ -2611,11 +2337,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2631,7 +2355,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full, Unsupported),
     Edge              -> Set(Unsupported),
@@ -2639,11 +2362,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full, Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Full, Unsupported),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full, Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Full, Unknown, Unsupported),
     Samsung           -> Set(Unsupported))
 
@@ -2659,7 +2380,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2667,11 +2387,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2687,7 +2405,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -2695,11 +2412,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -2715,7 +2430,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -2723,11 +2437,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -2743,7 +2455,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -2751,11 +2462,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unknown, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -2771,7 +2480,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2779,11 +2487,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -2799,7 +2505,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -2807,11 +2512,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX, FullX, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Unsupported, PartialX, FullX, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2827,7 +2530,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2835,11 +2537,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2855,7 +2555,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Partial, Full),
@@ -2863,11 +2562,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2883,7 +2580,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -2891,11 +2587,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported))
 
@@ -2911,7 +2605,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -2919,11 +2612,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
-    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Unsupported, PartialX, Partial),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -2939,7 +2630,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, PartialX, Full),
     Edge              -> Set(Unsupported, PartialX, Full),
@@ -2947,11 +2637,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(PartialX),
     Safari            -> Set(Unsupported, PartialX, Full),
     Samsung           -> Set(PartialX, Full))
 
@@ -2967,7 +2655,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -2975,11 +2662,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial),
-    QQBrowser         -> Set(Partial),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Partial))
 
@@ -2995,7 +2680,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Partial, Unsupported, Full),
@@ -3003,11 +2687,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unknown, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported))
 
@@ -3023,7 +2705,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -3031,11 +2712,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Unknown, FullX, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -3051,7 +2730,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -3059,11 +2737,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(FullX, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
 
@@ -3079,7 +2755,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(FullX, Full),
@@ -3087,11 +2762,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(FullX),
     IOSSafari         -> Set(Unsupported, FullX),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported, Full))
 
@@ -3107,7 +2780,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(FullX),
     AndroidFirefox    -> Set(FullX),
     AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
     Edge              -> Set(Unsupported, FullX),
@@ -3115,11 +2787,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(PartialX, FullX),
-    KaiOSBrowser      -> Set(FullX),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
     Safari            -> Set(FullX),
     Samsung           -> Set(FullX))
 
@@ -3135,7 +2805,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Unsupported, Partial, Full),
@@ -3143,11 +2812,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Partial))
 
@@ -3163,7 +2830,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -3171,11 +2837,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Full))
 
@@ -3191,7 +2855,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -3199,11 +2862,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(FullX, Full),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Full))
 
@@ -3219,7 +2880,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
@@ -3227,11 +2887,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(FullX, Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Full, FullX, Unsupported),
     Samsung           -> Set(Full))
 
@@ -3247,7 +2905,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -3255,11 +2912,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Full))
 
@@ -3275,7 +2930,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
@@ -3283,11 +2937,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -3303,7 +2955,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX, Full),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -3311,11 +2962,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(PartialX, FullX, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(PartialX, FullX, Full),
     Samsung           -> Set(Full))
 
@@ -3331,7 +2980,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(FullX, Full),
@@ -3339,11 +2987,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(FullX),
     IOSSafari         -> Set(FullX),
-    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(FullX, Full))
 
@@ -3359,7 +3005,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full, Partial),
     Edge              -> Set(Unsupported, Full),
@@ -3367,11 +3012,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -3387,7 +3030,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -3395,11 +3037,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -3415,7 +3055,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Unsupported, Full),
@@ -3423,11 +3062,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
@@ -3443,7 +3080,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Unsupported, Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -3451,11 +3087,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported, Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
@@ -3471,7 +3105,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unknown, Partial),
     Edge              -> Set(Unsupported, Partial),
@@ -3479,11 +3112,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Full),
     Samsung           -> Set(Unsupported))
 
@@ -3499,7 +3130,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(Unsupported),
@@ -3507,11 +3137,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported))
 
@@ -3527,7 +3155,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(Full),
@@ -3535,11 +3162,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
-    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Full))
 
@@ -3555,7 +3180,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Full),
@@ -3563,11 +3187,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Full))
 
@@ -3583,7 +3205,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Partial, Full),
     Edge              -> Set(Partial, Full),
@@ -3591,11 +3212,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial, Full),
-    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Full))
 
@@ -3611,7 +3230,6 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, Unknown, FullX, Full),
     Edge              -> Set(Full),
@@ -3619,11 +3237,9 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unknown, FullX, Full),
-    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Unknown, FullX, Full),
     Samsung           -> Set(FullX, Full))
 

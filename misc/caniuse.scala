@@ -111,6 +111,12 @@ object Caniuse {
       ,"zoom"
     )
 
+    val ignoredAgents = Set(
+      "and_qq",
+      "baidu",
+      "kaios",
+    )
+
     val agentkey0: String => String = {
       case "ie"      => "IE"
       case "firefox" => "Firefox"
@@ -128,9 +134,6 @@ object Caniuse {
       case "and_uc"  => "AndroidUC"
       case "edge"    => "Edge"
       case "samsung" => "Samsung"
-      case "and_qq"  => "QQBrowser"
-      case "baidu"   => "BaiduBrowser"
-      case "kaios"   => "KaiOSBrowser"
       case x         => sys error s"Unrecognised agent: '$x'"
     }
 
@@ -149,7 +152,7 @@ object Caniuse {
 
     val agents = {
       val jo = json.field("agents").obj.get
-        jo.fields.map{k =>
+        jo.fields.filterNot(ignoredAgents.contains).map{k =>
         val j = jo(k).get
         Agent(k |> agentkey,
           j.field("browser") |> str,
@@ -181,7 +184,7 @@ object Caniuse {
         v.field("title") |> str |> removeAt,
         v.field("description") |> str,
         v.field("spec") |> str,
-        (+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get mapValues consolidate)
+        ((+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get -- ignoredAgents) mapValues consolidate)
     }.filterNot(dataToIgnore contains _.scalaval)
 
     val data2 = {
