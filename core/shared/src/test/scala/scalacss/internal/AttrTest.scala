@@ -49,7 +49,8 @@ object AttrTest extends TestSuite {
 
     "overlap" - {
       def test(e: AttrCmp, a: Attr, b: Attr): Unit =
-        assertEq(s"$a cmp $b", e, a cmp b)
+        assertEq(s"$a cmp $b", a cmp b, e)
+
       test(Unrelated, padding,     margin)
       test(Overlap,   padding,     paddingLeft)
       test(Overlap,   all,         padding)
@@ -60,6 +61,95 @@ object AttrTest extends TestSuite {
       test(Unrelated, borderStyle, borderColor)
       test(Unrelated, borderLeft,  borderRightColor)
       test(Unrelated, borderLeft,  borderRight)
+
+      "logicalProps" - {
+        "size" - {
+          "base" - test(Unrelated, blockSize,    inlineSize)
+          "min"  - test(Unrelated, minBlockSize, minInlineSize)
+          "max"  - test(Unrelated, maxBlockSize, maxInlineSize)
+        }
+
+        "margin" - {
+          "blockStart_blockEnd"   - test(Unrelated, marginBlockStart,  marginBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, marginBlockStart,  marginInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, marginBlockStart,  marginInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, marginBlockEnd,    marginInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, marginBlockEnd,    marginInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, marginInlineStart, marginInlineEnd)
+        }
+
+        "padding" - {
+          "blockStart_blockEnd"   - test(Unrelated, paddingBlockStart,  paddingBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, paddingBlockStart,  paddingInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, paddingBlockStart,  paddingInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, paddingBlockEnd,    paddingInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, paddingBlockEnd,    paddingInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, paddingInlineStart, paddingInlineEnd)
+        }
+
+        "offset" - {
+          "blockStart_blockEnd"   - test(Unrelated, offsetBlockStart,  offsetBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, offsetBlockStart,  offsetInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, offsetBlockStart,  offsetInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, offsetBlockEnd,    offsetInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, offsetBlockEnd,    offsetInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, offsetInlineStart, offsetInlineEnd)
+        }
+
+        "correctOverlap" - {
+          "shorthand" - {
+            "margin" - {
+              test(Overlap, margin, marginBlockStart)
+              test(Overlap, margin, marginBlockEnd)
+              test(Overlap, margin, marginInlineStart)
+              test(Overlap, margin, marginInlineEnd)
+            }
+            "padding" - {
+              test(Overlap, padding, paddingBlockStart)
+              test(Overlap, padding, paddingBlockEnd)
+              test(Overlap, padding, paddingInlineStart)
+              test(Overlap, padding, paddingInlineEnd)
+            }
+            "all" - {
+              test(Overlap, all, blockSize)
+              test(Overlap, all, inlineSize)
+              test(Overlap, all, marginBlockStart)
+              test(Overlap, all, paddingInlineEnd)
+            }
+          }
+
+          "physicalProperties" - {
+            "blockSize" - {
+              test(Overlap, blockSize, height)
+              test(Overlap, blockSize, width)
+            }
+            "inlineSize" - {
+              test(Overlap, inlineSize, height)
+              test(Overlap, inlineSize, width)
+            }
+            "minSize" - {
+              test(Overlap, minBlockSize,  minHeight)
+              test(Overlap, minBlockSize,  minWidth)
+              test(Overlap, minInlineSize, minHeight)
+              test(Overlap, minInlineSize, minWidth)
+            }
+            "maxSize" - {
+              test(Overlap, maxBlockSize,  maxHeight)
+              test(Overlap, maxBlockSize,  maxWidth)
+              test(Overlap, maxInlineSize, maxHeight)
+              test(Overlap, maxInlineSize, maxWidth)
+            }
+            "margins" - {
+              test(Overlap, marginBlockStart, marginTop)
+              test(Overlap, marginBlockEnd,   marginBottom)
+            }
+            "paddings" - {
+              test(Overlap, paddingBlockStart, paddingTop)
+              test(Overlap, paddingBlockEnd,   paddingBottom)
+            }
+          }
+        }
+      }
     }
 
     "keyPrefixes" - {

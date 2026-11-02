@@ -53,29 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 7. CSS Logical Properties share physical `RealAttr` sets, causing false conflicts and overwriting orthogonal declarations
-- **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L2654-L3236), [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L174-L179)
-- **Code**:
-  ```scala
-  // Attrs.scala:2654-2656, 3039-3041
-  object blockSize extends TypedAttr_Length {
-    override protected def attr2 = Attr.alias("block-size", _)(_(height, width))
-  }
-  object inlineSize extends TypedAttr_Length {
-    override protected def attr2 = Attr.alias("inline-size", _)(_(height, width))
-  }
-
-  // Attrs.scala:3071-3100
-  object marginBlockEnd    extends TypedAttr_LenPctAuto { override val attr = Attr.alias("margin-block-end")(_(margin)) }
-  object marginBlockStart  extends TypedAttr_LenPctAuto { override val attr = Attr.alias("margin-block-start")(_(margin)) }
-  object marginInlineEnd   extends TypedAttr_LenPctAuto { override val attr = Attr.alias("margin-inline-end")(_(margin)) }
-  object marginInlineStart extends TypedAttr_LenPctAuto { override val attr = Attr.alias("margin-inline-start")(_(margin)) }
-  ```
-  (Same pattern for `maxBlockSize`/`maxInlineSize`, `minBlockSize`/`minInlineSize`, `paddingBlock*`/`paddingInline*`, `offsetBlock*`/`offsetInline*`, `borderBlock*`/`borderInline*`.)
-- **Defect**: `AttrCmp.byRealAttrs` determines whether two attributes conflict by checking `x.real exists y.real.contains`. Because `blockSize` and `inlineSize` both have `real = Set(height, width)`, `blockSize.cmp(inlineSize)` returns `AttrCmp.Overlap` (`conflict = true`). Setting both `blockSize(10.px)` and `inlineSize(20.px)` (or `marginBlockStart(5.px)` and `marginBlockEnd(10.px)`, or `paddingInlineStart(4.px)` and `paddingInlineEnd(8.px)`) in the same style triggers false conflict warnings and, under `Compose.Rules.replace`, deletes the earlier property!
-
----
-
 ### 8. `Compose.mergeAVs` drops exact matches before conflict checks, self-conflicts within the right-hand operand, and iterates over unordered `Map`s
 - **Files**: [Compose.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Compose.scala#L21-L45), [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L43-L45)
 - **Code**:

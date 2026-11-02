@@ -112,6 +112,26 @@ object ComposeTest extends TestSuite {
           AV(marginLeft, "0"), AV(margin, "auto")
         )("{margin: auto} conflicts with {margin-left: 0}")
 
+      "logicalProps" - {
+        "blockSizeAndInlineSize" - {
+          test(style(blockSize(10.px), inlineSize(20.px)))(
+            AV(blockSize, "10px"), AV(inlineSize, "20px")
+          )()
+        }
+
+        "marginBlockAndInline" - {
+          test(style(marginBlockStart(10.px), marginBlockEnd(20.px)))(
+            AV(marginBlockStart, "10px"), AV(marginBlockEnd, "20px")
+          )()
+        }
+
+        "replaceMode" - {
+          implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+          val s = style(blockSize(10.px), inlineSize(20.px))
+          assertEq(s.data(Cond.empty).avIterator.toVector, Vector(AV(blockSize, "10px"), AV(inlineSize, "20px")))
+        }
+      }
+
     }
   }
 }
