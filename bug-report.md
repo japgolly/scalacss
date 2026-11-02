@@ -53,31 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 8. `Compose.mergeAVs` drops exact matches before conflict checks, self-conflicts within the right-hand operand, and iterates over unordered `Map`s
-- **Files**: [Compose.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Compose.scala#L21-L45), [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L43-L45)
-- **Code**:
-  ```scala
-  def mergeAVs(c: Cond, newAVs: AVs, into: AVs): AVs = {
-    // Remove exact matches
-    var newData = newAVs.data
-    for {(a, nvs) <- newData; ovs <- into.get(a)} {
-      val o = ovs.toSet
-      val newVals = nvs.whole.filterNot(o.contains)
-      NonEmptyVector.maybe(newVals, newData -= a)(n => newData = newData.updated(a, n))
-    }
-
-    // Find conflicts
-    newData.foldLeft(into) { case (results, (a, nvs)) =>
-      ...
-  ```
-- **Defects**:
-  1. **Exact matches are removed before checking conflicts**: If `into` has `margin(10.px)` followed by `marginLeft(20.px)` and `newAVs` has `margin(10.px)`, the "Remove exact matches" loop deletes `margin(10.px)` from `newData` because `into` already contains `margin -> 10px`. As a result, `margin(10.px)` never overrides or removes `marginLeft(20.px)`! This breaks associativity of composition (noted as `// TODO broke in 9259fd3` in [ComposeTest.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/test/scala/scalacss/internal/ComposeTest.scala#L39)).
-  2. **`newData.foldLeft(into)` resolves `newAVs` entries against earlier entries from `newAVs` itself**: If `newAVs` (`b`) contains both `margin(10.px)` and `marginLeft(20.px)`, folding `newData` into `results` under `Rules.replace` causes the second attribute in `b` to conflict with and delete the first attribute from `b` itself, violating `(a ∘ b) ⊇ b` (noted at [ComposeTest.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/test/scala/scalacss/internal/ComposeTest.scala#L14)).
-  3. **Unordered `Map` iteration**: `newData` (`newAVs.data`) and `r.data` (line 41) are `scala.collection.immutable.Map`s rather than ordered sequences (`newAVs.order` / `r.order`). When a style has 5 or more attributes (`HashMap`), `newData.foldLeft` iterates in hash order rather than declaration order, scrambling CSS property order and warning order.
-  4. **`AVs.addTail` does not move an updated attribute to the end of `order`**: In `AVs.scala:44`, `addTail` uses `e => if (e.isEmpty) order :+ a else order`. When appending a new value to an existing attribute `a`, `a` remains at its old position in `order` rather than moving after attributes added in between.
-
----
-
 ### 10. `StyleLookup.boolean.get` wraps `null` in `Some(null)` for partial boolean domains
 - **File**: [StyleLookup.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/StyleLookup.scala#L15-L29)
 - **Code**:
