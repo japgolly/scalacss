@@ -74,6 +74,22 @@ object AttrTest extends TestSuite {
       test(textAlign.left, "left")
       test(cursor.pointer, "pointer")
       test(cursor.zoomIn, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+
+      "important" - {
+        test(textAlign.left.important, "left !important")
+        test(cursor.pointer.important, "pointer !important")
+        test(cursor.zoomIn.important,  "-moz-zoom-in !important", "-o-zoom-in !important", "-webkit-zoom-in !important", "zoom-in !important")
+
+        "avApply" - {
+          val expected = Vector(
+            CssKV("cursor", "-moz-zoom-in !important"),
+            CssKV("cursor", "-o-zoom-in !important"),
+            CssKV("cursor", "-webkit-zoom-in !important"),
+            CssKV("cursor", "zoom-in !important"),
+          )
+          assertEq(cursor.zoomIn.important(Env.empty), expected)
+        }
+      }
     }
 
     "content" - {

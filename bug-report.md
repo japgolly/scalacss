@@ -53,26 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 6. `AV.important` breaks vendor prefixing for `Transform.values` attributes
-- **Files**: [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L9-L16), [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L137-L140)
-- **Code**:
-  ```scala
-  // AVs.scala:9-16
-  final case class AV(attr: Attr, value: Value) {
-    def apply(env: Env): Vector[CssKV] = attr.gen(env)(value)
-    def important: AV = copy(value = this.value + _important)
-  }
-
-  // Attr.scala:137-140
-  def values(subject: Subject)(v1: Value, vn: Value*): Transform = {
-    val whitelist = vn.toSet + v1
-    values(subject, PrefixApply maybePrepend whitelist.contains)
-  }
-  ```
-- **Defect**: `AV.important` appends `" !important"` directly to `AV.value` before `attr.gen(env)(value)` runs. When `Transform.values` checks `whitelist.contains(in)`, `in` is `"flex !important"` (or `"inline-flex !important"`, `"grid !important"`, `"zoom-in !important"`, `"max-content !important"`), which does not match `"flex"` in `whitelist`. Consequently, calling `.important` on any `Transform.values`-backed property (such as `display.flex.important`, `cursor.zoomIn.important`, `width.maxContent.important`) silently drops all vendor prefixes.
-
----
-
 ### 7. CSS Logical Properties share physical `RealAttr` sets, causing false conflicts and overwriting orthogonal declarations
 - **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L2654-L3236), [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L174-L179)
 - **Code**:

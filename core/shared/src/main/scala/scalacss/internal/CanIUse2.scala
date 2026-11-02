@@ -57,7 +57,10 @@ object CanIUse2 {
       in => Some(_.prefix + in)
 
     def maybePrepend(f: String => Boolean): PrefixApply =
-      in => if (f(in)) prepend(in) else None //_ => in
+      in => {
+        val v = if (in.endsWith(_important)) in.stripSuffix(_important) else in
+        if (f(v) || f(in)) prepend(in) else None
+      }
 
     /**
      * Transforms only certain keywords.
