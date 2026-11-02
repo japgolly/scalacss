@@ -78,23 +78,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 9. Mixing an `addClassName`-only `StyleA` into another style silently drops its first class name
-- **Files**: [Register.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/Register.scala#L62-L76), [Compose.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Compose.scala#L58)
-- **Code**:
-  ```scala
-  // Register.scala:62-67
-  val s =
-    if (doesntNeedClassName(s0)) {
-      val h = s0.addClassNames.head
-      val t = s0.addClassNames.tail
-      s0.copy(className = Some(h), addClassNames = t)
-    } else s0
-  ```
-- **Defect**: When `val s1 = style(addClassName("btn"))` (or `addClassNames("btn", "btn-primary")`) is registered, `doesntNeedClassName(s0)` is `true`, so `registerS` removes `"btn"` from `s.addClassNames` and places it in `s.className`, storing the mutated `s` in `StyleA.style`. When `s1` is later mixed into another style `val s2 = style(s1, color.red)` (via `ToStyleStyleA(x: StyleA) = new ToStyle(x.style)`), `Compose.apply` sets `className = None` and only preserves `addClassNames`. As a result, `"btn"` is silently lost from `s2`!
-- **Related defect**: Because `StyleA(ClassName("btn"), ...)` is added to `_styles`, defining a second style in the same stylesheet that also wraps `addClassName("btn")` triggers a false-positive warning: `Another style in the register has the same classname`.
-
----
-
 ### 10. `StyleLookup.boolean.get` wraps `null` in `Some(null)` for partial boolean domains
 - **File**: [StyleLookup.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/StyleLookup.scala#L15-L29)
 - **Code**:

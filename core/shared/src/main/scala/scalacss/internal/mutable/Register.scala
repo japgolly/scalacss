@@ -33,7 +33,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   private def isTaken(className: ClassName): Boolean =
     mutex(
-      _styles.exists(_.className ==* className)
+      _styles.exists(s => (s.style.data.nonEmpty || s.style.unsafeExts.nonEmpty) && s.className ==* className)
         || _keyframes.exists(_.name ==* className))
 
   private def ensureUnique(cn: ClassName): ClassName =
@@ -60,24 +60,21 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     }
 
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
-    val s =
-      if (doesntNeedClassName(s0)) {
-        val h = s0.addClassNames.head
-        val t = s0.addClassNames.tail
-        s0.copy(className = Some(h), addClassNames = t)
-      } else s0
-
-    val cn = s.className getOrElse nextName(cnh)
+    val (cn, addClassNames) =
+      if (doesntNeedClassName(s0))
+        (s0.addClassNames.head, s0.addClassNames.tail)
+      else
+        (s0.className getOrElse nextName(cnh), s0.addClassNames)
 
     // Register
-    emitRegistrationWarnings(cn, s.warnings)
-    val a = StyleA(cn, s.addClassNames, s)
+    emitRegistrationWarnings(cn, s0.warnings, checkDuplicates = !doesntNeedClassName(s0))
+    val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
     a
   }
 
   /** Optional side-effects for warnings */
-  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning]): Unit =
+  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning], checkDuplicates: Boolean = true): Unit =
     errHandler.warn.foreach { f =>
 
       def warn(s: String): Unit =
@@ -86,7 +83,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       if (_rendered)
         warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
 
-      if (isTaken(cn))
+      if (checkDuplicates && isTaken(cn))
         warn("Another style in the register has the same classname.")
 
       warnings foreach (f(cn, _))

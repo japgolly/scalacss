@@ -202,7 +202,13 @@ abstract class DslBase
           implicit final def ToStyleUnsafeExt (x: UnsafeExt)                      : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts(x: UnsafeExts)                     : ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS    (x: StyleS)                         : ToStyle = new ToStyle(x)
-          implicit final def ToStyleStyleA    (x: StyleA)                         : ToStyle = new ToStyle(x.style)
+          implicit final def ToStyleStyleA    (x: StyleA)                         : ToStyle =
+            new ToStyle(
+              if (x.style.data.isEmpty && x.style.unsafeExts.isEmpty && !x.style.addClassNames.contains(x.className))
+                x.style.copy(addClassNames = x.className +: x.style.addClassNames)
+              else
+                x.style
+            )
 
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 

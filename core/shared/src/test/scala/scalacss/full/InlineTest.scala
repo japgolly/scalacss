@@ -293,6 +293,18 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
   val myFontText3 = style(fontFamily(ff6))
 }
 
+object MyInlineAddClassNames extends StyleSheet.Inline {
+  import dsl._
+
+  val btn            = style(addClassName("btn"))
+  val btnDefault     = style(addClassNames("btn", "btn-default"))
+  val btnPrimary     = style(addClassNames("btn", "btn-primary"))
+  val composedMulti  = style(btnDefault, marginTop.inherit)
+  val composedSingle = style(btn, color.red)
+  val alias          = style(btnDefault)
+  val aliasExtra     = style(btnDefault, addClassName("extra"))
+}
+
 object InlineTest extends utest.TestSuite {
   import japgolly.microlibs.testutil.TestUtil._
   import utest._
@@ -534,6 +546,17 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
+    "cssAddClassNames" - assertMultiline(norm(MyInlineAddClassNames.render), norm(
+      """
+        |.MyInlineAddClassNames-composedMulti {
+        |  margin-top: inherit;
+        |}
+        |
+        |.MyInlineAddClassNames-composedSingle {
+        |  color: red;
+        |}
+      """.stripMargin))
+
     "classnames" - {
       "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
@@ -579,6 +602,16 @@ object InlineTest extends utest.TestSuite {
 
       "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
       "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+
+      "addClassNames" - {
+        "btn"            - assertEq(MyInlineAddClassNames.btn.htmlClass, "btn")
+        "btnDefault"     - assertEq(MyInlineAddClassNames.btnDefault.htmlClass, "btn btn-default")
+        "btnPrimary"     - assertEq(MyInlineAddClassNames.btnPrimary.htmlClass, "btn btn-primary")
+        "composedMulti"  - assertEq(MyInlineAddClassNames.composedMulti.htmlClass, "MyInlineAddClassNames-composedMulti btn btn-default")
+        "composedSingle" - assertEq(MyInlineAddClassNames.composedSingle.htmlClass, "MyInlineAddClassNames-composedSingle btn")
+        "alias"          - assertEq(MyInlineAddClassNames.alias.htmlClass, "btn btn-default")
+        "aliasExtra"     - assertEq(MyInlineAddClassNames.aliasExtra.htmlClass, "btn btn-default extra")
+      }
 
     }
 

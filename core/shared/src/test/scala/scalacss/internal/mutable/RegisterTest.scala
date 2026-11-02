@@ -68,5 +68,40 @@ object RegisterTest extends TestSuite {
       test(fi, sfid.iterator.toList)
     }
 
+    "addClassNames" - {
+      "underlyingStyle" - {
+        "multi" - {
+          val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          implicit def cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
+          assertEq(a.style.addClassNames.map(_.value), Vector("btn", "btn-default"))
+        }
+
+        "single" - {
+          val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          implicit def cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn")))
+          assertEq(a.style.addClassNames.map(_.value), Vector("btn"))
+        }
+      }
+
+      "noDuplicateWarning" - {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
+        implicit def cnh: ClassNameHint = ClassNameHint("blah")
+        val s1 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
+        val s2 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-primary")))
+        val a1 = reg registerS s1
+        val a2 = reg registerS s2
+        assertEq(a1.htmlClass, "btn btn-default")
+        assertEq(a2.htmlClass, "btn btn-primary")
+        assertEq(warnings, Vector.empty)
+      }
+    }
+
   }
 }
