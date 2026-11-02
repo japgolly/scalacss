@@ -1,4 +1,4 @@
-scalaVersion := "2.12.4"
+scalaVersion := "2.12.18"
 
 libraryDependencies += "io.argonaut" %% "argonaut-scalaz" % "6.2"
 libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.2.18"
