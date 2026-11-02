@@ -231,8 +231,8 @@ object AttrTest extends TestSuite {
       test(backgroundClip.paddingBox                        , "padding-box")
       test(backgroundClip.borderBox                         , "border-box")
       test(backgroundClip.contentBox                        , "content-box")
-      test(backgroundClip.contentBox.paddingBox             , "content-box padding-box")
-      test(backgroundClip.contentBox.paddingBox.av.important, "content-box padding-box !important")
+      test(backgroundClip.contentBox.paddingBox             , "content-box,padding-box")
+      test(backgroundClip.contentBox.paddingBox.av.important, "content-box,padding-box !important")
     }
 
     "borderRadius" - {
