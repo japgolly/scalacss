@@ -107,18 +107,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 15. `Pseudo.AttrStartsWith` emits `"|="` instead of `"^="`
-- **File**: [Pseudo.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Pseudo.scala#L220-L222)
-- **Code**:
-  ```scala
-  /** Selects all elements with a name starting with value. */
-  def AttrStartsWith(name: String, value: String) =
-    AttrSelector(name, value, "|=")
-  ```
-- **Defect**: In CSS Selectors, `[attr^="val"]` selects elements whose attribute value starts with `"val"`. `[attr|="val"]` is the hyphen-separated subcode match (matching only `"val"` or `"val-..."`). `AttrStartsWith` mistakenly emits `"|="`, leaving ScalaCSS with no way to generate `[attr^="val"]` (or `[attr*="val"]`).
-
----
-
 ### 16. `backgroundClip.Accum` joins multiple values with spaces instead of commas
 - **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L271-L278)
 - **Code**:

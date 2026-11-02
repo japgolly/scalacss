@@ -219,7 +219,7 @@ object Pseudo {
 
   /** Selects all elements with a name starting with value. */
   def AttrStartsWith(name: String, value: String) =
-    AttrSelector(name, value, "|=")
+    AttrSelector(name, value, "^=")
 
   /** Selects all elements with a name ends with value. */
   def AttrEndsWith(name: String, value: String) =
