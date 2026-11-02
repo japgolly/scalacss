@@ -17,7 +17,7 @@ object CondTest extends TestSuite {
         assertEq(AttrExists("custom-attr").cssValue, "[custom-attr]")
         assertEq(Attr("custom-attr", "bla").cssValue, "[custom-attr=\"bla\"]")
         assertEq(AttrContains("custom-attr", "bla").cssValue, "[custom-attr~=\"bla\"]")
-        assertEq(AttrStartsWith("custom-attr", "bla").cssValue, "[custom-attr|=\"bla\"]")
+        assertEq(AttrStartsWith("custom-attr", "bla").cssValue, "[custom-attr^=\"bla\"]")
         assertEq(AttrEndsWith("custom-attr", "bla").cssValue, "[custom-attr$=\"bla\"]")
       }
 
