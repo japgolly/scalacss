@@ -79,8 +79,26 @@ object AttrTest extends TestSuite {
     "content" - {
       "e" - assertEq(content.string("").value, "''")
       "s" - assertEq(content.string("abc 123").value, "'abc 123'")
-      "q" - assertEq(content.string("""ok " ' \ Δ cool""").value, """'ok " \0027 \005C \0394 cool'""")
+      "q" - assertEq(content.string("""ok " ' \ Δ cool""").value, """'ok " \000027 \00005C \000394 cool'""")
       "u" - assertEq(content.url("http://www.example.com/test.png").value, "url('http://www.example.com/test.png')")
+
+      "hexFollowedByHexChar" - {
+        assertEq(content.string("'a").value, "'\\000027a'")
+        assertEq(content.string("\\a").value, "'\\00005Ca'")
+        assertEq(content.string("Δa").value, "'\\000394a'")
+      }
+
+      "newlines" - {
+        assertNotContains(content.string("hello\nworld").value, "\n")
+        assertNotContains(content.string("hello\rworld").value, "\r")
+        assertNotContains(content.string("hello\fworld").value, "\f")
+        assertEq(content.string("hello\nworld").value, "'hello\\00000Aworld'")
+      }
+
+      "surrogatePairs" - {
+        val v = content.string("🎉").value
+        assertEq(v, "'\\01F389'")
+      }
     }
 
     "border" - {

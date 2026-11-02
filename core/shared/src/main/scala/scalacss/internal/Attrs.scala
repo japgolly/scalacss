@@ -789,27 +789,29 @@ object Attrs {
 
     // TODO content still missing a bunch of combinations
 
+    // https://www.w3.org/TR/CSS2/syndata.html#escaped-characters
     private def escape(input: String): String = {
       // fast in JS, speed doesn't matter in JVM for this case
       var newStr = "'"
       var i = 0
-      while (i < input.length) {
-        val c = input.charAt(i)
+      val len = input.length
+      while (i < len) {
+        val cp = input.codePointAt(i)
 
         @inline def escape =
-          c match {
+          cp match {
             case '\\' | '\'' => true
-            case _           => c.toInt > 127
+            case _           => cp < 32 || cp >= 127
           }
 
         val add =
           if (escape)
-            "\\%04X".format(c.toInt)
+            "\\%06X".format(cp)
           else
-            c.toString
+            cp.toChar.toString
 
         newStr += add
-        i += 1
+        i += Character.charCount(cp)
       }
 
       newStr + "'"
