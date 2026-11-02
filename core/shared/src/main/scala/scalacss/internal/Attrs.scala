@@ -1844,7 +1844,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehavior extends TypedAttrT2[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -1853,7 +1853,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehaviorX extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -1862,7 +1862,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehaviorY extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -2075,7 +2075,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap">MDN</a>
    */
   object rowGap extends TypedAttrT1[GapStyle] with GapStyleOps {
-    override val attr = Attr.real("row-gap", Transform keys CanIUse.multicolumn)
+    override val attr = Attr.real("row-gap")
   }
 
   /**

@@ -119,31 +119,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 19. Wrong `CanIUse` subjects used in `overscrollBehavior`, `overscrollBehaviorX`, `overscrollBehaviorY`, and `rowGap`
-- **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1842-L1862) and [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L2073-L2075)
-- **Code**:
-  ```scala
-  // Lines 1842-1862:
-  object overscrollBehavior extends TypedAttrT2[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overflowAnchor)
-  }
-  object overscrollBehaviorX extends TypedAttr_OverscrollBehavior {
-    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overflowAnchor)
-  }
-  object overscrollBehaviorY extends TypedAttr_OverscrollBehavior {
-    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overflowAnchor)
-  }
-
-  // Lines 2073-2075:
-  object rowGap extends TypedAttrT1[LenPct] with ZeroLit {
-    override val attr = Attr.real("row-gap", Transform keys CanIUse.multicolumn)
-  ```
-- **Defects**:
-  1. `overscrollBehavior`, `overscrollBehaviorX`, and `overscrollBehaviorY` copy-pasted `CanIUse.overflowAnchor` from `overflowAnchor` right above them instead of using `CanIUse.overscrollBehavior` (which is defined in [CanIUse.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse.scala#L1451) and remains completely unused).
-  2. `rowGap` copy-pasted `Transform keys CanIUse.multicolumn` from `columnGap`, generating non-existent `-webkit-row-gap`, `-moz-row-gap`, and `-o-row-gap` properties.
-
----
-
 ### 20. Bogus vendor value transforms on `textAlign`, `resize`, `float`, `clear`, `captionSide`, and untransformed `width.available`
 - **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L636) (and lines 662, 1086, 2048–2050, 2170–2171), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L281), [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L13-L15)
 - **Defects**:
