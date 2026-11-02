@@ -107,18 +107,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 16. `backgroundClip.Accum` joins multiple values with spaces instead of commas
-- **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L271-L278)
-- **Code**:
-  ```scala
-  final class Accum private[backgroundClip](val v: Value) extends ToAV {
-    override def av = AV(attr, v)
-    private def add(v: Value) = new Accum(s"${this.v} $v")
-  ```
-- **Defect**: Per CSS Backgrounds and Borders Level 3 (`background-clip: <box>#`), multiple `background-clip` values must be comma-separated (e.g., `padding-box, content-box`), not space-separated (`padding-box content-box`).
-
----
-
 ### 17. `placeSelf` defines invalid CSS values `leftAuto` and `rightNormal`
 - **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3254-L3255)
 - **Code**:

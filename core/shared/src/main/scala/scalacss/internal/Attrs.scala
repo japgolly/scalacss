@@ -270,7 +270,7 @@ object Attrs {
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with BackgroundClipDecorationOps {
       override def av: AV = AV(attr, v)
-      override protected def next(v: Value): Accum = new Accum(s"${this.v} $v")
+      override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
     }
   }
   trait BackgroundClipDecorationOps {
