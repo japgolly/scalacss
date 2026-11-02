@@ -362,7 +362,9 @@ object Literal extends TypedLiteralAliases {
   def zoomOut            : Value = "zoom-out"
 
   def xxSmall            : Value = "xx-small"
+  @deprecated("Use xSmall", "1.1.0")
   def sSmall             : Value = "s-small"
+  def xSmall             : Value = "x-small"
   def small              : Value = "small"
   def large              : Value = "large"
   def xLarge             : Value = "x-large"

@@ -107,22 +107,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 14. `Attrs.fontSize.sSmall` and `Literal.sSmall` emit invalid `"s-small"` instead of `"x-small"`
-- **Files**: [Values.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Values.scala#L365), [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1157)
-- **Code**:
-  ```scala
-  // Values.scala:364-369
-  def xxSmall            : Value = "xx-small"
-  def sSmall             : Value = "s-small"
-  def small              : Value = "small"
-  def large              : Value = "large"
-  def xLarge             : Value = "x-large"
-  def xxLarge            : Value = "xx-large"
-  ```
-- **Defect**: In CSS Fonts (`<absolute-size>`), the keyword between `xx-small` and `small` is **`x-small`**, not `"s-small"`.
-
----
-
 ### 15. `Pseudo.AttrStartsWith` emits `"|="` instead of `"^="`
 - **File**: [Pseudo.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Pseudo.scala#L220-L222)
 - **Code**:
