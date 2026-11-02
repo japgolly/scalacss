@@ -3242,7 +3242,7 @@ object Attrs {
   /**
    * The place-self CSS property is a shorthand property sets both the align-self and justify-self properties. The first value is the align-self property value, the second the justify-self one. If the second value is not present, the first value is also used for it.
    *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/palce-self">MDN</a>
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/place-self">MDN</a>
    */
   object placeSelf extends TypedAttrBase {
     override val attr = Attr.alias("place-self")(_(alignSelf, justifySelf))
@@ -3255,7 +3255,9 @@ object Attrs {
     def selfEndNormal      = av("self-end normal")
     def flexStartAuto      = av("flex-start auto")
     def flexEndNormal      = av("flex-end normal")
+    @deprecated("This is invalid", "1.1.0")
     def leftAuto           = av("left auto")
+    @deprecated("This is invalid", "1.1.0")
     def rightNormal        = av("right normal")
     def baselineNormal     = av("baseline normal")
     def firstBaselineAuto  = av("first baseline auto")

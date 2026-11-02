@@ -107,17 +107,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 17. `placeSelf` defines invalid CSS values `leftAuto` and `rightNormal`
-- **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3254-L3255)
-- **Code**:
-  ```scala
-  def leftAuto    = av("left auto")
-  def rightNormal = av("right normal")
-  ```
-- **Defect**: Per CSS Box Alignment Level 3 (§6.4), `place-self: <'align-self'> <'justify-self'>?`. The first value is `<'align-self'>`, which does not accept `left` or `right` (those are only valid for `<'justify-self'>`). `"left auto"` and `"right normal"` are invalid CSS. (Note also the typo in the scaladoc URL on line 3241: `palce-self`.)
-
----
-
 ### 18. `ValueT.Rules.ruleWidStyCol_P` erroneously allows `Percentage` in `border`, `outline`, and `columnRule`
 - **File**: [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L144-L145)
 - **Code**:
