@@ -15,7 +15,9 @@ object Media {
 
   sealed abstract class ScanValue(final val value: String)
   case object Progressive extends ScanValue("progressive")
+  @deprecated("Use Interlace", "1.1.0")
   case object Interface   extends ScanValue("interface")
+  case object Interlace   extends ScanValue("interlace")
 
   sealed trait ValueExpr[T]
   case class Eql[T](eql: T) extends ValueExpr[T]
@@ -182,7 +184,9 @@ object Media {
 
     final def scan(v: ScanValue): Out = F(Scan(v))
     final def progressive       : Out = F(Scan(Progressive))
+    @deprecated("Use interlace", "1.1.0")
     final def interface         : Out = F(Scan(Interface))
+    final def interlace         : Out = F(Scan(Interlace))
 
     final def grid        : Out = F(Grid(None))
     final def grid(v: Int): Out = F(Grid(Some(v)))

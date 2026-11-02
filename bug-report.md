@@ -107,18 +107,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ---
 
-### 13. `Media.ScanValue.Interface` / `media.interface` is a typo for CSS `interlace`
-- **File**: [Media.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Media.scala#L16-L18) (and line 185)
-- **Code**:
-  ```scala
-  sealed abstract class ScanValue(final val value: String)
-  case object Progressive extends ScanValue("progressive")
-  case object Interface   extends ScanValue("interface")
-  ```
-- **Defect**: Per the W3C Media Queries specification, the valid values for the `scan` media feature are `progressive` and **`interlace`** (for interlaced CRT/TV displays). `"interface"` is a typo that produces invalid CSS `@media (scan:interface)`.
-
----
-
 ### 14. `Attrs.fontSize.sSmall` and `Literal.sSmall` emit invalid `"s-small"` instead of `"x-small"`
 - **Files**: [Values.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Values.scala#L365), [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1157)
 - **Code**:
