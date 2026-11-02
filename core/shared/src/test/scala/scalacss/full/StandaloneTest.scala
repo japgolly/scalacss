@@ -85,7 +85,7 @@ object StandaloneTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
+        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dppx) {
         |  div.std {
         |    width: 600px;
         |  }

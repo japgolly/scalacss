@@ -20,7 +20,7 @@ object DslBase {
   }
 
   final class DslInt(private val self: Int) extends AnyVal {
-    def :/:(y: Int) = Ratio(self, y)
+    def :/:(y: Int) = Ratio(y, self)
   }
 
   final class DslNum[N](private val self: N) extends AnyVal {

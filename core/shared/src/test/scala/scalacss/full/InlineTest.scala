@@ -366,7 +366,7 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dpi) {
         |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;

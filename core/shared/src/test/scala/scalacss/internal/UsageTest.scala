@@ -71,5 +71,18 @@ object UsageTest extends TestSuite {
           |}
         """.stripMargin.trim)
     }
+
+    "ratio" - {
+      "operator" - {
+        val r = 4 :/: 3
+        assertEq(r, Ratio(4, 3))
+        assertEq(r.value, "4/3")
+      }
+      "mediaQuery" - {
+        val s = style(media.minAspectRatio(4 :/: 3)(margin(10.px)))
+        val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
+        assertContains(css, "(min-aspect-ratio:4/3)")
+      }
+    }
   }
 }
