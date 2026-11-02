@@ -207,10 +207,13 @@ abstract class DslBase
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 
   def addClassName(cn: String): StyleS =
-    StyleS.empty.copy(addClassNames = Vector1(ClassName(cn)))
+    _addClassNames(ClassName.parse(cn).toVector)
 
   def addClassNames(cn: String*): StyleS =
-    StyleS.empty.copy(addClassNames = cn.foldLeft(Vector.empty[ClassName])(_ :+ ClassName(_)))
+    _addClassNames(cn.iterator.flatMap(ClassName.parse).toVector)
+
+  private def _addClassNames(cns: Vector[ClassName]): StyleS =
+    StyleS.empty.copy(addClassNames = cns)
 
   def media = MediaQueryEmpty
 

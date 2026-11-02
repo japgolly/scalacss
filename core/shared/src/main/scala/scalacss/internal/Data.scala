@@ -3,9 +3,16 @@ package scalacss.internal
 import japgolly.univeq.UnivEq
 import scala.annotation.nowarn
 
-final case class ClassName(value: String)
+final case class ClassName(value: String) {
+  assert(value.nonEmpty, "ClassName cannot be empty")
+  assert(!value.exists(_.isWhitespace), s"ClassName '$value' cannot contain whitespace")
+}
+
 object ClassName {
   implicit def univEq: UnivEq[ClassName] = UnivEq.derive
+
+  def parse(s: String): Iterator[ClassName] =
+    s.split("\\s+").iterator.filter(_.nonEmpty).map(apply)
 }
 
 /**

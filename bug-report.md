@@ -53,20 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 5. `ScalatagsJsDom.styleaToJsDomTag` throws `DOMException` on space-containing or empty class names
-- **File**: [ScalatagsJsDom.scala](file:///Users/golly/projects/public/scalacss/ext-scalatags/js/src/main/scala/scalacss/ScalatagsJsDom.scala#L11-L15)
-- **Code**:
-  ```scala
-  implicit final def styleaToJsDomTag(s: StyleA): Modifier = new Modifier {
-    def applyTo(t: dom.Element) =
-      for (cn <- s.classNameIterator)
-        t.classList.add(cn.value)
-  }
-  ```
-- **Defect**: If a style uses `addClassName("btn btn-default")` (as in [ScalatagsTest.scala](file:///Users/golly/projects/public/scalacss/ext-scalatags/shared/src/test/scala/scalacss/ScalatagsTest.scala#L22)) or has an empty class name `""`, `t.classList.add(cn.value)` throws `DOMException: InvalidCharacterError` (for whitespace) or `DOMException: SyntaxError` (for `""`).
-
----
-
 ### 6. `AV.important` breaks vendor prefixing for `Transform.values` attributes
 - **Files**: [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L9-L16), [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L137-L140)
 - **Code**:
