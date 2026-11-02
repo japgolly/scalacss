@@ -53,26 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 10. `StyleLookup.boolean.get` wraps `null` in `Some(null)` for partial boolean domains
-- **File**: [StyleLookup.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/StyleLookup.scala#L15-L29)
-- **Code**:
-  ```scala
-  override def empty = new Array[StyleA](2)
-  override def add   = (t, b, s) => { t(ind(b)) = s; t }
-
-  def ind(b: Boolean) = if (b) 1 else 0
-
-  override def get =
-    array => {
-      val t = Some(array(ind(true)))
-      val f = Some(array(ind(false)))
-      b => if (b) t else f
-    }
-  ```
-- **Defect**: `empty` allocates `Array[StyleA](null, null)`. If a `StyleF[Boolean]` is defined with a subset domain such as `Domain.ofValues(true)` or `Domain.empty`, `array(0)` remains `null`. Because `get` wraps the array elements with `Some(...)` instead of `Option(...)`, `get(array)(false)` returns `Some(null)` instead of `None`. In `Register._registerF` (`i => f(i) getOrElse errHandler.badInput(s, i)`), `Some(null).getOrElse(...)` returns `null: StyleA` instead of calling `errHandler.badInput`.
-
----
-
 ### 11. `ColorLiteral` macro (`c"..."`) crashes with `StringIndexOutOfBoundsException` on empty/blank strings and `NumberFormatException` on large integers
 - **Files**: [scala-2/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-2/scalacss/internal/Macros.scala#L101-L165), [scala-3/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-3/scalacss/internal/Macros.scala#L163-L239)
 - **Code**:
