@@ -313,6 +313,7 @@ object InlineTest extends utest.TestSuite {
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
         |  -ms-grid-template-areas: "main side";
+        |  -webkit-grid-template-areas: "main side";
         |  grid-template-areas: "main side";
         |}
         |
