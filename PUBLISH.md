@@ -1,6 +1,6 @@
 * `scala-cli bin/generate-aliases`
 
-* ~~bin/generate-caniuse~~
+* `bin/generate-caniuse`
 
 * ~~bin/generate-platformjs~~
 

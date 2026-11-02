@@ -45,27 +45,56 @@ object CanIUse {
     val AndroidBrowser    = Agent(webkit, Map.empty)
     val AndroidChrome     = Agent(webkit, Map.empty)
     val AndroidFirefox    = Agent(moz   , Map.empty)
-    val AndroidUC         = Agent(webkit, Map("11.4" -> webkit))
+    val AndroidUC         = Agent(webkit, Map("15.5" -> webkit))
     val BaiduBrowser      = Agent(webkit, Map.empty)
     val BlackberryBrowser = Agent(webkit, Map.empty)
     val Chrome            = Agent(webkit, Map.empty)
-    val Edge              = Agent(ms    , Map.empty)
+    val Edge              = Agent(webkit, Map("12,13,14,15,16,17,18" -> ms))
     val Firefox           = Agent(moz   , Map.empty)
     val IE                = Agent(ms    , Map.empty)
     val IEMobile          = Agent(ms    , Map.empty)
     val IOSSafari         = Agent(webkit, Map.empty)
+    val KaiOSBrowser      = Agent(moz   , Map.empty)
     val Opera             = Agent(webkit, Map("9,9.5-9.6,10.0-10.1,10.5,10.6,11,11.1,11.5,11.6,12,12.1" -> o))
     val OperaMini         = Agent(o     , Map.empty)
-    val OperaMobile       = Agent(o     , Map("37" -> webkit))
+    val OperaMobile       = Agent(o     , Map("80" -> webkit))
     val QQBrowser         = Agent(webkit, Map.empty)
     val Safari            = Agent(webkit, Map.empty)
     val Samsung           = Agent(webkit, Map.empty)
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
-    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BaiduBrowser, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, QQBrowser, Safari, Samsung)
+    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BaiduBrowser, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, KaiOSBrowser, Opera, OperaMini, OperaMobile, QQBrowser, Safari, Samsung)
   }
 
   import Agent._
   import Support._
+
+  /**
+   * CSS Anchor Positioning
+   *
+   * Allows placing elements anywhere on the page relative to an "anchor element", without regard to the layout of other elements besides their containing block
+   *
+   * https://www.w3.org/TR/css-anchor-position-1/
+   */
+  def anchorPositioning: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Partial),
+    AndroidChrome     -> Set(Partial),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial),
+    Firefox           -> Set(Unsupported, Partial),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Partial))
 
   /**
    * CSS Animation
@@ -78,7 +107,7 @@ object CanIUse {
     AndroidBrowser    -> Set(PartialX, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
@@ -87,39 +116,69 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(FullX),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, PartialX, FullX, Full),
     Samsung           -> Set(Full))
+
+  /**
+   * CSS :any-link selector
+   *
+   * The `:any-link` CSS pseudo-class matches all elements that match `:link` or `:visited`
+   *
+   * https://w3c.github.io/csswg-drafts/selectors-4/#the-any-link-pseudo
+   */
+  def anyLink: Subject = Map(
+    AndroidBrowser    -> Set(Unknown, FullX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unknown),
+    Chrome            -> Set(Unknown, FullX, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unknown, FullX, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unknown, FullX, Full),
+    KaiOSBrowser      -> Set(FullX, Full),
+    Opera             -> Set(Unsupported, FullX, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unknown, FullX, Full),
+    Samsung           -> Set(Unknown, FullX, Full))
 
   /**
    * CSS Appearance
    *
    * The `appearance` property defines how elements (particularly form controls) appear by default. By setting the value to `none` the default appearance can be entirely redefined using other CSS properties.
    *
-   * https://drafts.csswg.org/css-ui-4/#appearance-switching
+   * https://www.w3.org/TR/css-ui-4/#appearance-switching
    */
   def appearance: Subject = Map(
-    AndroidBrowser    -> Set(PartialX),
-    AndroidChrome     -> Set(PartialX),
-    AndroidFirefox    -> Set(PartialX),
-    AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(PartialX),
+    AndroidBrowser    -> Set(PartialX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
-    Chrome            -> Set(PartialX),
-    Edge              -> Set(Partial),
-    Firefox           -> Set(PartialX),
+    Chrome            -> Set(PartialX, FullX, Full),
+    Edge              -> Set(Partial, PartialX, FullX, Full),
+    Firefox           -> Set(PartialX, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported, Partial),
-    IOSSafari         -> Set(PartialX),
-    Opera             -> Set(Unsupported, PartialX),
+    IOSSafari         -> Set(PartialX, Full),
+    KaiOSBrowser      -> Set(PartialX, Full),
+    Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(PartialX),
-    Safari            -> Set(PartialX),
-    Samsung           -> Set(PartialX))
+    Safari            -> Set(PartialX, Full),
+    Samsung           -> Set(PartialX, Full))
 
   /**
    * CSS background-attachment
@@ -132,8 +191,8 @@ object CanIUse {
     AndroidBrowser    -> Set(Unsupported, Partial),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
@@ -141,12 +200,41 @@ object CanIUse {
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Partial),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Partial, Full),
+    Safari            -> Set(Partial, Full, Unsupported),
     Samsung           -> Set(Unsupported, Partial))
+
+  /**
+   * Background-clip: text
+   *
+   * Clipping a background image to the foreground text.
+   *
+   * https://drafts.csswg.org/css-backgrounds-4/#background-clip
+   */
+  def backgroundClipText: Subject = Map(
+    AndroidBrowser    -> Set(Unknown, FullX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(FullX),
+    BaiduBrowser      -> Set(FullX),
+    BlackberryBrowser -> Set(FullX),
+    Chrome            -> Set(FullX, Full),
+    Edge              -> Set(FullX, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, FullX, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unknown, Full),
+    QQBrowser         -> Set(FullX),
+    Safari            -> Set(Unsupported, PartialX, Partial, Full),
+    Samsung           -> Set(FullX, Full))
 
   /**
    * CSS3 Background-image options
@@ -168,6 +256,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Full),
@@ -195,6 +284,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
@@ -222,6 +312,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
@@ -244,16 +335,17 @@ object CanIUse {
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full, Partial),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Partial),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Unsupported, Partial),
+    Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
   /**
@@ -264,24 +356,25 @@ object CanIUse {
    * https://www.w3.org/TR/css3-background/#border-images
    */
   val borderImage: Subject = Map(
-    AndroidBrowser    -> Set(PartialX, Partial),
-    AndroidChrome     -> Set(Partial),
+    AndroidBrowser    -> Set(PartialX, Partial, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Partial),
-    BaiduBrowser      -> Set(Partial),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
-    Chrome            -> Set(PartialX, Partial),
+    Chrome            -> Set(Full, Partial, PartialX),
     Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, PartialX, Partial, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported, Full),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    Opera             -> Set(Unsupported, Partial, PartialX),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, Full, Partial, PartialX),
     OperaMini         -> Set(PartialX),
-    OperaMobile       -> Set(Unsupported, PartialX, Partial),
-    QQBrowser         -> Set(Partial),
+    OperaMobile       -> Set(Unsupported, PartialX, Full),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(PartialX, Partial, Full),
-    Samsung           -> Set(Partial))
+    Samsung           -> Set(Partial, Full))
 
   /**
    * CSS3 Border-radius (rounded corners)
@@ -303,6 +396,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -318,18 +412,19 @@ object CanIUse {
    * https://www.w3.org/TR/css3-break/#break-decoration
    */
   def boxdecorationbreak: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, PartialX),
-    AndroidChrome     -> Set(PartialX),
+    AndroidBrowser    -> Set(Unsupported, PartialX, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Full),
+    AndroidUC         -> Set(PartialX),
     BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
-    Chrome            -> Set(Unsupported, PartialX),
-    Edge              -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, PartialX, Full),
+    Edge              -> Set(Unsupported, PartialX, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, PartialX),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Unsupported, Full, PartialX),
@@ -357,6 +452,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -369,7 +465,7 @@ object CanIUse {
    *
    * Method of allowing calculated values for length units, i.e. `width: calc(100% - 3em)`
    *
-   * https://www.w3.org/TR/css3-values/#calc
+   * https://w3c.github.io/csswg-drafts/css-values-3/#calc-notation
    */
   def calc: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Partial, Full),
@@ -381,9 +477,10 @@ object CanIUse {
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
     Firefox           -> Set(Unsupported, FullX, Full),
-    IE                -> Set(Unsupported, Partial, Full),
+    IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -396,25 +493,26 @@ object CanIUse {
    *
    * Method of using HTML5 Canvas as a background image. Not currently part of any specification.
    *
-   * http://webkit.org/blog/176/css-canvas-drawing/
+   * https://webkit.org/blog/176/css-canvas-drawing/
    */
   def canvas: Subject = Map(
     AndroidBrowser    -> Set(FullX, Unsupported),
     AndroidChrome     -> Set(Unsupported),
     AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Unsupported),
     Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, Unknown),
+    Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(FullX),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(FullX),
+    QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, FullX),
     Samsung           -> Set(FullX, Unsupported))
 
@@ -429,21 +527,78 @@ object CanIUse {
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Cascade Layers
+   *
+   * The `@layer` at-rule allows authors to explicitly layer their styles in the cascade, before specificity and order of appearance are considered.
+   *
+   * https://www.w3.org/TR/css-cascade-5/
+   */
+  def cascadeLayers: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * Scoped Styles: the @scope rule
+   *
+   * Allows CSS rules to be scoped to part of the document, with upper and lower limits described by selectors.
+   *
+   * https://drafts.csswg.org/css-cascade-6/#scoped-styles
+   */
+  def cascadeScope: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
-    Samsung           -> Set(Unsupported))
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * ch (character) unit
@@ -465,6 +620,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -483,21 +639,190 @@ object CanIUse {
     AndroidBrowser    -> Set(Unsupported, PartialX, Partial),
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(PartialX),
+    AndroidUC         -> Set(Partial),
     BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX, Partial),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Partial),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, PartialX),
+    IOSSafari         -> Set(Unsupported, PartialX, Partial),
+    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, PartialX, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
-    QQBrowser         -> Set(PartialX),
-    Safari            -> Set(Unsupported, PartialX),
-    Samsung           -> Set(PartialX))
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(Unsupported, PartialX, Partial),
+    Samsung           -> Set(PartialX, Partial))
+
+  /**
+   * CSS print-color-adjust
+   *
+   * The `print-color-adjust` (or `-webkit-print-color-adjust` as prefixed in WebKit/Blink browsers) property is a CSS extension that can be used to force printing of background colors and images.
+   *
+   * https://w3c.github.io/csswg-drafts/css-color-adjust-1/#propdef-print-color-adjust
+   */
+  def colorAdjust: Subject = Map(
+    AndroidBrowser    -> Set(Unknown, FullX),
+    AndroidChrome     -> Set(Unknown),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unknown),
+    BaiduBrowser      -> Set(Unknown),
+    BlackberryBrowser -> Set(Unknown),
+    Chrome            -> Set(Unknown, FullX),
+    Edge              -> Set(Unsupported, FullX),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unknown),
+    IOSSafari         -> Set(Unknown, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, FullX),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, FullX),
+    QQBrowser         -> Set(FullX),
+    Safari            -> Set(Unsupported, FullX, Full),
+    Samsung           -> Set(Unknown))
+
+  /**
+   * CSS color() function
+   *
+   * The CSS `color()` function allows the browser to display colors in any color space, such as the P3 color space which can display colors outside of the default sRGB color space.
+   *
+   * https://w3c.github.io/csswg-drafts/css-color/#color-function
+   */
+  def colorFunction: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Container Queries (Size)
+   *
+   * Size queries in Container Queries provide a way to query the size of a container, and conditionally apply CSS to the content of that container.
+   *
+   * https://www.w3.org/TR/css-contain-3/
+   */
+  def containerQueries: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full, Partial),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Container Style Queries
+   *
+   * Style queries in Container Queries provide a way to query the current styling of a container, and conditionally apply additional CSS to the contents of that container.
+   *
+   * https://www.w3.org/TR/css-contain-3/
+   */
+  def containerQueriesStyle: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Partial),
+    AndroidChrome     -> Set(Partial),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial),
+    Samsung           -> Set(Unsupported, Partial))
+
+  /**
+   * CSS Container Query Units
+   *
+   * Container Query Units specify a length relative to the dimensions of a query container. The units include: `cqw`, `cqh`, `cqi`, `cqb`, `cqmin`, and `cqmax`.
+   *
+   * https://www.w3.org/TR/css-contain-3/#container-lengths
+   */
+  def containerQueryUnits: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS content-visibility
+   *
+   * Provides control over when elements are rendered, so rendering can be skipped for elements not yet in the user's viewport.
+   *
+   * https://www.w3.org/TR/css-contain-2/#content-visibility
+   */
+  def contentVisibility: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * CSS Counters
@@ -519,6 +844,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
@@ -531,34 +857,63 @@ object CanIUse {
    *
    * Scales images with an algorithm that preserves edges and contrast, without smoothing colors or introducing blur. This is intended for images such as pixel art. Official values that accomplish this for the `image-rendering` property are `crisp-edges` and `pixelated`.
    *
-   * https://drafts.csswg.org/css-images-3/#valdef-image-rendering-crisp-edges
+   * https://w3c.github.io/csswg-drafts/css-images-3/#valdef-image-rendering-crisp-edges
    */
   def crispEdges: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(PartialX),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, PartialX),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, FullX),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, PartialX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX, Full),
-    QQBrowser         -> Set(Unsupported),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, PartialX, Full),
     Samsung           -> Set(Full))
+
+  /**
+   * View Transitions (cross-document)
+   *
+   * Provides a mechanism for easily creating animated transitions between different DOM states, while also updating the DOM contents in a single step. This API is specific to cross-document transitions.
+   *
+   * https://www.w3.org/TR/css-view-transitions-2/
+   */
+  def crossDocumentViewTransitions: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Partial),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported))
 
   /**
    * CSS3 Box-sizing
    *
    * Method of specifying whether or not an element's borders and padding should be included in size units
    *
-   * https://www.w3.org/TR/css3-ui/#box-sizing
+   * https://www.w3.org/TR/css-sizing/#box-sizing
    */
   def css3Boxsizing: Subject = Map(
     AndroidBrowser    -> Set(FullX, Full),
@@ -573,12 +928,41 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
     QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Full))
+
+  /**
+   * CSS grab & grabbing cursors
+   *
+   * Support for the `grab` & `grabbing` values for the `cursor` property. Used to indicate that something can be grabbed (dragged to be moved).
+   *
+   * https://www.w3.org/TR/css3-ui/#cursor
+   */
+  def css3CursorsGrab: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(FullX),
+    Chrome            -> Set(FullX, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(FullX, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full, FullX),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(FullX, Full),
+    Samsung           -> Set(Unsupported))
 
   /**
    * CSS3 Cursors: zoom-in & zoom-out
@@ -588,11 +972,11 @@ object CanIUse {
    * https://www.w3.org/TR/css3-ui/#cursor
    */
   def css3CursorsNewer: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
     Edge              -> Set(Full),
@@ -600,44 +984,46 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(FullX, Full),
     Samsung           -> Set(Unsupported))
 
   /**
    * CSS3 tab-size
    *
-   * Method of customizing the width of the tab character. Only effective using 'white-space: pre' or 'white-space: pre-wrap'.
+   * Method of customizing the width of the tab character. Only effective using 'white-space: pre', 'white-space: pre-wrap', and 'white-space: break-spaces'.
    *
    * https://www.w3.org/TR/css3-text/#tab-size
    */
   def css3Tabsize: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Partial, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(FullX),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Unsupported, Partial, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, PartialX, FullX),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, PartialX, FullX, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(PartialX),
     Opera             -> Set(Unsupported, PartialX, Partial, Full),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Unsupported, Partial),
+    Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Full))
 
   /**
    * CSS Device Adaptation
    *
-   * A standard way to override the size of viewport in web page using the `@viewport` rule, standardizing and replacing Apple's own popular `&lt;meta&gt;` viewport implementation.
+   * Method of overriding the size of viewport in web page using the `@viewport` rule, replacing Apple's own popular `&lt;meta&gt;` viewport implementation. Includes the `extend-to-zoom` width value.
    *
    * https://www.w3.org/TR/css-device-adapt/
    */
@@ -649,11 +1035,12 @@ object CanIUse {
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
-    Edge              -> Set(PartialX),
+    Edge              -> Set(PartialX, Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(PartialX),
     OperaMobile       -> Set(Unsupported, PartialX),
@@ -666,21 +1053,78 @@ object CanIUse {
    *
    * `display: contents` causes an element's children to appear as if they were direct children of the element's parent, ignoring the element itself. This can be useful when a wrapper element should be ignored when using CSS grid or similar layout techniques.
    *
-   * https://drafts.csswg.org/css-display/
+   * https://w3c.github.io/csswg-drafts/css-display/
    */
   def displayContents: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Partial),
+    AndroidChrome     -> Set(Partial),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Partial),
+    BaiduBrowser      -> Set(Partial),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial),
+    Firefox           -> Set(Unsupported, Partial),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Partial, Unsupported, Full),
+    KaiOSBrowser      -> Set(Partial),
+    Opera             -> Set(Unsupported, Partial),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(Unsupported, Partial),
+    Samsung           -> Set(Unsupported, Partial))
+
+  /**
+   * CSS Environment Variables env()
+   *
+   * Usage of environment variables like `safe-area-inset-top`.
+   *
+   * https://w3c.github.io/csswg-drafts/css-env-1/#env-function
+   */
+  def envFunction: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * ui-serif, ui-sans-serif, ui-monospace and ui-rounded values for font-family
+   *
+   * Allows more control when choosing system interface fonts
+   *
+   * https://w3c.github.io/csswg-drafts/css-fonts-4/#ui-serif-def
+   */
+  def extendedSystemFonts: Subject = Map(
     AndroidBrowser    -> Set(Unsupported),
     AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(Full),
+    AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
     Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
@@ -708,6 +1152,7 @@ object CanIUse {
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
@@ -718,7 +1163,7 @@ object CanIUse {
   /**
    * CSS Filter Effects
    *
-   * Method of applying filter effects (like blur, grayscale, brightness, contrast and hue) to elements, previously only possible by using SVG.
+   * Method of applying filter effects using the `filter` property to elements, matching filters available in SVG. Filter functions include blur, brightness, contrast, drop-shadow, grayscale, hue-rotate, invert, opacity, sepia and saturate.
    *
    * https://www.w3.org/TR/filter-effects-1/
    */
@@ -726,21 +1171,22 @@ object CanIUse {
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(FullX),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
-    Edge              -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial, Full),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
-    Samsung           -> Set(FullX))
+    Samsung           -> Set(FullX, Full))
 
   /**
    * CSS position:fixed
@@ -762,6 +1208,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Full),
@@ -780,7 +1227,7 @@ object CanIUse {
     AndroidBrowser    -> Set(PartialX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(PartialX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
@@ -789,6 +1236,7 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX, Partial),
     IEMobile          -> Set(PartialX, Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full, FullX),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
@@ -797,9 +1245,37 @@ object CanIUse {
     Samsung           -> Set(Full))
 
   /**
+   * gap property for Flexbox
+   *
+   * `gap` for flexbox containers to create gaps/gutters between flex items
+   *
+   * https://www.w3.org/TR/css-align-3/#gaps
+   */
+  def flexboxGap: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
    * display: flow-root
    *
-   * The element generates a block container box, and lays out its contents using flow layout. It always establishes a new block formatting context for its contents. The result is the same as the "clearfix" hack.
+   * The element generates a block container box, and lays out its contents using flow layout. It always establishes a new block formatting context for its contents. It provides a better solution to the most use cases of the "clearfix" hack.
    *
    * https://www.w3.org/TR/css-display-3/#valdef-display-flow-root
    */
@@ -807,42 +1283,72 @@ object CanIUse {
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * :focus-visible CSS pseudo-class
+   *
+   * The `:focus-visible` pseudo-class applies while an element matches the `:focus` pseudo-class, and the UA determines via heuristics that the focus should be specially indicated on the element (typically via a “focus ring”).
+   *
+   * https://w3c.github.io/csswg-drafts/selectors-4/#the-focus-visible-pseudo
+   */
+  def focusVisible: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, FullX, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(FullX),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported))
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * system-ui value for font-family
    *
    * Value for `font-family` that represents the default user interface font.
    *
-   * https://drafts.csswg.org/css-fonts-4/#system-ui-def
+   * https://w3c.github.io/csswg-drafts/css-fonts-4/#system-ui-def
    */
   def fontFamilySystemUi: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
-    AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(Unsupported),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
-    BaiduBrowser      -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unsupported, Unknown),
-    Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, Partial),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -855,13 +1361,13 @@ object CanIUse {
    *
    * Method of applying advanced typographic and language-specific font features to supported OpenType fonts.
    *
-   * http://w3.org/TR/css3-fonts/#font-rend-props
+   * https://w3.org/TR/css3-fonts/#font-rend-props
    */
   def fontFeature: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, PartialX, FullX, Full),
@@ -870,6 +1376,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Partial, Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -892,17 +1399,46 @@ object CanIUse {
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Full))
+
+  /**
+   * CSS font-palette
+   *
+   * The font-palette CSS property allows selecting a palette from a color font. In combination with the `@font-palette-values` at-rule, custom palettes can be defined.
+   *
+   * https://www.w3.org/TR/css-fonts-4/#propdef-font-palette
+   */
+  def fontPalette: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * CSS font-size-adjust
@@ -912,37 +1448,38 @@ object CanIUse {
    * https://www.w3.org/TR/css-fonts-3/#font-size-adjust-prop
    */
   def fontSizeAdjust: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, Full),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported, Partial),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported))
 
   /**
    * CSS font-stretch
    *
-   * If a font has multiple types of variations based on the width of characters, the `font-stretch` property allows the appropriate one to be selected. The property in itself does not cause the browser to stretch to a font.
+   * If a font has multiple types of variations based on the width of characters, this property allows the appropriate one to be selected. The property in itself does not cause the browser to stretch to a font. Note that `font-stretch` is an alias of the [`font-width`](/wf-font-width) CSS property.
    *
-   * https://www.w3.org/TR/css-fonts-3/#font-stretch-prop
+   * https://www.w3.org/TR/css-fonts-4/#font-stretch-prop
    */
   def fontStretch: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
@@ -950,13 +1487,70 @@ object CanIUse {
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS font-variant-numeric
+   *
+   * CSS property that provides different ways of displaying numbers, fractions, and ordinal markers.
+   *
+   * https://w3c.github.io/csswg-drafts/css-fonts-3/#propdef-font-variant-numeric
+   */
+  def fontVariantNumeric: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported, Unknown),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * Fullscreen API
+   *
+   * API for allowing content (like a video or canvas element) to take up the entire screen.
+   *
+   * https://fullscreen.spec.whatwg.org/
+   */
+  def fullscreen: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported, PartialX),
+    Chrome            -> Set(Unsupported, PartialX, Full),
+    Edge              -> Set(Partial, Full),
+    Firefox           -> Set(Unsupported, PartialX, Full),
+    IE                -> Set(Unsupported, PartialX),
+    IEMobile          -> Set(Unsupported, PartialX),
+    IOSSafari         -> Set(Unsupported, Partial),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, Full, PartialX),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full, PartialX),
+    Samsung           -> Set(PartialX, Full))
 
   /**
    * CSS Generated content for pseudo-elements
@@ -978,6 +1572,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
@@ -1001,30 +1596,31 @@ object CanIUse {
     BlackberryBrowser -> Set(PartialX, Full),
     Chrome            -> Set(PartialX, FullX, Full),
     Edge              -> Set(Full),
-    Firefox           -> Set(Unsupported, FullX, Full),
+    Firefox           -> Set(Unsupported, PartialX, Partial, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
-    IOSSafari         -> Set(PartialX, FullX, Full),
+    IOSSafari         -> Set(PartialX, Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, PartialX, FullX, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Unsupported, PartialX, FullX, Full),
+    Safari            -> Set(Unsupported, Full, Partial, PartialX),
     Samsung           -> Set(Full))
 
   /**
-   * CSS Grid Layout
+   * CSS Grid Layout (level 1)
    *
    * Method of using a grid concept to lay out content, providing a mechanism for authors to divide available space for layout into columns and rows using a set of predictable sizing behaviors. Includes support for all `grid-*` properties and the `fr` unit.
    *
-   * https://www.w3.org/TR/css3-grid-layout/
+   * https://www.w3.org/TR/css-grid-1/
    */
   val grid: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
     Edge              -> Set(PartialX, Full),
@@ -1032,19 +1628,48 @@ object CanIUse {
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Grid Lanes
+   *
+   * CSS Grid Lanes extends CSS Grid to create layouts with columns *or* rows (not both), allowing mixed aspect ratio content to pack neatly (also known as  "masonry" or "waterfall" layout).
+   *
+   * https://www.w3.org/TR/css-grid-3/
+   */
+  def gridLanes: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
+    Firefox           -> Set(Unsupported),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
-    Samsung           -> Set(Unsupported, Full))
+    Samsung           -> Set(Unsupported))
 
   /**
    * CSS hanging-punctuation
    *
    * Allows some punctuation characters from start (or the end) of text elements to be placed "outside" of the box in order to preserve the reading flow.
    *
-   * https://drafts.csswg.org/css-text-3/#hanging-punctuation-property
+   * https://w3c.github.io/csswg-drafts/css-text-3/#hanging-punctuation-property
    */
   def hangingPunctuation: Subject = Map(
     AndroidBrowser    -> Set(Unsupported),
@@ -1054,16 +1679,17 @@ object CanIUse {
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported, Unknown),
+    Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, Full),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported, Full),
+    Safari            -> Set(Unsupported, Partial, Full),
     Samsung           -> Set(Unsupported))
 
   /**
@@ -1074,23 +1700,24 @@ object CanIUse {
    * https://www.w3.org/TR/css3-text/#hyphenation
    */
   def hyphens: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Partial),
-    AndroidChrome     -> Set(Partial),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(Partial),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported, Partial),
-    Edge              -> Set(FullX),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(FullX, Partial, Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
-    Opera             -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported, FullX),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, FullX, Full),
     Samsung           -> Set(Unsupported, Partial, Full))
 
   /**
@@ -1098,54 +1725,56 @@ object CanIUse {
    *
    * CSS property used generally to fix the intended orientation of an image. This can be done using 90 degree increments or based on the image's EXIF data using the "from-image" value.
    *
-   * https://www.w3.org/TR/css3-images/#image-orientation
+   * https://www.w3.org/TR/css-images-3/#the-image-orientation
    */
   def imageOrientation: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Partial),
-    Opera             -> Set(Unsupported),
+    IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported))
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * CSS image-set
    *
-   * Method of letting the browser pick the most appropriate CSS background image from a given set, primarily for high PPI screens.
+   * Method of letting the browser pick the most appropriate CSS image from a given set.
    *
-   * https://drafts.csswg.org/css-images-4/#image-set-notation
+   * https://w3c.github.io/csswg-drafts/css-images-4/#image-set-notation
    */
   def imageSet: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, FullX),
-    AndroidChrome     -> Set(FullX),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(FullX),
-    BlackberryBrowser -> Set(Unsupported, FullX),
-    Chrome            -> Set(Unsupported, FullX),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, PartialX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(PartialX),
+    BaiduBrowser      -> Set(PartialX),
+    BlackberryBrowser -> Set(Unsupported, PartialX),
+    Chrome            -> Set(Unsupported, PartialX, Full),
+    Edge              -> Set(Unsupported, PartialX, Full),
+    Firefox           -> Set(Full, Unsupported, Partial),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, FullX),
-    Opera             -> Set(Unsupported, FullX),
+    IOSSafari         -> Set(Partial, Unsupported, Full, PartialX),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
-    Safari            -> Set(Unsupported, FullX),
-    Samsung           -> Set(FullX))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(PartialX),
+    Safari            -> Set(Partial, Unsupported, Full, PartialX),
+    Samsung           -> Set(PartialX, Full))
 
   /**
    * CSS Initial Letter
@@ -1155,24 +1784,25 @@ object CanIUse {
    * https://www.w3.org/TR/css-inline/#initial-letter-styling
    */
   def initialLetter: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Partial),
+    AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
-    Opera             -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
     QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Partial, PartialX),
-    Samsung           -> Set(Unsupported))
+    Samsung           -> Set(Unsupported, Partial))
 
   /**
    * Intrinsic & Extrinsic Sizing
@@ -1184,22 +1814,79 @@ object CanIUse {
   def intrinsicWidth: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(PartialX),
-    AndroidUC         -> Set(FullX),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, PartialX),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, PartialX, Partial),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, PartialX),
-    Opera             -> Set(Unsupported, FullX, Full),
+    IOSSafari         -> Set(Unsupported, Full, PartialX, Partial),
+    KaiOSBrowser      -> Set(PartialX, Partial),
+    Opera             -> Set(Full, Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(FullX),
-    Safari            -> Set(Unsupported, PartialX, Partial),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full, PartialX, Partial),
     Samsung           -> Set(FullX, Full))
+
+  /**
+   * CSS justify-content: space-evenly
+   *
+   * The "space-evenly" value for the `justify-content` property distributes the space between items evenly. It is similar to space-around but provides equal instead of half-sized space on the edges. Can be used in both CSS flexbox & grid.
+   *
+   * https://w3c.github.io/csswg-drafts/css-align-3/#valdef-align-content-space-evenly
+   */
+  def justifyContentSpaceEvenly: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Partial, Full))
+
+  /**
+   * LCH and Lab color values
+   *
+   * The `lch()` and `lab()` color functions are based on the CIE LAB color space, representing colors in a way that closely matches human perception and provides access to a wider spectrum of colors than offered by the usual RGB color space.
+   *
+   * https://www.w3.org/TR/css-color-4/#specifying-lab-lch
+   */
+  def lchLab: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * letter-spacing CSS property
@@ -1221,6 +1908,7 @@ object CanIUse {
     IE                -> Set(Unknown, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unknown, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unknown, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
@@ -1231,29 +1919,30 @@ object CanIUse {
   /**
    * CSS Logical Properties
    *
-   * Use start/end properties that depend on LTR or RTL writing direction instead of left/right
+   * Logical properties and values provide control of layout through logical, rather than physical, direction and dimension mappings. These properties are `writing-mode` relative equivalents of their corresponding physical properties.
    *
    * https://www.w3.org/TR/css-logical-1/
    */
   def logicalProps: Subject = Map(
-    AndroidBrowser    -> Set(PartialX),
-    AndroidChrome     -> Set(PartialX),
-    AndroidFirefox    -> Set(PartialX),
-    AndroidUC         -> Set(PartialX),
-    BaiduBrowser      -> Set(PartialX),
+    AndroidBrowser    -> Set(PartialX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
-    Chrome            -> Set(PartialX),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, PartialX, Full),
+    Chrome            -> Set(PartialX, Partial, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, PartialX, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(PartialX),
-    Opera             -> Set(Unsupported, PartialX),
+    IOSSafari         -> Set(PartialX, Partial, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, Full, PartialX, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
-    QQBrowser         -> Set(PartialX),
-    Safari            -> Set(PartialX),
-    Samsung           -> Set(PartialX))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(PartialX, Partial, Full),
+    Samsung           -> Set(PartialX, Partial, Full))
 
   /**
    * CSS Masks
@@ -1263,51 +1952,111 @@ object CanIUse {
    * https://www.w3.org/TR/css-masking-1/
    */
   val masks: Subject = Map(
-    AndroidBrowser    -> Set(PartialX),
-    AndroidChrome     -> Set(PartialX),
+    AndroidBrowser    -> Set(PartialX, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(PartialX),
     BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(PartialX),
-    Chrome            -> Set(PartialX),
-    Edge              -> Set(Unsupported),
+    Chrome            -> Set(PartialX, Full),
+    Edge              -> Set(Unsupported, Partial, Full, PartialX),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(PartialX),
-    Opera             -> Set(Unsupported, PartialX),
+    IOSSafari         -> Set(PartialX, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(PartialX),
-    Safari            -> Set(Unsupported, PartialX),
-    Samsung           -> Set(PartialX))
+    Safari            -> Set(Unsupported, PartialX, Full),
+    Samsung           -> Set(PartialX, Full))
+
+  /**
+   * CSS math functions min(), max() and clamp()
+   *
+   * More advanced mathematical expressions in addition to `calc()`
+   *
+   * https://www.w3.org/TR/css-values-4/#math-function
+   */
+  def mathFunctions: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * Media Queries: Range Syntax
+   *
+   * Syntax improvements to make media queries using features that have a "range" type (like width or height) less verbose. Can be used with ordinary mathematical comparison operators: `&gt;`, `&lt;`, `&gt;=`, or `&lt;=`.
+
+For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@media (min-width: 100px) and (max-width: 1900px)`
+   *
+   * https://www.w3.org/TR/mediaqueries-4/#mq-range-context
+   */
+  def mediaRangeSyntax: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * Media Queries: resolution feature
    *
    * Allows a media query to be set based on the device pixels used per CSS unit. While the standard uses `min`/`max-resolution` for this, some browsers support the older non-standard `device-pixel-ratio` media query.
    *
-   * https://www.w3.org/TR/css3-mediaqueries/#resolution
+   * https://www.w3.org/TR/mediaqueries-4/#resolution
    */
   def mediaResolution: Subject = Map(
-    AndroidBrowser    -> Set(Unknown, PartialX, Full),
+    AndroidBrowser    -> Set(Unknown, PartialX, Partial, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(PartialX),
-    Chrome            -> Set(PartialX, Full),
-    Edge              -> Set(Full),
+    Chrome            -> Set(PartialX, Partial, Full),
+    Edge              -> Set(Partial, Full),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(Unknown, PartialX),
-    Opera             -> Set(Unsupported, PartialX, Full),
+    IOSSafari         -> Set(Unknown, PartialX, Full),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, PartialX, Full, Partial),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(PartialX, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Unsupported, PartialX),
-    Samsung           -> Set(Full))
+    Safari            -> Set(Unsupported, PartialX, Full),
+    Samsung           -> Set(Partial, Full))
 
   /**
    * CSS3 Multiple column layout
@@ -1317,24 +2066,53 @@ object CanIUse {
    * https://www.w3.org/TR/css3-multicol/
    */
   val multicolumn: Subject = Map(
-    AndroidBrowser    -> Set(PartialX, Full),
-    AndroidChrome     -> Set(Full),
+    AndroidBrowser    -> Set(PartialX, Partial),
+    AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
-    AndroidUC         -> Set(PartialX),
+    AndroidUC         -> Set(Partial),
     BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(PartialX),
-    Chrome            -> Set(PartialX, Full),
-    Edge              -> Set(Full),
+    Chrome            -> Set(PartialX, Partial),
+    Edge              -> Set(Full, Partial),
     Firefox           -> Set(PartialX, Partial),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, Partial, Full),
-    Opera             -> Set(Unsupported, Full, PartialX),
+    KaiOSBrowser      -> Set(PartialX),
+    Opera             -> Set(Unsupported, Full, PartialX, Partial),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full, Partial),
     QQBrowser         -> Set(Partial),
     Safari            -> Set(PartialX, Partial, Full),
-    Samsung           -> Set(PartialX, Full))
+    Samsung           -> Set(PartialX, Partial))
+
+  /**
+   * CSS Nesting
+   *
+   * CSS nesting provides the ability to nest one style rule inside another, with the selector of the child rule relative to the selector of the parent rule. Similar behavior previously required a CSS pre-processor.
+   *
+   * https://w3c.github.io/csswg-drafts/css-nesting/
+   */
+  def nesting: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Partial, Full))
 
   /**
    * CSS3 object-fit/object-position
@@ -1351,11 +2129,12 @@ object CanIUse {
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported, Partial),
+    Edge              -> Set(Unsupported, Partial, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(FullX),
     OperaMobile       -> Set(Unsupported, FullX, Full),
@@ -1383,6 +2162,7 @@ object CanIUse {
     IE                -> Set(Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
@@ -1395,7 +2175,7 @@ object CanIUse {
    *
    * The CSS outline properties draw a border around an element that does not affect layout, making it ideal for highlighting. This covers the `outline` shorthand, as well as `outline-width`, `outline-style`, `outline-color` and `outline-offset`.
    *
-   * https://drafts.csswg.org/css-ui/
+   * https://w3c.github.io/csswg-drafts/css-ui/
    */
   val outline: Subject = Map(
     AndroidBrowser    -> Set(Full),
@@ -1410,6 +2190,7 @@ object CanIUse {
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Partial, Full),
@@ -1418,59 +2199,117 @@ object CanIUse {
     Samsung           -> Set(Full))
 
   /**
+   * CSS overflow property
+   *
+   * Originally a single property for controlling overflowing content in both horizontal & vertical directions, the `overflow` property is now a shorthand for `overflow-x` & `overflow-y`. The latest version of the specification also introduces the `clip` value that blocks programmatic scrolling.
+   *
+   * https://www.w3.org/TR/css-overflow-3/
+   */
+  def overflow: Subject = Map(
+    AndroidBrowser    -> Set(Partial, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Partial),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Partial),
+    Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Partial, Full),
+    Firefox           -> Set(Partial, Full),
+    IE                -> Set(Partial),
+    IEMobile          -> Set(Partial),
+    IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Partial, Full),
+    OperaMini         -> Set(Partial),
+    OperaMobile       -> Set(Partial, Full),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(Partial, Full),
+    Samsung           -> Set(Partial, Full))
+
+  /**
    * CSS overflow-anchor (Scroll Anchoring)
    *
    * Changes in DOM elements above the visible region of a scrolling box can result in the page moving while the user is in the middle of consuming the content.
 By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarring user experience by keeping track of the position of an anchor node and adjusting the scroll offset accordingly
    *
-   * https://wicg.github.io/ScrollAnchoring/
+   * https://w3c.github.io/csswg-drafts/css-scroll-anchoring/
    */
   def overflowAnchor: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS overflow: overlay
+   *
+   * The `overlay` value of the `overflow` CSS property is a non-standard value to make scrollbars appear on top of content rather than take up space. This value is deprecated and related functionality being standardized as [the `scrollbar-gutter` property](mdn-css_properties_scrollbar-gutter).
+   *
+   * https://github.com/w3c/csswg-drafts/issues/92
+   */
+  def overflowOverlay: Subject = Map(
+    AndroidBrowser    -> Set(Full, Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unknown),
+    Chrome            -> Set(Unknown, Full, Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unknown, Full, Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported, Full))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unknown, Full, Unsupported),
+    Samsung           -> Set(Full))
 
   /**
    * CSS overscroll-behavior
    *
    * CSS property to control the behavior when the scroll position of a scroll container reaches the edge of the scrollport.
    *
-   * https://wicg.github.io/overscroll-behavior/
+   * https://drafts.csswg.org/css-overscroll/#overscroll-behavior-properties
    */
   def overscrollBehavior: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Partial),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
-    Edge              -> Set(Partial),
+    Edge              -> Set(Partial, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * CSS page-break properties
@@ -1480,45 +2319,187 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    * https://www.w3.org/TR/CSS2/page.html#page-breaks
    */
   def pageBreak: Subject = Map(
-    AndroidBrowser    -> Set(Partial),
+    AndroidBrowser    -> Set(Partial, Full),
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
     AndroidUC         -> Set(Partial),
     BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
-    Chrome            -> Set(Partial),
-    Edge              -> Set(Partial),
+    Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Partial, Full),
     Firefox           -> Set(Partial),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial),
+    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unknown, Full, Partial),
     OperaMini         -> Set(Full),
-    OperaMobile       -> Set(Full, Partial),
+    OperaMobile       -> Set(Full),
     QQBrowser         -> Set(Partial),
     Safari            -> Set(Partial),
-    Samsung           -> Set(Partial))
+    Samsung           -> Set(Partial, Full))
+
+  /**
+   * CSS Painting API
+   *
+   * Allows programmatic generation of images used by CSS
+   *
+   * https://drafts.css-houdini.org/css-paint-api/
+   */
+  def paintApi: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * Pointer events
+   *
+   * This specification integrates various inputs from mice, touchscreens, and pens, making separate implementations no longer necessary and authoring for cross-device pointers easier. Not to be mistaken with the unrelated "pointer-events" CSS property.
+   *
+   * https://www.w3.org/TR/pointerevents/
+   */
+  def pointer: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported, PartialX, Full),
+    IEMobile          -> Set(PartialX, Full),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * prefers-color-scheme media query
+   *
+   * Media query to detect if the user has set their system to use a light or dark color theme.
+   *
+   * https://w3c.github.io/csswg-drafts/mediaqueries-5/#prefers-color-scheme
+   */
+  def prefersColorScheme: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * prefers-reduced-motion media query
+   *
+   * CSS media query based on a user preference for preferring reduced motion (animation, etc).
+   *
+   * https://w3c.github.io/csswg-drafts/mediaqueries-5/#prefers-reduced-motion
+   */
+  def prefersReducedMotion: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS :read-only and :read-write selectors
+   *
+   * :read-only and :read-write pseudo-classes to match elements which are considered user-alterable
+   *
+   * https://html.spec.whatwg.org/multipage/semantics-other.html#selector-read-only
+   */
+  def readOnlyWrite: Subject = Map(
+    AndroidBrowser    -> Set(Unknown, Partial, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Partial, Full),
+    Chrome            -> Set(Unknown, Partial, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unknown, FullX, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unknown, Partial, Full),
+    KaiOSBrowser      -> Set(FullX, Full),
+    Opera             -> Set(Unknown, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unknown, Partial, Full),
+    Samsung           -> Set(Full))
 
   /**
    * CSS Reflections
    *
    * Method of displaying a reflection of an element
    *
-   * http://webkit.org/blog/182/css-reflections/
+   * https://webkit.org/blog/182/css-reflections/
    */
   def reflections: Subject = Map(
     AndroidBrowser    -> Set(FullX),
     AndroidChrome     -> Set(FullX),
     AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
+    AndroidUC         -> Set(FullX),
     BaiduBrowser      -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, FullX),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(FullX),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
@@ -1529,7 +2510,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
   /**
    * CSS Regions
    *
-   * Method of flowing content into multiple elements.
+   * Method of flowing content into multiple elements, allowing magazine-like layouts. While once supported in WebKit-based browsers and Internet Explorer, implementing the feature is no longer being pursued by any browser.
    *
    * https://www.w3.org/TR/css3-regions/
    */
@@ -1541,17 +2522,46 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, PartialX),
-    Edge              -> Set(PartialX),
+    Edge              -> Set(PartialX, Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, PartialX),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unsupported, FullX),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, FullX),
     Samsung           -> Set(Unsupported))
+
+  /**
+   * CSS Relative color syntax
+   *
+   * Relative color syntax in CSS allows a color to be defined relative to another color using the `from` keyword and optionally `calc()` for any of the color values.
+   *
+   * https://www.w3.org/TR/css-color-5/#relative-colors
+   */
+  def relativeColors: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, Partial, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Partial, Full),
+    Samsung           -> Set(Unsupported, Partial))
 
   /**
    * CSS Repeating Gradients
@@ -1573,6 +2583,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, PartialX, FullX, Full),
@@ -1595,11 +2606,12 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported, FullX, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -1612,7 +2624,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * If the run-in box contains a block box, same as block. If a block box follows the run-in box, the run-in box becomes the first inline box of the block box. If an inline box follows, the run-in box becomes a block box.
    *
-   * https://drafts.csswg.org/css-display/#valdef-display-run-in
+   * https://w3c.github.io/csswg-drafts/css-display-3/#valdef-display-run-in
    */
   def runIn: Subject = Map(
     AndroidBrowser    -> Set(Full, Unsupported),
@@ -1620,13 +2632,14 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidFirefox    -> Set(Unsupported),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unknown),
+    BlackberryBrowser -> Set(Full),
     Chrome            -> Set(Full, Unsupported),
     Edge              -> Set(Unsupported),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full, Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Full, Unsupported),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full, Unsupported),
@@ -1635,31 +2648,32 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     Samsung           -> Set(Unsupported))
 
   /**
-   * CSSOM Scroll-behavior
+   * CSS Scroll-behavior
    *
    * Method of specifying the scrolling behavior for a scrolling box, when scrolling happens due to navigation or CSSOM scrolling APIs.
    *
-   * https://drafts.csswg.org/cssom-view/#propdef-scroll-behavior
+   * https://www.w3.org/TR/css-overflow-3/#smooth-scrolling
    */
   def scrollBehavior: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * CSS 2.1 selectors
@@ -1681,6 +2695,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
@@ -1691,7 +2706,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
   /**
    * CSS3 selectors
    *
-   * Advanced element selection using selectors including: `[foo^="bar"]`, `[foo$="bar"]`, `[foo*="bar"]`, `:root`, `:nth-child()`,  `:nth-last-child()`, `nth-of-type`, `nth-last-of-type()`, `:last-child`, `:first-of-type`, `:last-of-type`, `:only-child`, `:only-of-type`, `:empty`, `:target`, `:enabled`, `:disabled`, `:checked`, `:not()`, `~` (general sibling)
+   * Advanced element selection using selectors including: `[foo^="bar"]`, `[foo$="bar"]`, `[foo*="bar"]`, `:root`, `:nth-child()`,  `:nth-last-child()`, `:nth-of-type()`, `:nth-last-of-type()`, `:last-child`, `:first-of-type`, `:last-of-type`, `:only-child`, `:only-of-type`, `:empty`, `:target`, `:enabled`, `:disabled`, `:checked`, `:not()`, `~` (general sibling)
    *
    * https://www.w3.org/TR/css3-selectors/
    */
@@ -1708,6 +2723,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Full),
@@ -1725,16 +2741,17 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
   def selection: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported, Full),
     Chrome            -> Set(Full),
     Edge              -> Set(Full),
-    Firefox           -> Set(FullX),
+    Firefox           -> Set(FullX, Full),
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unknown, Full),
@@ -1745,23 +2762,24 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
   /**
    * CSS Shapes Level 1
    *
-   * Allows geometric shapes to be set in CSS to define an area for text to flow around.
+   * Allows geometric shapes to be set in CSS to define an area for text to flow around. Includes properties `shape-outside`, `shape-margin` and `shape-image-threshold`
    *
    * https://www.w3.org/TR/css-shapes/
    */
   val shapes: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, FullX, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -1774,26 +2792,55 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * Keeps elements positioned as "fixed" or "relative" depending on how it appears in the viewport. As a result the element is "stuck" when necessary while scrolling.
    *
-   * https://drafts.csswg.org/css-position/#sticky-pos
+   * https://w3c.github.io/csswg-drafts/css-position/#sticky-pos
    */
   def sticky: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Partial),
-    AndroidChrome     -> Set(Partial),
-    AndroidFirefox    -> Set(Partial),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial, Full),
-    Edge              -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Unsupported, PartialX, FullX),
-    Opera             -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, PartialX, FullX, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
+    Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(Unsupported, PartialX, FullX, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Subgrid
+   *
+   * Feature of the CSS Grid Layout Module Level 2 that allows a grid-item with its own grid to align in one or both dimensions with its parent grid.
+   *
+   * https://www.w3.org/TR/css-grid-2/#subgrids
+   */
+  def subgrid: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported, PartialX, FullX),
+    Safari            -> Set(Unsupported, Full),
     Samsung           -> Set(Unsupported, Full))
 
   /**
@@ -1807,21 +2854,50 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Partial),
+    Edge              -> Set(Partial, Full),
     Firefox           -> Set(Unsupported, FullX, Full),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(FullX, Full),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * CSS Text Box
+   *
+   * CSS `text-box` (and its longhands `text-box-trim` & `text-box-edge`) provide the ability to trim extra space over/under text glyphs at the start/end of a block to match specific font-provided metrics. This allows for more precise alignment and positioning of text.
+   *
+   * https://w3c.github.io/csswg-drafts/css-inline-3/#propdef-leading-trim
+   */
+  def textBoxTrim: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported, Full))
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported))
 
   /**
    * text-decoration styling
@@ -1833,75 +2909,78 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
   val textDecoration: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Partial),
-    AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
-    BaiduBrowser      -> Set(Full),
+    AndroidFirefox    -> Set(Partial),
+    AndroidUC         -> Set(Partial),
+    BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Partial),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Partial),
     Firefox           -> Set(Unsupported, PartialX, Partial),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, PartialX),
+    KaiOSBrowser      -> Set(Partial),
     Opera             -> Set(Unsupported, Partial),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported, PartialX),
-    Samsung           -> Set(Unsupported))
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Partial),
+    Safari            -> Set(Unsupported, PartialX, Partial),
+    Samsung           -> Set(Unsupported, Partial))
 
   /**
    * text-emphasis styling
    *
    * Method of using small symbols next to each glyph to emphasize a run of text, commonly used in East Asian languages. The `text-emphasis` shorthand, and its `text-emphasis-style` and `text-emphasis-color` longhands, can be used to apply marks to the text. The `text-emphasis-position` property, which inherits separately, allows setting the emphasis marks' position with respect to the text.
    *
-   * https://drafts.csswg.org/css-text-decor-3/#text-emphasis-property
+   * https://w3c.github.io/csswg-drafts/css-text-decor-3/#text-emphasis-property
    */
   def textEmphasis: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, PartialX),
-    AndroidChrome     -> Set(PartialX),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(PartialX),
+    AndroidBrowser    -> Set(Unsupported, PartialX, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(PartialX),
     BlackberryBrowser -> Set(Unsupported, PartialX),
-    Chrome            -> Set(Unsupported, PartialX),
-    Edge              -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, PartialX, Full),
+    Edge              -> Set(Unsupported, PartialX, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
-    Opera             -> Set(Unsupported, PartialX),
+    KaiOSBrowser      -> Set(Full),
+    Opera             -> Set(Unsupported, PartialX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, PartialX),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(PartialX),
     Safari            -> Set(Unsupported, PartialX, Full),
-    Samsung           -> Set(PartialX))
+    Samsung           -> Set(PartialX, Full))
 
   /**
    * CSS text-indent
    *
    * The `text-indent` property applies indentation to lines of inline content in a block.
    *
-   * https://drafts.csswg.org/css-text-3/#text-indent-property
+   * https://w3c.github.io/csswg-drafts/css-text-3/#text-indent-property
    */
   def textIndent: Subject = Map(
-    AndroidBrowser    -> Set(Partial),
-    AndroidChrome     -> Set(Partial),
-    AndroidFirefox    -> Set(Partial),
+    AndroidBrowser    -> Set(Partial, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Partial),
     BaiduBrowser      -> Set(Partial),
     BlackberryBrowser -> Set(Partial),
-    Chrome            -> Set(Partial),
-    Edge              -> Set(Partial),
-    Firefox           -> Set(Partial),
+    Chrome            -> Set(Partial, Full),
+    Edge              -> Set(Partial, Full),
+    Firefox           -> Set(Partial, Full),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
-    IOSSafari         -> Set(Partial),
-    Opera             -> Set(Partial),
+    IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Partial),
+    Opera             -> Set(Partial, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial),
     QQBrowser         -> Set(Partial),
-    Safari            -> Set(Partial),
+    Safari            -> Set(Partial, Full),
     Samsung           -> Set(Partial))
 
   /**
@@ -1909,22 +2988,23 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * CSS property to define how text should be justified when `text-align: justify` is set.
    *
-   * https://drafts.csswg.org/css-text-3/#text-justify-property
+   * https://w3c.github.io/csswg-drafts/css-text-3/#text-justify-property
    */
   def textJustify: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Partial),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Partial, Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unknown, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported),
     QQBrowser         -> Set(Unsupported),
@@ -1936,26 +3016,27 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * The CSS `text-orientation` property specifies the orientation of text within a line. Current values only have an effect in vertical typographic modes (defined with the `writing-mode` property)
    *
-   * https://drafts.csswg.org/css-writing-modes-3/#text-orientation
+   * https://w3c.github.io/csswg-drafts/css-writing-modes-3/#text-orientation
    */
   def textOrientation: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(Unsupported),
-    Safari            -> Set(Unsupported, Unknown, FullX),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Unknown, FullX, Full),
     Samsung           -> Set(Unsupported, Full))
 
   /**
@@ -1978,6 +3059,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(FullX, Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(FullX, Full),
@@ -1990,25 +3072,26 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * On mobile devices, the text-size-adjust CSS property allows Web authors to control if and how the text-inflating algorithm is applied to the textual content of the element it is applied to.
    *
-   * https://drafts.csswg.org/css-size-adjust/
+   * https://w3c.github.io/csswg-drafts/css-size-adjust/
    */
   def textSizeAdjust: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
+    Edge              -> Set(FullX, Full),
     Firefox           -> Set(Unsupported),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(FullX),
     IOSSafari         -> Set(Unsupported, FullX),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    QQBrowser         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported),
     Samsung           -> Set(Unsupported, Full))
 
@@ -2023,7 +3106,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidBrowser    -> Set(FullX, Unsupported),
     AndroidChrome     -> Set(FullX),
     AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(Unsupported),
+    AndroidUC         -> Set(FullX),
     BaiduBrowser      -> Set(FullX),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX),
@@ -2032,12 +3115,41 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(PartialX, FullX),
+    KaiOSBrowser      -> Set(FullX),
     Opera             -> Set(Unsupported, FullX),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, FullX),
     QQBrowser         -> Set(FullX),
-    Safari            -> Set(FullX, Full),
+    Safari            -> Set(FullX),
     Samsung           -> Set(FullX))
+
+  /**
+   * CSS text-wrap: balance
+   *
+   * Allows multiple lines of text to have their lines broken in such a way that each line is roughly the same width, often used to make headlines more readable and visually appealing.
+   *
+   * https://www.w3.org/TR/css-text-4/#text-wrap
+   */
+  def textWrapBalance: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Partial, Full),
+    Edge              -> Set(Unsupported, Partial, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Partial))
 
   /**
    * CSS3 Text-shadow
@@ -2059,6 +3171,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Full),
@@ -2085,7 +3198,8 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(FullX, Full),
-    IOSSafari         -> Set(Unsupported, Partial),
+    IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -2104,20 +3218,21 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
     Edge              -> Set(Full),
-    Firefox           -> Set(Full, FullX, Unsupported),
+    Firefox           -> Set(FullX, Unsupported, Full),
     IE                -> Set(FullX, Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Full),
-    Safari            -> Set(Unsupported, FullX, Full),
+    Safari            -> Set(Full, FullX, Unsupported),
     Samsung           -> Set(Full))
 
   /**
@@ -2131,7 +3246,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidBrowser    -> Set(FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
@@ -2140,6 +3255,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, FullX, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -2152,13 +3268,13 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * Method of transforming an element in the third dimension using the `transform` property. Includes support for the `perspective` property to set the perspective in z-space and the `backface-visibility` property to toggle display of the reverse side of a 3D-transformed element.
    *
-   * https://www.w3.org/TR/css3-3d-transforms/
+   * https://w3c.github.io/csswg-drafts/css-transforms-2/
    */
   def transforms3d: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, FullX, Full),
@@ -2167,6 +3283,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -2194,6 +3311,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(PartialX, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, PartialX, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(PartialX, FullX, Full),
@@ -2206,54 +3324,112 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * Method of preventing text/element selection using CSS.
    *
-   * https://drafts.csswg.org/css-ui-4/#valdef-user-select-none
+   * https://w3c.github.io/csswg-drafts/css-ui-4/#valdef-user-select-none
    */
   def userSelectNone: Subject = Map(
     AndroidBrowser    -> Set(FullX, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(FullX),
-    AndroidUC         -> Set(FullX),
-    BaiduBrowser      -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(FullX, Full),
-    Edge              -> Set(FullX),
-    Firefox           -> Set(FullX),
+    Edge              -> Set(FullX, Full),
+    Firefox           -> Set(FullX, Full),
     IE                -> Set(Unsupported, FullX),
     IEMobile          -> Set(FullX),
     IOSSafari         -> Set(FullX),
+    KaiOSBrowser      -> Set(FullX, Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, FullX),
-    QQBrowser         -> Set(FullX),
-    Safari            -> Set(FullX),
-    Samsung           -> Set(FullX))
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(FullX, Full),
+    Samsung           -> Set(FullX, Full))
 
   /**
    * Variable fonts
    *
    * OpenType font settings that allows a single font file to behave like multiple fonts: it can contain all the allowed variations in width, weight, slant, optical size, or any other exposed axes of variation as defined by the font designer. Variations can be applied via the `font-variation-settings` property.
    *
-   * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
+   * https://w3c.github.io/csswg-drafts/css-fonts-4/#font-variation-settings-def
    */
   def variableFonts: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Unsupported),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Full),
+    BaiduBrowser      -> Set(Full),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full, Partial),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Full, Unsupported),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported, Full),
+    Opera             -> Set(Unsupported, Partial, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * View Transitions API (single-document)
+   *
+   * Provides a mechanism for easily creating animated transitions between different DOM states, while also updating the DOM contents in a single step. This API is specific to single-document transitions.
+   *
+   * https://www.w3.org/TR/css-view-transitions-1/
+   */
+  def viewTransitions: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
     AndroidUC         -> Set(Unsupported),
     BaiduBrowser      -> Set(Unsupported),
     BlackberryBrowser -> Set(Unsupported),
     Chrome            -> Set(Unsupported, Full),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
     IE                -> Set(Unsupported),
     IEMobile          -> Set(Unsupported),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
     QQBrowser         -> Set(Unsupported),
     Safari            -> Set(Unsupported, Full),
-    Samsung           -> Set(Unsupported))
+    Samsung           -> Set(Unsupported, Full))
+
+  /**
+   * Small, Large, and Dynamic viewport units
+   *
+   * Viewport units similar to `vw` and `vh` that are based on shown or hidden browser UI states to address shortcomings of the original units. Currently defined as the `sv*` units (`svb`, `svh`, `svi`, `svmax`, `svmin`, `svw`), `lv*` units (`lvb`, `lvh`, `lvi`, `lvmax`, `lvmin`, `lvw`), `dv*` units (`dvb`, `dvh`, `dvi`, `dvmax`, `dvmin`, `dvw`) and the logical `vi`/`vb` units.
+   *
+   * https://www.w3.org/TR/css-values-4/#viewport-variants
+   */
+  def viewportUnitVariants: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported, Full),
+    AndroidChrome     -> Set(Full),
+    AndroidFirefox    -> Set(Full),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported, Full),
+    Edge              -> Set(Unsupported, Full),
+    Firefox           -> Set(Unsupported, Full),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Full),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported, Full),
+    Samsung           -> Set(Unsupported, Full))
 
   /**
    * Viewport units: vw, vh, vmin, vmax
@@ -2275,6 +3451,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Unsupported, Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
@@ -2283,11 +3460,67 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     Samsung           -> Set(Full))
 
   /**
+   * CSS -webkit-user-drag property
+   *
+   * The non-standard `-webkit-user-drag` CSS property can be used to either make an element draggable or explicitly non-draggable (like links and images). See the standardized [draggable attribute/property](/mdn-api_htmlelement_draggable) for the recommended alternative method of accomplishing the same functionality.
+   *
+   * https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-user-drag
+   */
+  def webkitUserDrag: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unknown, Partial),
+    Edge              -> Set(Unsupported, Partial),
+    Firefox           -> Set(Unsupported),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported, Partial),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported, Partial),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Full),
+    Samsung           -> Set(Unsupported))
+
+  /**
+   * CSS @when / @else conditional rules
+   *
+   * Syntax allowing CSS conditions (like media and support queries) to be written more simply, as well as making it possible to write mutually exclusive rules using `@else` statements.
+   *
+   * https://www.w3.org/TR/css-conditional-5/#when-rule
+   */
+  def whenElse: Subject = Map(
+    AndroidBrowser    -> Set(Unsupported),
+    AndroidChrome     -> Set(Unsupported),
+    AndroidFirefox    -> Set(Unsupported),
+    AndroidUC         -> Set(Unsupported),
+    BaiduBrowser      -> Set(Unsupported),
+    BlackberryBrowser -> Set(Unsupported),
+    Chrome            -> Set(Unsupported),
+    Edge              -> Set(Unsupported),
+    Firefox           -> Set(Unsupported),
+    IE                -> Set(Unsupported),
+    IEMobile          -> Set(Unsupported),
+    IOSSafari         -> Set(Unsupported),
+    KaiOSBrowser      -> Set(Unsupported),
+    Opera             -> Set(Unsupported),
+    OperaMini         -> Set(Unsupported),
+    OperaMobile       -> Set(Unsupported),
+    QQBrowser         -> Set(Unsupported),
+    Safari            -> Set(Unsupported),
+    Samsung           -> Set(Unsupported))
+
+  /**
    * CSS widows & orphans
    *
    * CSS properties to control when lines break across pages or columns by defining the amount of lines that must be left before or after the break.
    *
-   * https://drafts.csswg.org/css-break-3/#widows-orphans
+   * https://w3c.github.io/csswg-drafts/css-break-3/#widows-orphans
    */
   def widowsOrphans: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
@@ -2302,6 +3535,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Unsupported, Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Unsupported, Full),
+    KaiOSBrowser      -> Set(Unsupported),
     Opera             -> Set(Full),
     OperaMini         -> Set(Full),
     OperaMobile       -> Set(Unsupported, Full),
@@ -2320,7 +3554,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     AndroidBrowser    -> Set(Partial, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Partial),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial),
     Chrome            -> Set(Partial, Full),
@@ -2329,10 +3563,11 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Full),
     IEMobile          -> Set(Full),
     IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Partial),
-    QQBrowser         -> Set(Partial),
+    OperaMobile       -> Set(Unsupported, Full),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Partial, Full),
     Samsung           -> Set(Full))
 
@@ -2351,11 +3586,12 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(Partial, Full),
     Chrome            -> Set(Partial, Full),
-    Edge              -> Set(Partial),
+    Edge              -> Set(Partial, Full),
     Firefox           -> Set(Unsupported, Partial, Full),
     IE                -> Set(Partial),
     IEMobile          -> Set(Partial),
     IOSSafari         -> Set(Partial, Full),
+    KaiOSBrowser      -> Set(Partial, Full),
     Opera             -> Set(Unsupported, Partial, Full),
     OperaMini         -> Set(Partial),
     OperaMobile       -> Set(Partial, Full),
@@ -2368,13 +3604,13 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * Property to define whether lines of text are laid out horizontally or vertically and the direction in which blocks progress.
    *
-   * https://drafts.csswg.org/css-writing-modes-3/#block-flow
+   * https://w3c.github.io/csswg-drafts/css-writing-modes-3/#block-flow
    */
   def writingMode: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(FullX),
+    AndroidUC         -> Set(Full),
     BaiduBrowser      -> Set(Full),
     BlackberryBrowser -> Set(FullX),
     Chrome            -> Set(Unsupported, Unknown, FullX, Full),
@@ -2383,10 +3619,11 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
     IE                -> Set(Partial),
     IEMobile          -> Set(PartialX),
     IOSSafari         -> Set(Unknown, FullX, Full),
+    KaiOSBrowser      -> Set(Full),
     Opera             -> Set(Unsupported, FullX, Full),
     OperaMini         -> Set(Unsupported),
     OperaMobile       -> Set(Unsupported, Full),
-    QQBrowser         -> Set(FullX),
+    QQBrowser         -> Set(Full),
     Safari            -> Set(Unsupported, Unknown, FullX, Full),
     Samsung           -> Set(FullX, Full))
 

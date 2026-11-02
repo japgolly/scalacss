@@ -72,6 +72,7 @@ object Caniuse {
       ,"fontVariantAlternates"
       ,"getcomputedstyle"
       ,"has"
+      ,"if"
       ,"inlineBlock"
       ,"initialValue"
       ,"inOutOfRange"
@@ -129,6 +130,7 @@ object Caniuse {
       case "samsung" => "Samsung"
       case "and_qq"  => "QQBrowser"
       case "baidu"   => "BaiduBrowser"
+      case "kaios"   => "KaiOSBrowser"
       case x         => sys error s"Unrecognised agent: '$x'"
     }
 
