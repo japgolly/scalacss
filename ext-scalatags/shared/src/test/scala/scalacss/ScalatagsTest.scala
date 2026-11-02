@@ -1,8 +1,8 @@
 package scalacss
 
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss.DevDefaults._
 import scalacss.ScalatagsCss._
-import scalacss.TestUtil._
 import utest._
 
 object ScalatagsTest extends TestSuite {
