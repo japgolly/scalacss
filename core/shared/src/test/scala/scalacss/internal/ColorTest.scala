@@ -39,6 +39,12 @@ object ColorTest extends TestSuite {
         "rgbaDWS" - test(c" rgb ( 1  2  3 / 0.5 ) ", "rgb(1 2 3/0.5)")
         "rgbaP"   - test(c"rgb(1 2 3/25%)", "rgb(1 2 3/25%)")
         "rgbaPWS" - test(c" rgb ( 1  2  3 / 25% ) ", "rgb(1 2 3/25%)")
+        "hsl"     - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
+        "hslDeg"  - test(c"hsl(360deg 2% 3)", "hsl(360 2% 3)")
+        "hslWS"   - test(c" hsl ( 1  2%  3 ) ", "hsl(1 2% 3)")
+        "hsla"    - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
+        "hslaDeg" - test(c"hsl(360deg 2% 3/50%)", "hsl(360 2% 3/50%)")
+        "hslaWS"  - test(c" hsl ( 1  2%  3  / 0.5 ) ", "hsl(1 2% 3/0.5)")
       }
 
     }
@@ -94,6 +100,9 @@ object ColorTest extends TestSuite {
         "b101%" - assertErrorContains(compileError(""" c"rgb(none none 101%)" """), "Invalid blue value")
         "rgbaD" - assertErrorContains(compileError(""" c"rgb(1 2 3/1.5)" """), "Invalid alpha value")
         "rgbaP" - assertErrorContains(compileError(""" c"rgb(1 2 3/125%)" """), "Invalid alpha value")
+        "h361"  - assertErrorContains(compileError(""" c"hsl(361 0 0)" """), "Invalid hue value")
+        "s101"  - assertErrorContains(compileError(""" c"hsl(0 101% 0)" """), "Invalid saturation value")
+        "l101"  - assertErrorContains(compileError(""" c"hsl(0 0 101%)" """), "Invalid lightness value")
       }
     }
   }
