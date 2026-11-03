@@ -119,7 +119,7 @@ object Macros {
     // NPN = number, percentage, or none
     private def modernNPN = """(-?\d+%?|none)"""
     private def modernA = s"\\s*/\\s*(-?\\d+%?|$dbl)"
-    private def modernH = """(-?\d+)(?:deg)?"""
+    private def modernH = """(-?\d+(?:deg)?|none)"""
     private def modernSL = """(-?\d+%?)"""
 
     private val rgbI  = cssFnRegexLegacy("rgb",  int, int, int)
@@ -228,6 +228,13 @@ object Macros {
           else
             validateInt(name, maxInt)(s)
 
+      def validateModernH(name: String): V =
+        s =>
+          if (s == "none")
+            ()
+          else
+            validateInt(name, 360)(s.stripSuffix("deg"))
+
       def validateModernA(name: String): V =
         s =>
           if (s.endsWith("%"))
@@ -275,13 +282,14 @@ object Macros {
       def rp = validatePct("red")
       def gp = validatePct("green")
       def bp = validatePct("blue")
-      def h  = validateInt("hue", 360)
+      def hi = validateInt("hue", 360)
       def sp = validatePct("saturation")
       def lp = validatePct("lightness")
       def a  = validateDbl("alpha", 1)
       def rm = validateModernNPN("red", 255)
       def gm = validateModernNPN("green", 255)
       def bm = validateModernNPN("blue", 255)
+      def hm = validateModernH("hue")
       def am = validateModernA("alpha")
       def sm = validateModernSM("saturation")
       def lm = validateModernSM("lightness")
@@ -290,12 +298,12 @@ object Macros {
       def validateRgbP  = validateFn3(rgbP, rp, gp, bp,      (r, g, b)    => s"rgb($r%,$g%,$b%)")
       def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a,  (r, g, b, a) => s"rgba($r,$g,$b,$a)")
       def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a,  (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
-      def validateHsl   = validateFn3(hsl, h, sp, lp,        (h, s, l)    => s"hsl($h,$s%,$l%)")
-      def validateHsla  = validateFn4(hsla, h, sp, lp, a,    (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
+      def validateHsl   = validateFn3(hsl, hi, sp, lp,       (h, s, l)    => s"hsl($h,$s%,$l%)")
+      def validateHsla  = validateFn4(hsla, hi, sp, lp, a,   (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
       def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb($r $g $b)")
       def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb($r $g $b/$a)")
-      def validateHslM  = validateFn3(hslM, h, sm, lm,       (h, s, l)    => s"hsl($h $s $l)")
-      def validateHslaM = validateFn4(hslaM, h, sm, lm, am,  (h, s, l, a) => s"hsl($h $s $l/$a)")
+      def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${h.stripSuffix("deg")} $s $l)")
+      def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${h.stripSuffix("deg")} $s $l/$a)")
 
       validateHex ||
         validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||

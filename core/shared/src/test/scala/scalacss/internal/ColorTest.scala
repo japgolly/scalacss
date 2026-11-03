@@ -40,6 +40,7 @@ object ColorTest extends TestSuite {
         "rgbaP"   - test(c"rgb(1 2 3/25%)", "rgb(1 2 3/25%)")
         "rgbaPWS" - test(c" rgb ( 1  2  3 / 25% ) ", "rgb(1 2 3/25%)")
         "hsl"     - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
+        "hslN"    - test(c"hsl(none 2% 3)", "hsl(none 2% 3)")
         "hslDeg"  - test(c"hsl(360deg 2% 3)", "hsl(360 2% 3)")
         "hslWS"   - test(c" hsl ( 1  2%  3 ) ", "hsl(1 2% 3)")
         "hsla"    - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
