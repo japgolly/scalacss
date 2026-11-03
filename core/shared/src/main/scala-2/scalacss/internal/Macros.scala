@@ -140,15 +140,15 @@ object Macros {
               }
             }
 
-          def validateDbl(name: String, max: Double): V =
+          def validateDbl(name: String, max: Double, suffix: String = ""): V =
             s => {
               val d = s.toDouble
               if (d < 0 || d > max)
-                fail(s"Invalid $name value: $s")
+                fail(s"Invalid $name value: $s$suffix")
             }
 
           def validatePct(name: String): V =
-            validateDbl(name, 100)
+            validateDbl(name, 100, "%")
 
           def validateModernNPN(name: String, maxInt: Int): V =
             s =>
