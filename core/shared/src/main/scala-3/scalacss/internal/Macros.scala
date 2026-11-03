@@ -102,21 +102,32 @@ object Macros {
 
   object ColorLiteral {
 
-    private def cssFnRegex(f: String, as: String*) = {
+    private def cssFnRegexLegacy(f: String, as: String*) = {
       val args = as mkString "\\s*,\\s*"
       Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args\\s*\\)\\s*$$"
+    }
+
+    private def cssFnRegexModern(f: String, as: String*)(suffix: String) = {
+      val args = as mkString "\\s+"
+      Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args$suffix\\s*\\)\\s*$$"
     }
 
     private def int = "(-?\\d+)"
     private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
     private def pct = s"$dbl%"
 
-    private val rgbI  = cssFnRegex("rgb",  int, int, int)
-    private val rgbP  = cssFnRegex("rgb",  pct, pct, pct)
-    private val rgbaI = cssFnRegex("rgba", int, int, int, dbl)
-    private val rgbaP = cssFnRegex("rgba", pct, pct, pct, dbl)
-    private val hsl   = cssFnRegex("hsl",  int, pct, pct)
-    private val hsla  = cssFnRegex("hsla", int, pct, pct, dbl)
+    // NPN = number, percentage, or none
+    private def modernNPN = """(-?\d+%?|none)"""
+    private def modernA = s"\\s*/\\s*(-?\\d+%?|$dbl)"
+
+    private val rgbI  = cssFnRegexLegacy("rgb",  int, int, int)
+    private val rgbP  = cssFnRegexLegacy("rgb",  pct, pct, pct)
+    private val rgbaI = cssFnRegexLegacy("rgba", int, int, int, dbl)
+    private val rgbaP = cssFnRegexLegacy("rgba", pct, pct, pct, dbl)
+    private val hsl   = cssFnRegexLegacy("hsl",  int, pct, pct)
+    private val hsla  = cssFnRegexLegacy("hsla", int, pct, pct, dbl)
+    private val rgbM  = cssFnRegexModern("rgb", modernNPN, modernNPN, modernNPN)("")
+    private val rgbaM = cssFnRegexModern("rgb", modernNPN, modernNPN, modernNPN)(modernA)
 
     private def isHex: Char => Boolean =
       c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')
@@ -204,6 +215,22 @@ object Macros {
       def validatePct(name: String): V =
         validateDbl(name, 100)
 
+      def validateModernNPN(name: String, maxInt: Int): V =
+        s =>
+          if (s == "none")
+            ()
+          else if (s.endsWith("%"))
+            validatePct(name)(s.stripSuffix("%"))
+          else
+            validateInt(name, maxInt)(s)
+
+      def validateModernA(name: String): V =
+        s =>
+          if (s.endsWith("%"))
+            validatePct(name)(s.stripSuffix("%"))
+          else
+            validateDbl(name, 1)(s)
+
       def validateFn3(p: Pattern, a: V, b: V, c: V, f: (String, String, String) => String): Boolean = {
         val m = p.matcher(text)
         if (m.matches) {
@@ -241,15 +268,23 @@ object Macros {
       def s  = validatePct("saturation")
       def l  = validatePct("lightness")
       def a  = validateDbl("alpha", 1)
+      def rm = validateModernNPN("red", 255)
+      def gm = validateModernNPN("green", 255)
+      def bm = validateModernNPN("blue", 255)
+      def am = validateModernA("alpha")
 
-      def validateRgbI  = validateFn3(rgbI, ri, gi, bi,     (r, g, b)    => s"rgb($r,$g,$b)")
-      def validateRgbP  = validateFn3(rgbP, rp, gp, bp,     (r, g, b)    => s"rgb($r%,$g%,$b%)")
-      def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a, (r, g, b, a) => s"rgba($r,$g,$b,$a)")
-      def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a, (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
-      def validateHsl   = validateFn3(hsl, h, s, l,         (h, s, l)    => s"hsl($h,$s%,$l%)")
-      def validateHsla  = validateFn4(hsla, h, s, l, a,     (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
+      def validateRgbI  = validateFn3(rgbI, ri, gi, bi,      (r, g, b)    => s"rgb($r,$g,$b)")
+      def validateRgbP  = validateFn3(rgbP, rp, gp, bp,      (r, g, b)    => s"rgb($r%,$g%,$b%)")
+      def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a,  (r, g, b, a) => s"rgba($r,$g,$b,$a)")
+      def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a,  (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
+      def validateHsl   = validateFn3(hsl, h, s, l,          (h, s, l)    => s"hsl($h,$s%,$l%)")
+      def validateHsla  = validateFn4(hsla, h, s, l, a,      (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
+      def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb($r $g $b)")
+      def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb($r $g $b/$a)")
 
-      validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
+      validateHex ||
+        validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||
+        validateRgbM || validateRgbaM
 
       Option(result).getOrElse(Left("Invalid colour literal: \"" + text + "\"."))
     }
