@@ -173,7 +173,7 @@ object Macros {
               else
                 validateDbl(name, 1)(s)
 
-          def validateModernSM(name: String): V =
+          def validateModernSL(name: String): V =
             s =>
               if (s.endsWith("%"))
                 validatePct(name)(s.stripSuffix("%"))
@@ -220,8 +220,8 @@ object Macros {
           def bm = validateModernNPN("blue", 255)
           def hm = validateModernH("hue")
           def am = validateModernA("alpha")
-          def sm = validateModernSM("saturation")
-          def lm = validateModernSM("lightness")
+          def sm = validateModernSL("saturation")
+          def lm = validateModernSL("lightness")
 
           def validateRgbI  = validateFn3(rgbI, ri, gi, bi,      (r, g, b)    => s"rgb($r,$g,$b)")
           def validateRgbP  = validateFn3(rgbP, rp, gp, bp,      (r, g, b)    => s"rgb($r%,$g%,$b%)")
