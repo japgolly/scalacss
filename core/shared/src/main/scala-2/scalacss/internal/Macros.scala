@@ -67,15 +67,14 @@ object Macros {
   object ColorLiteral {
 
     private def cssFnRegex(f: String, as: String*) = {
-      val args = as mkString ","
-      Pattern compile s"^$f\\($args\\)$$"
+      val args = as mkString "\\s*,\\s*"
+      Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args\\s*\\)\\s*$$"
     }
 
     private def int = "(-?\\d+)"
     private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
     private def pct = s"$dbl%"
 
-    private val ws    = "\\s+".r
     private val rgbI  = cssFnRegex("rgb",  int, int, int)
     private val rgbP  = cssFnRegex("rgb",  pct, pct, pct)
     private val rgbaI = cssFnRegex("rgba", int, int, int, dbl)
@@ -90,17 +89,16 @@ object Macros {
       import c.universe._
 
       c.prefix.tree match {
-        case Apply(_, List(Apply(_, List(Literal(Constant(text0: String)))))) =>
+        case Apply(_, List(Apply(_, List(Literal(Constant(text: String)))))) =>
 
           def fail(reason: String = null): Nothing = {
-            var err = s"""Invalid colour literal: "$text0"."""
+            var err = s"""Invalid colour literal: "$text"."""
             if (reason ne null)
               err = s"$err $reason"
             c.abort(c.enclosingPosition, err)
           }
 
-          val text = ws.replaceAllIn(text0, "").toLowerCase
-
+          var result: String = null
           def pass = true
           def undecided = false
 
@@ -108,7 +106,7 @@ object Macros {
             (text.nonEmpty && text.charAt(0) == '#') && {
               val v = text.drop(1)
               v.length match {
-                case (3 | 6 | 4 | 8) if v.forall(isHex) => pass
+                case (3 | 6 | 4 | 8) if v.forall(isHex) => result = text.toLowerCase; pass
                 case _                                  => fail("Hex notation must be #RGB, #RRGGBB, #RGBA, or #RRGGBBAA.")
               }
             }
@@ -137,13 +135,26 @@ object Macros {
           def validatePct(name: String): V =
             validateDbl(name, 100)
 
-          def validateFn(p: Pattern, a: V, b: V, c: V, d: V = null): Boolean = {
+          def validateFn3(p: Pattern, a: V, b: V, c: V, f: (String, String, String) => String): Boolean = {
             val m = p.matcher(text)
             if (m.matches) {
               a(m group 1)
               b(m group 2)
               c(m group 3)
-              if (d ne null) d(m group 4)
+              result = f(m group 1, m group 2, m group 3)
+              pass
+            } else
+              undecided
+          }
+
+          def validateFn4(p: Pattern, a: V, b: V, c: V, d: V, f: (String, String, String, String) => String): Boolean = {
+            val m = p.matcher(text)
+            if (m.matches) {
+              a(m group 1)
+              b(m group 2)
+              c(m group 3)
+              d(m group 4)
+              result = f(m group 1, m group 2, m group 3, m group 4)
               pass
             } else
               undecided
@@ -160,20 +171,19 @@ object Macros {
           def l  = validatePct("lightness")
           def a  = validateDbl("alpha", 1)
 
-          def validateRgbI  = validateFn(rgbI, ri, gi, bi)
-          def validateRgbP  = validateFn(rgbP, rp, gp, bp)
-          def validateRgbaI = validateFn(rgbaI, ri, gi, bi, a)
-          def validateRgbaP = validateFn(rgbaP, rp, gp, bp, a)
-          def validateHsl   = validateFn(hsl,  h, s, l)
-          def validateHsla  = validateFn(hsla, h, s, l, a)
+          def validateRgbI  = validateFn3(rgbI, ri, gi, bi,     (r, g, b)    => s"rgb($r,$g,$b)")
+          def validateRgbP  = validateFn3(rgbP, rp, gp, bp,     (r, g, b)    => s"rgb($r%,$g%,$b%)")
+          def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a, (r, g, b, a) => s"rgba($r,$g,$b,$a)")
+          def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a, (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
+          def validateHsl   = validateFn3(hsl, h, s, l,         (h, s, l)    => s"hsl($h,$s%,$l%)")
+          def validateHsla  = validateFn4(hsla, h, s, l, a,     (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
 
-          val validated =
-            validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
+          validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
 
-          if (validated) {
+          if (result ne null) {
             //println(showRaw(q"""_root_.scalacss.internal.Color($text)"""))
             c.Expr(Apply(Select(Select(Select(Ident(termNames.ROOTPKG), TermName("scalacss")), TermName("internal")), TermName("Color")),
-              Literal(Constant(text)) :: Nil))
+              Literal(Constant(result)) :: Nil))
           } else
             fail()
 

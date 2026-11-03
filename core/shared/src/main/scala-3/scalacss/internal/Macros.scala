@@ -103,15 +103,14 @@ object Macros {
   object ColorLiteral {
 
     private def cssFnRegex(f: String, as: String*) = {
-      val args = as mkString ","
-      Pattern compile s"^$f\\($args\\)$$"
+      val args = as mkString "\\s*,\\s*"
+      Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args\\s*\\)\\s*$$"
     }
 
     private def int = "(-?\\d+)"
     private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
     private def pct = s"$dbl%"
 
-    private val ws    = "\\s+".r
     private val rgbI  = cssFnRegex("rgb",  int, int, int)
     private val rgbP  = cssFnRegex("rgb",  pct, pct, pct)
     private val rgbaI = cssFnRegex("rgba", int, int, int, dbl)
@@ -160,16 +159,15 @@ object Macros {
         case Left(e) => throw new IllegalArgumentException(e)
       }
 
-    def attempt(text0: String): Either[String, String] = {
-      val text = ws.replaceAllIn(text0, "").toLowerCase
+    def attempt(text: String): Either[String, String] = {
 
-      var errorResult: Left[String, String] =
+      var result: Either[String, String] =
         null
 
       def pass = true
       def undecided = false
       def fail(err: String) = {
-        errorResult = Left(s"Invalid colour literal: \"$text0\". $err")
+        result = Left(s"Invalid colour literal: \"$text\". $err")
         false
       }
 
@@ -177,7 +175,7 @@ object Macros {
         (text.nonEmpty && text.charAt(0) == '#') && {
           val v = text.drop(1)
           v.length match {
-            case (3 | 6 | 4 | 8) if v.forall(isHex) => pass
+            case (3 | 6 | 4 | 8) if v.forall(isHex) => result = Right(text.toLowerCase); pass
             case _                                  => fail("Hex notation must be #RGB, #RRGGBB, #RGBA, or #RRGGBBAA.")
           }
         }
@@ -206,13 +204,28 @@ object Macros {
       def validatePct(name: String): V =
         validateDbl(name, 100)
 
-      def validateFn(p: Pattern, a: V, b: V, c: V, d: V = null): Boolean = {
+      def validateFn3(p: Pattern, a: V, b: V, c: V, f: (String, String, String) => String): Boolean = {
         val m = p.matcher(text)
         if (m.matches) {
           a(m group 1)
           b(m group 2)
           c(m group 3)
-          if (d ne null) d(m group 4)
+          if (result == null)
+            result = Right(f(m group 1, m group 2, m group 3))
+          pass
+        } else
+          undecided
+      }
+
+      def validateFn4(p: Pattern, a: V, b: V, c: V, d: V, f: (String, String, String, String) => String): Boolean = {
+        val m = p.matcher(text)
+        if (m.matches) {
+          a(m group 1)
+          b(m group 2)
+          c(m group 3)
+          d(m group 4)
+          if (result == null)
+            result = Right(f(m group 1, m group 2, m group 3, m group 4))
           pass
         } else
           undecided
@@ -229,20 +242,16 @@ object Macros {
       def l  = validatePct("lightness")
       def a  = validateDbl("alpha", 1)
 
-      def validateRgbI  = validateFn(rgbI, ri, gi, bi)
-      def validateRgbP  = validateFn(rgbP, rp, gp, bp)
-      def validateRgbaI = validateFn(rgbaI, ri, gi, bi, a)
-      def validateRgbaP = validateFn(rgbaP, rp, gp, bp, a)
-      def validateHsl   = validateFn(hsl,  h, s, l)
-      def validateHsla  = validateFn(hsla, h, s, l, a)
+      def validateRgbI  = validateFn3(rgbI, ri, gi, bi,     (r, g, b)    => s"rgb($r,$g,$b)")
+      def validateRgbP  = validateFn3(rgbP, rp, gp, bp,     (r, g, b)    => s"rgb($r%,$g%,$b%)")
+      def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a, (r, g, b, a) => s"rgba($r,$g,$b,$a)")
+      def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a, (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
+      def validateHsl   = validateFn3(hsl, h, s, l,         (h, s, l)    => s"hsl($h,$s%,$l%)")
+      def validateHsla  = validateFn4(hsla, h, s, l, a,     (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
 
-      val validated =
-        validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
+      validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
 
-      if (validated && (errorResult == null))
-        Right(text)
-      else
-        Option(errorResult).getOrElse(Left("Invalid colour literal: \"" + text0 + "\"."))
+      Option(result).getOrElse(Left("Invalid colour literal: \"" + text + "\"."))
     }
   }
 }
