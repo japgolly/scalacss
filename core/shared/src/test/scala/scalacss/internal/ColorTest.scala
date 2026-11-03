@@ -18,11 +18,12 @@ object ColorTest extends TestSuite {
       "hex6" - test(c"#abc105"  , "#abc105")
       "hex8" - test(c"#abc105f3", "#abc105f3")
 
-      "rgbI" - test(c"rgb(0,128,255)",    "rgb(0,128,255)")
-      "rgbP" - test(c"rgb(0%,50%,100%)",  "rgb(0%,50%,100%)")
-      "rgba" - test(c"rgba(255,128,0,0)", "rgba(255,128,0,0)")
-      "hsl"  - test(c"hsl(359,0%,100%)",  "hsl(359,0%,100%)")
-      "hsla" - test(c"hsla(0,100%,0%,1)", "hsla(0,100%,0%,1)")
+      "rgbI"  - test(c"rgb(0,128,255)",    "rgb(0,128,255)")
+      "rgbP"  - test(c"rgb(0%,50%,100%)",  "rgb(0%,50%,100%)")
+      "rgbaI" - test(c"rgba(255,128,0,0)", "rgba(255,128,0,0)")
+      "rgbaP" - test(c"rgba(0%,50%,100%,0.8)", "rgba(0%,50%,100%,0.8)")
+      "hsl"   - test(c"hsl(360,0%,100%)",  "hsl(360,0%,100%)")
+      "hsla"  - test(c"hsla(0,100%,0%,1)", "hsla(0,100%,0%,1)")
 
       "hexU" - test(c"#ABC",           "#abc")
       "rgbU" - test(c"RGB(0,128,255)", "rgb(0,128,255)")
@@ -34,12 +35,15 @@ object ColorTest extends TestSuite {
     }
 
     "invalid" - {
-      def assertFailure(e: CompileError) = ()
-      def assertErrorContains(e: CompileError, frag: String): Unit =
+      def assertErrorContains(e: CompileError, frag: String) = {
         assertContains(e.msg, frag)
+        e.msg
+      }
+      def assertFailure(e: CompileError) =
+        assertErrorContains(e, "Invalid colour literal")
 
       "hex" - {
-        def test(e: CompileError): Unit = assertErrorContains(e, "Hex notation must be")
+        def test(e: CompileError) = assertErrorContains(e, "Hex notation must be")
         "0" - test(compileError(""" c"#" """))
         "1" - test(compileError(""" c"#f" """))
         "2" - test(compileError(""" c"#00" """))
@@ -58,6 +62,7 @@ object ColorTest extends TestSuite {
       "numbers" - {
         "r-1"   - assertErrorContains(compileError(""" c"rgb(-1,0,0)" """), "Invalid red value")
         "r256"  - assertErrorContains(compileError(""" c"rgb(256,0,0)" """), "Invalid red value")
+        "rOver" - assertErrorContains(compileError(""" c"rgb(99999999999999999999999999,0,0)" """), "Invalid red value")
         "g256"  - assertErrorContains(compileError(""" c"rgb(0,256,0)" """), "Invalid green value")
         "b256"  - assertErrorContains(compileError(""" c"rgb(0,0,256)" """), "Invalid blue value")
         "a2"    - assertErrorContains(compileError(""" c"rgba(0,0,0,2)" """), "Invalid alpha value")

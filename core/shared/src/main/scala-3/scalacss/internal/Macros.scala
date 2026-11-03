@@ -111,12 +111,13 @@ object Macros {
     private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
     private def pct = s"$dbl%"
 
-    private val ws   = "\\s+".r
-    private val rgbI = cssFnRegex("rgb",  int, int, int)
-    private val rgbP = cssFnRegex("rgb",  pct, pct, pct)
-    private val rgba = cssFnRegex("rgba", int, int, int, dbl)
-    private val hsl  = cssFnRegex("hsl",  int, pct, pct)
-    private val hsla = cssFnRegex("hsla", int, pct, pct, dbl)
+    private val ws    = "\\s+".r
+    private val rgbI  = cssFnRegex("rgb",  int, int, int)
+    private val rgbP  = cssFnRegex("rgb",  pct, pct, pct)
+    private val rgbaI = cssFnRegex("rgba", int, int, int, dbl)
+    private val rgbaP = cssFnRegex("rgba", pct, pct, pct, dbl)
+    private val hsl   = cssFnRegex("hsl",  int, pct, pct)
+    private val hsla  = cssFnRegex("hsla", int, pct, pct, dbl)
 
     private def isHex: Char => Boolean =
       c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')
@@ -168,12 +169,12 @@ object Macros {
       def pass = true
       def undecided = false
       def fail(err: String) = {
-        errorResult = Left(err)
+        errorResult = Left(s"Invalid colour literal: \"$text0\". $err")
         false
       }
 
       def validateHex: Boolean =
-        (text.charAt(0) == '#') && {
+        (text.nonEmpty && text.charAt(0) == '#') && {
           val v = text.drop(1)
           v.length match {
             case (3 | 6 | 4 | 8) if v.forall(isHex) => pass
@@ -185,9 +186,14 @@ object Macros {
 
       def validateInt(name: String, max: Int): V =
         s => {
-          val i = s.toInt
-          if (i < 0 || i > max)
-            fail(s"Invalid $name value: $s")
+          try {
+            val i = s.toInt
+            if (i < 0 || i > max)
+              fail(s"Invalid $name value: $s")
+          } catch {
+            case _: NumberFormatException =>
+              fail(s"Invalid $name value: $s")
+          }
         }
 
       def validateDbl(name: String, max: Double): V =
@@ -218,24 +224,25 @@ object Macros {
       def rp = validatePct("red")
       def gp = validatePct("green")
       def bp = validatePct("blue")
-      def h  = validateInt("hue", 359)
+      def h  = validateInt("hue", 360)
       def s  = validatePct("saturation")
       def l  = validatePct("lightness")
       def a  = validateDbl("alpha", 1)
 
-      def validateRgbI = validateFn(rgbI, ri, gi, bi)
-      def validateRgbP = validateFn(rgbP, rp, gp, bp)
-      def validateRgba = validateFn(rgba, ri, gi, bi, a)
-      def validateHsl  = validateFn(hsl,  h, s, l)
-      def validateHsla = validateFn(hsla, h, s, l, a)
+      def validateRgbI  = validateFn(rgbI, ri, gi, bi)
+      def validateRgbP  = validateFn(rgbP, rp, gp, bp)
+      def validateRgbaI = validateFn(rgbaI, ri, gi, bi, a)
+      def validateRgbaP = validateFn(rgbaP, rp, gp, bp, a)
+      def validateHsl   = validateFn(hsl,  h, s, l)
+      def validateHsla  = validateFn(hsla, h, s, l, a)
 
       val validated =
-        validateHex || validateRgbI || validateRgbP || validateRgba || validateHsl || validateHsla
+        validateHex || validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla
 
       if (validated && (errorResult == null))
         Right(text)
       else
-        Option(errorResult).getOrElse(Left("Invalid colour: \"" + text0 + "\""))
+        Option(errorResult).getOrElse(Left("Invalid colour literal: \"" + text0 + "\"."))
     }
   }
 }

@@ -53,30 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 11. `ColorLiteral` macro (`c"..."`) crashes with `StringIndexOutOfBoundsException` on empty/blank strings and `NumberFormatException` on large integers
-- **Files**: [scala-2/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-2/scalacss/internal/Macros.scala#L101-L165), [scala-3/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-3/scalacss/internal/Macros.scala#L163-L239)
-- **Code**:
-  ```scala
-  val text = ws.replaceAllIn(text0, "").toLowerCase
-  ...
-  def validateHex: Boolean =
-    (text.charAt(0) == '#') && { ... }
-
-  def validateInt(name: String, max: Int): V =
-    s => {
-      val i = s.toInt
-      if (i < 0 || i > max)
-        fail(s"Invalid $name value: $s")
-    }
-  ```
-- **Defects**:
-  1. **Empty/whitespace string crash**: When `text0` is `""` or `"   "`, `text` is `""` and `text.charAt(0)` throws an uncaught `StringIndexOutOfBoundsException` instead of calling `fail(...)` (also crashing `ColorLiteral.attempt("")` at runtime in Scala 3).
-  2. **Integer overflow crash**: `int = "(-?\\d+)"` matches digit sequences of any length (e.g., `c"rgb(99999999999,0,0)"`), causing `s.toInt` to throw an uncaught `NumberFormatException`.
-  3. **Indiscriminate whitespace stripping**: `ws.replaceAllIn(text0, "")` strips spaces inside tokens, accepting invalid CSS such as `c"# fff"`, `c"r g b(0,0,0)"`, and `c"rgb(100 %,0 %,0 %)"`.
-  4. **Valid CSS colors rejected**: `validateInt("hue", 359)` rejects `360` (`hsl(360, 100%, 50%)`) and fractional degrees, and `rgba` only accepts integer RGB channels, rejecting `rgba(100%, 50%, 0%, 0.5)`.
-
----
-
 ### 12. Scala 3 `Macros.Dsl.nameQuoted` fails to detect `StyleSheet.Base` when superclass constructor arguments are passed or across compilation units, and strips `$`
 - **File**: [scala-3/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-3/scalacss/internal/Macros.scala#L33-L77)
 - **Code**:
