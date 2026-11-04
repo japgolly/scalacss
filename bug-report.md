@@ -53,35 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 21. `CanIUse2` prefixing bugs: `np` always `true`, invalid `-o-` prefixes, substring false positives, and multi-line regex failure
-- **File**: [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L23-L78)
-- **Code**:
-  ```scala
-  val needsPrefix: Support => Boolean = {
-    case FullX | PartialX             => true
-    case Unknown                      => false
-  }
-  ...
-  def agentPrefixes: Agent => SortedSet[Prefix] =
-    a => emptyPrefixSet + a.prefix ++ a.prefixExceptions.values
-  ...
-  val prefixPlan: Subject => PrefixPlan =
-    memo { s =>
-      val ps = subjectPrefixes(s).toVector.map(Some.apply)
-      val np = s.exists(_._2.exists(d => !needsPrefix(d)))
-      if (np) ps :+ None else ps
-    }
-
-  val prefixed: String => Boolean = {
-    val p = Prefix.values.iterator.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
-    in => p.matcher(in).matches
-  }
-  ```
-- **Defects**:
-  4. **Multi-line values fail to match**: `PrefixApply.keywords` (line 75) does not match across `\n` in multi-line CSS values.
-
----
-
 ### 22. `CanIUse2.agentsForPlatform` fails to match mobile browser names from `PlatformJs`, `PlatformJs.value` fails under CommonJS/AMD, and `Platform.env` ignores `PlatformJsEnv`
 - **Files**: [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L106-L125), [PlatformJs.scala](file:///Users/golly/projects/public/scalacss/core/js/src/main/scala/scalacss/js/PlatformJs.scala#L19-L24), [Platform.scala](file:///Users/golly/projects/public/scalacss/core/js/src/main/scala/scalacss/internal/Platform.scala#L11)
 - **Defects**:

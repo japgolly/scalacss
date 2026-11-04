@@ -85,7 +85,7 @@ object CanIUse2 {
       // JS (and thus Scala.JS) doesn't support negative look-behind :(
       // JS (and thus Scala.JS) doesn't support Pattern.quote
       val ws = w1 +: wn
-      val r1 = ws.mkString("(?:^|.*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-]).*").r.pattern
+      val r1 = ws.mkString("(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-])[\\s\\S]*").r.pattern
       val r2 = ws.mkString("(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
       in =>
         if (r1.matcher(in).matches)

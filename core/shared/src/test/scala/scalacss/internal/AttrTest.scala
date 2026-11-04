@@ -206,6 +206,17 @@ object AttrTest extends TestSuite {
         )
         assertEq(actual, expected)
       }
+      "multiLineGradient" - {
+        val av = AV(backgroundImage, "linear-gradient(\n  red,\n  blue\n)")
+        val actual = av(Env.empty).map(_.value)
+        val expected = Vector(
+          "-moz-linear-gradient(\n  red,\n  blue\n)",
+          "-o-linear-gradient(\n  red,\n  blue\n)",
+          "-webkit-linear-gradient(\n  red,\n  blue\n)",
+          "linear-gradient(\n  red,\n  blue\n)",
+        )
+        assertEq(actual, expected)
+      }
     }
 
     "valuePrefixes" - {
@@ -329,6 +340,10 @@ object AttrTest extends TestSuite {
       test("abc abc 123 def", "-o-abc -o-abc 123 -o-def")
       test("-o-abc")
       test("def(12)", "-o-def(12)")
+      test("abc\n123", "-o-abc\n123")
+      test("123\ndef", "123\n-o-def")
+      test("hello\nabc\nworld", "hello\n-o-abc\nworld")
+      test("multi\nline\ndef(12)", "multi\nline\n-o-def(12)")
     }
 
     "envDepPrefixes1" - {
