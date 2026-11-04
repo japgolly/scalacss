@@ -21,23 +21,6 @@
 
 ---
 
-### 26. `Pseudo.Composite` has broken `equals`/`hashCode` and makes `Cond.ordering` inconsistent with `Cond.equals`
-- **Files**: [Pseudo.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Pseudo.scala#L37-L47) (and lines 72–78), [Cond.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Cond.scala#L56-L57)
-- **Code**:
-  ```scala
-  case (a: Single      , b: Single      ) => Composite(a, SortedSet.empty[Single] + b)
-  case (p: Single      , Composite(h, t)) => Composite(p, t + h)
-  case (Composite(h, t), p: Single      ) => Composite(p, t + h)
-  case (Composite(a, b), Composite(c, d)) => Composite(a, b ++ d + c)
-  ```
-- **Defects**:
-  1. **Non-commutative `equals`/`hashCode`**: `(Hover & Focus)` is `Composite(Hover, SortedSet(Focus))` whereas `(Focus & Hover)` is `Composite(Focus, SortedSet(Hover))`. Both have `cssValue == ":focus:hover"`, yet `(Hover & Focus) != (Focus & Hover)`.
-  2. **Non-associative `equals`/`hashCode`**: `((Hover & Focus) & Active)` is `Composite(Active, SortedSet(Focus, Hover))`, whereas `(Hover & (Focus & Active))` is `Composite(Hover, SortedSet(Active, Focus))`, so `((Hover & Focus) & Active) != (Hover & (Focus & Active))`.
-  3. **Non-idempotent `Composite & Composite`**: `(Hover & Focus) & (Hover & Focus)` produces `Composite(Hover, SortedSet(Focus, Hover))` where `Hover` is duplicated in both `h` and `t`, so `(x & x) != x`.
-  4. **Inconsistent with `Cond.ordering`**: Because `Cond.ordering` compares `_.toString` (which uses `Pseudo.cssValue`), `Cond.ordering.compare(&.hover.focus, &.focus.hover) == 0` while `(&.hover.focus == &.focus.hover)` is `false`, violating the `SortedMap` contract in `StyleS.data`.
-
----
-
 ### 27. `AVs` does not override `equals` or `hashCode`, breaking `StyleS` and `StyleA` value equality
 - **Files**: [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L25), [Style.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Style.scala#L54)
 - **Code**:

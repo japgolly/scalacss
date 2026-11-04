@@ -49,6 +49,42 @@ object CondTest extends TestSuite {
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("-").cssValue }
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("+").cssValue }
       }
+
+      "composite" - {
+        "commutativity" - {
+          assertEq(Hover & Focus, Focus & Hover)
+          assertEq((Hover & Focus).hashCode, (Focus & Hover).hashCode)
+          assertEq((Hover & Focus).cssValue, (Focus & Hover).cssValue)
+        }
+
+        "associativity" - {
+          val a = (Hover & Focus) & Active
+          val b = Hover & (Focus & Active)
+          assertEq(a, b)
+          assertEq(a.hashCode, b.hashCode)
+        }
+
+        "idempotence" - {
+          val x = Hover & Focus
+          assertEq(x & x, x)
+          assertEq(x & Hover, x)
+          assertEq(Hover & x, x)
+          assertEq(x & Focus, x)
+          assertEq(Focus & x, x)
+          val y = Hover & Focus & Active
+          assertEq(y & x, y)
+          assertEq(x & y, y)
+        }
+
+        "condConsistency" - {
+          val c1 = Cond.empty.hover.focus
+          val c2 = Cond.empty.focus.hover
+          assertEq(c1, c2)
+          assertEq(c1.hashCode, c2.hashCode)
+          assertEq(Cond.ordering.compare(c1, c2), 0)
+          assertEq(Set(c1, c2).size, 1)
+        }
+      }
     }
   }
 }

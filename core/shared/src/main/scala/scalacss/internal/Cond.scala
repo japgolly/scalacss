@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.univeq._
 import scala.collection.immutable.SortedMap
 
 /**
@@ -52,6 +53,9 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
 object Cond {
   val empty: Cond =
     Cond(None, Vector.empty)
+
+  implicit def univEq: UnivEq[Cond] =
+    UnivEq.derive
 
   implicit val ordering: Ordering[Cond] =
     Ordering.by[Cond, String](_.toString)(NaturalOrdering)
