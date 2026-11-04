@@ -1,14 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 31. Thread-safety bugs in `Register.registerFontFace`, `internal.memo`, and `NameGen.nextShortPrefix`
-- **Files**: [Register.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/Register.scala#L135-L141) (and lines 250–256), [package.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/package.scala#L64-L71)
-- **Defects**:
-  1. `Register` is documented as `Thread-safe` and synchronizes `registerS`, `registerKeyframes`, `styles`, `keyframes`, and `fontFaces` with `mutex { ... }`. However, `registerFontFace` (`Register.scala:135-141`) is missing `mutex { ... }`, mutating `_fontFaces :+= ff` unsafely, and also fails to call `emitRegistrationWarnings` when `_rendered` is true.
-  2. `internal.memo` (`package.scala:64-71`) uses an unsynchronized `scala.collection.mutable.HashMap` and backs the global singleton `CanIUse2.prefixPlan` (`CanIUse2.scala:43`), risking race conditions and map corruption under concurrent JVM rendering.
-  3. `NameGen.nextShortPrefix()` (`Register.scala:250-256`) reads and increments a mutable `var _nextShortPrefix` on the global `NameGen` object without synchronization.
-
----
-
 ### 32. Typo in attribute name: `fontVariantionSettings` instead of `fontVariationSettings`
 - **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1271) (and line 50), [generated.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/generated.scala#L808)
 - **Code**:

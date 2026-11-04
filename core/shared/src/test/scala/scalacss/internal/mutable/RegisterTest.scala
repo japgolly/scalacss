@@ -167,6 +167,15 @@ object RegisterTest extends TestSuite {
         val warns = getWarns()
         assert(warns.exists(_._2.msg.contains("color")))
       }
+
+      "fontFacePostRender" - {
+        val (reg, getWarns) = newTestReg()
+        val _ = reg.fontFaces
+        val ff = FontFace[Option[String]](Some("myFont"), NonEmptyVector("url(font.woff)"))
+        reg.registerFontFace(ff)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("after stylesheet has been rendered")))
+      }
     }
 
   }

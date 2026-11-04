@@ -129,9 +129,11 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     kf
   }
 
-  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = {
+  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = mutex {
     // This allows duplicate fontFamily names to be specified
     val finalFamilyName = fontFace.fontFamily.getOrElse(nextName(cnh).value)
+    val cn = ClassName(finalFamilyName)
+    emitRegistrationWarnings(cn, Vector.empty, checkDuplicates = false)
     val ff = fontFace.copy(fontFamily = finalFamilyName)
     _fontFaces :+= ff
     ff
@@ -246,7 +248,7 @@ object Register { // ===========================================================
 
     private[this] var _nextShortPrefix = 0
 
-    def nextShortPrefix(): String = {
+    def nextShortPrefix(): String = synchronized {
       val p = toAlphabet(_nextShortPrefix)
       _nextShortPrefix += 1
       p
@@ -272,7 +274,7 @@ object Register { // ===========================================================
     def short8: NameGen =
       short("\u00a2", alphabet = nmchar8)
 
-    private[mutable] def resetNextShortPrefix() = _nextShortPrefix = 0
+    private[mutable] def resetNextShortPrefix() = synchronized { _nextShortPrefix = 0 }
   }
 
   // ===================================================================================================================
