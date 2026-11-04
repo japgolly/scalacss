@@ -103,5 +103,71 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "warnings" - {
+      import Dsl._
+      implicit def composition: Compose = Compose.safe
+      implicit def cnh: ClassNameHint = ClassNameHint("blah")
+
+      def newTestReg(): (Register, () => Vector[(ClassName, Warning)]) = {
+        var warnings = Vector.empty[(ClassName, Warning)]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((cn, w) => warnings :+= ((cn, w)))
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
+        (reg, () => warnings)
+      }
+
+      "unsafeChild" - {
+        val (reg, getWarns) = newTestReg()
+        val s = Dsl.style(
+          unsafeChild("span")(
+            color.red,
+            color.blue
+          )
+        )
+        reg.registerS(s)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "unsafeRoot" - {
+        val (reg, getWarns) = newTestReg()
+        val s = Dsl.style(
+          unsafeRoot("span")(
+            color.red,
+            color.blue
+          )
+        )
+        reg.registerS(s)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "keyframes" - {
+        val (reg, getWarns) = newTestReg()
+        val kfStyle = Dsl.style(color.red, color.blue)
+        val kf = Keyframes(ClassName("myAnim"), Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, kfStyle))))
+        reg.registerKeyframes(kf)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "standalone" - {
+        val (reg, getWarns) = newTestReg()
+        implicit val r: Register = reg
+        class MySS extends StyleSheet.Standalone {
+          import dsl._
+          RootStringOps("div").-(
+            color.red,
+            color.blue
+          )
+        }
+        new MySS
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+    }
+
   }
 }

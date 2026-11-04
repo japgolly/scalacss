@@ -59,6 +59,12 @@ final case class StyleS(data         : SortedMap[Cond, AVs],
   def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
   def compose[I](r: StyleF.P[I])(implicit c: Compose): StyleF.P[I] = c(this, r)
 
+  /** Returns all warnings for this style, including nested unsafe extensions. */
+  def allWarnings: Vector[Warning] =
+    warnings ++ unsafeExts.flatMap(e =>
+      e.style.allWarnings.map(w => w.copy(cond = e.cond & w.cond))
+    )
+
   override def toString = inspect
 
   def inspectCss: StyleStream =

@@ -67,7 +67,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
         (s0.className getOrElse nextName(cnh), s0.addClassNames)
 
     // Register
-    emitRegistrationWarnings(cn, s0.warnings, checkDuplicates = !doesntNeedClassName(s0))
+    emitRegistrationWarnings(cn, s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
     val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
     a
@@ -124,7 +124,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
     val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
     val kf = keyframes.copy(name = cn)
-    emitRegistrationWarnings(cn, Vector.empty)
+    emitRegistrationWarnings(cn, keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
     _keyframes :+= kf
     kf
   }

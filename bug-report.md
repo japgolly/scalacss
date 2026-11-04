@@ -1,14 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 29. Composition warnings in `keyframe`, `unsafeChild`, `unsafeRoot`, `unsafeExt`, and `StyleSheet.Standalone` are silently discarded
-- **Files**: [Register.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/Register.scala#L73) (and line 130), [StyleSheet.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala#L100) (and lines 163–166), [Dsl.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Dsl.scala#L202-L203)
-- **Defects**:
-  1. `ToStyleUnsafeExts` (`Dsl.scala:203`) wraps `UnsafeExts` into `StyleS.empty.copy(unsafeExts = x)` with `warnings = Vector.empty`, and `Register.registerS` (`Register.scala:73`) only passes `s.warnings` to `emitRegistrationWarnings` without inspecting `s.unsafeExts`. Thus warnings inside `unsafeChild`, `unsafeRoot`, and `unsafeExt` are never emitted.
-  2. `StyleSheet.Standalone` (`StyleSheet.scala:100`) converts all `&= / &-` rules into `UnsafeExt`s and never invokes `ErrorHandler.warn`, so conflict warnings in `StyleSheet.Standalone` are completely ignored.
-  3. `Register.registerKeyframes` (`Register.scala:130`) calls `emitRegistrationWarnings(cn, Vector.empty)` instead of collecting warnings from `keyframes.frames`, discarding all warnings inside `keyframe(...)`.
-
----
-
 ### 30. `StringRenderer` and `Css.keyframes` defects: missing `;` in `formatTiny` keyframes, missing `fmt.done()` in `Raw`, inconsistent `font-family` quoting, and overwritten duplicate keyframe selectors
 - **Files**: [Renderer.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Renderer.scala#L38-L46) (and lines 82–90, 115, 124–130), [Css.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Css.scala#L39-L40)
 - **Defects**:
