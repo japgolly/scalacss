@@ -173,6 +173,41 @@ object AttrTest extends TestSuite {
       }
     }
 
+    "prefixed" - {
+      import CanIUse2.prefixed
+      "positive" - {
+        assert(prefixed("-webkit-transform"))
+        assert(prefixed("-moz-available"))
+        assert(prefixed("-ms-flex"))
+        assert(prefixed("-o-text-overflow"))
+        assert(prefixed("-webkit-linear-gradient(red, blue)"))
+        assert(prefixed("url('foo.png'), -webkit-linear-gradient(red, blue)"))
+        assert(prefixed("-moz-zoom-in !important"))
+      }
+      "negative" - {
+        assert(!prefixed("transform"))
+        assert(!prefixed("url(logo-o-2.png), linear-gradient(red, blue)"))
+        assert(!prefixed("url('button-ms-normal.png'), linear-gradient(red, blue)"))
+        assert(!prefixed("url('foo-moz-bar.svg')"))
+        assert(!prefixed("foo-o-bar"))
+        assert(!prefixed("logo-o-2.png"))
+        assert(!prefixed("button-ms-normal"))
+        assert(!prefixed("--o-custom-prop"))
+        assert(!prefixed("linear-gradient(red, blue)"))
+      }
+      "backgroundImagePrefixingWithUrlContainingSubstring" - {
+        val av = AV(backgroundImage, "url(logo-o-2.png), linear-gradient(red, blue)")
+        val actual = av(Env.empty).map(_.value)
+        val expected = Vector(
+          "url(logo-o-2.png), -moz-linear-gradient(red, blue)",
+          "url(logo-o-2.png), -o-linear-gradient(red, blue)",
+          "url(logo-o-2.png), -webkit-linear-gradient(red, blue)",
+          "url(logo-o-2.png), linear-gradient(red, blue)",
+        )
+        assertEq(actual, expected)
+      }
+    }
+
     "valuePrefixes" - {
       def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
       "textAlign.left"          - test(textAlign.left,          "left")

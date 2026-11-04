@@ -52,8 +52,13 @@ object CanIUse2 {
     }
 
   val prefixed: String => Boolean = {
-    val p = Prefix.values.iterator.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
-    in => p.matcher(in).matches
+    val prefixes = Prefix.values.iterator.map(_.prefix).mkString("|")
+    val p = s"""(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:$prefixes)[a-zA-Z][\\s\\S]*""".r.pattern
+    val strip = """url\([^)]*\)|'[^']*'|"[^"]*"""".r
+    in => {
+      val unquoted = strip.replaceAllIn(in, "")
+      p.matcher(unquoted).matches
+    }
   }
 
   type PrefixApply = String => Option[Prefix => String]

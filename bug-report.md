@@ -78,9 +78,7 @@ This report documents **40** verified bugs, specification violations, broken inv
   }
   ```
 - **Defects**:
-  2. **`agentPrefixes` always includes `prefixExceptions`**: `Agent.Opera` has `prefix = webkit` and `prefixExceptions = Map(... -> o)` for legacy Presto Opera 9–12. Because `agentPrefixes` unconditionally adds `a.prefixExceptions.values`, any feature supported with `-webkit-` in Chromium-based Opera 15+ also emits non-existent `-o-` prefixes (e.g., `-o-flex`, `-o-user-select`, `-o-appearance`).
-  3. **`prefixed` matches substrings without word boundaries**: `.*(?:-moz-|-ms-|-o-|-webkit-).*` matches any value containing `-o-` or `-ms-` inside a URL, identifier, or string (e.g., `backgroundImage := "url(logo-o-2.png), linear-gradient(red, blue)"`), causing `runPlan` to skip vendor prefixing completely.
-  4. **Multi-line values fail to match**: Neither `prefixed` (line 50) nor `PrefixApply.keywords` (line 75) enables `Pattern.DOTALL` (`(?s)`), so `.` fails to match across `\n` in multi-line CSS values.
+  4. **Multi-line values fail to match**: `PrefixApply.keywords` (line 75) does not match across `\n` in multi-line CSS values.
 
 ---
 
