@@ -152,6 +152,24 @@ object AttrTest extends TestSuite {
       }
     }
 
+    "conflicts" - {
+      "transitive" - {
+        val a = AV(marginLeft, "1px")
+        val b = AV(margin, "2px")
+        val c = AV(marginRight, "3px")
+        val actual = AttrCmp.conflicts(Vector(a, b, c))
+        assertEq(actual, Set(a, b, c))
+      }
+      "transitive4" - {
+        val a = AV(marginLeft, "1px")
+        val b = AV(margin, "2px")
+        val c = AV(marginRight, "3px")
+        val d = AV(marginTop, "4px")
+        val actual = AttrCmp.conflicts(Vector(a, b, c, d))
+        assertEq(actual, Set(a, b, c, d))
+      }
+    }
+
     "keyPrefixes" - {
       def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
       test(textAlign,           "text-align")

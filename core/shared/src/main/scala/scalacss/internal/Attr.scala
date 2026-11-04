@@ -216,9 +216,9 @@ object AttrCmp {
         conflicts
       else {
         val h = untested.head
-        val (ko, ok) = untested.tail.partition(i => h.attr.cmp(i.attr).conflict)
+        val ko = untested.tail.filter(i => h.attr.cmp(i.attr).conflict)
         val c2 = if (ko.isEmpty) conflicts else conflicts + h ++ ko
-        go(ok, c2)
+        go(untested.tail, c2)
       }
     go(avs, Set.empty)
   }

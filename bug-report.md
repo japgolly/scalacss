@@ -1,26 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 25. `AttrCmp.conflicts` fails to find transitive/chained conflicts
-- **File**: [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L187-L198)
-- **Code**:
-  ```scala
-  def conflicts(avs: Vector[AV]): Set[AV] = {
-    @tailrec def go(untested: Vector[AV], conflicts: Set[AV]): Set[AV] =
-      if (untested.length <= 1)
-        conflicts
-      else {
-        val h = untested.head
-        val (ko, ok) = untested.tail.partition(i => h.attr.cmp(i.attr).conflict)
-        val c2 = if (ko.isEmpty) conflicts else conflicts + h ++ ko
-        go(ok, c2)
-      }
-    go(avs, Set.empty)
-  }
-  ```
-- **Defect**: `Attr.cmp(...).conflict` is not transitive (`marginLeft` conflicts with `margin`, and `margin` conflicts with `marginRight`, but `marginLeft` does not conflict with `marginRight`). When `avs = Vector(marginLeft(1.px), margin(2.px), marginRight(3.px))`, iteration 1 partitions `untested.tail` against `h = marginLeft`: `margin` goes into `ko` and `marginRight` goes into `ok`. Iteration 2 calls `go(Vector(marginRight), Set(marginLeft, margin))`, which immediately terminates because `untested.length <= 1`, failing to report `marginRight(3.px)` as conflicting with `margin(2.px)`.
-
----
-
 ### 27. `AVs` does not override `equals` or `hashCode`, breaking `StyleS` and `StyleA` value equality
 - **Files**: [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L25), [Style.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Style.scala#L54)
 - **Code**:
