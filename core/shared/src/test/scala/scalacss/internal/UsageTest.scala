@@ -84,5 +84,24 @@ object UsageTest extends TestSuite {
         assertContains(css, "(min-aspect-ratio:4/3)")
       }
     }
+
+    "normalLiteral" - {
+      val s = style(
+        gap(10.px, normal),
+        gap(normal, 10.px),
+        gap(normal),
+        rowGap(normal),
+      )
+      val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
+      assertMultiline(css,
+        """
+          |.a {
+          |  gap: 10px normal;
+          |  gap: normal 10px;
+          |  gap: normal;
+          |  row-gap: normal;
+          |}
+        """.stripMargin.trim)
+    }
   }
 }

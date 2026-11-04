@@ -10,18 +10,6 @@
 
 ---
 
-### 33. `Literal.Typed.normal` is missing from `TypedLiteralAliases`
-- **File**: [Values.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Values.scala#L11-L51) (and line 127)
-- **Code**:
-  ```scala
-  // Values.scala:126-127
-  sealed trait GapStyle
-  object normal extends Literal("normal") with GapStyle
-  ```
-- **Defect**: Every typed literal in `Literal.Typed` is exported in `TypedLiteralAliases` except `Typed.normal`. Because `TypedLiteralAliases` is mixed into `DslBase` and `Literal` (`^`), `normal` is unavailable in the DSL for `gap(10.px, normal)` despite `GapStyle` and `ruleGapStyle_l` (`ValueT.scala:139`) being defined for it.
-
----
-
 ### 34. `Media.Query.+` returns `Vector[Query]` which cannot be used as a `Cond`, while `&` renders `, ` (logical OR)
 - **File**: [Media.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Media.scala#L95-L102) (and line 253)
 - **Code**:

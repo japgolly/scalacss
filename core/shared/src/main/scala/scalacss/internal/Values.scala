@@ -35,6 +35,7 @@ trait TypedLiteralAliases {
   final def medium                                                          = Typed.medium
   final def none                                                            = Typed.none
   final def noRepeat                                                        = Typed.noRepeat
+  final def normal                                                          = Typed.normal
   final def outset                                                          = Typed.outset
   final def repeat                                                          = Typed.repeat
   final def ridge                                                           = Typed.ridge
