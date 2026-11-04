@@ -121,19 +121,22 @@ object CanIUse2 {
     def dunno = Agent.values
     if (p.toString.toLowerCase contains "android")
       p.name.fold(dunno)({
-        case "Chrome"  => NonEmptyVector(AndroidChrome)
-        case "Firefox" => NonEmptyVector(AndroidFirefox)
-        case _         => NonEmptyVector(AndroidBrowser, AndroidUC)
+        case n if n startsWith "Chrome"  => NonEmptyVector(AndroidChrome)
+        case n if n startsWith "Firefox" => NonEmptyVector(AndroidFirefox)
+        case _                           => NonEmptyVector(AndroidBrowser, AndroidUC)
       })
     else
       p.name.fold(dunno)({
-        case "Chrome"               => NonEmptyVector(Chrome)
-        case "Firefox"              => NonEmptyVector(Firefox)
-        case "IE"                   => NonEmptyVector(IE, IEMobile)
-        case "Opera"                => NonEmptyVector(Opera, OperaMini, OperaMobile)
-        case "Safari"               => NonEmptyVector(IOSSafari, Safari)
-        case n if n endsWith "Edge" => NonEmptyVector(Edge)
-        case _                      => dunno
+        case n if n startsWith "Chrome"  => NonEmptyVector(Chrome)
+        case n if n startsWith "Firefox" => NonEmptyVector(Firefox)
+        case "IE Mobile"                 => NonEmptyVector(IEMobile)
+        case n if n startsWith "IE"      => NonEmptyVector(IE)
+        case "Opera Mini"                => NonEmptyVector(OperaMini)
+        case "Opera Mobile"              => NonEmptyVector(OperaMobile)
+        case n if n startsWith "Opera"   => NonEmptyVector(Opera)
+        case "Safari"                    => NonEmptyVector(IOSSafari, Safari)
+        case n if n endsWith "Edge"      => NonEmptyVector(Edge)
+        case _                           => dunno
       })
   }
 
