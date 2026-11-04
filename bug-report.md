@@ -53,18 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 18. `ValueT.Rules.ruleWidStyCol_P` erroneously allows `Percentage` in `border`, `outline`, and `columnRule`
-- **File**: [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L144-L145)
-- **Code**:
-  ```scala
-  // diverging implicit expansion requires these ↙ :(
-  @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
-  @inline implicit def ruleWidStyCol_P : WidStyCol  <=< Pct = Rule.retype
-  ```
-- **Defect**: `WidStyCol` represents `<br-width> || <br-style> || <color>`. While `<br-width>` accepts `<length>` (`BrWidth <=< Len`), CSS forbids `<percentage>` for border/outline/column-rule widths. `ruleWidStyCol_P` was copy-pasted from the `LenPct` rules below it, allowing invalid CSS such as `border(25.%%)` (`border: 25%`) to compile.
-
----
-
 ### 20. Bogus vendor value transforms on `textAlign`, `resize`, `float`, `clear`, `captionSide`, and untransformed `width.available`
 - **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L636) (and lines 662, 1086, 2048–2050, 2170–2171), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L281), [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L13-L15)
 - **Defects**:

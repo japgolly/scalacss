@@ -215,6 +215,9 @@ object AttrTest extends TestSuite {
       assertEq(border(length).value, "3px")
       assertEq(border(length, style).value, "3px dashed")
       assertEq(border(length, style, colour).value, "3px dashed green")
+      compileError("border(pct)")
+      compileError("outline(pct)")
+      compileError("columnRule(pct)")
     }
 
     "textIndent" - {

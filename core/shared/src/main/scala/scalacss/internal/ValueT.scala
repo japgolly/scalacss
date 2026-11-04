@@ -142,7 +142,6 @@ object ValueT {
 
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
-    @inline implicit def ruleWidStyCol_P : WidStyCol  <=< Pct = Rule.retype
     @inline implicit def ruleLenPctNum_I : LenPctNum  <== Int = Rule(_.toString)
     @inline implicit def ruleLenPctNum_L : LenPctNum  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_P : LenPctNum  <=< Pct = Rule.retype

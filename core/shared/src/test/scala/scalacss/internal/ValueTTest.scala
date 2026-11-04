@@ -176,7 +176,7 @@ object ValueTTest extends TestSuite {
         compileError("test[WidStyCol](1)")
         compileError("test[WidStyCol](1.5)")
                       test[WidStyCol](len)
-                      test[WidStyCol](%%)
+        compileError("test[WidStyCol](%%)")
                       test[WidStyCol](Literal.Typed.thick)
                       test[WidStyCol](Literal.Typed.dashed)
                       test[WidStyCol](Color.black)
