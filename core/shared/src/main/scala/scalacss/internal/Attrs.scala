@@ -53,7 +53,7 @@ object Attrs {
     svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor,
 
     // 0.5.5
-    caretColor, fontVariantionSettings, hangingPunctuation, initialLetter,
+    caretColor, fontVariationSettings, hangingPunctuation, initialLetter,
     overscrollBehavior, overscrollBehaviorX, overscrollBehaviorY,
 
     // 0.5.6
@@ -1269,6 +1269,8 @@ object Attrs {
     *
     * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
     */
+  final def fontVariationSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
+  @deprecated("Use fontVariationSettings", "1.1.0")
   final def fontVariantionSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
 
   /**

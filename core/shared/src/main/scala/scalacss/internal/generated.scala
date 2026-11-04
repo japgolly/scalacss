@@ -811,7 +811,7 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
     *
     * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
     */
-  @inline final def fontVariantionSettings = Attrs.fontVariantionSettings
+  @inline final def fontVariationSettings = Attrs.fontVariationSettings
   /**
    * The font-weight CSS property specifies the weight or boldness of the font. However, some fonts are not available in all weights; some are available only on normal and bold.
    *

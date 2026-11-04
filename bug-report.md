@@ -1,15 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 32. Typo in attribute name: `fontVariantionSettings` instead of `fontVariationSettings`
-- **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1271) (and line 50), [generated.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/generated.scala#L808)
-- **Code**:
-  ```scala
-  final def fontVariantionSettings = Attr.real("font-variation-settings", Transform keys CanIUse.fontVariationSettings)
-  ```
-- **Defect**: Misspelled with an extra `n` (`fontVariantionSettings` instead of `fontVariationSettings`).
-
----
-
 ### 34. `Media.Query.+` returns `Vector[Query]` which cannot be used as a `Cond`, while `&` renders `, ` (logical OR)
 - **File**: [Media.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Media.scala#L95-L102) (and line 253)
 - **Code**:
