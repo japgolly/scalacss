@@ -1111,7 +1111,7 @@ object Attrs {
    */
   object fontFamily extends TypedAttrBase {
     override val attr = Attr.real("font-family", Transform.values(CanIUse.fontFamilySystemUi)(L.systemUI))
-    def apply(a: FontFace[String]): AV = av(a.fontFamily)
+    def apply(a: FontFace[String]): AV = av(FontFace.quoteIfNeeded(a.fontFamily))
     def systemUI = av(L.systemUI)
   }
 

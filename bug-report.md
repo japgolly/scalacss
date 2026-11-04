@@ -1,15 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 30. `StringRenderer` and `Css.keyframes` defects: missing `;` in `formatTiny` keyframes, missing `fmt.done()` in `Raw`, inconsistent `font-family` quoting, and overwritten duplicate keyframe selectors
-- **Files**: [Renderer.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Renderer.scala#L38-L46) (and lines 82–90, 115, 124–130), [Css.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Css.scala#L39-L40)
-- **Defects**:
-  1. **Missing `;` in `formatTiny` keyframes (`Renderer.scala:82-90, 146-147`)**: In `FormatSB.apply(CssEntry.Keyframes)`, `for (s <- styles) printCssKV(selO, s.mq, s.content)` calls `kv1` on the first property of *each* `s` in `styles`. Because `formatTiny`'s `kv1` does not emit a leading `;`, a keyframe containing multiple `CssEntry.Style` elements renders without a semicolon between them (e.g., `0%{color:redwidth:10px}`). Also, if a keyframe style has a media query `s.mq`, `@media` is never emitted around it, yet `formatPretty` still indents it via `mqIndent(mq)`.
-  2. **`StringRenderer.Raw` omits `fmt.done()` (`Renderer.scala:38-46`)**: Unlike `StringRenderer.Default` (line 29), `StringRenderer.Raw` never calls `fmt.done()`.
-  3. **Inconsistent and double-quoted `font-family` (`Renderer.scala:115, 124-130`, `Attrs.scala:1115`)**: `@font-face` quotes `fontFamily` containing spaces via `quoteIfNeeded` (`font-family: "My Font"`), whereas `Attrs.fontFamily(myFontFace)` emits `font-family: My Font` unquoted. Conversely, if `fontFamily` is already quoted (`"\"My Font\""`), `quoteIfNeeded` wraps it in quotes again (`font-family: ""My Font""`).
-  4. **Duplicate keyframe selectors overwritten (`Css.scala:39-40`)**: `ListMap(kfs.frames.map(s => (s._1, styleA(s._2))):_*)` silently overwrites earlier frames that share the same percentage selector instead of merging them.
-
----
-
 ### 31. Thread-safety bugs in `Register.registerFontFace`, `internal.memo`, and `NameGen.nextShortPrefix`
 - **Files**: [Register.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/Register.scala#L135-L141) (and lines 250–256), [package.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/package.scala#L64-L71)
 - **Defects**:

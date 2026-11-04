@@ -71,6 +71,16 @@ final case class FontFace[FF](fontFamily         : FF,
 }
 
 object FontFace {
+  /** Quotes a font-family string if it contains whitespace and is not already quoted. */
+  def quoteIfNeeded(s: String): String = {
+    def isQuoted =
+      s.length >= 2 && ((s.startsWith("\"") && s.endsWith("\"")) || (s.startsWith("'") && s.endsWith("'")))
+    if (s.exists(_.isWhitespace) && !isQuoted)
+      "\"" + s + "\""
+    else
+      s
+  }
+
   final class FontSrcSelector(val fontFamily: Option[String]) extends AnyVal {
     def src(src: String, additionalSrc: String*): FontFace[Option[String]] =
       FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
