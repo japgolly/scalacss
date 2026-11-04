@@ -729,6 +729,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def fontKerning = Attrs.fontKerning
   /**
+   * The font-language-override CSS property controls the usage of language-specific glyphs in a typeface.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-language-override">MDN</a>
+   */
+  @inline final def fontLanguageOverride = Attrs.fontLanguageOverride
+  /**
    * The font-size CSS property specifies the size of the font – specifically the desired height of glyphs from the font. Setting the font size may, in turn, change the size of other items, since it is used to compute the value of em and ex length units.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-size">MDN</a>
@@ -1375,7 +1381,7 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
   /**
    * The place-self CSS property is a shorthand property sets both the align-self and justify-self properties. The first value is the align-self property value, the second the justify-self one. If the second value is not present, the first value is also used for it.
    *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/palce-self">MDN</a>
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/place-self">MDN</a>
    */
   @inline final def placeSelf = Attrs.placeSelf
   /**

@@ -5,7 +5,7 @@ val outfile = "core/shared/src/main/scala/scalacss/internal/generated.scala"
 
 val r1 = """.*(?: (?:def|val) .*Attr[ \.]| extends ).*""".r.pattern
 val r2 = """^\s*(?://|\*).*""".r.pattern
-val r3 = """.*(?:override|private| val +values).*""".r.pattern
+val r3 = """.*(?:override |private | val +values).*""".r.pattern
 val r4 = """^.* (?:object|val|def) +| *=.+| +extends.*""".r
 val r5 = """^[a-z].*""".r.pattern
 

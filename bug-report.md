@@ -1,19 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 23. `fontLanguageOverride` is missing from `generated.scala` (`Dsl`) due to a regex bug in `bin/generate-aliases`
-- **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1143), [bin/generate-aliases](file:///Users/golly/projects/public/scalacss/bin/generate-aliases#L8), [generated.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/generated.scala#L730-L736)
-- **Code**:
-  ```scala
-  // Attrs.scala:1143
-  final def fontLanguageOverride = Attr.real("font-language-override")
-
-  // bin/generate-aliases:8
-  grep -vP '^ *(?:(?:\*|[/*]+).*|override|private| val +values|final class|object|def apply|$)'
-  ```
-- **Defect**: `bin/generate-aliases` filters out lines matching `override` without anchoring it as a keyword before `def`/`val`. Because `"font-language-override"` contains the substring `override`, `fontLanguageOverride` was stripped by the script and is missing from `AttrAliasesAndValueTRules` in `generated.scala`.
-
----
-
 ### 24. 9 attributes in `Attrs` are missing from `Attrs.valuesForAllAttr`, `Attrs.values`, and `Attrs.all`
 - **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L9-L70)
 - **Defect**: The following 9 attributes defined in `Attrs` are omitted from `valuesForAllAttr`:
