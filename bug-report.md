@@ -1,21 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 24. 9 attributes in `Attrs` are missing from `Attrs.valuesForAllAttr`, `Attrs.values`, and `Attrs.all`
-- **File**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L9-L70)
-- **Defect**: The following 9 attributes defined in `Attrs` are omitted from `valuesForAllAttr`:
-  - `justifyItems` ([line 1511](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1511))
-  - `overflowAnchor` ([line 1831](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1831))
-  - `svgFloodOpacity` ([line 3326](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3326))
-  - `svgLightingColor` ([line 3335](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3335))
-  - `svgStopColor` ([line 3344](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3344))
-  - `svgStopOpacity` ([line 3353](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3353))
-  - `svgFillOpacity` ([line 3398](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3398))
-  - `svgStroke` ([line 3442](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3442))
-  - `svgStrokeOpacity` ([line 3486](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L3486))
-  Because `Attrs.all` uses `valuesForAllAttr`, `all` fails to detect conflicts with any of these 9 attributes, and `Attrs.values` is incomplete.
-
----
-
 ### 25. `AttrCmp.conflicts` fails to find transitive/chained conflicts
 - **File**: [Attr.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attr.scala#L187-L198)
 - **Code**:

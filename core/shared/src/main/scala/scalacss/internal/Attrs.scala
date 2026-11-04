@@ -46,6 +46,12 @@ object Attrs {
     boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
     textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect,
 
+    svgAlignmentBaseline, svgBaselineShift, svgClipRule, svgColorInterpolation, svgColorInterpolationFilters,
+    svgColorProfile, svgColorRendering, svgDominantBaseline, svgEnableBackground, svgFill, svgFillRule, svgFloodColor,
+    svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
+    svgShapeRendering, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin,
+    svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor,
+
     // 0.5.5
     caretColor, fontVariantionSettings, hangingPunctuation, initialLetter,
     overscrollBehavior, overscrollBehaviorX, overscrollBehaviorY,
@@ -56,15 +62,9 @@ object Attrs {
     // 0.6.0
     justifySelf, placeSelf,
 
-    // =================================================================================================================
-    // ==================================== SVG Attributes =============================================================
-    // =================================================================================================================
-
-    svgAlignmentBaseline, svgBaselineShift, svgClipRule, svgColorInterpolation, svgColorInterpolationFilters,
-    svgColorProfile, svgColorRendering, svgDominantBaseline, svgEnableBackground, svgFill, svgFillRule, svgFloodColor,
-    svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
-    svgShapeRendering, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin,
-    svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor)
+    // 1.1.0
+    justifyItems, overflowAnchor,
+    svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity)
 
   lazy val values: NonEmptyVector[Attr] =
     Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
