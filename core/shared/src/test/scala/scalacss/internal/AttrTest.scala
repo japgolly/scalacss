@@ -161,6 +161,16 @@ object AttrTest extends TestSuite {
       test(overscrollBehaviorX, "overscroll-behavior-x")
       test(overscrollBehaviorY, "overscroll-behavior-y")
       test(rowGap,              "row-gap")
+      test(boxReflect,          "-ms-box-reflect", "-o-box-reflect", "-webkit-box-reflect")
+    }
+
+    "prefixPlan" - {
+      "unprefixedExcludedWhenNotSupported" - {
+        assert(!CanIUse2.prefixPlan(CanIUse.reflections).contains(None))
+      }
+      "unprefixedIncludedWhenSupported" - {
+        assert(CanIUse2.prefixPlan(CanIUse.borderRadius).contains(None))
+      }
     }
 
     "valuePrefixes" - {

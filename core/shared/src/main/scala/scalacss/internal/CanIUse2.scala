@@ -26,6 +26,11 @@ object CanIUse2 {
     case Unknown                      => false
   }
 
+  val supportsWithoutPrefix: Support => Boolean = {
+    case Full | Partial => true
+    case _              => false
+  }
+
   private[this] val emptyPrefixSet: SortedSet[Prefix] =
     SortedSet.empty[Prefix]
 
@@ -41,9 +46,9 @@ object CanIUse2 {
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
     memo { s =>
-      val ps = subjectPrefixes(s).toVector.map(Some.apply)
-      val np = s.exists(_._2.exists(d => !needsPrefix(d)))
-      if (np) ps :+ None else ps
+      val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
+      val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
+      if (noPrefix) prefixes :+ None else prefixes
     }
 
   val prefixed: String => Boolean = {
