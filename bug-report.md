@@ -53,15 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 20. Bogus vendor value transforms on `textAlign`, `resize`, `float`, `clear`, `captionSide`, and untransformed `width.available`
-- **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L636) (and lines 662, 1086, 2048–2050, 2170–2171), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L281), [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L13-L15)
-- **Defects**:
-  1. `textAlign` (`Attrs.scala:2171`) applies `Transform.values(CanIUse.textJustify)(L.justify)`, which prefixes `text-align: justify` into `text-align: -ms-justify`! `CanIUse.textJustify` is for the `text-justify` property, not `text-align: justify` (standard unprefixed CSS1).
-  2. `resize` (`Attrs.scala:2048-2050`) combines `Transform.keys(CanIUse.resize) * Transform.values(CanIUse.logicalProps)(L.block, L.inline)`, producing cross-vendor combinations like `-moz-resize: -webkit-block`. Similarly, `captionSide`, `clear`, and `float` prefix `inline-start`/`inline-end` using `CanIUse.logicalProps` (`-webkit-inline-start`), which browsers never supported as values on those properties.
-  3. `TypedAttr_Length` (`ValueT.scala:281`, used by `width` and `height`) defines `final def available = av(L.available)` (`"available"`), whereas `CanIUse2.intrinsicWidthTransforms` (`CanIUse2.scala:15`) only transforms `L.fillAvailable` (`"fill-available"`, used by `TypedAttr_MinLength` and `TypedAttr_MaxLength`). Thus `width.available` and `height.available` are never vendor-prefixed.
-
----
-
 ### 21. `CanIUse2` prefixing bugs: `np` always `true`, invalid `-o-` prefixes, substring false positives, and multi-line regex failure
 - **File**: [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L23-L78)
 - **Code**:

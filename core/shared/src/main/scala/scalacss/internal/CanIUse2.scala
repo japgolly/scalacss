@@ -12,7 +12,7 @@ object CanIUse2 {
 
   lazy val intrinsicWidthTransforms: Transform =
     Transform.values(intrinsicWidth)(
-      L.fillAvailable, L.maxContent, L.minContent, L.fitContent, L.containFloats)
+      L.fillAvailable, L.available, L.maxContent, L.minContent, L.fitContent, L.containFloats)
 
   lazy val backgroundImageTransforms: Transform = {
     val a = Transform.valueKeywords(gradients)("linear-gradient", "radial-gradient")

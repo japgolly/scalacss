@@ -165,9 +165,27 @@ object AttrTest extends TestSuite {
 
     "valuePrefixes" - {
       def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
-      test(textAlign.left, "left")
-      test(cursor.pointer, "pointer")
-      test(cursor.zoomIn, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      "textAlign.left"          - test(textAlign.left,          "left")
+      "textAlign.justify"       - test(textAlign.justify,       "justify")
+      "float.inlineStart"       - test(float.inlineStart,       "inline-start")
+      "float.inlineEnd"         - test(float.inlineEnd,         "inline-end")
+      "clear.inlineStart"       - test(clear.inlineStart,       "inline-start")
+      "clear.inlineEnd"         - test(clear.inlineEnd,         "inline-end")
+      "captionSide.blockStart"  - test(captionSide.blockStart,  "block-start")
+      "captionSide.inlineStart" - test(captionSide.inlineStart, "inline-start")
+      "resize.block"            - test(resize.block,            "block")
+      "resize.inline"           - test(resize.inline,           "inline")
+      "width.available"         - test(width.available,         "-moz-available", "-o-available", "-webkit-available", "available")
+      "width.fillAvailable"     - test(width.fillAvailable,     "-moz-fill-available", "-o-fill-available", "-webkit-fill-available", "fill-available")
+      "cursor.pointer"          - test(cursor.pointer,          "pointer")
+      "cursor.zoomIn"           - test(cursor.zoomIn,           "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+
+      "resize.block" - {
+        val expected = Vector(
+          CssKV("resize", "block"),
+        )
+        assertEq(resize.block(Env.empty), expected)
+      }
 
       "important" - {
         test(textAlign.left.important, "left !important")

@@ -632,8 +632,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/caption-side">MDN</a>
    */
   object captionSide extends TypedAttrBase {
-    override val attr = Attr.real("caption-side",
-      Transform.values(CanIUse.logicalProps)(L.blockStart, L.blockEnd, L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("caption-side")
     def blockEnd    = av(L.blockEnd)
     def blockStart  = av(L.blockStart)
     def bottom      = av(L.bottom)
@@ -658,8 +657,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear">MDN</a>
    */
   object clear extends TypedAttrBase {
-    override val attr = Attr.real("clear",
-      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("clear")
     def both        = av(L.both)
     def inlineEnd   = av(L.inlineEnd)
     def inlineStart = av(L.inlineStart)
@@ -1084,8 +1082,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float">MDN</a>
    */
   object float extends TypedAttrBase {
-    override val attr = Attr.real("float",
-      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("float")
     def inlineEnd   = av(L.inlineEnd)
     def inlineStart = av(L.inlineStart)
     def left        = av(L.left)
@@ -2049,9 +2046,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/resize">MDN</a>
    */
   object resize extends TypedAttrBase {
-    override val attr = Attr.real("resize",
-      Transform.keys(CanIUse.resize) *
-      Transform.values(CanIUse.logicalProps)(L.block, L.inline))
+    override val attr = Attr.real("resize", Transform keys CanIUse.resize)
     def block      = av(L.block)
     def both       = av(L.both)
     def horizontal = av(L.horizontal)
@@ -2171,8 +2166,7 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align",
-      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value) *
-      Transform.values(CanIUse.textJustify)(L.justify))
+      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value))
     def center      = av(L.center)
     def end         = avl(L.end)
     def justify     = av(L.justify)
