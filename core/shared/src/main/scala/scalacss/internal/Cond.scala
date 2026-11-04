@@ -1,7 +1,6 @@
 package scalacss.internal
 
 import japgolly.univeq._
-import scala.collection.immutable.SortedMap
 
 /**
  * Condition under which CSS is applicable.
@@ -32,21 +31,29 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
       optionAppend(pseudo, b.pseudo)(_ & _),
       b.mediaQueries.foldLeft(mediaQueries)(_ +: _))
 
-  def applyToStyle(s: StyleS): StyleS = {
-    val d = s.data.foldLeft(SortedMap.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
+  def applyToStyle(s: StyleS)(implicit c: Compose = Compose.trust): StyleS = {
+    val init = StyleS.empty.copy(
+      warnings = s.warnings.map(w => w.copy(cond = this & w.cond))
+    )
+
+    val composed = s.data.foldLeft(init) { case (q, (oldCond, av)) =>
       val newCond = this & oldCond
-      val newValue = q.get(newCond).fold(av)(_ ++ av)
-      q.updated(newCond, newValue)
+      val item = StyleS.data1(newCond, av)
+      c(q, item)
     }
 
     val u = s.unsafeExts.map(e =>
       e.copy(
-        style = this.copy(pseudo = None).applyToStyle(e.style),
+        style = this.copy(pseudo = None).applyToStyle(e.style)(c),
         cond  = this.copy(mediaQueries = Vector.empty) & e.cond
       )
     )
 
-    s.copy(data = d, unsafeExts = u)
+    composed.copy(
+      unsafeExts    = u,
+      className     = s.className,
+      addClassNames = s.addClassNames
+    )
   }
 }
 

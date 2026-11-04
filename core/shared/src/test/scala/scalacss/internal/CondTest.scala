@@ -86,5 +86,32 @@ object CondTest extends TestSuite {
         }
       }
     }
+
+    "applyToStyle" - {
+      import Dsl._
+      implicit val composition: Compose = Compose.safe
+      val & = Cond.empty
+
+      "warningsCondition" - {
+        val s = style(
+          &.hover(
+            color.red,
+            color.blue
+          )
+        )
+        assertEq(s.warnings.map(_.cond), Vector(&.hover))
+      }
+
+      "mergeSameConditionConflict" - {
+        val inner = style(
+          color.red,
+          &.hover(color.blue)
+        )
+        val s = style(
+          &.hover(inner)
+        )
+        assert(s.warnings.nonEmpty)
+      }
+    }
   }
 }

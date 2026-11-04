@@ -1,27 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 28. `Cond.applyToStyle` does not update `StyleS.warnings` conditions or use `Compose`, and `unsafeRoot` drops outer pseudo-conditions
-- **Files**: [Cond.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Cond.scala#L34-L49), [Css.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Css.scala#L66-L69), [Dsl.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Dsl.scala#L224)
-- **Code**:
-  ```scala
-  // Cond.scala:34-49
-  def applyToStyle(s: StyleS): StyleS = {
-    val d = s.data.foldLeft(SortedMap.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
-      val newCond = this & oldCond
-      val newValue = q.get(newCond).fold(av)(_ ++ av)
-      q.updated(newCond, newValue)
-    }
-    val u = s.unsafeExts.map(e => e.copy(cond = this & e.cond))
-    s.copy(data = d, unsafeExts = u)
-  }
-  ```
-- **Defects**:
-  1. `applyToStyle` does not update `s.warnings` (`w.copy(cond = this & w.cond)`), so warnings generated inside a conditional block (e.g., `&.hover(...)`) report `Cond.empty` instead of `&.hover`.
-  2. When two entries in `s.data` map to the same `newCond` (`this & oldCond`), `applyToStyle` merges their `AVs` using `_ ++ av` instead of `Compose`, bypassing conflict resolution and warnings.
-  3. In `Css.unsafeExt` (`val sel = u.sel(root + u.cond)`), `u.cond` is passed into `u.sel`. However, `Dsl.unsafeRoot` (`Dsl.scala:224`) defines `u.sel` as `_ => sel`, which ignores its argument and silently drops any pseudo-selector in `u.cond` (e.g., `&.hover(unsafeRoot(".foo")(...))`). Furthermore, `root + u.cond` uses `Cond.toString`, which embeds `@media ...` into the selector string if `u.cond` has media queries.
-
----
-
 ### 29. Composition warnings in `keyframe`, `unsafeChild`, `unsafeRoot`, `unsafeExt`, and `StyleSheet.Standalone` are silently discarded
 - **Files**: [Register.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/Register.scala#L73) (and line 130), [StyleSheet.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala#L100) (and lines 163–166), [Dsl.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Dsl.scala#L202-L203)
 - **Defects**:
