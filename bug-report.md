@@ -1,13 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 22. `CanIUse2.agentsForPlatform` fails to match mobile browser names from `PlatformJs`, `PlatformJs.value` fails under CommonJS/AMD, and `Platform.env` ignores `PlatformJsEnv`
-- **Files**: [CanIUse2.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/CanIUse2.scala#L106-L125), [PlatformJs.scala](file:///Users/golly/projects/public/scalacss/core/js/src/main/scala/scalacss/js/PlatformJs.scala#L19-L24), [Platform.scala](file:///Users/golly/projects/public/scalacss/core/js/src/main/scala/scalacss/internal/Platform.scala#L11)
-- **Defects**:
-  2. `PlatformJs.value` runs `js.eval(sourceCode)` and reads `js.Dynamic.global.platform`. However, in CommonJS/Node.js/Webpack environments (where `exports` and `module` exist) or AMD environments (`define.amd`), the bundled `platform.js` IIFE exports to `exports` or `define` instead of assigning `global.platform`, so `PlatformJs.value` evaluates to `undefined`.
-  3. `core/js/src/main/scala/scalacss/internal/Platform.scala` hardcodes `implicit def env: Env = Env.empty` instead of using `PlatformJsEnv.value`.
-
----
-
 ### 23. `fontLanguageOverride` is missing from `generated.scala` (`Dsl`) due to a regex bug in `bin/generate-aliases`
 - **Files**: [Attrs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Attrs.scala#L1143), [bin/generate-aliases](file:///Users/golly/projects/public/scalacss/bin/generate-aliases#L8), [generated.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/generated.scala#L730-L736)
 - **Code**:
