@@ -8,11 +8,10 @@ import utest._
 
 object CanIUse2Test extends TestSuite {
 
-  def p(name: String, os: Option[String] = None): Env.Platform[Option] =
-    Env.Platform.empty(None).copy(
-      name = Some(name),
-      os   = os.map(o => Env.OS(None, Some(o), None)),
-    )
+  def p(name: String, os: Option[String] = None): Env.Platform[Option] = {
+    val o = os.map(o => Env.OS[Option](None, Some(o), None))
+    Env.Platform[Option](Some(name), None, None, None, None, None, None, o)
+  }
 
   val android = Some("Android")
 
