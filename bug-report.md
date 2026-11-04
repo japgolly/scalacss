@@ -53,36 +53,6 @@ This report documents **40** verified bugs, specification violations, broken inv
 
 ## Detailed Findings
 
-### 12. Scala 3 `Macros.Dsl.nameQuoted` fails to detect `StyleSheet.Base` when superclass constructor arguments are passed or across compilation units, and strips `$`
-- **File**: [scala-3/scalacss/internal/Macros.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala-3/scalacss/internal/Macros.scala#L33-L77)
-- **Code**:
-  ```scala
-  val isStyleSheet: Symbol => Boolean = {
-    val ss = TypeRepr.of[mutable.StyleSheet.Base]
-    sym =>
-      try {
-        sym.tree match {
-          case ClassDef(_, _, parents, _, _) =>
-            parents.exists {
-              case p: TypeTree => (p.tpe <:< ss)
-              case _           => false
-            }
-          case _ => false
-        }
-      } catch {
-        case _: Throwable => false
-      }
-  }
-  ...
-  def fixName(s: String): String =
-    s.replace("$", "")
-  ```
-- **Defects**:
-  1. In Scala 3 `quotes.reflect`, when a class/object passes explicit constructor arguments to its superclass (e.g., `class MyStyles(using r: Register) extends StyleSheet.Inline()(using r)` or extends a custom parameterized base stylesheet), the superclass entry in `ClassDef.parents` is a `Term` (`Apply`), **not** a `TypeTree`. In addition, if the enclosing stylesheet class was compiled in a separate compilation unit without `-Yretain-trees`, accessing `sym.tree` throws an exception caught by `case _: Throwable => false`. In both cases, `isStyleSheet` returns `false`, `classOwner` walks up to `<root>`, and nested object prefixes are lost. Checking `sym.typeRef <:< ss` avoids inspecting `sym.tree` altogether.
-  2. `fixName` strips all `$` characters from already-decoded symbol names in Scala 3, turning a user-defined `val $foo = style(...)` into `"foo"` (whereas Scala 2 preserves `"$foo"`), and `import scala.reflect.NameTransformer` on line 5 is unused.
-
----
-
 ### 18. `ValueT.Rules.ruleWidStyCol_P` erroneously allows `Percentage` in `border`, `outline`, and `columnRule`
 - **File**: [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L144-L145)
 - **Code**:
