@@ -1,15 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 27. `AVs` does not override `equals` or `hashCode`, breaking `StyleS` and `StyleA` value equality
-- **Files**: [AVs.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/AVs.scala#L25), [Style.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Style.scala#L54)
-- **Code**:
-  ```scala
-  final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr, NonEmptyVector[Value]])
-  ```
-- **Defect**: `AVs` is a regular class that inherits `Object.equals` and `Object.hashCode` (reference equality), while `StyleS` and `StyleA` are `case class`es containing `AVs` (via `data: SortedMap[Cond, AVs]`). Two identically constructed `StyleS` or `StyleA` instances compare as unequal (`s1 != s2`) and have different hash codes.
-
----
-
 ### 28. `Cond.applyToStyle` does not update `StyleS.warnings` conditions or use `Compose`, and `unsafeRoot` drops outer pseudo-conditions
 - **Files**: [Cond.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Cond.scala#L34-L49), [Css.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Css.scala#L66-L69), [Dsl.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Dsl.scala#L224)
 - **Code**:
