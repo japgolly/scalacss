@@ -1,8 +1,10 @@
 package scalacss
 
 import japgolly.microlibs.testutil.TestUtil._
+import org.scalajs.dom.HTMLStyleElement
 import scalacss.DevDefaults._
 import scalacss.ScalatagsCss._
+import scalatags.JsDom._
 import scalatags.JsDom.all._
 import utest._
 
@@ -63,6 +65,19 @@ object ScalatagsJsDomTest extends TestSuite {
       assert(btn.classList.contains("valid-1"))
       assert(btn.classList.contains("valid-2"))
       assertEq(btn.classList.length, 2)
+    }
+
+    "renderToTag" - {
+      val styleTag = MyStyles.render[TypedTag[HTMLStyleElement]].render
+      assertEq(styleTag.tagName, "STYLE")
+      assertMultiline(styleTag.innerHTML.trim, """
+        |.ScalatagsJsDomTest_MyStyles-plain {
+        |  color: red;
+        |}
+        |
+        |.ScalatagsJsDomTest_MyStyles-withEmpty {
+        |  color: blue;
+        |}""".stripMargin.trim)
     }
   }
 }
