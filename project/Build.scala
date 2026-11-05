@@ -108,7 +108,6 @@ object ScalaCssBuild {
         Dep.cats.value % Test,
       ),
     )
-    .configure(onlyScala2)
 
   lazy val extReact = project
     .in(file("ext-react"))
