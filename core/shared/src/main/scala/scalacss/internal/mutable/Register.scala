@@ -246,7 +246,8 @@ object Register { // ===========================================================
     lazy val nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
     lazy val nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
-    private[this] var _nextShortPrefix = 0
+    // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
+    private[this] var _nextShortPrefix = 1
 
     def nextShortPrefix(): String = synchronized {
       val p = toAlphabet(_nextShortPrefix)
@@ -274,7 +275,10 @@ object Register { // ===========================================================
     def short8: NameGen =
       short("\u00a2", alphabet = nmchar8)
 
-    private[mutable] def resetNextShortPrefix() = synchronized { _nextShortPrefix = 0 }
+    private[mutable] def resetNextShortPrefix() = synchronized {
+      // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
+      _nextShortPrefix = 1
+    }
   }
 
   // ===================================================================================================================
