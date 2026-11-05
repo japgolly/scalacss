@@ -105,11 +105,7 @@ object Media {
       Cond(None, qn.foldLeft(Vector1(this) +: q2)(_ +: _))
 
     def and(that: Query): Query = {
-      def merge(
-          base: Vector[Feature],
-          extra: Vector[Feature],
-          exclude: Option[Feature]
-      ): Vector[Feature] =
+      def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
         extra.foldLeft(base)((acc, f) =>
           if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
         )
