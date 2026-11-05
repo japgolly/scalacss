@@ -12,7 +12,7 @@ object CanIUse2 {
 
   lazy val intrinsicWidthTransforms: Transform =
     Transform.values(intrinsicWidth)(
-      L.fillAvailable, L.maxContent, L.minContent, L.fitContent, L.containFloats)
+      L.fillAvailable, L.available, L.maxContent, L.minContent, L.fitContent, L.containFloats)
 
   lazy val backgroundImageTransforms: Transform = {
     val a = Transform.valueKeywords(gradients)("linear-gradient", "radial-gradient")
@@ -24,6 +24,11 @@ object CanIUse2 {
     case Unsupported | Full | Partial => false
     case FullX | PartialX             => true
     case Unknown                      => false
+  }
+
+  val supportsWithoutPrefix: Support => Boolean = {
+    case Full | Partial => true
+    case _              => false
   }
 
   private[this] val emptyPrefixSet: SortedSet[Prefix] =
@@ -41,14 +46,19 @@ object CanIUse2 {
   type PrefixPlan = Vector[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
     memo { s =>
-      val ps = subjectPrefixes(s).toVector.map(Some.apply)
-      val np = s.exists(_._2.exists(d => !needsPrefix(d)))
-      if (np) ps :+ None else ps
+      val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
+      val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
+      if (noPrefix) prefixes :+ None else prefixes
     }
 
   val prefixed: String => Boolean = {
-    val p = Prefix.values.iterator.map(_.prefix).mkString(".*(?:", "|", ").*").r.pattern
-    in => p.matcher(in).matches
+    val prefixes = Prefix.values.iterator.map(_.prefix).mkString("|")
+    val p = s"""(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:$prefixes)[a-zA-Z][\\s\\S]*""".r.pattern
+    val strip = """url\([^)]*\)|'[^']*'|"[^"]*"""".r
+    in => {
+      val unquoted = strip.replaceAllIn(in, "")
+      p.matcher(unquoted).matches
+    }
   }
 
   type PrefixApply = String => Option[Prefix => String]
@@ -57,7 +67,10 @@ object CanIUse2 {
       in => Some(_.prefix + in)
 
     def maybePrepend(f: String => Boolean): PrefixApply =
-      in => if (f(in)) prepend(in) else None //_ => in
+      in => {
+        val v = if (in.endsWith(_important)) in.stripSuffix(_important) else in
+        if (f(v) || f(in)) prepend(in) else None
+      }
 
     /**
      * Transforms only certain keywords.
@@ -72,7 +85,7 @@ object CanIUse2 {
       // JS (and thus Scala.JS) doesn't support negative look-behind :(
       // JS (and thus Scala.JS) doesn't support Pattern.quote
       val ws = w1 +: wn
-      val r1 = ws.mkString("(?:^|.*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-]).*").r.pattern
+      val r1 = ws.mkString("(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-])[\\s\\S]*").r.pattern
       val r2 = ws.mkString("(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
       in =>
         if (r1.matcher(in).matches)
@@ -108,19 +121,22 @@ object CanIUse2 {
     def dunno = Agent.values
     if (p.toString.toLowerCase contains "android")
       p.name.fold(dunno)({
-        case "Chrome"  => NonEmptyVector(AndroidChrome)
-        case "Firefox" => NonEmptyVector(AndroidFirefox)
-        case _         => NonEmptyVector(AndroidBrowser, AndroidUC)
+        case n if n startsWith "Chrome"  => NonEmptyVector(AndroidChrome)
+        case n if n startsWith "Firefox" => NonEmptyVector(AndroidFirefox)
+        case _                           => NonEmptyVector(AndroidBrowser, AndroidUC)
       })
     else
       p.name.fold(dunno)({
-        case "Chrome"               => NonEmptyVector(Chrome)
-        case "Firefox"              => NonEmptyVector(Firefox)
-        case "IE"                   => NonEmptyVector(IE, IEMobile)
-        case "Opera"                => NonEmptyVector(Opera, OperaMini, OperaMobile)
-        case "Safari"               => NonEmptyVector(IOSSafari, Safari)
-        case n if n endsWith "Edge" => NonEmptyVector(Edge)
-        case _                      => dunno
+        case n if n startsWith "Chrome"  => NonEmptyVector(Chrome)
+        case n if n startsWith "Firefox" => NonEmptyVector(Firefox)
+        case "IE Mobile"                 => NonEmptyVector(IEMobile)
+        case n if n startsWith "IE"      => NonEmptyVector(IE)
+        case "Opera Mini"                => NonEmptyVector(OperaMini)
+        case "Opera Mobile"              => NonEmptyVector(OperaMobile)
+        case n if n startsWith "Opera"   => NonEmptyVector(Opera)
+        case "Safari"                    => NonEmptyVector(IOSSafari, Safari)
+        case n if n endsWith "Edge"      => NonEmptyVector(Edge)
+        case _                           => dunno
       })
   }
 

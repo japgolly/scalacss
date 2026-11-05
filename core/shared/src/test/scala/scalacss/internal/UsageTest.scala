@@ -41,7 +41,7 @@ object UsageTest extends TestSuite {
     "maintest" - {
       val css = StringRenderer defaultPretty Css.style(".a1", s1)(Env.empty)
       // println(css)
-      assertEq(css.trim,
+      assertMultiline(css.trim,
         """
           |.a1 {
           |  margin: 12px;
@@ -66,8 +66,40 @@ object UsageTest extends TestSuite {
           |}
           |
           |.a1 nav.debug q {
-          |  quotes: "'" "'";
+          |  quotes: '\000027' '\000027';
           |  quotes: '<' '>' '"' '"';
+          |}
+        """.stripMargin.trim)
+    }
+
+    "ratio" - {
+      "operator" - {
+        val r = 4 :/: 3
+        assertEq(r, Ratio(4, 3))
+        assertEq(r.value, "4/3")
+      }
+      "mediaQuery" - {
+        val s = style(media.minAspectRatio(4 :/: 3)(margin(10.px)))
+        val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
+        assertContains(css, "(min-aspect-ratio:4/3)")
+      }
+    }
+
+    "normalLiteral" - {
+      val s = style(
+        gap(10.px, normal),
+        gap(normal, 10.px),
+        gap(normal),
+        rowGap(normal),
+      )
+      val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
+      assertMultiline(css,
+        """
+          |.a {
+          |  gap: 10px normal;
+          |  gap: normal 10px;
+          |  gap: normal;
+          |  row-gap: normal;
           |}
         """.stripMargin.trim)
     }

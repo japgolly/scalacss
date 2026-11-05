@@ -36,8 +36,8 @@ To create a media query, the syntax as follows:
 media.&lt;attr1&gt;
 media.&lt;attr1&gt;.&lt;attr2&gt;…&lt;attr<sub>n</sub>&gt;
 
-// Composing queries
-&lt;query1&gt; & &lt;query2&gt; [… & &lt;query<sub>n</sub>&gt;] </code></pre>
+// Composing queries (logical OR)
+&lt;query1&gt; or &lt;query2&gt; [… or &lt;query<sub>n</sub>&gt;] </code></pre>
 
 
 Examples:
@@ -51,10 +51,10 @@ media.not.handheld.minWidth(320 px) // @media not handheld and (min-width:320px)
 
 // Multiple queries:
 
-media.screen & media.not.handheld
+media.screen or media.not.handheld
 // produces: @media screen, not handheld
 
-media.screen.color & media.not.handheld & media.minHeight(240 px)
+media.screen.color or media.not.handheld or media.minHeight(240 px)
 // produces: @media screen and (color), not handheld, (min-height:240px)
 
 ```
@@ -118,7 +118,7 @@ object CondExample extends StyleSheet.Inline {
     ),
 
     // Multiple media queries
-    (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
+    (media.tv.minDeviceAspectRatio(4 :/: 3) or media.all.resolution(300 dpi))(
       margin.vertical(10 em)
     ),
 
@@ -138,6 +138,6 @@ object CondExample extends StyleSheet.Inline {
     )
   )
 
-  def modeX = media.maxWidth(320 px).maxHeight(240 px) & media.handheld
+  def modeX = media.maxWidth(320 px).maxHeight(240 px) or media.handheld
 }
 ```

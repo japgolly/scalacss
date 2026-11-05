@@ -49,7 +49,8 @@ object AttrTest extends TestSuite {
 
     "overlap" - {
       def test(e: AttrCmp, a: Attr, b: Attr): Unit =
-        assertEq(s"$a cmp $b", e, a cmp b)
+        assertEq(s"$a cmp $b", a cmp b, e)
+
       test(Unrelated, padding,     margin)
       test(Overlap,   padding,     paddingLeft)
       test(Overlap,   all,         padding)
@@ -60,33 +61,255 @@ object AttrTest extends TestSuite {
       test(Unrelated, borderStyle, borderColor)
       test(Unrelated, borderLeft,  borderRightColor)
       test(Unrelated, borderLeft,  borderRight)
+
+      "logicalProps" - {
+        "size" - {
+          "base" - test(Unrelated, blockSize,    inlineSize)
+          "min"  - test(Unrelated, minBlockSize, minInlineSize)
+          "max"  - test(Unrelated, maxBlockSize, maxInlineSize)
+        }
+
+        "margin" - {
+          "blockStart_blockEnd"   - test(Unrelated, marginBlockStart,  marginBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, marginBlockStart,  marginInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, marginBlockStart,  marginInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, marginBlockEnd,    marginInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, marginBlockEnd,    marginInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, marginInlineStart, marginInlineEnd)
+        }
+
+        "padding" - {
+          "blockStart_blockEnd"   - test(Unrelated, paddingBlockStart,  paddingBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, paddingBlockStart,  paddingInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, paddingBlockStart,  paddingInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, paddingBlockEnd,    paddingInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, paddingBlockEnd,    paddingInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, paddingInlineStart, paddingInlineEnd)
+        }
+
+        "offset" - {
+          "blockStart_blockEnd"   - test(Unrelated, offsetBlockStart,  offsetBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, offsetBlockStart,  offsetInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, offsetBlockStart,  offsetInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, offsetBlockEnd,    offsetInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, offsetBlockEnd,    offsetInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, offsetInlineStart, offsetInlineEnd)
+        }
+
+        "correctOverlap" - {
+          "shorthand" - {
+            "margin" - {
+              test(Overlap, margin, marginBlockStart)
+              test(Overlap, margin, marginBlockEnd)
+              test(Overlap, margin, marginInlineStart)
+              test(Overlap, margin, marginInlineEnd)
+            }
+            "padding" - {
+              test(Overlap, padding, paddingBlockStart)
+              test(Overlap, padding, paddingBlockEnd)
+              test(Overlap, padding, paddingInlineStart)
+              test(Overlap, padding, paddingInlineEnd)
+            }
+            "all" - {
+              test(Overlap, all, blockSize)
+              test(Overlap, all, inlineSize)
+              test(Overlap, all, marginBlockStart)
+              test(Overlap, all, paddingInlineEnd)
+            }
+          }
+
+          "physicalProperties" - {
+            "blockSize" - {
+              test(Overlap, blockSize, height)
+              test(Overlap, blockSize, width)
+            }
+            "inlineSize" - {
+              test(Overlap, inlineSize, height)
+              test(Overlap, inlineSize, width)
+            }
+            "minSize" - {
+              test(Overlap, minBlockSize,  minHeight)
+              test(Overlap, minBlockSize,  minWidth)
+              test(Overlap, minInlineSize, minHeight)
+              test(Overlap, minInlineSize, minWidth)
+            }
+            "maxSize" - {
+              test(Overlap, maxBlockSize,  maxHeight)
+              test(Overlap, maxBlockSize,  maxWidth)
+              test(Overlap, maxInlineSize, maxHeight)
+              test(Overlap, maxInlineSize, maxWidth)
+            }
+            "margins" - {
+              test(Overlap, marginBlockStart, marginTop)
+              test(Overlap, marginBlockEnd,   marginBottom)
+            }
+            "paddings" - {
+              test(Overlap, paddingBlockStart, paddingTop)
+              test(Overlap, paddingBlockEnd,   paddingBottom)
+            }
+          }
+        }
+      }
+    }
+
+    "conflicts" - {
+      "transitive" - {
+        val a = AV(marginLeft, "1px")
+        val b = AV(margin, "2px")
+        val c = AV(marginRight, "3px")
+        val actual = AttrCmp.conflicts(Vector(a, b, c))
+        assertEq(actual, Set(a, b, c))
+      }
+      "transitive4" - {
+        val a = AV(marginLeft, "1px")
+        val b = AV(margin, "2px")
+        val c = AV(marginRight, "3px")
+        val d = AV(marginTop, "4px")
+        val actual = AttrCmp.conflicts(Vector(a, b, c, d))
+        assertEq(actual, Set(a, b, c, d))
+      }
     }
 
     "keyPrefixes" - {
       def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
-      test(textAlign,    "text-align")
-      test(borderRadius, "border-radius", "-moz-border-radius")
-      test(flexWrap,     "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
+      test(textAlign,           "text-align")
+      test(borderRadius,        "border-radius", "-moz-border-radius")
+      test(flexWrap,            "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
+      test(overscrollBehavior,  "overscroll-behavior")
+      test(overscrollBehaviorX, "overscroll-behavior-x")
+      test(overscrollBehaviorY, "overscroll-behavior-y")
+      test(rowGap,              "row-gap")
+      test(boxReflect,          "-ms-box-reflect", "-o-box-reflect", "-webkit-box-reflect")
+    }
+
+    "prefixPlan" - {
+      "unprefixedExcludedWhenNotSupported" - {
+        assert(!CanIUse2.prefixPlan(CanIUse.reflections).contains(None))
+      }
+      "unprefixedIncludedWhenSupported" - {
+        assert(CanIUse2.prefixPlan(CanIUse.borderRadius).contains(None))
+      }
+    }
+
+    "prefixed" - {
+      import CanIUse2.prefixed
+      "positive" - {
+        assert(prefixed("-webkit-transform"))
+        assert(prefixed("-moz-available"))
+        assert(prefixed("-ms-flex"))
+        assert(prefixed("-o-text-overflow"))
+        assert(prefixed("-webkit-linear-gradient(red, blue)"))
+        assert(prefixed("url('foo.png'), -webkit-linear-gradient(red, blue)"))
+        assert(prefixed("-moz-zoom-in !important"))
+      }
+      "negative" - {
+        assert(!prefixed("transform"))
+        assert(!prefixed("url(logo-o-2.png), linear-gradient(red, blue)"))
+        assert(!prefixed("url('button-ms-normal.png'), linear-gradient(red, blue)"))
+        assert(!prefixed("url('foo-moz-bar.svg')"))
+        assert(!prefixed("foo-o-bar"))
+        assert(!prefixed("logo-o-2.png"))
+        assert(!prefixed("button-ms-normal"))
+        assert(!prefixed("--o-custom-prop"))
+        assert(!prefixed("linear-gradient(red, blue)"))
+      }
+      "backgroundImagePrefixingWithUrlContainingSubstring" - {
+        val av = AV(backgroundImage, "url(logo-o-2.png), linear-gradient(red, blue)")
+        val actual = av(Env.empty).map(_.value)
+        val expected = Vector(
+          "url(logo-o-2.png), -moz-linear-gradient(red, blue)",
+          "url(logo-o-2.png), -o-linear-gradient(red, blue)",
+          "url(logo-o-2.png), -webkit-linear-gradient(red, blue)",
+          "url(logo-o-2.png), linear-gradient(red, blue)",
+        )
+        assertEq(actual, expected)
+      }
+      "multiLineGradient" - {
+        val av = AV(backgroundImage, "linear-gradient(\n  red,\n  blue\n)")
+        val actual = av(Env.empty).map(_.value)
+        val expected = Vector(
+          "-moz-linear-gradient(\n  red,\n  blue\n)",
+          "-o-linear-gradient(\n  red,\n  blue\n)",
+          "-webkit-linear-gradient(\n  red,\n  blue\n)",
+          "linear-gradient(\n  red,\n  blue\n)",
+        )
+        assertEq(actual, expected)
+      }
     }
 
     "valuePrefixes" - {
       def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
-      test(textAlign.left, "left")
-      test(cursor.pointer, "pointer")
-      test(cursor.zoomIn, "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      "textAlign.left"          - test(textAlign.left,          "left")
+      "textAlign.justify"       - test(textAlign.justify,       "justify")
+      "float.inlineStart"       - test(float.inlineStart,       "inline-start")
+      "float.inlineEnd"         - test(float.inlineEnd,         "inline-end")
+      "clear.inlineStart"       - test(clear.inlineStart,       "inline-start")
+      "clear.inlineEnd"         - test(clear.inlineEnd,         "inline-end")
+      "captionSide.blockStart"  - test(captionSide.blockStart,  "block-start")
+      "captionSide.inlineStart" - test(captionSide.inlineStart, "inline-start")
+      "resize.block"            - test(resize.block,            "block")
+      "resize.inline"           - test(resize.inline,           "inline")
+      "width.available"         - test(width.available,         "-moz-available", "-o-available", "-webkit-available", "available")
+      "width.fillAvailable"     - test(width.fillAvailable,     "-moz-fill-available", "-o-fill-available", "-webkit-fill-available", "fill-available")
+      "cursor.pointer"          - test(cursor.pointer,          "pointer")
+      "cursor.zoomIn"           - test(cursor.zoomIn,           "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+
+      "resize.block" - {
+        val expected = Vector(
+          CssKV("resize", "block"),
+        )
+        assertEq(resize.block(Env.empty), expected)
+      }
+
+      "important" - {
+        test(textAlign.left.important, "left !important")
+        test(cursor.pointer.important, "pointer !important")
+        test(cursor.zoomIn.important,  "-moz-zoom-in !important", "-o-zoom-in !important", "-webkit-zoom-in !important", "zoom-in !important")
+
+        "avApply" - {
+          val expected = Vector(
+            CssKV("cursor", "-moz-zoom-in !important"),
+            CssKV("cursor", "-o-zoom-in !important"),
+            CssKV("cursor", "-webkit-zoom-in !important"),
+            CssKV("cursor", "zoom-in !important"),
+          )
+          assertEq(cursor.zoomIn.important(Env.empty), expected)
+        }
+      }
     }
 
     "content" - {
       "e" - assertEq(content.string("").value, "''")
       "s" - assertEq(content.string("abc 123").value, "'abc 123'")
-      "q" - assertEq(content.string("""ok " ' \ Δ cool""").value, """'ok " \0027 \005C \0394 cool'""")
+      "q" - assertEq(content.string("""ok " ' \ Δ cool""").value, """'ok " \000027 \00005C \000394 cool'""")
       "u" - assertEq(content.url("http://www.example.com/test.png").value, "url('http://www.example.com/test.png')")
+
+      "hexFollowedByHexChar" - {
+        assertEq(content.string("'a").value, "'\\000027a'")
+        assertEq(content.string("\\a").value, "'\\00005Ca'")
+        assertEq(content.string("Δa").value, "'\\000394a'")
+      }
+
+      "newlines" - {
+        assertNotContains(content.string("hello\nworld").value, "\n")
+        assertNotContains(content.string("hello\rworld").value, "\r")
+        assertNotContains(content.string("hello\fworld").value, "\f")
+        assertEq(content.string("hello\nworld").value, "'hello\\00000Aworld'")
+      }
+
+      "surrogatePairs" - {
+        val v = content.string("🎉").value
+        assertEq(v, "'\\01F389'")
+      }
     }
 
     "border" - {
       assertEq(border(length).value, "3px")
       assertEq(border(length, style).value, "3px dashed")
       assertEq(border(length, style, colour).value, "3px dashed green")
+      compileError("border(pct)")
+      compileError("outline(pct)")
+      compileError("columnRule(pct)")
     }
 
     "textIndent" - {
@@ -103,8 +326,8 @@ object AttrTest extends TestSuite {
       test(backgroundClip.paddingBox                        , "padding-box")
       test(backgroundClip.borderBox                         , "border-box")
       test(backgroundClip.contentBox                        , "content-box")
-      test(backgroundClip.contentBox.paddingBox             , "content-box padding-box")
-      test(backgroundClip.contentBox.paddingBox.av.important, "content-box padding-box !important")
+      test(backgroundClip.contentBox.paddingBox             , "content-box,padding-box")
+      test(backgroundClip.contentBox.paddingBox.av.important, "content-box,padding-box !important")
     }
 
     "borderRadius" - {
@@ -135,6 +358,10 @@ object AttrTest extends TestSuite {
       test("abc abc 123 def", "-o-abc -o-abc 123 -o-def")
       test("-o-abc")
       test("def(12)", "-o-def(12)")
+      test("abc\n123", "-o-abc\n123")
+      test("123\ndef", "123\n-o-def")
+      test("hello\nabc\nworld", "hello\n-o-abc\nworld")
+      test("multi\nline\ndef(12)", "multi\nline\n-o-def(12)")
     }
 
     "envDepPrefixes1" - {

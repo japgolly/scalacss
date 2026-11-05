@@ -16,6 +16,6 @@ node_modules
 doc/_book
 
 project/sjsincoptbench.sbt
-project/metals.sbt
+metals.sbt
 .bsp
 .scala-build

@@ -19,7 +19,7 @@ object MyStandalone extends StyleSheet.Standalone {
     &("span") -
       color.red,
 
-    (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dppx)) -
+    (media.tv.minDeviceAspectRatio(4 :/: 3) or media.all.resolution(300 dppx)) -
       width(600 px),
 
     media.not.handheld.landscape.color -
@@ -85,7 +85,7 @@ object StandaloneTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dppx) {
+        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dppx) {
         |  div.std {
         |    width: 600px;
         |  }

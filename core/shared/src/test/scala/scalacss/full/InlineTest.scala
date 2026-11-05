@@ -30,7 +30,7 @@ object MyInline extends StyleSheet.Inline {
         font := ^.inherit
       ),
 
-      (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
+      (media.tv.minDeviceAspectRatio(4 :/: 3) or media.all.resolution(300 dpi))(
         margin.vertical(10 em)
       ),
 
@@ -293,6 +293,18 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
   val myFontText3 = style(fontFamily(ff6))
 }
 
+object MyInlineAddClassNames extends StyleSheet.Inline {
+  import dsl._
+
+  val btn            = style(addClassName("btn"))
+  val btnDefault     = style(addClassNames("btn", "btn-default"))
+  val btnPrimary     = style(addClassNames("btn", "btn-primary"))
+  val composedMulti  = style(btnDefault, marginTop.inherit)
+  val composedSingle = style(btn, color.red)
+  val alias          = style(btnDefault)
+  val aliasExtra     = style(btnDefault, addClassName("extra"))
+}
+
 object InlineTest extends utest.TestSuite {
   import japgolly.microlibs.testutil.TestUtil._
   import utest._
@@ -367,7 +379,7 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dpi) {
         |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
@@ -534,12 +546,34 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
+    "cssAddClassNames" - assertMultiline(norm(MyInlineAddClassNames.render), norm(
+      """
+        |.MyInlineAddClassNames-composedMulti {
+        |  margin-top: inherit;
+        |}
+        |
+        |.MyInlineAddClassNames-composedSingle {
+        |  color: red;
+        |}
+      """.stripMargin))
+
     "classnames" - {
       "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
       "manualF" - {
         assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
         assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
+
+        object SS extends StyleSheet.Inline {
+          import dsl._
+          val s1 = styleF("custom")(Domain.boolean.option)(_ => styleS(color.red))
+          val s2 = styleF("custom2")(Domain.boolean)(_ => styleS(color.blue), (_, i) => s"x$i")
+        }
+        assertEq(SS.s1(None).htmlClass, "custom-1")
+        assertEq(SS.s1(Some(true)).htmlClass, "custom-2")
+        assertEq(SS.s1(Some(false)).htmlClass, "custom-3")
+        assertEq(SS.s2(true).htmlClass, "custom2-x0")
+        assertEq(SS.s2(false).htmlClass, "custom2-x1")
       }
 
       "everythingOk" - {
@@ -579,6 +613,16 @@ object InlineTest extends utest.TestSuite {
 
       "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
       "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+
+      "addClassNames" - {
+        "btn"            - assertEq(MyInlineAddClassNames.btn.htmlClass, "btn")
+        "btnDefault"     - assertEq(MyInlineAddClassNames.btnDefault.htmlClass, "btn btn-default")
+        "btnPrimary"     - assertEq(MyInlineAddClassNames.btnPrimary.htmlClass, "btn btn-primary")
+        "composedMulti"  - assertEq(MyInlineAddClassNames.composedMulti.htmlClass, "MyInlineAddClassNames-composedMulti btn btn-default")
+        "composedSingle" - assertEq(MyInlineAddClassNames.composedSingle.htmlClass, "MyInlineAddClassNames-composedSingle btn")
+        "alias"          - assertEq(MyInlineAddClassNames.alias.htmlClass, "btn btn-default")
+        "aliasExtra"     - assertEq(MyInlineAddClassNames.aliasExtra.htmlClass, "btn btn-default extra")
+      }
 
     }
 

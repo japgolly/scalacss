@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import scala.collection.immutable.SortedMap
+import japgolly.univeq._
 
 /**
  * Condition under which CSS is applicable.
@@ -10,13 +10,6 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
     Css.selector("", this)
 
-  private[Cond] val sortKey: String = {
-    var s = "" // remember, this is JS
-    for (p <- pseudo) s += p.cssValue
-    for (q <- mediaQueries) s += q.cssSuffix
-    s
-  }
-
   protected def addPseudo(p: Pseudo): Cond =
     copy(pseudo = Some(this.pseudo.fold(p)(_ & p)))
 
@@ -24,34 +17,50 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     addPseudo(p)
 
   def &(q: Media.Query): Cond =
-    copy(mediaQueries = this.mediaQueries +: q)
+    if (mediaQueries.isEmpty)
+      copy(mediaQueries = Vector1(q))
+    else
+      copy(mediaQueries = mediaQueries.map(_ and q))
 
   def &(b: Cond): Cond =
     Cond(
       optionAppend(pseudo, b.pseudo)(_ & _),
-      b.mediaQueries.foldLeft(mediaQueries)(_ +: _))
+      if (mediaQueries.isEmpty) b.mediaQueries
+      else if (b.mediaQueries.isEmpty) mediaQueries
+      else for { q1 <- mediaQueries; q2 <- b.mediaQueries } yield q1 and q2)
 
-  def applyToStyle(s: StyleS): StyleS = {
-    val d = s.data.foldLeft(SortedMap.empty[Cond, AVs]){ case (q, (oldCond, av)) =>
+  def applyToStyle(s: StyleS)(implicit c: Compose = Compose.trust): StyleS = {
+    val init = StyleS.empty.copy(
+      warnings = s.warnings.map(w => w.copy(cond = this & w.cond))
+    )
+
+    val composed = s.data.foldLeft(init) { case (q, (oldCond, av)) =>
       val newCond = this & oldCond
-      val newValue = q.get(newCond).fold(av)(_ ++ av)
-      q.updated(newCond, newValue)
+      val item = StyleS.data1(newCond, av)
+      c(q, item)
     }
 
     val u = s.unsafeExts.map(e =>
       e.copy(
-        style = this.copy(pseudo = None).applyToStyle(e.style),
+        style = this.copy(pseudo = None).applyToStyle(e.style)(c),
         cond  = this.copy(mediaQueries = Vector.empty) & e.cond
       )
     )
 
-    s.copy(data = d, unsafeExts = u)
+    composed.copy(
+      unsafeExts    = u,
+      className     = s.className,
+      addClassNames = s.addClassNames
+    )
   }
 }
 
 object Cond {
   val empty: Cond =
     Cond(None, Vector.empty)
+
+  implicit def univEq: UnivEq[Cond] =
+    UnivEq.derive
 
   implicit val ordering: Ordering[Cond] =
     Ordering.by[Cond, String](_.toString)(NaturalOrdering)

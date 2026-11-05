@@ -3,9 +3,16 @@ package scalacss.internal
 import japgolly.univeq.UnivEq
 import scala.annotation.nowarn
 
-final case class ClassName(value: String)
+final case class ClassName(value: String) {
+  assert(value.nonEmpty, "ClassName cannot be empty")
+  assert(!value.exists(_.isWhitespace), s"ClassName '$value' cannot contain whitespace")
+}
+
 object ClassName {
   implicit def univEq: UnivEq[ClassName] = UnivEq.derive
+
+  def parse(s: String): Iterator[ClassName] =
+    s.split("\\s+").iterator.filter(_.nonEmpty).map(apply)
 }
 
 /**
@@ -64,6 +71,16 @@ final case class FontFace[FF](fontFamily         : FF,
 }
 
 object FontFace {
+  /** Quotes a font-family string if it contains whitespace and is not already quoted. */
+  def quoteIfNeeded(s: String): String = {
+    def isQuoted =
+      s.length >= 2 && ((s.startsWith("\"") && s.endsWith("\"")) || (s.startsWith("'") && s.endsWith("'")))
+    if (s.exists(_.isWhitespace) && !isQuoted)
+      Util.quote(s)
+    else
+      s
+  }
+
   final class FontSrcSelector(val fontFamily: Option[String]) extends AnyVal {
     def src(src: String, additionalSrc: String*): FontFace[Option[String]] =
       FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
@@ -126,7 +143,7 @@ object LengthUnit {
 final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: LengthUnit) {
   def value = {
     val s = n.toString
-    if (s == "0") "0" else s + u.value
+    if (s.stripPrefix("-").stripSuffix(".0") == "0") "0" else s + u.value
   }
 
   def *(m: N)(implicit N: Numeric[N]): Length[N] =
@@ -173,6 +190,7 @@ final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: Re
   def /(m: Double)(implicit N: Numeric[N]): Resolution[Double] =
     copy(n = N.toDouble(n) / m, u)
 
+  @deprecated("Resolutions can't be negative, so this method is deprecated.", "1.1.0")
   def unary_-(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.negate(this.n), u)
 }

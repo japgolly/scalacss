@@ -18,5 +18,5 @@ trait ScalatagsTextImplicits {
 
 class ScalatagsTextRenderer(s: Renderer[String]) extends Renderer[TypedTag[String]] {
   override def apply(css: Css) =
-    tags2.style(`type` := "text/css", s(css))
+    tags2.style(`type` := "text/css", raw(s(css)))
 }

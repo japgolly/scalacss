@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import japgolly.univeq._
+
 /**
  * Style composition logic.
  *
@@ -18,27 +20,40 @@ final case class Compose(rules: Compose.Rules) {
 
     def mergeAVs(c: Cond, newAVs: AVs, into: AVs): AVs = {
 
-      // Remove exact matches
-      var newData = newAVs.data
-      for {(a, nvs) <- newData; ovs <- into.get(a)} {
-        val o = ovs.toSet
-        val newVals = nvs.whole.filterNot(o.contains)
-        NonEmptyVector.maybe(newVals, newData -= a)(n => newData = newData.updated(a, n))
-      }
+      // Track attributes originating from `into` so `newAVs` attributes only conflict with `into`,
+      // never self-conflicting against other attributes from `newAVs` itself.
+      var intoAttrs = into.data.keySet
 
-      // Find conflicts
-      newData.foldLeft(into) { case (results, (a, nvs)) =>
-        results.filterKeys(k => a.cmp(k).conflict) match {
+      // Same attribute with identical values is an exact match (not a conflict).
+      // Different values or overlapping attributes (eg. margin vs margin-left) are conflicts.
+      def isConflict(a: Attr, nvs: NonEmptyVector[Value])(k: Attr, kvs: NonEmptyVector[Value]): Boolean =
+        if (k ==* a)
+          !nvs.whole.forall(kvs.toSet.contains)
+        else
+          a.cmp(k).conflict
+
+      // Process incoming attributes in declaration order
+      newAVs.iterator.foldLeft(into) { case (results, (a, nvs)) =>
+        results.filterKeys(k => intoAttrs.contains(k) && isConflict(a, nvs)(k, results.data(k))) match {
           case None =>
-            // No conflicts - safe to add
-            results.addAll(a, nvs)
+            // No conflicts - add new attribute or append only unseen values (avoids duplicates)
+            results.get(a) match {
+              case None =>
+                results.addAll(a, nvs)
+              case Some(ovs) =>
+                val newVals = nvs.whole.filterNot(ovs.toSet.contains)
+                NonEmptyVector.maybe(newVals, results)(results.addAll(a, _))
+            }
+
           case Some(conflicts) =>
             // Handle conflict via rules
             val r = absorbWarning(c, rules.mergeAVs(conflicts, AVs(a, nvs)))
             val delete = conflicts.data.keySet -- r.order.whole
+            intoAttrs --= delete
+            intoAttrs -= a
             results.filterKeys(!delete.contains(_)) match {
               case None    => r
-              case Some(o) => r.data.foldLeft(o)((o, b) => o.modify(b._1, _ => b._2))
+              case Some(o) => r.iterator.foldLeft(o)((o, b) => o.modify(b._1, _ => b._2))
             }
         }
       }

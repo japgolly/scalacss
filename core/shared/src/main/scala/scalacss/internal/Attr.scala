@@ -171,11 +171,37 @@ object AttrCmp {
   val byEquality: Fn =
     (a, b) => if (a ==* b) Same else Unrelated
 
+  private def logicalDirection(id: String): Option[String] =
+    if (id.contains("-block-start") || id.startsWith("block-start"))
+      Some("block-start")
+    else if (id.contains("-block-end") || id.startsWith("block-end"))
+      Some("block-end")
+    else if (id.contains("-inline-start") || id.startsWith("inline-start"))
+      Some("inline-start")
+    else if (id.contains("-inline-end") || id.startsWith("inline-end"))
+      Some("inline-end")
+    else if (id.contains("block-size"))
+      Some("block")
+    else if (id.contains("inline-size"))
+      Some("inline")
+    else
+      None
+
+  private def areOrthogonalLogicalProps(x: Attr, y: Attr): Boolean = {
+    val da = logicalDirection(x.id)
+    val db = logicalDirection(y.id)
+    da.isDefined && db.isDefined && da != db
+  }
+
   val byRealAttrs: Fn =
     (x, y) => {
-      val a = x.real
-      val b = y.real
-      if (a exists b.contains) Overlap else Unrelated
+      if (areOrthogonalLogicalProps(x, y))
+        Unrelated
+      else {
+        val a = x.real
+        val b = y.real
+        if (a exists b.contains) Overlap else Unrelated
+      }
     }
 
   def compose(fst: Fn, snd: Fn): Fn =
@@ -190,9 +216,9 @@ object AttrCmp {
         conflicts
       else {
         val h = untested.head
-        val (ko, ok) = untested.tail.partition(i => h.attr.cmp(i.attr).conflict)
+        val ko = untested.tail.filter(i => h.attr.cmp(i.attr).conflict)
         val c2 = if (ko.isEmpty) conflicts else conflicts + h ++ ko
-        go(ok, c2)
+        go(untested.tail, c2)
       }
     go(avs, Set.empty)
   }

@@ -22,8 +22,8 @@ object StyleLookup {
 
       override def get =
         array => {
-          val t = Some(array(ind(true)))
-          val f = Some(array(ind(false)))
+          val t = Option(array(ind(true)))
+          val f = Option(array(ind(false)))
           b => if (b) t else f
         }
     }

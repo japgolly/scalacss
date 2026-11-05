@@ -36,14 +36,32 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 
   protected final def addPseudo(that: Pseudo): Pseudo =
     (this, that) match {
-      // Avoid
-      case (a, b: Single) if a contains b => a
-      case (a: Single, b) if b contains a => b
-      // Append
-      case (a: Single      , b: Single      ) => Composite(a, SortedSet.empty[Single] + b)
-      case (p: Single      , Composite(h, t)) => Composite(p, t + h)
-      case (Composite(h, t), p: Single      ) => Composite(p, t + h)
-      case (Composite(a, b), Composite(c, d)) => Composite(a, b ++ d + c)
+      case (a: Single, b: Single) =>
+        if (a ==* b) a
+        else {
+          val s = SortedSet.empty[Single] + a + b
+          Composite(s.head, s.tail)
+        }
+
+      case (a: Single, b: Composite) =>
+        if (b contains a) b
+        else {
+          val s = b.singles + a
+          Composite(s.head, s.tail)
+        }
+
+      case (a: Composite, b: Single) =>
+        if (a contains b) a
+        else {
+          val s = a.singles + b
+          Composite(s.head, s.tail)
+        }
+
+      case (a: Composite, b: Composite) =>
+        val s = a.singles ++ b.singles
+        if (s.size ==* a.singles.size) a
+        else if (s.size ==* b.singles.size) b
+        else Composite(s.head, s.tail)
     }
 
   @inline final def &(p: Pseudo): Pseudo =
@@ -70,11 +88,23 @@ object Pseudo {
     extends Single(cssValue, pseudoType)
 
   final case class Composite private[Pseudo](h: Single, t: SortedSet[Single]) extends Pseudo {
+    val singles: SortedSet[Single] =
+      t + h
+
     override lazy val cssValue =
-      (t + h).foldLeft("")(_ + _.cssValue)
+      singles.foldLeft("")(_ + _.cssValue)
 
     override def contains(p: Single) =
-      (h ==* p) || (t contains p)
+      singles contains p
+
+    override def equals(o: Any): Boolean =
+      o match {
+        case c: Composite => (this eq c) || (singles == c.singles)
+        case _            => false
+      }
+
+    override def hashCode(): Int =
+      singles.hashCode()
   }
 
   /** Selects the active link. */
@@ -219,13 +249,15 @@ object Pseudo {
 
   /** Selects all elements with a name starting with value. */
   def AttrStartsWith(name: String, value: String) =
-    AttrSelector(name, value, "|=")
+    AttrSelector(name, value, "^=")
 
   /** Selects all elements with a name ends with value. */
   def AttrEndsWith(name: String, value: String) =
     AttrSelector(name, value, "$=")
 
-  implicit def univEq: UnivEq[Single] = UnivEq.derive
+  implicit def univEqSingle   : UnivEq[Single   ] = UnivEq.derive
+  implicit def univEqComposite: UnivEq[Composite] = UnivEq.force
+  implicit def univEq         : UnivEq[Pseudo   ] = UnivEq.derive
 
   implicit val order: Ordering[Single] =
     new Ordering[Single] {

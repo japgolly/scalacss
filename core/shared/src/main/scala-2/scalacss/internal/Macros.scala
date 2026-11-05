@@ -66,21 +66,36 @@ object Macros {
 
   object ColorLiteral {
 
-    private def cssFnRegex(f: String, as: String*) = {
-      val args = as mkString ","
-      Pattern compile s"^$f\\($args\\)$$"
+    private def cssFnRegexLegacy(f: String, as: String*) = {
+      val args = as mkString "\\s*,\\s*"
+      Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args\\s*\\)\\s*$$"
+    }
+
+    private def cssFnRegexModern(f: String, as: String*)(suffix: String) = {
+      val args = as mkString "\\s+"
+      Pattern compile s"^(?i)\\s*$f\\s*\\(\\s*$args$suffix\\s*\\)\\s*$$"
     }
 
     private def int = "(-?\\d+)"
     private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
     private def pct = s"$dbl%"
 
-    private val ws   = "\\s+".r
-    private val rgbI = cssFnRegex("rgb",  int, int, int)
-    private val rgbP = cssFnRegex("rgb",  pct, pct, pct)
-    private val rgba = cssFnRegex("rgba", int, int, int, dbl)
-    private val hsl  = cssFnRegex("hsl",  int, pct, pct)
-    private val hsla = cssFnRegex("hsla", int, pct, pct, dbl)
+    // NPN = number, percentage, or none
+    private def modernNPN = """(-?\d+%?|none)"""
+    private def modernA = s"\\s*/\\s*(-?\\d+%?|$dbl)"
+    private def modernH = """(-?\d+(?:deg)?|none)"""
+    private def modernSL = """(-?\d+%?)"""
+
+    private val rgbI  = cssFnRegexLegacy("rgb",  int, int, int)
+    private val rgbP  = cssFnRegexLegacy("rgb",  pct, pct, pct)
+    private val rgbaI = cssFnRegexLegacy("rgba", int, int, int, dbl)
+    private val rgbaP = cssFnRegexLegacy("rgba", pct, pct, pct, dbl)
+    private val hsl   = cssFnRegexLegacy("hsl",  int, pct, pct)
+    private val hsla  = cssFnRegexLegacy("hsla", int, pct, pct, dbl)
+    private val rgbM  = cssFnRegexModern("rgb", modernNPN, modernNPN, modernNPN)("")
+    private val rgbaM = cssFnRegexModern("rgb", modernNPN, modernNPN, modernNPN)(modernA)
+    private val hslM  = cssFnRegexModern("hsl", modernH, modernSL, modernSL)("")
+    private val hslaM = cssFnRegexModern("hsl", modernH, modernSL, modernSL)(modernA)
 
     private def isHex: Char => Boolean =
       c => (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')
@@ -89,25 +104,24 @@ object Macros {
       import c.universe._
 
       c.prefix.tree match {
-        case Apply(_, List(Apply(_, List(Literal(Constant(text0: String)))))) =>
+        case Apply(_, List(Apply(_, List(Literal(Constant(text: String)))))) =>
 
           def fail(reason: String = null): Nothing = {
-            var err = s"""Invalid colour literal: "$text0"."""
+            var err = s"""Invalid colour literal: "$text"."""
             if (reason ne null)
               err = s"$err $reason"
             c.abort(c.enclosingPosition, err)
           }
 
-          val text = ws.replaceAllIn(text0, "").toLowerCase
-
+          var result: String = null
           def pass = true
           def undecided = false
 
           def validateHex: Boolean =
-            (text.charAt(0) == '#') && {
+            (text.nonEmpty && text.charAt(0) == '#') && {
               val v = text.drop(1)
               v.length match {
-                case (3 | 6 | 4 | 8) if v.forall(isHex) => pass
+                case (3 | 6 | 4 | 8) if v.forall(isHex) => result = text.toLowerCase; pass
                 case _                                  => fail("Hex notation must be #RGB, #RRGGBB, #RGBA, or #RRGGBBAA.")
               }
             }
@@ -116,28 +130,76 @@ object Macros {
 
           def validateInt(name: String, max: Int): V =
             s => {
-              val i = s.toInt
-              if (i < 0 || i > max)
-                fail(s"Invalid $name value: $s")
+              try {
+                val i = s.toInt
+                if (i < 0 || i > max)
+                  fail(s"Invalid $name value: $s")
+              } catch {
+                case _: NumberFormatException =>
+                  fail(s"Invalid $name value: $s")
+              }
             }
 
-          def validateDbl(name: String, max: Double): V =
+          def validateDbl(name: String, max: Double, suffix: String = ""): V =
             s => {
               val d = s.toDouble
               if (d < 0 || d > max)
-                fail(s"Invalid $name value: $s")
+                fail(s"Invalid $name value: $s$suffix")
             }
 
           def validatePct(name: String): V =
-            validateDbl(name, 100)
+            validateDbl(name, 100, "%")
 
-          def validateFn(p: Pattern, a: V, b: V, c: V, d: V = null): Boolean = {
+          def validateModernNPN(name: String, maxInt: Int): V =
+            s =>
+              if (s == "none")
+                ()
+              else if (s.endsWith("%"))
+                validatePct(name)(s.stripSuffix("%"))
+              else
+                validateInt(name, maxInt)(s)
+
+          def validateModernH(name: String): V =
+            s =>
+              if (s == "none")
+                ()
+              else
+                validateInt(name, 360)(s.stripSuffix("deg"))
+
+          def validateModernA(name: String): V =
+            s =>
+              if (s.endsWith("%"))
+                validatePct(name)(s.stripSuffix("%"))
+              else
+                validateDbl(name, 1)(s)
+
+          def validateModernSL(name: String): V =
+            s =>
+              if (s.endsWith("%"))
+                validatePct(name)(s.stripSuffix("%"))
+              else
+                validateInt(name, 100)(s)
+
+          def validateFn3(p: Pattern, a: V, b: V, c: V, f: (String, String, String) => String): Boolean = {
             val m = p.matcher(text)
             if (m.matches) {
               a(m group 1)
               b(m group 2)
               c(m group 3)
-              if (d ne null) d(m group 4)
+              result = f(m group 1, m group 2, m group 3)
+              pass
+            } else
+              undecided
+          }
+
+          def validateFn4(p: Pattern, a: V, b: V, c: V, d: V, f: (String, String, String, String) => String): Boolean = {
+            val m = p.matcher(text)
+            if (m.matches) {
+              a(m group 1)
+              b(m group 2)
+              c(m group 3)
+              d(m group 4)
+              result = f(m group 1, m group 2, m group 3, m group 4)
               pass
             } else
               undecided
@@ -149,24 +211,37 @@ object Macros {
           def rp = validatePct("red")
           def gp = validatePct("green")
           def bp = validatePct("blue")
-          def h  = validateInt("hue", 359)
-          def s  = validatePct("saturation")
-          def l  = validatePct("lightness")
+          def hi = validateInt("hue", 360)
+          def sp = validatePct("saturation")
+          def lp = validatePct("lightness")
           def a  = validateDbl("alpha", 1)
+          def rm = validateModernNPN("red", 255)
+          def gm = validateModernNPN("green", 255)
+          def bm = validateModernNPN("blue", 255)
+          def hm = validateModernH("hue")
+          def am = validateModernA("alpha")
+          def sm = validateModernSL("saturation")
+          def lm = validateModernSL("lightness")
 
-          def validateRgbI = validateFn(rgbI, ri, gi, bi)
-          def validateRgbP = validateFn(rgbP, rp, gp, bp)
-          def validateRgba = validateFn(rgba, ri, gi, bi, a)
-          def validateHsl  = validateFn(hsl,  h, s, l)
-          def validateHsla = validateFn(hsla, h, s, l, a)
+          def validateRgbI  = validateFn3(rgbI, ri, gi, bi,      (r, g, b)    => s"rgb($r,$g,$b)")
+          def validateRgbP  = validateFn3(rgbP, rp, gp, bp,      (r, g, b)    => s"rgb($r%,$g%,$b%)")
+          def validateRgbaI = validateFn4(rgbaI, ri, gi, bi, a,  (r, g, b, a) => s"rgba($r,$g,$b,$a)")
+          def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a,  (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
+          def validateHsl   = validateFn3(hsl, hi, sp, lp,       (h, s, l)    => s"hsl($h,$s%,$l%)")
+          def validateHsla  = validateFn4(hsla, hi, sp, lp, a,   (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
+          def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb($r $g $b)")
+          def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb($r $g $b/$a)")
+          def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${h.stripSuffix("deg")} $s $l)")
+          def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${h.stripSuffix("deg")} $s $l/$a)")
 
-          val validated =
-            validateHex || validateRgbI || validateRgbP || validateRgba || validateHsl || validateHsla
+          validateHex
+            validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||
+            validateRgbM || validateRgbaM || validateHslM || validateHslaM
 
-          if (validated) {
+          if (result ne null) {
             //println(showRaw(q"""_root_.scalacss.internal.Color($text)"""))
             c.Expr(Apply(Select(Select(Select(Ident(termNames.ROOTPKG), TermName("scalacss")), TermName("internal")), TermName("Color")),
-              Literal(Constant(text)) :: Nil))
+              Literal(Constant(result)) :: Nil))
           } else
             fail()
 

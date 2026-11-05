@@ -38,7 +38,7 @@ object Dependencies {
     val scalaJsReactDummy    = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)
     val scalaJsReactTest     = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
     val scalaReflect         = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
-    val scalatags            = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags cross CrossVersion.for3Use2_13)
+    val scalatags            = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags)
     val univEq               = Def.setting("com.github.japgolly.univeq"        %%% "univeq"                  % Ver.univEq)
     val utest                = Def.setting("com.lihaoyi"                       %%% "utest"                   % Ver.utest)
   }

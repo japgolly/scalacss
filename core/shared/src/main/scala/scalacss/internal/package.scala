@@ -63,10 +63,12 @@ package object internal {
   @nowarn("cat=unused")
   def memo[A: UnivEq, B](f: A => B): A => B = {
     val m = scala.collection.mutable.HashMap.empty[A, B]
-    a => m.getOrElse(a, {
-      val b = f(a)
-      m.update(a, b)
-      b
-    })
+    a => m.synchronized {
+      m.getOrElse(a, {
+        val b = f(a)
+        m.update(a, b)
+        b
+      })
+    }
   }
 }
