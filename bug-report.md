@@ -1,12 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 35. Data and `ValueT` edge cases: `Length(0.0)` JVM/JS divergence, negative `Resolution`, `ValueT.mkString` escaping, and sub-millisecond `FiniteDuration` truncation
-- **Files**: [Data.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Data.scala#L126-L178), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L21-L26) (and lines 115–121)
-- **Defects**:
-  4. **`ruleTime_FD` truncates sub-millisecond durations (`ValueT.scala:115-121`)**: `d.toMillis` truncates `NANOSECONDS` and `MICROSECONDS` via integer division (e.g., `500.microseconds` becomes `"0ms"` instead of `"0.5ms"`).
-
----
-
 ### 36. `Domain.Pair.apply` throws `ArithmeticException: / by zero` when first domain is empty, and `OptionT`/`Disjunction` mishandle negative indices
 - **File**: [Domain.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Domain.scala#L45-L60)
 - **Code**:

@@ -104,10 +104,10 @@ object ValueT {
     @inline implicit def ruleNumber_D : Number  <== Double         = Rule(_.toString)
     @inline implicit def ruleTime_FD  : Time    <== FiniteDuration =
       Rule(d => d.unit match {
-        case TimeUnit.MICROSECONDS
-           | TimeUnit.MILLISECONDS
-           | TimeUnit.NANOSECONDS => d.toMillis.toString + "ms"
-        case _                    => d.toSeconds.toString + "s"
+        case TimeUnit.NANOSECONDS  => (d.length / 1000000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.MICROSECONDS => (d.length / 1000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.MILLISECONDS => d.length.toString + "ms"
+        case _                     => d.toSeconds.toString + "s"
       })
 
     @inline implicit def ruleLenPct_L     : LenPct      <=< Len          = Rule.retype
