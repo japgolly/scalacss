@@ -143,7 +143,7 @@ object LengthUnit {
 final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: LengthUnit) {
   def value = {
     val s = n.toString
-    if (s == "0") "0" else s + u.value
+    if (s.stripPrefix("-").stripSuffix(".0") == "0") "0" else s + u.value
   }
 
   def *(m: N)(implicit N: Numeric[N]): Length[N] =

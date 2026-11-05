@@ -3,7 +3,6 @@
 ### 35. Data and `ValueT` edge cases: `Length(0.0)` JVM/JS divergence, negative `Resolution`, `ValueT.mkString` escaping, and sub-millisecond `FiniteDuration` truncation
 - **Files**: [Data.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Data.scala#L126-L178), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L21-L26) (and lines 115–121)
 - **Defects**:
-  1. **`Length.value` zero check (`Data.scala:126-131`)**: `if (s == "0") "0" else s + u.value` checks `n.toString == "0"`. For `Double` `0.0`, `0.0.toString` is `"0.0"` on the JVM and `"0"` on Scala.js, so `0.0.px.value` renders `"0.0px"` on the JVM and `"0"` on Scala.js (and `(-0.0).px.value` renders `"-0.0px"`).
   2. **`Resolution.unary_-` and missing `UnivEq` (`Data.scala:167-178`)**: CSS `<resolution>` values cannot be negative, so `Resolution.unary_-` produces invalid CSS; `Resolution` is also missing a companion `UnivEq` instance.
   3. **`ValueT.mkString` does not escape quotes, backslashes, or newlines (`ValueT.scala:21-26`)**: Used by `quotes(...)`, `mkString` fails when a string contains both `'` and `"`, ends with `\`, or contains a newline.
   4. **`ruleTime_FD` truncates sub-millisecond durations (`ValueT.scala:115-121`)**: `d.toMillis` truncates `NANOSECONDS` and `MICROSECONDS` via integer division (e.g., `500.microseconds` becomes `"0ms"` instead of `"0.5ms"`).
