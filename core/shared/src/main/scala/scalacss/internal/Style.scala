@@ -65,7 +65,8 @@ final case class StyleS(data         : SortedMap[Cond, AVs],
       e.style.allWarnings.map(w => w.copy(cond = e.cond & w.cond))
     )
 
-  override def toString = inspect
+  override def toString =
+    "StyleS(…)"
 
   def inspectCss: StyleStream =
     Css.styleA(StyleA(className getOrElse ClassName("???"), addClassNames, this))(Env.empty)
@@ -129,4 +130,3 @@ object StyleF {
   def P[I](f: Domain[I] => StyleF[I]): P[I] =
     new P[I] { override def apply(d: Domain[I]) = f(d) }
 }
-
