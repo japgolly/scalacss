@@ -10,13 +10,6 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
     Css.selector("", this)
 
-  private[Cond] val sortKey: String = {
-    var s = "" // remember, this is JS
-    for (p <- pseudo) s += p.cssValue
-    for (q <- mediaQueries) s += q.cssSuffix
-    s
-  }
-
   protected def addPseudo(p: Pseudo): Cond =
     copy(pseudo = Some(this.pseudo.fold(p)(_ & p)))
 
