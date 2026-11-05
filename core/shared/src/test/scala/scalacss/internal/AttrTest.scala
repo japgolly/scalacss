@@ -173,13 +173,13 @@ object AttrTest extends TestSuite {
     "keyPrefixes" - {
       def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
       test(textAlign,           "text-align")
-      test(borderRadius,        "border-radius", "-moz-border-radius")
-      test(flexWrap,            "flex-wrap", "-moz-flex-wrap", "-ms-flex-wrap", "-o-flex-wrap", "-webkit-flex-wrap")
+      test(borderRadius,        "border-radius")
+      test(flexWrap,            "flex-wrap", "-ms-flex-wrap")
       test(overscrollBehavior,  "overscroll-behavior")
       test(overscrollBehaviorX, "overscroll-behavior-x")
       test(overscrollBehaviorY, "overscroll-behavior-y")
       test(rowGap,              "row-gap")
-      test(boxReflect,          "-ms-box-reflect", "-o-box-reflect", "-webkit-box-reflect")
+      test(boxReflect,          "-o-box-reflect", "-webkit-box-reflect")
     }
 
     "prefixPlan" - {
@@ -217,7 +217,6 @@ object AttrTest extends TestSuite {
         val av = AV(backgroundImage, "url(logo-o-2.png), linear-gradient(red, blue)")
         val actual = av(Env.empty).map(_.value)
         val expected = Vector(
-          "url(logo-o-2.png), -moz-linear-gradient(red, blue)",
           "url(logo-o-2.png), -o-linear-gradient(red, blue)",
           "url(logo-o-2.png), -webkit-linear-gradient(red, blue)",
           "url(logo-o-2.png), linear-gradient(red, blue)",
@@ -228,7 +227,6 @@ object AttrTest extends TestSuite {
         val av = AV(backgroundImage, "linear-gradient(\n  red,\n  blue\n)")
         val actual = av(Env.empty).map(_.value)
         val expected = Vector(
-          "-moz-linear-gradient(\n  red,\n  blue\n)",
           "-o-linear-gradient(\n  red,\n  blue\n)",
           "-webkit-linear-gradient(\n  red,\n  blue\n)",
           "linear-gradient(\n  red,\n  blue\n)",
@@ -249,10 +247,10 @@ object AttrTest extends TestSuite {
       "captionSide.inlineStart" - test(captionSide.inlineStart, "inline-start")
       "resize.block"            - test(resize.block,            "block")
       "resize.inline"           - test(resize.inline,           "inline")
-      "width.available"         - test(width.available,         "-moz-available", "-o-available", "-webkit-available", "available")
-      "width.fillAvailable"     - test(width.fillAvailable,     "-moz-fill-available", "-o-fill-available", "-webkit-fill-available", "fill-available")
+      "width.available"         - test(width.available,         "available")
+      "width.fillAvailable"     - test(width.fillAvailable,     "fill-available")
       "cursor.pointer"          - test(cursor.pointer,          "pointer")
-      "cursor.zoomIn"           - test(cursor.zoomIn,           "-moz-zoom-in", "-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in")
 
       "resize.block" - {
         val expected = Vector(
@@ -264,13 +262,10 @@ object AttrTest extends TestSuite {
       "important" - {
         test(textAlign.left.important, "left !important")
         test(cursor.pointer.important, "pointer !important")
-        test(cursor.zoomIn.important,  "-moz-zoom-in !important", "-o-zoom-in !important", "-webkit-zoom-in !important", "zoom-in !important")
+        test(cursor.zoomIn.important,  "zoom-in !important")
 
         "avApply" - {
           val expected = Vector(
-            CssKV("cursor", "-moz-zoom-in !important"),
-            CssKV("cursor", "-o-zoom-in !important"),
-            CssKV("cursor", "-webkit-zoom-in !important"),
             CssKV("cursor", "zoom-in !important"),
           )
           assertEq(cursor.zoomIn.important(Env.empty), expected)
@@ -370,11 +365,11 @@ object AttrTest extends TestSuite {
         val a = cursor.zoomIn(env).map(_.value).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("-webkit-zoom-in",               "zoom-in")
-      "firefox" - test("Firefox")("-moz-zoom-in",                  "zoom-in")
-      "opera"   - test("Opera")  ("-o-zoom-in", "-webkit-zoom-in", "zoom-in")
+      "chrome"  - test("Chrome") ("zoom-in")
+      "firefox" - test("Firefox")("zoom-in")
+      "opera"   - test("Opera")  ("zoom-in")
       "ie"      - test("IE")     (/*"-ms-zoom-in", Unsupported */  "zoom-in")
-      "safari"  - test("Safari") ("-webkit-zoom-in",               "zoom-in")
+      "safari"  - test("Safari") ("zoom-in")
     }
 
     "envDepPrefixes2" - {
@@ -383,11 +378,11 @@ object AttrTest extends TestSuite {
         val a = AV(flex, "")(env).map(_.key).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("-webkit-flex",            "flex")
-      "firefox" - test("Firefox")("-moz-flex",               "flex")
-      "opera"   - test("Opera")  ("-o-flex", "-webkit-flex", "flex")
-      "ie"      - test("IE")     ("-ms-flex",                "flex")
-      "safari"  - test("Safari") ("-webkit-flex",            "flex")
+      "chrome"  - test("Chrome") ("flex")
+      "firefox" - test("Firefox")("flex")
+      "opera"   - test("Opera")  ("flex")
+      "ie"      - test("IE")     ("-ms-flex", "flex")
+      "safari"  - test("Safari") ("flex")
     }
 
     "gridTemplateAreas" - {

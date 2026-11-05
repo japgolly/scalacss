@@ -49,9 +49,6 @@ object StandaloneTest extends utest.TestSuite {
         |}
         |
         |div.std:hover {
-        |  cursor: -moz-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
