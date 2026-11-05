@@ -1,7 +1,6 @@
 package scalacss
 
 import japgolly.univeq._
-import scala.annotation.nowarn
 
 package object internal {
 

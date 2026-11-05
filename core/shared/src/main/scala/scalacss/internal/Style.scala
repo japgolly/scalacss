@@ -1,6 +1,5 @@
 package scalacss.internal
 
-import scala.collection.immutable.SortedMap
 import scala.runtime.AbstractFunction1
 
 /**
@@ -49,11 +48,14 @@ object Style {
  * @param addClassNames Additional class names to be appended to the resulting [[StyleA]].
  *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
-final case class StyleS(data         : SortedMap[Cond, AVs],
+final case class StyleS(data         : Map[Cond, AVs],
                         unsafeExts   : Style.UnsafeExts,
                         className    : Option[ClassName],
                         addClassNames: Vector[ClassName],
                         warnings     : Vector[Warning]) extends Style1 {
+
+  def dataSorted: Vector[(Cond, AVs)] =
+    data.toVector.sortBy(_._1)
 
   def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
   def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
@@ -84,7 +86,7 @@ final case class StyleS(data         : SortedMap[Cond, AVs],
 
 object StyleS {
   /** Helper method for common case where only data is specified. */
-  def data(d: SortedMap[Cond, AVs]): StyleS =
+  def data(d: Map[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
 
   /** Helper method for common case where only one condition is specified. */
@@ -92,7 +94,7 @@ object StyleS {
     data(empty.data.updated(c, avs))
 
   val empty: StyleS =
-    data(SortedMap.empty)
+    data(Map.empty)
 }
 
 /**

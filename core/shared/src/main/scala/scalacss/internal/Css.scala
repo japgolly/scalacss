@@ -52,7 +52,7 @@ object Css {
 
   def style(sel: CssSelector, s: StyleS)(implicit env: Env): StyleStream = {
     def main: Iterator[CssEntry.Style] =
-      s.data.iterator.flatMap {
+      s.dataSorted.iterator.flatMap {
         case (cond, avs) =>
           val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
           NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>
