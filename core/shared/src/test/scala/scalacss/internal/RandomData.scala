@@ -3,7 +3,6 @@ package scalacss.internal
 import cats.data.NonEmptyList
 import nyaya.gen._
 import nyaya.util._
-import scala.collection.immutable.SortedMap
 import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
 
 object RandomData {
@@ -93,7 +92,7 @@ object RandomData {
         ws   <- warning.vector(sized(0, 20, 6))
       } yield {
         // println(s"${data.size} / ${exts.size} / ${ws.size}")
-        val lData = SortedMap(data.toSeq:_*)
+        val lData = Map(data.toSeq:_*)
         new StyleS(lData, exts, cn, cns, ws)
       }
     level(Some(level(Some(level(None)))))
