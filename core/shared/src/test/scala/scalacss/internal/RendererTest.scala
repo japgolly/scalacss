@@ -61,8 +61,8 @@ object RendererTest extends TestSuite {
         val renderedStyle = StringRenderer.formatTiny(styleEntry)
         val renderedFont = StringRenderer.formatTiny(Vector(fontEntry))
 
-        assertEq(renderedFont, """@font-face {font-family:"My Font";src:url(font.woff)}""")
-        assertEq(renderedStyle, """.c{font-family:"My Font"}""")
+        assertEq(renderedFont, """@font-face {font-family:'My Font';src:url(font.woff)}""")
+        assertEq(renderedStyle, """.c{font-family:'My Font'}""")
       }
     }
 

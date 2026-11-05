@@ -76,7 +76,7 @@ object FontFace {
     def isQuoted =
       s.length >= 2 && ((s.startsWith("\"") && s.endsWith("\"")) || (s.startsWith("'") && s.endsWith("'")))
     if (s.exists(_.isWhitespace) && !isQuoted)
-      "\"" + s + "\""
+      Util.quote(s)
     else
       s
   }

@@ -787,41 +787,14 @@ object Attrs {
 
     // TODO content still missing a bunch of combinations
 
-    // https://www.w3.org/TR/CSS2/syndata.html#escaped-characters
-    private def escape(input: String): String = {
-      // fast in JS, speed doesn't matter in JVM for this case
-      var newStr = "'"
-      var i = 0
-      val len = input.length
-      while (i < len) {
-        val cp = input.codePointAt(i)
-
-        @inline def escape =
-          cp match {
-            case '\\' | '\'' => true
-            case _           => cp < 32 || cp >= 127
-          }
-
-        val add =
-          if (escape)
-            "\\%06X".format(cp)
-          else
-            cp.toChar.toString
-
-        newStr += add
-        i += Character.charCount(cp)
-      }
-
-      newStr + "'"
-    }
 
     /** @param content Content string (unescaped). This will be escaped as required.
      */
     def string(content: String) =
-      av(escape(content))
+      av(Util.quote(content))
 
     def url(url: String) =
-      av("url(" + escape(url) + ")")
+      av("url(" + Util.quote(url) + ")")
   }
 
   /**
@@ -2031,8 +2004,8 @@ object Attrs {
   }
   trait QuotesOps {
     protected def next(v: Value): quotes.Accum
-    final def apply(openQuote: String, closeQuote: String) =
-      next(mkStrings(openQuote, " ", closeQuote))
+    final def apply(openQuote: String, closeQuote: String): quotes.Accum =
+      next(Util.quote(openQuote) + " " + Util.quote(closeQuote))
   }
 
   /**

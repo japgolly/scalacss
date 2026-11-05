@@ -41,7 +41,7 @@ object UsageTest extends TestSuite {
     "maintest" - {
       val css = StringRenderer defaultPretty Css.style(".a1", s1)(Env.empty)
       // println(css)
-      assertEq(css.trim,
+      assertMultiline(css.trim,
         """
           |.a1 {
           |  margin: 12px;
@@ -66,7 +66,7 @@ object UsageTest extends TestSuite {
           |}
           |
           |.a1 nav.debug q {
-          |  quotes: "'" "'";
+          |  quotes: '\000027' '\000027';
           |  quotes: '<' '>' '"' '"';
           |}
         """.stripMargin.trim)
