@@ -190,6 +190,7 @@ final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: Re
   def /(m: Double)(implicit N: Numeric[N]): Resolution[Double] =
     copy(n = N.toDouble(n) / m, u)
 
+  @deprecated("Resolutions can't be negative, so this method is deprecated.", "1.1.0")
   def unary_-(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.negate(this.n), u)
 }
