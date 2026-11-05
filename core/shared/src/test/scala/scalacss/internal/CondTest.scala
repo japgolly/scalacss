@@ -1,8 +1,10 @@
 package scalacss.internal
 
 import japgolly.microlibs.testutil.TestUtil._
+import scala.annotation.nowarn
 import utest._
 
+@nowarn("cat=deprecation")
 object CondTest extends TestSuite {
 
   override def tests = Tests {
@@ -111,6 +113,49 @@ object CondTest extends TestSuite {
           &.hover(inner)
         )
         assert(s.warnings.nonEmpty)
+      }
+    }
+
+    "media" - {
+      import Dsl._
+      "or" - {
+        val q = media.screen or media.handheld
+        assertEq(q.mediaQueries.length, 2)
+        assertEq(q.toString.trim, "@media screen, handheld")
+      }
+      "and" - {
+        val q1 = media.minWidth(500 px) and media.maxWidth(1000 px)
+        assertEq(q1.cssSuffix, "(min-width:500px) and (max-width:1000px)")
+        val q2 = media.screen and media.minWidth(500 px)
+        assertEq(q2.cssSuffix, "screen and (min-width:500px)")
+        val q3 = media.minWidth(500 px) and media.screen
+        assertEq(q3.cssSuffix, "screen and (min-width:500px)")
+      }
+      "nested" - {
+        import Dsl._
+        implicit val composition: Compose = Compose.safe
+        val s = style(
+          media.minWidth(500 px)(
+            media.maxWidth(1000 px)(
+              color.red
+            )
+          )
+        )
+        val expected = Vector(media.minWidth(500 px) and media.maxWidth(1000 px))
+        assertEq(s.data.keys.flatMap(_.mediaQueries).toVector, expected)
+        val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
+        assertMultiline(css,
+          """
+            |@media (min-width:500px) and (max-width:1000px) {
+            |  .a {
+            |    color: red;
+            |  }
+            |}
+          """.stripMargin.trim)
+      }
+      "deprecatedAmpersand" - {
+        val q = media.screen & media.handheld
+        assertEq(q.toString.trim, "@media screen, handheld")
       }
     }
   }

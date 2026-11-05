@@ -24,12 +24,17 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     addPseudo(p)
 
   def &(q: Media.Query): Cond =
-    copy(mediaQueries = this.mediaQueries +: q)
+    if (mediaQueries.isEmpty)
+      copy(mediaQueries = Vector1(q))
+    else
+      copy(mediaQueries = mediaQueries.map(_ and q))
 
   def &(b: Cond): Cond =
     Cond(
       optionAppend(pseudo, b.pseudo)(_ & _),
-      b.mediaQueries.foldLeft(mediaQueries)(_ +: _))
+      if (mediaQueries.isEmpty) b.mediaQueries
+      else if (b.mediaQueries.isEmpty) mediaQueries
+      else for { q1 <- mediaQueries; q2 <- b.mediaQueries } yield q1 and q2)
 
   def applyToStyle(s: StyleS)(implicit c: Compose = Compose.trust): StyleS = {
     val init = StyleS.empty.copy(

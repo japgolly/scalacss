@@ -1,19 +1,5 @@
 # ScalaCSS Bug & Defect Report
 
-### 34. `Media.Query.+` returns `Vector[Query]` which cannot be used as a `Cond`, while `&` renders `, ` (logical OR)
-- **File**: [Media.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Media.scala#L95-L102) (and line 253)
-- **Code**:
-  ```scala
-  def +(q2: Query): Vector[Query] =
-    Vector1(this) +: q2
-
-  def &(q2: Query): Cond =
-    Cond(None, this + q2)
-  ```
-- **Defect**: `Query.+` returns `Vector[Query]`, which has no conversion to `Cond` in `DslBase`, so `(media.screen + media.handheld)(...)` does not compile. Meanwhile, `q1 & q2` (and nested media query conditions `q1(q2(...))`) combines queries into `Vector[Query]`, which `Media.cssQueries` renders separated by `", "` (CSS logical **OR**) rather than `" and "` (logical **AND**).
-
----
-
 ### 35. Data and `ValueT` edge cases: `Length(0.0)` JVM/JS divergence, negative `Resolution`, `ValueT.mkString` escaping, and sub-millisecond `FiniteDuration` truncation
 - **Files**: [Data.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/Data.scala#L126-L178), [ValueT.scala](file:///Users/golly/projects/public/scalacss/core/shared/src/main/scala/scalacss/internal/ValueT.scala#L21-L26) (and lines 115–121)
 - **Defects**:

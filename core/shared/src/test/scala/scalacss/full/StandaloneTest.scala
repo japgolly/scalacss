@@ -19,7 +19,7 @@ object MyStandalone extends StyleSheet.Standalone {
     &("span") -
       color.red,
 
-    (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dppx)) -
+    (media.tv.minDeviceAspectRatio(4 :/: 3) or media.all.resolution(300 dppx)) -
       width(600 px),
 
     media.not.handheld.landscape.color -
