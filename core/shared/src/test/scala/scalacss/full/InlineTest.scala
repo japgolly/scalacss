@@ -563,6 +563,17 @@ object InlineTest extends utest.TestSuite {
       "manualF" - {
         assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
         assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
+
+        object SS extends StyleSheet.Inline {
+          import dsl._
+          val s1 = styleF("custom")(Domain.boolean.option)(_ => styleS(color.red))
+          val s2 = styleF("custom2")(Domain.boolean)(_ => styleS(color.blue), (_, i) => s"x$i")
+        }
+        assertEq(SS.s1(None).htmlClass, "custom-1")
+        assertEq(SS.s1(Some(true)).htmlClass, "custom-2")
+        assertEq(SS.s1(Some(false)).htmlClass, "custom-3")
+        assertEq(SS.s2(true).htmlClass, "custom2-x0")
+        assertEq(SS.s2(false).htmlClass, "custom2-x1")
       }
 
       "everythingOk" - {

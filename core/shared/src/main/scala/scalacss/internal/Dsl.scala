@@ -253,6 +253,9 @@ object DslMacros {
   trait MStyleF2 {
     protected def create[I: StyleLookup](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
 
+    final def apply[I: StyleLookup](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(None, d, f, classNameSuffix)
+
     final def bool(f: Boolean => StyleS): Boolean => StyleA =
       create(None, Domain.boolean, f, defaultStyleFClassNameSuffixB)
 
@@ -268,9 +271,6 @@ object DslMacros {
         override protected def create[I: StyleLookup](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
           MStyleF.this.create(Some(name), d, f, classNameSuffix)
       }
-
-    final def apply[I: StyleLookup](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
-      create(None, d, f, classNameSuffix)
   }
 
   trait MKeyframes {
