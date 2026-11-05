@@ -25,8 +25,10 @@ object Caniuse {
 
     // ====================================================================================================
 
+    type StringMap = Map[String, String]
+
     val N = new NaturalOrderComparator()
-    def consolidate(m: MSS): MSS =
+    def consolidate(m: StringMap): StringMap =
       m.toStream.sortWith((a,b) => N.compare(a._1, b._1)<0)
           .foldLeft(Map.empty[String, String]){case (q,(a,b)) => q.updated(b, q.get(b).fold(a)(_+","+a)) }
           .toStream.map{case (a,b) => (b,a)}.toMap
@@ -140,6 +142,20 @@ object Caniuse {
     val agentkey: String => String =
       k => String.format("%-17s", agentkey0(k))
 
+    // Only consider the last n versions of each agent
+    val latestAgentVersions = 10
+
+    val agentVersions: Map[String, List[String]] = {
+      val jo = json.field("agents").obj.get
+      jo.fields.filterNot(ignoredAgents.contains).map { k =>
+        val vers = jo(k).get.field("versions").array.get.filterNot(_.isNull).map(str).takeRight(latestAgentVersions)
+        k -> vers
+      }.toMap
+    }
+
+    val agentVersionSets: Map[String, Set[String]] =
+      agentVersions.map { case (k, v) => (k, v.toSet) }
+
     case class Agent(
       key: String,
       browser: String,
@@ -152,26 +168,29 @@ object Caniuse {
 
     val agents = {
       val jo = json.field("agents").obj.get
-        jo.fields.filterNot(ignoredAgents.contains).map{k =>
+      jo.fields.filterNot(ignoredAgents.contains).map { k =>
         val j = jo(k).get
+        val vers = agentVersions(k)
+        val keep = agentVersionSets(k)
+        val pe = j.field("prefix_exceptions").map { x =>
+          consolidate(x.jdecode[StringMap].toOption.get.filter(kv => keep.contains(kv._1)))
+        } getOrElse Map.empty
         Agent(k |> agentkey,
           j.field("browser") |> str,
-          j.field("versions").array.get.filterNot(_.isNull).map(str),
+          vers,
           j.field("prefix") |> str,
-          j.field("prefix_exceptions").map(_.jdecode[MSS].toOption.get |> consolidate) getOrElse Map.empty)
+          pe)
       }
     }
 
     println(s"Found ${agents.size} agents...")
-
-    type MSS = Map[String, String]
 
     case class Data(
       key: String,
       title: String,
       desc: String,
       spec: String,
-      stats: Map[String, MSS]) {
+      stats: Map[String, StringMap]) {
 
       val scalaval = "^css([A-Z])".r.replaceAllIn(camel(key), _.group(1).toLowerCase)
     }
@@ -180,11 +199,16 @@ object Caniuse {
     val cssj = dataj.assoc.get.filter(kv =>
                  (+kv._2 --\ "categories" focus).toString.toUpperCase contains "CSS")
     val data1 = cssj.map{ case (k,v) =>
+      val rawStats = (+v --\ "stats" focus).jdecode[Map[String, StringMap]].toOption.get -- ignoredAgents
+      val stats = rawStats.map { case (agent, vMap) =>
+        val keep = agentVersionSets.getOrElse(agent, Set.empty)
+        agent -> consolidate(vMap.filter(kv => keep.contains(kv._1)))
+      }
       Data(k.toString,
         v.field("title") |> str |> removeAt,
         v.field("description") |> str,
         v.field("spec") |> str,
-        ((+v --\ "stats" focus).jdecode[Map[String, MSS]].toOption.get -- ignoredAgents) mapValues consolidate)
+        stats)
     }.filterNot(dataToIgnore contains _.scalaval)
 
     val data2 = {
@@ -264,7 +288,7 @@ object Caniuse {
     def fmtData(d: Data) = {
       import d._
       val stats2 = stats.mapValues(m => m.toList.map{case(a,b) => (b,a)}.toMap)
-      def statss(s: MSS) = s.keySet.map(fmtsup).mkString("Set(",", ",")")
+      def statss(s: StringMap) = s.keySet.map(fmtsup).mkString("Set(",", ",")")
       val defval = if (valAttrs contains scalaval) "val" else "def"
       s"""/**
    * ${htmlsafe(title)}
