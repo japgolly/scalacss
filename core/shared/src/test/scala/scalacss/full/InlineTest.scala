@@ -30,7 +30,7 @@ object MyInline extends StyleSheet.Inline {
         font := ^.inherit
       ),
 
-      (media.tv.minDeviceAspectRatio(4 :/: 3) & media.all.resolution(300 dpi))(
+      (media.tv.minDeviceAspectRatio(4 :/: 3) or media.all.resolution(300 dpi))(
         margin.vertical(10 em)
       ),
 
@@ -293,6 +293,18 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
   val myFontText3 = style(fontFamily(ff6))
 }
 
+object MyInlineAddClassNames extends StyleSheet.Inline {
+  import dsl._
+
+  val btn            = style(addClassName("btn"))
+  val btnDefault     = style(addClassNames("btn", "btn-default"))
+  val btnPrimary     = style(addClassNames("btn", "btn-primary"))
+  val composedMulti  = style(btnDefault, marginTop.inherit)
+  val composedSingle = style(btn, color.red)
+  val alias          = style(btnDefault)
+  val aliasExtra     = style(btnDefault, addClassName("extra"))
+}
+
 object InlineTest extends utest.TestSuite {
   import japgolly.microlibs.testutil.TestUtil._
   import utest._
@@ -306,9 +318,7 @@ object InlineTest extends utest.TestSuite {
         |  margin: 12px;
         |  padding: 0.5ex;
         |  cursor: pointer;
-        |  -moz-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
-        |  background-image: -moz-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: radial-gradient(5em circle at top left, yellow, blue);
@@ -320,16 +330,10 @@ object InlineTest extends utest.TestSuite {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
-        |  cursor: -moz-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:not(:first-child):visited {
-        |  -moz-animation-delay: 60s,50ms;
-        |  -o-animation-delay: 60s,50ms;
-        |  -webkit-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
@@ -366,7 +370,7 @@ object InlineTest extends utest.TestSuite {
         |  }
         |}
         |
-        |@media tv and (min-device-aspect-ratio:3/4), all and (resolution:300dpi) {
+        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dpi) {
         |  .manual {
         |    margin-top: 10em;
         |    margin-bottom: 10em;
@@ -533,12 +537,34 @@ object InlineTest extends utest.TestSuite {
         |}
       """.stripMargin))
 
+    "cssAddClassNames" - assertMultiline(norm(MyInlineAddClassNames.render), norm(
+      """
+        |.MyInlineAddClassNames-composedMulti {
+        |  margin-top: inherit;
+        |}
+        |
+        |.MyInlineAddClassNames-composedSingle {
+        |  color: red;
+        |}
+      """.stripMargin))
+
     "classnames" - {
       "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
 
       "manualF" - {
         assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
         assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
+
+        object SS extends StyleSheet.Inline {
+          import dsl._
+          val s1 = styleF("custom")(Domain.boolean.option)(_ => styleS(color.red))
+          val s2 = styleF("custom2")(Domain.boolean)(_ => styleS(color.blue), (_, i) => s"x$i")
+        }
+        assertEq(SS.s1(None).htmlClass, "custom-1")
+        assertEq(SS.s1(Some(true)).htmlClass, "custom-2")
+        assertEq(SS.s1(Some(false)).htmlClass, "custom-3")
+        assertEq(SS.s2(true).htmlClass, "custom2-x0")
+        assertEq(SS.s2(false).htmlClass, "custom2-x1")
       }
 
       "everythingOk" - {
@@ -578,6 +604,16 @@ object InlineTest extends utest.TestSuite {
 
       "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
       "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+
+      "addClassNames" - {
+        "btn"            - assertEq(MyInlineAddClassNames.btn.htmlClass, "btn")
+        "btnDefault"     - assertEq(MyInlineAddClassNames.btnDefault.htmlClass, "btn btn-default")
+        "btnPrimary"     - assertEq(MyInlineAddClassNames.btnPrimary.htmlClass, "btn btn-primary")
+        "composedMulti"  - assertEq(MyInlineAddClassNames.composedMulti.htmlClass, "MyInlineAddClassNames-composedMulti btn btn-default")
+        "composedSingle" - assertEq(MyInlineAddClassNames.composedSingle.htmlClass, "MyInlineAddClassNames-composedSingle btn")
+        "alias"          - assertEq(MyInlineAddClassNames.alias.htmlClass, "btn btn-default")
+        "aliasExtra"     - assertEq(MyInlineAddClassNames.aliasExtra.htmlClass, "btn btn-default extra")
+      }
 
     }
 
@@ -621,29 +657,11 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
-       |  -moz-animation-name: MyInlineWithKeyframes-kf1;
-       |  -o-animation-name: MyInlineWithKeyframes-kf1;
-       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
-       |  -moz-animation-duration: 5s;
-       |  -o-animation-duration: 5s;
-       |  -webkit-animation-duration: 5s;
        |  animation-duration: 5s;
-       |  -moz-animation-direction: alternate;
-       |  -o-animation-direction: alternate;
-       |  -webkit-animation-direction: alternate;
        |  animation-direction: alternate;
-       |  -moz-animation-iteration-count: 5;
-       |  -o-animation-iteration-count: 5;
-       |  -webkit-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
-       |  -moz-animation-play-state: running;
-       |  -o-animation-play-state: running;
-       |  -webkit-animation-play-state: running;
        |  animation-play-state: running;
-       |  -moz-animation-timing-function: ease;
-       |  -o-animation-timing-function: ease;
-       |  -webkit-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
@@ -655,16 +673,10 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.manual:hover {
-        |  cursor: -moz-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:nth-child(5) {
-        |  cursor: -moz-zoom-in;
-        |  cursor: -o-zoom-in;
-        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |

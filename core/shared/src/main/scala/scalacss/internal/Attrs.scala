@@ -46,8 +46,14 @@ object Attrs {
     boxReflect, flowFrom, flowInto, regionFragment, textSizeAdjust, textStroke, textStrokeColor, textStrokeWidth,
     textEmphasis, textEmphasisColor, textEmphasisPosition, textEmphasisStyle, userSelect,
 
+    svgAlignmentBaseline, svgBaselineShift, svgClipRule, svgColorInterpolation, svgColorInterpolationFilters,
+    svgColorProfile, svgColorRendering, svgDominantBaseline, svgEnableBackground, svgFill, svgFillRule, svgFloodColor,
+    svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
+    svgShapeRendering, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin,
+    svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor,
+
     // 0.5.5
-    caretColor, fontVariantionSettings, hangingPunctuation, initialLetter,
+    caretColor, fontVariationSettings, hangingPunctuation, initialLetter,
     overscrollBehavior, overscrollBehaviorX, overscrollBehaviorY,
 
     // 0.5.6
@@ -56,15 +62,9 @@ object Attrs {
     // 0.6.0
     justifySelf, placeSelf,
 
-    // =================================================================================================================
-    // ==================================== SVG Attributes =============================================================
-    // =================================================================================================================
-
-    svgAlignmentBaseline, svgBaselineShift, svgClipRule, svgColorInterpolation, svgColorInterpolationFilters,
-    svgColorProfile, svgColorRendering, svgDominantBaseline, svgEnableBackground, svgFill, svgFillRule, svgFloodColor,
-    svgGlyphOrientationHorizontal, svgGlyphOrientationVertical, svgKerning, svgMarkerEnd, svgMarkerMid, svgMarkerStart,
-    svgShapeRendering, svgStrokeDashArray, svgStrokeDashOffset, svgStrokeLineCap, svgStrokeLineJoin,
-    svgStrokeMiterLimit, svgStrokeWidth, svgTextAnchor)
+    // 1.1.0
+    justifyItems, overflowAnchor,
+    svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity)
 
   lazy val values: NonEmptyVector[Attr] =
     Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
@@ -270,7 +270,7 @@ object Attrs {
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with BackgroundClipDecorationOps {
       override def av: AV = AV(attr, v)
-      override protected def next(v: Value): Accum = new Accum(s"${this.v} $v")
+      override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
     }
   }
   trait BackgroundClipDecorationOps {
@@ -632,8 +632,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/caption-side">MDN</a>
    */
   object captionSide extends TypedAttrBase {
-    override val attr = Attr.real("caption-side",
-      Transform.values(CanIUse.logicalProps)(L.blockStart, L.blockEnd, L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("caption-side")
     def blockEnd    = av(L.blockEnd)
     def blockStart  = av(L.blockStart)
     def bottom      = av(L.bottom)
@@ -658,8 +657,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/clear">MDN</a>
    */
   object clear extends TypedAttrBase {
-    override val attr = Attr.real("clear",
-      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("clear")
     def both        = av(L.both)
     def inlineEnd   = av(L.inlineEnd)
     def inlineStart = av(L.inlineStart)
@@ -789,39 +787,14 @@ object Attrs {
 
     // TODO content still missing a bunch of combinations
 
-    private def escape(input: String): String = {
-      // fast in JS, speed doesn't matter in JVM for this case
-      var newStr = "'"
-      var i = 0
-      while (i < input.length) {
-        val c = input.charAt(i)
-
-        @inline def escape =
-          c match {
-            case '\\' | '\'' => true
-            case _           => c.toInt > 127
-          }
-
-        val add =
-          if (escape)
-            "\\%04X".format(c.toInt)
-          else
-            c.toString
-
-        newStr += add
-        i += 1
-      }
-
-      newStr + "'"
-    }
 
     /** @param content Content string (unescaped). This will be escaped as required.
      */
     def string(content: String) =
-      av(escape(content))
+      av(Util.quote(content))
 
     def url(url: String) =
-      av("url(" + escape(url) + ")")
+      av("url(" + Util.quote(url) + ")")
   }
 
   /**
@@ -1082,8 +1055,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/float">MDN</a>
    */
   object float extends TypedAttrBase {
-    override val attr = Attr.real("float",
-      Transform.values(CanIUse.logicalProps)(L.inlineStart, L.inlineEnd))
+    override val attr = Attr.real("float")
     def inlineEnd   = av(L.inlineEnd)
     def inlineStart = av(L.inlineStart)
     def left        = av(L.left)
@@ -1112,7 +1084,7 @@ object Attrs {
    */
   object fontFamily extends TypedAttrBase {
     override val attr = Attr.real("font-family", Transform.values(CanIUse.fontFamilySystemUi)(L.systemUI))
-    def apply(a: FontFace[String]): AV = av(a.fontFamily)
+    def apply(a: FontFace[String]): AV = av(FontFace.quoteIfNeeded(a.fontFamily))
     def systemUI = av(L.systemUI)
   }
 
@@ -1154,7 +1126,9 @@ object Attrs {
     def medium  = avl(LT.medium)
     def small   = av(L.small)
     def smaller = av(L.smaller)
+    @deprecated("Use xSmall", "1.1.0")
     def sSmall  = av(L.sSmall)
+    def xSmall  = av(L.xSmall)
     def xLarge  = av(L.xLarge)
     def xxSmall = av(L.xxSmall)
     def xxLarge = av(L.xxLarge)
@@ -1268,6 +1242,8 @@ object Attrs {
     *
     * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
     */
+  final def fontVariationSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
+  @deprecated("Use fontVariationSettings", "1.1.0")
   final def fontVariantionSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
 
   /**
@@ -1840,7 +1816,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehavior extends TypedAttrT2[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -1849,7 +1825,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehaviorX extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior-x", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -1858,7 +1834,7 @@ object Attrs {
     * https://wicg.github.io/overscroll-behavior/
     */
   object overscrollBehaviorY extends TypedAttrT1[OverflowBehaviour] with OverflowBehaviourOps {
-    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overflowAnchor)
+    override val attr = Attr.real("overscroll-behavior-y", Transform keys CanIUse.overscrollBehavior)
   }
 
   /**
@@ -2028,8 +2004,8 @@ object Attrs {
   }
   trait QuotesOps {
     protected def next(v: Value): quotes.Accum
-    final def apply(openQuote: String, closeQuote: String) =
-      next(mkStrings(openQuote, " ", closeQuote))
+    final def apply(openQuote: String, closeQuote: String): quotes.Accum =
+      next(Util.quote(openQuote) + " " + Util.quote(closeQuote))
   }
 
   /**
@@ -2045,9 +2021,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/resize">MDN</a>
    */
   object resize extends TypedAttrBase {
-    override val attr = Attr.real("resize",
-      Transform.keys(CanIUse.resize) *
-      Transform.values(CanIUse.logicalProps)(L.block, L.inline))
+    override val attr = Attr.real("resize", Transform keys CanIUse.resize)
     def block      = av(L.block)
     def both       = av(L.both)
     def horizontal = av(L.horizontal)
@@ -2071,7 +2045,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap">MDN</a>
    */
   object rowGap extends TypedAttrT1[GapStyle] with GapStyleOps {
-    override val attr = Attr.real("row-gap", Transform keys CanIUse.multicolumn)
+    override val attr = Attr.real("row-gap")
   }
 
   /**
@@ -2167,8 +2141,7 @@ object Attrs {
    */
   object textAlign extends TypedAttrBase {
     override val attr = Attr.real("text-align",
-      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value) *
-      Transform.values(CanIUse.textJustify)(L.justify))
+      Transform.values(CanIUse.logicalProps)(L.start.value, L.end.value))
     def center      = av(L.center)
     def end         = avl(L.end)
     def justify     = av(L.justify)
@@ -3238,7 +3211,7 @@ object Attrs {
   /**
    * The place-self CSS property is a shorthand property sets both the align-self and justify-self properties. The first value is the align-self property value, the second the justify-self one. If the second value is not present, the first value is also used for it.
    *
-   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/palce-self">MDN</a>
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/place-self">MDN</a>
    */
   object placeSelf extends TypedAttrBase {
     override val attr = Attr.alias("place-self")(_(alignSelf, justifySelf))
@@ -3251,7 +3224,9 @@ object Attrs {
     def selfEndNormal      = av("self-end normal")
     def flexStartAuto      = av("flex-start auto")
     def flexEndNormal      = av("flex-end normal")
+    @deprecated("This is invalid", "1.1.0")
     def leftAuto           = av("left auto")
+    @deprecated("This is invalid", "1.1.0")
     def rightNormal        = av("right normal")
     def baselineNormal     = av("baseline normal")
     def firstBaselineAuto  = av("first baseline auto")

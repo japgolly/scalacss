@@ -1,6 +1,5 @@
 package scalacss.internal.mutable
 
-import scala.annotation.nowarn
 import scalacss.internal.DslBase.{DslCond, ToStyle}
 import scalacss.internal._
 
@@ -188,7 +187,6 @@ object StyleSheet {
      * your styles are rendered.
      * To do so, call this at the end of your stylesheet with one style from each inner object.
      */
-    @nowarn("cat=unused")
     protected def initInnerObjects(a: StyleA*) = ()
   }
 }

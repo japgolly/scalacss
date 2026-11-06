@@ -9,19 +9,19 @@ object Dependencies {
   object Ver {
 
     // Exported
-    val scala2          = "2.13.6"
-    val scala3          = "3.0.1"
-    val scalaJsDom      = "2.0.0"
-    val scalaJsReact    = "2.0.0"
-    val scalatags       = "0.10.0"
-    val univEq          = "2.0.0"
+    val scala2          = "2.13.18"
+    val scala3          = "3.3.9"
+    val scalaJsDom      = "2.8.1"
+    val scalaJsReact    = "2.1.4"
+    val scalatags       = "0.13.1"
+    val univEq          = "2.1.0"
 
     // Internal
-    val cats            = "2.6.1"
-    val microlibs       = "4.0.0"
-    val nyaya           = "1.0.0"
+    val cats            = "2.13.0"
+    val microlibs       = "4.3.0"
+    val nyaya           = "1.2.0"
     val reactJs         = "17.0.2"
-    val utest           = "0.7.10"
+    val utest           = "0.8.4"
   }
 
   object Dep {
@@ -38,7 +38,7 @@ object Dependencies {
     val scalaJsReactDummy    = Def.setting("com.github.japgolly.scalajs-react" %%% "util-dummy-defaults"     % Ver.scalaJsReact)
     val scalaJsReactTest     = Def.setting("com.github.japgolly.scalajs-react" %%% "test"                    % Ver.scalaJsReact)
     val scalaReflect         = Def.setting("org.scala-lang"                      % "scala-reflect"           % scalaVersion.value)
-    val scalatags            = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags cross CrossVersion.for3Use2_13)
+    val scalatags            = Def.setting("com.lihaoyi"                       %%% "scalatags"               % Ver.scalatags)
     val univEq               = Def.setting("com.github.japgolly.univeq"        %%% "univeq"                  % Ver.univEq)
     val utest                = Def.setting("com.lihaoyi"                       %%% "utest"                   % Ver.utest)
   }

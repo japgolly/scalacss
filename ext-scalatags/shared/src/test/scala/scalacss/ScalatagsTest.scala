@@ -1,8 +1,8 @@
 package scalacss
 
+import japgolly.microlibs.testutil.TestUtil._
 import scalacss.DevDefaults._
 import scalacss.ScalatagsCss._
-import scalacss.TestUtil._
 import utest._
 
 object ScalatagsTest extends TestSuite {
@@ -22,6 +22,20 @@ object ScalatagsTest extends TestSuite {
     val bootstrappy = style(addClassName("btn btn-default"))
   }
 
+  object MyStyles2 extends StyleSheet.Inline {
+    import dsl._
+
+    val child = style(
+      unsafeChild("> span")(
+        color.red
+      )
+    )
+
+    val quote = style(
+      content.string("he\"llo")
+    )
+  }
+
   type T = scalatags.Text.TypedTag[String]
   import scalatags.Text.all._
 
@@ -29,16 +43,29 @@ object ScalatagsTest extends TestSuite {
 
     "styleTag" - {
       val html = MyStyles.render[T].toString()
-      assertEq(html, """<style type="text/css">.ScalatagsTest_MyStyles-input {
-                       |  font-weight: bold;
-                       |  padding: 0.3ex 2ex;
-                       |}
-                       |
-                       |.ScalatagsTest_MyStyles-required {
-                       |  border: thin solid red;
-                       |}
-                       |
-                       |</style>""".stripMargin)
+      assertMultiline(html, """<style type="text/css">.ScalatagsTest_MyStyles-input {
+                               |  font-weight: bold;
+                               |  padding: 0.3ex 2ex;
+                               |}
+                               |
+                               |.ScalatagsTest_MyStyles-required {
+                               |  border: thin solid red;
+                               |}
+                               |
+                               |</style>""".stripMargin)
+    }
+
+    "noHtmlEscaping" - {
+      val html = MyStyles2.render[T].toString()
+      assertMultiline(html, """<style type="text/css">.ScalatagsTest_MyStyles2-child > span {
+                              |  color: red;
+                              |}
+                              |
+                              |.ScalatagsTest_MyStyles2-quote {
+                              |  content: 'he"llo';
+                              |}
+                              |
+                              |</style>""".stripMargin)
     }
 
     "simple" - {

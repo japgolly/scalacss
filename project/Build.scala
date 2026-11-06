@@ -1,13 +1,11 @@
 import sbt._
 import sbt.Keys._
-import com.jsuereth.sbtpgp.PgpKeys
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin
 import org.scalajs.jsdependencies.sbtplugin.JSDependenciesPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, _}
-import sbtrelease.ReleasePlugin.autoImport._
 import scalajscrossproject.ScalaJSCrossPlugin.autoImport._
 import Dependencies._
 import Lib._
@@ -44,16 +42,15 @@ object ScalaCssBuild {
 
   val commonSettings = ConfigureBoth(
     _.settings(
-      scalaVersion                  := Ver.scala2,
-      crossScalaVersions            := Seq(Ver.scala2, Ver.scala3),
-      scalacOptions                ++= scalacCommonFlags,
-      scalacOptions                ++= scalac2Flags.filter(_ => scalaVersion.value.startsWith("2")),
-      scalacOptions                ++= scalac3Flags.filter(_ => scalaVersion.value.startsWith("3")),
-   // incOptions                    := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
-      updateOptions                 := updateOptions.value.withCachedResolution(true),
-      releasePublishArtifactsAction := PgpKeys.publishSigned.value,
-      releaseTagComment             := s"v${(ThisBuild / version).value}",
-      releaseVcsSign                := true))
+      scalaVersion        := Ver.scala2,
+      crossScalaVersions  := Seq(Ver.scala2, Ver.scala3),
+      scalacOptions      ++= scalacCommonFlags,
+      scalacOptions      ++= scalac2Flags.filter(_ => scalaVersion.value.startsWith("2")),
+      scalacOptions      ++= scalac3Flags.filter(_ => scalaVersion.value.startsWith("3")),
+   // incOptions          := incOptions.value.withNameHashing(true).withLogRecompileOnMacro(false),
+      updateOptions       := updateOptions.value.withCachedResolution(true),
+    )
+  )
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -111,7 +108,6 @@ object ScalaCssBuild {
         Dep.cats.value % Test,
       ),
     )
-    .configure(onlyScala2)
 
   lazy val extReact = project
     .in(file("ext-react"))

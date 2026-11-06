@@ -33,7 +33,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   private def isTaken(className: ClassName): Boolean =
     mutex(
-      _styles.exists(_.className ==* className)
+      _styles.exists(s => (s.style.data.nonEmpty || s.style.unsafeExts.nonEmpty) && s.className ==* className)
         || _keyframes.exists(_.name ==* className))
 
   private def ensureUnique(cn: ClassName): ClassName =
@@ -60,24 +60,21 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     }
 
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
-    val s =
-      if (doesntNeedClassName(s0)) {
-        val h = s0.addClassNames.head
-        val t = s0.addClassNames.tail
-        s0.copy(className = Some(h), addClassNames = t)
-      } else s0
-
-    val cn = s.className getOrElse nextName(cnh)
+    val (cn, addClassNames) =
+      if (doesntNeedClassName(s0))
+        (s0.addClassNames.head, s0.addClassNames.tail)
+      else
+        (s0.className getOrElse nextName(cnh), s0.addClassNames)
 
     // Register
-    emitRegistrationWarnings(cn, s.warnings)
-    val a = StyleA(cn, s.addClassNames, s)
+    emitRegistrationWarnings(cn, s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
+    val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
     a
   }
 
   /** Optional side-effects for warnings */
-  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning]): Unit =
+  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning], checkDuplicates: Boolean = true): Unit =
     errHandler.warn.foreach { f =>
 
       def warn(s: String): Unit =
@@ -86,7 +83,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       if (_rendered)
         warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
 
-      if (isTaken(cn))
+      if (checkDuplicates && isTaken(cn))
         warn("Another style in the register has the same classname.")
 
       warnings foreach (f(cn, _))
@@ -127,14 +124,16 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
     val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
     val kf = keyframes.copy(name = cn)
-    emitRegistrationWarnings(cn, Vector.empty)
+    emitRegistrationWarnings(cn, keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
     _keyframes :+= kf
     kf
   }
 
-  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = {
+  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = mutex {
     // This allows duplicate fontFamily names to be specified
     val finalFamilyName = fontFace.fontFamily.getOrElse(nextName(cnh).value)
+    val cn = ClassName(finalFamilyName)
+    emitRegistrationWarnings(cn, Vector.empty, checkDuplicates = false)
     val ff = fontFace.copy(fontFamily = finalFamilyName)
     _fontFaces :+= ff
     ff
@@ -247,9 +246,10 @@ object Register { // ===========================================================
     lazy val nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
     lazy val nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
-    private[this] var _nextShortPrefix = 0
+    // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
+    private[this] var _nextShortPrefix = 1
 
-    def nextShortPrefix(): String = {
+    def nextShortPrefix(): String = synchronized {
       val p = toAlphabet(_nextShortPrefix)
       _nextShortPrefix += 1
       p
@@ -275,7 +275,10 @@ object Register { // ===========================================================
     def short8: NameGen =
       short("\u00a2", alphabet = nmchar8)
 
-    private[mutable] def resetNextShortPrefix() = _nextShortPrefix = 0
+    private[mutable] def resetNextShortPrefix() = synchronized {
+      // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
+      _nextShortPrefix = 1
+    }
   }
 
   // ===================================================================================================================

@@ -1,7 +1,6 @@
 package scalacss.internal
 
 import japgolly.microlibs.testutil.TestUtil._
-import scala.annotation.nowarn
 import utest._
 
 object ColorTest extends TestSuite {
@@ -18,30 +17,49 @@ object ColorTest extends TestSuite {
       "hex4" - test(c"#f0a9"    , "#f0a9")
       "hex6" - test(c"#abc105"  , "#abc105")
       "hex8" - test(c"#abc105f3", "#abc105f3")
+      "hexU" - test(c"#ABC"     , "#abc")
 
-      "rgbI" - test(c"rgb(0,128,255)",    "rgb(0,128,255)")
-      "rgbP" - test(c"rgb(0%,50%,100%)",  "rgb(0%,50%,100%)")
-      "rgba" - test(c"rgba(255,128,0,0)", "rgba(255,128,0,0)")
-      "hsl"  - test(c"hsl(359,0%,100%)",  "hsl(359,0%,100%)")
-      "hsla" - test(c"hsla(0,100%,0%,1)", "hsla(0,100%,0%,1)")
+      "legacy" - {
+        "rgbI"       - test(c"rgb(0,128,255)",    "rgb(0,128,255)")
+        "rgbP"       - test(c"rgb(0%,50%,100%)",  "rgb(0%,50%,100%)")
+        "rgbaI"      - test(c"rgba(255,128,0,0)", "rgba(255,128,0,0)")
+        "rgbaP"      - test(c"rgba(0%,50%,100%,0.8)", "rgba(0%,50%,100%,0.8)")
+        "hsl"        - test(c"hsl(360,0%,100%)",  "hsl(360,0%,100%)")
+        "hsla"       - test(c"hsla(0,100%,0%,1)", "hsla(0,100%,0%,1)")
+        "rgbU"       - test(c"RGB(0,128,255)", "rgb(0,128,255)")
+        "alphaDec0"  - test(c"hsla(0,100%,0%,0.918)", "hsla(0,100%,0%,0.918)")
+        "alphaDecZ"  - test(c"hsla(0,100%,0%,.543)", "hsla(0,100%,0%,.543)")
+        "whitespace" - test(c"  rgba  (  255  ,  128  ,  0  ,  0  )  ", "rgba(255,128,0,0)")
+      }
 
-      "hexU" - test(c"#ABC",           "#abc")
-      "rgbU" - test(c"RGB(0,128,255)", "rgb(0,128,255)")
+      "modern" - {
+        "rgb"     - test(c"rgb(1 2% none)", "rgb(1 2% none)")
+        "rgbWS"   - test(c" rgb ( 1  2%  none ) ", "rgb(1 2% none)")
+        "rgbaD"   - test(c"rgb(1 2 3/0.5)", "rgb(1 2 3/0.5)")
+        "rgbaDWS" - test(c" rgb ( 1  2  3 / 0.5 ) ", "rgb(1 2 3/0.5)")
+        "rgbaP"   - test(c"rgb(1 2 3/25%)", "rgb(1 2 3/25%)")
+        "rgbaPWS" - test(c" rgb ( 1  2  3 / 25% ) ", "rgb(1 2 3/25%)")
+        "hsl"     - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
+        "hslN"    - test(c"hsl(none 2% 3)", "hsl(none 2% 3)")
+        "hslDeg"  - test(c"hsl(360deg 2% 3)", "hsl(360 2% 3)")
+        "hslWS"   - test(c" hsl ( 1  2%  3 ) ", "hsl(1 2% 3)")
+        "hsla"    - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
+        "hslaDeg" - test(c"hsl(360deg 2% 3/50%)", "hsl(360 2% 3/50%)")
+        "hslaWS"  - test(c" hsl ( 1  2%  3  / 0.5 ) ", "hsl(1 2% 3/0.5)")
+      }
 
-      "whitespace" - test(c"  rgba  (  255  ,  128  ,  0  ,  0  )  ", "rgba(255,128,0,0)")
-
-      "alphaDec0" - test(c"hsla(0,100%,0%,0.918)", "hsla(0,100%,0%,0.918)")
-      "alphaDecZ" - test(c"hsla(0,100%,0%,.543)",  "hsla(0,100%,0%,.543)")
     }
 
     "invalid" - {
-      @nowarn("cat=unused")
-      def assertFailure(e: CompileError) = ()
-      def assertErrorContains(e: CompileError, frag: String): Unit =
+      def assertErrorContains(e: CompileError, frag: String) = {
         assertContains(e.msg, frag)
+        e.msg
+      }
+      def assertFailure(e: CompileError) =
+        assertErrorContains(e, "Invalid colour literal")
 
       "hex" - {
-        def test(e: CompileError): Unit = assertErrorContains(e, "Hex notation must be")
+        def test(e: CompileError) = assertErrorContains(e, "Hex notation must be")
         "0" - test(compileError(""" c"#" """))
         "1" - test(compileError(""" c"#f" """))
         "2" - test(compileError(""" c"#00" """))
@@ -57,9 +75,10 @@ object ColorTest extends TestSuite {
       "badFn" - assertFailure(compileError( """ c"rbg(0,0,0)" """))
       "two"   - assertFailure(compileError( """ c"#fed #fed" """))
 
-      "numbers" - {
+      "legacy" - {
         "r-1"   - assertErrorContains(compileError(""" c"rgb(-1,0,0)" """), "Invalid red value")
         "r256"  - assertErrorContains(compileError(""" c"rgb(256,0,0)" """), "Invalid red value")
+        "rOver" - assertErrorContains(compileError(""" c"rgb(99999999999999999999999999,0,0)" """), "Invalid red value")
         "g256"  - assertErrorContains(compileError(""" c"rgb(0,256,0)" """), "Invalid green value")
         "b256"  - assertErrorContains(compileError(""" c"rgb(0,0,256)" """), "Invalid blue value")
         "a2"    - assertErrorContains(compileError(""" c"rgba(0,0,0,2)" """), "Invalid alpha value")
@@ -71,6 +90,20 @@ object ColorTest extends TestSuite {
         "str"   - assertFailure      (compileError(""" c"rgb(x,0,0)" """))
         "empty" - assertFailure      (compileError(""" c"rgb(0,,0)" """))
         "mixed" - assertFailure      (compileError(""" c"rbg(0,0%,0)" """))
+      }
+
+      "modern" - {
+        "r256"  - assertErrorContains(compileError(""" c"rgb(256 0 0)" """), "Invalid red value")
+        "g256"  - assertErrorContains(compileError(""" c"rgb(0 256 0)" """), "Invalid green value")
+        "b256"  - assertErrorContains(compileError(""" c"rgb(0 0 256)" """), "Invalid blue value")
+        "r101%" - assertErrorContains(compileError(""" c"rgb(101% 0% none)" """), "Invalid red value")
+        "g101%" - assertErrorContains(compileError(""" c"rgb(none 101% none)" """), "Invalid green value")
+        "b101%" - assertErrorContains(compileError(""" c"rgb(none none 101%)" """), "Invalid blue value")
+        "rgbaD" - assertErrorContains(compileError(""" c"rgb(1 2 3/1.5)" """), "Invalid alpha value")
+        "rgbaP" - assertErrorContains(compileError(""" c"rgb(1 2 3/125%)" """), "Invalid alpha value")
+        "h361"  - assertErrorContains(compileError(""" c"hsl(361 0 0)" """), "Invalid hue value")
+        "s101"  - assertErrorContains(compileError(""" c"hsl(0 101% 0)" """), "Invalid saturation value")
+        "l101"  - assertErrorContains(compileError(""" c"hsl(0 0 101%)" """), "Invalid lightness value")
       }
     }
   }

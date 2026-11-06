@@ -35,6 +35,26 @@ object StyleTest extends TestSuite {
         assert(r2Data.get(backgroundColor).get.head ==* backgroundColor.blue.value)
         assert(r2Data.get(color).get.head ==* color.red.value)
       }
+
+      "compose" - {
+        import Dsl._
+
+        "multiClass" - {
+          val reg = new mutable.Register(mutable.Register.NameGen.numbered(), mutable.Register.MacroName.Use, mutable.Register.ErrorHandler.silent)
+          implicit val cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS addClassNames("btn", "btn-default")
+          val composed = Dsl.style(a, color.red)
+          assertEq(composed.addClassNames.map(_.value), Vector("btn", "btn-default"))
+        }
+
+        "singleClass" - {
+          val reg = new mutable.Register(mutable.Register.NameGen.numbered(), mutable.Register.MacroName.Use, mutable.Register.ErrorHandler.silent)
+          implicit val cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS addClassName("btn")
+          val composed = Dsl.style(a, color.red)
+          assertEq(composed.addClassNames.map(_.value), Vector("btn"))
+        }
+      }
     }
   }
 }

@@ -41,6 +41,7 @@ object StringRenderer {
       val fmt = format(sb)
 
       css foreach (fmt(_))
+      fmt.done()
 
       sb.toString()
     }
@@ -83,9 +84,10 @@ object StringRenderer {
           kfStart(e.name.value)
           for ((sel, styles) <- e.frames) {
             kfsStart(sel.value)
-            val selO = Some(sel)
-            for (s <- styles)
-              printCssKV(selO, s.mq, s.content)
+            val allKvs = styles.flatMap(_.content.whole)
+            NonEmptyVector.maybe(allKvs, ()) { nel =>
+              printCssKV(Some(sel), None, nel)
+            }
             kfsEnd(sel)
           }
           kfEnd(e.name)
@@ -122,11 +124,9 @@ object StringRenderer {
   }
 
   private def quoteIfNeeded(sb: StringBuilder, s: String, quote: Boolean): Unit =
-    if (quote && s.contains(" ")) {
-      sb append '"'
-      sb append s
-      sb append '"'
-    } else
+    if (quote)
+      sb append FontFace.quoteIfNeeded(s)
+    else
       sb append s
 
   /**

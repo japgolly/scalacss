@@ -15,7 +15,9 @@ object Media {
 
   sealed abstract class ScanValue(final val value: String)
   case object Progressive extends ScanValue("progressive")
+  @deprecated("Use Interlace", "1.1.0")
   case object Interface   extends ScanValue("interface")
+  case object Interlace   extends ScanValue("interlace")
 
   sealed trait ValueExpr[T]
   case class Eql[T](eql: T) extends ValueExpr[T]
@@ -86,20 +88,43 @@ object Media {
 
     private[scalacss] val cssSuffix: String = {
       val z = head.fold(cssTypeExpr, cssFeature)
-      tail.foldLeft(z)(_ ~ and ~ cssFeature(_))
+      tail.foldLeft(z)(_ ~ _and_ ~ cssFeature(_))
     }
 
     override def toString =
       Media.css(NonEmptyVector one this)
 
-    def +:(qs: Vector[Query]): Vector[Query] =
+    private def +:(qs: Vector[Query]): Vector[Query] =
       if (qs.exists(_ ==* this)) qs else qs :+ this
 
-    def +(q2: Query): Vector[Query] =
-      Vector1(this) +: q2
-
+    @deprecated("Use .or", "1.1.0")
     def &(q2: Query): Cond =
-      Cond(None, this + q2)
+      or(q2)
+
+    def or(q2: Query, qn: Query*): Cond =
+      Cond(None, qn.foldLeft(Vector1(this) +: q2)(_ +: _))
+
+    def and(that: Query): Query = {
+      def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
+        extra.foldLeft(base)((acc, f) =>
+          if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
+        )
+
+      (this.head, that.head) match {
+        case (Left(t1), Left(t2)) =>
+          val t = if (t1 ==* Just(All)) t2 else t1
+          Query(Left(t), merge(this.tail, that.tail, None))
+
+        case (Left(t), Right(f)) =>
+          Query(Left(t), merge(this.tail, f +: that.tail, None))
+
+        case (Right(f), Left(t)) =>
+          Query(Left(t), merge(that.tail, f +: this.tail, None))
+
+        case (Right(f1), Right(f2)) =>
+          Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))
+      }
+    }
   }
 
   implicit def univEqScanValue              : UnivEq[ScanValue        ] = UnivEq.derive
@@ -182,7 +207,9 @@ object Media {
 
     final def scan(v: ScanValue): Out = F(Scan(v))
     final def progressive       : Out = F(Scan(Progressive))
+    @deprecated("Use interlace", "1.1.0")
     final def interface         : Out = F(Scan(Interface))
+    final def interlace         : Out = F(Scan(Interlace))
 
     final def grid        : Out = F(Grid(None))
     final def grid(v: Int): Out = F(Grid(Some(v)))
@@ -195,7 +222,7 @@ object Media {
 
   private final def media = "@media "
   private final def `:`   = ":"
-  private final def and   = " and "
+  private final def _and_ = " and "
   private final def `,`   = ", "
   private final def `(`   = "("
   private final def `)`   = ")"

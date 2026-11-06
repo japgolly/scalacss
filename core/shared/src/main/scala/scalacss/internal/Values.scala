@@ -35,6 +35,7 @@ trait TypedLiteralAliases {
   final def medium                                                          = Typed.medium
   final def none                                                            = Typed.none
   final def noRepeat                                                        = Typed.noRepeat
+  final def normal                                                          = Typed.normal
   final def outset                                                          = Typed.outset
   final def repeat                                                          = Typed.repeat
   final def ridge                                                           = Typed.ridge
@@ -362,7 +363,9 @@ object Literal extends TypedLiteralAliases {
   def zoomOut            : Value = "zoom-out"
 
   def xxSmall            : Value = "xx-small"
+  @deprecated("Use xSmall", "1.1.0")
   def sSmall             : Value = "s-small"
+  def xSmall             : Value = "x-small"
   def small              : Value = "small"
   def large              : Value = "large"
   def xLarge             : Value = "x-large"

@@ -35,8 +35,7 @@ object ComposeTest extends TestSuite {
         flat(a compose b))
     }
 
-    //def all = "Props" rename_: (appendTest & replaceTest)
-    def all = appendTest
+    def all = "Props" rename_: (appendTest & replaceTest)
   }
 
   val propTest =
@@ -46,7 +45,7 @@ object ComposeTest extends TestSuite {
     import scalacss.defaults.Exports._
     import scalacss.defaults.DefaultSettings.Dev._
     object SampleStyles extends StyleSheet.Inline {
-      override implicit val classNameHint = ClassNameHint("TEST")
+      override implicit val classNameHint: ClassNameHint = ClassNameHint("TEST")
       import dsl._
       val other = style(borderCollapse.collapse, &.hover(fontWeight._200), fontWeight._100)
       val outer = style(fontWeight.bold)
@@ -111,6 +110,89 @@ object ComposeTest extends TestSuite {
         test(style(marginLeft.`0`) compose style(margin.auto))(
           AV(marginLeft, "0"), AV(margin, "auto")
         )("{margin: auto} conflicts with {margin-left: 0}")
+
+      "logicalProps" - {
+        "blockSizeAndInlineSize" - {
+          test(style(blockSize(10.px), inlineSize(20.px)))(
+            AV(blockSize, "10px"), AV(inlineSize, "20px")
+          )()
+        }
+
+        "marginBlockAndInline" - {
+          test(style(marginBlockStart(10.px), marginBlockEnd(20.px)))(
+            AV(marginBlockStart, "10px"), AV(marginBlockEnd, "20px")
+          )()
+        }
+
+        "replaceMode" - {
+          implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+          val s = style(blockSize(10.px), inlineSize(20.px))
+          assertEq(s.data(Cond.empty).avIterator.toVector, Vector(AV(blockSize, "10px"), AV(inlineSize, "20px")))
+        }
+      }
+
+      "exactMatchConflict" - {
+        "safe" - {
+          val a = style(margin.auto, marginLeft.`0`)(Compose.trust)
+          val b = style(margin.auto)
+          test(a compose b)(
+            AV(margin, "auto"), AV(marginLeft, "0")
+          )("{margin: auto} conflicts with {margin-left: 0}")
+        }
+
+        "replace" - {
+          implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+          val a = style(margin.auto, marginLeft.`0`)(Compose.trust)
+          val b = style(margin.auto)
+          val res = a compose b
+          assertEq(res.data(Cond.empty).avIterator.toVector, Vector(AV(margin, "auto")))
+        }
+      }
+
+      "selfConflictInOperand" - {
+        "replace" - {
+          implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+          val a = style(color.red)
+          val b = style(margin.auto, marginLeft.`0`)(Compose.trust)
+          val res = a compose b
+          assertEq(res.data(Cond.empty).avIterator.toVector, Vector(AV(color, "red"), AV(margin, "auto"), AV(marginLeft, "0")))
+        }
+
+        "safe" - {
+          val a = style(color.red)
+          val b = style(margin.auto, marginLeft.`0`)(Compose.trust)
+          test(a compose b)(
+            AV(color, "red"), AV(margin, "auto"), AV(marginLeft, "0")
+          )()
+        }
+      }
+
+      "largeStyleOrder" - {
+        implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+        val a = style(color.red)
+        val b = style(
+          marginTop(1.px),
+          marginRight(2.px),
+          marginBottom(3.px),
+          marginLeft(4.px),
+          paddingTop(5.px),
+          paddingRight(6.px),
+        )
+        val res = a compose b
+        assertEq(
+          res.data(Cond.empty).order.iterator.map(_.id).toVector,
+          Vector("color", "margin-top", "margin-right", "margin-bottom", "margin-left", "padding-top", "padding-right")
+        )
+      }
+
+      "replaceLaw" - {
+        implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
+        val a = style(color.red)
+        val b = style(margin(10.px), marginLeft(20.px))(Compose.trust)
+        val flatB = flat(b).toSet
+        val flatAB = flat(a compose b).toSet
+        assert(flatB.subsetOf(flatAB))
+      }
 
     }
   }

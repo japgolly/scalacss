@@ -18,16 +18,6 @@ final case class ValueT[T <: ValueT.ValueClass](value: Value) {
 
 object ValueT {
 
-  // TODO ValueT.mkString won't handle strings with both ' and "
-  def mkString(s: String): Value =
-    if (s contains "'")
-      s""""$s""""
-    else
-      s"'$s'"
-
-  @inline def mkStrings(a: String, sep: String, b: String): Value =
-    mkString(a) + sep + mkString(b)
-
   /*
   sealed trait ValueT[T]
   def ValueT[T](v: Value) = v.asInstanceOf[ValueT[T]]
@@ -114,10 +104,10 @@ object ValueT {
     @inline implicit def ruleNumber_D : Number  <== Double         = Rule(_.toString)
     @inline implicit def ruleTime_FD  : Time    <== FiniteDuration =
       Rule(d => d.unit match {
-        case TimeUnit.MICROSECONDS
-           | TimeUnit.MILLISECONDS
-           | TimeUnit.NANOSECONDS => d.toMillis.toString + "ms"
-        case _                    => d.toSeconds.toString + "s"
+        case TimeUnit.NANOSECONDS  => (d.length / 1000000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.MICROSECONDS => (d.length / 1000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.MILLISECONDS => d.length.toString + "ms"
+        case _                     => d.toSeconds.toString + "s"
       })
 
     @inline implicit def ruleLenPct_L     : LenPct      <=< Len          = Rule.retype
@@ -142,7 +132,6 @@ object ValueT {
 
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
-    @inline implicit def ruleWidStyCol_P : WidStyCol  <=< Pct = Rule.retype
     @inline implicit def ruleLenPctNum_I : LenPctNum  <== Int = Rule(_.toString)
     @inline implicit def ruleLenPctNum_L : LenPctNum  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_P : LenPctNum  <=< Pct = Rule.retype
@@ -277,13 +266,14 @@ object ValueT {
   abstract class TypedAttr_Length extends TypedAttrT1[LenPct] with ZeroLit {
     override val attr = attr2(CanIUse2.intrinsicWidthTransforms)
     protected def attr2: Transform => Attr
-    final def auto       = avl(LT.auto)
-    final def available  = av(L.available)
-    final def borderBox  = av(L.borderBox)
-    final def contentBox = av(L.contentBox)
-    final def fitContent = av(L.fitContent)
-    final def maxContent = av(L.maxContent)
-    final def minContent = av(L.minContent)
+    final def auto          = avl(LT.auto)
+    final def available     = av(L.available)
+    final def fillAvailable = av(L.fillAvailable)
+    final def borderBox     = av(L.borderBox)
+    final def contentBox    = av(L.contentBox)
+    final def fitContent    = av(L.fitContent)
+    final def maxContent    = av(L.maxContent)
+    final def minContent    = av(L.minContent)
   }
 
   abstract class TypedAttr_MaxLength extends TypedAttrT1[LenPct] with ZeroLit {

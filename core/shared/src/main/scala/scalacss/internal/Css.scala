@@ -36,8 +36,13 @@ object Css {
   def mediaQuery(c: Cond): CssMediaQueryO =
     NonEmptyVector.option(c.mediaQueries) map Media.css
 
-  def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes =
-    CssEntry.Keyframes(kfs.name, ListMap(kfs.frames.map(s => (s._1, styleA(s._2))):_*))
+  def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes = {
+    val frames = kfs.frames.foldLeft(ListMap.empty[KeyframeSelector, StyleStream]) { case (acc, (ks, sa)) =>
+      val cur = acc.getOrElse(ks, Vector.empty)
+      acc.updated(ks, cur ++ styleA(sa))
+    }
+    CssEntry.Keyframes(kfs.name, frames)
+  }
 
   def fontFaces(ff: FontFace[String]): CssEntry.FontFace =
     CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
@@ -47,7 +52,7 @@ object Css {
 
   def style(sel: CssSelector, s: StyleS)(implicit env: Env): StyleStream = {
     def main: Iterator[CssEntry.Style] =
-      s.data.iterator.flatMap {
+      s.dataSorted.iterator.flatMap {
         case (cond, avs) =>
           val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
           NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>

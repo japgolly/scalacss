@@ -1,5 +1,5 @@
 #!/bin/bash
-cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
+cd "$(dirname "$0")/.." || exit 1
 
 echo "Downloading licence..."
 curl -s https://raw.githubusercontent.com/bestiejs/platform.js/master/LICENSE -o LICENSE-platform.js.txt

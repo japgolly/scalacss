@@ -1,9 +1,10 @@
 package scalacss.internal
 
-import scala.annotation.nowarn
+import japgolly.microlibs.testutil.TestUtil._
 import scala.concurrent.duration._
 import scalacss.internal.ValueT.Rules._
 import scalacss.internal.ValueT._
+import sourcecode.Line
 import utest._
 
 object ValueTTest extends TestSuite {
@@ -17,7 +18,6 @@ object ValueTTest extends TestSuite {
   override def tests = Tests {
 
     "valueClasses" - {
-      @nowarn("cat=unused")
       def test[C <: ValueClass](v: ValueT[C]): Unit = ()
 //      def test[C <: ValueClass] = new {
 //        def apply[A](v: A)(implicit ev: A => ValueT[C]): Unit = ()
@@ -178,7 +178,7 @@ object ValueTTest extends TestSuite {
         compileError("test[WidStyCol](1)")
         compileError("test[WidStyCol](1.5)")
                       test[WidStyCol](len)
-                      test[WidStyCol](%%)
+        compileError("test[WidStyCol](%%)")
                       test[WidStyCol](Literal.Typed.thick)
                       test[WidStyCol](Literal.Typed.dashed)
                       test[WidStyCol](Color.black)
@@ -205,6 +205,17 @@ object ValueTTest extends TestSuite {
         ()
       }
 
+    }
+
+    "timeValues" - {
+      def test(d: FiniteDuration, expected: String)(implicit q: Line): Unit =
+        assertEq((d: ValueT[Time]).value, expected)
+
+      "nanos"   - test(500000.nanos,  "0.5ms")
+      "micros"  - test(500.micros,    "0.5ms")
+      "millis"  - test(250.millis,    "250ms")
+      "seconds" - test(3.seconds,     "3s")
+      "minutes" - test(2.minutes,     "120s")
     }
   }
 }

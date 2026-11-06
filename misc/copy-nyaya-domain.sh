@@ -1,5 +1,5 @@
 #!/bin/bash
-cd "$(dirname "$(readlink -e "$0")")/.." || exit 1
+cd "$(dirname "$0")/.." || exit 1
 
 src=../nyaya/nyaya-test/src/main/scala/japgolly/nyaya/test/Domain.scala
 tgt=core/src/main/scala/scalacss/Domain.scala

@@ -20,7 +20,7 @@ object DslBase {
   }
 
   final class DslInt(private val self: Int) extends AnyVal {
-    def :/:(y: Int) = Ratio(self, y)
+    def :/:(y: Int) = Ratio(y, self)
   }
 
   final class DslNum[N](private val self: N) extends AnyVal {
@@ -202,15 +202,24 @@ abstract class DslBase
           implicit final def ToStyleUnsafeExt (x: UnsafeExt)                      : ToStyle = ToStyleUnsafeExts(Vector1(x))
           implicit final def ToStyleUnsafeExts(x: UnsafeExts)                     : ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS    (x: StyleS)                         : ToStyle = new ToStyle(x)
-          implicit final def ToStyleStyleA    (x: StyleA)                         : ToStyle = new ToStyle(x.style)
+          implicit final def ToStyleStyleA    (x: StyleA)                         : ToStyle =
+            new ToStyle(
+              if (x.style.data.isEmpty && x.style.unsafeExts.isEmpty && !x.style.addClassNames.contains(x.className))
+                x.style.copy(addClassNames = x.className +: x.style.addClassNames)
+              else
+                x.style
+            )
 
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 
   def addClassName(cn: String): StyleS =
-    StyleS.empty.copy(addClassNames = Vector1(ClassName(cn)))
+    _addClassNames(ClassName.parse(cn).toVector)
 
   def addClassNames(cn: String*): StyleS =
-    StyleS.empty.copy(addClassNames = cn.foldLeft(Vector.empty[ClassName])(_ :+ ClassName(_)))
+    _addClassNames(cn.iterator.flatMap(ClassName.parse).toVector)
+
+  private def _addClassNames(cns: Vector[ClassName]): StyleS =
+    StyleS.empty.copy(addClassNames = cns)
 
   def media = MediaQueryEmpty
 
@@ -244,6 +253,9 @@ object DslMacros {
   trait MStyleF2 {
     protected def create[I: StyleLookup](manualName: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String): I => StyleA
 
+    final def apply[I: StyleLookup](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
+      create(None, d, f, classNameSuffix)
+
     final def bool(f: Boolean => StyleS): Boolean => StyleA =
       create(None, Domain.boolean, f, defaultStyleFClassNameSuffixB)
 
@@ -259,9 +271,6 @@ object DslMacros {
         override protected def create[I: StyleLookup](u: Option[String], d: Domain[I], f: I => StyleS, classNameSuffix: (I, Int) => String) =
           MStyleF.this.create(Some(name), d, f, classNameSuffix)
       }
-
-    final def apply[I: StyleLookup](d: Domain[I])(f: I => StyleS, classNameSuffix: (I, Int) => String = defaultStyleFClassNameSuffix): I => StyleA =
-      create(None, d, f, classNameSuffix)
   }
 
   trait MKeyframes {

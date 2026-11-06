@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import scalacss.js.PlatformJsEnv
+
 // ================
 // ====        ====
 // ====   JS   ====
@@ -9,5 +11,5 @@ package scalacss.internal
 object Platform {
 
   implicit def env: Env =
-    Env.empty
+    PlatformJsEnv.value getOrElse Env.empty
 }

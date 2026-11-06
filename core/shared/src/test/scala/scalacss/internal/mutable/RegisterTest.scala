@@ -1,7 +1,6 @@
 package scalacss.internal.mutable
 
 import japgolly.microlibs.testutil.TestUtil._
-import scala.collection.immutable.SortedMap
 import scalacss.internal._
 import utest._
 
@@ -10,7 +9,7 @@ object RegisterTest extends TestSuite {
   import Register._
 
   def styleS(av: AV, avs: AV*) =
-    StyleS.data(SortedMap(Cond.empty -> AVs(av, avs: _*)))
+    StyleS.data(Map(Cond.empty -> AVs(av, avs: _*)))
 
   val ss1 = styleS(AV(marginTop, "1px"))
   val ss2 = styleS(AV(marginBottom, "2px"))
@@ -66,6 +65,116 @@ object RegisterTest extends TestSuite {
       assertEq(css.size, 2 + 4)
       test(fb, Domain.boolean.iterator.toList)
       test(fi, sfid.iterator.toList)
+    }
+
+    "addClassNames" - {
+      "underlyingStyle" - {
+        "multi" - {
+          val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          implicit def cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
+          assertEq(a.style.addClassNames.map(_.value), Vector("btn", "btn-default"))
+        }
+
+        "single" - {
+          val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          implicit def cnh: ClassNameHint = ClassNameHint("blah")
+          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn")))
+          assertEq(a.style.addClassNames.map(_.value), Vector("btn"))
+        }
+      }
+
+      "noDuplicateWarning" - {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
+        implicit def cnh: ClassNameHint = ClassNameHint("blah")
+        val s1 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
+        val s2 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-primary")))
+        val a1 = reg registerS s1
+        val a2 = reg registerS s2
+        assertEq(a1.htmlClass, "btn btn-default")
+        assertEq(a2.htmlClass, "btn btn-primary")
+        assertEq(warnings, Vector.empty)
+      }
+    }
+
+    "warnings" - {
+      import Dsl._
+      implicit def composition: Compose = Compose.safe
+      implicit def cnh: ClassNameHint = ClassNameHint("blah")
+
+      def newTestReg(): (Register, () => Vector[(ClassName, Warning)]) = {
+        var warnings = Vector.empty[(ClassName, Warning)]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((cn, w) => warnings :+= ((cn, w)))
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
+        (reg, () => warnings)
+      }
+
+      "unsafeChild" - {
+        val (reg, getWarns) = newTestReg()
+        val s = Dsl.style(
+          unsafeChild("span")(
+            color.red,
+            color.blue
+          )
+        )
+        reg.registerS(s)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "unsafeRoot" - {
+        val (reg, getWarns) = newTestReg()
+        val s = Dsl.style(
+          unsafeRoot("span")(
+            color.red,
+            color.blue
+          )
+        )
+        reg.registerS(s)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "keyframes" - {
+        val (reg, getWarns) = newTestReg()
+        val kfStyle = Dsl.style(color.red, color.blue)
+        val kf = Keyframes(ClassName("myAnim"), Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, kfStyle))))
+        reg.registerKeyframes(kf)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "standalone" - {
+        val (reg, getWarns) = newTestReg()
+        implicit val r: Register = reg
+        class MySS extends StyleSheet.Standalone {
+          import dsl._
+          RootStringOps("div").-(
+            color.red,
+            color.blue
+          )
+        }
+        new MySS
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("color")))
+      }
+
+      "fontFacePostRender" - {
+        val (reg, getWarns) = newTestReg()
+        val _ = reg.fontFaces
+        val ff = FontFace[Option[String]](Some("myFont"), NonEmptyVector("url(font.woff)"))
+        reg.registerFontFace(ff)
+        val warns = getWarns()
+        assert(warns.exists(_._2.msg.contains("after stylesheet has been rendered")))
+      }
     }
 
   }
