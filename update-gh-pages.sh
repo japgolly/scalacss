@@ -5,7 +5,7 @@ cd "$(dirname "$0")" || exit 1
 #tmp=/tmp/$(date +%Y%m%d-%H%M%S)-$$
 
 git pull \
-  && git merge master \
+  && git merge main \
   && bin/gitbook build doc book \
   && git add -A book \
   && git st \
