@@ -1,5 +1,5 @@
-var baseCastFunction = require('./_baseCastFunction'),
-    baseTimes = require('./_baseTimes'),
+var baseTimes = require('./_baseTimes'),
+    castFunction = require('./_castFunction'),
     toInteger = require('./toInteger');
 
 /** Used as references for various `Number` constants. */
@@ -16,6 +16,7 @@ var nativeMin = Math.min;
  * each invocation. The iteratee is invoked with one argument; (index).
  *
  * @static
+ * @since 0.1.0
  * @memberOf _
  * @category Util
  * @param {number} n The number of times to invoke `iteratee`.
@@ -26,8 +27,8 @@ var nativeMin = Math.min;
  * _.times(3, String);
  * // => ['0', '1', '2']
  *
- *  _.times(4, _.constant(true));
- * // => [true, true, true, true]
+ *  _.times(4, _.constant(0));
+ * // => [0, 0, 0, 0]
  */
 function times(n, iteratee) {
   n = toInteger(n);
@@ -37,7 +38,7 @@ function times(n, iteratee) {
   var index = MAX_ARRAY_LENGTH,
       length = nativeMin(n, MAX_ARRAY_LENGTH);
 
-  iteratee = baseCastFunction(iteratee);
+  iteratee = castFunction(iteratee);
   n -= MAX_ARRAY_LENGTH;
 
   var result = baseTimes(length, iteratee);

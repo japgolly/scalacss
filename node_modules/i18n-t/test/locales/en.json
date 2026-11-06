@@ -1,0 +1,5 @@
+{
+    "HELLO": "Hello {{name}}",
+    "WORLD": "World",
+    "CATS": "{{0}} cats"
+}

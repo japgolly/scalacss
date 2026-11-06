@@ -1,0 +1,12 @@
+Usage: cpr <source> <destination> [options]
+
+  Copies files from one directory to another.
+
+Options:
+  
+  -d, --delete-first              Delete the destination directory before copying.
+  -f <regex>, --filter <regex>    Filter out any items that match `<regex>`, a case-insensitive regex pattern.
+  -h, --help                      Display this usage info.
+  -o, --overwrite                 Overwrite the destination exists if it exists.
+  -v, --version                   Display the cpr version.
+

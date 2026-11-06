@@ -1,27 +1,44 @@
 {
   "name": "mkdirp",
   "description": "Recursively mkdir, like `mkdir -p`",
-  "version": "0.5.1",
-  "author": "James Halliday <mail@substack.net> (http://substack.net)",
+  "version": "1.0.4",
   "main": "index.js",
   "keywords": [
     "mkdir",
-    "directory"
+    "directory",
+    "make dir",
+    "make",
+    "dir",
+    "recursive",
+    "native"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/substack/node-mkdirp.git"
+    "url": "https://github.com/isaacs/node-mkdirp.git"
   },
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tap",
+    "snap": "tap",
+    "preversion": "npm test",
+    "postversion": "npm publish",
+    "postpublish": "git push origin --follow-tags"
   },
-  "dependencies": {
-    "minimist": "0.0.8"
+  "tap": {
+    "check-coverage": true,
+    "coverage-map": "map.js"
   },
   "devDependencies": {
-    "tap": "1",
-    "mock-fs": "2 >=2.7.0"
+    "require-inject": "^1.4.4",
+    "tap": "^14.10.7"
   },
   "bin": "bin/cmd.js",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "index.js"
+  ]
 }

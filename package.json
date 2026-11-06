@@ -2,6 +2,6 @@
   "name": "ScalaCSS",
   "private": true,
   "devDependencies": {
-    "gitbook-cli": "^2.3.0"
+    "honkit": "^6.2.5"
   }
 }

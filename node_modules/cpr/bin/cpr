@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+var cpr = require('../lib');
+var fs = require('fs');
+var minimist = require('minimist');
+
+var argv = minimist(process.argv.slice(2), {
+    alias: { d:'delete-first', f:'filter', h:'help', o:'overwrite', v:'version' }
+});
+
+if (argv.v) {
+    console.log(require('../package.json').version);
+    return;
+}
+
+if (argv.h) {
+    fs.createReadStream(__dirname + '/usage.txt').pipe(process.stdout);
+    return;
+}
+
+var filter;
+
+if (argv.f) {
+    filter = new RegExp(argv.f, 'i');
+}
+
+cpr(argv._[0], argv._[1], {
+    deleteFirst: argv.d,
+    filter: filter,
+    overwrite: argv.o
+}, function (err) {
+    if (err) {
+        console.error('Error: ' + err.message);
+        process.exit(1);
+    }
+});

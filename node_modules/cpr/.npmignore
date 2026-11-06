@@ -1,0 +1,15 @@
+**/node_modules/
+**/npm-debug.log
+node_modules/
+coverage/
+artifacts/
+tmp/
+CVS/
+.DS_Store
+.*.swp
+.svn
+*~
+.com.apple.timemachine.supported
+tests/out/
+.nyc_output
+package-lock.json

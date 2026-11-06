@@ -1,0 +1,35 @@
+{
+  "author": "Tom de Grunt <tom@degrunt.nl>",
+  "name": "jsonschema",
+  "version": "1.1.0",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "contributors": [
+    { "name" : "Austin Wright" }
+  ],
+  "main": "./lib",
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "chai": "~1.5.0"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "keywords": [
+    "json",
+    "schema",
+    "jsonschema",
+    "validator",
+    "validation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tdegrunt/jsonschema.git"
+  },
+  "description": "A fast and easy to use JSON Schema validator",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec"
+  }
+}

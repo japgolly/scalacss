@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+'use strict'
+
+process.title = 'asciidoctor'
+const { Options, Invoker } = require('../lib/cli.js')
+
+const options = new Options().parse(process.argv)
+new Invoker(options).invoke()

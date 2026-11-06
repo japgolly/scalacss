@@ -1,0 +1,54 @@
+{
+  "name": "omit-keys",
+  "description": "Return a copy of an object without the given keys.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/omit-keys",
+  "author": {
+    "name": "Jon Schlinkert",
+    "url": "https://github.com/jonschlinkert"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonschlinkert/omit-keys.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/omit-keys/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonschlinkert/omit-keys/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "devDependencies": {
+    "verb-tag-jscomments": ">= 0.2.0",
+    "verb": ">= 0.2.6",
+    "mocha": "*"
+  },
+  "keywords": [
+    "JavaScript",
+    "Lo-Dash",
+    "Underscore",
+    "js",
+    "key",
+    "lodash",
+    "object",
+    "omit",
+    "property",
+    "remove",
+    "util",
+    "utilities",
+    "utils"
+  ],
+  "dependencies": {
+    "array-difference": "0.0.1",
+    "isobject": "^0.2.0"
+  }
+}
