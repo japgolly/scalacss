@@ -109,7 +109,7 @@ lazy val js = project
   .settings(
     scalaJSStage := jsStage,
     libraryDependencies ++= {
-      val ver = version.value.stripSuffix("-SNAPSHOT") + "-SNAPSHOT"
+      val ver = version.value
       Seq(
         "com.github.japgolly.scalacss" %%% "core" % ver,
         Dep.microlibsCompileTime.value % Test,
