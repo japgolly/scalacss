@@ -54,8 +54,11 @@ final case class StyleS(data         : Map[Cond, AVs],
                         addClassNames: Vector[ClassName],
                         warnings     : Vector[Warning]) extends Style1 {
 
-  def dataSorted: Vector[(Cond, AVs)] =
-    data.toVector.sortBy(_._1)
+  def dataSorted: Vector[(Cond, AVs)] = {
+    val a = data.toArray
+    scala.util.Sorting.quickSort(a)(Ordering.by(_._1))
+    Vector.from(a)
+  }
 
   def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
   def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
