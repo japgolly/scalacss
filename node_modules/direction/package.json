@@ -1,0 +1,45 @@
+{
+  "name": "direction",
+  "version": "0.1.5",
+  "description": "Detect directionality: left-to-right, right-to-left, or neutral",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "system",
+    "direction",
+    "directionality",
+    "rtl",
+    "ltr",
+    "cli",
+    "bin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/direction.git"
+  },
+  "author": "Titus Wormer <tituswormer@gmail.com>",
+  "bin": {
+    "direction": "cli.js"
+  },
+  "devDependencies": {
+    "eslint": "^0.10.0",
+    "istanbul": "^0.3.0",
+    "jscs": "^1.0.0",
+    "jscs-jsdoc": "^0.3.2",
+    "mocha": "^2.0.0"
+  },
+  "scripts": {
+    "test-lib": "_mocha --check-leaks test.js",
+    "test-cli": "bash ./test.sh",
+    "test-coveralls": "istanbul cover _mocha --report lcovonly -- --check-leaks test.js",
+    "test-travis": "npm run test-cli && npm run test-coveralls",
+    "test": "npm run test-lib && npm run test-cli",
+    "coverage": "istanbul cover _mocha -- -- test.js",
+    "lint-api": "eslint index.js",
+    "lint-cli": "eslint cli.js",
+    "lint-test": "eslint --env mocha test.js",
+    "lint-style": "jscs --reporter inline index.js cli.js test.js",
+    "lint": "npm run lint-api && npm run lint-cli && npm run lint-test && npm run lint-style",
+    "make": "npm run lint && npm run coverage"
+  }
+}

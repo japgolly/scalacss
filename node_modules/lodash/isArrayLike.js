@@ -1,5 +1,4 @@
-var getLength = require('./_getLength'),
-    isFunction = require('./isFunction'),
+var isFunction = require('./isFunction'),
     isLength = require('./isLength');
 
 /**
@@ -9,6 +8,7 @@ var getLength = require('./_getLength'),
  *
  * @static
  * @memberOf _
+ * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -27,8 +27,7 @@ var getLength = require('./_getLength'),
  * // => false
  */
 function isArrayLike(value) {
-  return value != null &&
-    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+  return value != null && isLength(value.length) && !isFunction(value);
 }
 
 module.exports = isArrayLike;

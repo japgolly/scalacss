@@ -1,0 +1,10 @@
+{
+  "name": "kramed",
+  "version": "0.4.6",
+  "repo": "GitbookIO/kramed",
+  "description": "A markdown (kramdown compatible) parser and compiler. Built for speed.",
+  "keywords": ["markdown", "markup", "html"],
+  "scripts": ["lib/kramed.js"],
+  "main": "lib/kramed.js",
+  "license": "MIT"
+}

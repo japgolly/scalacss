@@ -1,0 +1,66 @@
+{
+  "name": "cpr",
+  "description": "cp -R",
+  "author": "Dav Glass <davglass@gmail.com>",
+  "version": "3.0.1",
+  "dependencies": {
+    "graceful-fs": "^4.1.5",
+    "minimist": "^1.2.0",
+    "mkdirp": "~0.5.1",
+    "rimraf": "^2.5.4"
+  },
+  "main": "./lib/index.js",
+  "typings": "./cpr.d.ts",
+  "bin": "./bin/cpr",
+  "devDependencies": {
+    "github-changes": "^1.0.4",
+    "jenkins-mocha": "^4.0.0",
+    "jshint": "^2.9.2",
+    "nyc": "^11.0.2",
+    "yui-lint": "~0.2.0"
+  },
+  "contributors": [
+    "soyuka <soyuka@gmail.com>",
+    "fresheneesz <bitetrudpublic@gmail.com>",
+    "silverwind <me@silverwind.io>",
+    "Peter deHaan <peter@deseloper.com>",
+    "André Cruz <andremiguelcruz@msn.com>",
+    "Brian J Brennan <brianloveswords@gmail.com>",
+    "Elijah Insua <tmpvar@gmail.com>",
+    "Jonny Reeves <github@jonnyreeves.co.uk>",
+    "Lydie Danet <lydie@happinov.fr>",
+    "Ben Elliott <ben.elliott@gsacapital.com>"
+  ],
+  "keywords": [
+    "copy",
+    "recursive",
+    "cp -r",
+    "cp"
+  ],
+  "scripts": {
+    "pretest": "jshint --config ./node_modules/yui-lint/jshint.json ./lib/",
+    "windows-test": "jenkins-mocha ./tests/full.js",
+    "test": "jenkins-mocha ./tests/full.js",
+    "posttest": "nyc report",
+    "changes": "github-changes -o davglass -r cpr"
+  },
+  "nyc": {
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 90,
+    "check-coverage": true,
+    "reporter": [
+      "text",
+      "text-summary"
+    ]
+  },
+  "bugs": {
+    "url": "http://github.com/davglass/cpr/issues"
+  },
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/davglass/cpr.git"
+  }
+}

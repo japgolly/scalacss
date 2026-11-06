@@ -1,0 +1,66 @@
+{
+  "name": "@asciidoctor/cli",
+  "version": "3.5.0",
+  "description": "The Command Line Interface (CLI) for Asciidoctor.js",
+  "main": "lib/cli.js",
+  "engines": {
+    "node": ">=8.11",
+    "npm": ">=5.0.0"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "data"
+  ],
+  "bin": {
+    "asciidoctor": "bin/asciidoctor",
+    "asciidoctorjs": "bin/asciidoctor"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "./bin/asciidoctor --version && mocha",
+    "lint": "standard bin/* lib/*.js test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asciidoctor/asciidoctor-cli.js.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "asciidoc",
+    "asciidoctor",
+    "asciidoctor-cli",
+    "opal",
+    "javascript",
+    "library"
+  ],
+  "authors": [
+    "Dan Allen (https://github.com/mojavelinux)",
+    "Guillaume Grossetie (https://github.com/mogztter)",
+    "Anthonny Quérouil (https://github.com/anthonny)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/asciidoctor/asciidoctor-cli.js/issues"
+  },
+  "homepage": "https://github.com/asciidoctor/asciidoctor-cli.js",
+  "dependencies": {
+    "yargs": "16.2.0"
+  },
+  "devDependencies": {
+    "@asciidoctor/core": "^2.0.0-rc.1",
+    "chai": "^4.2.0",
+    "dirty-chai": "^2.0.1",
+    "mocha": "8.4.0",
+    "sinon": "^10.0.0",
+    "standard": "16.0.3"
+  },
+  "peerDependencies": {
+    "@asciidoctor/core": "^2.0.0-rc.1"
+  },
+  "standard": {
+    "env": "mocha"
+  }
+}

@@ -1,1 +1,1 @@
-module.exports = require('../conforms');
+module.exports = require('./conformsTo');
