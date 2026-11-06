@@ -1,6 +1,11 @@
-#!/bin/bash
-cd "$(dirname "$0")/.." || exit 1
-[ -e ~/.bash_profile ] && source ~/.bash_profile # for NVM
-[ -e /usr/share/nvm/init-nvm.sh ] && source /usr/share/nvm/init-nvm.sh
-nvm use --delete-prefix 6 --silent
-nvm exec 6 ./node_modules/.bin/gitbook "$@"
+#!/usr/bin/env bash
+set -e
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# If building, convert relative output dir to an absolute path so HonKit doesn't output inside the input dir
+if [ "$1" = "build" ] && [ -n "$3" ] && [[ "$3" != /* ]]; then
+  set -- "$1" "$2" "$PWD/$3" "${@:4}"
+fi
+
+exec "$ROOT/node_modules/.bin/honkit" "$@"
+

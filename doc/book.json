@@ -1,5 +1,8 @@
 {
-  "gitbook": "2.1.0",
+  "title": "ScalaCSS",
+  "styles": {
+    "website": "styles/website.css"
+  },
   "variables": {
     "issue": "https://github.com/japgolly/scalacss/issues/",
     "scalajsReact": "[scalajs-react](https://github.com/japgolly/scalajs-react)",
