@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import japgolly.univeq._
 import scala.annotation.tailrec
 

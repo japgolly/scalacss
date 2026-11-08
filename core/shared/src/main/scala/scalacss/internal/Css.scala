@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import scala.collection.immutable.ListMap
 
 object Css {

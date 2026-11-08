@@ -81,6 +81,7 @@ object ScalaCssBuild {
       utestSettings)
     .settings(
       libraryDependencies ++= Seq(
+        Dep.microlibsNonEmpty.value,
         Dep.univEq.value,
         Dep.nyayaGen.value % Test,
         Dep.nyayaProp.value % Test,

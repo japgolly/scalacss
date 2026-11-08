@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import scalacss.internal.Literal.{Typed => LT}
 import scalacss.internal.ValueT._
 import scalacss.internal.{Literal => L}

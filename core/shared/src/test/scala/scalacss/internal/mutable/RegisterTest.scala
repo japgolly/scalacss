@@ -1,5 +1,6 @@
 package scalacss.internal.mutable
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import japgolly.microlibs.testutil.TestUtil._
 import scalacss.internal._
 import utest._

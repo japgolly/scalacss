@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import japgolly.univeq._
 
 /**
@@ -28,7 +29,7 @@ final case class Compose(rules: Compose.Rules) {
       // Different values or overlapping attributes (eg. margin vs margin-left) are conflicts.
       def isConflict(a: Attr, nvs: NonEmptyVector[Value])(k: Attr, kvs: NonEmptyVector[Value]): Boolean =
         if (k ==* a)
-          !nvs.whole.forall(kvs.toSet.contains)
+          !nvs.whole.forall(kvs.whole.toSet.contains)
         else
           a.cmp(k).conflict
 
@@ -41,7 +42,7 @@ final case class Compose(rules: Compose.Rules) {
               case None =>
                 results.addAll(a, nvs)
               case Some(ovs) =>
-                val newVals = nvs.whole.filterNot(ovs.toSet.contains)
+                val newVals = nvs.whole.filterNot(ovs.whole.toSet.contains)
                 NonEmptyVector.maybe(newVals, results)(results.addAll(a, _))
             }
 

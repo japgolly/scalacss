@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import cats.data.NonEmptyList
+import japgolly.microlibs.nonempty.NonEmptyVector
 import nyaya.gen._
 import nyaya.util._
 import scalacss.internal.Style.{UnsafeExt, UnsafeExts}

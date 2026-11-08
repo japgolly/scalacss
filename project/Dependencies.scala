@@ -9,6 +9,7 @@ object Dependencies {
   object Ver {
 
     // Exported
+    val microlibs       = "4.3.0"
     val scala2          = "2.13.18"
     val scala3          = "3.3.9"
     val scalaJsDom      = "2.8.1"
@@ -18,7 +19,6 @@ object Dependencies {
 
     // Internal
     val cats            = "2.13.0"
-    val microlibs       = "4.3.0"
     val nyaya           = "1.2.0"
     val reactJs         = "17.0.2"
     val utest           = "0.8.4"
@@ -27,6 +27,7 @@ object Dependencies {
   object Dep {
     val cats                 = Def.setting("org.typelevel"                     %%% "cats-core"               % Ver.cats)
     val microlibsCompileTime = Def.setting("com.github.japgolly.microlibs"     %%% "compile-time"            % Ver.microlibs)
+    val microlibsNonEmpty    = Def.setting("com.github.japgolly.microlibs"     %%% "nonempty"                % Ver.microlibs)
     val microlibsTestUtil    = Def.setting("com.github.japgolly.microlibs"     %%% "test-util"               % Ver.microlibs)
     val nyayaGen             = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-gen"               % Ver.nyaya)
     val nyayaProp            = Def.setting("com.github.japgolly.nyaya"         %%% "nyaya-prop"              % Ver.nyaya)

@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
+
 /**
  * Render [[Css]], an internal representation of CSS, into a different format; usually real CSS text.
  */

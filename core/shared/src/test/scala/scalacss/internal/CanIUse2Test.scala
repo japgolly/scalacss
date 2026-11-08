@@ -1,5 +1,6 @@
 package scalacss.internal
 
+import japgolly.microlibs.nonempty.NonEmptyVector
 import japgolly.microlibs.testutil.TestUtil._
 import scala.collection.immutable.SortedSet
 import scalacss.internal.CanIUse.{Agent, Prefix}
