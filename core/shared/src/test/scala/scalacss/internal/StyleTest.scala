@@ -12,8 +12,8 @@ object StyleTest extends TestSuite {
       "addOperator" - {
         import Dsl._
 
-        val s1 = StyleA(ClassName("s1"), Vector("c1", "c2", "c3").map(ClassName.apply), style(backgroundColor.blue))
-        val s2 = StyleA(ClassName("s2"), Vector("c4", "c5").map(ClassName.apply), style(color.red))
+        val s1 = StyleA(ClassName("s1"), ArraySeq("c1", "c2", "c3").map(ClassName.apply), style(backgroundColor.blue))
+        val s2 = StyleA(ClassName("s2"), ArraySeq("c4", "c5").map(ClassName.apply), style(color.red))
 
         val r1 = s1 + s2
         assertEq(r1.className, s1.className)
@@ -44,7 +44,7 @@ object StyleTest extends TestSuite {
           implicit val cnh: ClassNameHint = ClassNameHint("blah")
           val a = reg registerS addClassNames("btn", "btn-default")
           val composed = Dsl.style(a, color.red)
-          assertEq(composed.addClassNames.map(_.value), Vector("btn", "btn-default"))
+          assertEq(composed.addClassNames.map(_.value), ArraySeq("btn", "btn-default"))
         }
 
         "singleClass" - {
@@ -52,7 +52,7 @@ object StyleTest extends TestSuite {
           implicit val cnh: ClassNameHint = ClassNameHint("blah")
           val a = reg registerS addClassName("btn")
           val composed = Dsl.style(a, color.red)
-          assertEq(composed.addClassNames.map(_.value), Vector("btn"))
+          assertEq(composed.addClassNames.map(_.value), ArraySeq("btn"))
         }
       }
     }

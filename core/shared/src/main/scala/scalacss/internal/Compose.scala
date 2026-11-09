@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq._
 
 /**
@@ -14,7 +14,7 @@ final case class Compose(rules: Compose.Rules) {
   def apply(a: StyleS, b: StyleS): StyleS = {
     var warnings = a.warnings ++ b.warnings
 
-    def absorbWarning[A](c: Cond, t: (A, Vector[WarningMsg])): A = {
+    def absorbWarning[A](c: Cond, t: (A, ArraySeq[WarningMsg])): A = {
       t._2.foreach { w => warnings :+= Warning(c, w) }
       t._1
     }
@@ -27,7 +27,7 @@ final case class Compose(rules: Compose.Rules) {
 
       // Same attribute with identical values is an exact match (not a conflict).
       // Different values or overlapping attributes (eg. margin vs margin-left) are conflicts.
-      def isConflict(a: Attr, nvs: NonEmptyVector[Value])(k: Attr, kvs: NonEmptyVector[Value]): Boolean =
+      def isConflict(a: Attr, nvs: NonEmptyArraySeq[Value])(k: Attr, kvs: NonEmptyArraySeq[Value]): Boolean =
         if (k ==* a)
           !nvs.whole.forall(kvs.whole.toSet.contains)
         else
@@ -43,7 +43,7 @@ final case class Compose(rules: Compose.Rules) {
                 results.addAll(a, nvs)
               case Some(ovs) =>
                 val newVals = nvs.whole.filterNot(ovs.whole.toSet.contains)
-                NonEmptyVector.maybe(newVals, results)(results.addAll(a, _))
+                NonEmptyArraySeq.maybe(newVals, results)(results.addAll(a, _))
             }
 
           case Some(conflicts) =>
@@ -108,16 +108,16 @@ object Compose {
     new Compose(Rules(Rules.append, Rules.silent))
 
   trait Rules {
-    def mergeAVs(lo: AVs, hi: AVs): (AVs, Vector[WarningMsg])
+    def mergeAVs(lo: AVs, hi: AVs): (AVs, ArraySeq[WarningMsg])
   }
 
   object Rules {
     type MergeRule = (AVs, AVs) => AVs
-    type WarnRule  = (AVs, AVs) => Vector[WarningMsg]
+    type WarnRule  = (AVs, AVs) => ArraySeq[WarningMsg]
 
     def apply(m: MergeRule, w: WarnRule): Rules =
       new Rules {
-        override def mergeAVs(lo: AVs, hi: AVs): (AVs, Vector[WarningMsg]) =
+        override def mergeAVs(lo: AVs, hi: AVs): (AVs, ArraySeq[WarningMsg]) =
           (m(lo, hi), w(lo, hi))
       }
 
@@ -128,16 +128,16 @@ object Compose {
       (_, hi) => hi
 
     def silent: WarnRule =
-      (_, _) => Vector.empty
+      (_, _) => ArraySeq.empty
 
     def warn: WarnRule =
       (lo, hi) => {
         def showA(a: Attr): String = a.id
-        def showV(vs: NonEmptyVector[Value]): String =
+        def showV(vs: NonEmptyArraySeq[Value]): String =
           if (vs.tail.isEmpty) vs.head else vs.whole.mkString("[", "; ", "]")
-        def showAVt(t: (Attr, NonEmptyVector[Value])) =
+        def showAVt(t: (Attr, NonEmptyArraySeq[Value])) =
           showAV(t._1, t._2)
-        def showAV(a: Attr, vs: NonEmptyVector[Value]): String =
+        def showAV(a: Attr, vs: NonEmptyArraySeq[Value]): String =
 //          s"(${showA(a)}: ${showV(vs)})"
           s"${showA(a)}: ${showV(vs)}"
         def showAVs(avs: AVs): String = {
@@ -147,7 +147,7 @@ object Compose {
         }
         hi.iterator
           .map(t => s"{${showAVt(t)}} conflicts with ${showAVs(lo)}")
-          .toVector
+          .to(ArraySeq)
       }
   }
 }

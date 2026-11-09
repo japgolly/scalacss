@@ -1,14 +1,14 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq._
 
 /**
  * Condition under which CSS is applicable.
  */
-final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query]) extends Pseudo.ChainOps[Cond] {
+final case class Cond(pseudo: Option[Pseudo], mediaQueries: ArraySeq[Media.Query]) extends Pseudo.ChainOps[Cond] {
   override def toString =
-    NonEmptyVector.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
+    NonEmptyArraySeq.option(mediaQueries).map(Media.css).fold("")(_ + " ") +
     Css.selector("", this)
 
   protected def addPseudo(p: Pseudo): Cond =
@@ -19,7 +19,7 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
 
   def &(q: Media.Query): Cond =
     if (mediaQueries.isEmpty)
-      copy(mediaQueries = Vector1(q))
+      copy(mediaQueries = ArraySeq1(q))
     else
       copy(mediaQueries = mediaQueries.map(_ and q))
 
@@ -44,7 +44,7 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
     val u = s.unsafeExts.map(e =>
       e.copy(
         style = this.copy(pseudo = None).applyToStyle(e.style)(c),
-        cond  = this.copy(mediaQueries = Vector.empty) & e.cond
+        cond  = this.copy(mediaQueries = ArraySeq.empty) & e.cond
       )
     )
 
@@ -58,7 +58,7 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
 
 object Cond {
   val empty: Cond =
-    Cond(None, Vector.empty)
+    Cond(None, ArraySeq.empty)
 
   implicit def univEq: UnivEq[Cond] =
     UnivEq.derive

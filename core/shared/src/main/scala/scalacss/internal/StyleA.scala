@@ -8,7 +8,7 @@ package scalacss.internal
  * @param addClassNames Additional class names that the style has requested be appended.
  *                      Allows ScalaCSS styles to use classname-based CSS libraries like Bootstrap.
  */
-final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], style: StyleS) {
+final case class StyleA(className: ClassName, addClassNames: ArraySeq[ClassName], style: StyleS) {
 
   def selector: String =
     "." + className.value

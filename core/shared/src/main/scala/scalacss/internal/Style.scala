@@ -29,7 +29,7 @@ object Style {
    * An example of what this would be useful for, is styling the entire page, declaring the default font and size,
    * the properties of all `h1` elements, etc.
    */
-  type UnsafeExts = Vector[UnsafeExt]
+  type UnsafeExts = ArraySeq[UnsafeExt]
 
   /**
    * @param sel A CSS selector based on the intended parent's selector.
@@ -51,13 +51,13 @@ object Style {
 final case class StyleS(data         : Map[Cond, AVs],
                         unsafeExts   : Style.UnsafeExts,
                         className    : Option[ClassName],
-                        addClassNames: Vector[ClassName],
-                        warnings     : Vector[Warning]) extends Style1 {
+                        addClassNames: ArraySeq[ClassName],
+                        warnings     : ArraySeq[Warning]) extends Style1 {
 
-  def dataSorted: Vector[(Cond, AVs)] = {
+  def dataSorted: ArraySeq[(Cond, AVs)] = {
     val a = data.toArray
     scala.util.Sorting.quickSort(a)(Ordering.by(_._1))
-    Vector.from(a)
+    ArraySeq.from(a)
   }
 
   def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
@@ -65,7 +65,7 @@ final case class StyleS(data         : Map[Cond, AVs],
   def compose[I](r: StyleF.P[I])(implicit c: Compose): StyleF.P[I] = c(this, r)
 
   /** Returns all warnings for this style, including nested unsafe extensions. */
-  def allWarnings: Vector[Warning] =
+  def allWarnings: ArraySeq[Warning] =
     warnings ++ unsafeExts.flatMap(e =>
       e.style.allWarnings.map(w => w.copy(cond = e.cond & w.cond))
     )
@@ -90,7 +90,7 @@ final case class StyleS(data         : Map[Cond, AVs],
 object StyleS {
   /** Helper method for common case where only data is specified. */
   def data(d: Map[Cond, AVs]): StyleS =
-    new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)
+    new StyleS(d, ArraySeq.empty, None, ArraySeq.empty, ArraySeq.empty)
 
   /** Helper method for common case where only one condition is specified. */
   def data1(c: Cond, avs: AVs): StyleS =

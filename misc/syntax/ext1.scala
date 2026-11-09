@@ -43,7 +43,7 @@ def fixValue(s: String): String = s.trim match {
 
 scala.io.Source.fromFile("ext1").mkString.split("\n+").map(_.trim).sorted.foreach{l =>
   val Array(name,syn) = l.split(" *\t")
-  val vals = syn.split("\\|").toVector.map(fixValue).sorted
+  val vals = syn.split("\\|").to(ArraySeq).map(fixValue).sorted
   implicit val sz: Int = vals.map(_.size).max
 
   val attr = as(name)
@@ -55,4 +55,3 @@ scala.io.Source.fromFile("ext1").mkString.split("\n+").map(_.trim).sorted.foreac
 ${vals.map(fmtval).map("    "+_) mkString "\n"}
   }""")
 }
-

@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import scala.collection.immutable.ListMap
 
 object Css {
@@ -9,7 +9,7 @@ object Css {
             kfs: IterableOnce[Keyframes],
             ff: IterableOnce[FontFace[String]])
            (implicit env: Env): Css = {
-    val b = Vector.newBuilder[CssEntry]
+    val b = ArraySeq.newBuilder[CssEntry]
     b ++= styles(ss)
     b ++= keyframes(kfs)
     b ++= fontFaces(ff)
@@ -17,7 +17,7 @@ object Css {
   }
 
   def styles(ss: IterableOnce[StyleA])(implicit env: Env): StyleStream =
-    ss.iterator.flatMap(styleA).toVector
+    ss.iterator.flatMap(styleA).to(ArraySeq)
 
   def keyframes(kfs: IterableOnce[Keyframes])(implicit env: Env): KeyframeStream =
     kfs.iterator.map(keyframes).toList
@@ -35,11 +35,11 @@ object Css {
     c.pseudo.fold(cs)(_ modSelector cs)
 
   def mediaQuery(c: Cond): CssMediaQueryO =
-    NonEmptyVector.option(c.mediaQueries) map Media.css
+    NonEmptyArraySeq.option(c.mediaQueries) map Media.css
 
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes = {
     val frames = kfs.frames.foldLeft(ListMap.empty[KeyframeSelector, StyleStream]) { case (acc, (ks, sa)) =>
-      val cur = acc.getOrElse(ks, Vector.empty)
+      val cur = acc.getOrElse(ks, ArraySeq.empty)
       acc.updated(ks, cur ++ styleA(sa))
     }
     CssEntry.Keyframes(kfs.name, frames)
@@ -55,8 +55,8 @@ object Css {
     def main: Iterator[CssEntry.Style] =
       s.dataSorted.iterator.flatMap {
         case (cond, avs) =>
-          val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
-          NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>
+          val kvs = avs.avIterator.map(_(env)).foldLeft(ArraySeq.empty[CssKV])(_ ++ _)
+          NonEmptyArraySeq.maybe(kvs, List.empty[CssEntry.Style]) { c =>
             val mq = mediaQuery(cond)
             val s = selector(sel, cond)
             CssEntry.Style(mq, s, c) :: Nil
@@ -66,7 +66,7 @@ object Css {
     def exts: Iterator[CssEntry.Style] =
       s.unsafeExts.iterator.flatMap(unsafeExt(sel, _))
 
-    (main ++ exts).toVector
+    (main ++ exts).to(ArraySeq)
   }
 
   def unsafeExt(root: CssSelector, u: Style.UnsafeExt)(implicit env: Env): StyleStream = {
@@ -74,11 +74,11 @@ object Css {
     style(sel, u.style)
   }
 
-  type ValuesByMediaQuery = NonEmptyVector[(CssSelector, NonEmptyVector[CssKV])]
+  type ValuesByMediaQuery = NonEmptyArraySeq[(CssSelector, NonEmptyArraySeq[CssKV])]
   type ByMediaQuery       = ListMap[CssMediaQueryO, ValuesByMediaQuery]
 
   def separateStylesAndKeyframes(c: Css): (StyleStream, KeyframeStream, FontFaceStream) = {
-    val styles = Vector.newBuilder[CssEntry.Style]
+    val styles = ArraySeq.newBuilder[CssEntry.Style]
     val animations = List.newBuilder[CssEntry.Keyframes]
     val fontFaces = List.newBuilder[CssEntry.FontFace]
     c.foreach {
@@ -94,17 +94,17 @@ object Css {
     c.foldLeft(z){(q, e) =>
       val add = (e.sel, e.content)
       val k = e.mq
-      q.updated(k, NonEmptyVector.endO(q get k, add))
+      q.updated(k, NonEmptyArraySeq.endO(q get k, add))
     }
   }
 
-  def flatten(css: StyleStream): Vector[(CssMediaQueryO, CssSelector, CssKV)] =
+  def flatten(css: StyleStream): ArraySeq[(CssMediaQueryO, CssSelector, CssKV)] =
     css.flatMap { case CssEntry.Style(mq, sel, kvs) =>
       kvs.iterator.map(kv => (mq, sel, kv))
     }
 
   type Flat4 = (CssMediaQueryO, CssSelector, String, String)
-  def flatten4(css: StyleStream): Vector[Flat4] =
+  def flatten4(css: StyleStream): ArraySeq[Flat4] =
     css.flatMap { case CssEntry.Style(mq, sel, kvs) =>
       kvs.iterator.map(kv => (mq, sel, kv.key, kv.value))
     }

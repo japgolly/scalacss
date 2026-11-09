@@ -2,6 +2,7 @@ package scalacss.internal.mutable
 
 import japgolly.univeq._
 import scala.annotation.tailrec
+import scala.collection.immutable.ArraySeq
 import scalacss.internal._
 import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
@@ -15,9 +16,9 @@ import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
   var _nameGen   = initNameGen
-  var _styles    = Vector.empty[StyleA]
-  var _keyframes = Vector.empty[Keyframes]
-  var _fontFaces = Vector.empty[FontFace[String]]
+  var _styles    = ArraySeq.empty[StyleA]
+  var _keyframes = ArraySeq.empty[Keyframes]
+  var _fontFaces = ArraySeq.empty[FontFace[String]]
   var _rendered  = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -74,7 +75,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   }
 
   /** Optional side-effects for warnings */
-  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning], checkDuplicates: Boolean = true): Unit =
+  private def emitRegistrationWarnings(cn: ClassName, warnings: => ArraySeq[Warning], checkDuplicates: Boolean = true): Unit =
     errHandler.warn.foreach { f =>
 
       def warn(s: String): Unit =
@@ -124,7 +125,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
     val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
     val kf = keyframes.copy(name = cn)
-    emitRegistrationWarnings(cn, keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
+    emitRegistrationWarnings(cn, keyframes.frames.iterator.flatMap(_._2.style.allWarnings).to(ArraySeq))
     _keyframes :+= kf
     kf
   }
@@ -133,23 +134,23 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     // This allows duplicate fontFamily names to be specified
     val finalFamilyName = fontFace.fontFamily.getOrElse(nextName(cnh).value)
     val cn = ClassName(finalFamilyName)
-    emitRegistrationWarnings(cn, Vector.empty, checkDuplicates = false)
+    emitRegistrationWarnings(cn, ArraySeq.empty, checkDuplicates = false)
     val ff = fontFace.copy(fontFamily = finalFamilyName)
     _fontFaces :+= ff
     ff
   }
 
-  def styles: Vector[StyleA] = mutex {
+  def styles: ArraySeq[StyleA] = mutex {
     _rendered = true
     _styles
   }
 
-  def keyframes: Vector[Keyframes] = mutex {
+  def keyframes: ArraySeq[Keyframes] = mutex {
     _rendered = true
     _keyframes
   }
 
-  def fontFaces: Vector[FontFace[String]] = mutex {
+  def fontFaces: ArraySeq[FontFace[String]] = mutex {
     _rendered = true
     _fontFaces
   }
@@ -315,7 +316,7 @@ object Register { // ===========================================================
     def fallbackStyle: StyleA = {
       import Dsl._
       val s = style(backgroundColor(Color("#ffbaba")), color(Color("#d8000c")))(Compose.safe)
-      StyleA(ClassName("_SCALACSS_ERROR_"), Vector.empty, s)
+      StyleA(ClassName("_SCALACSS_ERROR_"), ArraySeq.empty, s)
     }
   }
 }

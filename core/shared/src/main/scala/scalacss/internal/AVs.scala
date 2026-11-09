@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq._
 
 /**
@@ -23,7 +23,7 @@ object AV {
 /**
  * One or more ordered attributes, each with one or more ordered values.
  */
-final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr, NonEmptyVector[Value]]) {
+final class AVs private[AVs](val order: NonEmptyArraySeq[Attr], val data: Map[Attr, NonEmptyArraySeq[Value]]) {
   override def toString = iterator.mkString("AVs(", ", ", ")")
 
   def +(av: AV): AVs =
@@ -36,45 +36,45 @@ final class AVs private[AVs](val order: NonEmptyVector[Attr], val data: Map[Attr
     avs.iterator.foldLeft(this)((q, t) => q.addAll(t._1, t._2))
 
   def add(a: Attr, v: Value): AVs =
-    addTail(a, NonEmptyVector.end(_, v))
+    addTail(a, NonEmptyArraySeq.end(_, v))
 
-  def addAll(a: Attr, vs: NonEmptyVector[Value]): AVs =
+  def addAll(a: Attr, vs: NonEmptyArraySeq[Value]): AVs =
     addTail(a, _ ++: vs)
 
-  private def addTail(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
+  private def addTail(a: Attr, f: ArraySeq[Value] => NonEmptyArraySeq[Value]): AVs =
     addf(a, f, e => if (e.isEmpty) order :+ a else order)
 
-  private def addf(a: Attr, f: Vector[Value] => NonEmptyVector[Value], g: Vector[Value] => NonEmptyVector[Attr]): AVs = {
+  private def addf(a: Attr, f: ArraySeq[Value] => NonEmptyArraySeq[Value], g: ArraySeq[Value] => NonEmptyArraySeq[Attr]): AVs = {
     val existing = getv(a)
     val newOrder = g(existing)
     val newData  = data.updated(a, f(existing))
     new AVs(newOrder, newData)
   }
 
-  private def addHead(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
+  private def addHead(a: Attr, f: ArraySeq[Value] => NonEmptyArraySeq[Value]): AVs =
     addf(a, f,
       e => if (e.isEmpty)
         a +: order
       else
-        NonEmptyVector(a, order.whole.filterNot(a ==* _)))
+        NonEmptyArraySeq(a, order.whole.filterNot(a ==* _): _*))
 
   def +:(av: AV): AVs =
-    addHead(av.attr, NonEmptyVector(av.value, _))
+    addHead(av.attr, tail => NonEmptyArraySeq(av.value, tail: _*))
 
-  def get(a: Attr): Option[NonEmptyVector[Value]] =
+  def get(a: Attr): Option[NonEmptyArraySeq[Value]] =
     data.get(a)
 
-  def getv(a: Attr): Vector[Value] =
-    data.get(a).fold(Vector.empty[Value])(_.whole)
+  def getv(a: Attr): ArraySeq[Value] =
+    data.get(a).fold(ArraySeq.empty[Value])(_.whole)
 
   def filterKeys(f: Attr => Boolean): Option[AVs] =
-    NonEmptyVector.option(order.whole.filter(f))
+    NonEmptyArraySeq.option(order.whole.filter(f))
       .map(o => new AVs(o, data.iterator.filter(kv => f(kv._1)).toMap))
 
-  def modify(a: Attr, f: Vector[Value] => NonEmptyVector[Value]): AVs =
+  def modify(a: Attr, f: ArraySeq[Value] => NonEmptyArraySeq[Value]): AVs =
     addTail(a, f)
 
-  def iterator: Iterator[(Attr, NonEmptyVector[Value])] =
+  def iterator: Iterator[(Attr, NonEmptyArraySeq[Value])] =
     order.iterator.map(a => (a, data(a)))
 
   def avIterator: Iterator[AV] =
@@ -86,8 +86,8 @@ object AVs {
     apply(av1.attr, av1.value) ++ avn
 
   def apply(a: Attr, v: Value): AVs =
-    apply(a, NonEmptyVector one v)
+    apply(a, NonEmptyArraySeq one v)
 
-  def apply(a: Attr, vs: NonEmptyVector[Value]): AVs =
-    new AVs(NonEmptyVector one a, Map.empty.updated(a, vs))
+  def apply(a: Attr, vs: NonEmptyArraySeq[Value]): AVs =
+    new AVs(NonEmptyArraySeq one a, Map.empty.updated(a, vs))
 }

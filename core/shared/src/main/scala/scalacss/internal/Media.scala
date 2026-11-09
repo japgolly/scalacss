@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq._
 import scala.annotation.nowarn
 import scalacss.internal.{Resolution => Res}
@@ -84,7 +84,7 @@ object Media {
   case class Only(t: TypeA) extends TypeExpr
   case class Not (t: TypeA) extends TypeExpr
 
-  case class Query(head: Either[TypeExpr, Feature], tail: Vector[Feature]) extends FeatureOps[Query] {
+  case class Query(head: Either[TypeExpr, Feature], tail: ArraySeq[Feature]) extends FeatureOps[Query] {
     override protected def F = f => new Query(head, tail :+ f)
 
     private[scalacss] val cssSuffix: String = {
@@ -93,9 +93,9 @@ object Media {
     }
 
     override def toString =
-      Media.css(NonEmptyVector one this)
+      Media.css(NonEmptyArraySeq one this)
 
-    private def +:(qs: Vector[Query]): Vector[Query] =
+    private def +:(qs: ArraySeq[Query]): ArraySeq[Query] =
       if (qs.exists(_ ==* this)) qs else qs :+ this
 
     @deprecated("Use .or", "1.1.0")
@@ -103,10 +103,10 @@ object Media {
       or(q2)
 
     def or(q2: Query, qn: Query*): Cond =
-      Cond(None, qn.foldLeft(Vector1(this) +: q2)(_ +: _))
+      Cond(None, qn.foldLeft(ArraySeq1(this) +: q2)(_ +: _))
 
     def and(that: Query): Query = {
-      def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
+      def merge(base: ArraySeq[Feature], extra: ArraySeq[Feature], exclude: Option[Feature]): ArraySeq[Feature] =
         extra.foldLeft(base)((acc, f) =>
           if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
         )
@@ -277,9 +277,9 @@ object Media {
     case Only(t) => "only " ~ t.value // Applies to whole Query. Don't wrap in parenthesis.
   }
 
-  def cssQueries(qs: NonEmptyVector[Query]): String =
+  def cssQueries(qs: NonEmptyArraySeq[Query]): String =
     qs.reduceMapLeft1(_.cssSuffix)(_ ~ `,` ~ _)
 
-  def css(qs: NonEmptyVector[Query]): CssMediaQuery =
+  def css(qs: NonEmptyArraySeq[Query]): CssMediaQuery =
     media ~ cssQueries(qs)
 }

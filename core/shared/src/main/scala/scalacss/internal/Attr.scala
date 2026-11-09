@@ -1,8 +1,9 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq._
 import scala.annotation.tailrec
+import scala.collection.immutable.ArraySeq
 
 /**
  * A style attribute.
@@ -31,9 +32,9 @@ final class RealAttr(id: String, gen: Attr.Gen) extends Attr(id, gen) {
   override val real = Set[RealAttr](this)
 }
 
-final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyVector[Attr]]) extends Attr(id, gen) {
+final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyArraySeq[Attr]]) extends Attr(id, gen) {
   override lazy val real = {
-    @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: Vector[Attr]): Set[RealAttr] =
+    @tailrec def go(seen: Set[Attr], found: Set[RealAttr], queue: ArraySeq[Attr]): Set[RealAttr] =
       if (queue.isEmpty)
         found
       else {
@@ -50,12 +51,12 @@ final class AliasAttr(id: String, gen: Attr.Gen, val targets: Need[NonEmptyVecto
 }
 
 object Attr {
-  type Gen = Env => Value => Vector[CssKV]
+  type Gen = Env => Value => ArraySeq[CssKV]
 
   implicit def univEq: UnivEq[Attr] = UnivEq.force
 
   def genSimple(css: String): Gen =
-    _ => v => Vector1(CssKV(css, v))
+    _ => v => ArraySeq1(CssKV(css, v))
 
   def real(css: String): Attr =
     new RealAttr(css, genSimple(css))
@@ -69,15 +70,15 @@ object Attr {
   def alias(css: String, t: Transform) =
     _alias(css, t attrGen css)
 
-  private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyVector[Attr]) => Attr =
+  private def _alias(id: String, g: Gen): (AliasB.type => NonEmptyArraySeq[Attr]) => Attr =
     f => new AliasAttr(id, g, Need(f(AliasB)))
 
   /**
-   * Helper for creating a lazy NonEmptyVector[Attr] so that initialisation order doesn't matter,
+   * Helper for creating a lazy NonEmptyArraySeq[Attr] so that initialisation order doesn't matter,
    * and attributes can have recursive definitions.
    */
   object AliasB {
-    @inline def apply(h: Attr, t: Attr*) = NonEmptyVector(h, t: _*)
+    @inline def apply(h: Attr, t: Attr*) = NonEmptyArraySeq(h, t: _*)
   }
 }
 
@@ -94,7 +95,7 @@ object Attr {
  *   border-radius: 1em/5em;
  * }}}
  */
-class Transform(val run: Env => CssKV => Vector[CssKV]) {
+class Transform(val run: Env => CssKV => ArraySeq[CssKV]) {
 
   /**
    * Applicative product of two transforms.
@@ -117,7 +118,7 @@ object Transform {
   import CanIUse.Subject
   import CanIUse2.PrefixApply
 
-  def apply(run: Env => CssKV => Vector[CssKV]): Transform =
+  def apply(run: Env => CssKV => ArraySeq[CssKV]): Transform =
     new Transform(run)
 
   private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform = {
@@ -211,8 +212,8 @@ object AttrCmp {
   val default: Fn =
     compose(byEquality, byRealAttrs)
 
-  def conflicts(avs: Vector[AV]): Set[AV] = {
-    @tailrec def go(untested: Vector[AV], conflicts: Set[AV]): Set[AV] =
+  def conflicts(avs: ArraySeq[AV]): Set[AV] = {
+    @tailrec def go(untested: ArraySeq[AV], conflicts: Set[AV]): Set[AV] =
       if (untested.length <= 1)
         conflicts
       else {

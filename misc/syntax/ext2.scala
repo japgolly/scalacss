@@ -55,7 +55,7 @@ def fixTokenC(s: String): String = s match {
 
 scala.io.Source.fromFile("ext2b").mkString.split("\n+").map(_.trim).sorted.foreach{l =>
   val Array(name,syn) = l.split(" *\t")
-  val vals = syn.split("\\|").toVector.map(fixValue).sorted
+  val vals = syn.split("\\|").to(ArraySeq).map(fixValue).sorted
 
   val (tokens,consts) = vals.partition(_ contains '<')
   val tokenType = fixTokenC(tokens.map(fixToken).sorted.mkString(""))
@@ -77,4 +77,3 @@ scala.io.Source.fromFile("ext2b").mkString.split("\n+").map(_.trim).sorted.forea
 ${consts.map(fmtConst).map("    "+_) mkString "\n"}
   }""".replaceFirst("\n\n","\n"))
 }
-

@@ -312,7 +312,7 @@ object Caniuse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq.UnivEq
 
 object $obj {
@@ -337,7 +337,7 @@ object $obj {
     ${prefixes map fmtpref mkString "\n    "}
     implicit def univEq: UnivEq[Prefix] = UnivEq.derive
     implicit val ordering: Ordering[Prefix] = Ordering.by(_.name)
-    val values = NonEmptyVector[Prefix](${prefixes mkString ", "})
+    val values = NonEmptyArraySeq[Prefix](${prefixes mkString ", "})
   }
 
   import Prefix._
@@ -346,7 +346,7 @@ object $obj {
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
-    val values = NonEmptyVector[Agent](${agents.map(_.key.trim).sorted mkString ", "})
+    val values = NonEmptyArraySeq[Agent](${agents.map(_.key.trim).sorted mkString ", "})
   }
 
   import Agent._

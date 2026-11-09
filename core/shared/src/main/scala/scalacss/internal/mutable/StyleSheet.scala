@@ -1,5 +1,6 @@
 package scalacss.internal.mutable
 
+import scala.collection.immutable.ArraySeq
 import scalacss.internal.DslBase.{DslCond, ToStyle}
 import scalacss.internal._
 
@@ -48,7 +49,7 @@ object StyleSheet {
     final def css(implicit env: Env): Css =
       cssRegister.css
 
-    final def styles: Vector[StyleA] =
+    final def styles: ArraySeq[StyleA] =
       cssRegister.styles
 
     /**

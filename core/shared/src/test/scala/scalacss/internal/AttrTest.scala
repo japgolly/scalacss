@@ -38,7 +38,7 @@ object AttrTest extends TestSuite {
 
   def testGen(l: CssKV.Lens)(a: Attr, v: Value, exp: String*): Unit = {
     val x = a.gen(Env.empty)(v).map(l.get).sorted
-    val y = exp.toVector.sorted
+    val y = exp.to(ArraySeq).sorted
     assertEq(x, y)
   }
 
@@ -157,7 +157,7 @@ object AttrTest extends TestSuite {
         val a = AV(marginLeft, "1px")
         val b = AV(margin, "2px")
         val c = AV(marginRight, "3px")
-        val actual = AttrCmp.conflicts(Vector(a, b, c))
+        val actual = AttrCmp.conflicts(ArraySeq(a, b, c))
         assertEq(actual, Set(a, b, c))
       }
       "transitive4" - {
@@ -165,7 +165,7 @@ object AttrTest extends TestSuite {
         val b = AV(margin, "2px")
         val c = AV(marginRight, "3px")
         val d = AV(marginTop, "4px")
-        val actual = AttrCmp.conflicts(Vector(a, b, c, d))
+        val actual = AttrCmp.conflicts(ArraySeq(a, b, c, d))
         assertEq(actual, Set(a, b, c, d))
       }
     }
@@ -216,7 +216,7 @@ object AttrTest extends TestSuite {
       "backgroundImagePrefixingWithUrlContainingSubstring" - {
         val av = AV(backgroundImage, "url(logo-o-2.png), linear-gradient(red, blue)")
         val actual = av(Env.empty).map(_.value)
-        val expected = Vector(
+        val expected = ArraySeq(
           "url(logo-o-2.png), -o-linear-gradient(red, blue)",
           "url(logo-o-2.png), -webkit-linear-gradient(red, blue)",
           "url(logo-o-2.png), linear-gradient(red, blue)",
@@ -226,7 +226,7 @@ object AttrTest extends TestSuite {
       "multiLineGradient" - {
         val av = AV(backgroundImage, "linear-gradient(\n  red,\n  blue\n)")
         val actual = av(Env.empty).map(_.value)
-        val expected = Vector(
+        val expected = ArraySeq(
           "-o-linear-gradient(\n  red,\n  blue\n)",
           "-webkit-linear-gradient(\n  red,\n  blue\n)",
           "linear-gradient(\n  red,\n  blue\n)",
@@ -253,7 +253,7 @@ object AttrTest extends TestSuite {
       "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in")
 
       "resize.block" - {
-        val expected = Vector(
+        val expected = ArraySeq(
           CssKV("resize", "block"),
         )
         assertEq(resize.block(Env.empty), expected)
@@ -265,7 +265,7 @@ object AttrTest extends TestSuite {
         test(cursor.zoomIn.important,  "zoom-in !important")
 
         "avApply" - {
-          val expected = Vector(
+          val expected = ArraySeq(
             CssKV("cursor", "zoom-in !important"),
           )
           assertEq(cursor.zoomIn.important(Env.empty), expected)
@@ -363,7 +363,7 @@ object AttrTest extends TestSuite {
       def test(name: String)(exp: String*): Unit = {
         val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
         val a = cursor.zoomIn(env).map(_.value).sorted
-        assertEq(a, exp.toVector.sorted)
+        assertEq(a, exp.to(ArraySeq).sorted)
       }
       "chrome"  - test("Chrome") ("zoom-in")
       "firefox" - test("Firefox")("zoom-in")
@@ -376,7 +376,7 @@ object AttrTest extends TestSuite {
       def test(name: String)(exp: String*): Unit = {
         val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
         val a = AV(flex, "")(env).map(_.key).sorted
-        assertEq(a, exp.toVector.sorted)
+        assertEq(a, exp.to(ArraySeq).sorted)
       }
       "chrome"  - test("Chrome") ("flex")
       "firefox" - test("Firefox")("flex")

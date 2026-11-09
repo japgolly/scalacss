@@ -8,15 +8,15 @@ object DslBase {
 
   // media.
   object MediaQueryEmpty extends TypeAOps[Query] with FeatureOps[Query] {
-    override protected def F = f => new Query(Right(f), Vector.empty)
-    override protected def T = t => new Query(Left(Just(t)), Vector.empty)
+    override protected def F = f => new Query(Right(f), ArraySeq.empty)
+    override protected def T = t => new Query(Left(Just(t)), ArraySeq.empty)
     def not  = new MediaQueryNeedType(Not.apply)
     def only = new MediaQueryNeedType(Only.apply)
   }
 
   // media.{not,only}
   final class MediaQueryNeedType(f: TypeA => TypeExpr) extends TypeAOps[Query] {
-    override protected def T = t => new Query(Left(f(t)), Vector.empty)
+    override protected def T = t => new Query(Left(f(t)), ArraySeq.empty)
   }
 
   final class DslInt(private val self: Int) extends AnyVal {
@@ -191,15 +191,15 @@ abstract class DslBase
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
-          implicit final def CondPseudo    (x: Pseudo)     : Cond = Cond(Some(x), Vector.empty)
-          implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, Vector1(x))
+          implicit final def CondPseudo    (x: Pseudo)     : Cond = Cond(Some(x), ArraySeq.empty)
+          implicit final def CondMediaQuery(x: Media.Query): Cond = Cond(None, ArraySeq1(x))
 
           implicit final def ToStyleToAV      (x: ToAV)                           : ToStyle = ToStyleAV(x.av)
           implicit final def ToStyleAV        (x: AV)                             : ToStyle = ToStyleAVs(AVs(x))
           implicit final def ToStyleAVs       (x: AVs)                            : ToStyle = new ToStyle(StyleS.data1(Cond.empty, x))
           implicit final def ToStyleCAV [C]   (x: (C, AV)) (implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(f(x._1), AVs(x._2)))
           implicit final def ToStyleCAVs[C]   (x: (C, AVs))(implicit f: C => Cond): ToStyle = new ToStyle(StyleS.data1(f(x._1), x._2))
-          implicit final def ToStyleUnsafeExt (x: UnsafeExt)                      : ToStyle = ToStyleUnsafeExts(Vector1(x))
+          implicit final def ToStyleUnsafeExt (x: UnsafeExt)                      : ToStyle = ToStyleUnsafeExts(ArraySeq1(x))
           implicit final def ToStyleUnsafeExts(x: UnsafeExts)                     : ToStyle = new ToStyle(StyleS.empty.copy(unsafeExts = x))
   @inline implicit final def ToStyleStyleS    (x: StyleS)                         : ToStyle = new ToStyle(x)
           implicit final def ToStyleStyleA    (x: StyleA)                         : ToStyle =
@@ -213,12 +213,12 @@ abstract class DslBase
   protected def styleS(t: ToStyle*)(implicit c: Compose): StyleS
 
   def addClassName(cn: String): StyleS =
-    _addClassNames(ClassName.parse(cn).toVector)
+    _addClassNames(ClassName.parse(cn).to(ArraySeq))
 
   def addClassNames(cn: String*): StyleS =
-    _addClassNames(cn.iterator.flatMap(ClassName.parse).toVector)
+    _addClassNames(cn.iterator.flatMap(ClassName.parse).to(ArraySeq))
 
-  private def _addClassNames(cns: Vector[ClassName]): StyleS =
+  private def _addClassNames(cns: ArraySeq[ClassName]): StyleS =
     StyleS.empty.copy(addClassNames = cns)
 
   def media = MediaQueryEmpty

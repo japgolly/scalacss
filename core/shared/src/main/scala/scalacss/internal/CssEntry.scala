@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq.UnivEq
 import scala.collection.immutable.ListMap
 
@@ -10,13 +10,13 @@ object CssEntry {
 
   case class Style(mq     : CssMediaQueryO,
                    sel    : CssSelector,
-                   content: NonEmptyVector[CssKV]) extends CssEntry
+                   content: NonEmptyArraySeq[CssKV]) extends CssEntry
 
   case class Keyframes(name  : KeyframeAnimationName,
                        frames: ListMap[KeyframeSelector, StyleStream]) extends CssEntry
 
   case class FontFace(fontFamily  : String,
-                      src         : NonEmptyVector[String],
+                      src         : NonEmptyArraySeq[String],
                       fontStretch : Option[Value],
                       fontStyle   : Option[Value],
                       fontWeight  : Option[Value],

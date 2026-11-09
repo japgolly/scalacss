@@ -80,8 +80,8 @@ object NaturalOrderingTest extends TestSuite {
 
     "condOrdering" - {
       "attributesWithSpaces" - {
-        val c1 = Cond(Some(Pseudo.Attr("custom-attr", "a b")), Vector.empty)
-        val c2 = Cond(Some(Pseudo.Attr("custom-attr", "ab")), Vector.empty)
+        val c1 = Cond(Some(Pseudo.Attr("custom-attr", "a b")), ArraySeq.empty)
+        val c2 = Cond(Some(Pseudo.Attr("custom-attr", "ab")), ArraySeq.empty)
         assert(Cond.ordering.compare(c1, c2) < 0)
         assert(Cond.ordering.compare(c2, c1) > 0)
 
@@ -90,8 +90,8 @@ object NaturalOrderingTest extends TestSuite {
       }
 
       "nthChildLeadingZeros" - {
-        val c1 = Cond(Some(Pseudo.NthChild("1")), Vector.empty)
-        val c2 = Cond(Some(Pseudo.NthChild("01")), Vector.empty)
+        val c1 = Cond(Some(Pseudo.NthChild("1")), ArraySeq.empty)
+        val c2 = Cond(Some(Pseudo.NthChild("01")), ArraySeq.empty)
         assert(Cond.ordering.compare(c1, c2) < 0)
         assert(Cond.ordering.compare(c2, c1) > 0)
 

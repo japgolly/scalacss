@@ -101,7 +101,7 @@ object CondTest extends TestSuite {
             color.blue
           )
         )
-        assertEq(s.warnings.map(_.cond), Vector(&.hover))
+        assertEq(s.warnings.map(_.cond), ArraySeq(&.hover))
       }
 
       "mergeSameConditionConflict" - {
@@ -141,8 +141,8 @@ object CondTest extends TestSuite {
             )
           )
         )
-        val expected = Vector(media.minWidth(500 px) and media.maxWidth(1000 px))
-        assertEq(s.data.keys.flatMap(_.mediaQueries).toVector, expected)
+        val expected = ArraySeq(media.minWidth(500 px) and media.maxWidth(1000 px))
+        assertEq(s.data.keys.flatMap(_.mediaQueries).to(ArraySeq), expected)
         val css = StringRenderer.defaultPretty(Css.style(".a", s)(Env.empty)).trim
         assertMultiline(css,
           """

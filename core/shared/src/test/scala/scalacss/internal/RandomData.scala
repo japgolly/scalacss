@@ -1,7 +1,7 @@
 package scalacss.internal
 
 import cats.data.NonEmptyList
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import nyaya.gen._
 import nyaya.util._
 import scalacss.internal.Style.{UnsafeExt, UnsafeExts}
@@ -11,8 +11,8 @@ object RandomData {
   val str  = Gen.alphaNumeric.string(0 to 32)
   val str1 = Gen.alphaNumeric.string(1 to 32)
 
-  def nev[A](g: Gen[A])(implicit ss: SizeSpec): Gen[NonEmptyVector[A]] =
-    g.vector.flatMap(as => g.map(NonEmptyVector(_, as)))
+  def nev[A](g: Gen[A])(implicit ss: SizeSpec): Gen[NonEmptyArraySeq[A]] =
+    g.vector.flatMap(as => g.map(NonEmptyArraySeq(_, as)))
 
   val attr: Gen[Attr] =
     Gen.choose(Attrs.values.head, Attrs.values.tail: _*)
@@ -60,7 +60,7 @@ object RandomData {
   }
 
   val cond: Gen[Cond] =
-    pseduo.option map (Cond(_, Vector.empty)) // TODO no media queries in random data
+    pseduo.option map (Cond(_, ArraySeq.empty)) // TODO no media queries in random data
 
   val unsafeCssSelEndo: Gen[CssSelector => CssSelector] =
     Gen.alphaNumeric.string(1 to 8).pair.map {
@@ -74,7 +74,7 @@ object RandomData {
     from to (jvm `JVM|JS` js)
 
   def unsafeExts(o: Option[Gen[StyleS]]): Gen[UnsafeExts] =
-    o.fold[Gen[UnsafeExts]](Gen pure Vector.empty)(g =>
+    o.fold[Gen[UnsafeExts]](Gen pure ArraySeq.empty)(g =>
       unsafeExt(g).vector(sized(1, 8, 3)))
 
   val warning: Gen[Warning] =

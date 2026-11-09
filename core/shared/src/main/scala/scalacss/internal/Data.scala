@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq.UnivEq
 import scala.annotation.nowarn
 
@@ -59,7 +59,7 @@ final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSel
   * http://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
   */
 final case class FontFace[FF](fontFamily         : FF,
-                              src                : NonEmptyVector[String],
+                              src                : NonEmptyArraySeq[String],
                               fontStretchValue   : Option[Value] = None,
                               fontStyleValue     : Option[Value] = None,
                               fontWeightValue    : Option[Value] = None,
@@ -84,7 +84,7 @@ object FontFace {
 
   final class FontSrcSelector(val fontFamily: Option[String]) extends AnyVal {
     def src(src: String, additionalSrc: String*): FontFace[Option[String]] =
-      FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
+      FontFace(fontFamily, NonEmptyArraySeq(src, additionalSrc: _*))
   }
 
   final class FontStretchBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {

@@ -25,7 +25,7 @@ object GlobalRegistryTest extends TestSuite {
   implicit val eqBL: Eq[BlarrrrStyle]      = _ eq _
   implicit val eqSS: Eq[StyleSheet.Inline] = _ eq _
 
-  var postreg = Vector.empty[StyleSheet.Inline]
+  var postreg = ArraySeq.empty[StyleSheet.Inline]
   gr.register(s1)
   gr.onRegistration(postreg :+= _)
   gr.register(blar)
@@ -39,7 +39,7 @@ object GlobalRegistryTest extends TestSuite {
       assertEq(gr[S2].isEmpty, true)
     }
     "onRegistration" - {
-      assertEq(postreg, Vector(s1, blar))
+      assertEq(postreg, ArraySeq(s1, blar))
     }
   }
 }

@@ -24,8 +24,8 @@ object ComposeTest extends TestSuite {
     def appendTest = {
       implicit val impc = new Compose(R(R.append, R.silent))
       E.equal("sort(a) + sort(b) = sort(a + b)",
-        (flat(a) ++ flat(b)).sorted.toVector,
-        flat(a compose b).sorted.toVector)
+        (flat(a) ++ flat(b)).sorted.to(ArraySeq),
+        flat(a compose b).sorted.to(ArraySeq))
     }
 
     def replaceTest = {
@@ -87,8 +87,8 @@ object ComposeTest extends TestSuite {
       implicit def c: Compose = Compose.safe
 
       def test(s: StyleS)(avs: AV*)(ws: String*): Unit = {
-        assertEq(s.data(Cond.empty).avIterator.toVector, avs.toVector)
-        assertEq(s.warnings.map(_.msg), ws.toVector)
+        assertEq(s.data(Cond.empty).avIterator.to(ArraySeq), avs.to(ArraySeq))
+        assertEq(s.warnings.map(_.msg), ws.to(ArraySeq))
       }
 
       "idempotency" - {
@@ -127,7 +127,7 @@ object ComposeTest extends TestSuite {
         "replaceMode" - {
           implicit val c: Compose = new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent))
           val s = style(blockSize(10.px), inlineSize(20.px))
-          assertEq(s.data(Cond.empty).avIterator.toVector, Vector(AV(blockSize, "10px"), AV(inlineSize, "20px")))
+          assertEq(s.data(Cond.empty).avIterator.to(ArraySeq), ArraySeq(AV(blockSize, "10px"), AV(inlineSize, "20px")))
         }
       }
 
@@ -145,7 +145,7 @@ object ComposeTest extends TestSuite {
           val a = style(margin.auto, marginLeft.`0`)(Compose.trust)
           val b = style(margin.auto)
           val res = a compose b
-          assertEq(res.data(Cond.empty).avIterator.toVector, Vector(AV(margin, "auto")))
+          assertEq(res.data(Cond.empty).avIterator.to(ArraySeq), ArraySeq(AV(margin, "auto")))
         }
       }
 
@@ -155,7 +155,7 @@ object ComposeTest extends TestSuite {
           val a = style(color.red)
           val b = style(margin.auto, marginLeft.`0`)(Compose.trust)
           val res = a compose b
-          assertEq(res.data(Cond.empty).avIterator.toVector, Vector(AV(color, "red"), AV(margin, "auto"), AV(marginLeft, "0")))
+          assertEq(res.data(Cond.empty).avIterator.to(ArraySeq), ArraySeq(AV(color, "red"), AV(margin, "auto"), AV(marginLeft, "0")))
         }
 
         "safe" - {
@@ -180,8 +180,8 @@ object ComposeTest extends TestSuite {
         )
         val res = a compose b
         assertEq(
-          res.data(Cond.empty).order.iterator.map(_.id).toVector,
-          Vector("color", "margin-top", "margin-right", "margin-bottom", "margin-left", "padding-top", "padding-right")
+          res.data(Cond.empty).order.iterator.map(_.id).to(ArraySeq),
+          ArraySeq("color", "margin-top", "margin-right", "margin-bottom", "margin-left", "padding-top", "padding-right")
         )
       }
 

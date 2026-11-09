@@ -1,8 +1,12 @@
 package scalacss
 
 import japgolly.univeq._
+import scala.reflect.ClassTag
 
 package object internal {
+
+  type ArraySeq[+A] = scala.collection.immutable.ArraySeq[A]
+  @inline def ArraySeq = scala.collection.immutable.ArraySeq
 
   /**
    * A CSS value, like `"none"`, `"solid 3px black"`.
@@ -34,22 +38,21 @@ package object internal {
   type KeyframeAnimationName = ClassName
   type KeyframeSelector      = Percentage[_]
 
-  type StyleStream    = Vector[CssEntry.Style]
+  type StyleStream    = ArraySeq[CssEntry.Style]
   type KeyframeStream = List[CssEntry.Keyframes]
   type FontFaceStream = List[CssEntry.FontFace]
 
   /**
    * A stylesheet in its entirety. Normally turned into a `.css` file or a `&lt;style&gt;` tag.
    */
-  type Css = Vector[CssEntry]
-  implicit def univEqCss: UnivEq[Css] = UnivEq.univEqVector
+  type Css = ArraySeq[CssEntry]
+  implicit def univEqCss: UnivEq[Css] = UnivEq.univEqSciArraySeq
 
   type WarningMsg = String
   final case class Warning(cond: Cond, msg: WarningMsg)
 
-  /** Faster than Vector(a) */
-  def Vector1[A](a: A): Vector[A] =
-    Vector.empty :+ a
+  @inline def ArraySeq1[A: ClassTag](a: A): ArraySeq[A] =
+    ArraySeq(a)
 
   def optionAppend[A](oa: Option[A], ob: Option[A])(f: (A, A) => A): Option[A] =
     (oa, ob) match {

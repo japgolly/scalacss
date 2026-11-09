@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import scala.collection.immutable.SortedSet
 import scalacss.internal.CanIUse.Support._
 import scalacss.internal.CanIUse._
@@ -44,10 +44,10 @@ object CanIUse2 {
       .map(ad => agentPrefixes(ad._1))
       .foldLeft(emptyPrefixSet)(_ ++ _)
 
-  type PrefixPlan = Vector[Option[Prefix]]
+  type PrefixPlan = ArraySeq[Option[Prefix]]
   val prefixPlan: Subject => PrefixPlan =
     memo { s =>
-      val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
+      val prefixes = subjectPrefixes(s).to(ArraySeq).map(Some.apply)
       val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
       if (noPrefix) prefixes :+ None else prefixes
     }
@@ -96,9 +96,9 @@ object CanIUse2 {
     }
   }
 
-  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
+  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): ArraySeq[CssKV] = {
     val tgt = l.get(kv)
-    def nop = Vector1(kv)
+    def nop = ArraySeq1(kv)
     if (prefixed(tgt))
       nop
     else
@@ -108,35 +108,35 @@ object CanIUse2 {
             l.set(kv, apply(p)))))
   }
 
-  def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
+  def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): ArraySeq[CssKV] =
     runPlan(pp, pa, CssKV.key, kv)
 
-  def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
+  def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): ArraySeq[CssKV] =
     runPlan(pp, pa, CssKV.value, kv)
 
   def prefixesForPlatform(p: Env.Platform[Option]): SortedSet[Prefix] =
     agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)
 
-  def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
+  def agentsForPlatform(p: Env.Platform[Option]): NonEmptyArraySeq[Agent] = {
     import Agent._
     def dunno = Agent.values
     if (p.toString.toLowerCase contains "android")
       p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(AndroidChrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(AndroidFirefox)
-        case _                           => NonEmptyVector(AndroidBrowser, AndroidUC)
+        case n if n startsWith "Chrome"  => NonEmptyArraySeq(AndroidChrome)
+        case n if n startsWith "Firefox" => NonEmptyArraySeq(AndroidFirefox)
+        case _                           => NonEmptyArraySeq(AndroidBrowser, AndroidUC)
       })
     else
       p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(Chrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(Firefox)
-        case "IE Mobile"                 => NonEmptyVector(IEMobile)
-        case n if n startsWith "IE"      => NonEmptyVector(IE)
-        case "Opera Mini"                => NonEmptyVector(OperaMini)
-        case "Opera Mobile"              => NonEmptyVector(OperaMobile)
-        case n if n startsWith "Opera"   => NonEmptyVector(Opera)
-        case "Safari"                    => NonEmptyVector(IOSSafari, Safari)
-        case n if n endsWith "Edge"      => NonEmptyVector(Edge)
+        case n if n startsWith "Chrome"  => NonEmptyArraySeq(Chrome)
+        case n if n startsWith "Firefox" => NonEmptyArraySeq(Firefox)
+        case "IE Mobile"                 => NonEmptyArraySeq(IEMobile)
+        case n if n startsWith "IE"      => NonEmptyArraySeq(IE)
+        case "Opera Mini"                => NonEmptyArraySeq(OperaMini)
+        case "Opera Mobile"              => NonEmptyArraySeq(OperaMobile)
+        case n if n startsWith "Opera"   => NonEmptyArraySeq(Opera)
+        case "Safari"                    => NonEmptyArraySeq(IOSSafari, Safari)
+        case n if n endsWith "Edge"      => NonEmptyArraySeq(Edge)
         case _                           => dunno
       })
   }

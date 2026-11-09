@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 
 /**
  * Render [[Css]], an internal representation of CSS, into a different format; usually real CSS text.
@@ -87,7 +87,7 @@ object StringRenderer {
           for ((sel, styles) <- e.frames) {
             kfsStart(sel.value)
             val allKvs = styles.flatMap(_.content.whole)
-            NonEmptyVector.maybe(allKvs, ()) { nel =>
+            NonEmptyArraySeq.maybe(allKvs, ()) { nel =>
               printCssKV(Some(sel), None, nel)
             }
             kfsEnd(sel)
@@ -98,13 +98,13 @@ object StringRenderer {
           ff(e)
       }
 
-    def apply(kf: KeyframeSelectorO, mq: CssMediaQueryO, sel: CssSelector, kvs: NonEmptyVector[CssKV]): Unit = {
+    def apply(kf: KeyframeSelectorO, mq: CssMediaQueryO, sel: CssSelector, kvs: NonEmptyArraySeq[CssKV]): Unit = {
       selStart(mq, sel)
       printCssKV(kf, mq, kvs)
       selEnd(mq, sel)
     }
 
-    def printCssKV(kf: KeyframeSelectorO, mq: CssMediaQueryO, kvs: NonEmptyVector[CssKV]): Unit = {
+    def printCssKV(kf: KeyframeSelectorO, mq: CssMediaQueryO, kvs: NonEmptyArraySeq[CssKV]): Unit = {
       kv1(kf, mq, kvs.head)
       kvs.tail.foreach(kvn(kf, mq, _))
     }

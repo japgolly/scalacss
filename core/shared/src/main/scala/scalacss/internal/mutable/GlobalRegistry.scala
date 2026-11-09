@@ -1,5 +1,6 @@
 package scalacss.internal.mutable
 
+import scala.collection.immutable.ArraySeq
 import scala.reflect.ClassTag
 
 /**
@@ -29,10 +30,10 @@ object GlobalRegistry extends StyleSheetRegistry
 class StyleSheetRegistry(implicit mutex: Mutex) {
 
   import StyleSheet.{Inline => ISS}
-  final type ISSs = Vector[ISS]
+  final type ISSs = ArraySeq[ISS]
 
   private[this] var _register: ISSs =
-    Vector.empty[ISS]
+    ArraySeq.empty[ISS]
 
   private[this] var _onRegistration: ISSs => Unit =
     (_: ISSs) => ()
@@ -52,7 +53,7 @@ class StyleSheetRegistry(implicit mutex: Mutex) {
     }
 
   def register(ss: ISS*): Unit = {
-    val v = ss.toVector
+    val v = ss.to(ArraySeq)
     val f = mutex {
       _register ++= v
       _onRegistration

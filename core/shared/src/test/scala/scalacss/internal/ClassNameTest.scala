@@ -32,26 +32,26 @@ object ClassNameTest extends TestSuite {
 
     "parse" - {
       "single" - {
-        val result = ClassName.parse("btn").toVector
-        assertEq(result, Vector(ClassName("btn")))
+        val result = ClassName.parse("btn").to(ArraySeq)
+        assertEq(result, ArraySeq(ClassName("btn")))
       }
 
       "multiple" - {
-        val result = ClassName.parse("btn btn-default").toVector
-        assertEq(result, Vector(ClassName("btn"), ClassName("btn-default")))
+        val result = ClassName.parse("btn btn-default").to(ArraySeq)
+        assertEq(result, ArraySeq(ClassName("btn"), ClassName("btn-default")))
       }
 
       "extraWhitespace" - {
-        val result = ClassName.parse("  btn \t btn-default \n btn-sm  ").toVector
-        assertEq(result, Vector(ClassName("btn"), ClassName("btn-default"), ClassName("btn-sm")))
+        val result = ClassName.parse("  btn \t btn-default \n btn-sm  ").to(ArraySeq)
+        assertEq(result, ArraySeq(ClassName("btn"), ClassName("btn-default"), ClassName("btn-sm")))
       }
 
       "empty" - {
-        assertEq(ClassName.parse("").toVector, Vector.empty)
+        assertEq(ClassName.parse("").to(ArraySeq), ArraySeq.empty)
       }
 
       "whitespaceOnly" - {
-        assertEq(ClassName.parse("   \t  \n  ").toVector, Vector.empty)
+        assertEq(ClassName.parse("   \t  \n  ").to(ArraySeq), ArraySeq.empty)
       }
     }
 
@@ -61,24 +61,24 @@ object ClassNameTest extends TestSuite {
       "addClassName" - {
         "withSpaces" - {
           val s = addClassName("btn btn-default")
-          assertEq(s.addClassNames, Vector(ClassName("btn"), ClassName("btn-default")))
+          assertEq(s.addClassNames, ArraySeq(ClassName("btn"), ClassName("btn-default")))
         }
 
         "empty" - {
           val s = addClassName("")
-          assertEq(s.addClassNames, Vector.empty)
+          assertEq(s.addClassNames, ArraySeq.empty)
         }
 
         "whitespaceOnly" - {
           val s = addClassName("   ")
-          assertEq(s.addClassNames, Vector.empty)
+          assertEq(s.addClassNames, ArraySeq.empty)
         }
       }
 
       "addClassNames" - {
         "multipleArgs" - {
           val s = addClassNames("btn btn-primary", " active ", "", "   ", "extra")
-          assertEq(s.addClassNames, Vector(ClassName("btn"), ClassName("btn-primary"), ClassName("active"), ClassName("extra")))
+          assertEq(s.addClassNames, ArraySeq(ClassName("btn"), ClassName("btn-primary"), ClassName("active"), ClassName("extra")))
         }
       }
     }

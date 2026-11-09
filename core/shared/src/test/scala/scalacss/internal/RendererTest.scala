@@ -1,6 +1,6 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.microlibs.testutil.TestUtil._
 import scala.collection.immutable.ListMap
 import scalacss.DevDefaults._
@@ -14,13 +14,13 @@ object RendererTest extends TestSuite {
       val kfEntry = CssEntry.Keyframes(
         ClassName("anim"),
         ListMap(
-          Percentage(0) -> Vector(
-            CssEntry.Style(None, "0%", NonEmptyVector(CssKV("color", "red"))),
-            CssEntry.Style(None, "0%", NonEmptyVector(CssKV("width", "10px")))
+          Percentage(0) -> ArraySeq(
+            CssEntry.Style(None, "0%", NonEmptyArraySeq(CssKV("color", "red"))),
+            CssEntry.Style(None, "0%", NonEmptyArraySeq(CssKV("width", "10px")))
           )
         )
       )
-      val rendered = StringRenderer.formatTiny(Vector(kfEntry))
+      val rendered = StringRenderer.formatTiny(ArraySeq(kfEntry))
       assertEq(rendered, "@keyframes anim{0%{color:red;width:10px}}")
     }
 
@@ -29,7 +29,7 @@ object RendererTest extends TestSuite {
       val customFormat: StringRenderer.Format = sb =>
         StringRenderer.formatTiny(sb).copy(done = () => { doneCalled = true; sb.append("/*done*/") })
       val renderer = new StringRenderer.Raw(customFormat)
-      val out = renderer(Vector.empty)
+      val out = renderer(ArraySeq.empty)
       assert(doneCalled)
       assertEq(out, "/*done*/")
     }
@@ -40,13 +40,13 @@ object RendererTest extends TestSuite {
       "noDoubleQuotesInFontFace" - {
         val ff = CssEntry.FontFace(
           fontFamily = "\"My Font\"",
-          src = NonEmptyVector("url(font.woff)"),
+          src = NonEmptyArraySeq("url(font.woff)"),
           fontStretch = None,
           fontStyle = None,
           fontWeight = None,
           unicodeRange = None
         )
-        val rendered = StringRenderer.formatTiny(Vector(ff))
+        val rendered = StringRenderer.formatTiny(ArraySeq(ff))
         assert(!rendered.contains("\"\""))
         assertEq(rendered, """@font-face {font-family:"My Font";src:url(font.woff)}""")
       }
@@ -54,13 +54,13 @@ object RendererTest extends TestSuite {
       "consistencyWithStyle" - {
         val ff = FontFace[String](
           "My Font",
-          NonEmptyVector("url(font.woff)")
+          NonEmptyArraySeq("url(font.woff)")
         )
         val styleWithFont = Dsl.style(fontFamily(ff))
-        val styleEntry = Css.styleA(StyleA(ClassName("c"), Vector.empty, styleWithFont))(Env.empty)
+        val styleEntry = Css.styleA(StyleA(ClassName("c"), ArraySeq.empty, styleWithFont))(Env.empty)
         val fontEntry = Css.fontFaces(ff)
         val renderedStyle = StringRenderer.formatTiny(styleEntry)
-        val renderedFont = StringRenderer.formatTiny(Vector(fontEntry))
+        val renderedFont = StringRenderer.formatTiny(ArraySeq(fontEntry))
 
         assertEq(renderedFont, """@font-face {font-family:'My Font';src:url(font.woff)}""")
         assertEq(renderedStyle, """.c{font-family:'My Font'}""")
@@ -72,15 +72,15 @@ object RendererTest extends TestSuite {
       val kf = Keyframes(
         ClassName("anim"),
         Seq(
-          (Percentage(0), StyleA(ClassName("k0"), Vector.empty, Dsl.style(color.red))),
-          (Percentage(0), StyleA(ClassName("k1"), Vector.empty, Dsl.style(width(10 px)))),
-          (Percentage(100), StyleA(ClassName("k2"), Vector.empty, Dsl.style(color.blue)))
+          (Percentage(0), StyleA(ClassName("k0"), ArraySeq.empty, Dsl.style(color.red))),
+          (Percentage(0), StyleA(ClassName("k1"), ArraySeq.empty, Dsl.style(width(10 px)))),
+          (Percentage(100), StyleA(ClassName("k2"), ArraySeq.empty, Dsl.style(color.blue)))
         )
       )
       val cssKf = Css.keyframes(kf)(Env.empty)
       val frame0 = cssKf.frames(Percentage(0))
       val props0 = frame0.flatMap(_.content.whole.map(_.key))
-      assertEq(props0, Vector("color", "width"))
+      assertEq(props0, ArraySeq("color", "width"))
     }
 
   }

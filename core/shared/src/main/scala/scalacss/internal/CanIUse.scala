@@ -8,7 +8,7 @@ package scalacss.internal
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.univeq.UnivEq
 
 object CanIUse {
@@ -36,7 +36,7 @@ object CanIUse {
     case object webkit extends Prefix("webkit")
     implicit def univEq: UnivEq[Prefix] = UnivEq.derive
     implicit val ordering: Ordering[Prefix] = Ordering.by(_.name)
-    val values = NonEmptyVector[Prefix](moz, ms, o, webkit)
+    val values = NonEmptyArraySeq[Prefix](moz, ms, o, webkit)
   }
 
   import Prefix._
@@ -60,7 +60,7 @@ object CanIUse {
     val Safari            = Agent(webkit, Map.empty)
     val Samsung           = Agent(webkit, Map.empty)
     implicit def univEq: UnivEq[Agent] = UnivEq.derive
-    val values = NonEmptyVector[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari, Samsung)
+    val values = NonEmptyArraySeq[Agent](AndroidBrowser, AndroidChrome, AndroidFirefox, AndroidUC, BlackberryBrowser, Chrome, Edge, Firefox, IE, IEMobile, IOSSafari, Opera, OperaMini, OperaMobile, Safari, Samsung)
   }
 
   import Agent._

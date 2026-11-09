@@ -1,6 +1,6 @@
 package scalacss.internal.mutable
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import japgolly.microlibs.testutil.TestUtil._
 import scalacss.internal._
 import utest._
@@ -31,7 +31,7 @@ object RegisterTest extends TestSuite {
 
   implicit def env: Env = Env.empty
 
-  def stylesToCssMap(s: Vector[StyleA]) =
+  def stylesToCssMap(s: ArraySeq[StyleA]) =
     Css.styles(s).map(e => (e.sel, e.content)).toMap
 
   override def tests = Tests {
@@ -45,10 +45,10 @@ object RegisterTest extends TestSuite {
       val a4 = reg registerS ss4
       assertDistinctClasses(a1, a2, a3, a4)
       val css = stylesToCssMap(reg.styles)
-      assertEq(css(Css className a1.className), NonEmptyVector(CssKV("margin-top", "1px")))
-      assertEq(css(Css className a2.className), NonEmptyVector(CssKV("margin-bottom", "2px")))
-      assertEq(css(Css className a3.className), NonEmptyVector(CssKV("margin-right", "3px")))
-      assertEq(css(Css className a4.className), NonEmptyVector(CssKV("margin-left", "4px")))
+      assertEq(css(Css className a1.className), NonEmptyArraySeq(CssKV("margin-top", "1px")))
+      assertEq(css(Css className a2.className), NonEmptyArraySeq(CssKV("margin-bottom", "2px")))
+      assertEq(css(Css className a3.className), NonEmptyArraySeq(CssKV("margin-right", "3px")))
+      assertEq(css(Css className a4.className), NonEmptyArraySeq(CssKV("margin-left", "4px")))
       assertEq(css.size, 4)
     }
 
@@ -73,33 +73,33 @@ object RegisterTest extends TestSuite {
         "multi" - {
           val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
           implicit def cnh: ClassNameHint = ClassNameHint("blah")
-          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
-          assertEq(a.style.addClassNames.map(_.value), Vector("btn", "btn-default"))
+          val a = reg registerS StyleS.empty.copy(addClassNames = ArraySeq(ClassName("btn"), ClassName("btn-default")))
+          assertEq(a.style.addClassNames.map(_.value), ArraySeq("btn", "btn-default"))
         }
 
         "single" - {
           val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
           implicit def cnh: ClassNameHint = ClassNameHint("blah")
-          val a = reg registerS StyleS.empty.copy(addClassNames = Vector(ClassName("btn")))
-          assertEq(a.style.addClassNames.map(_.value), Vector("btn"))
+          val a = reg registerS StyleS.empty.copy(addClassNames = ArraySeq(ClassName("btn")))
+          assertEq(a.style.addClassNames.map(_.value), ArraySeq("btn"))
         }
       }
 
       "noDuplicateWarning" - {
-        var warnings = Vector.empty[String]
+        var warnings = ArraySeq.empty[String]
         val errHandler = new ErrorHandler {
           override def warn = Some((_, w) => warnings :+= w.msg)
           override def badInput[I](s: StyleF[I], i: I) = ???
         }
         val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
         implicit def cnh: ClassNameHint = ClassNameHint("blah")
-        val s1 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-default")))
-        val s2 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-primary")))
+        val s1 = StyleS.empty.copy(addClassNames = ArraySeq(ClassName("btn"), ClassName("btn-default")))
+        val s2 = StyleS.empty.copy(addClassNames = ArraySeq(ClassName("btn"), ClassName("btn-primary")))
         val a1 = reg registerS s1
         val a2 = reg registerS s2
         assertEq(a1.htmlClass, "btn btn-default")
         assertEq(a2.htmlClass, "btn btn-primary")
-        assertEq(warnings, Vector.empty)
+        assertEq(warnings, ArraySeq.empty)
       }
     }
 
@@ -108,8 +108,8 @@ object RegisterTest extends TestSuite {
       implicit def composition: Compose = Compose.safe
       implicit def cnh: ClassNameHint = ClassNameHint("blah")
 
-      def newTestReg(): (Register, () => Vector[(ClassName, Warning)]) = {
-        var warnings = Vector.empty[(ClassName, Warning)]
+      def newTestReg(): (Register, () => ArraySeq[(ClassName, Warning)]) = {
+        var warnings = ArraySeq.empty[(ClassName, Warning)]
         val errHandler = new ErrorHandler {
           override def warn = Some((cn, w) => warnings :+= ((cn, w)))
           override def badInput[I](s: StyleF[I], i: I) = ???
@@ -147,7 +147,7 @@ object RegisterTest extends TestSuite {
       "keyframes" - {
         val (reg, getWarns) = newTestReg()
         val kfStyle = Dsl.style(color.red, color.blue)
-        val kf = Keyframes(ClassName("myAnim"), Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, kfStyle))))
+        val kf = Keyframes(ClassName("myAnim"), Seq((Percentage(0), StyleA(ClassName("k0"), ArraySeq.empty, kfStyle))))
         reg.registerKeyframes(kf)
         val warns = getWarns()
         assert(warns.exists(_._2.msg.contains("color")))
@@ -171,7 +171,7 @@ object RegisterTest extends TestSuite {
       "fontFacePostRender" - {
         val (reg, getWarns) = newTestReg()
         val _ = reg.fontFaces
-        val ff = FontFace[Option[String]](Some("myFont"), NonEmptyVector("url(font.woff)"))
+        val ff = FontFace[Option[String]](Some("myFont"), NonEmptyArraySeq("url(font.woff)"))
         reg.registerFontFace(ff)
         val warns = getWarns()
         assert(warns.exists(_._2.msg.contains("after stylesheet has been rendered")))

@@ -1,13 +1,14 @@
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.{console, document}
+import scala.collection.immutable.ArraySeq
 
 object Demo {
 
   def main(args: Array[String]): Unit = {
 
     // Try to make JS size comparison fairer
-    val v = Vector.empty[Int] :+ 1 :+ 2 :+ 3 :+ 4 :+ 5 :+ 6 :+ 7
+    val v = ArraySeq.empty[Int] :+ 1 :+ 2 :+ 3 :+ 4 :+ 5 :+ 6 :+ 7
     val m = Map.empty[Int, Int] ++ v.iterator.map(i => (i, i))
     val s = Set.empty[(Int, Int)] ++ m
     console.log(s.toString)

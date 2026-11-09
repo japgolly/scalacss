@@ -92,9 +92,9 @@ object Domain {
     private[this] val as = a.size
     val (size, starts) =
       if (as == 0)
-        (if (r.contains(0)) 1 else 0, Vector.empty[Int])
+        (if (r.contains(0)) 1 else 0, ArraySeq.empty[Int])
       else
-        r.foldLeft((0, Vector.empty[Int])) {
+        r.foldLeft((0, ArraySeq.empty[Int])) {
           case ((sum, q), i) => (sum + (if (i == 0) 1 else math.pow(as, i).toInt), q :+ sum)
         }
 

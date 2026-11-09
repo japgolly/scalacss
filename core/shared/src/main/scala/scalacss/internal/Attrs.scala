@@ -1,13 +1,13 @@
 package scalacss.internal
 
-import japgolly.microlibs.nonempty.NonEmptyVector
+import japgolly.microlibs.nonempty.NonEmptyArraySeq
 import scalacss.internal.Literal.{Typed => LT}
 import scalacss.internal.ValueT._
 import scalacss.internal.{Literal => L}
 
 object Attrs {
 
-  private[internal] lazy val valuesForAllAttr = NonEmptyVector[Attr](
+  private[internal] lazy val valuesForAllAttr = NonEmptyArraySeq[Attr](
     alignContent, alignItems, alignSelf, animation, animationDelay, animationDirection, animationDuration,
     animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction,
     backfaceVisibility, background, backgroundAttachment, backgroundBlendMode, backgroundClip, backgroundColor,
@@ -67,8 +67,8 @@ object Attrs {
     justifyItems, overflowAnchor,
     svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity)
 
-  lazy val values: NonEmptyVector[Attr] =
-    Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
+  lazy val values: NonEmptyArraySeq[Attr] =
+    ArraySeq[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
 
   /**
    * The CSS align-content property aligns a flex container's lines within the flex container when there is extra space on the cross-axis. This property has no effect on single line flexible boxes.
