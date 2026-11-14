@@ -31,7 +31,7 @@ object Env {
                                scan             : F[Scan],
                                grid             : F[Boolean])
   object Media {
-    @deprecated("This is unused.", "1.1.1")
+    @deprecated("Media is unused.", "1.1.1")
     def empty[F[+_]](e: F[Nothing]): Media[F] =
       Media[F](e, e, e, e, e, e, e, e, e, e, e, e, e)
   }
@@ -79,24 +79,32 @@ object Env {
 
   @nowarn("msg=deprecated")
   def apply(platform: Platform[Option]): Env =
-    new Env(platform, Media.empty(None))
+    new Env(NonEmptyVector one platform, Media.empty(None))
+
+  @nowarn("msg=deprecated")
+  def apply(platforms: NonEmptyVector[Platform[Option]]): Env =
+    new Env(platforms, Media.empty(None))
 
   @deprecated("Media is unused", "1.1.1")
   def apply(platform: Platform[Option], media: Media[Option]): Env =
-    new Env(platform, media)
+    new Env(NonEmptyVector one platform, media)
 }
 
 import Env._
 
 @nowarn("msg=deprecated")
-final case class Env(platform: Platform[Option],
-                     @deprecated("This is unused.", "1.1.1") media: Media[Option]) {
+final case class Env(platforms: NonEmptyVector[Platform[Option]],
+                     @deprecated("Media is unused.", "1.1.1") media: Media[Option]) {
+
+  @deprecated("Use .platforms", "1.1.1")
+  def platform: Platform[Option] =
+    platforms.head
 
   @deprecated("This is no longer used.", "1.1.1")
   lazy val prefixWhitelist: SortedSet[CanIUse.Prefix] =
-    CanIUse2.prefixesForPlatform(platform)
+    platforms.reduceMapLeft1(CanIUse2.prefixesForPlatform)(_ ++ _)
 
   /** A non-empty set of all the agents that are relevant to the current platform. */
   lazy val agents: Set[CanIUse.Agent] =
-    CanIUse2.agentsForPlatform(platform).toSet
+    platforms.reduceMapLeft1(CanIUse2.agentsForPlatform(_).toSet)(_ ++ _)
 }

@@ -365,7 +365,7 @@ object AttrTest extends TestSuite {
 
     "envDepPrefixes1" - {
       def test(name: String)(exp: String*): Unit = {
-        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Option(name)))
+        val env = Env(Env.Platform.empty(None).copy(name = Option(name)))
         val a = cursor.zoomIn(env).map(_.value).sorted
         assertEq(a, exp.toVector.sorted)
       }
@@ -379,7 +379,7 @@ object AttrTest extends TestSuite {
 
     "envDepPrefixes2" - {
       def test(name: String)(exp: String*)(implicit q: Line): Unit = {
-        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Option(name)))
+        val env = Env(Env.Platform.empty(None).copy(name = Option(name)))
         val a = AV(userSelect, "none")(env).map(_.key).sorted
         assertEq(a, exp.toVector.sorted)
       }
