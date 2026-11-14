@@ -2,6 +2,7 @@ package scalacss.internal
 
 import scala.collection.immutable.SortedSet
 import scalacss.internal.Media.{Orientation, Scan}
+import scala.annotation.nowarn
 
 object Env {
 
@@ -15,6 +16,7 @@ object Env {
    *             If the device is grid-based (such as a TTY terminal or a phone display with only one font),
    *             the value is true, otherwise it is false.
    */
+  @deprecated("Media is unused.", "1.1.1")
   final case class Media[F[_]](width            : F[Length[Int]],
                                height           : F[Length[Int]],
                                aspectRatio      : F[Double],
@@ -29,6 +31,7 @@ object Env {
                                scan             : F[Scan],
                                grid             : F[Boolean])
   object Media {
+    @deprecated("This is unused.", "1.1.1")
     def empty[F[+_]](e: F[Nothing]): Media[F] =
       Media[F](e, e, e, e, e, e, e, e, e, e, e, e, e)
   }
@@ -72,13 +75,22 @@ object Env {
   }
 
   final val empty: Env =
-    Env(Platform empty None, Media empty None)
+    Env(Platform empty None)
+
+  @nowarn("msg=deprecated")
+  def apply(platform: Platform[Option]): Env =
+    new Env(platform, Media.empty(None))
+
+  @deprecated("Media is unused", "1.1.1")
+  def apply(platform: Platform[Option], media: Media[Option]): Env =
+    new Env(platform, media)
 }
 
 import Env._
 
+@nowarn("msg=deprecated")
 final case class Env(platform: Platform[Option],
-                     media   : Media[Option]) {
+                     @deprecated("This is unused.", "1.1.1") media: Media[Option]) {
 
   @deprecated("This is no longer used.", "1.1.1")
   lazy val prefixWhitelist: SortedSet[CanIUse.Prefix] =

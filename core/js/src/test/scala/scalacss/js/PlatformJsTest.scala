@@ -9,7 +9,6 @@ object PlatformJsTest extends TestSuite {
   def test(): Unit = {
     println(PlatformJs.value)
     println(PlatformJsEnv.value.map(_.platform))
-    println(PlatformJsEnv.value.map(_.media))
   }
 
   override def tests = Tests {
