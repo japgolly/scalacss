@@ -365,28 +365,30 @@ object AttrTest extends TestSuite {
 
     "envDepPrefixes1" - {
       def test(name: String)(exp: String*): Unit = {
-        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Option(name)))
         val a = cursor.zoomIn(env).map(_.value).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("-webkit-zoom-in", "zoom-in")
+      "chrome"  - test("Chrome") ("zoom-in")
       "firefox" - test("Firefox")("zoom-in")
-      "opera"   - test("Opera")  ("-webkit-zoom-in", "zoom-in")
+      "opera"   - test("Opera")  ("zoom-in")
       "ie"      - test("IE")     (/*"-ms-zoom-in", Unsupported */  "zoom-in")
-      "safari"  - test("Safari") ("-webkit-zoom-in", "zoom-in")
+      "safari"  - test("Safari") ("zoom-in")
+      "all"     - test(null)     ("-webkit-zoom-in", "zoom-in")
     }
 
     "envDepPrefixes2" - {
       def test(name: String)(exp: String*)(implicit q: Line): Unit = {
-        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
-        val a = AV(flex, "")(env).map(_.key).sorted
+        val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Option(name)))
+        val a = AV(userSelect, "none")(env).map(_.key).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("-webkit-flex", "flex")
-      "firefox" - test("Firefox")("flex")
-      "opera"   - test("Opera"  )("-webkit-flex", "flex")
-      "ie"      - test("IE")     ("-ms-flex", "flex")
-      "safari"  - test("Safari") ("-webkit-flex", "flex")
+      "chrome"  - test("Chrome") ("user-select")
+      "firefox" - test("Firefox")("user-select")
+      "opera"   - test("Opera"  )("user-select")
+      "ie"      - test("IE")     ("-ms-user-select")
+      "safari"  - test("Safari") ("-webkit-user-select", "user-select")
+      "all"     - test(null)     ("-ms-user-select", "-webkit-user-select", "user-select")
     }
 
     "gridTemplateAreas" - {

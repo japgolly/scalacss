@@ -119,14 +119,13 @@ object Transform {
   def apply(run: Env => CssKV => Vector[CssKV]): Transform =
     new Transform(run)
 
-  private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform = {
-    import CanIUse2._
-    val pp0 = prefixPlan(subject)
+  private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform =
     Transform(e => {
-      val pp = filteredPrefixPlan(e.prefixWhitelist, pp0)
-      kv => runPlan(pp, pa, l, kv)
+      // Only consider prefixes defined for the env's agents
+      val subectSubset = subject.filter(kv => e.agents.contains(kv._1))
+      val pp = CanIUse2.prefixPlan(subectSubset)
+      kv => CanIUse2.runPlan(pp, pa, l, kv)
     })
-  }
 
   def keys(subject: Subject): Transform =
     prefix(subject, PrefixApply.prepend, CssKV.key)
