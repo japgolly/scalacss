@@ -9,6 +9,7 @@ import scalacss.internal.AttrCmp.{Overlap, Unrelated}
 import scalacss.internal.Attrs._
 import scalacss.internal.Dsl.ToAVToAV
 import scalacss.internal.ValueT.Rules._
+import sourcecode.Line
 import utest._
 
 object AttrTest extends TestSuite {
@@ -36,7 +37,7 @@ object AttrTest extends TestSuite {
   val style = Literal.Typed.dashed
   val colour = Color.green
 
-  def testGen(l: CssKV.Lens)(a: Attr, v: Value, exp: String*): Unit = {
+  def testGen(l: CssKV.Lens)(a: Attr, v: Value, exp: String*)(implicit q: Line): Unit = {
     val x = a.gen(Env.empty)(v).map(l.get).sorted
     val y = exp.toVector.sorted
     assertEq(x, y)
@@ -48,7 +49,7 @@ object AttrTest extends TestSuite {
 //    'laws3 - Attr.laws3.mustBeSatisfiedBy(builtInAttrTriplets)
 
     "overlap" - {
-      def test(e: AttrCmp, a: Attr, b: Attr): Unit =
+      def test(e: AttrCmp, a: Attr, b: Attr)(implicit q: Line): Unit =
         assertEq(s"$a cmp $b", a cmp b, e)
 
       test(Unrelated, padding,     margin)
@@ -171,10 +172,11 @@ object AttrTest extends TestSuite {
     }
 
     "keyPrefixes" - {
-      def test(a: Attr, exp: String*): Unit = testGen(CssKV.key)(a, "x", exp: _*)
+      def test(a: Attr, exp: String*)(implicit q: Line): Unit =
+        testGen(CssKV.key)(a, "x", exp: _*)
       test(textAlign,           "text-align")
-      test(borderRadius,        "border-radius")
-      test(flexWrap,            "flex-wrap", "-ms-flex-wrap")
+      test(borderRadius,        "border-radius", "-webkit-border-radius")
+      test(flexWrap,            "flex-wrap", "-ms-flex-wrap", "-webkit-flex-wrap")
       test(overscrollBehavior,  "overscroll-behavior")
       test(overscrollBehaviorX, "overscroll-behavior-x")
       test(overscrollBehaviorY, "overscroll-behavior-y")
@@ -236,7 +238,7 @@ object AttrTest extends TestSuite {
     }
 
     "valuePrefixes" - {
-      def test(av: AV, exp: String*): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
+      def test(av: AV, exp: String*)(implicit q: Line): Unit = testGen(CssKV.value)(av.attr, av.value, exp: _*)
       "textAlign.left"          - test(textAlign.left,          "left")
       "textAlign.justify"       - test(textAlign.justify,       "justify")
       "float.inlineStart"       - test(float.inlineStart,       "inline-start")
@@ -247,10 +249,10 @@ object AttrTest extends TestSuite {
       "captionSide.inlineStart" - test(captionSide.inlineStart, "inline-start")
       "resize.block"            - test(resize.block,            "block")
       "resize.inline"           - test(resize.inline,           "inline")
-      "width.available"         - test(width.available,         "available")
-      "width.fillAvailable"     - test(width.fillAvailable,     "fill-available")
+      "width.available"         - test(width.available,         "available", "-webkit-available")
+      "width.fillAvailable"     - test(width.fillAvailable,     "fill-available", "-webkit-fill-available")
       "cursor.pointer"          - test(cursor.pointer,          "pointer")
-      "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in")
+      "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in", "-webkit-zoom-in")
 
       "resize.block" - {
         val expected = Vector(
@@ -262,10 +264,11 @@ object AttrTest extends TestSuite {
       "important" - {
         test(textAlign.left.important, "left !important")
         test(cursor.pointer.important, "pointer !important")
-        test(cursor.zoomIn.important,  "zoom-in !important")
+        test(cursor.zoomIn.important,  "zoom-in !important", "-webkit-zoom-in !important")
 
         "avApply" - {
           val expected = Vector(
+            CssKV("cursor", "-webkit-zoom-in !important"),
             CssKV("cursor", "zoom-in !important"),
           )
           assertEq(cursor.zoomIn.important(Env.empty), expected)
@@ -308,7 +311,8 @@ object AttrTest extends TestSuite {
     }
 
     "textIndent" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      def test(av: AV, exp: String)(implicit q: Line): Unit =
+        assertEq(av.value, exp)
       import Literal.Typed._
       test(textIndent(length)                   , "3px")
       test(textIndent(length, hanging)          , "3px hanging")
@@ -317,7 +321,7 @@ object AttrTest extends TestSuite {
     }
 
     "backgroundClip" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
       test(backgroundClip.paddingBox                        , "padding-box")
       test(backgroundClip.borderBox                         , "border-box")
       test(backgroundClip.contentBox                        , "content-box")
@@ -326,7 +330,7 @@ object AttrTest extends TestSuite {
     }
 
     "borderRadius" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
       test(borderRadius(px(3)), "3px")
       test(borderRadius(px(3))(px(5)), "3px / 5px")
       test(borderRadius(px(1), px(2), px(3), px(4))(px(9), px(8), px(7), px(6)), "1px 2px 3px 4px / 9px 8px 7px 6px")
@@ -334,7 +338,7 @@ object AttrTest extends TestSuite {
 
     "PrefixApplyWords" - {
       val pa = CanIUse2.PrefixApply.keywords("abc", "def")
-      def test(i: String, eo: String = null): Unit = {
+      def test(i: String, eo: String = null)(implicit q: Line): Unit = {
         val o = pa(i).fold(i)(_(CanIUse.Prefix.o))
         assertEq(o, Option(eo) getOrElse i)
       }
@@ -365,34 +369,34 @@ object AttrTest extends TestSuite {
         val a = cursor.zoomIn(env).map(_.value).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("zoom-in")
+      "chrome"  - test("Chrome") ("-webkit-zoom-in", "zoom-in")
       "firefox" - test("Firefox")("zoom-in")
-      "opera"   - test("Opera")  ("zoom-in")
+      "opera"   - test("Opera")  ("-webkit-zoom-in", "zoom-in")
       "ie"      - test("IE")     (/*"-ms-zoom-in", Unsupported */  "zoom-in")
-      "safari"  - test("Safari") ("zoom-in")
+      "safari"  - test("Safari") ("-webkit-zoom-in", "zoom-in")
     }
 
     "envDepPrefixes2" - {
-      def test(name: String)(exp: String*): Unit = {
+      def test(name: String)(exp: String*)(implicit q: Line): Unit = {
         val env = Env.empty.copy(platform = Env.Platform.empty(None).copy(name = Some(name)))
         val a = AV(flex, "")(env).map(_.key).sorted
         assertEq(a, exp.toVector.sorted)
       }
-      "chrome"  - test("Chrome") ("flex")
+      "chrome"  - test("Chrome") ("-webkit-flex", "flex")
       "firefox" - test("Firefox")("flex")
-      "opera"   - test("Opera")  ("flex")
+      "opera"   - test("Opera"  )("-webkit-flex", "flex")
       "ie"      - test("IE")     ("-ms-flex", "flex")
-      "safari"  - test("Safari") ("flex")
+      "safari"  - test("Safari") ("-webkit-flex", "flex")
     }
 
     "gridTemplateAreas" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
 
     "rowGap" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
       test(rowGap.normal, "normal")
       test(rowGap(Literal.Typed.normal), "normal")
       test(rowGap.`0`, "0")
@@ -401,14 +405,14 @@ object AttrTest extends TestSuite {
     }
 
     "gap" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
       test(gap.normal, "normal")
       test(gap(Literal.Typed.normal, Literal.Typed.`0`), "normal 0")
       test(gap(pct, length), "5% 3px")
     }
 
     "pointerEvents" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
       test(pointerEvents.auto,    "auto")
       test(pointerEvents.none,    "none")
       test(pointerEvents.inherit, "inherit")
@@ -416,7 +420,7 @@ object AttrTest extends TestSuite {
       test(pointerEvents.unset,   "unset")
     }
     "justifyContent" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
       test(justifyContent.center       , "center")
       test(justifyContent.start        , "start")
       test(justifyContent.end          , "end")
@@ -435,7 +439,8 @@ object AttrTest extends TestSuite {
       test(justifyContent.unset        , "unset")
     }
     "userSelect" - {
-      def test(av: AV, exp: String): Unit = assertEq(av.value, exp.trim)
+      def test(av: AV, exp: String)(implicit q: Line): Unit =
+        assertEq(av.value, exp.trim)
       test(userSelect.auto, "auto")
       test(userSelect.text, "text")
       test(userSelect.none, "none")

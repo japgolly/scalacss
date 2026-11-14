@@ -281,8 +281,7 @@ object Caniuse {
 
     def fmtAgent(a: Agent) = {
       import a._
-      val p2 = fmtpref2(prefix)
-      s"""val $key = Agent($p2, ${fmtmap(fmtstr, identity[String])(prefixExceptions)})"""
+      s"""val $key = Agent("${key.trim}", $prefix, ${fmtmap(fmtstr, identity[String])(prefixExceptions)})"""
     }
 
     def fmtData(d: Data) = {
@@ -341,7 +340,7 @@ object $obj {
 
   import Prefix._
 
-  final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
+  final case class Agent(name: String, prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
     implicit def univEq: UnivEq[Agent] = UnivEq.derive

@@ -318,6 +318,7 @@ object InlineTest extends utest.TestSuite {
         |  margin: 12px;
         |  padding: 0.5ex;
         |  cursor: pointer;
+        |  -webkit-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
@@ -330,10 +331,12 @@ object InlineTest extends utest.TestSuite {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:not(:first-child):visited {
+        |  -webkit-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
@@ -511,10 +514,12 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.MyInline3-attr04 {
+        |  -webkit-initial-letter: 3;
         |  initial-letter: 3;
         |}
         |
         |.MyInline3-attr05 {
+        |  -webkit-initial-letter: 3.2 5;
         |  initial-letter: 3.2 5;
         |}
         |
@@ -657,11 +662,17 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
+       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-duration: 5s;
        |  animation-duration: 5s;
+       |  -webkit-animation-direction: alternate;
        |  animation-direction: alternate;
+       |  -webkit-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
+       |  -webkit-animation-play-state: running;
        |  animation-play-state: running;
+       |  -webkit-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
@@ -673,10 +684,12 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.manual:hover {
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:nth-child(5) {
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
