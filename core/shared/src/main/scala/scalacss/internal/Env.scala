@@ -80,6 +80,11 @@ import Env._
 final case class Env(platform: Platform[Option],
                      media   : Media[Option]) {
 
+  @deprecated("This is no longer used.", "1.1.1")
   lazy val prefixWhitelist: SortedSet[CanIUse.Prefix] =
     CanIUse2.prefixesForPlatform(platform)
+
+  /** A non-empty set of all the agents that are relevant to the current platform. */
+  lazy val agents: Set[CanIUse.Agent] =
+    CanIUse2.agentsForPlatform(platform).toSet
 }

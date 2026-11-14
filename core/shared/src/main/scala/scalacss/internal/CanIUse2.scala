@@ -48,7 +48,12 @@ object CanIUse2 {
     memo { s =>
       val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
       val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
-      if (noPrefix) prefixes :+ None else prefixes
+      // prefixes can be empty if we have only Supported as the sole Support type.
+      // Rather than completely omit CSS the user has declared, we emit the CSS once without any prefixes.
+      if (noPrefix || prefixes.isEmpty)
+        prefixes :+ None
+      else
+        prefixes
     }
 
   val prefixed: String => Boolean = {
