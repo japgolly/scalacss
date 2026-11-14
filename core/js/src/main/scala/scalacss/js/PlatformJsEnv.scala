@@ -20,7 +20,7 @@ object PlatformJsEnv {
 
   def value: Option[Env] =
     PlatformJs.value.map(p =>
-      Env(platform(p), Media.empty(None)))
+      Env(platform(p)))
 
   def platform(p: PlatformJs): Platform[Option] = {
     val envOs =
