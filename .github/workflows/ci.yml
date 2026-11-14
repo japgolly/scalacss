@@ -31,6 +31,7 @@ jobs:
         with:
           java-version: adoptium@1.${{ matrix.java }}
           node-version: 26
+          jsdom-version: 26.1.0
 
       - name: Build and test
         shell: bash

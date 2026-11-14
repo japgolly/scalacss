@@ -12,6 +12,7 @@ object MyStandalone extends StyleSheet.Standalone {
     margin(12 px, auto),
     textAlign.left,
     cursor.pointer,
+    userSelect.none,
 
     &.hover -
       cursor.zoomIn,
@@ -46,9 +47,13 @@ object StandaloneTest extends utest.TestSuite {
         |  margin: 12px auto;
         |  text-align: left;
         |  cursor: pointer;
+        |  -ms-user-select: none;
+        |  -webkit-user-select: none;
+        |  user-select: none;
         |}
         |
         |div.std:hover {
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
