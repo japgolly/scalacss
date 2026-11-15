@@ -60,8 +60,9 @@ package object internal {
     }
 
   def memo[A: UnivEq, B](f: A => B): A => B = {
+    val lock = new AnyRef
     var m = UnivEq.emptyMap[A, B]
-    a => m.synchronized {
+    a => lock.synchronized {
       m.getOrElse(a, {
         val b = f(a)
         m = m.updated(a, b)

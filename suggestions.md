@@ -2,11 +2,6 @@
 
 ## Bugs & Correctness
 
-1. **Fix `memo` locking on a reassigned `var` (`core/shared/src/main/scala/scalacss/internal/package.scala`)**
-   - `memo` (lines 62-71) defines `var m = UnivEq.emptyMap[A, B]` and synchronises on `m.synchronized { ... m = m.updated(a, b) ... }`.
-   - Because `m` is reassigned on every cache miss, concurrent JVM threads synchronise on different `Map` instances and can race or lose cached entries.
-   - **Fix:** Synchronise on a dedicated `val lock = new AnyRef` (or use a `ConcurrentHashMap` / `mutable.HashMap` guarded by a fixed lock), or replace global memoisation for `CanIUse2.prefixPlan` (see #17).
-
 2. **Fix `Register.registerFontFace` crashing on multi-word `fontFamily` names (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
    - `registerFontFace` (line 135) wraps `finalFamilyName` in `ClassName(finalFamilyName)` just to pass an argument to `emitRegistrationWarnings`.
    - `ClassName` (`core/shared/src/main/scala/scalacss/internal/Data.scala:6-9`) asserts `value.nonEmpty` and `!value.exists(_.isWhitespace)`. Any valid multi-word font family like `"Open Sans"` (which `FontFace.quoteIfNeeded` explicitly supports) throws `AssertionError`.
