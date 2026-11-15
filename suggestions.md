@@ -2,11 +2,6 @@
 
 ## Bugs & Correctness
 
-2. **Fix `Register.registerFontFace` crashing on multi-word `fontFamily` names (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
-   - `registerFontFace` (line 135) wraps `finalFamilyName` in `ClassName(finalFamilyName)` just to pass an argument to `emitRegistrationWarnings`.
-   - `ClassName` (`core/shared/src/main/scala/scalacss/internal/Data.scala:6-9`) asserts `value.nonEmpty` and `!value.exists(_.isWhitespace)`. Any valid multi-word font family like `"Open Sans"` (which `FontFace.quoteIfNeeded` explicitly supports) throws `AssertionError`.
-   - **Fix:** Avoid constructing `ClassName` from a font family name (or pass an `ErrorHandler` label that doesn't require `ClassName` whitespace invariants).
-
 3. **Fix `StyleSheet.Inline.MKeyframes.apply` eagerly constructing `ClassName` before sanitisation (`core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala`)**
    - `MKeyframes.apply` (line 159) constructs `Keyframes(ClassName(name), frames)` before `cssRegister.registerKeyframes` runs `macroName(cnh, keyframes.name.value)` (`Register.scala:125`).
    - A backticked identifier containing spaces or an empty fallback `""` from the macro throws `AssertionError` in `ClassName` before `MacroName.Use` can sanitise illegal characters or `MacroName.Ignore` can discard it.

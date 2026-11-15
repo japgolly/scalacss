@@ -38,7 +38,7 @@ object RendererTest extends TestSuite {
 
       "noDoubleQuotesInFontFace" - {
         val ff = CssEntry.FontFace(
-          fontFamily = "\"My Font\"",
+          fontFamily = FontFamily("\"My Font\""),
           src = NonEmptyVector("url(font.woff)"),
           fontStretch = None,
           fontStyle = None,
@@ -51,8 +51,8 @@ object RendererTest extends TestSuite {
       }
 
       "consistencyWithStyle" - {
-        val ff = FontFace[String](
-          "My Font",
+        val ff = FontFace[FontFamily](
+          FontFamily("My Font"),
           NonEmptyVector("url(font.woff)")
         )
         val styleWithFont = Dsl.style(fontFamily(ff))

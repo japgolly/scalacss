@@ -107,10 +107,10 @@ object RegisterTest extends TestSuite {
       implicit def composition: Compose = Compose.safe
       implicit def cnh: ClassNameHint = ClassNameHint("blah")
 
-      def newTestReg(): (Register, () => Vector[(ClassName, Warning)]) = {
-        var warnings = Vector.empty[(ClassName, Warning)]
+      def newTestReg(): (Register, () => Vector[(Either[FontFamily, ClassName], Warning)]) = {
+        var warnings = Vector.empty[(Either[FontFamily, ClassName], Warning)]
         val errHandler = new ErrorHandler {
-          override def warn = Some((cn, w) => warnings :+= ((cn, w)))
+          override def warn = Some((src, w) => warnings :+= ((src, w)))
           override def badInput[I](s: StyleF[I], i: I) = ???
         }
         val reg = new Register(NameGen.numbered(), MacroName.Use, errHandler)
@@ -170,7 +170,7 @@ object RegisterTest extends TestSuite {
       "fontFacePostRender" - {
         val (reg, getWarns) = newTestReg()
         val _ = reg.fontFaces
-        val ff = FontFace[Option[String]](Some("myFont"), NonEmptyVector("url(font.woff)"))
+        val ff = FontFace[Option[FontFamily]](Some(FontFamily("myFont")), NonEmptyVector("url(font.woff)"))
         reg.registerFontFace(ff)
         val warns = getWarns()
         assert(warns.exists(_._2.msg.contains("after stylesheet has been rendered")))

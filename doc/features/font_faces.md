@@ -70,6 +70,6 @@ which produces this CSS:
 }
 
 .MyInlineWithFontFace-myFontText {
-  font-family: MyInlineWithFontFace-myFont;
+  font-family: myFont;
 }
 ```

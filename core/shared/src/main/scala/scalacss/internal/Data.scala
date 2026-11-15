@@ -52,6 +52,12 @@ final case class ClassNameHint(value: String)
   */
 final case class Keyframes(name: KeyframeAnimationName, frames: Seq[(KeyframeSelector, StyleA)])
 
+final case class FontFamily(name: String)
+
+object FontFamily {
+  implicit def univEq: UnivEq[FontFamily] = UnivEq.derive
+}
+
 /**
   * Font face declaration
   *
@@ -81,8 +87,8 @@ object FontFace {
       s
   }
 
-  final class FontSrcSelector(val fontFamily: Option[String]) extends AnyVal {
-    def src(src: String, additionalSrc: String*): FontFace[Option[String]] =
+  final class FontSrcSelector(val fontFamily: Option[FontFamily]) extends AnyVal {
+    def src(src: String, additionalSrc: String*): FontFace[Option[FontFamily]] =
       FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
   }
 

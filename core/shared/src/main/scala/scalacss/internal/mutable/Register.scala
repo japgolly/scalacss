@@ -17,7 +17,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   var _nameGen   = initNameGen
   var _styles    = Vector.empty[StyleA]
   var _keyframes = Vector.empty[Keyframes]
-  var _fontFaces = Vector.empty[FontFace[String]]
+  var _fontFaces = Vector.empty[FontFace[FontFamily]]
   var _rendered  = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
@@ -67,26 +67,26 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
         (s0.className getOrElse nextName(cnh), s0.addClassNames)
 
     // Register
-    emitRegistrationWarnings(cn, s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
+    emitRegistrationWarnings(Right(cn), s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
     val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
     a
   }
 
   /** Optional side-effects for warnings */
-  private def emitRegistrationWarnings(cn: ClassName, warnings: => Vector[Warning], checkDuplicates: Boolean = true): Unit =
+  private def emitRegistrationWarnings(src: Either[FontFamily, ClassName], warnings: => Vector[Warning], checkDuplicates: Boolean = true): Unit =
     errHandler.warn.foreach { f =>
 
       def warn(s: String): Unit =
-        f(cn, Warning(Cond.empty, s))
+        f(src, Warning(Cond.empty, s))
 
       if (_rendered)
         warn("Style being registered after stylesheet has been rendered (via .render), or extracted (via .styles).")
 
-      if (checkDuplicates && isTaken(cn))
+      if (checkDuplicates && src.exists(isTaken))
         warn("Another style in the register has the same classname.")
 
-      warnings foreach (f(cn, _))
+      warnings foreach (f(src, _))
     }
 
   def registerF[I](s: StyleF[I])(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
@@ -124,17 +124,16 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
     val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
     val kf = keyframes.copy(name = cn)
-    emitRegistrationWarnings(cn, keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
+    emitRegistrationWarnings(Right(cn), keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
     _keyframes :+= kf
     kf
   }
 
-  def registerFontFace(fontFace: FontFace[Option[String]])(implicit cnh: ClassNameHint): FontFace[String] = mutex {
+  def registerFontFace(fontFace: FontFace[Option[FontFamily]])(implicit cnh: ClassNameHint): FontFace[FontFamily] = mutex {
     // This allows duplicate fontFamily names to be specified
-    val finalFamilyName = fontFace.fontFamily.getOrElse(nextName(cnh).value)
-    val cn = ClassName(finalFamilyName)
-    emitRegistrationWarnings(cn, Vector.empty, checkDuplicates = false)
-    val ff = fontFace.copy(fontFamily = finalFamilyName)
+    val name = FontFamily(fontFace.fontFamily.fold(nextName(cnh).value)(_.name))
+    emitRegistrationWarnings(Left(name), Vector.empty, checkDuplicates = false)
+    val ff = fontFace.copy(fontFamily = name)
     _fontFaces :+= ff
     ff
   }
@@ -149,7 +148,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _keyframes
   }
 
-  def fontFaces: Vector[FontFace[String]] = mutex {
+  def fontFaces: Vector[FontFace[FontFamily]] = mutex {
     _rendered = true
     _fontFaces
   }
@@ -284,7 +283,7 @@ object Register { // ===========================================================
   // ===================================================================================================================
 
   trait ErrorHandler {
-    def warn: Option[(ClassName, Warning) => Unit]
+    def warn: Option[(Either[FontFamily, ClassName], Warning) => Unit]
     def badInput[I](s: StyleF[I], input: I): StyleA
   }
 
@@ -292,8 +291,9 @@ object Register { // ===========================================================
 
     class Noisy(println: String => Unit) extends ErrorHandler {
       override def warn =
-        Some((cn, w) => {
-          this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.msg}")
+        Some({
+          case (Right(cn), w) => this.println(s"[CSS WARNING] ${Css.selector(cn, w.cond)} -- ${w.msg}")
+          case (Left(ff), w)  => this.println(s"[CSS WARNING] font-family: ${ff.name} -- ${w.msg}")
         })
       override def badInput[I](s: StyleF[I], i: I): Nothing = {
         val legal = s.domain.iterator.mkString(",")

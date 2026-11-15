@@ -170,12 +170,12 @@ object StyleSheet {
     }
 
     protected class MFontFace extends DslMacros.MFontFace {
-      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String] = {
+      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
         cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(None)))
       }
 
-      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String] = {
-        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(fontFamily))))
+      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
+        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(FontFamily(fontFamily)))))
       }
     }
 

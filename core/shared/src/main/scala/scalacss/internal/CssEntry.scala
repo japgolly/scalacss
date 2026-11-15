@@ -14,7 +14,7 @@ object CssEntry {
   case class Keyframes(name  : KeyframeAnimationName,
                        frames: ListMap[KeyframeSelector, StyleStream]) extends CssEntry
 
-  case class FontFace(fontFamily  : String,
+  case class FontFace(fontFamily  : FontFamily,
                       src         : NonEmptyVector[String],
                       fontStretch : Option[Value],
                       fontStyle   : Option[Value],

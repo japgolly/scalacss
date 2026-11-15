@@ -6,7 +6,7 @@ object Css {
 
   def apply(ss: IterableOnce[StyleA],
             kfs: IterableOnce[Keyframes],
-            ff: IterableOnce[FontFace[String]])
+            ff: IterableOnce[FontFace[FontFamily]])
            (implicit env: Env): Css = {
     val b = Vector.newBuilder[CssEntry]
     b ++= styles(ss)
@@ -21,7 +21,7 @@ object Css {
   def keyframes(kfs: IterableOnce[Keyframes])(implicit env: Env): KeyframeStream =
     kfs.iterator.map(keyframes).toList
 
-  def fontFaces(ff: IterableOnce[FontFace[String]]): FontFaceStream =
+  def fontFaces(ff: IterableOnce[FontFace[FontFamily]]): FontFaceStream =
     ff.iterator.map(fontFaces).toList
 
   def className(cn: ClassName): CssSelector =
@@ -44,7 +44,7 @@ object Css {
     CssEntry.Keyframes(kfs.name, frames)
   }
 
-  def fontFaces(ff: FontFace[String]): CssEntry.FontFace =
+  def fontFaces(ff: FontFace[FontFamily]): CssEntry.FontFace =
     CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =

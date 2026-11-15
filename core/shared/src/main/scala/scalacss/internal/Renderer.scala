@@ -114,7 +114,7 @@ object StringRenderer {
                     kvn     : (String, String, Boolean) => Unit, //Key, value, wrap
                     end     : ()                        => Unit) = {
     start()
-    kv1("font-family", fontface.fontFamily, true)
+    kv1("font-family", fontface.fontFamily.name, true)
     kvn("src", fontface.src.whole.mkString(","), false)
     for (v <- fontface.fontStretch ) kvn("font-stretch" , v         , false)
     for (v <- fontface.fontStyle   ) kvn("font-style"   , v         , false)
