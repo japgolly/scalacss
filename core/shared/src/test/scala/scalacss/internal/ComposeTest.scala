@@ -194,6 +194,22 @@ object ComposeTest extends TestSuite {
         assert(flatB.subsetOf(flatAB))
       }
 
+      "deterministicWarningOrder" - {
+        val & = Cond.empty
+        val conds = Vector(
+          &.nthChild("10"),
+          &.nthChild("2"),
+          &.hover,
+          &.focus,
+          &.active,
+          &,
+        )
+        val a = StyleS.data(conds.map(_ -> AVs(AV(color, "red"))).toMap)
+        val b = StyleS.data(conds.map(_ -> AVs(AV(color, "blue"))).toMap)
+        val res = a compose b
+        assertEq(res.warnings.map(_.cond), conds.sorted(Cond.ordering))
+      }
+
     }
   }
 }

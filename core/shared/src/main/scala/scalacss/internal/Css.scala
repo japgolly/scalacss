@@ -54,7 +54,7 @@ object Css {
     def main: Iterator[CssEntry.Style] =
       s.dataSorted.iterator.flatMap {
         case (cond, avs) =>
-          val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
+          val kvs = avs.avIterator.flatMap(_(env)).toVector
           NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>
             val mq = mediaQuery(cond)
             val s = selector(sel, cond)

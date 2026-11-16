@@ -2,12 +2,6 @@
 
 ## Performance & Memory Optimisations
 
-22. **Replace repeated `Vector ++`, `ListMap.updated`, and `Set` allocations in `Css`, `Compose`, and `AVs` (`Css.scala`, `Compose.scala`, `AVs.scala`)**
-    1. `Css.style` (`Css.scala:57`): `avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)` repeatedly concatenates `Vector`s; use `avs.avIterator.flatMap(_(env)).toVector` (or a `Vector.newBuilder`).
-    2. `Css.mapByMediaQuery` (`Css.scala:91-98`) and `Css.keyframes` (`Css.scala:40-43`): repeatedly call `ListMap.updated` (O(n) per update) and `NonEmptyVector.endO` (`whole :+ a`); building with a `mutable.LinkedHashMap` internally is O(n) total.
-    3. `Compose.mergeAVs` (`Compose.scala:29-31, 44`): calls `kvs.toSet` / `ovs.toSet` on every conflict check and duplicate filter. Also, `b.data.foldLeft` (line 63) iterates a `HashMap`, making warning order non-deterministic when `b.data` has >4 conditions.
-    4. `AVs.++(avs: AVs)` (`AVs.scala:34-35`): rebuilds `order` and `data` per attribute instead of merging in batch.
-
 23. **Cache `Platform.env` on JS (`core/js/src/main/scala/scalacss/internal/Platform.scala`, `PlatformJsEnv.scala`, `Settings.scala`)**
     1. `Platform.env`, `PlatformJsEnv.value`, and `Settings.cssEnv` are all `def`s. Every `.render`, `.css`, or `.addToDocument()` re-parses `PlatformJs` properties and allocates fresh `OS`, `Platform`, `NonEmptyVector`, `Media`, and `Env` objects, defeating `Env.agents: lazy val`.
     2. **Fix:** Make `Platform.env` (and `PlatformJsEnv.value`) a `lazy val`.
