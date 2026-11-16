@@ -21,6 +21,30 @@ object CondTest extends TestSuite {
         assertEq(AttrContains("custom-attr", "bla").cssValue, "[custom-attr~=\"bla\"]")
         assertEq(AttrStartsWith("custom-attr", "bla").cssValue, "[custom-attr^=\"bla\"]")
         assertEq(AttrEndsWith("custom-attr", "bla").cssValue, "[custom-attr$=\"bla\"]")
+        assertEq(Attr("title", """ok " ' \ Δ cool""").cssValue, """[title="ok \000022 ' \00005C \000394 cool"]""")
+        assertEq(Attr("a", "\"a").cssValue, """[a="\000022a"]""")
+        assertEq(Attr("a", "\\a").cssValue, """[a="\00005Ca"]""")
+        assertEq(Attr("a", "hello\nworld").cssValue, """[a="hello\00000Aworld"]""")
+        assertEq(Attr("a", "🎉").cssValue, """[a="\01F389"]""")
+        assertEq(AttrContains("data-x", """a"b\c""").cssValue, """[data-x~="a\000022b\00005Cc"]""")
+      }
+
+      "nthChild" - {
+        assertEq(NthChild("ODD").cssValue, ":nth-child(ODD)")
+        assertEq(NthChild("EVEN").cssValue, ":nth-child(EVEN)")
+        assertEq(NthChild("Odd").cssValue, ":nth-child(Odd)")
+        assertEq(NthChild("2N+1").cssValue, ":nth-child(2N+1)")
+        assertEq(NthChild("-N+3").cssValue, ":nth-child(-N+3)")
+        assertEq(NthChild("+2N - 1").cssValue, ":nth-child(+2N - 1)")
+        assertEq(NthChild("2n + 1").cssValue, ":nth-child(2n + 1)")
+        assertEq(NthChild("2n - 1").cssValue, ":nth-child(2n - 1)")
+        assertEq(NthChild("2n+ 1").cssValue, ":nth-child(2n+ 1)")
+        assertEq(NthChild("2n +1").cssValue, ":nth-child(2n +1)")
+        assertEq(NthChild("  n + 2  ").cssValue, ":nth-child(n + 2)")
+        assertEq(NthChild("-n + 3 of li.important").cssValue, ":nth-child(-n + 3 of li.important)")
+        assertEq(NthChild("2n+1 OF .foo, .bar").cssValue, ":nth-child(2n+1 OF .foo, .bar)")
+        assertEq(NthLastChild("odd of li").cssValue, ":nth-last-child(odd of li)")
+        assertEq(NthChild("  2n + 1 of .item  ").cssValue, ":nth-child(2n + 1 of .item)")
       }
 
       "elementClassOrder" - {
@@ -50,6 +74,22 @@ object CondTest extends TestSuite {
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("nn").cssValue }
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("-").cssValue }
         intercept[IllegalArgumentException] { Before.&(Hover).nthChild("+").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2 n").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("+ 2n").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("- n").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("+ 4").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("- 4").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n1").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n+").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n-").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("   ").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n+1 of").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2n+1 of   ").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("2nofli").cssValue }
+        intercept[IllegalArgumentException] { Before.&(Hover).nthChild("- n + 3 of li.important").cssValue }
+        intercept[IllegalArgumentException] { NthOfType("2n of li").cssValue }
+        intercept[IllegalArgumentException] { NthLastOfType("2n of li").cssValue }
       }
 
       "composite" - {

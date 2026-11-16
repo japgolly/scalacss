@@ -162,15 +162,27 @@ object Pseudo {
   type NthQuery = String
 
   object NthChildBase {
-    val queryPattern = """^((\+|-)?\d+|odd|even)$""".r.pattern
-    val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
+    private val queryPattern = """^(?i)(?:[+-]?\d+|odd|even)$""".r.pattern
+    private val fQueryPattern = """^(?i)[+-]?\d*n(?:\s*[+-]\s*\d+)?$""".r.pattern
+    private val ofSelectorPattern = """^(?i)(.+?)\s+of\s+(\S.*)$""".r.pattern
+
+    private def validate(cls: String, query: NthQuery): String = {
+      val trimmed = query.trim
+      val m = ofSelectorPattern.matcher(trimmed)
+      val anPlusB =
+        if ((cls == "nth-child" || cls == "nth-last-child") && m.matches())
+          m.group(1)
+        else
+          trimmed
+      require(
+        queryPattern.matcher(anPlusB).matches() || fQueryPattern.matcher(anPlusB).matches(),
+        s"Invalid NthQuery: '$query'")
+      trimmed
+    }
   }
 
-  sealed abstract class NthChildBase(cls: String, query: NthQuery) extends Single(s":$cls($query)", PseudoType.Class) {
-    require(
-      NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches(),
-      s"Invalid NthQuery: '$query'")
-  }
+  sealed abstract class NthChildBase(cls: String, query: NthQuery)
+    extends Single(s":$cls(${NthChildBase.validate(cls, query)})", PseudoType.Class)
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
   final case class NthChild(query: NthQuery) extends NthChildBase("nth-child", query)
@@ -237,7 +249,7 @@ object Pseudo {
     extends Single(s"[$name]", PseudoType.Attr)
 
   final case class AttrSelector(name: String, value: String, op: String)
-    extends Single(s"""[$name$op"$value"]""", PseudoType.Attr)
+    extends Single(s"[$name$op${Util.quote(value, '"')}]", PseudoType.Attr)
 
   /** Selects all elements with a name="value". */
   def Attr(name: String, value: String) =

@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-12. **Fix `Pseudo.AttrSelector` escaping and `Pseudo.NthChildBase` `An+B` syntax support (`core/shared/src/main/scala/scalacss/internal/Pseudo.scala`)**
-    - `AttrSelector` (lines 239-240) interpolates `value` raw into `[$name$op"$value"]` without escaping `"` or `\`, producing broken CSS if `value` contains quotes.
-    - `NthChildBase` (`queryPattern` / `fQueryPattern`, lines 165-166) rejects valid CSS `An+B` expressions with spaces around `+`/`-` (e.g. `"2n + 1"`) or uppercase (`"ODD"`, `"EVEN"`, `"2N+1"`).
-
 13. **Fix `Media.Query.and` silently dropping `TypeExpr` and reordering features (`core/shared/src/main/scala/scalacss/internal/Media.scala`)**
     - In `Query.and` (lines 114-126), `(Left(t1), Left(t2))` does `if (t1 ==* Just(All)) t2 else t1`, silently discarding `t2` (e.g. `media.screen and media.print` drops `print`, and `media.not.screen and media.all` vs `media.all and media.not.screen` behaves inconsistently).
     - `(Right(f), Left(t))` puts `f +: this.tail` after `that.tail`, whereas `(Left(t), Right(f))` puts `this.tail` before `f +: that.tail`.
