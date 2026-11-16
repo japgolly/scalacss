@@ -1,7 +1,7 @@
 package scalacss.internal.mutable
 
-import japgolly.univeq._
 import scala.annotation.tailrec
+import scala.collection.mutable
 import scalacss.internal._
 import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
@@ -19,6 +19,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   private var _keyframes = Vector.empty[Keyframes]
   private var _fontFaces = Vector.empty[FontFace[FontFamily]]
   private var _rendered  = false
+  private val _taken     = mutable.HashSet.empty[ClassName]
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
     mutex {
@@ -46,9 +47,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     s0.addClassNames.nonEmpty && s0.data.isEmpty && s0.className.isEmpty && s0.unsafeExts.isEmpty
 
   private def isTaken(className: ClassName): Boolean =
-    mutex(
-      _styles.exists(s => (s.style.data.nonEmpty || s.style.unsafeExts.nonEmpty) && s.className ==* className)
-        || _keyframes.exists(_.name ==* className))
+    mutex(_taken.contains(className))
 
   private def ensureUnique(cn: ClassName): ClassName =
     mutex(
@@ -88,6 +87,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     emitRegistrationWarnings(Right(cn), s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
     val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
+    if (s0.data.nonEmpty || s0.unsafeExts.nonEmpty)
+      _taken += cn
     a
   }
 
@@ -154,6 +155,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       val kf = Keyframes(cn, frames)
       emitRegistrationWarnings(Right(cn), frames.iterator.flatMap(_._2.style.allWarnings).toVector)
       _keyframes :+= kf
+      _taken += cn
       kf
     }
 

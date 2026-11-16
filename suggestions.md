@@ -2,10 +2,6 @@
 
 ## Performance & Memory Optimisations
 
-20. **Make `Register.isTaken` O(1) instead of O(N) (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
-    1. `isTaken` (lines 34-37) linearly scans `_styles` and `_keyframes`. Under `DevDefaults`, `ensureUnique` and `emitRegistrationWarnings` both call `isTaken`, making `N` style registrations O(N²) (or O(N³) on collisions).
-    2. **Fix:** Maintain a `Set[ClassName]` (or `mutable.HashSet[String]`) of taken names inside `Register`.
-
 21. **Avoid O(n log n) `Cond.toString` allocations in `Cond.ordering` (`core/shared/src/main/scala/scalacss/internal/Cond.scala`)**
     1. `Cond.ordering` (lines 65-66) is `Ordering.by[Cond, String](_.toString)(NaturalOrdering)`.
     2. `StyleS.dataSorted` (`Style.scala:57-61`) sorts using this ordering, calling `Cond.toString`—which renders `Media.css` and `Css.selector`—repeatedly on every comparison.
