@@ -2,10 +2,6 @@
 
 ## Performance & Memory Optimisations
 
-23. **Cache `Platform.env` on JS (`core/js/src/main/scala/scalacss/internal/Platform.scala`, `PlatformJsEnv.scala`, `Settings.scala`)**
-    1. `Platform.env`, `PlatformJsEnv.value`, and `Settings.cssEnv` are all `def`s. Every `.render`, `.css`, or `.addToDocument()` re-parses `PlatformJs` properties and allocates fresh `OS`, `Platform`, `NonEmptyVector`, `Media`, and `Env` objects, defeating `Env.agents: lazy val`.
-    2. **Fix:** Make `Platform.env` (and `PlatformJsEnv.value`) a `lazy val`.
-
 24. **Optimise hot-path string & wrapper allocations (`Util.scala`, `Data.scala`, `Renderer.scala`, `Dsl.scala`, `ValueT.scala`, `Pseudo.scala`, `Scalatags*.scala`)**
     1. `Util.quote` (`Util.scala:7-32`) uses `newStr += add` in a loop and `"\\%06X".format(cp)` instead of a `StringBuilder` and hex digit appending.
     2. `Data.Length.value` (`Data.scala:144-147`) allocates two intermediate strings via `s.stripPrefix("-").stripSuffix(".0")` on every call; `ClassName.parse` (`Data.scala:15`) compiles/splits `\\s+` regex on every call.
