@@ -2,9 +2,6 @@
 
 ## Thread-Safety & Concurrency
 
-16. **Close TOCTOU race, public `var` exposure, and torn snapshots in `Register` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`, `StyleSheet.scala`)**
-    4. `nextName` (`Register.scala:67, 125, 134`) does not check `isTaken`, so auto-generated names can collide with manual names.
-
 17. **Fix JVM `Mutex.mutex` allocating a fresh lock per implicit resolution (`core/jvm/src/main/scala/scalacss/internal/mutable/Mutex.scala`)**
     1. `Mutex.mutex` (line 15) is `implicit def mutex: Mutex = new Mutex` (unlike JS's `implicit val mutex`). Wait-free/shared coordination across callers that summon `Mutex` implicitly (e.g., multiple `StyleSheetRegistry` instances or default `Register`s) gets separate lock instances and extra allocations.
 

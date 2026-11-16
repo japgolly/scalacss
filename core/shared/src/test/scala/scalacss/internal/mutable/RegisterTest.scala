@@ -381,6 +381,50 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "nextNameCollision" - {
+
+      "registerS" - {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Ignore, errHandler)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val manual = reg.registerS(ss1.copy(className = Some(ClassName("SS-0001"))))
+        val auto   = reg.registerS(ss2)
+        assertEq(manual.className, ClassName("SS-0001"))
+        assertEq(auto.className, ClassName("SS-0002"))
+        assertEq(warnings, Vector.empty)
+      }
+
+      "registerKeyframes" - {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), MacroName.Ignore, errHandler)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val manual = reg.registerS(ss1.copy(className = Some(ClassName("SS-0001"))))
+        val kf     = reg.registerKeyframes("fade", Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, ss2))))
+        assertEq(manual.className, ClassName("SS-0001"))
+        assertEq(kf.name, ClassName("SS-0002"))
+        assertEq(warnings, Vector.empty)
+      }
+
+      "constantNameGen" - {
+        val constNG: NameGen = new NameGen {
+          override def next(cnh: ClassNameHint) = (ClassName("dup"), this)
+        }
+        val reg = new Register(constNG, MacroName.Ignore, ErrorHandler.silent)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val a1 = reg.registerS(ss1)
+        val a2 = reg.registerS(ss2)
+        assertDistinctClasses(a1, a2)
+      }
+    }
+
   }
 }
 

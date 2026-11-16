@@ -22,9 +22,23 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
     mutex {
-      val (cn, ng) = _nameGen.next(cnh)
-      _nameGen = ng
-      cn
+      val (cn0, ng0) = _nameGen.next(cnh)
+      _nameGen = ng0
+      if (!isTaken(cn0))
+        cn0
+      else {
+        @tailrec def go(seen: Set[ClassName]): ClassName = {
+          val (cn, ng) = _nameGen.next(cnh)
+          _nameGen = ng
+          if (!isTaken(cn))
+            cn
+          else if (seen.contains(cn))
+            ensureUnique(cn)
+          else
+            go(seen + cn)
+        }
+        go(Set(cn0))
+      }
     }
 
   // Special case: addClassNames-only styles don't need a class-name generated
