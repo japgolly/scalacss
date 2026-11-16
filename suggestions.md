@@ -1,12 +1,5 @@
 # ScalaCSS Improvement, Fix & Optimisation Suggestions
 
-## Bugs & Correctness
-
-15. **Fix `ScalatagsTextRenderer` RAWTEXT `<style>` injection hazard (`ext-scalatags/shared/src/main/scala/scalacss/ScalatagsText.scala`)**
-    - `ScalatagsTextRenderer.apply` (line 21) passes `raw(s(css))` directly inside `tags2.style(...)`. Because `Util.quote` (`Util.scala:15-19`) does not escape `<` or `>`, a CSS string value containing `</style` prematurely closes the `<style>` tag in HTML5 parsers (XSS vector if untrusted strings reach `content.string` or `url`).
-
----
-
 ## Thread-Safety & Concurrency
 
 16. **Close TOCTOU race, public `var` exposure, and torn snapshots in `Register` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`, `StyleSheet.scala`)**

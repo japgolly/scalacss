@@ -36,6 +36,22 @@ object ScalatagsTest extends TestSuite {
     )
   }
 
+  object MyStylesInjection extends StyleSheet.Inline {
+    import dsl._
+
+    val lower = style(
+      content.string("</style><script>alert(1)</script>")
+    )
+
+    val upper = style(
+      content.string("</STYLE><script>alert(1)</script>")
+    )
+
+    val rawUrl = style(
+      backgroundImage := "url('https://example.com/</style><script>alert(1)</script>')"
+    )
+  }
+
   type T = scalatags.Text.TypedTag[String]
   import scalatags.Text.all._
 
@@ -84,6 +100,16 @@ object ScalatagsTest extends TestSuite {
       val el = input(`type` := "text", MyStyles.input, MyStyles.required, value := "ah")
       val html = el.toString()
       assertEq(html, """<input type="text" class=" ScalatagsTest_MyStyles-input  ScalatagsTest_MyStyles-required" value="ah" />""")
+    }
+
+    "noStyleTagInjection" - {
+      val html = MyStylesInjection.render[T].toString()
+      val inner = html.stripPrefix("""<style type="text/css">""").stripSuffix("</style>")
+      assertNotContains(inner.toLowerCase, "</style")
+      assertContains(inner, """content: '\00003C/style><script>alert(1)</script>';""")
+      assertContains(inner, """content: '\00003C/STYLE><script>alert(1)</script>';""")
+      assertContains(inner, """url('https://example.com/\00003C/style><script>alert(1)</script>')""")
+      inner
     }
   }
 }

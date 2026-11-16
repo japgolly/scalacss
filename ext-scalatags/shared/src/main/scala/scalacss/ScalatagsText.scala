@@ -1,5 +1,6 @@
 package scalacss
 
+import scala.util.matching.Regex
 import scalacss.internal.{Css, Renderer}
 import scalatags.Text._
 import scalatags.Text.all._
@@ -17,6 +18,13 @@ trait ScalatagsTextImplicits {
 }
 
 class ScalatagsTextRenderer(s: Renderer[String]) extends Renderer[TypedTag[String]] {
-  override def apply(css: Css) =
-    tags2.style(`type` := "text/css", raw(s(css)))
+  override def apply(css: Css) = {
+    val safeCss = ScalatagsTextRenderer.closeStyleTag.replaceAllIn(s(css), ScalatagsTextRenderer.escapedClosePrefix)
+    tags2.style(`type` := "text/css", raw(safeCss))
+  }
+}
+
+object ScalatagsTextRenderer {
+  private val closeStyleTag      = "(?i)</(?=style)".r
+  private val escapedClosePrefix = Regex.quoteReplacement("""\00003C/""")
 }
