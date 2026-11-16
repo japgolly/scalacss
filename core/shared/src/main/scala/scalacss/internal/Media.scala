@@ -110,16 +110,31 @@ object Media {
           if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
         )
 
+      def mergeType(t1: TypeExpr, t2: TypeExpr): TypeExpr =
+        (t1, t2) match {
+          case _ if t1 ==* t2               => t1
+          case (Just(All), _)               => t2
+          case (_, Just(All))               => t1
+          case (Only(All), Just(x))         => Only(x)
+          case (Just(x), Only(All))         => Only(x)
+          case (Only(All), Only(x))         => Only(x)
+          case (Only(x), Only(All))         => Only(x)
+          case (Only(x), Just(y)) if x ==* y => t1
+          case (Just(x), Only(y)) if x ==* y => t2
+          case _ =>
+            throw new IllegalArgumentException(
+              s"Cannot combine incompatible media queries: '${cssTypeExpr(t1)}' and '${cssTypeExpr(t2)}'")
+        }
+
       (this.head, that.head) match {
         case (Left(t1), Left(t2)) =>
-          val t = if (t1 ==* Just(All)) t2 else t1
-          Query(Left(t), merge(this.tail, that.tail, None))
+          Query(Left(mergeType(t1, t2)), merge(this.tail, that.tail, None))
 
         case (Left(t), Right(f)) =>
           Query(Left(t), merge(this.tail, f +: that.tail, None))
 
         case (Right(f), Left(t)) =>
-          Query(Left(t), merge(that.tail, f +: this.tail, None))
+          Query(Left(t), merge(f +: this.tail, that.tail, None))
 
         case (Right(f1), Right(f2)) =>
           Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))

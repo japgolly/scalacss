@@ -164,12 +164,42 @@ object CondTest extends TestSuite {
         assertEq(q.toString.trim, "@media screen, handheld")
       }
       "and" - {
-        val q1 = media.minWidth(500 px) and media.maxWidth(1000 px)
-        assertEq(q1.cssSuffix, "(min-width:500px) and (max-width:1000px)")
-        val q2 = media.screen and media.minWidth(500 px)
-        assertEq(q2.cssSuffix, "screen and (min-width:500px)")
-        val q3 = media.minWidth(500 px) and media.screen
-        assertEq(q3.cssSuffix, "screen and (min-width:500px)")
+        "basic" - {
+          val q1 = media.minWidth(500 px) and media.maxWidth(1000 px)
+          assertEq(q1.cssSuffix, "(min-width:500px) and (max-width:1000px)")
+          val q2 = media.screen and media.minWidth(500 px)
+          assertEq(q2.cssSuffix, "screen and (min-width:500px)")
+          val q3 = media.minWidth(500 px) and media.screen
+          assertEq(q3.cssSuffix, "screen and (min-width:500px)")
+        }
+
+        "featureOrder" - {
+          val q1 = media.minWidth(500 px) and media.screen.maxWidth(1000 px)
+          assertEq(q1.cssSuffix, "screen and (min-width:500px) and (max-width:1000px)")
+          val q2 = media.minWidth(500 px).orientation(Media.Portrait) and media.screen.maxWidth(1000 px).color
+          assertEq(q2.cssSuffix, "screen and (min-width:500px) and (orientation:portrait) and (max-width:1000px) and (color)")
+        }
+
+        "compatibleTypes" - {
+          assertEq((media.screen and media.screen).cssSuffix, "screen")
+          assertEq((media.all and media.screen).cssSuffix, "screen")
+          assertEq((media.screen and media.all).cssSuffix, "screen")
+          assertEq((media.all and media.not.screen).cssSuffix, "not screen")
+          assertEq((media.not.screen and media.all).cssSuffix, "not screen")
+          assertEq((media.only.all and media.screen).cssSuffix, "only screen")
+          assertEq((media.screen and media.only.all).cssSuffix, "only screen")
+          assertEq((media.screen and media.only.screen).cssSuffix, "only screen")
+          assertEq((media.only.screen and media.screen).cssSuffix, "only screen")
+        }
+
+        "incompatibleTypes" - {
+          "screenAndPrint"       - intercept[IllegalArgumentException](media.screen and media.print)
+          "screenAndNotScreen"   - intercept[IllegalArgumentException](media.screen and media.not.screen)
+          "notScreenAndScreen"   - intercept[IllegalArgumentException](media.not.screen and media.screen)
+          "notScreenAndNotPrint" - intercept[IllegalArgumentException](media.not.screen and media.not.print)
+          "notScreenAndPrint"    - intercept[IllegalArgumentException](media.not.screen and media.print)
+          "onlyScreenAndNot"     - intercept[IllegalArgumentException](media.only.screen and media.not.screen)
+        }
       }
       "nested" - {
         import Dsl._

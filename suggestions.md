@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-13. **Fix `Media.Query.and` silently dropping `TypeExpr` and reordering features (`core/shared/src/main/scala/scalacss/internal/Media.scala`)**
-    - In `Query.and` (lines 114-126), `(Left(t1), Left(t2))` does `if (t1 ==* Just(All)) t2 else t1`, silently discarding `t2` (e.g. `media.screen and media.print` drops `print`, and `media.not.screen and media.all` vs `media.all and media.not.screen` behaves inconsistently).
-    - `(Right(f), Left(t))` puts `f +: this.tail` after `that.tail`, whereas `(Left(t), Right(f))` puts `this.tail` before `f +: that.tail`.
-
 14. **Fix implicit ambiguity when `DevDefaults._` and `ScalaCssReact._` are imported together (`ext-react/src/main/scala/scalacss/React.scala`)**
     - `ScalaCssReactImplicits` (line 25) extends `PlatformExports`, and `Exports` (`core/shared/src/main/scala/scalacss/defaults/Exports.scala:4`, mixed into `DevDefaults`/`ProdDefaults`) also extends `PlatformExports`.
     - Importing both `scalacss.DevDefaults._` and `scalacss.ScalaCssReact._` in the same scope causes ambiguous implicit errors for `.addToDocument()`, `.addToDocumentOnRegistration()`, and `.render[HTMLStyleElement]`.
