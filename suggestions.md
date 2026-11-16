@@ -2,9 +2,6 @@
 
 ## Thread-Safety & Concurrency
 
-17. **Fix JVM `Mutex.mutex` allocating a fresh lock per implicit resolution (`core/jvm/src/main/scala/scalacss/internal/mutable/Mutex.scala`)**
-    1. `Mutex.mutex` (line 15) is `implicit def mutex: Mutex = new Mutex` (unlike JS's `implicit val mutex`). Wait-free/shared coordination across callers that summon `Mutex` implicitly (e.g., multiple `StyleSheetRegistry` instances or default `Register`s) gets separate lock instances and extra allocations.
-
 18. **Fix `StyleSheetRegistry` (`GlobalRegistry`) callback ordering, re-entrancy, and unbounded growth (`core/shared/src/main/scala/scalacss/internal/mutable/GlobalRegistry.scala`)**
     1. `onRegistrationN` (lines 43-52) invokes `f(_register)` **while holding `mutex`** and *before* updating `_onRegistration`. Re-entrant `register(s2)` inside `f` misses the new listener, and external side effects risk deadlock.
     2. `register` (lines 56-60) invokes `_onRegistration(v)` *outside* `mutex`, allowing concurrent `register` calls to deliver callbacks out of order.
