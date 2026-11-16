@@ -52,7 +52,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     )
 
   def applyMacroName(name: String, style: StyleS)(implicit cnh: ClassNameHint): StyleS =
-    if (style.data.isEmpty && style.unsafeExts.isEmpty)
+    if (style.className.nonEmpty || doesntNeedClassName(style))
       style
     else {
       val cn = macroName(cnh, name) map ensureUnique

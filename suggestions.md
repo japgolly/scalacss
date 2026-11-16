@@ -2,11 +2,6 @@
 
 ## Bugs & Correctness
 
-5. **Fix `Register.applyMacroName` overwriting explicit `style.className` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
-   - Unlike `registerFM` (line 110, which checks `if (style.className.isEmpty ...)`), `applyMacroName` (lines 54-60) unconditionally executes `style.copy(className = cn)`.
-   - Under `ProdDefaults` (`MacroName.Ignore`), `cn` is `None`, wiping out an explicit `className` on a composed `StyleS`.
-   - Also, for empty styles (`style()`), `applyMacroName` skips naming (`style.data.isEmpty && style.unsafeExts.isEmpty`), while `doesntNeedClassName` (line 31-32) returns `false`, causing `registerS` to fall back to `nextName` instead of the macro name.
-
 6. **Sanitise `Register.registerF2`, `registerFM`, `MacroName.apply(cnh, name, domain)`, and `StyleSheet.Base.classNameHint` (`Register.scala`, `StyleSheet.scala`)**
    - `MacroName.apply(cnh, name, domain)` (`Register.scala:174`) builds `ClassName(n.value + "-" + domain)` without running `cssIllegal` on `domain`.
    - `registerF2` (`Register.scala:100`) builds `ClassName(manualName + "-" + toCN(i, index))` without sanitisation or non-empty guards (empty `manualName` yields invalid CSS like `.-1`).

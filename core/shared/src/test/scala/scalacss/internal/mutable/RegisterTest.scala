@@ -216,5 +216,49 @@ object RegisterTest extends TestSuite {
       assertEq(ss.kf.className, ClassName("custom"))
     }
 
+    "applyMacroName" - {
+      implicit val compose: Compose = Compose.trust
+
+      "preserveExplicitClassName" - {
+        "macroNameUse" - {
+          implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          class SS extends StyleSheet.Inline {
+            override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+            import dsl._
+            private val explicit = Dsl.style("explicit")(color.red)
+            val s = style(explicit)
+          }
+          val ss = new SS
+          assertEq(ss.s.className, ClassName("explicit"))
+        }
+
+        "macroNameIgnore" - {
+          implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Ignore, ErrorHandler.silent)
+          class SS extends StyleSheet.Inline {
+            override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+            import dsl._
+            private val explicit = Dsl.style("explicit")(color.red)
+            val s = style(explicit)
+          }
+          val ss = new SS
+          assertEq(ss.s.className, ClassName("explicit"))
+        }
+      }
+
+      "emptyStyle" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val empty = style()
+          val btn = style(addClassNames("btn", "btn-default"))
+        }
+        val ss = new SS
+        assertEq(ss.empty.className, ClassName("SS-empty"))
+        assertEq(ss.btn.className, ClassName("btn"))
+        assertEq(ss.btn.addClassNames, Vector(ClassName("btn-default")))
+      }
+    }
+
   }
 }
