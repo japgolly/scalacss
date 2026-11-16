@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-7. **Fix `NameGen.short` validation and `Alphabet` / `toAlphabet` edge cases (`Register.scala`)**
-   - `NameGen.short` (lines 269-271) only checks the first character (`^[_a-zA-Z\u00a0-\u00ff].*`)—allowing spaces/invalid chars later in `fullPrefix`—prints `Not: '$prefix'` instead of `'$fullPrefix'`, and still returns an invalid `NameGen`.
-   - `NameGen.Alphabet.code` (lines 223-229) has no guard against empty `alphabet` or negative `n`; `toAlphabet` (lines 258-264) is non-tail-recursive and loops indefinitely on negative `i`.
-
 8. **Fix missing `||` after `validateHex` in Scala 2 `ColorLiteral.impl` (`core/shared/src/main/scala-2/scalacss/internal/Macros.scala`)**
    - Lines 237-239 have `validateHex` followed on the next line by `validateRgbI || ...` with no `||` operator.
    - Its `Boolean` result is discarded (silenced because `-Ywarn-value-discard` is commented out in `project/Build.scala:36`), so all 10 `rgb`/`hsl` regexes still run on every hex colour literal. (Scala 3 at `scala-3/.../Macros.scala:308` has `validateHex ||`.)

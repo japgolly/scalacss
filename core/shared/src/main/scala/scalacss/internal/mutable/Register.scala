@@ -237,12 +237,19 @@ object Register { // ===========================================================
       new NameGen.IncFmt(format)
 
     class Alphabet(alphabet: Array[Char], fmt: (ClassNameHint, String) => String, n: Int = 0) extends NameGen {
-      @tailrec final def code(cs: List[Char], i: Int): List[Char] = {
-        val m = i % alphabet.length
-        val r = i / alphabet.length - 1
-        val c = alphabet(m)
-        val x = c :: cs
-        if (r == -1) x else code(x, r)
+      require(alphabet.nonEmpty, "alphabet cannot be empty")
+      require(n >= 0, s"n must be non-negative: $n")
+
+      final def code(cs: List[Char], i: Int): List[Char] = {
+        require(i >= 0, s"i must be non-negative: $i")
+        @tailrec def go(acc: List[Char], cur: Int): List[Char] = {
+          val m = cur % alphabet.length
+          val r = cur / alphabet.length - 1
+          val c = alphabet(m)
+          val x = c :: acc
+          if (r == -1) x else go(x, r)
+        }
+        go(cs, i)
       }
 
       override def next(cnh: ClassNameHint) = {
@@ -272,20 +279,25 @@ object Register { // ===========================================================
       p
     }
 
-    private[this] def toAlphabet(i: Int): String = {
-      val quot = i / 26
-      val rem = i % 26
-      val letter = ('a' + rem).toChar
-      if (quot == 0) letter.toString
-      else toAlphabet(quot - 1) + letter
+    private[mutable] def toAlphabet(i: Int): String = {
+      require(i >= 0, s"i must be non-negative: $i")
+      @tailrec def go(cur: Int, acc: List[Char]): String = {
+        val quot = cur / 26
+        val rem  = cur % 26
+        val x    = ('a' + rem).toChar :: acc
+        if (quot == 0) String.valueOf(x.toArray)
+        else go(quot - 1, x)
+      }
+      go(i, Nil)
     }
 
     def short(prefix  : String      = "_",
               prefix2 : String      = nextShortPrefix(),
               alphabet: Array[Char] = nmchar7): NameGen = {
-      val fullPrefix = prefix + prefix2
-      if (!fullPrefix.matches("^[_a-zA-Z\u00a0-\u00ff].*"))
-        System.err.println(s"[NameGen.short] CSS class names must begin with a-z, an underscore, or A0-FF. Not: '$prefix'.")
+      val fullPrefix = (if (prefix eq null) "" else prefix) + (if (prefix2 eq null) "" else prefix2)
+      require(
+        fullPrefix.matches("^[_a-zA-Z\u00a0-\u00ff][_a-zA-Z0-9\u00a0-\u00ff-]*$"),
+        s"[NameGen.short] CSS class names must begin with [a-zA-Z_\\u00a0-\\u00ff] and contain only [a-zA-Z0-9_-\\u00a0-\\u00ff]. Not: '$fullPrefix'.")
       new NameGen.Alphabet(alphabet, (_, c) => fullPrefix + c)
     }
 
