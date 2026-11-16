@@ -167,8 +167,13 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _fontFaces
   }
 
-  def css(implicit env: Env): Css =
-    Css(styles, keyframes, fontFaces)
+  def css(implicit env: Env): Css = {
+    val (s, k, f) = mutex {
+      _rendered = true
+      (_styles, _keyframes, _fontFaces)
+    }
+    Css(s, k, f)
+  }
 
   def render[Out](implicit r: Renderer[Out], env: Env): Out =
     r(css)
