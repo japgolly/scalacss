@@ -182,7 +182,8 @@ object Macros {
       def pass = true
       def undecided = false
       def fail(err: String) = {
-        result = Left(s"Invalid colour literal: \"$text\". $err")
+        if (result eq null)
+          result = Left(s"Invalid colour literal: \"$text\". $err")
         false
       }
 
@@ -219,9 +220,18 @@ object Macros {
       def validatePct(name: String): V =
         validateDbl(name, 100, "%")
 
+      def stripDeg(s: String): String =
+        if (s.length > 3 && s.substring(s.length - 3).equalsIgnoreCase("deg"))
+          s.substring(0, s.length - 3)
+        else
+          s
+
+      def normNone(s: String): String =
+        if (s.equalsIgnoreCase("none")) "none" else s
+
       def validateModernNPN(name: String, maxInt: Int): V =
         s =>
-          if (s == "none")
+          if (s.equalsIgnoreCase("none"))
             ()
           else if (s.endsWith("%"))
             validatePct(name)(s.stripSuffix("%"))
@@ -230,10 +240,10 @@ object Macros {
 
       def validateModernH(name: String): V =
         s =>
-          if (s == "none")
+          if (s.equalsIgnoreCase("none"))
             ()
           else
-            validateInt(name, 360)(s.stripSuffix("deg"))
+            validateInt(name, 360)(stripDeg(s))
 
       def validateModernA(name: String): V =
         s =>
@@ -253,9 +263,9 @@ object Macros {
         val m = p.matcher(text)
         if (m.matches) {
           a(m group 1)
-          b(m group 2)
-          c(m group 3)
-          if (result == null)
+          if (result eq null) b(m group 2)
+          if (result eq null) c(m group 3)
+          if (result eq null)
             result = Right(f(m group 1, m group 2, m group 3))
           pass
         } else
@@ -266,10 +276,10 @@ object Macros {
         val m = p.matcher(text)
         if (m.matches) {
           a(m group 1)
-          b(m group 2)
-          c(m group 3)
-          d(m group 4)
-          if (result == null)
+          if (result eq null) b(m group 2)
+          if (result eq null) c(m group 3)
+          if (result eq null) d(m group 4)
+          if (result eq null)
             result = Right(f(m group 1, m group 2, m group 3, m group 4))
           pass
         } else
@@ -300,10 +310,10 @@ object Macros {
       def validateRgbaP = validateFn4(rgbaP, rp, gp, bp, a,  (r, g, b, a) => s"rgba($r%,$g%,$b%,$a)")
       def validateHsl   = validateFn3(hsl, hi, sp, lp,       (h, s, l)    => s"hsl($h,$s%,$l%)")
       def validateHsla  = validateFn4(hsla, hi, sp, lp, a,   (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
-      def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb($r $g $b)")
-      def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb($r $g $b/$a)")
-      def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${h.stripSuffix("deg")} $s $l)")
-      def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${h.stripSuffix("deg")} $s $l/$a)")
+      def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb(${normNone(r)} ${normNone(g)} ${normNone(b)})")
+      def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb(${normNone(r)} ${normNone(g)} ${normNone(b)}/$a)")
+      def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${normNone(stripDeg(h))} $s $l)")
+      def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${normNone(stripDeg(h))} $s $l/$a)")
 
       validateHex ||
         validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||

@@ -34,6 +34,7 @@ object ColorTest extends TestSuite {
 
       "modern" - {
         "rgb"     - test(c"rgb(1 2% none)", "rgb(1 2% none)")
+        "rgbNoneU" - test(c"rgb(NONE 0 0)", "rgb(none 0 0)")
         "rgbWS"   - test(c" rgb ( 1  2%  none ) ", "rgb(1 2% none)")
         "rgbaD"   - test(c"rgb(1 2 3/0.5)", "rgb(1 2 3/0.5)")
         "rgbaDWS" - test(c" rgb ( 1  2  3 / 0.5 ) ", "rgb(1 2 3/0.5)")
@@ -41,10 +42,13 @@ object ColorTest extends TestSuite {
         "rgbaPWS" - test(c" rgb ( 1  2  3 / 25% ) ", "rgb(1 2 3/25%)")
         "hsl"     - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
         "hslN"    - test(c"hsl(none 2% 3)", "hsl(none 2% 3)")
+        "hslNU"   - test(c"hsl(NONE 2% 3)", "hsl(none 2% 3)")
         "hslDeg"  - test(c"hsl(360deg 2% 3)", "hsl(360 2% 3)")
+        "hslDegU" - test(c"hsl(120DEG 50% 50%)", "hsl(120 50% 50%)")
         "hslWS"   - test(c" hsl ( 1  2%  3 ) ", "hsl(1 2% 3)")
         "hsla"    - test(c"hsl(1 2% 3)", "hsl(1 2% 3)")
         "hslaDeg" - test(c"hsl(360deg 2% 3/50%)", "hsl(360 2% 3/50%)")
+        "hslaDegU" - test(c"hsl(120Deg 50% 50%/50%)", "hsl(120 50% 50%/50%)")
         "hslaWS"  - test(c" hsl ( 1  2%  3  / 0.5 ) ", "hsl(1 2% 3/0.5)")
       }
 
@@ -104,7 +108,11 @@ object ColorTest extends TestSuite {
         "h361"  - assertErrorContains(compileError(""" c"hsl(361 0 0)" """), "Invalid hue value")
         "s101"  - assertErrorContains(compileError(""" c"hsl(0 101% 0)" """), "Invalid saturation value")
         "l101"  - assertErrorContains(compileError(""" c"hsl(0 0 101%)" """), "Invalid lightness value")
+        "multi3" - assertErrorContains(compileError(""" c"rgb(256 256 0)" """), "Invalid red value")
+        "multi4" - assertErrorContains(compileError(""" c"rgb(1 256 256/2)" """), "Invalid green value")
       }
+
+      "multiLegacy" - assertErrorContains(compileError(""" c"rgb(256, 256, 0)" """), "Invalid red value")
     }
   }
 }

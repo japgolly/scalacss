@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-10. **Fix `ColorLiteral` case-sensitivity for `none`/`deg` and Scala 3 error ordering (`scala-2/.../Macros.scala`, `scala-3/.../Macros.scala`)**
-    - The regexes use `(?i)`, so `c"rgb(NONE 0 0)"` and `c"hsl(120DEG 50% 50%)"` match the regex, but `validateModernNPN` and `validateModernH` do case-sensitive checks (`s == "none"`, `s.stripSuffix("deg")`), causing them to fail.
-    - In Scala 3 `ColorLiteral.attempt` (`validateFn3`/`validateFn4`, lines 252-277), `fail` does not abort immediately like Scala 2, so later argument errors overwrite earlier ones.
-
 11. **Fix `Domain.IntoSeq`, `Pair`, and `OptionT` missing bounds checks and `IntoSeq` overflow/negative-range bugs (`core/shared/src/main/scala/scalacss/internal/Domain.scala`)**
     - `IntoSeq.apply(i0)` (lines 101-120) never checks `i0 < 0 || i0 >= size` when `as > 0` (out-of-bounds indices silently wrap or index the last bucket; negative indices pass negative modulo values to `a`).
     - `IntoSeq` (line 98) computes `math.pow(as, i).toInt`, silently overflowing `Int` for large domains or turning negative `r` values into `0`.
