@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-8. **Fix missing `||` after `validateHex` in Scala 2 `ColorLiteral.impl` (`core/shared/src/main/scala-2/scalacss/internal/Macros.scala`)**
-   - Lines 237-239 have `validateHex` followed on the next line by `validateRgbI || ...` with no `||` operator.
-   - Its `Boolean` result is discarded (silenced because `-Ywarn-value-discard` is commented out in `project/Build.scala:36`), so all 10 `rgb`/`hsl` regexes still run on every hex colour literal. (Scala 3 at `scala-3/.../Macros.scala:308` has `validateHex ||`.)
-
 9. **Fix Scala 3 `Macros.Dsl.nameQuoted` failing to detect `StyleSheet` subclasses and omitting `NameTransformer.decode` (`core/shared/src/main/scala-3/scalacss/internal/Macros.scala`)**
    - `isStyleSheet` (lines 33-48) only matches `case p: TypeTree => (p.tpe <:< ss)` in `ClassDef.parents`. Because `StyleSheet.Inline` and `StyleSheet.Standalone` take constructor arguments, extending them yields an `Apply` term in `parents`, not a `TypeTree`. Thus `isStyleSheet` returns `false`, `classOwner` walks past the stylesheet, and relative nested names are lost.
    - `NameTransformer` is imported at line 5 but `NameTransformer.decode` is never called (unlike Scala 2 lines 29, 33), and `fixName` (`s.replace("$", "")`, line 58) mangles encoded operator/backticked names.

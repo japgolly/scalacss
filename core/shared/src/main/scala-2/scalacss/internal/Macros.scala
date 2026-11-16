@@ -234,7 +234,7 @@ object Macros {
           def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${h.stripSuffix("deg")} $s $l)")
           def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${h.stripSuffix("deg")} $s $l/$a)")
 
-          validateHex
+          validateHex ||
             validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||
             validateRgbM || validateRgbaM || validateHslM || validateHslaM
 
