@@ -205,5 +205,16 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "keyframeManualClassName" - {
+      implicit val compose: Compose = Compose.trust
+      implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+      class SS extends StyleSheet.Inline {
+        import dsl._
+        val kf = keyframe("custom")(color.red)
+      }
+      val ss = new SS
+      assertEq(ss.kf.className, ClassName("custom"))
+    }
+
   }
 }

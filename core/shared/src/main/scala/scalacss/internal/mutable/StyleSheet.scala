@@ -160,13 +160,14 @@ object StyleSheet {
     }
 
     protected class MKStyle extends DslMacros.MStyle {
-      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
-        val s = Dsl.style(t: _*)
-        StyleA(ClassName("keyframe"), s.addClassNames, s)
-      }
+      private def mk(s: StyleS): StyleA =
+        StyleA(s.className getOrElse ClassName("keyframe"), s.addClassNames, s)
+
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+        mk(Dsl.style(t: _*))
 
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
-        apply(t:_*)
+        mk(Dsl.style(className)(t: _*))
     }
 
     protected class MFontFace extends DslMacros.MFontFace {

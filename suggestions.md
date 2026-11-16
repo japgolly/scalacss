@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-4. **Fix `MKStyle.apply(className: String)` silently ignoring `className` (`core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala`)**
-   - `MKStyle.apply(className: String)` (lines 168-169) delegates to `apply(t: _*)` and drops the `className` argument.
-   - **Fix:** Either construct the keyframe `StyleA` using the provided `className` or remove/deprecate the misleading overload on `keyframe`.
-
 5. **Fix `Register.applyMacroName` overwriting explicit `style.className` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
    - Unlike `registerFM` (line 110, which checks `if (style.className.isEmpty ...)`), `applyMacroName` (lines 54-60) unconditionally executes `style.copy(className = cn)`.
    - Under `ProdDefaults` (`MacroName.Ignore`), `cn` is `None`, wiping out an explicit `className` on a composed `StyleS`.
