@@ -2,11 +2,6 @@
 
 ## Bugs & Correctness
 
-11. **Fix `Domain.IntoSeq`, `Pair`, and `OptionT` missing bounds checks and `IntoSeq` overflow/negative-range bugs (`core/shared/src/main/scala/scalacss/internal/Domain.scala`)**
-    - `IntoSeq.apply(i0)` (lines 101-120) never checks `i0 < 0 || i0 >= size` when `as > 0` (out-of-bounds indices silently wrap or index the last bucket; negative indices pass negative modulo values to `a`).
-    - `IntoSeq` (line 98) computes `math.pow(as, i).toInt`, silently overflowing `Int` for large domains or turning negative `r` values into `0`.
-    - `Pair.apply` (lines 79-83) only guards `as == 0` and `OptionT.apply` (line 67) doesn't guard `i < 0`.
-
 12. **Fix `Pseudo.AttrSelector` escaping and `Pseudo.NthChildBase` `An+B` syntax support (`core/shared/src/main/scala/scalacss/internal/Pseudo.scala`)**
     - `AttrSelector` (lines 239-240) interpolates `value` raw into `[$name$op"$value"]` without escaping `"` or `\`, producing broken CSS if `value` contains quotes.
     - `NthChildBase` (`queryPattern` / `fQueryPattern`, lines 165-166) rejects valid CSS `An+B` expressions with spaces around `+`/`-` (e.g. `"2n + 1"`) or uppercase (`"ODD"`, `"EVEN"`, `"2N+1"`).
