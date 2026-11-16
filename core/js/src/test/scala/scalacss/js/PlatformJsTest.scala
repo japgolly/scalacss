@@ -8,7 +8,7 @@ object PlatformJsTest extends TestSuite {
   @JSExportTopLevel("testPlatformJs")
   def test(): Unit = {
     println(PlatformJs.value)
-    println(PlatformJsEnv.value.map(_.platform))
+    println(PlatformJsEnv.value.map(_.platforms))
   }
 
   override def tests = Tests {
