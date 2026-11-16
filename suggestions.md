@@ -3,7 +3,6 @@
 ## Thread-Safety & Concurrency
 
 16. **Close TOCTOU race, public `var` exposure, and torn snapshots in `Register` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`, `StyleSheet.scala`)**
-    2. `_nameGen`, `_styles`, `_keyframes`, `_fontFaces`, and `_rendered` (`Register.scala:17-21`) are public `var`s instead of `private[this]`.
     4. `nextName` (`Register.scala:67, 125, 134`) does not check `isTaken`, so auto-generated names can collide with manual names.
 
 17. **Fix JVM `Mutex.mutex` allocating a fresh lock per implicit resolution (`core/jvm/src/main/scala/scalacss/internal/mutable/Mutex.scala`)**

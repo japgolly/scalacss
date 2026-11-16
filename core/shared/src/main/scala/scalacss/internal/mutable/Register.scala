@@ -14,11 +14,11 @@ import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
  */
 final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: ErrorHandler)(implicit mutex: Mutex) {
 
-  var _nameGen   = initNameGen
-  var _styles    = Vector.empty[StyleA]
-  var _keyframes = Vector.empty[Keyframes]
-  var _fontFaces = Vector.empty[FontFace[FontFamily]]
-  var _rendered  = false
+  private var _nameGen   = initNameGen
+  private var _styles    = Vector.empty[StyleA]
+  private var _keyframes = Vector.empty[Keyframes]
+  private var _fontFaces = Vector.empty[FontFace[FontFamily]]
+  private var _rendered  = false
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
     mutex {
