@@ -3,7 +3,6 @@
 ## Thread-Safety & Concurrency
 
 16. **Close TOCTOU race, public `var` exposure, and torn snapshots in `Register` (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`, `StyleSheet.scala`)**
-    1. `StyleSheet.Inline.MStyle.apply` (`StyleSheet.scala:141-142`) calls `applyMacroName` (which checks `ensureUnique` and releases `mutex`) and then `registerS` (which re-acquires `mutex`), allowing concurrent registrations with the same macro name to collide.
     2. `_nameGen`, `_styles`, `_keyframes`, `_fontFaces`, and `_rendered` (`Register.scala:17-21`) are public `var`s instead of `private[this]`.
     3. `Register.css` (`Register.scala:157-158`) calls `styles`, `keyframes`, `fontFaces` in three separate `mutex` blocks, allowing a torn snapshot.
     4. `nextName` (`Register.scala:67, 125, 134`) does not check `isTaken`, so auto-generated names can collide with manual names.

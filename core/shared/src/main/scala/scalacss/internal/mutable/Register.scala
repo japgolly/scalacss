@@ -59,6 +59,10 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       style.copy(className = cn)
     }
 
+  def registerS(macroName: String, s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
+    registerS(applyMacroName(macroName, s0))
+  }
+
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
     val (cn, addClassNames) =
       if (doesntNeedClassName(s0))

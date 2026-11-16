@@ -148,11 +148,8 @@ object StyleSheet {
     override protected def __macroFontFace                = new MFontFace
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
-      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
-        val s1 = Dsl.style(t: _*)
-        val s2 = cssRegister.applyMacroName(name, s1)
-        cssRegister registerS s2
-      }
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+        cssRegister.registerS(name, Dsl.style(t: _*))
 
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
         cssRegister registerS Dsl.style(className)(t: _*)
