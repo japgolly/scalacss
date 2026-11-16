@@ -1,14 +1,5 @@
 # ScalaCSS Improvement, Fix & Optimisation Suggestions
 
-## Thread-Safety & Concurrency
-
-18. **Fix `StyleSheetRegistry` (`GlobalRegistry`) callback ordering, re-entrancy, and unbounded growth (`core/shared/src/main/scala/scalacss/internal/mutable/GlobalRegistry.scala`)**
-    1. `onRegistrationN` (lines 43-52) invokes `f(_register)` **while holding `mutex`** and *before* updating `_onRegistration`. Re-entrant `register(s2)` inside `f` misses the new listener, and external side effects risk deadlock.
-    2. `register` (lines 56-60) invokes `_onRegistration(v)` *outside* `mutex`, allowing concurrent `register` calls to deliver callbacks out of order.
-    3. `_register` has no deduplication or `unregister`/`clear`, and `_onRegistration = s => { g(s); f(s) }` chains closures indefinitely (no unsubscribe, linear stack depth on `N` listeners).
-
----
-
 ## Performance & Memory Optimisations
 
 19. **Eliminate per-`AV` `Subject` filtering and `Map` allocations in `Transform.prefix` / `Attrs` / `CanIUse` (`Attr.scala`, `Attrs.scala`, `CanIUse.scala`, `misc/caniuse.scala`)**
