@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-14. **Fix implicit ambiguity when `DevDefaults._` and `ScalaCssReact._` are imported together (`ext-react/src/main/scala/scalacss/React.scala`)**
-    - `ScalaCssReactImplicits` (line 25) extends `PlatformExports`, and `Exports` (`core/shared/src/main/scala/scalacss/defaults/Exports.scala:4`, mixed into `DevDefaults`/`ProdDefaults`) also extends `PlatformExports`.
-    - Importing both `scalacss.DevDefaults._` and `scalacss.ScalaCssReact._` in the same scope causes ambiguous implicit errors for `.addToDocument()`, `.addToDocumentOnRegistration()`, and `.render[HTMLStyleElement]`.
-
 15. **Fix `ScalatagsTextRenderer` RAWTEXT `<style>` injection hazard (`ext-scalatags/shared/src/main/scala/scalacss/ScalatagsText.scala`)**
     - `ScalatagsTextRenderer.apply` (line 21) passes `raw(s(css))` directly inside `tags2.style(...)`. Because `Util.quote` (`Util.scala:15-19`) does not escape `<` or `>`, a CSS string value containing `</style` prematurely closes the `<style>` tag in HTML5 parsers (XSS vector if untrusted strings reach `content.string` or `url`).
 

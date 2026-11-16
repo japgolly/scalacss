@@ -4,12 +4,12 @@ import japgolly.microlibs.testutil.TestUtil._
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import org.scalajs.dom.{HTMLStyleElement, document}
+import scalacss.DevDefaults._
 import scalacss.ScalaCssReact._
 import scalacss.internal.mutable.StyleSheetRegistry
 import utest._
 
 object ReactTest extends TestSuite {
-  import scalacss.DevDefaults._
 
   object MyStyles extends StyleSheet.Inline {
     import dsl._
