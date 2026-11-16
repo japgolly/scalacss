@@ -44,17 +44,64 @@ object CanIUse2 {
       .foldLeft(emptyPrefixSet)(_ ++ _)
 
   type PrefixPlan = Vector[Option[Prefix]]
-  val prefixPlan: Subject => PrefixPlan =
-    memo { s =>
-      val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
-      val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
-      // prefixes can be empty if we have only Supported as the sole Support type.
-      // Rather than completely omit CSS the user has declared, we emit the CSS once without any prefixes.
-      if (noPrefix || prefixes.isEmpty)
-        prefixes :+ None
-      else
-        prefixes
+
+  private[this] val someMoz    = Some(Prefix.moz)
+  private[this] val someMs     = Some(Prefix.ms)
+  private[this] val someO      = Some(Prefix.o)
+  private[this] val someWebkit = Some(Prefix.webkit)
+
+  private def prefixBit(p: Prefix): Int = p match {
+    case Prefix.moz    => 1
+    case Prefix.ms     => 2
+    case Prefix.o      => 4
+    case Prefix.webkit => 8
+  }
+
+  private def agentPrefixMask(a: Agent): Int = {
+    var m = prefixBit(a.prefix)
+    if (a.prefixExceptions.nonEmpty) {
+      val it = a.prefixExceptions.valuesIterator
+      while (it.hasNext)
+        m |= prefixBit(it.next())
     }
+    m
+  }
+
+  private[internal] def prefixPlanForAgents(s: Subject, agents: Set[Agent]): PrefixPlan = {
+    val checkAgents = (agents ne null) && (agents ne Env.empty.agents)
+    var mask = 0
+    var noPrefix = false
+    val it = s.iterator
+    while (it.hasNext) {
+      val (agent, supports) = it.next()
+      if (!checkAgents || agents.contains(agent)) {
+        var agentNeedPrefix = false
+        val sit = supports.iterator
+        while (sit.hasNext) {
+          val sup = sit.next()
+          if (!agentNeedPrefix && needsPrefix(sup))
+            agentNeedPrefix = true
+          if (!noPrefix && supportsWithoutPrefix(sup))
+            noPrefix = true
+        }
+        if (agentNeedPrefix)
+          mask |= agentPrefixMask(agent)
+      }
+    }
+
+    val b = Vector.newBuilder[Option[Prefix]]
+    if ((mask & 1) != 0) b += someMoz
+    if ((mask & 2) != 0) b += someMs
+    if ((mask & 4) != 0) b += someO
+    if ((mask & 8) != 0) b += someWebkit
+    // prefixes can be empty if we have only Supported as the sole Support type.
+    // Rather than completely omit CSS the user has declared, we emit the CSS once without any prefixes.
+    if (noPrefix || mask == 0) b += None
+    b.result()
+  }
+
+  val prefixPlan: Subject => PrefixPlan =
+    prefixPlanForAgents(_, null)
 
   val prefixed: String => Boolean = {
     val prefixes = Prefix.values.iterator.map(_.prefix).mkString("|")
@@ -100,17 +147,21 @@ object CanIUse2 {
     }
   }
 
-  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
+  private[internal] def runPlanLazy(pp: => PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
     val tgt = l.get(kv)
     def nop = Vector1(kv)
     if (prefixed(tgt))
       nop
     else
-      pa(tgt).fold(nop)(apply =>
+      pa(tgt).fold(nop) { apply =>
         pp.map(op =>
           op.fold(kv)(p =>
-            l.set(kv, apply(p)))))
+            l.set(kv, apply(p))))
+      }
   }
+
+  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] =
+    runPlanLazy(pp, pa, l, kv)
 
   def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
     runPlan(pp, pa, CssKV.key, kv)

@@ -48,5 +48,43 @@ object CanIUse2Test extends TestSuite {
         }
       }
     }
+
+    "prefixPlanForAgents" - {
+      def expectedPlan(s: CanIUse.Subject, agents: Set[Agent]): CanIUse2.PrefixPlan = {
+        val sub = s.filter(kv => agents.contains(kv._1))
+        val prefixes = CanIUse2.subjectPrefixes(sub).toVector.map(Some.apply)
+        val noPrefix = sub.exists(_._2 exists CanIUse2.supportsWithoutPrefix)
+        // prefixes can be empty if we have only Supported as the sole Support type.
+        // Rather than completely omit CSS the user has declared, we emit the CSS once without any prefixes.
+        if (noPrefix || prefixes.isEmpty) prefixes :+ None else prefixes
+      }
+
+      val subjects = Vector(
+        CanIUse.borderRadius,
+        CanIUse.reflections,
+        CanIUse.flexbox,
+        CanIUse.grid,
+        CanIUse.gradients,
+        CanIUse.transforms,
+        CanIUse.userSelectNone,
+      )
+      val agentSets = Vector(
+        Env.empty.agents,
+        Set(Agent.Chrome),
+        Set(Agent.Firefox),
+        Set(Agent.IE),
+        Set(Agent.OperaMobile),
+        Set(Agent.AndroidUC),
+        Set(Agent.Chrome, Agent.Firefox),
+      )
+
+      for {
+        s <- subjects
+        a <- agentSets
+      } assertEq(CanIUse2.prefixPlanForAgents(s, a), expectedPlan(s, a))
+
+      for (s <- subjects)
+        assertEq(CanIUse2.prefixPlan(s), expectedPlan(s, Env.empty.agents))
+    }
   }
 }

@@ -2,12 +2,6 @@
 
 ## Performance & Memory Optimisations
 
-19. **Eliminate per-`AV` `Subject` filtering and `Map` allocations in `Transform.prefix` / `Attrs` / `CanIUse` (`Attr.scala`, `Attrs.scala`, `CanIUse.scala`, `misc/caniuse.scala`)**
-    1. In `Attr.scala:123-128`, `Transform.prefix` runs `subject.filter(kv => e.agents.contains(kv._1))` and `CanIUse2.prefixPlan(subectSubset)` on **every single `AV` evaluation** (and 5 times per `display` property via `Transform.*` in `Attrs.scala:949-954`). For `Env.empty` (all 16 agents), this needlessly copies the full 16-entry `Map`, hashes it, and hits `memo`'s synchronised global `Map`.
-    2. In `Attrs.scala`, dozens of attributes with transforms (e.g., `boxShadow`, `clipPath`, `filter`, `grid*`, `backgroundImage`, etc.) are `final def` instead of `val`/`lazy val`, allocating a fresh `RealAttr` and `Transform` on every usage.
-    3. In `CanIUse.scala`, ~110 of ~122 `Subject`s are generated as `def` (because `misc/caniuse.scala:257-269` only lists 12 in `valAttrs`), re-allocating a 16-entry `Map` and 16 `Set`s every time an `Attrs` `def` evaluates.
-    4. **Fix:** Compute `PrefixPlan` directly from `subject.iterator` + `e.agents` without building an intermediate `Map`; precompute the full-agent `PrefixPlan` on `Transform.prefix` (for `e.agents.size == Agent.values.length`) or cache per `Env`; and make `CanIUse` subjects and `Attrs` definitions `val` / `lazy val` (note that `CanIUse2.prefixed` also runs two regexes per transform step).
-
 20. **Make `Register.isTaken` O(1) instead of O(N) (`core/shared/src/main/scala/scalacss/internal/mutable/Register.scala`)**
     1. `isTaken` (lines 34-37) linearly scans `_styles` and `_keyframes`. Under `DevDefaults`, `ensureUnique` and `emitRegistrationWarnings` both call `isTaken`, making `N` style registrations O(N²) (or O(N³) on collisions).
     2. **Fix:** Maintain a `Set[ClassName]` (or `mutable.HashSet[String]`) of taken names inside `Register`.
