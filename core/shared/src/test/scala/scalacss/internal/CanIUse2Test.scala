@@ -68,23 +68,29 @@ object CanIUse2Test extends TestSuite {
         CanIUse.transforms,
         CanIUse.userSelectNone,
       )
-      val agentSets = Vector(
-        Env.empty.agents,
-        Set(Agent.Chrome),
-        Set(Agent.Firefox),
-        Set(Agent.IE),
-        Set(Agent.OperaMobile),
-        Set(Agent.AndroidUC),
-        Set(Agent.Chrome, Agent.Firefox),
-      )
 
-      for {
-        s <- subjects
-        a <- agentSets
-      } assertEq(CanIUse2.prefixPlanForAgents(s, a), expectedPlan(s, a))
+      "agents" - {
+        val agentSets = Vector(
+          Env.empty.agents,
+          Set(Agent.Chrome),
+          Set(Agent.Firefox),
+          Set(Agent.IE),
+          Set(Agent.OperaMobile),
+          Set(Agent.AndroidUC),
+          Set(Agent.Chrome, Agent.Firefox),
+        )
 
-      for (s <- subjects)
-        assertEq(CanIUse2.prefixPlan(s), expectedPlan(s, Env.empty.agents))
+        for {
+          s <- subjects
+          a <- agentSets
+        } assertEq(CanIUse2.prefixPlanForAgents(s, a), expectedPlan(s, a))
+      }
+
+      "emptyEnv" - {
+        assertEq(Env.empty.agents, CanIUse.Agent.values.whole.toSet)
+        for (s <- subjects)
+          assertEq(CanIUse2.prefixPlan(s), expectedPlan(s, Env.empty.agents))
+      }
     }
   }
 }
