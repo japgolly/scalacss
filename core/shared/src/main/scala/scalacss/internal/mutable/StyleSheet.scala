@@ -53,7 +53,7 @@ object StyleSheet {
         new CondOps(f(x))
 
       final class CondOps(val cond: Cond) {
-        @inline def - = new DslCond(cond, dsl)
+        @inline def - = new DslCond(cond)
       }
     }
 

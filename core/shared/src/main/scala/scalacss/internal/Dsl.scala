@@ -141,9 +141,9 @@ object DslBase {
     @inline def &(b: AVs): AVs = self ++ b
   }
 
-  final class DslCond(c: Cond, b: DslBase) {
+  final class DslCond(private val c: Cond) extends AnyVal {
     def apply(t: ToStyle*)(implicit u: Compose): StyleS =
-      c applyToStyle b.mixin(t: _*)
+      c applyToStyle Dsl.style(t: _*)
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -187,7 +187,7 @@ abstract class DslBase
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-          implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(f(x), this)
+  @inline implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(f(x))
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
@@ -303,5 +303,11 @@ object Dsl extends DslBase {
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =
     if (t.isEmpty) StyleS.empty
-    else t.map(_.s).reduce(_ compose _)
+    else {
+      val it = t.iterator
+      var acc = it.next().s
+      while (it.hasNext)
+        acc = acc compose it.next().s
+      acc
+    }
 }
