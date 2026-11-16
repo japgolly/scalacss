@@ -2,11 +2,6 @@
 
 ## Performance & Memory Optimisations
 
-21. **Avoid O(n log n) `Cond.toString` allocations in `Cond.ordering` (`core/shared/src/main/scala/scalacss/internal/Cond.scala`)**
-    1. `Cond.ordering` (lines 65-66) is `Ordering.by[Cond, String](_.toString)(NaturalOrdering)`.
-    2. `StyleS.dataSorted` (`Style.scala:57-61`) sorts using this ordering, calling `Cond.toString`—which renders `Media.css` and `Css.selector`—repeatedly on every comparison.
-    3. **Fix:** Cache the sort key (e.g. `private[scalacss] lazy val sortKey: String = toString`) or compare structurally before falling back to string comparison.
-
 22. **Replace repeated `Vector ++`, `ListMap.updated`, and `Set` allocations in `Css`, `Compose`, and `AVs` (`Css.scala`, `Compose.scala`, `AVs.scala`)**
     1. `Css.style` (`Css.scala:57`): `avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)` repeatedly concatenates `Vector`s; use `avs.avIterator.flatMap(_(env)).toVector` (or a `Vector.newBuilder`).
     2. `Css.mapByMediaQuery` (`Css.scala:91-98`) and `Css.keyframes` (`Css.scala:40-43`): repeatedly call `ListMap.updated` (O(n) per update) and `NonEmptyVector.endO` (`whole :+ a`); building with a `mutable.LinkedHashMap` internally is O(n) total.

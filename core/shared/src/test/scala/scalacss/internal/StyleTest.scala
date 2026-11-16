@@ -56,5 +56,33 @@ object StyleTest extends TestSuite {
         }
       }
     }
+
+    "styleS" - {
+      "dataSorted" - {
+        import Dsl._
+        val & = Cond.empty
+
+        "empty" - {
+          assertEq(StyleS.empty.dataSorted.map(_._1), Vector.empty)
+        }
+
+        "single" - {
+          val single = style(color.red)
+          assertEq(single.dataSorted.map(_._1), Vector(Cond.empty))
+        }
+
+        "multi" - {
+          val multi = style(
+            &.nthChild("10")(color.red),
+            &.nthChild("2")(color.blue),
+            &.hover(color.green),
+            color.black
+          )
+          val sortedConds = multi.dataSorted.map(_._1)
+          assertEq(sortedConds, multi.data.keys.toVector.sorted(Cond.ordering))
+          assertEq(sortedConds, Vector(Cond.empty, Cond.empty.hover, Cond.empty.nthChild("2"), Cond.empty.nthChild("10")))
+        }
+      }
+    }
   }
 }
