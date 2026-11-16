@@ -94,20 +94,26 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
       domain.iterator.foldLeft(l.empty)((q, i) =>
         add(q, i, s f i)))
 
-  def registerF2[I](s: StyleF[I], manualName: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
+  def registerF2[I](s: StyleF[I], manualName: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA = {
+    val mn = if (manualName eq null) "" else MacroName.Use.sanitise(manualName.trim)
     _registerF(s, l)((add, domain) =>
       domain.iterator.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
-        val cn = ClassName(manualName + "-" + toCN(i, index))
-        val style = (s f i).copy(className = Some(cn))
+        var style = s f i
+        if (mn.nonEmpty) {
+          val suffix = MacroName.Use.sanitise(Option(toCN(i, index)).getOrElse(""))
+          val cn = ClassName(if (suffix.isEmpty) mn else s"$mn-$suffix")
+          style = style.copy(className = Some(cn))
+        }
         add(q, i, style)
       }
     )
+  }
 
   def registerFM[I](s: StyleF[I], nameFromMacro: String)(toCN: (I, Int) => String)(implicit cnh: ClassNameHint, l: StyleLookup[I]): I => StyleA =
     _registerF(s, l)((add, domain) =>
       domain.iterator.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
         var style = s f i
-        if (style.className.isEmpty && (nameFromMacro ne null))
+        if (style.className.isEmpty && !doesntNeedClassName(style) && (nameFromMacro ne null))
           for (cn <- macroName(cnh, nameFromMacro, toCN(i, index)))
             style = style.copy(className = Some(ensureUnique(cn)))
         add(q, i, style)
@@ -174,7 +180,11 @@ object Register { // ===========================================================
     def apply(cnh: ClassNameHint, name: String): Option[ClassName]
 
     def apply(cnh: ClassNameHint, name: String, domain: => String): Option[ClassName] =
-      apply(cnh, name).map(n => ClassName(n.value + "-" + domain))
+      apply(cnh, name).map { n =>
+        val raw = domain
+        val d   = if (raw eq null) "" else MacroName.Use.sanitise(raw)
+        if (d.isEmpty) n else ClassName(n.value + "-" + d)
+      }
   }
 
   object MacroName {
@@ -185,12 +195,16 @@ object Register { // ===========================================================
     object Use extends MacroName {
       val cssIllegal = "[^_a-zA-Z0-9\u00a0-\u00ff-]".r
 
+      private[mutable] def sanitise(s: String): String =
+        cssIllegal.replaceAllIn(s, "_")
+
       override def apply(cnh: ClassNameHint, name: String) =
         if (name.isEmpty)
           None
         else {
-          val name2 = cssIllegal.replaceAllIn(name, "_")
-          Some(ClassName(s"${cnh.value}-$name2"))
+          val name2 = sanitise(name)
+          val cnh2  = sanitise(cnh.value)
+          Some(ClassName(if (cnh2.isEmpty) name2 else s"$cnh2-$name2"))
         }
     }
 

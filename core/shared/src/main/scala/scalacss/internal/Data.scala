@@ -44,6 +44,10 @@ object UnicodeRange {
  */
 final case class ClassNameHint(value: String)
 
+object ClassNameHint {
+  implicit def univEq: UnivEq[ClassNameHint] = UnivEq.derive
+}
+
 /**
   * Animation keyframes.
   *

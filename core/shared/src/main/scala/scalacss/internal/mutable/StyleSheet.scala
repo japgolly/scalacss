@@ -20,15 +20,27 @@ object StyleSheet {
   private def fixRepl(s: String): String =
     s.replaceFirst("""^\$line.+[.$]\$iw[.$]""", "")
 
+  private def isCssIdentStart(c: Char): Boolean =
+    c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '\u00a0' && c <= '\u00ff')
+
+  private[mutable] def mkClassNameHint(rawName: String): ClassNameHint = {
+    val s1 = fixRepl(rawName)
+    val dot = s1.lastIndexOf('.')
+    val s2 = if (dot >= 0) s1.substring(dot + 1) else s1
+    val s3 = s2.replaceFirst("\\$+$", "").replaceAll("\\$+", "_")
+    val s4 = Register.MacroName.Use.sanitise(s3)
+    val s5 =
+      if (s4.isEmpty) "StyleSheet"
+      else if (isCssIdentStart(s4.charAt(0))) s4
+      else "_" + s4
+    ClassNameHint(s5)
+  }
+
   abstract class Base {
     protected def cssRegister: Register
 
     protected implicit val classNameHint: ClassNameHint =
-      ClassNameHint(
-        fixRepl(getClass.getName)
-          .replaceFirst("\\$+$", "")
-          .replaceFirst("""^(?:.+\.)(.+?)$""", "$1")
-          .replaceAll("\\$+", "_"))
+      mkClassNameHint(getClass.getName)
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)

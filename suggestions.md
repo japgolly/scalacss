@@ -2,12 +2,6 @@
 
 ## Bugs & Correctness
 
-6. **Sanitise `Register.registerF2`, `registerFM`, `MacroName.apply(cnh, name, domain)`, and `StyleSheet.Base.classNameHint` (`Register.scala`, `StyleSheet.scala`)**
-   - `MacroName.apply(cnh, name, domain)` (`Register.scala:174`) builds `ClassName(n.value + "-" + domain)` without running `cssIllegal` on `domain`.
-   - `registerF2` (`Register.scala:100`) builds `ClassName(manualName + "-" + toCN(i, index))` without sanitisation or non-empty guards (empty `manualName` yields invalid CSS like `.-1`).
-   - `registerFM` (`Register.scala:110-112`) assigns a `className` even to `addClassNames`-only styles, bypassing `doesntNeedClassName` in `registerS`.
-   - `StyleSheet.Base.classNameHint` (`StyleSheet.scala:26-31`) only strips `$` and package prefixes from `getClass.getName`, leaving whitespace/illegal characters in backticked object names or producing `""` (which makes `NameGen.IncFmt` emit invalid CSS selectors like `.-0001`).
-
 7. **Fix `NameGen.short` validation and `Alphabet` / `toAlphabet` edge cases (`Register.scala`)**
    - `NameGen.short` (lines 269-271) only checks the first character (`^[_a-zA-Z\u00a0-\u00ff].*`)—allowing spaces/invalid chars later in `fullPrefix`—prints `Not: '$prefix'` instead of `'$fullPrefix'`, and still returns an invalid `NameGen`.
    - `NameGen.Alphabet.code` (lines 223-229) has no guard against empty `alphabet` or negative `n`; `toAlphabet` (lines 258-264) is non-tail-recursive and loops indefinitely on negative `i`.

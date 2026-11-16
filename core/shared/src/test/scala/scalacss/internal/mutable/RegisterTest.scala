@@ -260,5 +260,115 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "macroNameWithDomain" - {
+      implicit val compose: Compose = Compose.trust
+
+      "sanitisesDomain" - {
+        assertEq(MacroName.Use(ClassNameHint("SS"), "f", "a b?"), Some(ClassName("SS-f-a_b_")))
+        assertEq(MacroName.Ignore(ClassNameHint("SS"), "f", "a b?"), None)
+      }
+
+      "styleFCustomSuffix" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val f = styleF(Domain.boolean)(_ => dsl.styleS(color.red), (b, _) => if (b) "yes!" else "no ?")
+        }
+        val ss = new SS
+        assertEq(ss.f(true).className, ClassName("SS-f-yes_"))
+        assertEq(ss.f(false).className, ClassName("SS-f-no__"))
+      }
+    }
+
+    "registerF2" - {
+      implicit val compose: Compose = Compose.trust
+
+      "sanitisesNameAndSuffix" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val f = styleF("my style")(Domain.boolean)(_ => dsl.styleS(color.red), (b, _) => if (b) "yes!" else "no ?")
+        }
+        val ss = new SS
+        assertEq(ss.f(true).className, ClassName("my_style-yes_"))
+        assertEq(ss.f(false).className, ClassName("my_style-no__"))
+      }
+
+      "emptyManualName" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val f = styleF("")(Domain.boolean)(_ => dsl.styleS(color.red))
+        }
+        val ss = new SS
+        assertEq(ss.f(true).className, ClassName("SS-0001"))
+        assertEq(ss.f(false).className, ClassName("SS-0002"))
+      }
+    }
+
+    "registerFM" - {
+      implicit val compose: Compose = Compose.trust
+
+      "addClassNamesOnly" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val btn = styleF.bool { b =>
+            if (b) addClassNames("btn", "btn-lg")
+            else   addClassNames("btn", "btn-sm")
+          }
+          val mixed = styleF.bool { b =>
+            if (b) addClassNames("btn", "btn-lg")
+            else   dsl.styleS(addClassNames("btn"), color.red)
+          }
+        }
+        val ss = new SS
+        assertEq(ss.btn(true).htmlClass, "btn btn-lg")
+        assertEq(ss.btn(false).htmlClass, "btn btn-sm")
+        assertEq(ss.mixed(true).htmlClass, "btn btn-lg")
+        assertEq(ss.mixed(false).htmlClass, "SS-mixed-f btn")
+      }
+    }
+
+    "classNameHint" - {
+      implicit val compose: Compose = Compose.trust
+
+      "backtickedWhitespace" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class `my sheet` extends StyleSheet.Inline {
+          import dsl._
+          val s = style(color.red)
+          def hint = classNameHint
+        }
+        val ss = new `my sheet`
+        assert(!ss.hint.value.exists(_.isWhitespace))
+        assertEq(ss.s.className.value, s"${ss.hint.value}-s")
+      }
+
+      "dollarObject" - {
+        val cn = `$`.s.className.value
+        assert(cn.matches("^[_a-zA-Z\u00a0-\u00ff][_a-zA-Z0-9\u00a0-\u00ff-]*$"))
+      }
+
+      "mkClassNameHint" - {
+        assertEq(StyleSheet.mkClassNameHint("com.example.MyStyles$"), ClassNameHint("MyStyles"))
+        assertEq(StyleSheet.mkClassNameHint("$line8.$read.$iw.$iw.MyStyles$"), ClassNameHint("MyStyles"))
+        assertEq(StyleSheet.mkClassNameHint("pkg.my sheet!$"), ClassNameHint("my_sheet_"))
+        assertEq(StyleSheet.mkClassNameHint("pkg.123$"), ClassNameHint("_123"))
+        assertEq(StyleSheet.mkClassNameHint("pkg.$$"), ClassNameHint("StyleSheet"))
+        assertEq(StyleSheet.mkClassNameHint("$line8.$read.$iw.$iw.$$"), ClassNameHint("StyleSheet"))
+      }
+    }
+
   }
+}
+
+private object `$` extends StyleSheet.Inline()(new Register(Register.NameGen.numbered(), Register.MacroName.Use, Register.ErrorHandler.silent)) {
+  import dsl._
+  private implicit val compose: Compose = Compose.trust
+  val s = style(color.red)
 }
