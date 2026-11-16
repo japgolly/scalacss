@@ -2,10 +2,6 @@
 
 ## Bugs & Correctness
 
-9. **Fix Scala 3 `Macros.Dsl.nameQuoted` failing to detect `StyleSheet` subclasses and omitting `NameTransformer.decode` (`core/shared/src/main/scala-3/scalacss/internal/Macros.scala`)**
-   - `isStyleSheet` (lines 33-48) only matches `case p: TypeTree => (p.tpe <:< ss)` in `ClassDef.parents`. Because `StyleSheet.Inline` and `StyleSheet.Standalone` take constructor arguments, extending them yields an `Apply` term in `parents`, not a `TypeTree`. Thus `isStyleSheet` returns `false`, `classOwner` walks past the stylesheet, and relative nested names are lost.
-   - `NameTransformer` is imported at line 5 but `NameTransformer.decode` is never called (unlike Scala 2 lines 29, 33), and `fixName` (`s.replace("$", "")`, line 58) mangles encoded operator/backticked names.
-
 10. **Fix `ColorLiteral` case-sensitivity for `none`/`deg` and Scala 3 error ordering (`scala-2/.../Macros.scala`, `scala-3/.../Macros.scala`)**
     - The regexes use `(?i)`, so `c"rgb(NONE 0 0)"` and `c"hsl(120DEG 50% 50%)"` match the regex, but `validateModernNPN` and `validateModernH` do case-sensitive checks (`s == "none"`, `s.stripSuffix("deg")`), causing them to fail.
     - In Scala 3 `ColorLiteral.attempt` (`validateFn3`/`validateFn4`, lines 252-277), `fail` does not abort immediately like Scala 2, so later argument errors overwrite earlier ones.

@@ -364,6 +364,23 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "dslMacroName" - {
+      "nestedObjectsAndDecodedNames" - {
+        val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        val ss = new DslMacroNameSS(reg)
+        assertEq(ss.`a+b`.className, ClassName("SS-a_b"))
+        assertEq(ss.nested.depth1.className, ClassName("SS-nested-depth1"))
+        assertEq(ss.nested.deeper.depth2.className, ClassName("SS-nested-deeper-depth2"))
+        assertEq(ss.`sub+group`.`my style!`.className, ClassName("SS-sub_group-my_style_"))
+      }
+
+      "inheritedStyleSheetClass" - {
+        val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        val ss = new DslMacroNameSubSS(reg)
+        assertEq(ss.nested.s.className, ClassName("SS-nested-s"))
+      }
+    }
+
   }
 }
 
@@ -371,4 +388,34 @@ private object `$` extends StyleSheet.Inline()(new Register(Register.NameGen.num
   import dsl._
   private implicit val compose: Compose = Compose.trust
   val s = style(color.red)
+}
+
+private class DslMacroNameSS(reg: Register) extends StyleSheet.Inline()(reg) {
+  override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+  import dsl._
+  private implicit val compose: Compose = Compose.trust
+  val `a+b` = style(color.red)
+  object nested {
+    val depth1 = style(color.red)
+    object deeper {
+      val depth2 = style(color.red)
+    }
+  }
+  object `sub+group` {
+    val `my style!` = style(color.red)
+  }
+  initInnerObjects(nested.depth1, nested.deeper.depth2, `sub+group`.`my style!`)
+}
+
+private abstract class DslMacroNameBaseSS(reg: Register) extends StyleSheet.Inline()(reg) {
+  override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+}
+
+private class DslMacroNameSubSS(reg: Register) extends DslMacroNameBaseSS(reg) {
+  import dsl._
+  private implicit val compose: Compose = Compose.trust
+  object nested {
+    val s = style(color.red)
+  }
+  initInnerObjects(nested.s)
 }
