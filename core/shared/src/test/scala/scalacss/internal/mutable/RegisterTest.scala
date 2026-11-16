@@ -177,5 +177,33 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "keyframesMacroName" - {
+      implicit val compose: Compose = Compose.trust
+
+      "backtickedWithWhitespace" - {
+        "macroNameUse" - {
+          implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+          class SS extends StyleSheet.Inline {
+            override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+            import dsl._
+            val `fade in` = keyframes((0 %%) -> keyframe(color.red))
+          }
+          val ss = new SS
+          assertEq(ss.`fade in`.name.value, "SS-fade_in")
+        }
+
+        "macroNameIgnore" - {
+          implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Ignore, ErrorHandler.silent)
+          class SS extends StyleSheet.Inline {
+            override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+            import dsl._
+            val `fade in` = keyframes((0 %%) -> keyframe(color.red))
+          }
+          val ss = new SS
+          assertEq(ss.`fade in`.name.value, "SS-0001")
+        }
+      }
+    }
+
   }
 }

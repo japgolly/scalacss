@@ -2,11 +2,6 @@
 
 ## Bugs & Correctness
 
-3. **Fix `StyleSheet.Inline.MKeyframes.apply` eagerly constructing `ClassName` before sanitisation (`core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala`)**
-   - `MKeyframes.apply` (line 159) constructs `Keyframes(ClassName(name), frames)` before `cssRegister.registerKeyframes` runs `macroName(cnh, keyframes.name.value)` (`Register.scala:125`).
-   - A backticked identifier containing spaces or an empty fallback `""` from the macro throws `AssertionError` in `ClassName` before `MacroName.Use` can sanitise illegal characters or `MacroName.Ignore` can discard it.
-   - **Fix:** Pass `name: String` into `registerKeyframes` (matching `MStyle` -> `applyMacroName`) and only construct `ClassName` after `macroName` / `nextName` resolves it.
-
 4. **Fix `MKStyle.apply(className: String)` silently ignoring `className` (`core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala`)**
    - `MKStyle.apply(className: String)` (lines 168-169) delegates to `apply(t: _*)` and drops the `className` argument.
    - **Fix:** Either construct the keyframe `StyleA` using the provided `className` or remove/deprecate the misleading overload on `keyframe`.

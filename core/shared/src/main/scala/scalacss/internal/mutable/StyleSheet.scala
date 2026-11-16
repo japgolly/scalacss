@@ -156,7 +156,7 @@ object StyleSheet {
 
     protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
       override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
-        cssRegister.registerKeyframes(Keyframes(ClassName(name), frames))
+        cssRegister.registerKeyframes(name, frames)
     }
 
     protected class MKStyle extends DslMacros.MStyle {

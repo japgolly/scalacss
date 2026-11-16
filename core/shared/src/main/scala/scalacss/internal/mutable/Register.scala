@@ -121,13 +121,17 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     i => f(i) getOrElse errHandler.badInput(s, i)
   }
 
-  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes = mutex {
-    val cn = macroName(cnh, keyframes.name.value).fold(nextName(cnh))(ensureUnique)
-    val kf = keyframes.copy(name = cn)
-    emitRegistrationWarnings(Right(cn), keyframes.frames.iterator.flatMap(_._2.style.allWarnings).toVector)
-    _keyframes :+= kf
-    kf
-  }
+  def registerKeyframes(keyframes: Keyframes)(implicit cnh: ClassNameHint): Keyframes =
+    registerKeyframes(keyframes.name.value, keyframes.frames)
+
+  def registerKeyframes(name: String, frames: Seq[(KeyframeSelector, StyleA)])(implicit cnh: ClassNameHint): Keyframes =
+    mutex {
+      val cn = macroName(cnh, name).fold(nextName(cnh))(ensureUnique)
+      val kf = Keyframes(cn, frames)
+      emitRegistrationWarnings(Right(cn), frames.iterator.flatMap(_._2.style.allWarnings).toVector)
+      _keyframes :+= kf
+      kf
+    }
 
   def registerFontFace(fontFace: FontFace[Option[FontFamily]])(implicit cnh: ClassNameHint): FontFace[FontFamily] = mutex {
     // This allows duplicate fontFamily names to be specified
