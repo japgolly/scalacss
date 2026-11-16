@@ -47,7 +47,7 @@ object RendererTest extends TestSuite {
         )
         val rendered = StringRenderer.formatTiny(Vector(ff))
         assert(!rendered.contains("\"\""))
-        assertEq(rendered, """@font-face {font-family:"My Font";src:url(font.woff)}""")
+        assertEq(rendered, """@font-face{font-family:"My Font";src:url(font.woff)}""")
       }
 
       "consistencyWithStyle" - {
@@ -61,7 +61,7 @@ object RendererTest extends TestSuite {
         val renderedStyle = StringRenderer.formatTiny(styleEntry)
         val renderedFont = StringRenderer.formatTiny(Vector(fontEntry))
 
-        assertEq(renderedFont, """@font-face {font-family:'My Font';src:url(font.woff)}""")
+        assertEq(renderedFont, """@font-face{font-family:'My Font';src:url(font.woff)}""")
         assertEq(renderedStyle, """.c{font-family:'My Font'}""")
       }
     }

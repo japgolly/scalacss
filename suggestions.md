@@ -5,7 +5,6 @@
 24. **Optimise hot-path string & wrapper allocations (`Util.scala`, `Data.scala`, `Renderer.scala`, `Dsl.scala`, `ValueT.scala`, `Pseudo.scala`, `Scalatags*.scala`)**
     1. `Util.quote` (`Util.scala:7-32`) uses `newStr += add` in a loop and `"\\%06X".format(cp)` instead of a `StringBuilder` and hex digit appending.
     2. `Data.Length.value` (`Data.scala:144-147`) allocates two intermediate strings via `s.stripPrefix("-").stripSuffix(".0")` on every call; `ClassName.parse` (`Data.scala:15`) compiles/splits `\\s+` regex on every call.
-    3. `StringRenderer.formatTiny` (`Renderer.scala:155-158`) emits `"@font-face {"` with an unnecessary space (unlike all other rules in `formatTiny`, though note `ProdRenderInlineTest` and `RendererTest` currently assert this space) and allocates `CssKV(key, value)` per `@font-face` property.
     4. `Dsl.style` (`Dsl.scala:306`) calls `t.map(_.s).reduce(_ compose _)` allocating an intermediate collection instead of iterating/folding `t.iterator`. `DslBase.DslCond` (`Dsl.scala:144`) is not `AnyVal`.
     5. `ValueT` (`ValueT.scala:15`) allocates a case class wrapper per typed CSS value (commented-out zero-cost cast at lines 21-28; on Scala 3 this could be an `opaque type`, and on Scala 2 `extends AnyVal` or tagged type). `ValueT.concat` (lines 177-184) uses chained `+` instead of a single interpolation/`StringBuilder`.
     6. `Pseudo.addPseudo` / `Composite` (`Pseudo.scala:42-65, 90-92`) builds a `SortedSet`, passes `(s.head, s.tail)` to `Composite`, and `Composite` immediately recomputes `val singles = t + h`.

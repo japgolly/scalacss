@@ -152,7 +152,7 @@ object StringRenderer {
       ff       = fontface  =>
         printFontFace(
           fontface,
-          () => sb append "@font-face {",
+          () => sb append "@font-face{",
           (key: String, value: String, quote: Boolean) => kv(CssKV(key, value), quote),
           (key: String, value: String, quote: Boolean) => { sb append ';'; kv(CssKV(key, value), quote) },
           () => sb append "}"
