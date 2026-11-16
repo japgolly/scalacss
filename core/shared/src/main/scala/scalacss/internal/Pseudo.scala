@@ -162,9 +162,9 @@ object Pseudo {
   type NthQuery = String
 
   object NthChildBase {
-    private val queryPattern = """^(?i)(?:[+-]?\d+|odd|even)$""".r.pattern
-    private val fQueryPattern = """^(?i)[+-]?\d*n(?:\s*[+-]\s*\d+)?$""".r.pattern
-    private val ofSelectorPattern = """^(?i)(.+?)\s+of\s+(\S.*)$""".r.pattern
+    private val queryPattern = """(?i)^(?:[+-]?\d+|odd|even)$""".r.pattern
+    private val fQueryPattern = """(?i)^[+-]?\d*n(?:\s*[+-]\s*\d+)?$""".r.pattern
+    private val ofSelectorPattern = """(?i)^(.+?)\s+of\s+(\S.*)$""".r.pattern
 
     private def validate(cls: String, query: NthQuery): String = {
       val trimmed = query.trim
