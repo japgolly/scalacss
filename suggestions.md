@@ -160,7 +160,6 @@
     - `misc/caniuse.scala:110-111` lists `"variables"` twice in `dataToIgnore`.
 
 31. **Improve build configuration and test hygiene (`project/Build.scala`, `build.sbt`, `scalafix.sbt`, tests)**
-    - `scalafix.sbt:8` sets `ThisBuild / semanticdbEnabled := true` unconditionally, adding compilation overhead to all normal/CI builds.
     - `project/Build.scala:36` has `-Ywarn-value-discard` commented out (allowing bugs like #8 in `Macros.scala:237` to go unnoticed).
     - `build.sbt:11` disables `parallelExecution` globally (`ThisBuild / parallelExecution := false`) due to global mutable state in `NameGen.short` (`_nextShortPrefix`); isolating `NameGen.short` state per test or `Register` would allow parallel test execution.
     - `core/js/src/test/scala/scalacss/js/PlatformJsTest.scala:14-16` only calls `println(...)` and asserts nothing (`PlatformJs` / `PlatformJsEnv` behaviour is effectively untested).
