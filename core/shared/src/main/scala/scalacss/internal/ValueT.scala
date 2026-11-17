@@ -175,13 +175,13 @@ object ValueT {
   }
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_]): Value =
-    a.value + sep + b.value
+    s"${a.value}$sep${b.value}"
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_]): Value =
-    concat(sep, a, b) + sep + c.value
+    s"${a.value}$sep${b.value}$sep${c.value}"
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_], d: ValueT[_]): Value =
-    concat(sep, a, b, c) + sep + d.value
+    s"${a.value}$sep${b.value}$sep${c.value}$sep${d.value}"
 
   abstract class TypedAttrT2[T <: ValueClass] extends TypedAttrBase {
     final def apply(both: ValueT[T])                           : AV = av(both.value)

@@ -217,5 +217,13 @@ object ValueTTest extends TestSuite {
       "seconds" - test(3.seconds,     "3s")
       "minutes" - test(2.minutes,     "120s")
     }
+
+    "concat" - {
+      val s: ValueT[Time] = sec
+      val m: ValueT[Time] = ms
+      assertEq(ValueT.concat(" ", len, %%), "12px 25%")
+      assertEq(ValueT.concat(" ", len, %%, s), "12px 25% 3s")
+      assertEq(ValueT.concat(",", len, %%, s, m), "12px,25%,3s,3ms")
+    }
   }
 }

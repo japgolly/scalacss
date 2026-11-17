@@ -6,8 +6,6 @@
     1. `Util.quote` (`Util.scala:7-32`) uses `newStr += add` in a loop and `"\\%06X".format(cp)` instead of a `StringBuilder` and hex digit appending.
     2. `Data.Length.value` (`Data.scala:144-147`) allocates two intermediate strings via `s.stripPrefix("-").stripSuffix(".0")` on every call; `ClassName.parse` (`Data.scala:15`) compiles/splits `\\s+` regex on every call.
     5. `ValueT` (`ValueT.scala:15`) allocates a case class wrapper per typed CSS value (commented-out zero-cost cast at lines 21-28; on Scala 3 this could be an `opaque type`, and on Scala 2 `extends AnyVal` or tagged type). `ValueT.concat` (lines 177-184) uses chained `+` instead of a single interpolation/`StringBuilder`.
-    6. `Pseudo.addPseudo` / `Composite` (`Pseudo.scala:42-65, 90-92`) builds a `SortedSet`, passes `(s.head, s.tail)` to `Composite`, and `Composite` immediately recomputes `val singles = t + h`.
-    7. `ScalatagsTextImplicits.styleaToTextTag` (`ScalatagsText.scala:11-13`) allocates `" " + s.htmlClass` (and produces leading/double spaces in `class="..."`), and `ScalatagsJsDomImplicits.styleaToJsDomTag` (`ScalatagsJsDom.scala:11-14`) allocates a composite iterator even for single-class `StyleA`s.
 
 ---
 
