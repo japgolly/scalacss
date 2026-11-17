@@ -16,8 +16,12 @@ final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], 
   def classNameIterator: Iterator[ClassName] =
     Iterator.single(className) ++ addClassNames
 
-  /** Value to be applied to a HTML element's `class` attribute. */
-  val htmlClass: String =
+  @deprecated("Use htmlClasses instead", "1.1.1")
+  def htmlClass: String =
+    htmlClasses
+
+  /** HTML classes separated by spaces. */
+  val htmlClasses: String =
     classNameIterator.map(_.value).mkString(" ")
 
   def +(s: StyleA)(implicit c: Compose): StyleA =

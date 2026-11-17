@@ -53,8 +53,8 @@ object ComposeTest extends TestSuite {
     }
     def test(): Unit = {
       val css = SampleStyles.renderA[String].trim
-      assertEq(SampleStyles.outer.htmlClass, "TEST-outer")
-      assertEq(SampleStyles.inner.htmlClass, "TEST-inner")
+      assertEq(SampleStyles.outer.htmlClasses, "TEST-outer")
+      assertEq(SampleStyles.inner.htmlClasses, "TEST-inner")
       assertMultiline(css,
         """
           |.TEST-other {

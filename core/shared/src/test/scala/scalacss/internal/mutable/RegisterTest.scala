@@ -96,8 +96,8 @@ object RegisterTest extends TestSuite {
         val s2 = StyleS.empty.copy(addClassNames = Vector(ClassName("btn"), ClassName("btn-primary")))
         val a1 = reg registerS s1
         val a2 = reg registerS s2
-        assertEq(a1.htmlClass, "btn btn-default")
-        assertEq(a2.htmlClass, "btn btn-primary")
+        assertEq(a1.htmlClasses, "btn btn-default")
+        assertEq(a2.htmlClasses, "btn btn-primary")
         assertEq(warnings, Vector.empty)
       }
     }
@@ -327,10 +327,10 @@ object RegisterTest extends TestSuite {
           }
         }
         val ss = new SS
-        assertEq(ss.btn(true).htmlClass, "btn btn-lg")
-        assertEq(ss.btn(false).htmlClass, "btn btn-sm")
-        assertEq(ss.mixed(true).htmlClass, "btn btn-lg")
-        assertEq(ss.mixed(false).htmlClass, "SS-mixed-f btn")
+        assertEq(ss.btn(true).htmlClasses, "btn btn-lg")
+        assertEq(ss.btn(false).htmlClasses, "btn btn-sm")
+        assertEq(ss.mixed(true).htmlClasses, "btn btn-lg")
+        assertEq(ss.mixed(false).htmlClasses, "SS-mixed-f btn")
       }
     }
 

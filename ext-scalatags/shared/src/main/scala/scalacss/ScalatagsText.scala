@@ -10,7 +10,7 @@ import scalatags.text.Builder
 trait ScalatagsTextImplicits {
 
   implicit final def styleaToTextTag(s: StyleA): Modifier = new Modifier {
-    def applyTo(t: text.Builder) = t.appendAttr("class", Builder.GenericAttrValueSource(" " + s.htmlClass))
+    def applyTo(t: text.Builder) = t.appendAttr("class", Builder.GenericAttrValueSource(" " + s.htmlClasses))
   }
 
   implicit final def styleTextTagRenderer(implicit s: Renderer[String]): Renderer[TypedTag[String]] =
