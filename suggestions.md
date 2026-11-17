@@ -4,12 +4,6 @@
 
 ## JS / DOM & Platform Detection
 
-25. **Replace `js.eval` of embedded `platform.js` with `navigator.userAgent` / feature detection (`core/js/src/main/scala/scalacss/js/PlatformJs.scala`, `PlatformJsEnv.scala`)**
-    1. `PlatformJs.value` (lines 19-27) embeds ~9 KB of an old (~2015) `platform.js` snapshot and executes it via `js.eval(sourceCode)`.
-    2. This fails under strict CSP (`'unsafe-eval'` disabled), pollutes `window.platform`, and breaks under AMD/CommonJS bundlers (where the UMD epilogue writes to `define(...)` or `exports` instead of `window.platform`, leaving `js.Dynamic.global.platform` `undefined`).
-    3. Also, `PlatformJsEnv.value` (`PlatformJsEnv.scala:22`) does not guard against `null` (`UndefOr` only checks `!= undefined`), and `PlatformJs.sourceCode` is out of date for modern browsers (Chromium Edge, iPadOS, Samsung Internet).
-    4. **Fix:** Detect browser/OS directly in Scala.js from `window.navigator.userAgent` / `userAgentData` without `eval`, or make `PlatformJs` opt-in.
-
 26. **Update `CanIUse2.agentsForPlatform` matching (`core/shared/src/main/scala/scalacss/internal/CanIUse2.scala`)**
     1. Line 127 inspects `p.toString.toLowerCase contains "android"`, which allocates the full `Platform.toString` and can misfire if `desc`/`userAgent` contains `"android"` unexpectedly (e.g. `p.os.exists(_.family.exists(_.toLowerCase.contains("android")))` is cleaner).
     2. `CanIUse.Agent.values` includes `Samsung` and `BlackberryBrowser`, neither of which is matched in `agentsForPlatform` (lines 124-146), and Safari matching only checks exact `"Safari"` (missing mobile/iOS variants).
@@ -48,5 +42,4 @@
 31. **Improve build configuration and test hygiene (`project/Build.scala`, `build.sbt`, `scalafix.sbt`, tests)**
     1. `project/Build.scala:36` has `-Ywarn-value-discard` commented out (allowing bugs like #8 in `Macros.scala:237` to go unnoticed).
     2. `build.sbt:11` disables `parallelExecution` globally (`ThisBuild / parallelExecution := false`) due to global mutable state in `NameGen.short` (`_nextShortPrefix`); isolating `NameGen.short` state per test or `Register` would allow parallel test execution.
-    3. `core/js/src/test/scala/scalacss/js/PlatformJsTest.scala:14-16` only calls `println(...)` and asserts nothing (`PlatformJs` / `PlatformJsEnv` behaviour is effectively untested).
-    4. `ErrorHandler.Noisy.badInput` (`Register.scala:299`) calls `s.domain.iterator.mkString(",")`, which can allocate huge strings / OOM on large ranges (truncating to e.g. `.take(20)` avoids this).
+    3. `ErrorHandler.Noisy.badInput` (`Register.scala:299`) calls `s.domain.iterator.mkString(",")`, which can allocate huge strings / OOM on large ranges (truncating to e.g. `.take(20)` avoids this).
