@@ -8,27 +8,19 @@ object Util {
     quote(input, '\'')
 
   def quote(input: String, quoteChar: Char): String = {
-    // fast in JS, speed doesn't matter in JVM for this case
-    var newStr = quoteChar.toString
-    var i = 0
     val len = input.length
+    val sb = new StringBuilder(len + 2)
+    sb.append(quoteChar)
     val quoteCp = quoteChar.toInt
+    var i = 0
     while (i < len) {
       val cp = input.codePointAt(i)
-
-      @inline def escape =
-        cp == '\\' || cp == quoteCp || cp < 32 || cp >= 127
-
-      val add =
-        if (escape)
-          "\\%06X".format(cp)
-        else
-          cp.toChar.toString
-
-      newStr += add
+      if (cp == '\\' || cp == quoteCp || cp < 32 || cp >= 127)
+        sb.append("\\%06X".format(cp))
+      else
+        sb.append(cp.toChar)
       i += Character.charCount(cp)
     }
-
-    newStr + quoteChar
+    sb.append(quoteChar).toString
   }
 }
