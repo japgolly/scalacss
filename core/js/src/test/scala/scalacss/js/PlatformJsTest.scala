@@ -59,7 +59,7 @@ object PlatformJsTest extends TestSuite {
 
       "safariMac" - check(
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
-        "Safari", None, NonEmptyVector(Agent.IOSSafari, Agent.Safari))
+        "Safari", None, NonEmptyVector(Agent.Safari))
 
       "edgeChromium" - check(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.2210.91",
@@ -113,19 +113,19 @@ object PlatformJsTest extends TestSuite {
 
       "safariIPhone" - check(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
-        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari, Agent.Safari))
+        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari))
 
       "safariIPad" - check(
         "Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
-        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari, Agent.Safari))
+        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari))
 
       "iosWebView" - check(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari, Agent.Safari))
+        "Safari", Some("iOS"), NonEmptyVector(Agent.IOSSafari))
 
       "edgeAndroid" - check(
         "Mozilla/5.0 (Linux; Android 10; HD1913) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36 EdgA/120.0.2210.111",
-        "Microsoft Edge", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Microsoft Edge", Some("Android"), NonEmptyVector(Agent.Edge))
 
       "edgeIOS" - check(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 EdgiOS/120.2210.111 Mobile/15E148 Safari/605.1.15",
@@ -133,27 +133,27 @@ object PlatformJsTest extends TestSuite {
 
       "samsungInternet" - check(
         "Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/23.0 Chrome/115.0.0.0 Mobile Safari/537.36",
-        "Samsung Internet", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Samsung Internet", Some("Android"), NonEmptyVector(Agent.Samsung))
 
       "ucBrowser" - check(
         "Mozilla/5.0 (Linux; U; Android 11; en-US) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/78.0.3904.108 UCBrowser/13.4.0.1306 Mobile Safari/537.36",
-        "UC Browser", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "UC Browser", Some("Android"), NonEmptyVector(Agent.AndroidUC))
 
       "androidAospBrowser" - check(
         "Mozilla/5.0 (Linux; U; Android 4.4.2; en-us; Nexus 5 Build/KOT49H) AppleWebKit/537.16 (KHTML, like Gecko) Version/4.0 Mobile Safari/537.16",
-        "Android Browser", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Android Browser", Some("Android"), NonEmptyVector(Agent.AndroidBrowser))
 
       "operaMobileAndroid" - check(
         "Mozilla/5.0 (Linux; Android 10; VOG-L29) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 OPR/79.1.4195.77401",
-        "Opera Mobile", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Opera Mobile", Some("Android"), NonEmptyVector(Agent.OperaMobile))
 
       "operaTouchAndroid" - check(
         "Mozilla/5.0 (Linux; Android 10; VOG-L29) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 OPT/2.9.2",
-        "Opera Mobile", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Opera Mobile", Some("Android"), NonEmptyVector(Agent.OperaMobile))
 
       "operaMiniPresto" - check(
         "Opera/9.80 (Android; Opera Mini/36.2.2254/119.132; U; en) Presto/2.12.423 Version/12.16",
-        "Opera Mini", Some("Android"), NonEmptyVector(Agent.AndroidBrowser, Agent.AndroidUC))
+        "Opera Mini", Some("Android"), NonEmptyVector(Agent.OperaMini))
 
       "operaMiniIOS" - check(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) OPiOS/16.0.10.123456 Mobile/18A373 Safari/9537.53",
@@ -163,12 +163,9 @@ object PlatformJsTest extends TestSuite {
         "Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 630) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537",
         "IE Mobile", Some("Windows Phone"), NonEmptyVector(Agent.IEMobile))
 
-      "blackBerry10" - {
-        val ua = "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+"
-        val p  = PlatformJsEnv.parseUserAgent(ua)
-        assertEq(p.flatMap(_.name), Some("BlackBerry"))
-        assertEq(p.flatMap(_.os).flatMap(_.family), Some("BlackBerry"))
-      }
+      "blackBerry10" - check(
+        "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+",
+        "BlackBerry", Some("BlackBerry"), NonEmptyVector(Agent.BlackberryBrowser))
     }
 
     "unrecognised" - {

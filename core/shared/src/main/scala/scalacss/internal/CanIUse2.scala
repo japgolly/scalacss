@@ -174,26 +174,26 @@ object CanIUse2 {
 
   def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
     import Agent._
-    def dunno = Agent.values
-    if (p.toString.toLowerCase contains "android")
-      p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(AndroidChrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(AndroidFirefox)
-        case _                           => NonEmptyVector(AndroidBrowser, AndroidUC)
-      })
-    else
-      p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(Chrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(Firefox)
-        case "IE Mobile"                 => NonEmptyVector(IEMobile)
-        case n if n startsWith "IE"      => NonEmptyVector(IE)
-        case "Opera Mini"                => NonEmptyVector(OperaMini)
-        case "Opera Mobile"              => NonEmptyVector(OperaMobile)
-        case n if n startsWith "Opera"   => NonEmptyVector(Opera)
-        case "Safari"                    => NonEmptyVector(IOSSafari, Safari)
-        case n if n endsWith "Edge"      => NonEmptyVector(Edge)
-        case _                           => dunno
-      })
+    val isAndroid = p.os.exists(_.family.exists(_.toLowerCase.contains("android")))
+    val isIOS     = p.os.exists(_.family.exists(_.equalsIgnoreCase("iOS")))
+    p.name.fold(Agent.values)({
+      case n if n startsWith "Chrome"                       => NonEmptyVector(if (isAndroid) AndroidChrome else Chrome)
+      case n if n startsWith "Firefox"                      => NonEmptyVector(if (isAndroid) AndroidFirefox else Firefox)
+      case "IE Mobile"                                      => NonEmptyVector(IEMobile)
+      case n if n startsWith "IE"                           => NonEmptyVector(IE)
+      case "Opera Mini"                                     => NonEmptyVector(OperaMini)
+      case "Opera Mobile"                                   => NonEmptyVector(OperaMobile)
+      case n if n startsWith "Opera"                        => NonEmptyVector(Opera)
+      case n if n endsWith "Edge"                           => NonEmptyVector(Edge)
+      case n if n startsWith "Samsung"                      => NonEmptyVector(Samsung)
+      case n if n.toLowerCase startsWith "blackberry"       => NonEmptyVector(BlackberryBrowser)
+      case "Mobile Safari" | "Safari Mobile" | "iOS Safari" => NonEmptyVector(IOSSafari)
+      case "Safari"                                         => NonEmptyVector(if (isIOS) IOSSafari else Safari)
+      case "UC Browser"                                     => NonEmptyVector(AndroidUC)
+      case "Android Browser"                                => NonEmptyVector(AndroidBrowser)
+      case _ if isAndroid                                   => NonEmptyVector(AndroidBrowser, AndroidUC)
+      case _                                                => Agent.values
+    })
   }
 
   def filteredPrefixPlan(whitelist: Set[Prefix], pp: PrefixPlan): PrefixPlan =

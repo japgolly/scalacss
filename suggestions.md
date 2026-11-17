@@ -4,10 +4,6 @@
 
 ## JS / DOM & Platform Detection
 
-26. **Update `CanIUse2.agentsForPlatform` matching (`core/shared/src/main/scala/scalacss/internal/CanIUse2.scala`)**
-    1. Line 127 inspects `p.toString.toLowerCase contains "android"`, which allocates the full `Platform.toString` and can misfire if `desc`/`userAgent` contains `"android"` unexpectedly (e.g. `p.os.exists(_.family.exists(_.toLowerCase.contains("android")))` is cleaner).
-    2. `CanIUse.Agent.values` includes `Samsung` and `BlackberryBrowser`, neither of which is matched in `agentsForPlatform` (lines 124-146), and Safari matching only checks exact `"Safari"` (missing mobile/iOS variants).
-
 27. **Harden `PlatformExports.installStyle` and `addToDocumentOnRegistration` (`core/js/src/main/scala/scalacss/defaults/PlatformExports.scala`)**
     1. `installStyle` (line 23) assumes `document.head` is non-null (throws in SVG/XML docs or early head scripts; fallback to `Option(document.head).getOrElse(document.documentElement)`).
     2. `addToDocumentOnRegistration` (lines 37-45) creates empty `<style>` elements when `ss` renders to `""` (e.g., `addClassNames`-only sheets or empty `register()` calls), ignores custom `Renderer[HTMLStyleElement]` instances, and joins sheets with `"\n"` even under `formatTiny`.
