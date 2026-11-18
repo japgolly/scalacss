@@ -89,7 +89,7 @@ object Literal extends TypedLiteralAliases {
 
     // <br-style>
     sealed trait BrStyle
-    object hidden extends Literal("hidden") with BrStyle
+    object hidden extends Literal("hidden") with BrStyle with Overflow
     object dotted extends Literal("dotted") with BrStyle
     object dashed extends Literal("dashed") with BrStyle
     object solid  extends Literal("solid")  with BrStyle
@@ -101,8 +101,14 @@ object Literal extends TypedLiteralAliases {
 
     // <overflow-behaviour>
     sealed trait OverflowBehaviour { def value: Value }
-    object auto    extends Literal("auto")    with OverflowBehaviour
+    object auto    extends Literal("auto")    with OverflowBehaviour with Overflow
     object contain extends Literal("contain") with OverflowBehaviour
+
+    // <overflow>
+    sealed trait Overflow
+    object clip    extends Literal("clip")    with Overflow
+    object scroll  extends Literal("scroll")  with Overflow
+    object visible extends Literal("visible") with Overflow
 
     // <repeat-style>
     sealed trait RepeatStyle { def value: Value }

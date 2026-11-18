@@ -610,5 +610,19 @@ object AttrTest extends TestSuite {
       assertEq(cursor.revert.value,     "revert")
       assertEq(userSelect.revert.value, "revert")
     }
+    "overflow" - {
+      import Dsl.{auto, hidden}
+      assertEq(overflow.auto.value,                        "auto")
+      assertEq(overflow.clip.value,                        "clip")
+      assertEq(overflow.hidden.value,                      "hidden")
+      assertEq(overflow.scroll.value,                      "scroll")
+      assertEq(overflow.visible.value,                     "visible")
+      assertEq(overflow(auto).value,                       "auto")
+      assertEq(overflow(auto, hidden).value,               "auto hidden")
+      assertEq(overflow(Literal.Typed.clip, Literal.Typed.scroll).value, "clip scroll")
+      assertEq(overflowX.clip.value,                       "clip")
+      assertEq(overflowY.clip.value,                       "clip")
+      assertEq(overflowX(auto).value,                      "auto")
+    }
   }
 }

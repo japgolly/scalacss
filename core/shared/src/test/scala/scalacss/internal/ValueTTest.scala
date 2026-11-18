@@ -205,6 +205,21 @@ object ValueTTest extends TestSuite {
         ()
       }
 
+      "Overflow" - {
+                      test[Overflow](inherit)
+                      test[Overflow](Dsl.revert)
+                      test[Overflow](Literal.Typed.auto)
+                      test[Overflow](Literal.Typed.hidden)
+                      test[Overflow](Literal.Typed.clip)
+                      test[Overflow](Literal.Typed.scroll)
+                      test[Overflow](Literal.Typed.visible)
+        compileError("test[Overflow](1)")
+        compileError("test[Overflow](len)")
+        compileError("test[Overflow](Color.black)")
+        compileError("test[Overflow](Literal.Typed.solid)")
+        ()
+      }
+
     }
 
     "timeValues" - {

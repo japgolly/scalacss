@@ -1864,12 +1864,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">MDN</a>
    */
-  object overflow extends TypedAttrBase {
+  object overflow extends TypedAttrT2[Overflow] with OverflowOps {
     override val attr = Attr.real("overflow", Transform keys CanIUse.overflow)
-    def auto    = avl(LT.auto)
-    def hidden  = avl(LT.hidden)
-    def scroll  = av(L.scroll)
-    def visible = av(L.visible)
   }
 
   /**
@@ -1922,12 +1918,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x">MDN</a>
    */
-  object overflowX extends TypedAttrBase {
+  object overflowX extends TypedAttrT1[Overflow] with OverflowOps {
     override val attr = Attr.real("overflow-x")
-    def auto    = avl(LT.auto)
-    def hidden  = avl(LT.hidden)
-    def scroll  = av(L.scroll)
-    def visible = av(L.visible)
   }
 
   /**
@@ -1935,12 +1927,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y">MDN</a>
    */
-  object overflowY extends TypedAttrBase {
+  object overflowY extends TypedAttrT1[Overflow] with OverflowOps {
     override val attr = Attr.real("overflow-y")
-    def auto    = avl(LT.auto)
-    def hidden  = avl(LT.hidden)
-    def scroll  = av(L.scroll)
-    def visible = av(L.visible)
   }
 
   /**

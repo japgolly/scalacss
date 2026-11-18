@@ -52,6 +52,7 @@ object ValueT {
   sealed trait WidStyCol         extends ValueClass
   sealed trait RepeatStyle       extends ValueClass
   sealed trait OverflowBehaviour extends ValueClass
+  sealed trait Overflow          extends ValueClass
   sealed trait GapStyle          extends ValueClass
   sealed trait TimingFunction    extends ValueClass
   sealed trait IterationCount    extends ValueClass
@@ -132,6 +133,7 @@ object ValueT {
     @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
     @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
     @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
+    @inline implicit def ruleOverflow[L <: Literal with LT.Overflow]: Overflow <== L = Rule.literal
     @inline implicit def ruleTimingFunction[L <: Literal with LT.TimingFunction]: TimingFunction <== L = Rule.literal
 
     @inline implicit def ruleIterationCount_I    : IterationCount <== Int              = Rule(_.toString)
@@ -380,6 +382,15 @@ object ValueT {
     def none   : AV = avl(LT.none)
     def auto   : AV = avl(LT.auto)
     def contain: AV = avl(LT.contain)
+  }
+
+  trait OverflowOps {
+    this: TypedAttrBase =>
+    def auto   : AV = avl(LT.auto)
+    def clip   : AV = avl(LT.clip)
+    def hidden : AV = avl(LT.hidden)
+    def scroll : AV = avl(LT.scroll)
+    def visible: AV = avl(LT.visible)
   }
 
   trait ColourOps extends ColorOps[AV] {
