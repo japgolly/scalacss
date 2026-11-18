@@ -15,12 +15,52 @@ object CondTest extends TestSuite {
         assertEq(Not(Link).cssValue, ":not(:link)")
       }
 
+      "is" - {
+        assertEq(Is("h1, h2").cssValue, ":is(h1, h2)")
+        assertEq(Is(Hover).cssValue, ":is(:hover)")
+        assertEq(Is(Hover, Focus).cssValue, ":is(:hover, :focus)")
+        assertEq(Is(_.hover).cssValue, ":is(:hover)")
+        assertEq(Cond.empty.is(Hover, Focus).pseudo.map(_.cssValue), Some(":is(:hover, :focus)"))
+      }
+
+      "where" - {
+        assertEq(Where("p, div").cssValue, ":where(p, div)")
+        assertEq(Where(FocusVisible, FocusWithin).cssValue, ":where(:focus-visible, :focus-within)")
+        assertEq(Where(_.focus).cssValue, ":where(:focus)")
+        assertEq(Cond.empty.where("span").pseudo.map(_.cssValue), Some(":where(span)"))
+      }
+
+      "root" - {
+        assertEq(Root.cssValue, ":root")
+        assertEq(Cond.empty.root.pseudo.map(_.cssValue), Some(":root"))
+      }
+
+      "focusVisible" - {
+        assertEq(FocusVisible.cssValue, ":focus-visible")
+        assertEq(Cond.empty.focusVisible.pseudo.map(_.cssValue), Some(":focus-visible"))
+      }
+
+      "focusWithin" - {
+        assertEq(FocusWithin.cssValue, ":focus-within")
+        assertEq(Cond.empty.focusWithin.pseudo.map(_.cssValue), Some(":focus-within"))
+      }
+
+      "placeholder" - {
+        assertEq(Placeholder.cssValue, "::placeholder")
+        assertEq((Hover & Placeholder).cssValue, ":hover::placeholder")
+        assertEq(Cond.empty.focusVisible.placeholder.pseudo.map(_.cssValue), Some(":focus-visible::placeholder"))
+      }
+
       "attrSelectors" - {
         assertEq(AttrExists("custom-attr").cssValue, "[custom-attr]")
         assertEq(Attr("custom-attr", "bla").cssValue, "[custom-attr=\"bla\"]")
         assertEq(AttrContains("custom-attr", "bla").cssValue, "[custom-attr~=\"bla\"]")
         assertEq(AttrStartsWith("custom-attr", "bla").cssValue, "[custom-attr^=\"bla\"]")
         assertEq(AttrEndsWith("custom-attr", "bla").cssValue, "[custom-attr$=\"bla\"]")
+        assertEq(AttrDashMatch("lang", "en").cssValue, "[lang|=\"en\"]")
+        assertEq(AttrSubstring("href", "example").cssValue, "[href*=\"example\"]")
+        assertEq(Cond.empty.attrDashMatch("lang", "en").pseudo.map(_.cssValue), Some("[lang|=\"en\"]"))
+        assertEq(Cond.empty.attrSubstring("href", "example").pseudo.map(_.cssValue), Some("[href*=\"example\"]"))
         assertEq(Attr("title", """ok " ' \ Δ cool""").cssValue, """[title="ok \000022 ' \00005C \000394 cool"]""")
         assertEq(Attr("a", "\"a").cssValue, """[a="\000022a"]""")
         assertEq(Attr("a", "\\a").cssValue, """[a="\00005Ca"]""")

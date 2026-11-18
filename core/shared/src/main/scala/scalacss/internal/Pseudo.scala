@@ -131,6 +131,12 @@ object Pseudo {
   /** Selects the &lt;input&gt; element that has focus. */
   case object Focus extends Single(":focus", PseudoType.Class)
 
+  /** Selects an element that matches `:focus` and whose focus should be visibly indicated. */
+  case object FocusVisible extends Single(":focus-visible", PseudoType.Class)
+
+  /** Selects an element if it or any of its descendants has focus. */
+  case object FocusWithin extends Single(":focus-within", PseudoType.Class)
+
   /** Selects links on mouse over. */
   case object Hover extends Single(":hover", PseudoType.Class)
 
@@ -139,6 +145,16 @@ object Pseudo {
 
   /** Selects all &lt;input&gt; elements with an invalid value. */
   case object Invalid extends Single(":invalid", PseudoType.Class)
+
+  private def joinPseudos(s: Pseudo, sn: Seq[Pseudo]): String =
+    if (sn.isEmpty) s.cssValue else (s +: sn).iterator.map(_.cssValue).mkString(", ")
+
+  /** Matches any element that matches any of the selectors in the list. */
+  final case class Is(selector: String) extends Single(s":is($selector)", PseudoType.Class)
+  object Is {
+    def apply(s: Pseudo, sn: Pseudo*): Is = Is(joinPseudos(s, sn))
+    def apply(f: PseudoF): Is             = Is(f(ChainOps))
+  }
 
   /** Selects every &lt;p&gt; element with a lang attribute value starting with "it". */
   final case class Lang(language: String) extends Single(s":lang($language)", PseudoType.Class)
@@ -217,8 +233,8 @@ object Pseudo {
   /** Selects &lt;input&gt; elements with a "required" attribute specified. */
   case object Required extends Single(":required", PseudoType.Class)
 
-  // /** Selects the document's root element. */
-  // case object Root extends Pseudo1(":root")
+  /** Selects the document's root element. */
+  case object Root extends Single(":root", PseudoType.Class)
 
   /** Selects the current active #news element (clicked on a URL containing that anchor name). */
   case object Target extends Single(":target", PseudoType.Class)
@@ -228,6 +244,13 @@ object Pseudo {
 
   /** Selects all visited link. */
   case object Visited extends Single(":visited", PseudoType.Class)
+
+  /** Matches any element that matches any of the selectors in the list with 0 specificity. */
+  final case class Where(selector: String) extends Single(s":where($selector)", PseudoType.Class)
+  object Where {
+    def apply(s: Pseudo, sn: Pseudo*): Where = Where(joinPseudos(s, sn))
+    def apply(f: PseudoF): Where             = Where(f(ChainOps))
+  }
 
   /** Insert content after every &lt;p&gt; element. */
   case object After extends Single("::after", PseudoType.Element)
@@ -240,6 +263,9 @@ object Pseudo {
 
   /** Selects the first line of every &lt;p&gt; element. */
   case object FirstLine extends Single("::first-line", PseudoType.Element)
+
+  /** Selects placeholder text inside an input or textarea element. */
+  case object Placeholder extends Single("::placeholder", PseudoType.Element)
 
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Single("::selection", PseudoType.Element)
@@ -266,6 +292,14 @@ object Pseudo {
   /** Selects all elements with a name ends with value. */
   def AttrEndsWith(name: String, value: String) =
     AttrSelector(name, value, "$=")
+
+  /** Selects all elements with an attribute equal to `value` or starting with `value-`. */
+  def AttrDashMatch(name: String, value: String) =
+    AttrSelector(name, value, "|=")
+
+  /** Selects all elements with an attribute containing the substring `value`. */
+  def AttrSubstring(name: String, value: String) =
+    AttrSelector(name, value, "*=")
 
   implicit def univEqSingle   : UnivEq[Single   ] = UnivEq.derive
   implicit def univEqComposite: UnivEq[Composite] = UnivEq.force
@@ -297,9 +331,11 @@ object Pseudo {
     final def after                                      : Out = addPseudo(After)
     final def attr          (name: String, value: String): Out = addPseudo(Attr(name, value))
     final def attrContains  (name: String, value: String): Out = addPseudo(AttrContains(name, value))
+    final def attrDashMatch (name: String, value: String): Out = addPseudo(AttrDashMatch(name, value))
     final def attrEndsWith  (name: String, value: String): Out = addPseudo(AttrEndsWith(name, value))
     final def attrExists    (name: String)               : Out = addPseudo(AttrExists(name))
     final def attrStartsWith(name: String, value: String): Out = addPseudo(AttrStartsWith(name, value))
+    final def attrSubstring (name: String, value: String): Out = addPseudo(AttrSubstring(name, value))
     final def before                                     : Out = addPseudo(Before)
     final def checked                                    : Out = addPseudo(Checked)
     final def disabled                                   : Out = addPseudo(Disabled)
@@ -310,9 +346,14 @@ object Pseudo {
     final def firstLine                                  : Out = addPseudo(FirstLine)
     final def firstOfType                                : Out = addPseudo(FirstOfType)
     final def focus                                      : Out = addPseudo(Focus)
+    final def focusVisible                               : Out = addPseudo(FocusVisible)
+    final def focusWithin                                : Out = addPseudo(FocusWithin)
     final def hover                                      : Out = addPseudo(Hover)
     final def inRange                                    : Out = addPseudo(InRange)
     final def invalid                                    : Out = addPseudo(Invalid)
+    final def is            (f: PseudoF)                 : Out = addPseudo(Is(f))
+    final def is            (s: Pseudo, sn: Pseudo*)     : Out = addPseudo(Is(s, sn: _*))
+    final def is            (selector: String)           : Out = addPseudo(Is(selector))
     final def lang          (language: String)           : Out = addPseudo(Lang(language))
     final def lastChild                                  : Out = addPseudo(LastChild)
     final def lastOfType                                 : Out = addPseudo(LastOfType)
@@ -332,12 +373,17 @@ object Pseudo {
     final def onlyOfType                                 : Out = addPseudo(OnlyOfType)
     final def optional                                   : Out = addPseudo(Optional)
     final def outOfRange                                 : Out = addPseudo(OutOfRange)
+    final def placeholder                                : Out = addPseudo(Placeholder)
     final def readOnly                                   : Out = addPseudo(ReadOnly)
     final def readWrite                                  : Out = addPseudo(ReadWrite)
     final def required                                   : Out = addPseudo(Required)
+    final def root                                       : Out = addPseudo(Root)
     final def selection                                  : Out = addPseudo(Selection)
     final def target                                     : Out = addPseudo(Target)
     final def valid                                      : Out = addPseudo(Valid)
     final def visited                                    : Out = addPseudo(Visited)
+    final def where         (f: PseudoF)                 : Out = addPseudo(Where(f))
+    final def where         (s: Pseudo, sn: Pseudo*)     : Out = addPseudo(Where(s, sn: _*))
+    final def where         (selector: String)           : Out = addPseudo(Where(selector))
   }
 }
