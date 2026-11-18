@@ -40,10 +40,10 @@ object ModeMacros {
           }
 
         case Some("dev") =>
-          '{ scalacss.DevDefaults }
+          '{ _root_.scalacss.DevDefaults }
 
         case Some("prod") =>
-          '{ scalacss.ProdDefaults }
+          '{ _root_.scalacss.ProdDefaults }
 
         case Some(x) =>
           fail(s"Unrecognised option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
