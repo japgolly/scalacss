@@ -46,7 +46,7 @@ object ModeMacros {
           '{ scalacss.ProdDefaults }
 
         case Some(x) =>
-          fail(s"Unrecognise option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
+          fail(s"Unrecognised option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
       }
 
     Inlined(None, Nil, expr.asTerm).asExprOf[S]

@@ -36,7 +36,7 @@ object ModeMacros {
           q"_root_.scalacss.ProdDefaults"
 
         case Some(x) =>
-          fail(s"Unrecognise option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
+          fail(s"Unrecognised option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
       }
     )
   }
