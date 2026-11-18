@@ -113,14 +113,15 @@ object Macros {
     }
 
     private def int = "(-?\\d+)"
-    private def dbl = """(-?\d+(?:\.\d+)?|\.\d+)"""
+    private def dblRaw = """(?:-?\d+(?:\.\d+)?|\.\d+)"""
+    private def dbl = s"($dblRaw)"
     private def pct = s"$dbl%"
 
     // NPN = number, percentage, or none
-    private def modernNPN = """(-?\d+%?|none)"""
-    private def modernA = s"\\s*/\\s*(-?\\d+%?|$dbl)"
-    private def modernH = """(-?\d+(?:deg)?|none)"""
-    private def modernSL = """(-?\d+%?)"""
+    private def modernNPN = s"($dblRaw%?|none)"
+    private def modernA = s"\\s*/\\s*($dblRaw%?)"
+    private def modernH = s"($dblRaw(?:deg|grad|rad|turn)?|none)"
+    private def modernSL = s"($dblRaw%?)"
 
     private val rgbI  = cssFnRegexLegacy("rgb",  int, int, int)
     private val rgbP  = cssFnRegexLegacy("rgb",  pct, pct, pct)
@@ -220,44 +221,49 @@ object Macros {
       def validatePct(name: String): V =
         validateDbl(name, 100, "%")
 
-      def stripDeg(s: String): String =
-        if (s.length > 3 && s.substring(s.length - 3).equalsIgnoreCase("deg"))
-          s.substring(0, s.length - 3)
-        else
-          s
-
       def normNone(s: String): String =
         if (s.equalsIgnoreCase("none")) "none" else s
 
-      def validateModernNPN(name: String, maxInt: Int): V =
+      def normHue(s: String): String =
+        if (s.equalsIgnoreCase("none")) "none"
+        else {
+          val l = s.toLowerCase
+          if (l.endsWith("deg")) l.substring(0, l.length - 3) else l
+        }
+
+      def validateModernNPN(name: String, maxNum: Int): V =
         s =>
           if (s.equalsIgnoreCase("none"))
             ()
           else if (s.endsWith("%"))
-            validatePct(name)(s.stripSuffix("%"))
+            validatePct(name)(s.substring(0, s.length - 1))
           else
-            validateInt(name, maxInt)(s)
+            validateDbl(name, maxNum)(s)
 
       def validateModernH(name: String): V =
-        s =>
-          if (s.equalsIgnoreCase("none"))
-            ()
-          else
-            validateInt(name, 360)(stripDeg(s))
+        s => {
+          val l = s.toLowerCase
+          if (l == "none")             ()
+          else if (l.endsWith("deg"))  validateDbl(name, 360)(l.substring(0, l.length - 3))
+          else if (l.endsWith("grad")) validateDbl(name, 400, "grad")(l.substring(0, l.length - 4))
+          else if (l.endsWith("turn")) validateDbl(name, 1, "turn")(l.substring(0, l.length - 4))
+          else if (l.endsWith("rad"))  validateDbl(name, 2 * Math.PI, "rad")(l.substring(0, l.length - 3))
+          else                         validateDbl(name, 360)(s)
+        }
 
       def validateModernA(name: String): V =
         s =>
           if (s.endsWith("%"))
-            validatePct(name)(s.stripSuffix("%"))
+            validatePct(name)(s.substring(0, s.length - 1))
           else
             validateDbl(name, 1)(s)
 
       def validateModernSL(name: String): V =
         s =>
           if (s.endsWith("%"))
-            validatePct(name)(s.stripSuffix("%"))
+            validatePct(name)(s.substring(0, s.length - 1))
           else
-            validateInt(name, 100)(s)
+            validateDbl(name, 100)(s)
 
       def validateFn3(p: Pattern, a: V, b: V, c: V, f: (String, String, String) => String): Boolean = {
         val m = p.matcher(text)
@@ -312,8 +318,8 @@ object Macros {
       def validateHsla  = validateFn4(hsla, hi, sp, lp, a,   (h, s, l, a) => s"hsla($h,$s%,$l%,$a)")
       def validateRgbM  = validateFn3(rgbM, rm, gm, bm,      (r, g, b)    => s"rgb(${normNone(r)} ${normNone(g)} ${normNone(b)})")
       def validateRgbaM = validateFn4(rgbaM, rm, gm, bm, am, (r, g, b, a) => s"rgb(${normNone(r)} ${normNone(g)} ${normNone(b)}/$a)")
-      def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${normNone(stripDeg(h))} $s $l)")
-      def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${normNone(stripDeg(h))} $s $l/$a)")
+      def validateHslM  = validateFn3(hslM, hm, sm, lm,      (h, s, l)    => s"hsl(${normHue(h)} $s $l)")
+      def validateHslaM = validateFn4(hslaM, hm, sm, lm, am, (h, s, l, a) => s"hsl(${normHue(h)} $s $l/$a)")
 
       validateHex ||
         validateRgbI || validateRgbP || validateRgbaI || validateRgbaP || validateHsl || validateHsla ||

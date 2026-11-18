@@ -50,6 +50,17 @@ object ColorTest extends TestSuite {
         "hslaDeg" - test(c"hsl(360deg 2% 3/50%)", "hsl(360 2% 3/50%)")
         "hslaDegU" - test(c"hsl(120Deg 50% 50%/50%)", "hsl(120 50% 50%/50%)")
         "hslaWS"  - test(c" hsl ( 1  2%  3  / 0.5 ) ", "hsl(1 2% 3/0.5)")
+        "rgbDec"  - test(c"rgb(127.5 0.5 255)", "rgb(127.5 0.5 255)")
+        "rgbDecZ" - test(c"rgb(.5 12.25% none)", "rgb(.5 12.25% none)")
+        "rgbaDec" - test(c"rgb(127.5 0.5 255 / 50.5%)", "rgb(127.5 0.5 255/50.5%)")
+        "hslDec"  - test(c"hsl(180.5 50.5% 25.5)", "hsl(180.5 50.5% 25.5)")
+        "hslDegD" - test(c"hsl(120.5deg 50% 50%)", "hsl(120.5 50% 50%)")
+        "hslGrad" - test(c"hsl(200grad 50% 50%)", "hsl(200grad 50% 50%)")
+        "hslGradU"- test(c"hsl(200.5GRAD 50% 50%)", "hsl(200.5grad 50% 50%)")
+        "hslTurn" - test(c"hsl(0.5turn 50% 50%)", "hsl(0.5turn 50% 50%)")
+        "hslTurnU"- test(c"hsl(.25TURN 50% 50% / 0.5)", "hsl(.25turn 50% 50%/0.5)")
+        "hslRad"  - test(c"hsl(3.14rad 50% 50%)", "hsl(3.14rad 50% 50%)")
+        "hslRadU" - test(c"hsl(3.14RAD 50% 50%)", "hsl(3.14rad 50% 50%)")
       }
 
     }
@@ -110,6 +121,14 @@ object ColorTest extends TestSuite {
         "l101"  - assertErrorContains(compileError(""" c"hsl(0 0 101%)" """), "Invalid lightness value")
         "multi3" - assertErrorContains(compileError(""" c"rgb(256 256 0)" """), "Invalid red value")
         "multi4" - assertErrorContains(compileError(""" c"rgb(1 256 256/2)" """), "Invalid green value")
+        "rDecOver" - assertErrorContains(compileError(""" c"rgb(255.1 0 0)" """), "Invalid red value")
+        "aDecOver" - assertErrorContains(compileError(""" c"rgb(1 2 3 / 100.5%)" """), "Invalid alpha value")
+        "hDecOver" - assertErrorContains(compileError(""" c"hsl(360.1 0 0)" """), "Invalid hue value")
+        "hGradOver"- assertErrorContains(compileError(""" c"hsl(401grad 0 0)" """), "Invalid hue value")
+        "hTurnOver"- assertErrorContains(compileError(""" c"hsl(1.1turn 0 0)" """), "Invalid hue value")
+        "hRadOver" - assertErrorContains(compileError(""" c"hsl(7rad 0 0)" """), "Invalid hue value")
+        "sDecOver" - assertErrorContains(compileError(""" c"hsl(0 100.5 0)" """), "Invalid saturation value")
+        "lDecOver" - assertErrorContains(compileError(""" c"hsl(0 0 100.5%)" """), "Invalid lightness value")
       }
 
       "multiLegacy" - assertErrorContains(compileError(""" c"rgb(256, 256, 0)" """), "Invalid red value")
