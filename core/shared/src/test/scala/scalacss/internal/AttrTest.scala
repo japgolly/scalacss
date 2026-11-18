@@ -601,5 +601,14 @@ object AttrTest extends TestSuite {
         assertEq(transitionTimingFunction(ease, stepEnd).value, "ease,step-end")
       }
     }
+    "revert" - {
+      import Dsl.revert
+      assertEq(margin.revert.value,     "revert")
+      assertEq(margin(revert).value,    "revert")
+      assertEq(color.revert.value,      "revert")
+      assertEq(width.revert.value,      "revert")
+      assertEq(cursor.revert.value,     "revert")
+      assertEq(userSelect.revert.value, "revert")
+    }
   }
 }

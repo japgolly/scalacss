@@ -225,5 +225,14 @@ object ValueTTest extends TestSuite {
       assertEq(ValueT.concat(" ", len, %%, s), "12px 25% 3s")
       assertEq(ValueT.concat(",", len, %%, s, m), "12px,25%,3s,3ms")
     }
+
+    "revert" - {
+      import Dsl.revert
+      assertEq((revert: ValueT[Len]).value,    "revert")
+      assertEq((revert: ValueT[Pct]).value,    "revert")
+      assertEq((revert: ValueT[Number]).value, "revert")
+      assertEq((revert: ValueT[Color]).value,  "revert")
+      assertEq((revert: ValueT[Time]).value,   "revert")
+    }
   }
 }

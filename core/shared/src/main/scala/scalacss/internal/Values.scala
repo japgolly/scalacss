@@ -39,6 +39,7 @@ trait TypedLiteralAliases {
   final def normal                                                          = Typed.normal
   final def outset                                                          = Typed.outset
   final def repeat                                                          = Typed.repeat
+  final def revert                                                          = Typed.revert
   final def ridge                                                           = Typed.ridge
   final def round                                                           = Typed.round
   final def solid                                                           = Typed.solid
@@ -77,6 +78,7 @@ object Literal extends TypedLiteralAliases {
     sealed trait Anywhere
     object inherit extends Literal("inherit") with Anywhere
     object initial extends Literal("initial") with Anywhere
+    object revert  extends Literal("revert")  with Anywhere
     object unset   extends Literal("unset")   with Anywhere
 
     // <br-width>
