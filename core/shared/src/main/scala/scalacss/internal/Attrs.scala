@@ -2908,16 +2908,16 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-radius">MDN</a>
    */
-  object borderRadius extends TypedAttrBase with RorderRadiusOps[BorderRadiusNext] with ZeroLit {
+  object borderRadius extends TypedAttrBase with BorderRadiusOps[BorderRadiusNext] with ZeroLit {
     override val attr = Attr.alias("border-radius", Transform keys CanIUse.borderRadius)(_(
       borderTopLeftRadius, borderTopRightRadius, borderBottomRightRadius, borderBottomLeftRadius))
     override protected def n(v: Value) = new BorderRadiusNext(v)
   }
-  final class BorderRadiusNext(a: Value) extends RorderRadiusOps[AV] with ToAV {
+  final class BorderRadiusNext(a: Value) extends BorderRadiusOps[AV] with ToAV {
     override def av: AV = AV(borderRadius.attr, a)
     override protected def n(b: Value) = AV(borderRadius.attr, s"$a / $b")
   }
-  sealed trait RorderRadiusOps[Next] {
+  sealed trait BorderRadiusOps[Next] {
     protected def n(v: Value): Next
     final type V = ValueT[LenPct]
     final def apply(radius: V)                        : Next = n(radius.value)
