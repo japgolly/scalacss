@@ -812,6 +812,8 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-position">MDN</a>
    */
   @inline final def fontVariantPosition = Attrs.fontVariantPosition
+  @deprecated("Use fontVariationSettings", "1.1.0")
+  @inline final def fontVariantionSettings = Attrs.fontVariantionSettings
   /**
     * This property provides low-level control over OpenType or TrueType font variations. It is intended as a way of providing access to font variations that are not widely used but are needed for a particular use case.
     *
@@ -855,6 +857,7 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-position">MDN</a>
    */
+  @deprecated("Removed from CSS Grid specification.", "1.1.1")
   @inline final def gridAutoPosition = Attrs.gridAutoPosition
   /**
    * The documentation about this has not yet been written; please consider contributing!
@@ -970,6 +973,42 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inline-size">MDN</a>
    */
   @inline final def inlineSize = Attrs.inlineSize
+  /**
+   * The inset-block CSS property defines the logical block start and end offsets of an element, which maps to physical offsets depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block">MDN</a>
+   */
+  @inline final def insetBlock = Attrs.insetBlock
+  /**
+   * The inset-block-end CSS property defines the logical block end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block-end">MDN</a>
+   */
+  @inline final def insetBlockEnd = Attrs.insetBlockEnd
+  /**
+   * The inset-block-start CSS property defines the logical block start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block-start">MDN</a>
+   */
+  @inline final def insetBlockStart = Attrs.insetBlockStart
+  /**
+   * The inset-inline CSS property defines the logical inline start and end offsets of an element, which maps to physical offsets depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline">MDN</a>
+   */
+  @inline final def insetInline = Attrs.insetInline
+  /**
+   * The inset-inline-end CSS property defines the logical inline end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline-end">MDN</a>
+   */
+  @inline final def insetInlineEnd = Attrs.insetInlineEnd
+  /**
+   * The inset-inline-start CSS property defines the logical inline start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline-start">MDN</a>
+   */
+  @inline final def insetInlineStart = Attrs.insetInlineStart
   /**
    * The isolation CSS property defines if the element must create a new stacking context.
    *
@@ -1185,24 +1224,28 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-end">MDN</a>
    */
+  @deprecated("Use insetBlockEnd.", "1.1.1")
   @inline final def offsetBlockEnd = Attrs.offsetBlockEnd
   /**
    * The offset-block-start CSS property defines the logical block start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-start">MDN</a>
    */
+  @deprecated("Use insetBlockStart.", "1.1.1")
   @inline final def offsetBlockStart = Attrs.offsetBlockStart
   /**
    * The offset-inline-end CSS property defines the logical inline end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-end">MDN</a>
    */
+  @deprecated("Use insetInlineEnd.", "1.1.1")
   @inline final def offsetInlineEnd = Attrs.offsetInlineEnd
   /**
    * The offset-inline-start CSS property defines the logical inline start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation. It corresponds to the top, right, bottom, or left property depending on the values defined for writing-mode, direction, and text-orientation.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-start">MDN</a>
    */
+  @deprecated("Use insetInlineStart.", "1.1.1")
   @inline final def offsetInlineStart = Attrs.offsetInlineStart
   /**
    * The opacity CSS property specifies the transparency of an element, that is, the degree to which the background behind the element is overlaid.

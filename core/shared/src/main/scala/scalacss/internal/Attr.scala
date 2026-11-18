@@ -181,17 +181,21 @@ object AttrCmp {
       Some("inline-start")
     else if (id.contains("-inline-end") || id.startsWith("inline-end"))
       Some("inline-end")
-    else if (id.contains("block-size"))
+    else if (id.contains("block-size") || id == "inset-block")
       Some("block")
-    else if (id.contains("inline-size"))
+    else if (id.contains("inline-size") || id == "inset-inline")
       Some("inline")
     else
       None
 
   private def areOrthogonalLogicalProps(x: Attr, y: Attr): Boolean = {
-    val da = logicalDirection(x.id)
-    val db = logicalDirection(y.id)
-    da.isDefined && db.isDefined && da != db
+    (logicalDirection(x.id), logicalDirection(y.id)) match {
+      case (Some(da), Some(db)) =>
+        (da.startsWith("block") != db.startsWith("block")) ||
+          (da.length > 6 && db.length > 6 && da != db)
+      case _ =>
+        false
+    }
   }
 
   val byRealAttrs: Fn =

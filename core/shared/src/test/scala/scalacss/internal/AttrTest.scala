@@ -88,13 +88,29 @@ object AttrTest extends TestSuite {
           "inlineStart_inlineEnd" - test(Unrelated, paddingInlineStart, paddingInlineEnd)
         }
 
+        "inset" - {
+          "blockStart_blockEnd"   - test(Unrelated, insetBlockStart,  insetBlockEnd)
+          "blockStart_inlineStart"- test(Unrelated, insetBlockStart,  insetInlineStart)
+          "blockStart_inlineEnd"  - test(Unrelated, insetBlockStart,  insetInlineEnd)
+          "blockEnd_inlineStart"  - test(Unrelated, insetBlockEnd,    insetInlineStart)
+          "blockEnd_inlineEnd"    - test(Unrelated, insetBlockEnd,    insetInlineEnd)
+          "inlineStart_inlineEnd" - test(Unrelated, insetInlineStart, insetInlineEnd)
+          "block_inline"          - test(Unrelated, insetBlock,       insetInline)
+          "block_inlineStart"     - test(Unrelated, insetBlock,       insetInlineStart)
+          "inline_blockEnd"       - test(Unrelated, insetInline,      insetBlockEnd)
+        }
+
         "offset" - {
-          "blockStart_blockEnd"   - test(Unrelated, offsetBlockStart,  offsetBlockEnd)
-          "blockStart_inlineStart"- test(Unrelated, offsetBlockStart,  offsetInlineStart)
-          "blockStart_inlineEnd"  - test(Unrelated, offsetBlockStart,  offsetInlineEnd)
-          "blockEnd_inlineStart"  - test(Unrelated, offsetBlockEnd,    offsetInlineStart)
-          "blockEnd_inlineEnd"    - test(Unrelated, offsetBlockEnd,    offsetInlineEnd)
-          "inlineStart_inlineEnd" - test(Unrelated, offsetInlineStart, offsetInlineEnd)
+          @scala.annotation.nowarn("cat=deprecation")
+          def checkDeprecatedOffset(): Unit = {
+            test(Unrelated, offsetBlockStart,  offsetBlockEnd)
+            test(Unrelated, offsetBlockStart,  offsetInlineStart)
+            test(Unrelated, offsetBlockStart,  offsetInlineEnd)
+            test(Unrelated, offsetBlockEnd,    offsetInlineStart)
+            test(Unrelated, offsetBlockEnd,    offsetInlineEnd)
+            test(Unrelated, offsetInlineStart, offsetInlineEnd)
+          }
+          checkDeprecatedOffset()
         }
 
         "correctOverlap" - {
@@ -147,6 +163,18 @@ object AttrTest extends TestSuite {
             "paddings" - {
               test(Overlap, paddingBlockStart, paddingTop)
               test(Overlap, paddingBlockEnd,   paddingBottom)
+            }
+            "inset" - {
+              test(Overlap, insetBlock,       insetBlockStart)
+              test(Overlap, insetBlock,       insetBlockEnd)
+              test(Overlap, insetInline,      insetInlineStart)
+              test(Overlap, insetInline,      insetInlineEnd)
+              test(Overlap, insetBlockStart,  top)
+              test(Overlap, insetInlineEnd,   right)
+              test(Overlap, insetBlock,       bottom)
+              test(Overlap, insetInline,      left)
+              test(Overlap, all,              insetBlock)
+              test(Overlap, all,              insetBlockStart)
             }
           }
         }
@@ -510,6 +538,20 @@ object AttrTest extends TestSuite {
       assertEq(position.sticky(Env.empty),                     Vector(CssKV("position", "sticky")))
       assertEq(AV(backgroundBlendMode, "multiply")(Env.empty), Vector(CssKV("background-blend-mode", "multiply")))
       assertEq(backgroundRepeat.round(Env.empty),              Vector(CssKV("background-repeat", "round")))
+    }
+    "inset" - {
+      assertEq(insetBlock(length).value,       "3px")
+      assertEq(insetBlock(length, pct).value,  "3px 5%")
+      assertEq(insetBlock.auto.value,          "auto")
+      assertEq(insetBlock.`0`.value,           "0")
+      assertEq(insetInline(length).value,      "3px")
+      assertEq(insetInline(length, pct).value, "3px 5%")
+      assertEq(insetInline.auto.value,         "auto")
+      assertEq(insetInline.`0`.value,          "0")
+      assertEq(insetBlockStart(length).value,  "3px")
+      assertEq(insetBlockEnd(pct).value,       "5%")
+      assertEq(insetInlineStart.auto.value,    "auto")
+      assertEq(insetInlineEnd.`0`.value,       "0")
     }
   }
 }

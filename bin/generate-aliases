@@ -4,7 +4,7 @@ val infile  = "core/shared/src/main/scala/scalacss/internal/Attrs.scala"
 val outfile = "core/shared/src/main/scala/scalacss/internal/generated.scala"
 
 val r1 = """.*(?: (?:def|val) .*Attr[ \.]| extends ).*""".r.pattern
-val r2 = """^\s*(?://|\*).*""".r.pattern
+val r2 = """^\s*(?://|\*|@deprecated).*""".r.pattern
 val r3 = """.*(?:override |private | val +values).*""".r.pattern
 val r4 = """^.* (?:object|val|def) +| *=.+| +extends.*""".r
 val r5 = """^[a-z].*""".r.pattern
@@ -20,15 +20,23 @@ val commentr = """(?s)^(.+\n *\*/) *\n""".r
 def comment(d: String): Option[String] =
   commentr.findFirstMatchIn(d).map(_ group 1)
 
+def deprecated(d: String, a: String): Option[String] =
+  s"""(?m)^  (@deprecated\\([^\\n]+\\))\\n  (?:object|final def|def|val) +${java.util.regex.Pattern.quote(a)}\\b""".r
+    .findFirstMatchIn(d).map(_.group(1))
+
 val attrs =
   scala.io.Source.fromFile(infile).mkString
     .split("\n[ \t]*\n+").toIterator
     .map(l => comment(l).fold((None: Option[String], l))(c => (Some(c), l.replace(c,""))))
-    .flatMap{case (c,l) => findMethod(l.split("\n").toList).headOption.map((c,_)).toList }
+    .flatMap{case (c,l) => findMethod(l.split("\n").toList).headOption.map(a => (c, deprecated(l, a), a)).toList }
     .toList
-    .sortBy(_._2)
+    .sortBy(_._3)
     // .map{case (c, a) => (None, a) }
-    .map{case (c, a) => c.fold("")(_+"\n") + s"  @inline final def $a = Attrs.$a" }
+    .map{case (c, d, a) =>
+      c.fold("")(_ + "\n") +
+        d.fold("")("  " + _ + "\n") +
+        s"  @inline final def $a = Attrs.$a"
+    }
 
 val attrAliases =
 s"""

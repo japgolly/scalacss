@@ -1,11 +1,13 @@
 package scalacss.internal
 
+import scala.annotation.nowarn
 import scalacss.internal.Literal.{Typed => LT}
 import scalacss.internal.ValueT._
 import scalacss.internal.{Literal => L}
 
 object Attrs {
 
+  @nowarn("cat=deprecation")
   private[internal] lazy val valuesForAllAttr = NonEmptyVector[Attr](
     alignContent, alignItems, alignSelf, animation, animationDelay, animationDirection, animationDuration,
     animationFillMode, animationIterationCount, animationName, animationPlayState, animationTimingFunction,
@@ -67,7 +69,8 @@ object Attrs {
     svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity,
 
     // 1.1.1
-    appearance, printColorAdjust)
+    appearance, insetBlock, insetBlockEnd, insetBlockStart, insetInline, insetInlineEnd, insetInlineStart,
+    printColorAdjust)
 
   lazy val values: NonEmptyVector[Attr] =
     Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
@@ -617,6 +620,7 @@ object Attrs {
     override val attr = Attr.real("box-sizing", Transform keys CanIUse.css3Boxsizing)
     def borderBox  = av(L.borderBox)
     def contentBox = av(L.contentBox)
+    @deprecated("Removed from CSS Box Sizing specification.", "1.1.1")
     def paddingBox = av(L.paddingBox)
   }
 
@@ -1287,6 +1291,7 @@ object Attrs {
     * https://drafts.csswg.org/css-fonts-4/#font-variation-settings-def
     */
   final def fontVariationSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
+
   @deprecated("Use fontVariationSettings", "1.1.0")
   final def fontVariantionSettings = Attr.real("font-variation-settings", Transform keys CanIUse.variableFonts)
 
@@ -1331,6 +1336,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/grid-auto-position">MDN</a>
    */
+  @deprecated("Removed from CSS Grid specification.", "1.1.1")
   final def gridAutoPosition = Attr.real("grid-auto-position", Transform keys CanIUse.grid)
 
   /**
@@ -3069,6 +3075,62 @@ object Attrs {
   }
 
   /**
+   * The inset-block CSS property defines the logical block start and end offsets of an element, which maps to physical offsets depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block">MDN</a>
+   */
+  object insetBlock extends TypedAttrT2[LenPctAuto] with ZeroLit {
+    override val attr = Attr.alias("inset-block")(_(top, left, right, bottom))
+    def auto = avl(LT.auto)
+  }
+
+  /**
+   * The inset-block-end CSS property defines the logical block end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block-end">MDN</a>
+   */
+  object insetBlockEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("inset-block-end")(_(top, left, right, bottom))
+  }
+
+  /**
+   * The inset-block-start CSS property defines the logical block start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-block-start">MDN</a>
+   */
+  object insetBlockStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("inset-block-start")(_(top, left, right, bottom))
+  }
+
+  /**
+   * The inset-inline CSS property defines the logical inline start and end offsets of an element, which maps to physical offsets depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline">MDN</a>
+   */
+  object insetInline extends TypedAttrT2[LenPctAuto] with ZeroLit {
+    override val attr = Attr.alias("inset-inline")(_(top, left, right, bottom))
+    def auto = avl(LT.auto)
+  }
+
+  /**
+   * The inset-inline-end CSS property defines the logical inline end offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline-end">MDN</a>
+   */
+  object insetInlineEnd extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("inset-inline-end")(_(top, left, right, bottom))
+  }
+
+  /**
+   * The inset-inline-start CSS property defines the logical inline start offset of an element, which maps to a physical offset depending on the element's writing mode, directionality, and text orientation.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/inset-inline-start">MDN</a>
+   */
+  object insetInlineStart extends TypedAttr_LenPctAuto {
+    override val attr = Attr.alias("inset-inline-start")(_(top, left, right, bottom))
+  }
+
+  /**
    * The list-style CSS property is a shorthand property for setting list-style-type, list-style-image and list-style-position.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/list-style">MDN</a>
@@ -3168,6 +3230,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-end">MDN</a>
    */
+  @deprecated("Use insetBlockEnd.", "1.1.1")
   object offsetBlockEnd extends TypedAttr_LenPctAuto {
     override val attr = Attr.alias("offset-block-end")(_(
       top, left, right, bottom))
@@ -3178,6 +3241,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-block-start">MDN</a>
    */
+  @deprecated("Use insetBlockStart.", "1.1.1")
   object offsetBlockStart extends TypedAttr_LenPctAuto {
     override val attr = Attr.alias("offset-block-start")(_(
       top, left, right, bottom))
@@ -3188,6 +3252,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-end">MDN</a>
    */
+  @deprecated("Use insetInlineEnd.", "1.1.1")
   object offsetInlineEnd extends TypedAttr_LenPctAuto {
     override val attr = Attr.alias("offset-inline-end")(_(
       top, left, right, bottom))
@@ -3198,6 +3263,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/offset-inline-start">MDN</a>
    */
+  @deprecated("Use insetInlineStart.", "1.1.1")
   object offsetInlineStart extends TypedAttr_LenPctAuto {
     override val attr = Attr.alias("offset-inline-start")(_(
       top, left, right, bottom))
