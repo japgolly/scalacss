@@ -7,8 +7,6 @@
 ## CSS Spec Completeness, `CanIUse` Wiring & API Polish
 
 29. **Clean up `ModeMacros` duplication and config bugs (`core/{js,jvm}/src/main/scala-{2,3}/scalacss/internal/ModeMacros.scala`)**
-    1. `readConfig` is duplicated across all 4 files and places `.filter(_.nonEmpty)` *after* `orElse`, so an empty `-Dscalacss.mode=` prevents falling back to env vars.
-    2. `System.getenv("scalacss.mode")` uses a dot (not exportable in POSIX shells; consider also supporting `SCALACSS_MODE`).
     3. Fix `"Unrecognise option..."` typo and use `_root_.scalacss.*` consistently in Scala 3 quotes (`scala-3/.../ModeMacros.scala:44,47` and `jvm/.../scala-3/...:36,39`).
 
 ---

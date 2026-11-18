@@ -12,10 +12,9 @@ import scala.quoted._
 
 object ModeMacros {
 
-  private def readConfig(key: String): Option[String] =
-    (Option(System.getProperty(key, null)) orElse Option(System.getenv(key)))
-      .map(_.trim.toLowerCase)
-      .filter(_.nonEmpty)
+  private def readConfig(propKey: String, envKey: String): Option[String] =
+    Option(System.getProperty(propKey, null)).map(_.trim.toLowerCase).filter(_.nonEmpty) orElse
+    Option(System.getenv(envKey)).map(_.trim.toLowerCase).filter(_.nonEmpty)
 
   trait DevOrProdDefaults {
     transparent inline def devOrProdDefaults: Exports with mutable.Settings =
@@ -30,7 +29,7 @@ object ModeMacros {
 
     type S = Exports with mutable.Settings
     val expr: Expr[S] =
-      readConfig("scalacss.mode") match {
+      readConfig("scalacss.mode", "SCALACSS_MODE") match {
 
         case None =>
           '{
