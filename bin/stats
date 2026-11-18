@@ -1,21 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
 
 cloc=cloc
-$cloc */src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
-  && $cloc */src/test | sed -n '/^Scala/s/Scala/test /p; $p' \
-  && $cloc */src | sed -n '/^Scala/s/Scala/Total/p; $p'
+$cloc */*/src/main */src/main | sed -n '/^-/,+2p' | sed '4d;6d;s/SUM:/main/' \
+  && $cloc */*/src/test */src/test | sed -n '/^Scala/s/Scala/test /p; $p' \
+  && $cloc */*/src */src | sed -n '/^Scala/s/Scala/Total/p; $p'
 
 
-f=core/src/main/scala/scalacss/Attrs.scala
+f=core/shared/src/main/scala/scalacss/internal/Attrs.scala
 _list="$(grep -v '^ *//' $f)"
 function list { echo "$_list" ;}
 function count { wc -l | awk '{print $1}' ;}
 
-total=$(list | grep -P 'Attr[ .](real|alias)|new AliasAttr' | count)
-typed=$(list | grep -P 'extends +TypedAttr' | count)
-untyped=$(list | grep -P '^ *final val .*Attr[^\]]' | count)
+total=$(list | grep -E 'Attr[ .](real|alias)|new AliasAttr' | count)
+typed=$(list | grep -E 'extends +TypedAttr' | count)
+untyped=$(($total - $typed))
 
 echo "
 CSS Attributes

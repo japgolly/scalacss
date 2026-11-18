@@ -4,12 +4,6 @@
 
 ## JS / DOM & Platform Detection
 
-27. **Harden `PlatformExports.installStyle` and `addToDocumentOnRegistration` (`core/js/src/main/scala/scalacss/defaults/PlatformExports.scala`)**
-    1. `installStyle` (line 23) assumes `document.head` is non-null (throws in SVG/XML docs or early head scripts; fallback to `Option(document.head).getOrElse(document.documentElement)`).
-    2. `addToDocumentOnRegistration` (lines 37-45) creates empty `<style>` elements when `ss` renders to `""` (e.g., `addClassNames`-only sheets or empty `register()` calls), ignores custom `Renderer[HTMLStyleElement]` instances, and joins sheets with `"\n"` even under `formatTiny`.
-
----
-
 ## CSS Spec Completeness, `CanIUse` Wiring & API Polish
 
 29. **Clean up `ModeMacros` duplication and config bugs (`core/{js,jvm}/src/main/scala-{2,3}/scalacss/internal/ModeMacros.scala`)**
@@ -22,8 +16,6 @@
 ## Build, Tooling & Tests
 
 30. **Fix broken scripts in `bin/*` and `downstream-tests/run`, plus `misc/caniuse.scala`**
-    1. `bin/stats:11,16` and `bin/untyped:4` point to non-existent `core/src/main/scala/scalacss/Attrs.scala` (should be `core/shared/src/main/scala/scalacss/internal/Attrs.scala`) and use `grep -P` (fails on macOS BSD `grep`); `bin/stats:6-8` and `bin/todo-list:6` use `*/src` which misses `core/{shared,js,jvm}/src` and `ext-scalatags/{shared,js,jvm}/src`.
-    2. `bin/generate-platformjs:15` points to non-existent `core/src/main/scala-js/scalacss/js/PlatformJs.scala` (should be `core/js/src/main/scala/scalacss/js/PlatformJs.scala`).
     3. `bin/ci:36` runs `free -h` under `set -euo pipefail`, which fails on macOS; `downstream-tests/run:18` uses Bash 4+ `declare -A`, which fails on macOS's default Bash 3.2.
     4. `bin/generate-aliases:24-27` splits blocks on `\n[ \t]*\n+`, silently dropping consecutive declarations without a blank line (currently omits `fontVariantionSettings` at `Attrs.scala:1247`).
 
