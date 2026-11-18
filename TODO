@@ -1,10 +1,6 @@
-CanIUse subjects pending action:
-* canvas
-
 CanIUse subjects affecting CSS values:
 * calc
 * viewportUnits
 
 CanIUse subjects affecting media queries:
-* deviceadaptation
 * mediaResolution

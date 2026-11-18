@@ -1271,7 +1271,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-variant-numeric">MDN</a>
    */
-  final def fontVariantNumeric = Attr.real("font-variant-numeric")
+  final def fontVariantNumeric = Attr.real("font-variant-numeric", Transform keys CanIUse.fontVariantNumeric)
 
   /**
    * The font-variant-position CSS property controls the usage of alternate glyphs of smaller size positioned as superscript or subscript regarding the baseline of the font, which is set unchanged. These glyphs are likely to be used in &lt;sub> and &lt;sup> elements.
@@ -1467,7 +1467,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/image-orientation">MDN</a>
    */
-  final def imageOrientation = Attr.real("image-orientation")
+  final def imageOrientation = Attr.real("image-orientation", Transform keys CanIUse.imageOrientation)
 
   /**
    * The ime-mode CSS property controls the state of the input method editor for text fields.
@@ -1512,7 +1512,9 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content">MDN</a>
    */
   object justifyContent extends TypedAttrBase {
-    override val attr = Attr.real("justify-content", Transform keys CanIUse.flexbox)
+    override val attr = Attr.real("justify-content",
+      Transform.keys(CanIUse.flexbox) *
+      Transform.values(CanIUse.justifyContentSpaceEvenly)(L.spaceEvenly))
     def center        = av(L.center)
     def start         = avl(L.start)
     def end           = avl(L.end)
@@ -1842,7 +1844,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">MDN</a>
    */
   object overflow extends TypedAttrBase {
-    override val attr = Attr.real("overflow")
+    override val attr = Attr.real("overflow", Transform keys CanIUse.overflow)
     def auto    = avl(LT.auto)
     def hidden  = avl(LT.hidden)
     def scroll  = av(L.scroll)

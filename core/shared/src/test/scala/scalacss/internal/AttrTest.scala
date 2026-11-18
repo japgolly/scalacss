@@ -538,6 +538,14 @@ object AttrTest extends TestSuite {
       assertEq(position.sticky(Env.empty),                     Vector(CssKV("position", "sticky")))
       assertEq(AV(backgroundBlendMode, "multiply")(Env.empty), Vector(CssKV("background-blend-mode", "multiply")))
       assertEq(backgroundRepeat.round(Env.empty),              Vector(CssKV("background-repeat", "round")))
+      assertEq(justifyContent.spaceEvenly(Env.empty),
+        Vector(
+          CssKV("-ms-justify-content", "space-evenly"),
+          CssKV("-webkit-justify-content", "space-evenly"),
+          CssKV("justify-content", "space-evenly")))
+      assertEq(overflow.hidden(Env.empty),                     Vector(CssKV("overflow", "hidden")))
+      assertEq(AV(fontVariantNumeric, "tabular-nums")(Env.empty), Vector(CssKV("font-variant-numeric", "tabular-nums")))
+      assertEq(AV(imageOrientation, "from-image")(Env.empty),  Vector(CssKV("image-orientation", "from-image")))
     }
     "inset" - {
       assertEq(insetBlock(length).value,       "3px")

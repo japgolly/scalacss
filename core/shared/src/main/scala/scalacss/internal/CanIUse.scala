@@ -416,56 +416,6 @@ object CanIUse {
     Samsung           -> Set(Full))
 
   /**
-   * calc() as CSS unit value
-   *
-   * Method of allowing calculated values for length units, i.e. `width: calc(100% - 3em)`
-   *
-   * https://w3c.github.io/csswg-drafts/css-values-3/#calc-notation
-   */
-  def calc: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Partial, Full),
-    AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Full),
-    BlackberryBrowser -> Set(Unsupported, Full),
-    Chrome            -> Set(Full),
-    Edge              -> Set(Full),
-    Firefox           -> Set(Full),
-    IE                -> Set(Unsupported, Partial),
-    IEMobile          -> Set(Full),
-    IOSSafari         -> Set(Full),
-    Opera             -> Set(Full),
-    OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Full),
-    Samsung           -> Set(Full))
-
-  /**
-   * CSS Canvas Drawings
-   *
-   * Method of using HTML5 Canvas as a background image. Not currently part of any specification.
-   *
-   * https://webkit.org/blog/176/css-canvas-drawing/
-   */
-  def canvas: Subject = Map(
-    AndroidBrowser    -> Set(FullX, Unsupported),
-    AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(FullX),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported),
-    IE                -> Set(Unsupported),
-    IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(FullX),
-    Opera             -> Set(Unsupported),
-    OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported),
-    Safari            -> Set(FullX),
-    Samsung           -> Set(Unsupported))
-
-  /**
    * CSS caret-color
    *
    * The `caret-color` property allows the color to be set of the caret (blinking text insertion pointer) in an editable text area.
@@ -489,56 +439,6 @@ object CanIUse {
     OperaMobile       -> Set(Unsupported, Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
-
-  /**
-   * CSS Cascade Layers
-   *
-   * The `@layer` at-rule allows authors to explicitly layer their styles in the cascade, before specificity and order of appearance are considered.
-   *
-   * https://www.w3.org/TR/css-cascade-5/
-   */
-  def cascadeLayers: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Full),
-    AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Full),
-    BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Full),
-    Edge              -> Set(Full),
-    Firefox           -> Set(Full),
-    IE                -> Set(Unsupported),
-    IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Full),
-    Opera             -> Set(Full),
-    OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Full),
-    Samsung           -> Set(Full))
-
-  /**
-   * Scoped Styles: the @scope rule
-   *
-   * Allows CSS rules to be scoped to part of the document, with upper and lower limits described by selectors.
-   *
-   * https://drafts.csswg.org/css-cascade-6/#scoped-styles
-   */
-  def cascadeScope: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported, Full),
-    AndroidChrome     -> Set(Full),
-    AndroidFirefox    -> Set(Full),
-    AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Full),
-    Edge              -> Set(Full),
-    Firefox           -> Set(Full),
-    IE                -> Set(Unsupported),
-    IEMobile          -> Set(Unsupported),
-    IOSSafari         -> Set(Full),
-    Opera             -> Set(Full),
-    OperaMini         -> Set(Unsupported),
-    OperaMobile       -> Set(Unsupported, Full),
-    Safari            -> Set(Full),
-    Samsung           -> Set(Unsupported, Full))
 
   /**
    * ch (character) unit
@@ -914,31 +814,6 @@ object CanIUse {
     OperaMobile       -> Set(Unsupported, PartialX, Full),
     Safari            -> Set(Full),
     Samsung           -> Set(Full))
-
-  /**
-   * CSS Device Adaptation
-   *
-   * Method of overriding the size of viewport in web page using the `@viewport` rule, replacing Apple's own popular `&lt;meta&gt;` viewport implementation. Includes the `extend-to-zoom` width value.
-   *
-   * https://www.w3.org/TR/css-device-adapt/
-   */
-  def deviceadaptation: Subject = Map(
-    AndroidBrowser    -> Set(Unsupported),
-    AndroidChrome     -> Set(Unsupported),
-    AndroidFirefox    -> Set(Unsupported),
-    AndroidUC         -> Set(Unsupported),
-    BlackberryBrowser -> Set(Unsupported),
-    Chrome            -> Set(Unsupported),
-    Edge              -> Set(Unsupported),
-    Firefox           -> Set(Unsupported),
-    IE                -> Set(Unsupported, PartialX),
-    IEMobile          -> Set(PartialX),
-    IOSSafari         -> Set(Unsupported),
-    Opera             -> Set(Unsupported),
-    OperaMini         -> Set(PartialX),
-    OperaMobile       -> Set(Unsupported, PartialX),
-    Safari            -> Set(Unsupported),
-    Samsung           -> Set(Unsupported))
 
   /**
    * CSS display: contents
