@@ -19,6 +19,35 @@ object Media {
   case object Interface   extends ScanValue("interface")
   case object Interlace   extends ScanValue("interlace")
 
+  sealed abstract class ColorScheme(final val value: String)
+  object ColorScheme {
+    case object Light extends ColorScheme("light")
+    case object Dark  extends ColorScheme("dark")
+    implicit def univEq: UnivEq[ColorScheme] = UnivEq.derive
+  }
+
+  sealed abstract class ReducedMotion(final val value: String)
+  object ReducedMotion {
+    case object NoPreference extends ReducedMotion("no-preference")
+    case object Reduce       extends ReducedMotion("reduce")
+    implicit def univEq: UnivEq[ReducedMotion] = UnivEq.derive
+  }
+
+  sealed abstract class PointerValue(final val value: String)
+  object PointerValue {
+    case object None   extends PointerValue("none")
+    case object Coarse extends PointerValue("coarse")
+    case object Fine   extends PointerValue("fine")
+    implicit def univEq: UnivEq[PointerValue] = UnivEq.derive
+  }
+
+  sealed abstract class HoverValue(final val value: String)
+  object HoverValue {
+    case object None  extends HoverValue("none")
+    case object Hover extends HoverValue("hover")
+    implicit def univEq: UnivEq[HoverValue] = UnivEq.derive
+  }
+
   sealed trait ValueExpr[T]
   case class Eql[T](eql: T) extends ValueExpr[T]
   case class Max[T](max: T) extends ValueExpr[T]
@@ -63,6 +92,18 @@ object Media {
 
   /** Determines whether the output device is a grid device or a bitmap device.  If the device is grid-based (such as a TTY terminal or a phone display with only one font), the value is 1.  Otherwise it is zero. */
   case class Grid(value: Option[Int]) extends Feature
+
+  /** Detects if the user has requested a light or dark color theme. */
+  case class PrefersColorScheme(value: ColorScheme) extends Feature
+
+  /** Detects if the user has requested that the system minimize non-essential motion. */
+  case class PrefersReducedMotion(value: Option[ReducedMotion]) extends Feature
+
+  /** Tests whether the primary input mechanism is a pointing device and how accurate it is. */
+  case class Pointer(value: Option[PointerValue]) extends Feature
+
+  /** Tests whether the primary input mechanism can hover over elements. */
+  case class Hover(value: Option[HoverValue]) extends Feature
 
   sealed abstract class TypeA(final val value: String)
   case object All extends TypeA("all")
@@ -228,6 +269,26 @@ object Media {
 
     final def grid        : Out = F(Grid(None))
     final def grid(v: Int): Out = F(Grid(Some(v)))
+
+    final def prefersColorScheme(v: ColorScheme): Out = F(PrefersColorScheme(v))
+    final def prefersColorSchemeLight           : Out = prefersColorScheme(ColorScheme.Light)
+    final def prefersColorSchemeDark            : Out = prefersColorScheme(ColorScheme.Dark)
+
+    final def prefersReducedMotion                  : Out = F(PrefersReducedMotion(None))
+    final def prefersReducedMotion(v: ReducedMotion): Out = F(PrefersReducedMotion(Some(v)))
+    final def prefersReducedMotionNoPreference      : Out = prefersReducedMotion(ReducedMotion.NoPreference)
+    final def prefersReducedMotionReduce            : Out = prefersReducedMotion(ReducedMotion.Reduce)
+
+    final def pointer                 : Out = F(Pointer(None))
+    final def pointer(v: PointerValue): Out = F(Pointer(Some(v)))
+    final def pointerNone             : Out = pointer(PointerValue.None)
+    final def pointerCoarse           : Out = pointer(PointerValue.Coarse)
+    final def pointerFine             : Out = pointer(PointerValue.Fine)
+
+    final def hover               : Out = F(Hover(None))
+    final def hover(v: HoverValue): Out = F(Hover(Some(v)))
+    final def hoverNone           : Out = hover(HoverValue.None)
+    final def hoverHover          : Out = hover(HoverValue.Hover)
   }
 
   // Ensure string concat doesn't accidentally call toString on something stupid.
@@ -277,9 +338,13 @@ object Media {
       case ColorIndex(v)        => cssValueExprO(v, "color-index")
       case Resolution(v)        => cssValueExpr (v, "resolution")
       case Monochrome(v)        => cssValueExprO(v, "monochrome")
-      case Orientation(v)       => "orientation:" ~ v.value
-      case Scan(v)              => "scan:"        ~ v.value
-      case Grid(v)              => opt(v, "grid")
+      case Orientation(v)          => "orientation:" ~ v.value
+      case Scan(v)                 => "scan:"        ~ v.value
+      case Grid(v)                 => opt(v, "grid")
+      case PrefersColorScheme(v)   => "prefers-color-scheme:" ~ v.value
+      case PrefersReducedMotion(v) => opt(v.map(_.value), "prefers-reduced-motion")
+      case Pointer(v)              => opt(v.map(_.value), "pointer")
+      case Hover(v)                => opt(v.map(_.value), "hover")
     }
     // Parentheses are required around expressions; failing to use them is an error.
     f => paren(x(f))

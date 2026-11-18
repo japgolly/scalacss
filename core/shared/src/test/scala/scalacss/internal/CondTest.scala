@@ -267,6 +267,31 @@ object CondTest extends TestSuite {
         val q = media.screen & media.handheld
         assertEq(q.toString.trim, "@media screen, handheld")
       }
+      "prefersColorScheme" - {
+        assertEq(media.prefersColorSchemeLight.cssSuffix, "(prefers-color-scheme:light)")
+        assertEq(media.prefersColorSchemeDark.cssSuffix, "(prefers-color-scheme:dark)")
+        assertEq(media.prefersColorScheme(Media.ColorScheme.Dark).cssSuffix, "(prefers-color-scheme:dark)")
+      }
+      "prefersReducedMotion" - {
+        assertEq(media.prefersReducedMotion.cssSuffix, "(prefers-reduced-motion)")
+        assertEq(media.prefersReducedMotionNoPreference.cssSuffix, "(prefers-reduced-motion:no-preference)")
+        assertEq(media.prefersReducedMotionReduce.cssSuffix, "(prefers-reduced-motion:reduce)")
+        assertEq(media.prefersReducedMotion(Media.ReducedMotion.Reduce).cssSuffix, "(prefers-reduced-motion:reduce)")
+      }
+      "pointer" - {
+        assertEq(media.pointer.cssSuffix, "(pointer)")
+        assertEq(media.pointerNone.cssSuffix, "(pointer:none)")
+        assertEq(media.pointerCoarse.cssSuffix, "(pointer:coarse)")
+        assertEq(media.pointerFine.cssSuffix, "(pointer:fine)")
+        assertEq(media.pointer(Media.PointerValue.Fine).cssSuffix, "(pointer:fine)")
+      }
+      "hover" - {
+        assertEq(media.hover.cssSuffix, "(hover)")
+        assertEq(media.hoverNone.cssSuffix, "(hover:none)")
+        assertEq(media.hoverHover.cssSuffix, "(hover:hover)")
+        assertEq(media.hover(Media.HoverValue.Hover).cssSuffix, "(hover:hover)")
+        assertEq((media.screen.hoverHover and media.pointerFine).cssSuffix, "screen and (hover:hover) and (pointer:fine)")
+      }
     }
   }
 }
