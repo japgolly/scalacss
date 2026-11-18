@@ -561,5 +561,45 @@ object AttrTest extends TestSuite {
       assertEq(insetInlineStart.auto.value,    "auto")
       assertEq(insetInlineEnd.`0`.value,       "0")
     }
+    "animation" - {
+      import Dsl._
+      "animationDirection" - {
+        assertEq(animationDirection.normal.av.value,                   "normal")
+        assertEq(animationDirection.normal.reverse.alternate.av.value, "normal,reverse,alternate")
+        assertEq(animationDirection.alternateReverse.important.value,  "alternate-reverse !important")
+      }
+      "animationFillMode" - {
+        assertEq(animationFillMode.none.av.value,                  "none")
+        assertEq(animationFillMode.forwards.backwards.both.av.value, "forwards,backwards,both")
+      }
+      "animationPlayState" - {
+        assertEq(animationPlayState.running.av.value,        "running")
+        assertEq(animationPlayState.running.paused.av.value, "running,paused")
+      }
+      "animationName" - {
+        val kf1 = Keyframes(ClassName("kf1"), Nil)
+        val kf2 = Keyframes(ClassName("kf2"), Nil)
+        val kf3 = Keyframes(ClassName("kf3"), Nil)
+        assertEq(animationName.none.value,           "none")
+        assertEq(animationName(kf1).value,           "kf1")
+        assertEq(animationName(kf1, kf2, kf3).value, "kf1,kf2,kf3")
+      }
+      "animationIterationCount" - {
+        assertEq(animationIterationCount.infinite.value,   "infinite")
+        assertEq(animationIterationCount.count(3).value,   "3")
+        assertEq(animationIterationCount.count(2.5).value, "2.5")
+        assertEq(animationIterationCount(1, 2.5, count(3), Literal.Typed.infinite).value, "1,2.5,3,infinite")
+      }
+      "animationTimingFunction" - {
+        assertEq(animationTimingFunction.ease.value,                     "ease")
+        assertEq(animationTimingFunction(easeIn, easeOut, linear).value, "ease-in,ease-out,linear")
+        assertEq(animationTimingFunction(cubicBezier(0.1, 0.2, 0.3, 0.4), steps(4, start)).value,
+          "cubic-bezier(0.1, 0.2, 0.3, 0.4),steps(4, start)")
+      }
+      "transitionTimingFunction" - {
+        assertEq(transitionTimingFunction.easeInOut.value,      "ease-in-out")
+        assertEq(transitionTimingFunction(ease, stepEnd).value, "ease,step-end")
+      }
+    }
   }
 }

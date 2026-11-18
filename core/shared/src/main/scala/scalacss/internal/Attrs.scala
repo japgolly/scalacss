@@ -161,12 +161,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-direction">MDN</a>
    */
-  object animationDirection extends TypedAttrBase {
+  object animationDirection extends TypedAttrBase with AnimationDirectionOps {
     override val attr: Attr = Attr.real("animation-direction", Transform keys CanIUse.animation)
-    def normal            = avl(LT.normal)
-    def reverse           = av(L.reverse)
-    def alternate         = av(L.alternate)
-    def alternateReverse  = av(L.alternateReverse)
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with AnimationDirectionOps {
+      override def av: AV = AV(attr, v)
+      def important: AV   = av.important
+      override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
+    }
+  }
+  trait AnimationDirectionOps {
+    protected def next(v: Value): animationDirection.Accum
+    final def normal           = next(LT.normal.value)
+    final def reverse          = next(L.reverse)
+    final def alternate        = next(L.alternate)
+    final def alternateReverse = next(L.alternateReverse)
   }
 
   /**
@@ -183,11 +192,21 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-fill-mode">MDN</a>
    */
-  object animationFillMode extends TypedAttrBase {
+  object animationFillMode extends TypedAttrBase with AnimationFillModeOps {
     override val attr: Attr = Attr.real("animation-fill-mode", Transform keys CanIUse.animation)
-    def forwards  = av(L.forwards)
-    def backwards = av(L.backwards)
-    def both      = av(L.both)
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with AnimationFillModeOps {
+      override def av: AV = AV(attr, v)
+      def important: AV   = av.important
+      override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
+    }
+  }
+  trait AnimationFillModeOps {
+    protected def next(v: Value): animationFillMode.Accum
+    final def none      = next(LT.none.value)
+    final def forwards  = next(L.forwards)
+    final def backwards = next(L.backwards)
+    final def both      = next(L.both)
   }
 
   /**
@@ -195,10 +214,11 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-iteration-count">MDN</a>
    */
-  object animationIterationCount extends TypedAttrBase {
+  object animationIterationCount extends TypedAttrTN[IterationCount](",") {
     override val attr: Attr = Attr.real("animation-iteration-count", Transform keys CanIUse.animation)
-    def infinite       = av(L.infinite)
-    def count(n: Int)  = avl(new LT.count(n))
+    def infinite         = av(L.infinite)
+    def count(n: Int)    = avl(new LT.count(n))
+    def count(n: Double) = av(ValueT.fmtDouble(n))
   }
 
   /**
@@ -208,7 +228,8 @@ object Attrs {
    */
   object animationName extends TypedAttrBase {
     override val attr = Attr.real("animation-name", Transform keys CanIUse.animation)
-    def apply(a: Keyframes): AV = av(a.name.value)
+    def none: AV                                = avl(LT.none)
+    def apply(a: Keyframes, an: Keyframes*): AV = av(if (an.isEmpty) a.name.value else (a +: an).map(_.name.value).mkString(","))
   }
 
   /**
@@ -216,10 +237,19 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-play-state">MDN</a>
    */
-  object animationPlayState extends TypedAttrBase {
+  object animationPlayState extends TypedAttrBase with AnimationPlayStateOps {
     override val attr: Attr = Attr.real("animation-play-state", Transform keys CanIUse.animation)
-    def running = av(L.running)
-    def paused  = av(L.paused)
+    override protected def next(v: Value): Accum = new Accum(v)
+    final class Accum(v: Value) extends ToAV with AnimationPlayStateOps {
+      override def av: AV = AV(attr, v)
+      def important: AV   = av.important
+      override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
+    }
+  }
+  trait AnimationPlayStateOps {
+    protected def next(v: Value): animationPlayState.Accum
+    final def running = next(L.running)
+    final def paused  = next(L.paused)
   }
 
   /**
@@ -227,17 +257,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function">MDN</a>
    */
-  object animationTimingFunction extends TypedAttrBase {
+  object animationTimingFunction extends TypedAttr_TimingFunction {
     override val attr: Attr = Attr.real("animation-timing-function", Transform keys CanIUse.animation)
-    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
-    def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
-    def linear                                                            = avl(LT.linear)
-    def ease                                                              = avl(LT.ease)
-    def easeIn                                                            = avl(LT.easeIn)
-    def easeInOut                                                         = avl(LT.easeInOut)
-    def easeOut                                                           = avl(LT.easeOut)
-    def stepStart                                                         = avl(LT.stepStart)
-    def stepEnd                                                           = avl(LT.stepEnd)
   }
 
   /**
@@ -2479,17 +2500,8 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function">MDN</a>
    */
-  object transitionTimingFunction extends TypedAttrBase {
+  object transitionTimingFunction extends TypedAttr_TimingFunction {
     override val attr: Attr = Attr.real("transition-timing-function", Transform keys CanIUse.transitions)
-    def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
-    def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
-    def linear                                                            = avl(LT.linear)
-    def ease                                                              = avl(LT.ease)
-    def easeIn                                                            = avl(LT.easeIn)
-    def easeInOut                                                         = avl(LT.easeInOut)
-    def easeOut                                                           = avl(LT.easeOut)
-    def stepStart                                                         = avl(LT.stepStart)
-    def stepEnd                                                           = avl(LT.stepEnd)
   }
 
   /**

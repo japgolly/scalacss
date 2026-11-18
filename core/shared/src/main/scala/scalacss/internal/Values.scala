@@ -15,6 +15,7 @@ trait TypedLiteralAliases {
   final def `0`                                                             = Typed.`0`
   final def auto                                                            = Typed.auto
   final def contain                                                         = Typed.contain
+  final def count(n: Int)                                                   = new Typed.count(n)
   final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
   final def dashed                                                          = Typed.dashed
   final def dotted                                                          = Typed.dotted
@@ -67,6 +68,7 @@ object Literal extends TypedLiteralAliases {
     final val `0` = Length(0, LengthUnit.px)
 
     class count(n: Int) extends Literal(n.toString)
+    object infinite     extends Literal("infinite")
 
     object hanging  extends Literal("hanging")
     object eachLine extends Literal("each-line")

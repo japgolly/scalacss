@@ -53,6 +53,13 @@ object ValueT {
   sealed trait RepeatStyle       extends ValueClass
   sealed trait OverflowBehaviour extends ValueClass
   sealed trait GapStyle          extends ValueClass
+  sealed trait TimingFunction    extends ValueClass
+  sealed trait IterationCount    extends ValueClass
+
+  private[internal] def fmtDouble(d: Double): String = {
+    val s = d.toString
+    if (s.endsWith(".0")) s.dropRight(2) else s
+  }
 
   // =========
   //   Rules
@@ -125,6 +132,12 @@ object ValueT {
     @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
     @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
     @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
+    @inline implicit def ruleTimingFunction[L <: Literal with LT.TimingFunction]: TimingFunction <== L = Rule.literal
+
+    @inline implicit def ruleIterationCount_I    : IterationCount <== Int              = Rule(_.toString)
+    @inline implicit def ruleIterationCount_N    : IterationCount <=< Number           = Rule.retype
+    @inline implicit def ruleIterationCount_Count: IterationCount <== LT.count         = Rule(_.value)
+    @inline implicit def ruleIterationCount_Inf  : IterationCount <== LT.infinite.type = Rule.literal
 
     @inline implicit def ruleGapStyle_l[L <: Literal with LT.GapStyle]: GapStyle <== L = Rule.literal
     @inline implicit def ruleGapStyle_L: GapStyle <=< Len = Rule.retype
@@ -258,6 +271,18 @@ object ValueT {
 
   abstract class TypedAttr_BrWidthStyleColour extends TypedAttrT3[WidStyCol](" ")
     with BrWidthOps with BrStyleOps with ColourOps
+
+  abstract class TypedAttr_TimingFunction extends TypedAttrTN[TimingFunction](",") {
+    final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    final def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
+    final def linear                                                            = avl(LT.linear)
+    final def ease                                                              = avl(LT.ease)
+    final def easeIn                                                            = avl(LT.easeIn)
+    final def easeInOut                                                         = avl(LT.easeInOut)
+    final def easeOut                                                           = avl(LT.easeOut)
+    final def stepStart                                                         = avl(LT.stepStart)
+    final def stepEnd                                                           = avl(LT.stepEnd)
+  }
 
   abstract class TypedAttr_LenPctAuto extends TypedAttrT1[LenPctAuto] with ZeroLit {
     final def auto = avl(LT.auto)
