@@ -1,7 +1,6 @@
 package scalacss.internal.mutable
 
 import scala.annotation.tailrec
-import scala.collection.mutable
 import scalacss.internal._
 import scalacss.internal.mutable.Register.{ErrorHandler, MacroName, NameGen}
 
@@ -19,7 +18,7 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   private var _keyframes = Vector.empty[Keyframes]
   private var _fontFaces = Vector.empty[FontFace[FontFamily]]
   private var _rendered  = false
-  private val _taken     = mutable.HashSet.empty[ClassName]
+  private var _taken     = Set.empty[ClassName]
 
   private def nextName(implicit cnh: ClassNameHint): ClassName =
     mutex {

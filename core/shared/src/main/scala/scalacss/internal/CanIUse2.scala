@@ -161,15 +161,6 @@ object CanIUse2 {
       }
   }
 
-  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] =
-    runPlanLazy(pp, pa, l, kv)
-
-  def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
-    runPlan(pp, pa, CssKV.key, kv)
-
-  def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
-    runPlan(pp, pa, CssKV.value, kv)
-
   def prefixesForPlatform(p: Env.Platform[Option]): SortedSet[Prefix] =
     agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)
 

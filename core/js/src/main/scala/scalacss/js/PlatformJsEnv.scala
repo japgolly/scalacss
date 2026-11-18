@@ -70,11 +70,10 @@ object PlatformJsEnv {
         } else if (has("""\bFxiOS/"""))                                          Some("Firefox Mobile")
         else if (has("""\b(?:Firefox|Fennec)/""")) {
           if (isAndroid || has("""\b(?:Mobile|Tablet)\b"""))                     Some("Firefox Mobile")
-          else Some("Firefox")
-        } else if (has("""\b(?:MSIE |Trident/)""")) Some("IE")
-        else if (isAndroid && has("""\bAppleWebKit/""")) Some("Android Browser")
-        else if (osFamily.contains("BlackBerry") && has("""\bAppleWebKit/"""))
-          Some("BlackBerry")
+          else                                                                   Some("Firefox")
+        } else if (has("""\b(?:MSIE |Trident/)"""))                              Some("IE")
+        else if (isAndroid && has("""\bAppleWebKit/"""))                         Some("Android Browser")
+        else if (osFamily.contains("BlackBerry") && has("""\bAppleWebKit/"""))   Some("BlackBerry")
         else if (has("""\bSafari/""") || (isIOS && has("""\bAppleWebKit/""")))   Some("Safari")
         else                                                                     None
 
