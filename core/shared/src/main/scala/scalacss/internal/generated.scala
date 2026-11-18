@@ -84,6 +84,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    */
   @inline final def animationTimingFunction = Attrs.animationTimingFunction
   /**
+   * The appearance CSS property is used to control native appearance of UI controls, that are based on operating system's theme.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/appearance">MDN</a>
+   */
+  @inline final def appearance = Attrs.appearance
+  /**
    * The CSS backface-visibility property determines whether or not the back face of the element is visible when facing the user. The back face of an element always is a transparent background, letting, when visible, a mirror image of the front face be displayed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility">MDN</a>
@@ -1396,6 +1402,12 @@ abstract class AttrAliasesAndValueTRules extends ValueT.Rules {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN</a>
    */
   @inline final def position = Attrs.position
+  /**
+   * The print-color-adjust CSS property sets what, if anything, the user agent may do to optimize the appearance of the element on the output device.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/print-color-adjust">MDN</a>
+   */
+  @inline final def printColorAdjust = Attrs.printColorAdjust
   /**
    * The quotes CSS property indicates how user agents should render quotation marks.
    *

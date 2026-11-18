@@ -17,7 +17,8 @@ object CanIUse2 {
   lazy val backgroundImageTransforms: Transform = {
     val a = Transform.valueKeywords(gradients)("linear-gradient", "radial-gradient")
     val b = Transform.valueKeywords(repeatingGradients)("repeating-linear-gradient", "repeating-radial-gradient")
-    a * b
+    val c = Transform.valueKeywords(imageSet)("image-set")
+    a * b * c
   }
 
   val needsPrefix: Support => Boolean = {

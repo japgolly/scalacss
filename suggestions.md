@@ -12,8 +12,8 @@
 
 ## CSS Spec Completeness, `CanIUse` Wiring & API Polish
 
-28. **Wire unused `CanIUse` subjects and clean up obsolete CSS properties (`Attrs.scala`, `Values.scala`, `ValueT.scala`, `Media.scala`, `Pseudo.scala`)**
-    1. 62 `CanIUse` subjects are unused, including `sticky` (not wired to `position`), `backgroundblendmode` (`backgroundBlendMode`), `backgroundClipText` (`backgroundClip` lacks `text`), `flexboxGap` (`gap`/`rowGap`/`columnGap`), `backgroundRepeatRoundSpace` (commented out at `Attrs.scala:320`), `css3CursorsGrab`, `prefersColorScheme`, `prefersReducedMotion`, `pointer`, `appearance`, `calc`, `viewportUnits` (several already listed in `TODO`).
+28. **Wire remaining `CanIUse` subjects and clean up obsolete CSS properties (`Attrs.scala`, `Values.scala`, `ValueT.scala`, `Media.scala`, `Pseudo.scala`)**
+    1. Remaining unused `CanIUse` subjects are primarily media/selector/value features (`prefersColorScheme`, `prefersReducedMotion`, `pointer`, `mediaResolution`, `anyLink`, `fullscreen`, `calc`, `viewportUnits` — several listed in `TODO` or #28.4) or obsolete subjects (`canvas`, `deviceadaptation` for `misc/caniuse.scala`'s `dataToIgnore`).
     2. Remove/deprecate obsolete draft properties (`offsetBlockStart`/`End`, `offsetInlineStart`/`End` renamed to `inset-*`; `gridAutoPosition`; `boxSizing.paddingBox`).
     3. Fix public typo `RorderRadiusOps` (`Attrs.scala:2848, 2853, 2857`) -> `BorderRadiusOps` (with a deprecated type alias for binary/source compat).
     4. Add missing CSS features/overloads: `ValueT.TypedAttrBase.revert` (`ValueT.scala:151-170`), `animationFillMode.none` (`Attrs.scala:180`), multi-value/comma-separated support on `animation*`/`transitionTimingFunction` and fractional `animationIterationCount`, `overflow.clip` and 2-arg `overflow(x, y)`, `Typed.TimingFunction` rule in `ValueT.Rules`, `TypedLiteralAliases.count`, decimal/angle-unit support in `ColorLiteral` modern `rgb`/`hsl`, `:root` / `:focus-visible` / `:focus-within` / `:is` / `:where` / `::placeholder` / `|=` / `*=` in `Pseudo.scala`, and `prefers-color-scheme` / `prefers-reduced-motion` / `pointer` / `hover` media features in `Media.scala`.

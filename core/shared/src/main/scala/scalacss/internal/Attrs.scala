@@ -64,7 +64,10 @@ object Attrs {
 
     // 1.1.0
     justifyItems, overflowAnchor,
-    svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity)
+    svgFillOpacity, svgFloodOpacity, svgLightingColor, svgStopColor, svgStopOpacity, svgStroke, svgStrokeOpacity,
+
+    // 1.1.1
+    appearance, printColorAdjust)
 
   lazy val values: NonEmptyVector[Attr] =
     Vector[Attr](all, unicodeBidi, direction) ++: valuesForAllAttr
@@ -235,6 +238,30 @@ object Attrs {
   }
 
   /**
+   * The appearance CSS property is used to control native appearance of UI controls, that are based on operating system's theme.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/appearance">MDN</a>
+   */
+  object appearance extends TypedAttrBase {
+    override val attr = Attr.real("appearance", Transform keys CanIUse.appearance)
+    def auto           = avl(LT.auto)
+    def base           = av("base")
+    def baseSelect     = av("base-select")
+    def button         = av("button")
+    def checkbox       = av("checkbox")
+    def listbox        = av("listbox")
+    def menulist       = av("menulist")
+    def menulistButton = av("menulist-button")
+    def meter          = av("meter")
+    def none           = avl(LT.none)
+    def progressBar    = av("progress-bar")
+    def radio          = av("radio")
+    def searchfield    = av("searchfield")
+    def textarea       = av("textarea")
+    def textfield      = av("textfield")
+  }
+
+  /**
    * The CSS backface-visibility property determines whether or not the back face of the element is visible when facing the user. The back face of an element always is a transparent background, letting, when visible, a mirror image of the front face be displayed.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/backface-visibility">MDN</a>
@@ -257,7 +284,22 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-blend-mode">MDN</a>
    */
-  final def backgroundBlendMode = Attr.real("background-blend-mode")
+  final def backgroundBlendMode = Attr.real("background-blend-mode", Transform keys CanIUse.backgroundblendmode)
+
+  private val backgroundClipTextKeyword: CanIUse2.PrefixApply =
+    CanIUse2.PrefixApply.keywords(L.text)
+
+  private val backgroundClipTransform: Transform = {
+    val opts = Transform keys CanIUse.backgroundImgOpts
+    val text = Transform keys CanIUse.backgroundClipText
+    Transform { env =>
+      lazy val optsFn = opts.run(env)
+      lazy val textFn = text.run(env)
+      kv =>
+        if (backgroundClipTextKeyword(kv.value).isDefined) textFn(kv)
+        else optsFn(kv)
+    }
+  }
 
   /**
    * Technical review completed. Editorial review completed.
@@ -265,7 +307,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip">MDN</a>
    */
   object backgroundClip extends TypedAttrBase with BackgroundClipDecorationOps {
-    override val attr = Attr.real("background-clip", Transform keys CanIUse.backgroundImgOpts)
+    override val attr = Attr.real("background-clip", backgroundClipTransform)
 
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with BackgroundClipDecorationOps {
@@ -278,6 +320,7 @@ object Attrs {
     final def contentBox: backgroundClip.Accum = next(Literal.contentBox)
     final def paddingBox: backgroundClip.Accum = next(Literal.paddingBox)
     final def borderBox: backgroundClip.Accum = next(Literal.borderBox)
+    final def text: backgroundClip.Accum = next(Literal.text)
   }
 
   /**
@@ -316,8 +359,8 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-repeat">MDN</a>
    */
   object backgroundRepeat extends TypedAttrT2[RepeatStyle] with RepeatStyleOps {
-    override val attr = Attr.real("background-repeat")
-//      Transform.valueKeywords(CanIUse.backgroundRepeatRoundSpace)(LT.round.value, LT.space.value))
+    override val attr = Attr.real("background-repeat",
+      Transform.valueKeywords(CanIUse.backgroundRepeatRoundSpace)(LT.round.value, LT.space.value))
     def repeatX = av("repeat-x")
     def repeatY = av("repeat-y")
   }
@@ -818,7 +861,8 @@ object Attrs {
    */
   object cursor extends TypedAttrBase {
     override val attr = Attr.real("cursor",
-      Transform.values(CanIUse.css3CursorsNewer)(L.grab, L.grabbing, L.zoomIn, L.zoomOut))
+      Transform.values(CanIUse.css3CursorsGrab)(L.grab, L.grabbing) *
+      Transform.values(CanIUse.css3CursorsNewer)(L.zoomIn, L.zoomOut))
 
     /** Indicating an alias or shortcut is to be created. */
     def alias = av(L.alias)
@@ -1979,12 +2023,23 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">MDN</a>
    */
   object position extends TypedAttrBase {
-    override val attr = Attr.real("position")
+    override val attr = Attr.real("position", Transform.values(CanIUse.sticky)(L.sticky))
     def absolute = av(L.absolute)
     def fixed    = av(L.fixed)
     def relative = av(L.relative)
     def static   = av(L.static)
     def sticky   = av(L.sticky)
+  }
+
+  /**
+   * The print-color-adjust CSS property sets what, if anything, the user agent may do to optimize the appearance of the element on the output device.
+   *
+   * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/print-color-adjust">MDN</a>
+   */
+  object printColorAdjust extends TypedAttrBase {
+    override val attr = Attr.real("print-color-adjust", Transform keys CanIUse.colorAdjust)
+    def economy = av("economy")
+    def exact   = av("exact")
   }
 
   /**
@@ -2045,7 +2100,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/row-gap">MDN</a>
    */
   object rowGap extends TypedAttrT1[GapStyle] with GapStyleOps {
-    override val attr = Attr.real("row-gap")
+    override val attr = Attr.real("row-gap", Transform keys CanIUse.flexboxGap)
   }
 
   /**

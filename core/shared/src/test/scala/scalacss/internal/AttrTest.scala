@@ -235,6 +235,16 @@ object AttrTest extends TestSuite {
         )
         assertEq(actual, expected)
       }
+      "imageSet" - {
+        val samsungEnv = Env(Env.Platform.empty(None).copy(name = Some("Samsung Internet")))
+        val chromeEnv  = Env(Env.Platform.empty(None).copy(name = Some("Chrome")))
+        val imgSet     = "image-set(url(a.png) 1x, url(b.png) 2x)"
+        val prefixed   = s"-webkit-$imgSet"
+        assertEq(AV(backgroundImage, imgSet)(Env.empty).map(_.value),  Vector(prefixed, imgSet))
+        assertEq(AV(background, imgSet)(Env.empty).map(_.value),       Vector(prefixed, imgSet))
+        assertEq(AV(backgroundImage, imgSet)(samsungEnv).map(_.value), Vector(prefixed, imgSet))
+        assertEq(AV(backgroundImage, imgSet)(chromeEnv).map(_.value),  Vector(imgSet))
+      }
     }
 
     "valuePrefixes" - {
@@ -253,6 +263,8 @@ object AttrTest extends TestSuite {
       "width.fillAvailable"     - test(width.fillAvailable,     "fill-available", "-webkit-fill-available")
       "cursor.pointer"          - test(cursor.pointer,          "pointer")
       "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in", "-webkit-zoom-in")
+      "cursor.grab"             - test(cursor.grab,             "grab", "-webkit-grab")
+      "cursor.grabbing"         - test(cursor.grabbing,         "grabbing", "-webkit-grabbing")
 
       "resize.block" - {
         val expected = Vector(
@@ -325,8 +337,19 @@ object AttrTest extends TestSuite {
       test(backgroundClip.paddingBox                        , "padding-box")
       test(backgroundClip.borderBox                         , "border-box")
       test(backgroundClip.contentBox                        , "content-box")
+      test(backgroundClip.text                              , "text")
+      test(backgroundClip.borderBox.text                    , "border-box,text")
       test(backgroundClip.contentBox.paddingBox             , "content-box,padding-box")
       test(backgroundClip.contentBox.paddingBox.av.important, "content-box,padding-box !important")
+
+      "prefixes" - {
+        val samsungEnv = Env(Env.Platform.empty(None).copy(name = Some("Samsung Internet")))
+        val chromeEnv  = Env(Env.Platform.empty(None).copy(name = Some("Chrome")))
+        assertEq(backgroundClip.text.av(Env.empty).map(_.key),       Vector("-webkit-background-clip", "background-clip"))
+        assertEq(backgroundClip.text.av(samsungEnv).map(_.key),      Vector("-webkit-background-clip", "background-clip"))
+        assertEq(backgroundClip.borderBox.av(samsungEnv).map(_.key), Vector("background-clip"))
+        assertEq(backgroundClip.text.av(chromeEnv).map(_.key),       Vector("background-clip"))
+      }
     }
 
     "borderRadius" - {
@@ -451,6 +474,42 @@ object AttrTest extends TestSuite {
       test(userSelect.inherit, "inherit")
       test(userSelect.initial, "initial")
       test(userSelect.unset, "unset")
+    }
+    "appearance" - {
+      assertEq(appearance.auto.value,           "auto")
+      assertEq(appearance.base.value,           "base")
+      assertEq(appearance.baseSelect.value,     "base-select")
+      assertEq(appearance.button.value,         "button")
+      assertEq(appearance.checkbox.value,       "checkbox")
+      assertEq(appearance.listbox.value,        "listbox")
+      assertEq(appearance.menulist.value,       "menulist")
+      assertEq(appearance.menulistButton.value, "menulist-button")
+      assertEq(appearance.meter.value,          "meter")
+      assertEq(appearance.none.value,           "none")
+      assertEq(appearance.progressBar.value,    "progress-bar")
+      assertEq(appearance.radio.value,          "radio")
+      assertEq(appearance.searchfield.value,    "searchfield")
+      assertEq(appearance.textarea.value,       "textarea")
+      assertEq(appearance.textfield.value,      "textfield")
+      val bbEnv     = Env(Env.Platform.empty(None).copy(name = Some("BlackBerry")))
+      val chromeEnv = Env(Env.Platform.empty(None).copy(name = Some("Chrome")))
+      assertEq(appearance.none(Env.empty).map(_.key), Vector("-webkit-appearance", "appearance"))
+      assertEq(appearance.none(bbEnv).map(_.key),     Vector("-webkit-appearance"))
+      assertEq(appearance.none(chromeEnv).map(_.key), Vector("appearance"))
+    }
+    "printColorAdjust" - {
+      assertEq(printColorAdjust.economy.value, "economy")
+      assertEq(printColorAdjust.exact.value,   "exact")
+      val chromeEnv  = Env(Env.Platform.empty(None).copy(name = Some("Chrome")))
+      val firefoxEnv = Env(Env.Platform.empty(None).copy(name = Some("Firefox")))
+      assertEq(printColorAdjust.exact(Env.empty).map(_.key),  Vector("-o-print-color-adjust", "-webkit-print-color-adjust", "print-color-adjust"))
+      assertEq(printColorAdjust.exact(chromeEnv).map(_.key),  Vector("-webkit-print-color-adjust"))
+      assertEq(printColorAdjust.exact(firefoxEnv).map(_.key), Vector("print-color-adjust"))
+    }
+    "wiredAttrs" - {
+      assertEq(position.sticky(Env.empty),                     Vector(CssKV("position", "sticky")))
+      assertEq(AV(backgroundBlendMode, "multiply")(Env.empty), Vector(CssKV("background-blend-mode", "multiply")))
+      assertEq(backgroundRepeat.round(Env.empty),              Vector(CssKV("background-repeat", "round")))
     }
   }
 }
