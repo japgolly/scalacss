@@ -3,8 +3,6 @@ package scalacss.internal
 import japgolly.univeq._
 import scala.collection.immutable.SortedSet
 
-// TODO Rename PseudoXxxxx (selector probably)
-
 /** http://www.w3.org/TR/selectors/#selector-syntax */
 sealed abstract class PseudoType(val priority: Short)
 

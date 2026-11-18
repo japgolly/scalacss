@@ -855,7 +855,6 @@ object Attrs {
 
     // TODO content still missing a bunch of combinations
 
-
     /** @param content Content string (unescaped). This will be escaped as required.
      */
     def string(content: String) =
