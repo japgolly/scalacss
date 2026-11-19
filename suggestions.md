@@ -36,11 +36,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `quoteIfNeeded` only quotes when `s.exists(_.isWhitespace) && !isQuoted`, and `isQuoted` only checks matching leading/trailing `'` or `"`. Unquoted names like `""`, `"123font"`, `"Font,Name"`, or `"inherit"` are emitted unquoted, while `"'Foo' 'Bar'"` passes `isQuoted` and emits invalid CSS.
     - **Fix:** Emit unquoted only if `s` is a valid single CSS `<custom-ident>` (and not a CSS-wide keyword) or a properly single-quoted/double-quoted CSS string without unescaped internal quotes.
 
-15. **`Cond.applyToStyle` iterates unordered `s.data`**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Cond.scala:37`
-    - **Issue:** `s.data.foldLeft(init)` iterates `Map[Cond, AVs]` in hash order rather than `s.dataSorted`. When two distinct `oldCond` entries collapse to the same `this & oldCond` (e.g. `Cond.empty` and `Hover` under `hover(...)`) and `s.data.size >= 5`, property override order is non-deterministic.
-    - **Fix:** Iterate `s.dataSorted`.
-
 16. **`Domain.IntoSeq.apply` and `Domain.Pair.apply` lack proper bounds checks**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Domain.scala:76-84, 91-121`
     - **Issue:** When `as > 0`, `IntoSeq.apply(i0)` never checks `0 <= i0 && i0 < size` (silently wrapping out-of-range indices via `i % as`, or indexing `r(-1)` if `r` is empty). `Pair.apply(i)` only checks `as == 0`, not `size == 0` (when `b.size == 0`).

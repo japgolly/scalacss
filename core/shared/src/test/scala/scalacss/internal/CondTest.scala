@@ -293,5 +293,41 @@ object CondTest extends TestSuite {
         assertEq((media.screen.hoverHover and media.pointerFine).cssSuffix, "screen and (hover:hover) and (pointer:fine)")
       }
     }
+
+    "applyToStyleDeterministicOrder" - {
+      import Attrs.color
+      import Dsl._
+
+      "pseudoBaseBeforeHover" - {
+        val hoverCond = Cond(Some(Pseudo.Hover), Vector.empty)
+        val s = StyleS.data(Map(
+          Cond.empty                               -> AVs(color, "black"),
+          Cond(Some(Pseudo.Hover), Vector.empty)   -> AVs(color, "blue"),
+          Cond(Some(Pseudo.Focus), Vector.empty)   -> AVs(color, "green"),
+          Cond(Some(Pseudo.Active), Vector.empty)  -> AVs(color, "yellow"),
+          Cond(Some(Pseudo.Visited), Vector.empty) -> AVs(color, "red"),
+          Cond(Some(Pseudo.Link), Vector.empty)    -> AVs(color, "white"),
+        ))
+        val res = hoverCond.applyToStyle(s)(Compose.safe)
+        assertEq(res.data(hoverCond).avIterator.toVector, Vector(AV(color, "black"), AV(color, "blue")))
+      }
+
+      "collapsingMediaQueriesSorted" - {
+        val onlyScreen = Cond(None, Vector1(media.only.screen))
+        val s = StyleS.data(Map(
+          Cond.empty                          -> AVs(color, "c1"),
+          Cond(None, Vector1(media.all))      -> AVs(color, "c2"),
+          Cond(None, Vector1(media.only.all)) -> AVs(color, "c3"),
+          onlyScreen                          -> AVs(color, "c4"),
+          Cond(None, Vector1(media.screen))   -> AVs(color, "c5"),
+        ))
+        val res = onlyScreen.applyToStyle(s)(Compose.safe)
+        assertEq(res.data.keySet, Set(onlyScreen))
+        assertEq(
+          res.data(onlyScreen).avIterator.toVector,
+          Vector(AV(color, "c1"), AV(color, "c2"), AV(color, "c3"), AV(color, "c4"), AV(color, "c5"))
+        )
+      }
+    }
   }
 }
