@@ -493,6 +493,19 @@ object RegisterTest extends TestSuite {
         val ss = new DslMacroNameSubSS(reg)
         assertEq(ss.nested.s.className, ClassName("SS-nested-s"))
       }
+
+      "dollarInIdentifiers" - {
+        val reg = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        val ss = new DslMacroNameDollarSS(reg)
+        assertEq(ss.`$btn`.className, ClassName("SS-_btn"))
+        assertEq(ss.btn.className, ClassName("SS-btn"))
+        assertDistinctClasses(ss.`$btn`, ss.btn)
+        assertEq(ss.`a$b`.className, ClassName("SS-a_b"))
+        assertEq(ss.`foo$`.className, ClassName("SS-foo_"))
+        assertEq(ss.`sub$group`.`x$y`.className, ClassName("SS-sub_group-x_y"))
+        assertEq(`Obj$SS`.s.className, ClassName("Obj_SS-s"))
+        assertEq(`Obj$SS`.inner.t.className, ClassName("Obj_SS-inner-t"))
+      }
     }
 
     "nextNameCollision" - {
@@ -629,4 +642,28 @@ private class DslMacroNameSubSS(reg: Register) extends DslMacroNameBaseSS(reg) {
     val s = style(color.red)
   }
   initInnerObjects(nested.s)
+}
+
+private class DslMacroNameDollarSS(reg: Register) extends StyleSheet.Inline()(reg) {
+  override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+  import dsl._
+  private implicit val compose: Compose = Compose.trust
+  val `$btn` = style(color.red)
+  val btn    = style(color.blue)
+  val `a$b`  = style(color.green)
+  val `foo$` = style(color.yellow)
+  object `sub$group` {
+    val `x$y` = style(color.black)
+  }
+  initInnerObjects(`sub$group`.`x$y`)
+}
+
+private object `Obj$SS` extends StyleSheet.Inline()(new Register(Register.NameGen.numbered(), Register.MacroName.Use, Register.ErrorHandler.silent)) {
+  import dsl._
+  private implicit val compose: Compose = Compose.trust
+  val s = style(color.red)
+  object inner {
+    val t = style(color.blue)
+  }
+  initInnerObjects(inner.t)
 }

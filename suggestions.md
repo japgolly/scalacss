@@ -46,11 +46,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
     - **Fix:** Evaluate `val res = t()` before setting `_thunk = null` (or wrap cleanly if one-shot failure is desired).
 
-19. **Scala 3 `Dsl.nameQuoted` strips all `$` characters indiscriminately**
-    - **Where:** `core/shared/src/main/scala-3/scalacss/internal/Macros.scala:5, 57-58` (compare with `core/shared/src/main/scala-2/scalacss/internal/Macros.scala:16-35`)
-    - **Issue:** Scala 3's `nameQuoted` has an unused `import scala.reflect.NameTransformer` and applies `s.replace("$", "")`, stripping literal `$` from identifiers like ``val `$btn` = style(...)`` instead of decoding / trimming only trailing module-class `$` markers.
-    - **Fix:** Remove the unused import and strip `$` only at symbol segment boundaries (e.g. `s.replaceAll("\\$(?=\\.|$)", "")`).
-
 20. **`backgroundOrigin` and `backgroundSize` omit `CanIUse.backgroundImgOpts`**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Attrs.scala:371, 397` (compare with `backgroundClip` at `316-326`)
     - **Issue:** `CanIUse.backgroundImgOpts` covers `background-clip`, `background-origin`, and `background-size`, but only `backgroundClip` wires it up; `backgroundOrigin` and `backgroundSize` omit the transform. Also `overflowX`/`overflowY` (`1920`, `1929`) omit `Transform keys CanIUse.overflow`, and `alignContent` (`84`) omits `CanIUse.justifyContentSpaceEvenly` (unlike `justifyContent` at `1537`).

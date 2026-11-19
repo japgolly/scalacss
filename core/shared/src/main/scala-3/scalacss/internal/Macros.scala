@@ -2,7 +2,6 @@ package scalacss.internal
 
 import java.util.regex.Pattern
 import scala.language.`3.0`
-import scala.reflect.NameTransformer
 import scala.quoted._
 
 object Macros {
@@ -54,27 +53,32 @@ object Macros {
         o
       }
 
-      def fixName(s: String): String =
-        s.replace("$", "")
+      def symName(s: Symbol): String = {
+        val n = s.name
+        if (s.flags.is(Flags.Module) && n.endsWith("$")) n.substring(0, n.length - 1) else n
+      }
 
       val localName =
-        fixName(owner.name)
+        symName(owner)
 
       // `style()` instead of `val x = style()` results in "<local OuterClass>"
       val finalName =
         if (localName startsWith "<")
           ""
-        else {
-          // Try to extract a name, relative to the stylesheet class
-          val className = fixName(classOwner.fullName)
-          val fullName  = fixName(owner.fullName)
-          if ((fullName.length > className.length + 1) && fullName.startsWith(className + ".")) {
-            val relName = fullName.substring(className.length + 1).replace('.', '-')
-            relName
-          } else
-            // Default to local name
+        else if (isStyleSheet(classOwner)) {
+          // Extract a name relative to the stylesheet class
+          var segs = List.empty[String]
+          var o = owner
+          while (o != classOwner && !o.maybeOwner.isNoSymbol) {
+            segs ::= symName(o)
+            o = o.owner
+          }
+          if (o == classOwner)
+            segs.mkString("-")
+          else
             localName
-        }
+        } else
+          localName
 
       Inlined(None, Nil, Literal(StringConstant(finalName))).asExprOf[String]
     }
