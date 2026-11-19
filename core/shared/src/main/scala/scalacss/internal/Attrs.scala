@@ -312,28 +312,27 @@ object Attrs {
    */
   final def backgroundBlendMode = Attr.real("background-blend-mode", Transform keys CanIUse.backgroundblendmode)
 
-  private val backgroundClipTextKeyword: CanIUse2.PrefixApply =
-    CanIUse2.PrefixApply.keywords(L.text)
-
-  private val backgroundClipTransform: Transform = {
-    val opts = Transform keys CanIUse.backgroundImgOpts
-    val text = Transform keys CanIUse.backgroundClipText
-    Transform { env =>
-      lazy val optsFn = opts.run(env)
-      lazy val textFn = text.run(env)
-      kv =>
-        if (backgroundClipTextKeyword(kv.value).isDefined) textFn(kv)
-        else optsFn(kv)
-    }
-  }
-
   /**
-   * Technical review completed. Editorial review completed.
+   * The background-clip CSS property sets whether an element's background extends underneath its border box, padding box, or content box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip">MDN</a>
    */
   object backgroundClip extends TypedAttrBase with BackgroundClipDecorationOps {
-    override val attr = Attr.real("background-clip", backgroundClipTransform)
+    @inline private def transform: Transform = {
+      val textKeyword = CanIUse2.PrefixApply.keywords(L.text)
+      val opts = Transform keys CanIUse.backgroundImgOpts
+      val text = Transform keys CanIUse.backgroundClipText
+      Transform { env =>
+        lazy val optsFn = opts.run(env)
+        lazy val textFn = text.run(env)
+        kv =>
+          if (textKeyword(kv.value).isDefined)
+            textFn(kv)
+          else
+            optsFn(kv)
+      }
+    }
+    override val attr = Attr.real("background-clip", transform)
 
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with BackgroundClipDecorationOps {
