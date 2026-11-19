@@ -11,11 +11,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
    - **Issue:** `NameGen.short` builds `fullPrefix = "_" + nextShortPrefix()` (which emits `"b"`, `"c"`, ..., `"z"`, `"aa"`, ..., `"ba"` at index 52) and directly concatenates `Alphabet.code(Nil, n)` using `nmchar7` (`'0'..'9'`, `'a'..'z'`, `'-'`, `'_'`). Because there is no delimiter between `prefix2` and the generated code and their alphabets overlap on `'a'..'z'`, stylesheet #1 (`prefix2 = "b"`, `n = 418` -> `code = "a0"`) and stylesheet #52 (`prefix2 = "ba"`, `n = 0` -> `code = "0"`) both generate `._ba0`. Each stylesheet owns an independent `Register._taken` set, so the collision goes undetected.
    - **Fix:** Add a delimiter between `prefix2` and the suffix that cannot appear in `prefix2` (e.g. `s"$p$p2-"` when `p2.nonEmpty`, or encode `prefix2` using uppercase `'A'..'Z'`).
 
-5. **`Compose.apply` drops overriding values when they appear inside an existing fallback list**
-   - **Where:** `core/shared/src/main/scala/scalacss/internal/Compose.scala:32-49`
-   - **Issue:** For `k ==* a`, `isConflict` returns `false` whenever every value in `nvs` is already contained anywhere in `kvs`. If `into` has `color -> [red, blue]` (`blue` wins) and `newAVs` has `color -> [red]` (or `[blue, red]`), `isConflict` returns `false`, `case None` filters out `nvs` because all items are already in `ovs`, and `blue` wrongly stays the winning declaration instead of `red`.
-   - **Fix:** Treat `k ==* a` as non-conflicting only when `kvs` and `nvs` have identical values in order (or at minimum end with the same winning sequence), and otherwise delegate to `rules.mergeAVs`.
-
 6. **React SSR breaks CSS containing `>`, `&`, or quotes, and lacks `</style` breakout protection**
    - **Where:** `ext-react/src/main/scala/scalacss/React.scala:7-10`
    - **Issue:** `ScalaCssReactFns.createStyleTag` renders `<.styleTag(^.`type` := "text/css", styleStr)` as a normal React string child. During `ReactDOMServer` SSR, React HTML-escapes text children (`>` -> `&gt;`, `"` -> `&quot;`, `'` -> `&#x27;`, `&` -> `&amp;`), which browsers do **not** decode inside `<style>`, breaking child selectors (`> span`) and quoted strings (`content`, `font-family`). It also lacks `</style` escaping that `ScalatagsTextRenderer` has (`ScalatagsText.scala:22`).

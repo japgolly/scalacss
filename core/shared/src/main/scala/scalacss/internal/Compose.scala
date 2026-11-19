@@ -27,11 +27,11 @@ final case class Compose(rules: Compose.Rules) {
       def containsValue(vs: NonEmptyVector[Value], v: Value): Boolean =
         (vs.head ==* v) || vs.tail.contains(v)
 
-      // Same attribute with identical values is an exact match (not a conflict).
+      // Same attribute with identical values in identical order is an exact match (not a conflict).
       // Different values or overlapping attributes (eg. margin vs margin-left) are conflicts.
       def isConflict(a: Attr, nvs: NonEmptyVector[Value])(k: Attr, kvs: NonEmptyVector[Value]): Boolean =
         if (k ==* a)
-          !(containsValue(kvs, nvs.head) && nvs.tail.forall(containsValue(kvs, _)))
+          kvs !=* nvs
         else
           a.cmp(k).conflict
 

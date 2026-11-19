@@ -3,6 +3,7 @@ package scalacss.internal
 import japgolly.microlibs.testutil.TestUtil._
 import nyaya.prop._
 import nyaya.test.PropTest._
+import sourcecode.Line
 import utest._
 
 object ComposeTest extends TestSuite {
@@ -51,7 +52,7 @@ object ComposeTest extends TestSuite {
       val outer = style(fontWeight.bold)
       val inner = style(color.red, outer)
     }
-    def test(): Unit = {
+    def test()(implicit q: Line): Unit = {
       val css = SampleStyles.renderA[String].trim
       assertEq(SampleStyles.outer.htmlClasses, "TEST-outer")
       assertEq(SampleStyles.inner.htmlClasses, "TEST-inner")
@@ -86,7 +87,7 @@ object ComposeTest extends TestSuite {
       import Dsl._
       implicit def c: Compose = Compose.safe
 
-      def test(s: StyleS)(avs: AV*)(ws: String*): Unit = {
+      def test(s: StyleS)(avs: AV*)(ws: String*)(implicit q: Line): Unit = {
         assertEq(s.data(Cond.empty).avIterator.toVector, avs.toVector)
         assertEq(s.warnings.map(_.msg), ws.toVector)
       }
@@ -208,6 +209,36 @@ object ComposeTest extends TestSuite {
         val b = StyleS.data(conds.map(_ -> AVs(AV(color, "blue"))).toMap)
         val res = a compose b
         assertEq(res.warnings.map(_.cond), conds.sorted(Cond.ordering))
+      }
+
+      "fallbackOverride" - {
+        val a = style(color.red, color.blue)(Compose.trust)
+
+        "singleValueOverridesEarlierFallback" - {
+          val b = style(color.red)
+          test(a compose b)(
+            AV(color, "red"), AV(color, "blue"), AV(color, "red")
+          )("{color: red} conflicts with {color: [red; blue]}")
+
+          val replaceRes = a.compose(b)(new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent)))
+          assertEq(replaceRes.data(Cond.empty).avIterator.toVector, Vector(AV(color, "red")))
+        }
+
+        "reorderedFallbackValues" - {
+          val b = style(color.blue, color.red)(Compose.trust)
+          test(a compose b)(
+            AV(color, "red"), AV(color, "blue"), AV(color, "blue"), AV(color, "red")
+          )("{color: [blue; red]} conflicts with {color: [red; blue]}")
+
+          val replaceRes = a.compose(b)(new Compose(Compose.Rules(Compose.Rules.replace, Compose.Rules.silent)))
+          assertEq(replaceRes.data(Cond.empty).avIterator.toVector, Vector(AV(color, "blue"), AV(color, "red")))
+        }
+
+        "identicalFallbackList" - {
+          test(a compose a)(
+            AV(color, "red"), AV(color, "blue")
+          )()
+        }
       }
 
     }
