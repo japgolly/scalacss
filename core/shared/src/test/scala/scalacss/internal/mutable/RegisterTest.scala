@@ -2,6 +2,7 @@ package scalacss.internal.mutable
 
 import japgolly.microlibs.testutil.TestUtil._
 import scalacss.internal._
+import sourcecode.Line
 import utest._
 
 object RegisterTest extends TestSuite {
@@ -20,10 +21,10 @@ object RegisterTest extends TestSuite {
   val sfi = StyleF[Int](i => styleS(AV(paddingLeft, s"${i * 4}ex")))(sfid)
   val sfb = StyleF[Boolean](b => styleS(AV(fontWeight, if (b) "bold" else "normal")))(Domain.boolean)
 
-  def assertDistinctClasses(as: StyleA*): Unit =
+  def assertDistinctClasses(as: StyleA*)(implicit q: Line): Unit =
     assertDistinctClassNames(as.map(_.className): _*)
 
-  def assertDistinctClassNames(ns: ClassName*): Unit = {
+  def assertDistinctClassNames(ns: ClassName*)(implicit q: Line): Unit = {
     val l = ns.map(_.value).toList
     assertEq(l, l.distinct)
   }
@@ -260,6 +261,17 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "macroNameUse" - {
+      "cssIdentStart" - {
+        assertEq(MacroName.Use(ClassNameHint(""), "1foo"), Some(ClassName("_1foo")))
+        assertEq(MacroName.Use(ClassNameHint(""), "-1foo"), Some(ClassName("_-1foo")))
+        assertEq(MacroName.Use(ClassNameHint(""), "-"), Some(ClassName("_-")))
+        assertEq(MacroName.Use(ClassNameHint(""), "-foo"), Some(ClassName("-foo")))
+        assertEq(MacroName.Use(ClassNameHint("1abc"), "foo"), Some(ClassName("_1abc-foo")))
+        assertEq(MacroName.Use(ClassNameHint("SS"), "1foo"), Some(ClassName("SS-1foo")))
+      }
+    }
+
     "macroNameWithDomain" - {
       implicit val compose: Compose = Compose.trust
 
@@ -374,6 +386,23 @@ object RegisterTest extends TestSuite {
         assertEq(ss.byInput(2).className, ClassName("suf"))
         assertEq(ss.byInput(3).className, ClassName("suf-2"))
         assertEq(warnings, Vector.empty)
+      }
+
+      "ensuresValidCssIdentStart" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val d  = styleF("1foo").bool(_ => dsl.styleS(color.red))
+          val hd = styleF("-1foo").bool(_ => dsl.styleS(color.red))
+          val h  = styleF("-").bool(_ => dsl.styleS(color.red))
+          val hv = styleF("-foo").bool(_ => dsl.styleS(color.red))
+        }
+        val ss = new SS
+        assertEq(ss.d(true).className, ClassName("_1foo-t"))
+        assertEq(ss.hd(true).className, ClassName("_-1foo-t"))
+        assertEq(ss.h(true).className, ClassName("_--t"))
+        assertEq(ss.hv(true).className, ClassName("-foo-t"))
       }
     }
 

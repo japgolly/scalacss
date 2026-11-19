@@ -74,5 +74,14 @@ object NameGenTest extends TestSuite {
       assertEq(NameGen.toAlphabet(702), "aaa")
       intercept[IllegalArgumentException](NameGen.toAlphabet(-1))
     }
+
+    "numberedCssIdentStart" - {
+      assertEq(NameGen.numbered().next(ClassNameHint(""))._1.value, "_-0001")
+      assertEq(NameGen.numbered().next(ClassNameHint("123"))._1.value, "_123-0001")
+      assertEq(NameGen.numbered("1-%s-%d").next(ClassNameHint("a"))._1.value, "_1-a-1")
+      assertEq(NameGen.numbered("-%s-%d").next(ClassNameHint("a"))._1.value, "-a-1")
+      assertEq(NameGen.numbered("%s").next(ClassNameHint("-"))._1.value, "_-")
+      assertEq(NameGen.numbered().next(ClassNameHint("SS"))._1.value, "SS-0001")
+    }
   }
 }

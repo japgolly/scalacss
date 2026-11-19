@@ -120,7 +120,8 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
         var style = s f i
         if (mn.nonEmpty && style.className.isEmpty && !doesntNeedClassName(style)) {
           val suffix = MacroName.Use.sanitise(Option(toCN(i, index)).getOrElse(""))
-          val cn = ensureUnique(ClassName(if (suffix.isEmpty) mn else s"$mn-$suffix"))
+          val raw = if (suffix.isEmpty) mn else s"$mn-$suffix"
+          val cn = ensureUnique(ClassName(Register.ensureCssIdentStart(raw)))
           style = style.copy(className = Some(cn))
         }
         add(q, i, style)
@@ -198,6 +199,21 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
 
 object Register { // ===================================================================================================
 
+  private[mutable] def isCssIdentStart(c: Char): Boolean =
+    c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '\u00a0' && c <= '\u00ff')
+
+  // CSS ident allows leading `-` only when followed by nmstart (rejecting digits, standalone `-`, and `--` from CSS 2.1)
+  private[mutable] def ensureCssIdentStart(s: String): String =
+    if (s.isEmpty)
+      "_"
+    else {
+      val c0 = s.charAt(0)
+      if (isCssIdentStart(c0) || (c0 == '-' && s.length > 1 && isCssIdentStart(s.charAt(1))))
+        s
+      else
+        "_" + s
+    }
+
   /**
    * Determines how to generate a class name for a style, using a name provided by a macro (i.e. the variable name).
    */
@@ -229,7 +245,8 @@ object Register { // ===========================================================
         else {
           val name2 = sanitise(name)
           val cnh2  = sanitise(cnh.value)
-          Some(ClassName(if (cnh2.isEmpty) name2 else s"$cnh2-$name2"))
+          val raw   = if (cnh2.isEmpty) name2 else s"$cnh2-$name2"
+          Some(ClassName(Register.ensureCssIdentStart(raw)))
         }
     }
 
@@ -252,8 +269,9 @@ object Register { // ===========================================================
   object NameGen {
     class IncFmt(fmt: String, nextInt: Int = 1) extends NameGen {
       override def next(cnh: ClassNameHint) = {
-        val cn = ClassName(String.format(fmt, cnh.value, nextInt: java.lang.Integer))
-        val ng = new IncFmt(fmt, nextInt + 1)
+        val raw = String.format(fmt, cnh.value, nextInt: java.lang.Integer)
+        val cn  = ClassName(Register.ensureCssIdentStart(raw))
+        val ng  = new IncFmt(fmt, nextInt + 1)
         (cn, ng)
       }
     }

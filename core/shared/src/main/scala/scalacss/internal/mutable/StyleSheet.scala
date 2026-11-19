@@ -20,9 +20,6 @@ object StyleSheet {
   private def fixRepl(s: String): String =
     s.replaceFirst("""^\$line.+[.$]\$iw[.$]""", "")
 
-  private def isCssIdentStart(c: Char): Boolean =
-    c == '_' || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '\u00a0' && c <= '\u00ff')
-
   private[mutable] def mkClassNameHint(rawName: String): ClassNameHint = {
     val s1 = fixRepl(rawName)
     val dot = s1.lastIndexOf('.')
@@ -31,7 +28,7 @@ object StyleSheet {
     val s4 = Register.MacroName.Use.sanitise(s3)
     val s5 =
       if (s4.isEmpty) "StyleSheet"
-      else if (isCssIdentStart(s4.charAt(0))) s4
+      else if (Register.isCssIdentStart(s4.charAt(0))) s4
       else "_" + s4
     ClassNameHint(s5)
   }
