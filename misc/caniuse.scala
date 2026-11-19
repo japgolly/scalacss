@@ -258,19 +258,7 @@ object Caniuse {
 
     def fmtpref2(p: String) = String.format("%-6s", p)
 
-    val valAttrs = Set(
-      "animation",
-      "borderImage",
-      "borderRadius",
-      "counters",
-      "flexbox",
-      "grid",
-      "masks",
-      "multicolumn",
-      "outline",
-      "shapes",
-      "textDecoration",
-      "transitions")
+    val valAttrs = Set.empty[String]
 
     def fmtpref(p: String): String = {
       val p2 = fmtpref2(p)

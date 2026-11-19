@@ -97,7 +97,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css3-animations/
    */
-  val animation: Subject = Map(
+  def animation: Subject = Map(
     AndroidBrowser    -> Set(PartialX, FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -322,7 +322,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css3-background/#border-images
    */
-  val borderImage: Subject = Map(
+  def borderImage: Subject = Map(
     AndroidBrowser    -> Set(PartialX, Partial, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -347,7 +347,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css3-background/#the-border-radius
    */
-  val borderRadius: Subject = Map(
+  def borderRadius: Subject = Map(
     AndroidBrowser    -> Set(FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -647,7 +647,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/CSS21/generate.html#counters
    */
-  val counters: Subject = Map(
+  def counters: Subject = Map(
     AndroidBrowser    -> Set(Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -972,7 +972,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css3-flexbox/
    */
-  val flexbox: Subject = Map(
+  def flexbox: Subject = Map(
     AndroidBrowser    -> Set(PartialX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -1322,7 +1322,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css-grid-1/
    */
-  val grid: Subject = Map(
+  def grid: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -1622,7 +1622,7 @@ object CanIUse {
    *
    * https://www.w3.org/TR/css-masking-1/
    */
-  val masks: Subject = Map(
+  def masks: Subject = Map(
     AndroidBrowser    -> Set(PartialX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -1724,7 +1724,7 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
    *
    * https://www.w3.org/TR/css3-multicol/
    */
-  val multicolumn: Subject = Map(
+  def multicolumn: Subject = Map(
     AndroidBrowser    -> Set(PartialX, Partial),
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
@@ -1824,7 +1824,7 @@ For example: `@media (100px &lt;= width &lt;= 1900px)` is the equivalent of `@me
    *
    * https://w3c.github.io/csswg-drafts/css-ui/
    */
-  val outline: Subject = Map(
+  def outline: Subject = Map(
     AndroidBrowser    -> Set(Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -2350,7 +2350,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * https://www.w3.org/TR/css-shapes/
    */
-  val shapes: Subject = Map(
+  def shapes: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
@@ -2475,7 +2475,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * https://www.w3.org/TR/css-text-decor-3/#line-decoration
    */
-  val textDecoration: Subject = Map(
+  def textDecoration: Subject = Map(
     AndroidBrowser    -> Set(Unsupported, Full),
     AndroidChrome     -> Set(Partial),
     AndroidFirefox    -> Set(Partial),
@@ -2825,7 +2825,7 @@ By default, the value of  `overflow-anchor` is `auto`, it can mitigate this jarr
    *
    * https://www.w3.org/TR/css3-transitions/
    */
-  val transitions: Subject = Map(
+  def transitions: Subject = Map(
     AndroidBrowser    -> Set(FullX, Full),
     AndroidChrome     -> Set(Full),
     AndroidFirefox    -> Set(Full),
