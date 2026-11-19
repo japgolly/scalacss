@@ -152,8 +152,8 @@ object LengthUnit {
 
 final case class Length[@specialized(scala.Int, scala.Double) N](n: N, u: LengthUnit) {
   def value = {
-    val s = n.toString
-    if (s.stripPrefix("-").stripSuffix(".0") == "0") "0" else s + u.value
+    val s = ValueT.stripDotZero(n.toString)
+    if (s == "0" || s == "-0") "0" else s + u.value
   }
 
   def *(m: N)(implicit N: Numeric[N]): Length[N] =
@@ -171,7 +171,7 @@ object Length {
 }
 
 final case class Percentage[@specialized(scala.Int, scala.Double) N](n: N) {
-  def value: Value = n.toString + "%"
+  def value: Value = ValueT.stripDotZero(n.toString) + "%"
 }
 object Percentage {
   @nowarn("cat=unused")
@@ -192,7 +192,7 @@ object ResolutionUnit {
 }
 
 final case class Resolution[@specialized(scala.Int, scala.Double) N](n: N, u: ResolutionUnit) {
-  def value = n.toString + u.value
+  def value = ValueT.stripDotZero(n.toString) + u.value
 
   def *(m: N)(implicit N: Numeric[N]): Resolution[N] =
     copy(n = N.times(this.n, m))

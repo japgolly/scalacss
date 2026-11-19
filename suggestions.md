@@ -46,11 +46,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
     - **Fix:** Evaluate `val res = t()` before setting `_thunk = null` (or wrap cleanly if one-shot failure is desired).
 
-22. **`Double` formatting differs between JVM and Scala.js in `ruleNumber_D` and `Length.value`**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/ValueT.scala:60-63, 112`, `core/shared/src/main/scala/scalacss/internal/Data.scala:154-157, 174, 195`
-    - **Issue:** `ruleNumber_D` uses `Rule(_.toString)` instead of `ValueT.fmtDouble`, and `Length.value` only drops `.0` for `0` (while `Percentage.value` and `Resolution.value` use `n.toString`). On JVM `(2.0).toString` is `"2.0"`, whereas on JS it is `"2"`.
-    - **Fix:** Normalize integer-valued `Double`s via `ValueT.fmtDouble` across `ruleNumber_D`, `Length.value`, `Percentage.value`, and `Resolution.value` (avoiding `stripSuffix` / `dropRight` in `fmtDouble` / `ruleTime_FD` where `substring(0, s.length - 2)` suffices).
-
 ---
 
 ## Performance, Memory & Scala.js Bundle Size

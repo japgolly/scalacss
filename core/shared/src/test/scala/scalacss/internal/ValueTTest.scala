@@ -249,5 +249,26 @@ object ValueTTest extends TestSuite {
       assertEq((revert: ValueT[Color]).value,  "revert")
       assertEq((revert: ValueT[Time]).value,   "revert")
     }
+
+    "doubleFormatting" - {
+      import Dsl._
+      assertEq((1.0: ValueT[Number]).value,                 "1")
+      assertEq((0.0: ValueT[Number]).value,                 "0")
+      assertEq((2.5: ValueT[Number]).value,                 "2.5")
+      assertEq((2.0: ValueT[LenPctNum]).value,              "2")
+      assertEq((3.0: ValueT[IterationCount]).value,         "3")
+      assertEq(Attrs.opacity(1.0).value,                    "1")
+      assertEq(Length(2.0, LengthUnit.px).value,            "2px")
+      assertEq(Length(2.5, LengthUnit.em).value,            "2.5em")
+      assertEq(Length(0.0, LengthUnit.px).value,            "0")
+      assertEq(Length(-0.0, LengthUnit.px).value,           "0")
+      assertEq((2.0 px).value,                              "2px")
+      assertEq(Percentage(50.0).value,                      "50%")
+      assertEq(Percentage(33.3).value,                      "33.3%")
+      assertEq((50.0 %%).value,                             "50%")
+      assertEq(Resolution(300.0, ResolutionUnit.dpi).value, "300dpi")
+      assertEq(Resolution(1.5, ResolutionUnit.dppx).value,  "1.5dppx")
+      assertEq((300.0 dpi).value,                           "300dpi")
+    }
   }
 }

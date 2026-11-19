@@ -57,10 +57,11 @@ object ValueT {
   sealed trait TimingFunction    extends ValueClass
   sealed trait IterationCount    extends ValueClass
 
-  private[internal] def fmtDouble(d: Double): String = {
-    val s = d.toString
-    if (s.endsWith(".0")) s.dropRight(2) else s
-  }
+  private[internal] def stripDotZero(s: String): String =
+    if (s.endsWith(".0")) s.substring(0, s.length - 2) else s
+
+  private[internal] def fmtDouble(d: Double): String =
+    if (d == 0.0) "0" else stripDotZero(d.toString)
 
   // =========
   //   Rules
@@ -109,11 +110,11 @@ object ValueT {
     @inline implicit def rulePct_P[N] : Pct     <== Percentage[N]  = Rule(_.value)
     @inline implicit def ruleInteger_I: Integer <== Int            = Rule(_.toString)
     @inline implicit def ruleNumber_I : Number  <== Int            = Rule(_.toString)
-    @inline implicit def ruleNumber_D : Number  <== Double         = Rule(_.toString)
+    @inline implicit def ruleNumber_D : Number  <== Double         = Rule(fmtDouble)
     @inline implicit def ruleTime_FD  : Time    <== FiniteDuration =
       Rule(d => d.unit match {
-        case TimeUnit.NANOSECONDS  => (d.length / 1000000.0).toString.stripSuffix(".0") + "ms"
-        case TimeUnit.MICROSECONDS => (d.length / 1000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.NANOSECONDS  => fmtDouble(d.length / 1000000.0) + "ms"
+        case TimeUnit.MICROSECONDS => fmtDouble(d.length / 1000.0) + "ms"
         case TimeUnit.MILLISECONDS => d.length.toString + "ms"
         case _                     => d.toSeconds.toString + "s"
       })
