@@ -307,6 +307,74 @@ object RegisterTest extends TestSuite {
         assertEq(ss.f(true).className, ClassName("SS-0001"))
         assertEq(ss.f(false).className, ClassName("SS-0002"))
       }
+
+      "preservesExplicitClassName" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val f = styleF("manual").bool { b =>
+            if (b) dsl.styleS(color.red).copy(className = Some(ClassName("custom-name")))
+            else   dsl.styleS(color.blue)
+          }
+        }
+        val ss = new SS
+        assertEq(ss.f(true).className, ClassName("custom-name"))
+        assertEq(ss.f(false).className, ClassName("manual-f"))
+      }
+
+      "addClassNamesOnly" - {
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, ErrorHandler.silent)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val btn = styleF("mybtn").bool { b =>
+            if (b) addClassNames("btn", "btn-lg")
+            else   addClassNames("btn", "btn-sm")
+          }
+          val mixed = styleF("mymixed").bool { b =>
+            if (b) addClassNames("btn", "btn-lg")
+            else   dsl.styleS(addClassNames("btn"), color.red)
+          }
+        }
+        val ss = new SS
+        assertEq(ss.btn(true).htmlClasses, "btn btn-lg")
+        assertEq(ss.btn(false).htmlClasses, "btn btn-sm")
+        assertEq(ss.mixed(true).htmlClasses, "btn btn-lg")
+        assertEq(ss.mixed(false).htmlClasses, "mymixed-f btn")
+      }
+
+      "ensureUniqueOnCollision" - {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        implicit val reg: Register = new Register(NameGen.numbered(), MacroName.Use, errHandler)
+        class SS extends StyleSheet.Inline {
+          override protected implicit val classNameHint: ClassNameHint = ClassNameHint("SS")
+          import dsl._
+          val pre     = style("dup-f")(color.black)
+          val byBool  = styleF("dup").bool(_ => dsl.styleS(color.red))
+          val byInput = styleF("suf")(Domain.ofValues(0, 1, 2, 3))(
+            _ => dsl.styleS(color.red),
+            (i, _) => i match {
+              case 0 => "a b"
+              case 1 => "a_b"
+              case _ => ""
+            }
+          )
+        }
+        val ss = new SS
+        assertEq(ss.pre.className, ClassName("dup-f"))
+        assertEq(ss.byBool(true).className, ClassName("dup-t"))
+        assertEq(ss.byBool(false).className, ClassName("dup-f-2"))
+        assertEq(ss.byInput(0).className, ClassName("suf-a_b"))
+        assertEq(ss.byInput(1).className, ClassName("suf-a_b-2"))
+        assertEq(ss.byInput(2).className, ClassName("suf"))
+        assertEq(ss.byInput(3).className, ClassName("suf-2"))
+        assertEq(warnings, Vector.empty)
+      }
     }
 
     "registerFM" - {

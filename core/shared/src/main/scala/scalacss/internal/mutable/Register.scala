@@ -118,9 +118,9 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     _registerF(s, l)((add, domain) =>
       domain.iterator.zipWithIndex.foldLeft(l.empty) { case (q, (i, index)) =>
         var style = s f i
-        if (mn.nonEmpty) {
+        if (mn.nonEmpty && style.className.isEmpty && !doesntNeedClassName(style)) {
           val suffix = MacroName.Use.sanitise(Option(toCN(i, index)).getOrElse(""))
-          val cn = ClassName(if (suffix.isEmpty) mn else s"$mn-$suffix")
+          val cn = ensureUnique(ClassName(if (suffix.isEmpty) mn else s"$mn-$suffix"))
           style = style.copy(className = Some(cn))
         }
         add(q, i, style)
