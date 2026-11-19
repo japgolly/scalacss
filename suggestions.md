@@ -41,11 +41,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** When `as > 0`, `IntoSeq.apply(i0)` never checks `0 <= i0 && i0 < size` (silently wrapping out-of-range indices via `i % as`, or indexing `r(-1)` if `r` is empty). `Pair.apply(i)` only checks `as == 0`, not `size == 0` (when `b.size == 0`).
     - **Fix:** Check `if (i0 < 0 || i0 >= size) throw new IndexOutOfBoundsException(...)` in `IntoSeq.apply` and check `size == 0` (or bounds) in `Pair.apply`.
 
-17. **`NaturalOrdering` uses `Character.isDigit` (matching non-ASCII Unicode digits)**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/NaturalOrdering.scala:16, 29-30, 51-52`
-    - **Issue:** `Character.isDigit` matches non-ASCII decimal digits (such as Arabic-Indic `\u0660`–`\u0669`) whose numeric values aren't handled consistently with `'0'` leading-zero checks and raw UTF-16 comparisons, and in Scala.js pulling `Character.isDigit` bloats the output with Unicode category tables.
-    - **Fix:** Replace `Character.isDigit(c)` with `c >= '0' && c <= '9'`.
-
 18. **`Need.value` clears `_thunk` before invoking `t()`**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Need.scala:5-9`
     - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
