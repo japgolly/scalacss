@@ -154,7 +154,17 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
     mutex {
       val cn = macroName(cnh, name).fold(nextName(cnh))(ensureUnique)
       val kf = Keyframes(cn, frames)
-      emitRegistrationWarnings(Right(cn), frames.iterator.flatMap(_._2.style.allWarnings).toVector)
+      emitRegistrationWarnings(Right(cn),
+        frames.iterator.flatMap { case (_, sa) =>
+          val s = sa.style
+          val condWarnings = s.dataSorted.iterator.collect {
+            case (cond, _) if cond.pseudo.isDefined || cond.mediaQueries.nonEmpty =>
+              Warning(cond, "Keyframes do not support conditions (pseudos or media queries); ignoring conditional styles.")
+          }
+          val unsafeWarnings = s.unsafeExts.iterator.map(u =>
+            Warning(u.cond, "Keyframes do not support unsafe selectors (unsafeChild / unsafeRoot / unsafeExt); ignoring selector styles."))
+          s.allWarnings.iterator ++ condWarnings ++ unsafeWarnings
+        }.toVector)
       _keyframes :+= kf
       _taken += cn
       kf

@@ -153,6 +153,23 @@ object RegisterTest extends TestSuite {
         assert(warns.exists(_._2.msg.contains("color")))
       }
 
+      "keyframesUnsupportedFeatures" - {
+        val (reg, getWarns) = newTestReg()
+        val & = Cond.empty
+        val kfStyle = Dsl.style(
+          color.red,
+          &.hover(color.blue),
+          media.minWidth(500 px)(margin(10 px)),
+          unsafeChild("span")(padding(5 px))
+        )
+        val kf = Keyframes(ClassName("myAnim"), Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, kfStyle))))
+        reg.registerKeyframes(kf)
+        val warns = getWarns()
+        assertEq(warns.count(_._2.cond.pseudo.contains(Pseudo.Hover)), 1)
+        assertEq(warns.count(_._2.cond.mediaQueries.nonEmpty), 1)
+        assertEq(warns.count(_._2.msg.contains("unsafe")), 1)
+      }
+
       "standalone" - {
         val (reg, getWarns) = newTestReg()
         implicit val r: Register = reg

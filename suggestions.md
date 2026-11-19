@@ -31,11 +31,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `Css.mapByMediaQuery` groups rules by `CssMediaQueryO` into a `ListMap` ordered by *first* appearance. If rule `.a` uses `@media (min-width:900px)` and rule `.b` uses `min-width:600px` followed by `min-width:900px`, `.b`'s `900px` rule is hoisted before its `600px` rule, reversing responsive override order.
     - **Fix:** Document this behavior clearly (pointing to `StringRenderer.Raw` when relative `@media` order matters), or merge only adjacent rules with matching media queries.
 
-13. **`Css.keyframes` / `FormatSB` silently drop `Cond` and `unsafeExts` selectors**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Css.scala:39-45`, `core/shared/src/main/scala/scalacss/internal/Renderer.scala:83-93`
-    - **Issue:** `FormatSB` flattens `styles.flatMap(_.content.whole)` into the keyframe stop, silently stripping any media query, pseudo-selector, or `unsafeChild` selector on a keyframe `StyleA` while dumping its declarations directly into the keyframe.
-    - **Fix:** Warn or reject non-empty `mq`, pseudos, and `unsafeExts` inside `keyframes` (or narrow keyframe DSL builders to static declarations).
-
 14. **`FontFace.quoteIfNeeded` misses non-whitespace special characters and multi-quoted inputs**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Data.scala:85-92`
     - **Issue:** `quoteIfNeeded` only quotes when `s.exists(_.isWhitespace) && !isQuoted`, and `isQuoted` only checks matching leading/trailing `'` or `"`. Unquoted names like `""`, `"123font"`, `"Font,Name"`, or `"inherit"` are emitted unquoted, while `"'Foo' 'Bar'"` passes `isQuoted` and emits invalid CSS.

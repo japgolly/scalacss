@@ -82,5 +82,26 @@ object RendererTest extends TestSuite {
       assertEq(props0, Vector("color", "width"))
     }
 
+    "keyframesIgnoresConditionsAndUnsafeExts" - {
+      import Dsl._
+      val & = Cond.empty
+      val s0 = Dsl.style(
+        color.red,
+        &.hover(color.blue),
+        media.minWidth(500 px)(margin(10 px)),
+        unsafeChild("span")(padding(5 px))
+      )
+      val s1 = Dsl.style(&.hover(backgroundColor.green))
+      val kf = Keyframes(
+        ClassName("anim"),
+        Seq(
+          (Percentage(0), StyleA(ClassName("k0"), Vector.empty, s0)),
+          (Percentage(100), StyleA(ClassName("k1"), Vector.empty, s1))
+        )
+      )
+      val rendered = StringRenderer.formatTiny(Vector(Css.keyframes(kf)(Env.empty)))
+      assertEq(rendered, "@keyframes anim{0%{color:red}100%{}}")
+    }
+
   }
 }

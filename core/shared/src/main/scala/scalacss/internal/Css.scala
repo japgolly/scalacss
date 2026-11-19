@@ -39,7 +39,10 @@ object Css {
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes = {
     val frames = kfs.frames.foldLeft(ListMap.empty[KeyframeSelector, StyleStream]) { case (acc, (ks, sa)) =>
       val cur = acc.getOrElse(ks, Vector.empty)
-      acc.updated(ks, cur ++ styleA(sa))
+      val kvs = sa.style.data.get(Cond.empty).fold(Vector.empty[CssKV])(_.avIterator.flatMap(_(env)).toVector)
+      val ss = NonEmptyVector.maybe(kvs, Vector.empty[CssEntry.Style])(c =>
+        Vector1(CssEntry.Style(None, className(sa.className), c)))
+      acc.updated(ks, cur ++ ss)
     }
     CssEntry.Keyframes(kfs.name, frames)
   }
