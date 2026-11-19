@@ -425,6 +425,59 @@ object RegisterTest extends TestSuite {
       }
     }
 
+    "emptyStyleReservation" - {
+      def newWarnReg(mn: MacroName): (Register, () => Vector[String]) = {
+        var warnings = Vector.empty[String]
+        val errHandler = new ErrorHandler {
+          override def warn = Some((_, w) => warnings :+= w.msg)
+          override def badInput[I](s: StyleF[I], i: I) = ???
+        }
+        val reg = new Register(NameGen.numbered(), mn, errHandler)
+        (reg, () => warnings)
+      }
+
+      "macroNameCollision" - {
+        val (reg, getWarns) = newWarnReg(MacroName.Use)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val a1 = reg.registerS("same", StyleS.empty)
+        val a2 = reg.registerS("same", ss1)
+        assertEq(a1.className, ClassName("SS-same"))
+        assertEq(a2.className, ClassName("SS-same-2"))
+        assertEq(getWarns(), Vector.empty)
+      }
+
+      "nextNameCollision" - {
+        val (reg, getWarns) = newWarnReg(MacroName.Ignore)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val manual = reg.registerS(StyleS.empty.copy(className = Some(ClassName("SS-0001"))))
+        val auto   = reg.registerS(ss1)
+        val kf     = reg.registerKeyframes("fade", Seq((Percentage(0), StyleA(ClassName("k0"), Vector.empty, ss2))))
+        assertEq(manual.className, ClassName("SS-0001"))
+        assertEq(auto.className, ClassName("SS-0002"))
+        assertEq(kf.name, ClassName("SS-0003"))
+        assertEq(getWarns(), Vector.empty)
+      }
+
+      "duplicateManualWarning" - {
+        val (reg, getWarns) = newWarnReg(MacroName.Use)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        reg.registerS(StyleS.empty.copy(className = Some(ClassName("manual"))))
+        reg.registerS(ss1.copy(className = Some(ClassName("manual"))))
+        assertEq(getWarns(), Vector("Another style in the register has the same classname."))
+      }
+
+      "explicitClassNameWithAddClassNames" - {
+        val (reg, getWarns) = newWarnReg(MacroName.Use)
+        implicit val cnh: ClassNameHint = ClassNameHint("SS")
+        val s1 = StyleS.empty.copy(className = Some(ClassName("SS-same")), addClassNames = Vector(ClassName("btn")))
+        val a1 = reg.registerS(s1)
+        val a2 = reg.registerS("same", ss1)
+        assertEq(a1.className, ClassName("SS-same"))
+        assertEq(a2.className, ClassName("SS-same-2"))
+        assertEq(getWarns(), Vector.empty)
+      }
+    }
+
   }
 }
 

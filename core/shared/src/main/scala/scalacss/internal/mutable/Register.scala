@@ -76,17 +76,18 @@ final class Register(initNameGen: NameGen, macroName: MacroName, errHandler: Err
   }
 
   def registerS(s0: StyleS)(implicit cnh: ClassNameHint): StyleA = mutex {
+    val needsClassName = !doesntNeedClassName(s0)
     val (cn, addClassNames) =
-      if (doesntNeedClassName(s0))
-        (s0.addClassNames.head, s0.addClassNames.tail)
-      else
+      if (needsClassName)
         (s0.className getOrElse nextName(cnh), s0.addClassNames)
+      else
+        (s0.addClassNames.head, s0.addClassNames.tail)
 
     // Register
-    emitRegistrationWarnings(Right(cn), s0.allWarnings, checkDuplicates = !doesntNeedClassName(s0))
+    emitRegistrationWarnings(Right(cn), s0.allWarnings, checkDuplicates = needsClassName)
     val a = StyleA(cn, addClassNames, s0)
     _styles :+= a
-    if (s0.data.nonEmpty || s0.unsafeExts.nonEmpty)
+    if (needsClassName)
       _taken += cn
     a
   }

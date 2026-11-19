@@ -11,11 +11,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
    - **Issue:** `NameGen.short` builds `fullPrefix = "_" + nextShortPrefix()` (which emits `"b"`, `"c"`, ..., `"z"`, `"aa"`, ..., `"ba"` at index 52) and directly concatenates `Alphabet.code(Nil, n)` using `nmchar7` (`'0'..'9'`, `'a'..'z'`, `'-'`, `'_'`). Because there is no delimiter between `prefix2` and the generated code and their alphabets overlap on `'a'..'z'`, stylesheet #1 (`prefix2 = "b"`, `n = 418` -> `code = "a0"`) and stylesheet #52 (`prefix2 = "ba"`, `n = 0` -> `code = "0"`) both generate `._ba0`. Each stylesheet owns an independent `Register._taken` set, so the collision goes undetected.
    - **Fix:** Add a delimiter between `prefix2` and the suffix that cannot appear in `prefix2` (e.g. `s"$p$p2-"` when `p2.nonEmpty`, or encode `prefix2` using uppercase `'A'..'Z'`).
 
-2. **`Register.registerS` omits empty styles from `_taken`**
-   - **Where:** `core/shared/src/main/scala/scalacss/internal/mutable/Register.scala:46-47, 79-93`
-   - **Issue:** When a style `s0` is completely empty (`data.isEmpty && unsafeExts.isEmpty && addClassNames.isEmpty`), `doesntNeedClassName(s0)` is `false`, so `registerS` assigns it a class name `cn`, but lines 90–91 only do `_taken += cn` if `s0.data.nonEmpty || s0.unsafeExts.nonEmpty`. A later style or `keyframes` with the same name passes `ensureUnique` and reuses `cn`, unexpectedly styling DOM elements carrying the earlier empty `StyleA`.
-   - **Fix:** Record `cn` in `_taken` whenever `!doesntNeedClassName(s0)`.
-
 3. **`Register.registerF2` overwrites `style.className` and skips `ensureUnique`**
    - **Where:** `core/shared/src/main/scala/scalacss/internal/mutable/Register.scala:116-140`
    - **Issue:** Unlike `registerFM` (line 135), `registerF2` unconditionally overwrites `style.className = Some(cn)` even if the style already has a manual `className` or `doesntNeedClassName(style)` is `true`, and does not call `ensureUnique(cn)` (emitting duplicate selectors in `ProdDefaults` if `toCN(i, index)` collides after sanitisation).
