@@ -50,13 +50,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## Performance, Memory & Scala.js Bundle Size
 
-24. **`CanIUse` `val`s vs `def`s and repeated `Attr.real` allocation on untyped properties**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/CanIUse.scala` (12 eager `val`s e.g. lines `100, 325, 350, 650, 975, 1325, 1625, 1727, 1827, 2353, 2478, 2828`), `misc/caniuse.scala:261-273`, `core/shared/src/main/scala/scalacss/internal/Attrs.scala` (e.g. `304, 311, 313-326, 626, 633`)
-    - **Issue:**
-      - `object Attrs` initializes `backgroundClipTextKeyword` and `backgroundClipTransform` eagerly even when `backgroundClip` is never used, and 12 `CanIUse` subjects are eager `val`s (retaining 12 browser-support maps and preventing Scala.js DCE when unused).
-      - Meanwhile, untyped attributes defined as `final def` with `Transform keys CanIUse.foo` (e.g. `boxShadow`, `backgroundBlendMode`, `boxReflect`) rebuild the `CanIUse` `Map` + `Set`s + `Transform` + `Attr` every time they are referenced in a style.
-    - **Fix:** Make all `CanIUse` subjects `def`s (for DCE and zero retained heap on `CanIUse$`), move `backgroundClipTextKeyword`/`backgroundClipTransform` into `object backgroundClip`, and back transformed attributes that are called repeatedly with `private lazy val` (or `object`) if initialization cost matters, without keeping unused subjects alive.
-
 25. **`Platform.env` and `PlatformJsEnv` recompile regexes and recompute `Env` on every render**
     - **Where:** `core/js/src/main/scala/scalacss/internal/Platform.scala:13-14`, `core/js/src/main/scala/scalacss/js/PlatformJsEnv.scala:13, 38-75`
     - **Issue:** `Platform.env` is a `def` calling `PlatformJsEnv.value` (also uncached), and `parseUserAgent` uses `re.r.findFirstIn(ua).isDefined` — compiling ~15–20 Scala `Regex`es and constructing a fresh `Env` (recomputing `Env.agents` `lazy val`) on every `.render` / `.css` call.

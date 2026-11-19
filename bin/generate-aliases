@@ -21,7 +21,7 @@ def comment(d: String): Option[String] =
   commentr.findFirstMatchIn(d).map(_ group 1)
 
 def deprecated(d: String, a: String): Option[String] =
-  s"""(?m)^  (@deprecated\\([^\\n]+\\))\\n  (?:object|final def|def|val) +${java.util.regex.Pattern.quote(a)}\\b""".r
+  s"""(?m)^  (@deprecated\\([^\\n]+\\))\\n  (?:object|(?:final +)?(?:lazy +)?(?:def|val)) +${java.util.regex.Pattern.quote(a)}\\b""".r
     .findFirstMatchIn(d).map(_.group(1))
 
 val attrs =
