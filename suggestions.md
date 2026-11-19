@@ -21,11 +21,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
    - **Issue:** `t.appendAttr("class", Builder.GenericAttrValueSource(" " + s.htmlClasses))` prepends `" "` even though Scalatags' `Builder.appendAttr` already joins multiple `class` modifiers with `" "`, producing `class=" Foo-a"` (or double spaces when chaining styles, currently asserted in `ScalatagsTest.scala:90, 96, 102`).
    - **Fix:** Pass `s.htmlClasses` directly without `" " +` (and update `ScalatagsTest.scala`).
 
-8. **`PlatformExports.installStyle` crashes when `document.head` is `null` or `undefined`**
-   - **Where:** `core/js/src/main/scala/scalacss/defaults/PlatformExports.scala:22-23`
-   - **Issue:** `document.head appendChild style` throws a `TypeError` in SVG/XML documents (where `document.head` is `undefined`) or minimal/early HTML documents without `<head>`.
-   - **Fix:** Check `!js.isUndefined(head) && (head ne null)`, falling back to `document.documentElement`.
-
 9. **`StyleSheetRegistryJsOps.addToDocumentOnRegistration` ignores `Renderer[HTMLStyleElement]` and inserts empty `<style>` elements**
    - **Where:** `core/js/src/main/scala/scalacss/defaults/PlatformExports.scala:31-45`
    - **Issue:** `addToDocumentOnRegistration` requires only `Renderer[String]`, bypassing custom `Renderer[HTMLStyleElement]` instances (e.g. adding a CSP `nonce` attribute) that `StyleSheetInlineJsOps.addToDocument` respects. It also creates and appends `<style>` tags even when stylesheets produce empty CSS (or `"\n"`-joined empty strings across `addClassName`-only stylesheets), and renders each sheet separately rather than merging shared media queries across the batch.

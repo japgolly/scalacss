@@ -1,8 +1,9 @@
 package scalacss.defaults
 
-import org.scalajs.dom.{HTMLStyleElement, document}
+import org.scalajs.dom.{Element, HTMLStyleElement, document}
 import scalacss.internal.mutable.{StyleSheet, StyleSheetRegistry}
 import scalacss.internal.{Css, Env, Renderer}
+import scala.scalajs.js
 
 // ================
 // ====        ====
@@ -19,9 +20,12 @@ object PlatformExports {
     e
   }
 
-  def installStyle(style: HTMLStyleElement): Unit =
-    document.head appendChild style
-
+  def installStyle(style: HTMLStyleElement): Unit = {
+    var parent: Element = document.head
+    if (js.isUndefined(parent) || parent == null)
+      parent = document.documentElement
+    parent appendChild style
+  }
 
   class StyleElementRenderer(s: Renderer[String]) extends Renderer[HTMLStyleElement] {
     override def apply(css: Css) =
