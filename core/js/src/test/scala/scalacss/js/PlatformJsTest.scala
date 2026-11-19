@@ -147,6 +147,10 @@ object PlatformJsTest extends TestSuite {
         "Mozilla/5.0 (Linux; Android 10; VOG-L29) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 OPR/79.1.4195.77401",
         "Opera Mobile", Some("Android"), NonEmptyVector(Agent.OperaMobile))
 
+      "operaMobilePresto" - check(
+        "Opera/9.80 (Android; Opera Mobile/12.0; U; en) Presto/2.10.254 Version/12.00",
+        "Opera Mobile", Some("Android"), NonEmptyVector(Agent.OperaMobile))
+
       "operaTouchAndroid" - check(
         "Mozilla/5.0 (Linux; Android 10; VOG-L29) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36 OPT/2.9.2",
         "Opera Mobile", Some("Android"), NonEmptyVector(Agent.OperaMobile))
@@ -166,9 +170,17 @@ object PlatformJsTest extends TestSuite {
       "blackBerry10" - check(
         "Mozilla/5.0 (BB10; Touch) AppleWebKit/537.10+ (KHTML, like Gecko) Version/10.0.9.2372 Mobile Safari/537.10+",
         "BlackBerry", Some("BlackBerry"), NonEmptyVector(Agent.BlackberryBrowser))
+
+      "blackBerryModelPrefix" - check(
+        "Mozilla/5.0 (BlackBerry9800; U; en) AppleWebKit/534.8+ (KHTML, like Gecko) Version/6.0.0.448 Mobile Safari/534.8+",
+        "BlackBerry", Some("BlackBerry"), NonEmptyVector(Agent.BlackberryBrowser))
     }
 
     "unrecognised" - {
+      "null"   - {
+        assertEq(PlatformJsEnv.parseUserAgent(null).isDefined, false)
+        assertEq(PlatformJsEnv.fromUserAgent(null).isDefined, false)
+      }
       "empty"  - assertEq(PlatformJsEnv.parseUserAgent("").isDefined, false)
       "nodejs" - assertEq(PlatformJsEnv.parseUserAgent("Node.js/22.0.0").isDefined, false)
       "curl"   - assertEq(PlatformJsEnv.parseUserAgent("curl/8.4.0").isDefined, false)
@@ -182,6 +194,8 @@ object PlatformJsTest extends TestSuite {
       "missingNavigator"    - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal())).isDefined, false)
       "nullNavigator"       - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = null))).isDefined, false)
       "undefinedNavigator"  - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.undefined))).isDefined, false)
+      "missingUserAgent"    - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.Dynamic.literal()))).isDefined, false)
+      "undefinedUserAgent"  - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.Dynamic.literal(userAgent = js.undefined)))).isDefined, false)
       "nullUserAgent"       - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.Dynamic.literal(userAgent = null)))).isDefined, false)
       "emptyUserAgent"      - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.Dynamic.literal(userAgent = "")))).isDefined, false)
       "validUserAgent"      - assertEq(PlatformJsEnv.valueFromWindow(mockWin(js.Dynamic.literal(navigator = js.Dynamic.literal(userAgent = chromeWinUA)))).map(_.agents), Some(Set(Agent.Chrome)))

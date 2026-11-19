@@ -24,11 +24,16 @@ object PlatformJsEnv {
     a.toOption.flatMap(Option(_))
 
   private[js] def readUserAgent(window: UndefOr[dom.Window]): Option[String] =
-    for {
-      w   <- undefToOption(window)
-      nav <- undefToOption[dom.Navigator](w.navigator)
-      ua  <- Option(nav.userAgent) if ua.nonEmpty
-    } yield ua
+    undefToOption(window).flatMap { w =>
+      undefToOption[dom.Navigator](w.navigator).flatMap { nav =>
+        val raw: Any = nav.asInstanceOf[js.Dynamic].userAgent
+        if (js.typeOf(raw) == "string") {
+          val ua = raw.asInstanceOf[String]
+          if (ua.nonEmpty) Some(ua) else None
+        } else
+          None
+      }
+    }
 
   /** Parses a `navigator.userAgent` string into an [[Env]]. */
   def fromUserAgent(ua: String): Option[Env] =
@@ -36,18 +41,18 @@ object PlatformJsEnv {
 
   /** Parses `navigator.userAgent` for the fields used by [[scalacss.internal.CanIUse2.agentsForPlatform]]. */
   def parseUserAgent(ua: String): Option[Platform[Option]] =
-    if (ua.isEmpty)
+    if ((ua eq null) || ua.isEmpty)
       None
     else {
       def has(re: String): Boolean =
         re.r.findFirstIn(ua).isDefined
 
       val osFamily: Option[String] =
-        if (has("""\bWindows Phone\b"""))                     Some("Windows Phone")
-        else if (has("""\bAndroid\b"""))                      Some("Android")
-        else if (has("""\b(?:iPhone|iPad|iPod)\b"""))         Some("iOS")
-        else if (has("""\b(?:BB10|PlayBook|BlackBerry)\b""")) Some("BlackBerry")
-        else                                                  None
+        if (has("""\bWindows Phone\b"""))                       Some("Windows Phone")
+        else if (has("""\bAndroid\b"""))                        Some("Android")
+        else if (has("""\b(?:iPhone|iPad|iPod)\b"""))           Some("iOS")
+        else if (has("""\b(?:BB10\b|PlayBook\b|BlackBerry)""")) Some("BlackBerry")
+        else                                                    None
 
       val isAndroid = osFamily.contains("Android")
       val isIOS     = osFamily.contains("iOS")
@@ -55,7 +60,7 @@ object PlatformJsEnv {
       val browserName: Option[String] =
         if (has("""\b(?:Opera Mini|OPiOS)/"""))                                  Some("Opera Mini")
         else if (has("""\bIEMobile/"""))                                         Some("IE Mobile")
-        else if (has("""\bOPT/""") || has("""\bOpera Mobi\b"""))                 Some("Opera Mobile")
+        else if (has("""\bOPT/""") || has("""\bOpera Mobi(?:le)?\b"""))          Some("Opera Mobile")
         else if (has("""\bOPR/""")) {
           if (isAndroid || has("""\bMobile\b"""))                                Some("Opera Mobile")
           else                                                                   Some("Opera")

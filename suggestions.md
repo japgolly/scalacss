@@ -26,13 +26,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
    - **Issue:** `addToDocumentOnRegistration` requires only `Renderer[String]`, bypassing custom `Renderer[HTMLStyleElement]` instances (e.g. adding a CSP `nonce` attribute) that `StyleSheetInlineJsOps.addToDocument` respects. It also creates and appends `<style>` tags even when stylesheets produce empty CSS (or `"\n"`-joined empty strings across `addClassName`-only stylesheets), and renders each sheet separately rather than merging shared media queries across the batch.
    - **Fix:** Skip empty CSS output before `installStyle` in both `addToDocument` and `addToDocumentOnRegistration`, and accept/use `Renderer[HTMLStyleElement]` (or combine `Css` before rendering in `addToDocumentOnRegistration`).
 
-10. **`PlatformJsEnv.readUserAgent` / `parseUserAgent` unsafe null/`undefined` handling and UA matching gaps**
-    - **Where:** `core/js/src/main/scala/scalacss/js/PlatformJsEnv.scala:26-40, 49, 58`
-    - **Issue:**
-      - Line 30 uses `Option(nav.userAgent)` on `dom.Navigator.userAgent`; if a partial/mocked `navigator` has `userAgent === undefined`, `Option(undefined)` is `Some(undefined)` in Scala.js and `ua.nonEmpty` throws. Calling `parseUserAgent(null)` / `fromUserAgent(null)` throws `NullPointerException` on `ua.isEmpty`.
-      - Line 49 (`\b(?:BB10|PlayBook|BlackBerry)\b`) misses legacy `BlackBerry9700/...` UAs (no word boundary after `BlackBerry`), and line 58 (`\bOpera Mobi\b`) misses `Opera Mobile/...` UAs (misclassifying them as desktop `Opera` at line 62).
-    - **Fix:** Guard `nav.userAgent` as `UndefOr[String]` (and `(ua eq null) || ua.isEmpty`), and update the regexes to `\b(?:BB10\b|PlayBook\b|BlackBerry)` and `\bOpera Mobi(?:le)?\b`.
-
 11. **`CanIUse2.PrefixApply.keywords` can throw on `$`/`\`, rewrites `url(...)`/strings, and drops combined prefixes**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/CanIUse2.scala:17-22, 137-148`
     - **Issue:**
