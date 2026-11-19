@@ -51,10 +51,10 @@ object PlatformExports {
 
 trait PlatformExports {
 
-  implicit def toStyleSheetInlineJsOps(s: StyleSheet.Inline): PlatformExports.StyleSheetInlineJsOps =
+  @inline implicit final def toStyleSheetInlineJsOps(s: StyleSheet.Inline): PlatformExports.StyleSheetInlineJsOps =
     new PlatformExports.StyleSheetInlineJsOps(s)
 
-  implicit def toStyleSheetRegistryJsOps(s: StyleSheetRegistry): PlatformExports.StyleSheetRegistryJsOps =
+  @inline implicit final def toStyleSheetRegistryJsOps(s: StyleSheetRegistry): PlatformExports.StyleSheetRegistryJsOps =
     new PlatformExports.StyleSheetRegistryJsOps(s)
 
   implicit final def cssStyleElementRenderer(implicit s: Renderer[String]): Renderer[HTMLStyleElement] =

@@ -25,7 +25,7 @@ object ScalaCssReact extends ScalaCssReactImplicits
 trait ScalaCssReactImplicits extends PlatformExports {
   import ScalaCssReactFns._
 
-  implicit final def scalacssStyleaToTagMod(s: StyleA): TagMod =
+  @inline implicit final def scalacssStyleaToTagMod(s: StyleA): TagMod =
     ^.className := s.htmlClasses
 
   implicit final def scalacssReactElementRenderer(implicit s: Renderer[String]): Renderer[VdomElement] =
