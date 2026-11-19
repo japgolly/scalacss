@@ -26,14 +26,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
    - **Issue:** `addToDocumentOnRegistration` requires only `Renderer[String]`, bypassing custom `Renderer[HTMLStyleElement]` instances (e.g. adding a CSP `nonce` attribute) that `StyleSheetInlineJsOps.addToDocument` respects. It also creates and appends `<style>` tags even when stylesheets produce empty CSS (or `"\n"`-joined empty strings across `addClassName`-only stylesheets), and renders each sheet separately rather than merging shared media queries across the batch.
    - **Fix:** Skip empty CSS output before `installStyle` in both `addToDocument` and `addToDocumentOnRegistration`, and accept/use `Renderer[HTMLStyleElement]` (or combine `Css` before rendering in `addToDocumentOnRegistration`).
 
-11. **`CanIUse2.PrefixApply.keywords` can throw on `$`/`\`, rewrites `url(...)`/strings, and drops combined prefixes**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/CanIUse2.scala:17-22, 137-148`
-    - **Issue:**
-      - `r2.replaceAllIn(in, m => m.group(1) + p.prefix + m.group(2))` does not quote `m.group(1)` with `Regex.quoteReplacement`. Since `[^a-zA-Z0-9_-]` matches `$` and `\`, values like `"$linear-gradient(...)"` or `"\\linear-gradient(...)"` trigger `IllegalArgumentException` on JVM or drop `\`.
-      - Unlike `CanIUse2.prefixed` (line 110), `keywords` does not strip/skip `url(...)` or quoted strings, rewriting e.g. `url(linear-gradient.png)` into `url(-webkit-linear-gradient.png)`.
-      - Chaining `a * b * c` in `backgroundImageTransforms` cannot emit a single declaration with both functions prefixed when a `background-image` uses two separately-prefixed functions (e.g. `linear-gradient` + `image-set`), because the first prefixed output short-circuits subsequent steps via `prefixed(tgt)`.
-    - **Fix:** Escape `m.group(1)` with `Regex.quoteReplacement` (or use index slicing), ignore `url(...)` and quoted spans in `keywords`, and rethink multi-keyword chaining so multiple prefixable functions in one value compose cleanly.
-
 12. **`StringRenderer.Default` / `Css.mapByMediaQuery` can invert `@media` cascade order**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Renderer.scala:18-33`, `core/shared/src/main/scala/scalacss/internal/Css.scala:91-98`
     - **Issue:** `Css.mapByMediaQuery` groups rules by `CssMediaQueryO` into a `ListMap` ordered by *first* appearance. If rule `.a` uses `@media (min-width:900px)` and rule `.b` uses `min-width:600px` followed by `min-width:900px`, `.b`'s `900px` rule is hoisted before its `600px` rule, reversing responsive override order.

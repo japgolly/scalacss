@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import scala.collection.immutable.SortedSet
+import scala.util.matching.Regex
 import scalacss.internal.CanIUse.Support._
 import scalacss.internal.CanIUse._
 import scalacss.internal.{Literal => L}
@@ -14,12 +15,12 @@ object CanIUse2 {
     Transform.values(intrinsicWidth)(
       L.fillAvailable, L.available, L.maxContent, L.minContent, L.fitContent, L.containFloats)
 
-  lazy val backgroundImageTransforms: Transform = {
-    val a = Transform.valueKeywords(gradients)("linear-gradient", "radial-gradient")
-    val b = Transform.valueKeywords(repeatingGradients)("repeating-linear-gradient", "repeating-radial-gradient")
-    val c = Transform.valueKeywords(imageSet)("image-set")
-    a * b * c
-  }
+  lazy val backgroundImageTransforms: Transform =
+    Transform(runPlansLazy(Vector(
+      gradients          -> PrefixApply.keywords("linear-gradient", "radial-gradient"),
+      repeatingGradients -> PrefixApply.keywords("repeating-linear-gradient", "repeating-radial-gradient"),
+      imageSet           -> PrefixApply.keywords("image-set"),
+    ), CssKV.value))
 
   val needsPrefix: Support => Boolean = {
     case Unsupported | Full | Partial => false
@@ -104,10 +105,13 @@ object CanIUse2 {
   val prefixPlan: Subject => PrefixPlan =
     prefixPlanForAgents(_, null)
 
+  private[this] val protectedCssSpan =
+    """url\((?:'[^']*'|"[^"]*"|[^)])*\)|'[^']*'|"[^"]*""""
+
   val prefixed: String => Boolean = {
     val prefixes = Prefix.values.iterator.map(_.prefix).mkString("|")
     val p = s"""(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:$prefixes)[a-zA-Z][\\s\\S]*""".r.pattern
-    val strip = """url\([^)]*\)|'[^']*'|"[^"]*"""".r
+    val strip = protectedCssSpan.r
     in => {
       val unquoted = strip.replaceAllIn(in, "")
       p.matcher(unquoted).matches
@@ -138,11 +142,11 @@ object CanIUse2 {
       // JS (and thus Scala.JS) doesn't support negative look-behind :(
       // JS (and thus Scala.JS) doesn't support Pattern.quote
       val ws = w1 +: wn
-      val r1 = ws.mkString("(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-])[\\s\\S]*").r.pattern
-      val r2 = ws.mkString("(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
+      val r = ws.mkString(s"(?:$protectedCssSpan)|(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
       in =>
-        if (r1.matcher(in).matches)
-          Some(p => r2.replaceAllIn(in, m => m.group(1) + p.prefix + m.group(2)))
+        if (r.findAllMatchIn(in).exists(_.group(2) ne null))
+          Some(p => r.replaceAllIn(in, m =>
+            Regex.quoteReplacement(if (m.group(2) eq null) m.matched else m.group(1) + p.prefix + m.group(2))))
         else
           None
     }
@@ -160,6 +164,40 @@ object CanIUse2 {
             l.set(kv, apply(p))))
       }
   }
+
+  private[internal] def runPlansLazy(groups: Vector[(Subject, PrefixApply)], l: CssKV.Lens): Env => CssKV => Vector[CssKV] =
+    e => {
+      lazy val plans = groups.map(g => prefixPlanForAgents(g._1, e.agents))
+      kv => {
+        val tgt = l.get(kv)
+        def nop = Vector1(kv)
+        if (prefixed(tgt))
+          nop
+        else {
+          val matches = groups.indices.flatMap(i => groups(i)._2(tgt).map((i, _)))
+          if (matches.isEmpty)
+            nop
+          else if (matches.size == 1) {
+            val (i, apply) = matches.head
+            plans(i).map(_.fold(kv)(p => l.set(kv, apply(p))))
+          } else {
+            val activePlans = matches.map(m => plans(m._1))
+            val prefixes    = activePlans.flatten.flatten.distinct.sorted
+            val keepUnpref  = prefixes.isEmpty || activePlans.forall(_.contains(None))
+            val b = Vector.newBuilder[CssKV]
+            prefixes.foreach { p =>
+              val pOpt = Some(p)
+              val res = matches.foldLeft(tgt) { case (cur, (i, _)) =>
+                if (plans(i).contains(pOpt)) groups(i)._2(cur).fold(cur)(_(p)) else cur
+              }
+              b += l.set(kv, res)
+            }
+            if (keepUnpref) b += kv
+            b.result()
+          }
+        }
+      }
+    }
 
   def prefixesForPlatform(p: Env.Platform[Option]): SortedSet[Prefix] =
     agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)

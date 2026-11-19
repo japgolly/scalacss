@@ -273,6 +273,46 @@ object AttrTest extends TestSuite {
         assertEq(AV(backgroundImage, imgSet)(samsungEnv).map(_.value), Vector(prefixed, imgSet))
         assertEq(AV(backgroundImage, imgSet)(chromeEnv).map(_.value),  Vector(imgSet))
       }
+      "backgroundImageUrlContainsKeyword" - {
+        assertEq(
+          AV(backgroundImage, "url(linear-gradient.png)")(Env.empty).map(_.value),
+          Vector("url(linear-gradient.png)")
+        )
+        assertEq(
+          AV(backgroundImage, "url(linear-gradient.png), linear-gradient(red, blue)")(Env.empty).map(_.value),
+          Vector(
+            "url(linear-gradient.png), -o-linear-gradient(red, blue)",
+            "url(linear-gradient.png), -webkit-linear-gradient(red, blue)",
+            "url(linear-gradient.png), linear-gradient(red, blue)",
+          )
+        )
+      }
+      "backgroundImageCombinedFunctions" - {
+        assertEq(
+          AV(backgroundImage, "linear-gradient(red, blue), image-set(url(a.png) 1x)")(Env.empty).map(_.value),
+          Vector(
+            "-o-linear-gradient(red, blue), image-set(url(a.png) 1x)",
+            "-webkit-linear-gradient(red, blue), -webkit-image-set(url(a.png) 1x)",
+            "linear-gradient(red, blue), image-set(url(a.png) 1x)",
+          )
+        )
+        assertEq(
+          AV(background, "linear-gradient(red, blue), image-set(url(a.png) 1x)")(Env.empty).map(_.value),
+          Vector(
+            "-o-linear-gradient(red, blue), image-set(url(a.png) 1x)",
+            "-webkit-linear-gradient(red, blue), -webkit-image-set(url(a.png) 1x)",
+            "linear-gradient(red, blue), image-set(url(a.png) 1x)",
+          )
+        )
+        assertEq(
+          AV(backgroundImage, "linear-gradient(red, blue), repeating-linear-gradient(red, blue)")(Env.empty).map(_.value),
+          Vector(
+            "-o-linear-gradient(red, blue), -o-repeating-linear-gradient(red, blue)",
+            "-webkit-linear-gradient(red, blue), -webkit-repeating-linear-gradient(red, blue)",
+            "linear-gradient(red, blue), repeating-linear-gradient(red, blue)",
+          )
+        )
+      }
     }
 
     "valuePrefixes" - {
@@ -412,6 +452,21 @@ object AttrTest extends TestSuite {
       test("123\ndef", "123\n-o-def")
       test("hello\nabc\nworld", "hello\n-o-abc\nworld")
       test("multi\nline\ndef(12)", "multi\nline\n-o-def(12)")
+      test("$abc", "$-o-abc")
+      test("$1 abc", "$1 -o-abc")
+      test("\\abc", "\\-o-abc")
+      test("foo\\def", "foo\\-o-def")
+      test("url(abc.png)")
+      test("url('abc.png')")
+      test("url(\"abc.png\")")
+      test("url(foo/abc/bar.png)")
+      test("url(abc.png), def(1)", "url(abc.png), -o-def(1)")
+      test("'abc'")
+      test("\"def\"")
+      test("'abc' abc", "'abc' -o-abc")
+      test("\"def\" def(1)", "\"def\" -o-def(1)")
+      assertEq(pa("url(abc.png)").isDefined, false)
+      assertEq(pa("'abc'").isDefined, false)
     }
 
     "envDepPrefixes1" - {
