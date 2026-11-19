@@ -22,7 +22,10 @@ final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], 
 
   /** HTML classes separated by spaces. */
   val htmlClasses: String =
-    classNameIterator.map(_.value).mkString(" ")
+    if (addClassNames.isEmpty)
+      className.value
+    else
+      classNameIterator.map(_.value).mkString(" ")
 
   def +(s: StyleA)(implicit c: Compose): StyleA =
     StyleA(className, s.className +: (addClassNames ++ s.addClassNames), style.compose(s.style))

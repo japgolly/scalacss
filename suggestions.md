@@ -65,20 +65,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `.format(...)` / `String.format` pulls `java.util.Formatter` into Scala.js bundles and adds formatting overhead in `Util.quote` (run on `@font-face` / attribute selectors) and `UnicodeRange.toString`.
     - **Fix:** Replace `"%06X".format(cp)` and `"U+%x-%x".format(...)` with direct hex character / `Integer.toHexString` formatting.
 
-28. **Small avoidable allocations & quadratic folds in rendering/composition**
-    - **Where & Issues:**
-      - `core/shared/src/main/scala/scalacss/internal/AVs.scala:69-71`: `filterKeys` runs predicate `f` twice per entry (once on `order.whole`, once on `data.iterator`), doubling `Attr.cmp` conflict checks in `Compose.mergeAVs`.
-      - `core/shared/src/main/scala/scalacss/internal/Compose.scala:66`: `Compose.apply` calls `b.dataSorted` only to fold into an unordered `Map` (sorting unnecessarily, especially in `Compose.trust`).
-      - `core/shared/src/main/scala/scalacss/internal/Css.scala:39-45, 91-98`: `keyframes` and `mapByMediaQuery` update `ListMap` in a fold ($O(N \cdot M)$); using a local `mutable.LinkedHashMap` inside those methods would be linear.
-      - `core/shared/src/main/scala/scalacss/internal/StyleA.scala:24-25`: `htmlClasses` builds iterators and a `StringBuilder` even when `addClassNames.isEmpty` (fast-path `if (addClassNames.isEmpty) className.value`).
-      - `core/shared/src/main/scala/scalacss/internal/NonEmptyVector.scala:39-40`: `++(b: NonEmptyVector[B])` allocates `b.whole` instead of appending `b.head` and `b.tail`.
-      - `core/shared/src/main/scala/scalacss/internal/StyleLookup.scala:31-38`: `implicit def scalaMap[I: UnivEq]` allocates a new `StyleLookup` instance at each call site instead of reusing a cached singleton cast via `.asInstanceOf`.
-      - `core/shared/src/main/scala/scalacss/internal/Pseudo.scala:40-62, 88-90`: `addPseudo` constructs `Composite(s.head, s.tail)` which immediately re-executes `t + h` on the already-sorted set.
-      - `core/shared/src/main/scala/scalacss/internal/Renderer.scala:156-157, 207-208`: `printFontFace` allocates temporary `CssKV` objects for every descriptor.
-      - `core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala:42-43`: `StyleSheet.Base` eagerly computes `classNameHint` (3 regexes + initializing `Register.MacroName.Use$` with its regex) even in `ProdDefaults` where it is unused.
-      - `ext-scalatags/js/src/main/scala/scalacss/ScalatagsJsDom.scala:11-15`: `styleaToJsDomTag` allocates `classNameIterator` and a closure per element instead of calling `t.classList.add(s.className.value)` plus a `while` loop over `s.addClassNames`.
-      - `core/js/src/main/scala/scalacss/defaults/PlatformExports.scala:50-55` & `ext-react/src/main/scala/scalacss/React.scala:28-29`: `toStyleSheetInlineJsOps`, `toStyleSheetRegistryJsOps`, and `scalacssStyleaToTagMod` are missing `@inline`.
-
 29. **JVM `Mutex.apply` closure overhead and lock-ordering / listener retention in `GlobalRegistry`**
     - **Where:** `core/jvm/src/main/scala/scalacss/internal/mutable/Mutex.scala:9-12`, `core/shared/src/main/scala/scalacss/internal/mutable/GlobalRegistry.scala:45-75`
     - **Issue:** Unlike JS `Mutex`, JVM `Mutex.apply` is not `@inline` (allocating `Function0` closures on nested `Register` calls and using `synchronized(this)`, which pins JDK 21+ virtual threads during callbacks). In `StyleSheetRegistry`, `registerListenerN` invokes `f(existing)` before returning the unregister function (preventing self-unregistration during replay), `onRegistration`/`onRegistrationN` discard the unregister handle forever, and both `GlobalRegistry` and `Register` retain all stylesheet definitions indefinitely after startup CSS injection with no optional release/reset mechanism.

@@ -28,14 +28,17 @@ object StyleLookup {
         }
     }
 
-  @nowarn("cat=unused")
-  implicit def scalaMap[I: UnivEq]: StyleLookup[I] =
-    new StyleLookup[I] {
-      override type T    = Map[I, StyleA]
+  private[this] val _scalaMap: StyleLookup[Any] =
+    new StyleLookup[Any] {
+      override type T    = Map[Any, StyleA]
       override def empty = Map.empty
       override def add   = _.updated(_, _)
       override def get   = _.get
     }
+
+  @nowarn("cat=unused")
+  implicit def scalaMap[I: UnivEq]: StyleLookup[I] =
+    _scalaMap.asInstanceOf[StyleLookup[I]]
 
   // Convenience for common types.
 
