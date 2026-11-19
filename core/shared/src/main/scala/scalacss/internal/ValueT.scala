@@ -266,6 +266,9 @@ object ValueT {
   abstract class TypedAttr_BrStyle extends TypedAttrBase //TypedAttrT[BrStyle]
     with BrStyleOps
 
+  abstract class TypedAttr_OutlineStyle extends TypedAttrBase
+    with OutlineStyleOps
+
   abstract class TypedAttr_Color extends TypedAttrT1[Color]
     with ColourOps
 
@@ -350,10 +353,9 @@ object ValueT {
     final def thick  = avl(LT.thick)
   }
 
-  trait BrStyleOps {
+  trait OutlineStyleOps {
     this: TypedAttrBase =>
     final def none   = avl(LT.none)
-    final def hidden = avl(LT.hidden)
     final def dotted = avl(LT.dotted)
     final def dashed = avl(LT.dashed)
     final def solid  = avl(LT.solid)
@@ -362,6 +364,11 @@ object ValueT {
     final def ridge  = avl(LT.ridge)
     final def inset  = avl(LT.inset)
     final def outset = avl(LT.outset)
+  }
+
+  trait BrStyleOps extends OutlineStyleOps {
+    this: TypedAttrBase =>
+    final def hidden = avl(LT.hidden)
   }
 
   trait GapStyleOps extends ZeroLit {

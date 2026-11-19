@@ -46,11 +46,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
     - **Fix:** Evaluate `val res = t()` before setting `_thunk = null` (or wrap cleanly if one-shot failure is desired).
 
-21. **`columnCount` accepts `Number` (floats) instead of `Integer`; `outlineStyle` allows `hidden`**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Attrs.scala:768-771, 1847-1850`, `core/shared/src/main/scala/scalacss/internal/ValueT.scala:355-363`
-    - **Issue:** `columnCount` extends `TypedAttrT1[Number]` (allowing invalid fractional `column-count: 2.5`), and `outlineStyle` extends `TypedAttr_BrStyle` which inherits `def hidden` from `BrStyleOps` even though `hidden` is invalid for CSS `outline-style`.
-    - **Fix:** Change `columnCount` to `TypedAttrT1[Integer]`, and separate an `OutlineStyle` value trait/class from `BrStyleOps` without `hidden`.
-
 22. **`Double` formatting differs between JVM and Scala.js in `ruleNumber_D` and `Length.value`**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/ValueT.scala:60-63, 112`, `core/shared/src/main/scala/scalacss/internal/Data.scala:154-157, 174, 195`
     - **Issue:** `ruleNumber_D` uses `Rule(_.toString)` instead of `ValueT.fmtDouble`, and `Length.value` only drops `.0` for `0` (while `Percentage.value` and `Resolution.value` use `n.toString`). On JVM `(2.0).toString` is `"2.0"`, whereas on JS it is `"2"`.

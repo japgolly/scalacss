@@ -767,7 +767,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/column-count">MDN</a>
    */
-  object columnCount extends TypedAttrT1[Number] {
+  object columnCount extends TypedAttrT1[Integer] {
     override val attr = Attr.real("column-count", Transform keys CanIUse.multicolumn)
     def auto = avl(LT.auto)
   }
@@ -1846,9 +1846,11 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/outline-style">MDN</a>
    */
-  object outlineStyle extends TypedAttr_BrStyle {
+  object outlineStyle extends TypedAttr_OutlineStyle {
     override val attr = Attr.real("outline-style", Transform keys CanIUse.outline)
     def auto = avl(LT.auto)
+    @deprecated("This is invalid", "1.1.1")
+    def hidden = avl(LT.hidden)
   }
 
   /**

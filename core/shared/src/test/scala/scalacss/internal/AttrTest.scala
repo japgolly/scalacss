@@ -694,5 +694,24 @@ object AttrTest extends TestSuite {
       assertEq(overflowY.clip.value,                       "clip")
       assertEq(overflowX(auto).value,                      "auto")
     }
+    "columnCount" - {
+      assertEq(columnCount(3).value, "3")
+      assertEq(columnCount.auto.value, "auto")
+      assertEq(columnCount.inherit.value, "inherit")
+      compileError("columnCount(2.5)")
+      compileError("columnCount(1.0)")
+    }
+    "outlineStyle" - {
+      assertEq(outlineStyle.auto.value,    "auto")
+      assertEq(outlineStyle.none.value,    "none")
+      assertEq(outlineStyle.dotted.value,  "dotted")
+      assertEq(outlineStyle.dashed.value,  "dashed")
+      assertEq(outlineStyle.solid.value,   "solid")
+      assertEq(outlineStyle.double.value,  "double")
+      assertEq(outlineStyle.groove.value,  "groove")
+      assertEq(outlineStyle.ridge.value,   "ridge")
+      assertEq(outlineStyle.inset.value,   "inset")
+      assertEq(outlineStyle.outset.value,  "outset")
+    }
   }
 }
