@@ -50,11 +50,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## Performance, Memory & Scala.js Bundle Size
 
-23. **`Transform.prefix` recomputes `PrefixPlan` on every `AV` evaluation**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Attr.scala:122-130`
-    - **Issue:** `var pp: CanIUse2.PrefixPlan = null` is allocated **inside** the `e => ...` lambda returned to `Transform.attrGen`. Every `AV.apply(env)` during CSS rendering calls `run(e)`, allocating a fresh `pp` and re-scanning all 16 `Agent`s in `subject` per declaration instead of caching across `AV`s sharing the same `Env.agents`.
-    - **Fix:** Cache the last `(agents, PrefixPlan)` pair outside `e => ...` on the `Transform` closure (or key a small cache on `subject`/`e.agents`), keeping retained memory minimal while avoiding repeated scans during stylesheet rendering.
-
 24. **`CanIUse` `val`s vs `def`s and repeated `Attr.real` allocation on untyped properties**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/CanIUse.scala` (12 eager `val`s e.g. lines `100, 325, 350, 650, 975, 1325, 1625, 1727, 1827, 2353, 2478, 2828`), `misc/caniuse.scala:261-273`, `core/shared/src/main/scala/scalacss/internal/Attrs.scala` (e.g. `304, 311, 313-326, 626, 633`)
     - **Issue:**

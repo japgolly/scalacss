@@ -119,15 +119,25 @@ object Transform {
   def apply(run: Env => CssKV => Vector[CssKV]): Transform =
     new Transform(run)
 
-  private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform =
-    Transform(e => {
-      var pp: CanIUse2.PrefixPlan = null
-      kv => CanIUse2.runPlanLazy({
-        if (pp eq null)
-          pp = CanIUse2.prefixPlanForAgents(subject, e.agents)
-        pp
-      }, pa, l, kv)
-    })
+  private final class PlanCache(val agents: Set[CanIUse.Agent], val pp: CanIUse2.PrefixPlan)
+
+  private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform = {
+    @volatile var cache: PlanCache = null
+    Transform { e =>
+      def getPP: CanIUse2.PrefixPlan = {
+        val agents = e.agents
+        val c = cache
+        if ((c ne null) && ((c.agents eq agents) || c.agents ==* agents))
+          c.pp
+        else {
+          val fresh = CanIUse2.prefixPlanForAgents(subject, agents)
+          cache = new PlanCache(agents, fresh)
+          fresh
+        }
+      }
+      kv => CanIUse2.runPlanLazy(getPP, pa, l, kv)
+    }
+  }
 
   def keys(subject: Subject): Transform =
     prefix(subject, PrefixApply.prepend, CssKV.key)
