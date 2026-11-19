@@ -210,6 +210,11 @@ object AttrTest extends TestSuite {
       test(overscrollBehaviorY, "overscroll-behavior-y")
       test(rowGap,              "row-gap")
       test(boxReflect,          "-o-box-reflect", "-webkit-box-reflect")
+      test(backgroundOrigin,    "background-origin", "-webkit-background-origin")
+      test(backgroundSize,      "background-size", "-webkit-background-size")
+      test(overflowX,           "overflow-x")
+      test(overflowY,           "overflow-y")
+      test(alignContent,        "align-content", "-ms-align-content", "-webkit-align-content")
     }
 
     "prefixPlan" - {
@@ -333,6 +338,16 @@ object AttrTest extends TestSuite {
       "cursor.zoomIn"           - test(cursor.zoomIn,           "zoom-in", "-webkit-zoom-in")
       "cursor.grab"             - test(cursor.grab,             "grab", "-webkit-grab")
       "cursor.grabbing"         - test(cursor.grabbing,         "grabbing", "-webkit-grabbing")
+      "alignContent.spaceEvenly" - {
+        assertEq(
+          alignContent.spaceEvenly(Env.empty),
+          Vector(
+            CssKV("-ms-align-content", "space-evenly"),
+            CssKV("-webkit-align-content", "space-evenly"),
+            CssKV("align-content", "space-evenly"),
+          )
+        )
+      }
 
       "resize.block" - {
         val expected = Vector(

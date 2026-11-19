@@ -81,7 +81,9 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/align-content">MDN</a>
    */
   object alignContent extends TypedAttrBase {
-    override val attr = Attr.real("align-content", Transform keys CanIUse.flexbox)
+    override val attr = Attr.real("align-content",
+      Transform.keys(CanIUse.flexbox) *
+      Transform.values(CanIUse.justifyContentSpaceEvenly)(L.spaceEvenly))
     def baseline      = av(L.baseline)
     def center        = av(L.center)
     def end           = avl(LT.end)
@@ -368,7 +370,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-origin">MDN</a>
    */
-  final def backgroundOrigin = Attr.real("background-origin")
+  final def backgroundOrigin = Attr.real("background-origin", Transform keys CanIUse.backgroundImgOpts)
 
   /**
    * The background-position CSS property sets the initial position, relative to the background position layer defined by background-origin for each defined background image.
@@ -394,7 +396,7 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/background-size">MDN</a>
    */
-  final def backgroundSize = Attr.real("background-size")
+  final def backgroundSize = Attr.real("background-size", Transform keys CanIUse.backgroundImgOpts)
 
   /**
    * The border-bottom-color CSS property sets the color of the bottom border of an element. Note that in many cases the shorthand CSS properties border-color or border-bottom are more convenient and preferable.
@@ -1918,7 +1920,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-x">MDN</a>
    */
   object overflowX extends TypedAttrT1[Overflow] with OverflowOps {
-    override val attr = Attr.real("overflow-x")
+    override val attr = Attr.real("overflow-x", Transform keys CanIUse.overflow)
   }
 
   /**
@@ -1927,7 +1929,7 @@ object Attrs {
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-y">MDN</a>
    */
   object overflowY extends TypedAttrT1[Overflow] with OverflowOps {
-    override val attr = Attr.real("overflow-y")
+    override val attr = Attr.real("overflow-y", Transform keys CanIUse.overflow)
   }
 
   /**

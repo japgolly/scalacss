@@ -46,11 +46,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
     - **Fix:** Evaluate `val res = t()` before setting `_thunk = null` (or wrap cleanly if one-shot failure is desired).
 
-20. **`backgroundOrigin` and `backgroundSize` omit `CanIUse.backgroundImgOpts`**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Attrs.scala:371, 397` (compare with `backgroundClip` at `316-326`)
-    - **Issue:** `CanIUse.backgroundImgOpts` covers `background-clip`, `background-origin`, and `background-size`, but only `backgroundClip` wires it up; `backgroundOrigin` and `backgroundSize` omit the transform. Also `overflowX`/`overflowY` (`1920`, `1929`) omit `Transform keys CanIUse.overflow`, and `alignContent` (`84`) omits `CanIUse.justifyContentSpaceEvenly` (unlike `justifyContent` at `1537`).
-    - **Fix:** Add the corresponding `Transform`s to `backgroundOrigin`, `backgroundSize`, `overflowX`, `overflowY`, and `alignContent`.
-
 21. **`columnCount` accepts `Number` (floats) instead of `Integer`; `outlineStyle` allows `hidden`**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Attrs.scala:768-771, 1847-1850`, `core/shared/src/main/scala/scalacss/internal/ValueT.scala:355-363`
     - **Issue:** `columnCount` extends `TypedAttrT1[Number]` (allowing invalid fractional `column-count: 2.5`), and `outlineStyle` extends `TypedAttr_BrStyle` which inherits `def hidden` from `BrStyleOps` even though `hidden` is invalid for CSS `outline-style`.
