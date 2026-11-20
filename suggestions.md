@@ -64,11 +64,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## CSS Spec Compliance & API / Macro Gaps
 
-31. **`StyleA.+` silently drops `Compose` warnings and can duplicate class names**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/StyleA.scala:27-28`
-    - **Issue:** `a + b` prepends `s.className` unconditionally to `addClassNames` (allowing duplicates if composed repeatedly) and computes `style.compose(s.style)` into an unregistered `StyleS`, silently discarding any `Compose.safe` warnings while actual HTML styling follows CSS stylesheet declaration order rather than `a + b` order.
-    - **Fix:** Deduplicate `addClassNames` in `StyleA.+` and document the warning/cascade caveat.
-
 32. **`StyleSheet.Standalone` lacks `keyframes`/`fontFace` and misapplies pseudos to comma-separated selectors**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala:95-130`
     - **Issue:** `Standalone` provides no `keyframes` or `fontFace` DSL helpers (forcing raw `cssRegister` calls), and `("h1, h2").hover - (...)` produces `"h1, h2:hover"` (attaching `:hover` only to the last selector).

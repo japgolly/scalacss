@@ -1,5 +1,7 @@
 package scalacss.internal
 
+import japgolly.univeq._
+
 /**
  * Applicable style.
  *
@@ -27,6 +29,35 @@ final case class StyleA(className: ClassName, addClassNames: Vector[ClassName], 
     else
       classNameIterator.map(_.value).mkString(" ")
 
-  def +(s: StyleA)(implicit c: Compose): StyleA =
-    StyleA(className, s.className +: (addClassNames ++ s.addClassNames), style.compose(s.style))
+  /**
+   * Combine two already-registered styles by merging their class names (deduplicated, preserving order) and composing
+   * their underlying [[StyleS]] definitions.
+   *
+   * Note: because the returned [[StyleA]] is not registered, any [[Compose]] warnings produced during composition are
+   * not emitted, and CSS cascade precedence in the browser follows stylesheet declaration order rather than `a + b`
+   * order. To compose styles with full warning reporting and predictable precedence, compose them inside a stylesheet
+   * via `style(a, b)` instead.
+   */
+  def +(s: StyleA)(implicit c: Compose): StyleA = {
+    val cns =
+      if (addClassNames.isEmpty && s.addClassNames.isEmpty)
+        if (className ==* s.className)
+          Vector.empty
+        else
+          Vector1(s.className)
+      else {
+        val b    = Vector.newBuilder[ClassName]
+        var seen = Set(className)
+        def add(cn: ClassName): Unit =
+          if (!seen.contains(cn)) {
+            seen += cn
+            b += cn
+          }
+        addClassNames.foreach(add)
+        add(s.className)
+        s.addClassNames.foreach(add)
+        b.result()
+      }
+    StyleA(className, cns, style.compose(s.style))
+  }
 }
