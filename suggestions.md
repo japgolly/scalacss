@@ -64,11 +64,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## CSS Spec Compliance & API / Macro Gaps
 
-30. **`ToAV` subtypes lack `.important` and `&` combinator support**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/ValueT.scala:8-10`, `core/shared/src/main/scala/scalacss/internal/Attrs.scala:337-340, 2071-2074, 2268-2271, 2915-2918`, `core/shared/src/main/scala/scalacss/internal/Dsl.scala:187, 192`
-    - **Issue:** `backgroundClip.Accum`, `quotes.Accum`, `textDecorationLine.Accum`, and `BorderRadiusNext` implement `ToAV` without `.important` (forcing workarounds like `.av.important` in `AttrTest.scala:371`), and `ToAV` values cannot be combined with `&` (`borderRadius(4 px) & color.red`) without calling `.av`.
-    - **Fix:** Add `def important: AV = av.important` directly to `trait ToAV` and add `implicit def autoDslToAV(a: ToAV): DslAV = new DslAV(a.av)` in `DslBase`.
-
 31. **`StyleA.+` silently drops `Compose` warnings and can duplicate class names**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/StyleA.scala:27-28`
     - **Issue:** `a + b` prepends `s.className` unconditionally to `addClassNames` (allowing duplicates if composed repeatedly) and computes `style.compose(s.style)` into an unregistered `StyleS`, silently discarding any `Compose.safe` warnings while actual HTML styling follows CSS stylesheet declaration order rather than `a + b` order.

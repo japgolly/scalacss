@@ -168,7 +168,6 @@ object Attrs {
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with AnimationDirectionOps {
       override def av: AV = AV(attr, v)
-      def important: AV   = av.important
       override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
     }
   }
@@ -199,7 +198,6 @@ object Attrs {
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with AnimationFillModeOps {
       override def av: AV = AV(attr, v)
-      def important: AV   = av.important
       override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
     }
   }
@@ -244,7 +242,6 @@ object Attrs {
     override protected def next(v: Value): Accum = new Accum(v)
     final class Accum(v: Value) extends ToAV with AnimationPlayStateOps {
       override def av: AV = AV(attr, v)
-      def important: AV   = av.important
       override protected def next(v: Value): Accum = new Accum(s"${this.v},$v")
     }
   }

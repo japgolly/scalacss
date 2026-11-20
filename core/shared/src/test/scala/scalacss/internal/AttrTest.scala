@@ -417,13 +417,13 @@ object AttrTest extends TestSuite {
 
     "backgroundClip" - {
       def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
-      test(backgroundClip.paddingBox                        , "padding-box")
-      test(backgroundClip.borderBox                         , "border-box")
-      test(backgroundClip.contentBox                        , "content-box")
-      test(backgroundClip.text                              , "text")
-      test(backgroundClip.borderBox.text                    , "border-box,text")
-      test(backgroundClip.contentBox.paddingBox             , "content-box,padding-box")
-      test(backgroundClip.contentBox.paddingBox.av.important, "content-box,padding-box !important")
+      test(backgroundClip.paddingBox                     , "padding-box")
+      test(backgroundClip.borderBox                      , "border-box")
+      test(backgroundClip.contentBox                     , "content-box")
+      test(backgroundClip.text                           , "text")
+      test(backgroundClip.borderBox.text                 , "border-box,text")
+      test(backgroundClip.contentBox.paddingBox          , "content-box,padding-box")
+      test(backgroundClip.contentBox.paddingBox.important, "content-box,padding-box !important")
 
       "prefixes" - {
         val samsungEnv = Env(Env.Platform.empty(None).copy(name = Some("Samsung Internet")))
@@ -438,8 +438,24 @@ object AttrTest extends TestSuite {
     "borderRadius" - {
       def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
       test(borderRadius(px(3)), "3px")
+      test(borderRadius(px(3)).important, "3px !important")
       test(borderRadius(px(3))(px(5)), "3px / 5px")
+      test(borderRadius(px(3))(px(5)).important, "3px / 5px !important")
       test(borderRadius(px(1), px(2), px(3), px(4))(px(9), px(8), px(7), px(6)), "1px 2px 3px 4px / 9px 8px 7px 6px")
+    }
+
+    "quotes" - {
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
+      test(quotes("[", "]"), "'[' ']'")
+      test(quotes("[", "]").important, "'[' ']' !important")
+      test(quotes("[", "]")("<", ">").important, "'[' ']' '<' '>' !important")
+    }
+
+    "textDecorationLine" - {
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
+      test(textDecorationLine.underline, "underline")
+      test(textDecorationLine.underline.important, "underline !important")
+      test(textDecorationLine.underline.overline.important, "underline overline !important")
     }
 
     "PrefixApplyWords" - {
@@ -639,12 +655,14 @@ object AttrTest extends TestSuite {
         assertEq(animationDirection.alternateReverse.important.value,  "alternate-reverse !important")
       }
       "animationFillMode" - {
-        assertEq(animationFillMode.none.av.value,                  "none")
+        assertEq(animationFillMode.none.av.value,                    "none")
         assertEq(animationFillMode.forwards.backwards.both.av.value, "forwards,backwards,both")
+        assertEq(animationFillMode.forwards.important.value,         "forwards !important")
       }
       "animationPlayState" - {
-        assertEq(animationPlayState.running.av.value,        "running")
-        assertEq(animationPlayState.running.paused.av.value, "running,paused")
+        assertEq(animationPlayState.running.av.value,               "running")
+        assertEq(animationPlayState.running.paused.av.value,        "running,paused")
+        assertEq(animationPlayState.running.paused.important.value, "running,paused !important")
       }
       "animationName" - {
         val kf1 = Keyframes(ClassName("kf1"), Nil)

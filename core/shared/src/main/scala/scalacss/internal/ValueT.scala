@@ -7,6 +7,7 @@ import scalacss.internal.{Literal => L}
 
 trait ToAV {
   def av: AV
+  def important: AV = av.important
 }
 
 /**
