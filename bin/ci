@@ -33,7 +33,7 @@ dryrun=
 # dryrun=-n
 
 # See how much memory is available
-free -h
+which free &>/dev/null && free -h || true
 echo
 
 # Test upstream
