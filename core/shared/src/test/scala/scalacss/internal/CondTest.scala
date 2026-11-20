@@ -319,6 +319,56 @@ object CondTest extends TestSuite {
         assertEq(media.hover(Media.HoverValue.Hover).cssSuffix, "(hover:hover)")
         assertEq((media.screen.hoverHover and media.pointerFine).cssSuffix, "screen and (hover:hover) and (pointer:fine)")
       }
+      "anyPointer" - {
+        assertEq(media.anyPointer.cssSuffix, "(any-pointer)")
+        assertEq(media.anyPointerNone.cssSuffix, "(any-pointer:none)")
+        assertEq(media.anyPointerCoarse.cssSuffix, "(any-pointer:coarse)")
+        assertEq(media.anyPointerFine.cssSuffix, "(any-pointer:fine)")
+        assertEq(media.anyPointer(Media.PointerValue.Fine).cssSuffix, "(any-pointer:fine)")
+      }
+      "anyHover" - {
+        assertEq(media.anyHover.cssSuffix, "(any-hover)")
+        assertEq(media.anyHoverNone.cssSuffix, "(any-hover:none)")
+        assertEq(media.anyHoverHover.cssSuffix, "(any-hover:hover)")
+        assertEq(media.anyHover(Media.HoverValue.Hover).cssSuffix, "(any-hover:hover)")
+      }
+      "prefersContrast" - {
+        assertEq(media.prefersContrast.cssSuffix, "(prefers-contrast)")
+        assertEq(media.prefersContrastNoPreference.cssSuffix, "(prefers-contrast:no-preference)")
+        assertEq(media.prefersContrastMore.cssSuffix, "(prefers-contrast:more)")
+        assertEq(media.prefersContrastLess.cssSuffix, "(prefers-contrast:less)")
+        assertEq(media.prefersContrastCustom.cssSuffix, "(prefers-contrast:custom)")
+        assertEq(media.prefersContrast(Media.ContrastValue.More).cssSuffix, "(prefers-contrast:more)")
+      }
+      "forcedColors" - {
+        assertEq(media.forcedColors.cssSuffix, "(forced-colors)")
+        assertEq(media.forcedColorsNone.cssSuffix, "(forced-colors:none)")
+        assertEq(media.forcedColorsActive.cssSuffix, "(forced-colors:active)")
+        assertEq(media.forcedColors(Media.ForcedColorsValue.Active).cssSuffix, "(forced-colors:active)")
+      }
+      "rangeSyntax" - {
+        assertEq((media.width < 600.px).cssSuffix, "(width < 600px)")
+        assertEq((media.width <= 600.px).cssSuffix, "(width <= 600px)")
+        assertEq((media.width > 600.px).cssSuffix, "(width > 600px)")
+        assertEq((media.width >= 600.px).cssSuffix, "(width >= 600px)")
+        assertEq((media.width === 600.px).cssSuffix, "(width = 600px)")
+        assertEq(media.width.between(400.px, 800.px).cssSuffix, "(400px <= width <= 800px)")
+        assertEq(media.width.betweenExclusive(400.px, 800.px).cssSuffix, "(400px < width < 800px)")
+        assertEq(media.width.between(400.px, Media.RangeOp.Lte, Media.RangeOp.Lt, 800.px).cssSuffix, "(400px <= width < 800px)")
+        assertEq(media.width.between(800.px, Media.RangeOp.Gte, Media.RangeOp.Gt, 400.px).cssSuffix, "(800px >= width > 400px)")
+        assertEq((media.screen.width >= 500.px).cssSuffix, "screen and (width >= 500px)")
+        assertEq((media.height < 500.px).cssSuffix, "(height < 500px)")
+        assertEq((media.deviceWidth >= 1024.px).cssSuffix, "(device-width >= 1024px)")
+        assertEq((media.deviceHeight <= 768.px).cssSuffix, "(device-height <= 768px)")
+        assertEq((media.aspectRatio >= (16 :/: 9)).cssSuffix, "(aspect-ratio >= 16/9)")
+        assertEq(media.aspectRatio.between(4 :/: 3, 16 :/: 9).cssSuffix, "(4/3 <= aspect-ratio <= 16/9)")
+        assertEq((media.deviceAspectRatio > (4 :/: 3)).cssSuffix, "(device-aspect-ratio > 4/3)")
+        assertEq((media.resolution >= 2.dppx).cssSuffix, "(resolution >= 2dppx)")
+        assertEq(media.resolution.between(1.dppx, 3.dppx).cssSuffix, "(1dppx <= resolution <= 3dppx)")
+        assertEq(media.width(500.px).cssSuffix, "(width:500px)")
+        intercept[IllegalArgumentException](media.width.between(400.px, Media.RangeOp.Lte, Media.RangeOp.Gte, 800.px))
+        intercept[IllegalArgumentException](media.width.between(400.px, Media.RangeOp.Eql, Media.RangeOp.Lte, 800.px))
+      }
     }
 
     "applyToStyleDeterministicOrder" - {

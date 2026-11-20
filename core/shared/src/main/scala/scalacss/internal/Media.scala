@@ -48,10 +48,44 @@ object Media {
     implicit def univEq: UnivEq[HoverValue] = UnivEq.derive
   }
 
+  sealed abstract class ContrastValue(final val value: String)
+  object ContrastValue {
+    case object NoPreference extends ContrastValue("no-preference")
+    case object More         extends ContrastValue("more")
+    case object Less         extends ContrastValue("less")
+    case object Custom       extends ContrastValue("custom")
+    implicit def univEq: UnivEq[ContrastValue] = UnivEq.derive
+  }
+
+  sealed abstract class ForcedColorsValue(final val value: String)
+  object ForcedColorsValue {
+    case object None   extends ForcedColorsValue("none")
+    case object Active extends ForcedColorsValue("active")
+    implicit def univEq: UnivEq[ForcedColorsValue] = UnivEq.derive
+  }
+
+  sealed abstract class RangeOp(final val value: String)
+  object RangeOp {
+    case object Lt  extends RangeOp("<")
+    case object Lte extends RangeOp("<=")
+    case object Gt  extends RangeOp(">")
+    case object Gte extends RangeOp(">=")
+    case object Eql extends RangeOp("=")
+    implicit def univEq: UnivEq[RangeOp] = UnivEq.derive
+  }
+
   sealed trait ValueExpr[T]
   case class Eql[T](eql: T) extends ValueExpr[T]
   case class Max[T](max: T) extends ValueExpr[T]
   case class Min[T](min: T) extends ValueExpr[T]
+  case class Range[T](op: RangeOp, value: T) extends ValueExpr[T]
+  case class Between[T](min: T, minOp: RangeOp, maxOp: RangeOp, max: T) extends ValueExpr[T] {
+    require(
+      ((minOp ==* RangeOp.Lt || minOp ==* RangeOp.Lte) && (maxOp ==* RangeOp.Lt || maxOp ==* RangeOp.Lte)) ||
+      ((minOp ==* RangeOp.Gt || minOp ==* RangeOp.Gte) && (maxOp ==* RangeOp.Gt || maxOp ==* RangeOp.Gte)),
+      s"Range operators must have the same direction (< / <= or > / >=), got '${minOp.value}' and '${maxOp.value}'"
+    )
+  }
 
   sealed trait Feature
 
@@ -104,6 +138,18 @@ object Media {
 
   /** Tests whether the primary input mechanism can hover over elements. */
   case class Hover(value: Option[HoverValue]) extends Feature
+
+  /** Tests whether any available input mechanism is a pointing device and how accurate it is. */
+  case class AnyPointer(value: Option[PointerValue]) extends Feature
+
+  /** Tests whether any available input mechanism can hover over elements. */
+  case class AnyHover(value: Option[HoverValue]) extends Feature
+
+  /** Detects if the user has requested web content with higher or lower contrast. */
+  case class PrefersContrast(value: Option[ContrastValue]) extends Feature
+
+  /** Detects if the user agent has enabled a forced colors mode. */
+  case class ForcedColors(value: Option[ForcedColorsValue]) extends Feature
 
   sealed abstract class TypeA(final val value: String)
   case object All extends TypeA("all")
@@ -233,6 +279,50 @@ object Media {
     final def tv        : Out = T(TV)
   }
 
+  final class RangeOps[T, Out](private val make: ValueExpr[T] => Out) extends AnyVal {
+    def <(v: T)  : Out = make(Range(RangeOp.Lt, v))
+    def <=(v: T) : Out = make(Range(RangeOp.Lte, v))
+    def >(v: T)  : Out = make(Range(RangeOp.Gt, v))
+    def >=(v: T) : Out = make(Range(RangeOp.Gte, v))
+    def ===(v: T): Out = make(Range(RangeOp.Eql, v))
+    def between(min: T, max: T): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    def betweenExclusive(min: T, max: T): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    def between(min: T, minOp: RangeOp, maxOp: RangeOp, max: T): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
+  sealed abstract class LengthRangeOps[Out] {
+    protected def make[N](e: ValueExpr[Length[N]]): Out
+    final def <[N](v: Length[N])  : Out = make(Range(RangeOp.Lt, v))
+    final def <=[N](v: Length[N]) : Out = make(Range(RangeOp.Lte, v))
+    final def >[N](v: Length[N])  : Out = make(Range(RangeOp.Gt, v))
+    final def >=[N](v: Length[N]) : Out = make(Range(RangeOp.Gte, v))
+    final def ===[N](v: Length[N]): Out = make(Range(RangeOp.Eql, v))
+    final def between[N](min: Length[N], max: Length[N]): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    final def betweenExclusive[N](min: Length[N], max: Length[N]): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    final def between[N](min: Length[N], minOp: RangeOp, maxOp: RangeOp, max: Length[N]): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
+  sealed abstract class ResolutionRangeOps[Out] {
+    protected def make[N](e: ValueExpr[Res[N]]): Out
+    final def <[N](v: Res[N])  : Out = make(Range(RangeOp.Lt, v))
+    final def <=[N](v: Res[N]) : Out = make(Range(RangeOp.Lte, v))
+    final def >[N](v: Res[N])  : Out = make(Range(RangeOp.Gt, v))
+    final def >=[N](v: Res[N]) : Out = make(Range(RangeOp.Gte, v))
+    final def ===[N](v: Res[N]): Out = make(Range(RangeOp.Eql, v))
+    final def between[N](min: Res[N], max: Res[N]): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    final def betweenExclusive[N](min: Res[N], max: Res[N]): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    final def between[N](min: Res[N], minOp: RangeOp, maxOp: RangeOp, max: Res[N]): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
   trait FeatureOps[Out] {
     protected def F: Feature => Out
 
@@ -246,38 +336,45 @@ object Media {
     final def minColorIndex(v: Int): Out = F(ColorIndex(Some(Min(v))))
     final def maxColorIndex(v: Int): Out = F(ColorIndex(Some(Max(v))))
 
-    final def aspectRatio   (v: Ratio): Out = F(AspectRatio(Eql(v)))
-    final def minAspectRatio(v: Ratio): Out = F(AspectRatio(Min(v)))
-    final def maxAspectRatio(v: Ratio): Out = F(AspectRatio(Max(v)))
+    final def aspectRatio             : RangeOps[Ratio, Out] = new RangeOps(e => F(AspectRatio(e)))
+    final def aspectRatio   (v: Ratio): Out                  = F(AspectRatio(Eql(v)))
+    final def minAspectRatio(v: Ratio): Out                  = F(AspectRatio(Min(v)))
+    final def maxAspectRatio(v: Ratio): Out                  = F(AspectRatio(Max(v)))
 
-    final def height   [N](v: Length[N]): Out = F(Height(Eql(v)))
-    final def minHeight[N](v: Length[N]): Out = F(Height(Min(v)))
-    final def maxHeight[N](v: Length[N]): Out = F(Height(Max(v)))
+    final def height                  : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(Height(e)) }
+    final def height   [N](v: Length[N]): Out               = F(Height(Eql(v)))
+    final def minHeight[N](v: Length[N]): Out               = F(Height(Min(v)))
+    final def maxHeight[N](v: Length[N]): Out               = F(Height(Max(v)))
 
-    final def width   [N](v: Length[N]): Out = F(Width(Eql(v)))
-    final def minWidth[N](v: Length[N]): Out = F(Width(Min(v)))
-    final def maxWidth[N](v: Length[N]): Out = F(Width(Max(v)))
+    final def width                   : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(Width(e)) }
+    final def width   [N](v: Length[N]): Out                = F(Width(Eql(v)))
+    final def minWidth[N](v: Length[N]): Out                = F(Width(Min(v)))
+    final def maxWidth[N](v: Length[N]): Out                = F(Width(Max(v)))
 
-    final def deviceAspectRatio   (v: Ratio): Out = F(DeviceAspectRatio(Eql(v)))
-    final def minDeviceAspectRatio(v: Ratio): Out = F(DeviceAspectRatio(Min(v)))
-    final def maxDeviceAspectRatio(v: Ratio): Out = F(DeviceAspectRatio(Max(v)))
+    final def deviceAspectRatio             : RangeOps[Ratio, Out] = new RangeOps(e => F(DeviceAspectRatio(e)))
+    final def deviceAspectRatio   (v: Ratio): Out                  = F(DeviceAspectRatio(Eql(v)))
+    final def minDeviceAspectRatio(v: Ratio): Out                  = F(DeviceAspectRatio(Min(v)))
+    final def maxDeviceAspectRatio(v: Ratio): Out                  = F(DeviceAspectRatio(Max(v)))
 
-    final def deviceHeight   [N](v: Length[N]): Out = F(DeviceHeight(Eql(v)))
-    final def minDeviceHeight[N](v: Length[N]): Out = F(DeviceHeight(Min(v)))
-    final def maxDeviceHeight[N](v: Length[N]): Out = F(DeviceHeight(Max(v)))
+    final def deviceHeight                  : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(DeviceHeight(e)) }
+    final def deviceHeight   [N](v: Length[N]): Out               = F(DeviceHeight(Eql(v)))
+    final def minDeviceHeight[N](v: Length[N]): Out               = F(DeviceHeight(Min(v)))
+    final def maxDeviceHeight[N](v: Length[N]): Out               = F(DeviceHeight(Max(v)))
 
-    final def deviceWidth   [N](v: Length[N]): Out = F(DeviceWidth(Eql(v)))
-    final def minDeviceWidth[N](v: Length[N]): Out = F(DeviceWidth(Min(v)))
-    final def maxDeviceWidth[N](v: Length[N]): Out = F(DeviceWidth(Max(v)))
+    final def deviceWidth                   : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(DeviceWidth(e)) }
+    final def deviceWidth   [N](v: Length[N]): Out                = F(DeviceWidth(Eql(v)))
+    final def minDeviceWidth[N](v: Length[N]): Out                = F(DeviceWidth(Min(v)))
+    final def maxDeviceWidth[N](v: Length[N]): Out                = F(DeviceWidth(Max(v)))
 
     final def monochrome           : Out = F(Monochrome(None))
     final def monochrome   (v: Int): Out = F(Monochrome(Some(Eql(v))))
     final def minMonochrome(v: Int): Out = F(Monochrome(Some(Min(v))))
     final def maxMonochrome(v: Int): Out = F(Monochrome(Some(Max(v))))
 
-    final def resolution   [N](v: Res[N]): Out = F(Resolution(Eql(v)))
-    final def minResolution[N](v: Res[N]): Out = F(Resolution(Min(v)))
-    final def maxResolution[N](v: Res[N]): Out = F(Resolution(Max(v)))
+    final def resolution                : ResolutionRangeOps[Out] = new ResolutionRangeOps[Out] { override protected def make[N](e: ValueExpr[Res[N]]) = F(Resolution(e)) }
+    final def resolution   [N](v: Res[N]): Out                    = F(Resolution(Eql(v)))
+    final def minResolution[N](v: Res[N]): Out                    = F(Resolution(Min(v)))
+    final def maxResolution[N](v: Res[N]): Out                    = F(Resolution(Max(v)))
 
     final def orientation(v: OrientationValue): Out = F(Orientation(v))
     final def landscape                       : Out = F(Orientation(Landscape))
@@ -311,6 +408,29 @@ object Media {
     final def hover(v: HoverValue): Out = F(Hover(Some(v)))
     final def hoverNone           : Out = hover(HoverValue.None)
     final def hoverHover          : Out = hover(HoverValue.Hover)
+
+    final def anyPointer                 : Out = F(AnyPointer(None))
+    final def anyPointer(v: PointerValue): Out = F(AnyPointer(Some(v)))
+    final def anyPointerNone             : Out = anyPointer(PointerValue.None)
+    final def anyPointerCoarse           : Out = anyPointer(PointerValue.Coarse)
+    final def anyPointerFine             : Out = anyPointer(PointerValue.Fine)
+
+    final def anyHover               : Out = F(AnyHover(None))
+    final def anyHover(v: HoverValue): Out = F(AnyHover(Some(v)))
+    final def anyHoverNone           : Out = anyHover(HoverValue.None)
+    final def anyHoverHover          : Out = anyHover(HoverValue.Hover)
+
+    final def prefersContrast                  : Out = F(PrefersContrast(None))
+    final def prefersContrast(v: ContrastValue): Out = F(PrefersContrast(Some(v)))
+    final def prefersContrastNoPreference      : Out = prefersContrast(ContrastValue.NoPreference)
+    final def prefersContrastMore              : Out = prefersContrast(ContrastValue.More)
+    final def prefersContrastLess              : Out = prefersContrast(ContrastValue.Less)
+    final def prefersContrastCustom            : Out = prefersContrast(ContrastValue.Custom)
+
+    final def forcedColors                      : Out = F(ForcedColors(None))
+    final def forcedColors(v: ForcedColorsValue): Out = F(ForcedColors(Some(v)))
+    final def forcedColorsNone                  : Out = forcedColors(ForcedColorsValue.None)
+    final def forcedColorsActive                : Out = forcedColors(ForcedColorsValue.Active)
   }
 
   // Ensure string concat doesn't accidentally call toString on something stupid.
@@ -335,9 +455,11 @@ object Media {
 
   private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String =
     e match {
-      case Eql(t) =>       name ~ `:` ~ tc(t)
-      case Min(t) => min ~ name ~ `:` ~ tc(t)
-      case Max(t) => max ~ name ~ `:` ~ tc(t)
+      case Eql(t)                      => name ~ `:` ~ tc(t)
+      case Min(t)                      => min ~ name ~ `:` ~ tc(t)
+      case Max(t)                      => max ~ name ~ `:` ~ tc(t)
+      case Range(op, t)                => name ~ " " ~ op.value ~ " " ~ tc(t)
+      case Between(lo, loOp, hiOp, hi) => tc(lo) ~ " " ~ loOp.value ~ " " ~ name ~ " " ~ hiOp.value ~ " " ~ tc(hi)
     }
 
   private def cssValueExprO[T](o: Option[ValueExpr[T]], name: String)(implicit tc: T => String): String =
@@ -367,6 +489,10 @@ object Media {
       case PrefersReducedMotion(v) => opt(v.map(_.value), "prefers-reduced-motion")
       case Pointer(v)              => opt(v.map(_.value), "pointer")
       case Hover(v)                => opt(v.map(_.value), "hover")
+      case AnyPointer(v)           => opt(v.map(_.value), "any-pointer")
+      case AnyHover(v)             => opt(v.map(_.value), "any-hover")
+      case PrefersContrast(v)      => opt(v.map(_.value), "prefers-contrast")
+      case ForcedColors(v)         => opt(v.map(_.value), "forced-colors")
     }
     // Parentheses are required around expressions; failing to use them is an error.
     f => paren(x(f))
