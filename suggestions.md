@@ -36,11 +36,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** When `as > 0`, `IntoSeq.apply(i0)` never checks `0 <= i0 && i0 < size` (silently wrapping out-of-range indices via `i % as`, or indexing `r(-1)` if `r` is empty). `Pair.apply(i)` only checks `as == 0`, not `size == 0` (when `b.size == 0`).
     - **Fix:** Check `if (i0 < 0 || i0 >= size) throw new IndexOutOfBoundsException(...)` in `IntoSeq.apply` and check `size == 0` (or bounds) in `Pair.apply`.
 
-18. **`Need.value` clears `_thunk` before invoking `t()`**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Need.scala:5-9`
-    - **Issue:** `_thunk = null` happens before `t()` runs. If `t()` throws once, retrying `lazy val value` throws `NullPointerException` instead of re-invoking/preserving the failure.
-    - **Fix:** Evaluate `val res = t()` before setting `_thunk = null` (or wrap cleanly if one-shot failure is desired).
-
 ---
 
 ## Performance, Memory & Scala.js Bundle Size
