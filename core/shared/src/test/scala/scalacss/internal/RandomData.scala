@@ -29,9 +29,10 @@ object RandomData {
     import Pseudo._
 
     val objects = NonEmptyList.of[Pseudo](
-      Active, Checked, Disabled, Empty, Enabled, FirstChild, FirstOfType, Focus, Hover, InRange, Invalid, LastChild,
-      LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange, ReadOnly, ReadWrite, Required, Target, Valid,
-      Visited, After, Before, FirstLetter, FirstLine, Selection)
+      Active, AnyLink, Checked, Disabled, Empty, Enabled, FirstChild, FirstOfType, Focus, FocusVisible, FocusWithin,
+      Hover, InRange, Invalid, LastChild, LastOfType, Link, OnlyOfType, OnlyChild, Optional, OutOfRange,
+      PlaceholderShown, ReadOnly, ReadWrite, Required, Root, Target, Valid, Visited, After, Backdrop, Before,
+      FirstLetter, FirstLine, Marker, Placeholder, Selection)
 
     val needNthQuery = NonEmptyList.of[NthQuery => Pseudo](
       NthChild.apply,
@@ -41,18 +42,25 @@ object RandomData {
     )
 
     val needStr = NonEmptyList.of[String => Pseudo](
-      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), Lang.apply, new Not(_), AttrExists.apply)
+      Custom(_, PseudoType.Class), Custom(_, PseudoType.Element), new Has(_), new Is(_), Lang.apply, new Not(_),
+      new Where(_), AttrExists.apply)
 
-    val need2Str = NonEmptyList.of[(String, String) => Pseudo](
-      Pseudo.Attr _, AttrContains _, AttrStartsWith _, AttrEndsWith _)
+    val attrCase: Gen[AttrCase] =
+      Gen.choose(AttrCase.Default, AttrCase.Insensitive, AttrCase.Sensitive)
+
+    val needAttr = NonEmptyList.of[(String, String, AttrCase) => Pseudo](
+      Pseudo.Attr, AttrContains, AttrStartsWith, AttrEndsWith, AttrDashMatch, AttrSubstring)
 
     lazy val self: Gen[Pseudo] =
       Gen.frequency[Pseudo](
         objects.size      -> Gen.chooseNE(objects),
         needNthQuery.size -> Gen.chooseNE(needNthQuery).flatMap(Gen.numeric.string(1 to 20).map),
         needStr.size      -> Gen.chooseNE(needStr).flatMap(Gen.alphaNumeric.string(1 to 20).map),
-        need2Str.size     -> Gen.chooseNE(need2Str).flatMap(x => Gen.alphaNumeric.string(1 to 20).pair.map(t => x(t._1, t._2))),
-        2                 -> Gen.lazily(self.map(Not(_))),
+        needAttr.size     -> Gen.chooseNE(needAttr).flatMap(x => Gen.apply3(x)(Gen.alphaNumeric.string(1 to 20), Gen.alphaNumeric.string(1 to 20), attrCase)),
+        2                 -> Gen.lazily(self.list(1 to 3).map(l => Not(l.head, l.tail: _*))),
+        1                 -> Gen.lazily(self.list(1 to 3).map(l => Is(l.head, l.tail: _*))),
+        1                 -> Gen.lazily(self.list(1 to 3).map(l => Where(l.head, l.tail: _*))),
+        1                 -> Gen.lazily(self.list(1 to 3).map(l => Has(l.head, l.tail: _*))),
         1                 -> Gen.lazily(self.list(1 to 4).map(_.reduce(_ & _)))
       )
     self

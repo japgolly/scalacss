@@ -69,10 +69,10 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `modernA` and `modernSL` don't accept `none` (unlike `modernNPN`/`modernH`), `rgbM`/`hslM` reject `rgba(...)` and `hsla(...)` with space-separated syntax, legacy `hsl`/`hsla` require integer hue and decimal alpha, and CSS Color 4 functions (`oklch`, `oklab`, `lch`, `lab`, `hwb`, `color(...)`) are unsupported.
     - **Fix:** Allow `none` in `modernA`/`modernSL`, `(?:rgb|rgba)` and `(?:hsl|hsla)` in modern syntax, decimal/angle hue and `%` alpha in legacy syntax, and add validators for modern color functions.
 
-35. **Modern CSS features / units / pseudos**
-    - **Where:** `Data.scala:134-151`, `Pseudo.scala`
+35. **Modern CSS features / units**
+    - **Where:** `Data.scala:134-151`
     - **Issues:**
-      - Remaining modern CSS features/units to consider: `Percentage` arithmetic (`*`, `/`, `-`), and `Pseudo` (`:has`, `:any-link` for `CanIUse.anyLink`, `:placeholder-shown`, `::marker`, `::backdrop`, multi-arg `Not`, case-insensitive attribute flags).
+      - Remaining modern CSS features/units to consider: `Percentage` arithmetic (`*`, `/`, `-`).
       - Also `TODO:1-6` still tracks wiring `CanIUse.viewportUnits` (`CanIUse.scala:2953`), `CanIUse.mediaResolution` (`CanIUse.scala:1702`), and `calc` (`misc/caniuse.scala:55`).
 
 ---

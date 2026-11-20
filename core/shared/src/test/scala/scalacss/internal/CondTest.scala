@@ -13,6 +13,39 @@ object CondTest extends TestSuite {
       "not" - {
         assertEq(Not("div").cssValue, ":not(div)")
         assertEq(Not(Link).cssValue, ":not(:link)")
+        assertEq(Not(Hover, Focus).cssValue, ":not(:hover, :focus)")
+        assertEq(Not(_.disabled).cssValue, ":not(:disabled)")
+        assertEq(Cond.empty.not(Hover, Focus).pseudo.map(_.cssValue), Some(":not(:hover, :focus)"))
+      }
+
+      "has" - {
+        assertEq(Has("> img").cssValue, ":has(> img)")
+        assertEq(Has(Hover).cssValue, ":has(:hover)")
+        assertEq(Has(Hover, Focus).cssValue, ":has(:hover, :focus)")
+        assertEq(Has(_.checked).cssValue, ":has(:checked)")
+        assertEq(Cond.empty.has("> img").pseudo.map(_.cssValue), Some(":has(> img)"))
+        assertEq(Cond.empty.has(Hover, Focus).pseudo.map(_.cssValue), Some(":has(:hover, :focus)"))
+      }
+
+      "anyLink" - {
+        assertEq(AnyLink.cssValue, ":any-link")
+        assertEq(Cond.empty.anyLink.pseudo.map(_.cssValue), Some(":any-link"))
+      }
+
+      "placeholderShown" - {
+        assertEq(PlaceholderShown.cssValue, ":placeholder-shown")
+        assertEq(Cond.empty.placeholderShown.pseudo.map(_.cssValue), Some(":placeholder-shown"))
+      }
+
+      "marker" - {
+        assertEq(Marker.cssValue, "::marker")
+        assertEq((Hover & Marker).cssValue, ":hover::marker")
+        assertEq(Cond.empty.marker.pseudo.map(_.cssValue), Some("::marker"))
+      }
+
+      "backdrop" - {
+        assertEq(Backdrop.cssValue, "::backdrop")
+        assertEq(Cond.empty.backdrop.pseudo.map(_.cssValue), Some("::backdrop"))
       }
 
       "is" - {
@@ -67,6 +100,13 @@ object CondTest extends TestSuite {
         assertEq(Attr("a", "hello\nworld").cssValue, """[a="hello\00000Aworld"]""")
         assertEq(Attr("a", "🎉").cssValue, """[a="\01F389"]""")
         assertEq(AttrContains("data-x", """a"b\c""").cssValue, """[data-x~="a\000022b\00005Cc"]""")
+        assertEq(Attr("href", ".pdf", AttrCase.Insensitive).cssValue, """[href=".pdf" i]""")
+        assertEq(AttrEndsWith("href", ".pdf", AttrCase.Insensitive).cssValue, """[href$=".pdf" i]""")
+        assertEq(Attr("type", "text", AttrCase.Sensitive).cssValue, """[type="text" s]""")
+        assertEq(Attr("href", ".pdf").caseInsensitive.cssValue, """[href=".pdf" i]""")
+        assertEq(Attr("type", "text").caseSensitive.cssValue, """[type="text" s]""")
+        assertEq(Cond.empty.attrEndsWith("href", ".pdf", AttrCase.Insensitive).pseudo.map(_.cssValue), Some("""[href$=".pdf" i]"""))
+        assertEq(Cond.empty.attr("type", "text", AttrCase.Sensitive).pseudo.map(_.cssValue), Some("""[type="text" s]"""))
       }
 
       "nthChild" - {
