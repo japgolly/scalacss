@@ -167,6 +167,20 @@ object CondTest extends TestSuite {
           assertEq(Set(c1, c2).size, 1)
         }
       }
+
+      "modSelector" - {
+        assertEq(Hover.modSelector("h1"), "h1:hover")
+        assertEq(Hover.modSelector("h1, h2"), "h1:hover, h2:hover")
+        assertEq((Hover & Focus).modSelector("h1, h2, h3"), "h1:focus:hover, h2:focus:hover, h3:focus:hover")
+        assertEq(Hover.modSelector("h1 , h2"), "h1:hover , h2:hover")
+        assertEq(Hover.modSelector(":is(h1, h2)"), ":is(h1, h2):hover")
+        assertEq(Hover.modSelector("a:not(.foo, .bar), button"), "a:not(.foo, .bar):hover, button:hover")
+        assertEq(Hover.modSelector("li:nth-child(2n of .a, .b)"), "li:nth-child(2n of .a, .b):hover")
+        assertEq(Hover.modSelector("""a[title="a, b"], button"""), """a[title="a, b"]:hover, button:hover""")
+        assertEq(Hover.modSelector("""a[title='a, b'], button"""), """a[title='a, b']:hover, button:hover""")
+        assertEq(Hover.modSelector("""a[title="a\", b"], button"""), """a[title="a\", b"]:hover, button:hover""")
+        assertEq(Hover.modSelector("div:is(a[data-x='1,2'], b), p"), "div:is(a[data-x='1,2'], b):hover, p:hover")
+      }
     }
 
     "applyToStyle" - {

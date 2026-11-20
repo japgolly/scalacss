@@ -30,7 +30,10 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 
   // apply() is used by Dsl
   final def modSelector(sel: CssSelector): CssSelector =
-    sel + cssValue
+    if (sel.indexOf(',') < 0)
+      sel + cssValue
+    else
+      Pseudo.modSelectorList(sel, cssValue)
 
   protected final def addPseudo(that: Pseudo): Pseudo =
     (this, that) match {
@@ -71,6 +74,51 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 object Pseudo {
 
   type PseudoF = ChainOps[Pseudo] => Pseudo
+
+  private[internal] def modSelectorList(sel: String, suffix: String): String = {
+    val len      = sel.length
+    val sb       = new java.lang.StringBuilder(len + suffix.length * 2)
+    var depth    = 0
+    var quote    = '\u0000'
+    var segStart = 0
+    var i        = 0
+
+    def appendSegment(start: Int, end: Int): Unit = {
+      var trimmedEnd = end
+      while (trimmedEnd > start && sel.charAt(trimmedEnd - 1).isWhitespace)
+        trimmedEnd -= 1
+      sb.append(sel, start, trimmedEnd)
+      if (trimmedEnd > start)
+        sb.append(suffix)
+      sb.append(sel, trimmedEnd, end)
+    }
+
+    while (i < len) {
+      val c = sel.charAt(i)
+      if (quote != '\u0000') {
+        if (c == '\\' && i + 1 < len)
+          i += 1
+        else if (c == quote)
+          quote = '\u0000'
+      } else if (c == '\\' && i + 1 < len) {
+        i += 1
+      } else if (c == '"' || c == '\'') {
+        quote = c
+      } else if (c == '(' || c == '[') {
+        depth += 1
+      } else if (c == ')' || c == ']') {
+        if (depth > 0)
+          depth -= 1
+      } else if (c == ',' && depth == 0) {
+        appendSegment(segStart, i)
+        sb.append(',')
+        segStart = i + 1
+      }
+      i += 1
+    }
+    appendSegment(segStart, len)
+    sb.toString
+  }
 
   /**
    * A single [[Pseudo]] instance. Not a composite.

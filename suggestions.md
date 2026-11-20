@@ -64,11 +64,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## CSS Spec Compliance & API / Macro Gaps
 
-32. **`StyleSheet.Standalone` lacks `keyframes`/`fontFace` and misapplies pseudos to comma-separated selectors**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/mutable/StyleSheet.scala:95-130`
-    - **Issue:** `Standalone` provides no `keyframes` or `fontFace` DSL helpers (forcing raw `cssRegister` calls), and `("h1, h2").hover - (...)` produces `"h1, h2:hover"` (attaching `:hover` only to the last selector).
-    - **Fix:** Expose `keyframes` / `fontFace` on `Standalone` (or `Base`), and apply pseudos across top-level comma-separated selectors in `RootStringOps` / `NestedStringOps`.
-
 33. **`ColorLiteral` CSS Color 4 gaps (both Scala 2 and Scala 3)**
     - **Where:** `core/shared/src/main/scala-2/scalacss/internal/Macros.scala:84-99`, `core/shared/src/main/scala-3/scalacss/internal/Macros.scala:120-135` (plus Scaladoc typo `"validates Color"` at Scala 2 line 270 / Scala 3 line 14)
     - **Issue:** `modernA` and `modernSL` don't accept `none` (unlike `modernNPN`/`modernH`), `rgbM`/`hslM` reject `rgba(...)` and `hsla(...)` with space-separated syntax, legacy `hsl`/`hsla` require integer hue and decimal alpha, and CSS Color 4 functions (`oklch`, `oklab`, `lch`, `lab`, `hwb`, `color(...)`) are unsupported.

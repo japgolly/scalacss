@@ -85,18 +85,22 @@ object Macros {
 
     import DslMacros._
 
-    trait Mixin {
-      protected def __macroStyle    (name: String): MStyle
-      protected def __macroStyleF   (name: String): MStyleF
+    trait BaseMixin {
       protected def __macroKeyframes(name: String): MKeyframes
       protected def __macroKeyframe               : MStyle
       protected def __macroFontFace               : MFontFace
 
-      final protected inline def style    : MStyle     = __macroStyle(name())
-      final protected inline def styleF   : MStyleF    = __macroStyleF(name())
       final protected inline def keyframes: MKeyframes = __macroKeyframes(name())
       final protected inline def keyframe : MStyle     = __macroKeyframe
       final protected inline def fontFace : MFontFace  = __macroFontFace
+    }
+
+    trait Mixin extends BaseMixin {
+      protected def __macroStyle (name: String): MStyle
+      protected def __macroStyleF(name: String): MStyleF
+
+      final protected inline def style : MStyle  = __macroStyle(name())
+      final protected inline def styleF: MStyleF = __macroStyleF(name())
     }
   }
 

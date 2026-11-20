@@ -33,11 +33,41 @@ object StyleSheet {
     ClassNameHint(s5)
   }
 
-  abstract class Base {
+  abstract class Base extends Macros.Dsl.BaseMixin {
     protected def cssRegister: Register
 
     protected implicit val classNameHint: ClassNameHint =
       mkClassNameHint(getClass.getName)
+
+    override protected def __macroKeyframes(name: String) = new MKeyframes(name)
+    override protected def __macroKeyframe                = new MKStyle
+    override protected def __macroFontFace                = new MFontFace
+
+    protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
+      override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
+        cssRegister.registerKeyframes(name, frames)
+    }
+
+    protected class MKStyle extends DslMacros.MStyle {
+      private def mk(s: StyleS): StyleA =
+        StyleA(s.className getOrElse ClassName("keyframe"), s.addClassNames, s)
+
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+        mk(Dsl.style(t: _*))
+
+      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+        mk(Dsl.style(className)(t: _*))
+    }
+
+    protected class MFontFace extends DslMacros.MFontFace {
+      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
+        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(None)))
+      }
+
+      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
+        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(FontFamily(fontFamily)))))
+      }
+    }
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
@@ -138,11 +168,8 @@ object StyleSheet {
    */
   abstract class Inline(protected implicit val cssRegister: Register) extends Base with Macros.Dsl.Mixin {
 
-    override protected def __macroStyle    (name: String) = new MStyle (name)
-    override protected def __macroStyleF   (name: String) = new MStyleF(name)
-    override protected def __macroKeyframes(name: String) = new MKeyframes(name)
-    override protected def __macroKeyframe                = new MKStyle
-    override protected def __macroFontFace                = new MFontFace
+    override protected def __macroStyle (name: String) = new MStyle (name)
+    override protected def __macroStyleF(name: String) = new MStyleF(name)
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
       override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
@@ -158,32 +185,6 @@ object StyleSheet {
           case None    => cssRegister.registerFM(StyleF(f)(d), name)(classNameSuffix)
           case Some(n) => cssRegister.registerF2(StyleF(f)(d), n)(classNameSuffix)
         }
-    }
-
-    protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
-      override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
-        cssRegister.registerKeyframes(name, frames)
-    }
-
-    protected class MKStyle extends DslMacros.MStyle {
-      private def mk(s: StyleS): StyleA =
-        StyleA(s.className getOrElse ClassName("keyframe"), s.addClassNames, s)
-
-      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
-        mk(Dsl.style(t: _*))
-
-      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
-        mk(Dsl.style(className)(t: _*))
-    }
-
-    protected class MFontFace extends DslMacros.MFontFace {
-      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
-        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(None)))
-      }
-
-      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
-        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(FontFamily(fontFamily)))))
-      }
     }
 
     @inline final protected def & : Cond =
