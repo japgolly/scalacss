@@ -146,39 +146,61 @@ object Media {
       Cond(None, qn.foldLeft(Vector1(this) +: q2)(_ +: _))
 
     def and(that: Query): Query = {
-      def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
-        extra.foldLeft(base)((acc, f) =>
-          if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
-        )
-
-      def mergeType(t1: TypeExpr, t2: TypeExpr): TypeExpr =
-        (t1, t2) match {
-          case _ if t1 ==* t2               => t1
-          case (Just(All), _)               => t2
-          case (_, Just(All))               => t1
-          case (Only(All), Just(x))         => Only(x)
-          case (Just(x), Only(All))         => Only(x)
-          case (Only(All), Only(x))         => Only(x)
-          case (Only(x), Only(All))         => Only(x)
-          case (Only(x), Just(y)) if x ==* y => t1
-          case (Just(x), Only(y)) if x ==* y => t2
-          case _ =>
-            throw new IllegalArgumentException(
-              s"Cannot combine incompatible media queries: '${cssTypeExpr(t1)}' and '${cssTypeExpr(t2)}'")
+      def isNot(q: Query): Boolean =
+        q.head match {
+          case Left(_: Not) => true
+          case _            => false
         }
 
-      (this.head, that.head) match {
-        case (Left(t1), Left(t2)) =>
-          Query(Left(mergeType(t1, t2)), merge(this.tail, that.tail, None))
+      def isBareAll(q: Query): Boolean =
+        q.tail.isEmpty && (q.head match {
+          case Left(Just(All)) => true
+          case _               => false
+        })
 
-        case (Left(t), Right(f)) =>
-          Query(Left(t), merge(this.tail, f +: that.tail, None))
+      if (isNot(this) || isNot(that)) {
+        if (this ==* that || isBareAll(that))
+          this
+        else if (isBareAll(this))
+          that
+        else
+          throw new IllegalArgumentException(
+            s"Cannot combine negated media query '${this.cssSuffix}' with '${that.cssSuffix}' using 'and' (CSS 'not' negates the entire query)")
+      } else {
+        def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
+          extra.foldLeft(base)((acc, f) =>
+            if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
+          )
 
-        case (Right(f), Left(t)) =>
-          Query(Left(t), merge(f +: this.tail, that.tail, None))
+        def mergeType(t1: TypeExpr, t2: TypeExpr): TypeExpr =
+          (t1, t2) match {
+            case _ if t1 ==* t2                 => t1
+            case (Just(All), _)                 => t2
+            case (_, Just(All))                 => t1
+            case (Only(All), Just(x))           => Only(x)
+            case (Just(x), Only(All))           => Only(x)
+            case (Only(All), Only(x))           => Only(x)
+            case (Only(x), Only(All))           => Only(x)
+            case (Only(x), Just(y)) if x ==* y  => t1
+            case (Just(x), Only(y)) if x ==* y  => t2
+            case _ =>
+              throw new IllegalArgumentException(
+                s"Cannot combine incompatible media queries: '${cssTypeExpr(t1)}' and '${cssTypeExpr(t2)}'")
+          }
 
-        case (Right(f1), Right(f2)) =>
-          Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))
+        (this.head, that.head) match {
+          case (Left(t1), Left(t2)) =>
+            Query(Left(mergeType(t1, t2)), merge(this.tail, that.tail, None))
+
+          case (Left(t), Right(f)) =>
+            Query(Left(t), merge(this.tail, f +: that.tail, None))
+
+          case (Right(f), Left(t)) =>
+            Query(Left(t), merge(f +: this.tail, that.tail, None))
+
+          case (Right(f1), Right(f2)) =>
+            Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))
+        }
       }
     }
   }

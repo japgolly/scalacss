@@ -240,6 +240,10 @@ object CondTest extends TestSuite {
           assertEq((media.screen and media.all).cssSuffix, "screen")
           assertEq((media.all and media.not.screen).cssSuffix, "not screen")
           assertEq((media.not.screen and media.all).cssSuffix, "not screen")
+          assertEq((media.all and media.not.screen.color).cssSuffix, "not screen and (color)")
+          assertEq((media.not.screen.color and media.all).cssSuffix, "not screen and (color)")
+          assertEq((media.not.screen and media.not.screen).cssSuffix, "not screen")
+          assertEq((media.not.screen.color and media.not.screen.color).cssSuffix, "not screen and (color)")
           assertEq((media.only.all and media.screen).cssSuffix, "only screen")
           assertEq((media.screen and media.only.all).cssSuffix, "only screen")
           assertEq((media.screen and media.only.screen).cssSuffix, "only screen")
@@ -253,6 +257,15 @@ object CondTest extends TestSuite {
           "notScreenAndNotPrint" - intercept[IllegalArgumentException](media.not.screen and media.not.print)
           "notScreenAndPrint"    - intercept[IllegalArgumentException](media.not.screen and media.print)
           "onlyScreenAndNot"     - intercept[IllegalArgumentException](media.only.screen and media.not.screen)
+        }
+
+        "negatedWithFeatures" - {
+          "notScreenAndFeature"              - intercept[IllegalArgumentException](media.not.screen and media.minWidth(500 px))
+          "featureAndNotScreen"              - intercept[IllegalArgumentException](media.minWidth(500 px) and media.not.screen)
+          "notScreenAndAllWithFeature"       - intercept[IllegalArgumentException](media.not.screen and media.all.minWidth(500 px))
+          "allWithFeatureAndNotScreen"       - intercept[IllegalArgumentException](media.all.minWidth(500 px) and media.not.screen)
+          "notScreenDistinctFeatures"        - intercept[IllegalArgumentException](media.not.screen.color and media.not.screen.minWidth(500 px))
+          "notScreenAndNotScreenWithFeature" - intercept[IllegalArgumentException](media.not.screen and media.not.screen.minWidth(500 px))
         }
       }
       "nested" - {
