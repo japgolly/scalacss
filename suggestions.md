@@ -6,11 +6,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
 
 ## Bugs & Correctness
 
-1. **`NameGen.short` can collide across stylesheets**
-   - **Where:** `core/shared/src/main/scala/scalacss/internal/mutable/Register.scala:295-330`
-   - **Issue:** `NameGen.short` builds `fullPrefix = "_" + nextShortPrefix()` (which emits `"b"`, `"c"`, ..., `"z"`, `"aa"`, ..., `"ba"` at index 52) and directly concatenates `Alphabet.code(Nil, n)` using `nmchar7` (`'0'..'9'`, `'a'..'z'`, `'-'`, `'_'`). Because there is no delimiter between `prefix2` and the generated code and their alphabets overlap on `'a'..'z'`, stylesheet #1 (`prefix2 = "b"`, `n = 418` -> `code = "a0"`) and stylesheet #52 (`prefix2 = "ba"`, `n = 0` -> `code = "0"`) both generate `._ba0`. Each stylesheet owns an independent `Register._taken` set, so the collision goes undetected.
-   - **Fix:** Add a delimiter between `prefix2` and the suffix that cannot appear in `prefix2` (e.g. `s"$p$p2-"` when `p2.nonEmpty`, or encode `prefix2` using uppercase `'A'..'Z'`).
-
 6. **React SSR breaks CSS containing `>`, `&`, or quotes, and lacks `</style` breakout protection**
    - **Where:** `ext-react/src/main/scala/scalacss/React.scala:7-10`
    - **Issue:** `ScalaCssReactFns.createStyleTag` renders `<.styleTag(^.`type` := "text/css", styleStr)` as a normal React string child. During `ReactDOMServer` SSR, React HTML-escapes text children (`>` -> `&gt;`, `"` -> `&quot;`, `'` -> `&#x27;`, `&` -> `&amp;`), which browsers do **not** decode inside `<style>`, breaking child selectors (`> span`) and quoted strings (`content`, `font-family`). It also lacks `</style` escaping that `ScalatagsTextRenderer` has (`ScalatagsText.scala:22`).

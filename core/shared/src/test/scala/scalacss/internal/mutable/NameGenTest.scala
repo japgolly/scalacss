@@ -21,7 +21,7 @@ object NameGenTest extends TestSuite {
 
     "shortValidation" - {
       "rejectsEmptyPrefix" - {
-        intercept[IllegalArgumentException](NameGen.short(prefix = "", prefix2 = ""))
+        intercept[IllegalArgumentException](NameGen.short(prefix = "", prefix2 = "", prefix3 = ""))
       }
 
       "rejectsInvalidStartChar" - {
@@ -43,7 +43,7 @@ object NameGenTest extends TestSuite {
       }
 
       "acceptsValidPrefixes" - {
-        assertEq(NameGen.short(prefix = "a_", prefix2 = "1-b").next(ClassNameHint("x"))._1.value, "a_1-b0")
+        assertEq(NameGen.short(prefix = "a_", prefix2 = "1-b").next(ClassNameHint("x"))._1.value, "a_1-b_0")
         assertEq(NameGen.short8.next(ClassNameHint("x"))._1.value.nonEmpty, true)
         NameGen.resetNextShortPrefix()
       }

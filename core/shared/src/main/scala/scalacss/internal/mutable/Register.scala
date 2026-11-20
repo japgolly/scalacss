@@ -323,8 +323,7 @@ object Register { // ===========================================================
     lazy val nmchar7: Array[Char] = (('0' to '9') ++ ('a' to 'z') :+ '-' :+ '_').toArray
     lazy val nmchar8: Array[Char] = ((0xA0 to 0xFF).map(_.toChar) ++ nmchar7).toArray
 
-    // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
-    private[this] var _nextShortPrefix = 1
+    private[this] var _nextShortPrefix = 0
 
     def nextShortPrefix(): String = synchronized {
       val p = toAlphabet(_nextShortPrefix)
@@ -344,10 +343,11 @@ object Register { // ===========================================================
       go(i, Nil)
     }
 
-    def short(prefix  : String      = "_",
+    def short(prefix  : String      = "",
               prefix2 : String      = nextShortPrefix(),
+              prefix3 : String      = "_",
               alphabet: Array[Char] = nmchar7): NameGen = {
-      val fullPrefix = (if (prefix eq null) "" else prefix) + (if (prefix2 eq null) "" else prefix2)
+      val fullPrefix = s"$prefix$prefix2$prefix3"
       require(
         fullPrefix.matches("^[_a-zA-Z\u00a0-\u00ff][_a-zA-Z0-9\u00a0-\u00ff-]*$"),
         s"[NameGen.short] CSS class names must begin with [a-zA-Z_\\u00a0-\\u00ff] and contain only [a-zA-Z0-9_-\\u00a0-\\u00ff]. Not: '$fullPrefix'.")
@@ -358,8 +358,7 @@ object Register { // ===========================================================
       short("\u00a2", alphabet = nmchar8)
 
     private[mutable] def resetNextShortPrefix() = synchronized {
-      // This starts at 1/b instead of 0/a because of https://github.com/japgolly/scalacss/issues/358
-      _nextShortPrefix = 1
+      _nextShortPrefix = 0
     }
   }
 
