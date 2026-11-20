@@ -47,6 +47,7 @@ object ValueT {
   sealed trait LenPct            extends ValueClass
   sealed trait LenPctAuto        extends ValueClass
   sealed trait LenPctNum         extends ValueClass
+  sealed trait NumPct            extends ValueClass
   sealed trait BrWidth           extends ValueClass
   sealed trait BrStyle           extends ValueClass
   sealed trait Color             extends ValueClass
@@ -130,6 +131,8 @@ object ValueT {
     @inline implicit def ruleLenPctAuto_A : LenPctAuto  <== LT.auto.type = Rule.literal
     @inline implicit def ruleLenPctNum_LP : LenPctNum   <=< LenPct       = Rule.retype
     @inline implicit def ruleLenPctNum_N  : LenPctNum   <=< Number       = Rule.retype
+    @inline implicit def ruleNumPct_N     : NumPct      <=< Number       = Rule.retype
+    @inline implicit def ruleNumPct_P     : NumPct      <=< Pct          = Rule.retype
     @inline implicit def ruleBrWidth_1    : BrWidth     <=< Len          = Rule.retype
     @inline implicit def ruleWidStyCol_W  : WidStyCol   <=< BrWidth      = Rule.retype
     @inline implicit def ruleWidStyCol_S  : WidStyCol   <=< BrStyle      = Rule.retype
@@ -137,8 +140,10 @@ object ValueT {
 
     @inline implicit def ruleBrWidth_2[L <: Literal with LT.BrWidth]: BrWidth <== L = Rule.literal
     @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
+    @inline implicit def ruleBrStyle_Inset: BrStyle <== Attrs.inset.type = Rule(_ => LT.inset.value)
     @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
     @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
+    @inline implicit def ruleOverflowBehaviour_Contain: OverflowBehaviour <== Attrs.contain.type = Rule(_ => LT.contain.value)
     @inline implicit def ruleOverflow[L <: Literal with LT.Overflow]: Overflow <== L = Rule.literal
     @inline implicit def ruleTimingFunction[L <: Literal with LT.TimingFunction]: TimingFunction <== L = Rule.literal
 
@@ -154,6 +159,7 @@ object ValueT {
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_I : LenPctNum  <== Int = Rule(_.toString)
+    @inline implicit def ruleNumPct_I    : NumPct     <== Int = Rule(_.toString)
     @inline implicit def ruleLenPctNum_L : LenPctNum  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_P : LenPctNum  <=< Pct = Rule.retype
     @inline implicit def ruleLenPctAuto_L: LenPctAuto <=< Len = Rule.retype
@@ -191,6 +197,9 @@ object ValueT {
 
     /** The revert CSS keyword rolls back the cascaded value of the property to the previous origin's value. */
     def revert = avl(L.revert)
+
+    /** The revert-layer CSS keyword rolls back the value of the property to the value in a previous cascade layer. */
+    def revertLayer = avl(L.revertLayer)
   }
 
   abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {

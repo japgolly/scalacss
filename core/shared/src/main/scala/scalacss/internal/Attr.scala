@@ -191,9 +191,9 @@ object AttrCmp {
       Some("inline-start")
     else if (id.contains("-inline-end") || id.startsWith("inline-end"))
       Some("inline-end")
-    else if (id.contains("block-size") || id == "inset-block")
+    else if (id.contains("block-size") || id.endsWith("-block"))
       Some("block")
-    else if (id.contains("inline-size") || id == "inset-inline")
+    else if (id.contains("inline-size") || id.endsWith("-inline"))
       Some("inline")
     else
       None

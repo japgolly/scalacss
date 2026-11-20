@@ -77,6 +77,9 @@ object AttrTest extends TestSuite {
           "blockEnd_inlineStart"  - test(Unrelated, marginBlockEnd,    marginInlineStart)
           "blockEnd_inlineEnd"    - test(Unrelated, marginBlockEnd,    marginInlineEnd)
           "inlineStart_inlineEnd" - test(Unrelated, marginInlineStart, marginInlineEnd)
+          "block_inline"          - test(Unrelated, marginBlock,       marginInline)
+          "block_inlineStart"     - test(Unrelated, marginBlock,       marginInlineStart)
+          "inline_blockEnd"       - test(Unrelated, marginInline,      marginBlockEnd)
         }
 
         "padding" - {
@@ -86,6 +89,9 @@ object AttrTest extends TestSuite {
           "blockEnd_inlineStart"  - test(Unrelated, paddingBlockEnd,    paddingInlineStart)
           "blockEnd_inlineEnd"    - test(Unrelated, paddingBlockEnd,    paddingInlineEnd)
           "inlineStart_inlineEnd" - test(Unrelated, paddingInlineStart, paddingInlineEnd)
+          "block_inline"          - test(Unrelated, paddingBlock,       paddingInline)
+          "block_inlineStart"     - test(Unrelated, paddingBlock,       paddingInlineStart)
+          "inline_blockEnd"       - test(Unrelated, paddingInline,      paddingBlockEnd)
         }
 
         "inset" - {
@@ -116,16 +122,42 @@ object AttrTest extends TestSuite {
         "correctOverlap" - {
           "shorthand" - {
             "margin" - {
+              test(Overlap, margin, marginBlock)
+              test(Overlap, margin, marginInline)
               test(Overlap, margin, marginBlockStart)
               test(Overlap, margin, marginBlockEnd)
               test(Overlap, margin, marginInlineStart)
               test(Overlap, margin, marginInlineEnd)
             }
             "padding" - {
+              test(Overlap, padding, paddingBlock)
+              test(Overlap, padding, paddingInline)
               test(Overlap, padding, paddingBlockStart)
               test(Overlap, padding, paddingBlockEnd)
               test(Overlap, padding, paddingInlineStart)
               test(Overlap, padding, paddingInlineEnd)
+            }
+            "container" - {
+              test(Overlap, container, containerName)
+              test(Overlap, container, containerType)
+            }
+            "mask" - {
+              test(Overlap, mask, maskClip)
+              test(Overlap, mask, maskComposite)
+              test(Overlap, mask, maskImage)
+              test(Overlap, mask, maskMode)
+              test(Overlap, mask, maskOrigin)
+              test(Overlap, mask, maskPosition)
+              test(Overlap, mask, maskRepeat)
+              test(Overlap, mask, maskSize)
+            }
+            "placeContent" - {
+              test(Overlap, placeContent, alignContent)
+              test(Overlap, placeContent, justifyContent)
+            }
+            "placeItems" - {
+              test(Overlap, placeItems, alignItems)
+              test(Overlap, placeItems, justifyItems)
             }
             "all" - {
               test(Overlap, all, blockSize)
@@ -159,12 +191,20 @@ object AttrTest extends TestSuite {
             "margins" - {
               test(Overlap, marginBlockStart, marginTop)
               test(Overlap, marginBlockEnd,   marginBottom)
+              test(Overlap, marginBlock,      marginBlockStart)
+              test(Overlap, marginInline,     marginInlineEnd)
             }
             "paddings" - {
               test(Overlap, paddingBlockStart, paddingTop)
               test(Overlap, paddingBlockEnd,   paddingBottom)
+              test(Overlap, paddingBlock,      paddingBlockStart)
+              test(Overlap, paddingInline,     paddingInlineEnd)
             }
             "inset" - {
+              test(Overlap, inset,            top)
+              test(Overlap, inset,            insetBlock)
+              test(Overlap, inset,            insetInline)
+              test(Overlap, inset,            insetBlockStart)
               test(Overlap, insetBlock,       insetBlockStart)
               test(Overlap, insetBlock,       insetBlockEnd)
               test(Overlap, insetInline,      insetInlineStart)
@@ -173,6 +213,7 @@ object AttrTest extends TestSuite {
               test(Overlap, insetInlineEnd,   right)
               test(Overlap, insetBlock,       bottom)
               test(Overlap, insetInline,      left)
+              test(Overlap, all,              inset)
               test(Overlap, all,              insetBlock)
               test(Overlap, all,              insetBlockStart)
             }
@@ -812,6 +853,136 @@ object AttrTest extends TestSuite {
       assertEq(fontFamily(ff).value,                                    "'My Font'")
       assertEq(fontFamily("Helvetica Neue", "Arial", "sans-serif").value, "'Helvetica Neue', Arial, sans-serif")
       assertEq(fontFamily(ff, "Helvetica Neue", "sans-serif").value,      "'My Font', 'Helvetica Neue', sans-serif")
+    }
+    "modernLiteralsAndAttrs" - {
+      import Dsl._
+      "revertLayer" - {
+        assertEq(margin.revertLayer.value,  "revert-layer")
+        assertEq(margin(revertLayer).value, "revert-layer")
+        assertEq(color.revertLayer.value,   "revert-layer")
+      }
+      "stepJumpTerms" - {
+        assertEq(animationTimingFunction.steps(4, jumpStart).value, "steps(4, jump-start)")
+        assertEq(animationTimingFunction.steps(4, jumpEnd).value,   "steps(4, jump-end)")
+        assertEq(animationTimingFunction.steps(4, jumpNone).value,  "steps(4, jump-none)")
+        assertEq(animationTimingFunction.steps(4, jumpBoth).value,  "steps(4, jump-both)")
+        assertEq(transitionTimingFunction(steps(2, jumpNone)).value, "steps(2, jump-none)")
+      }
+      "whiteSpaceBreakSpaces" - {
+        assertEq(whiteSpace.breakSpaces.value, "break-spaces")
+      }
+      "accentColor" - {
+        assertEq(accentColor.auto.value,       "auto")
+        assertEq(accentColor.red.value,        "red")
+        assertEq(accentColor(c"#09f").value,   "#09f")
+      }
+      "aspectRatio" - {
+        assertEq(aspectRatio.auto.value,               "auto")
+        assertEq(aspectRatio(16 :/: 9).value,          "16/9")
+        assertEq(aspectRatio(1.5).value,               "1.5")
+        assertEq(aspectRatio(16, 9).value,             "16/9")
+        assertEq(aspectRatio(auto, 16 :/: 9).value,    "auto 16/9")
+        assertEq(aspectRatio(16 :/: 9, auto).value,    "16/9 auto")
+      }
+      "backdropFilter" - {
+        assertEq((backdropFilter := "blur(10px)").value, "blur(10px)")
+      }
+      "colorScheme" - {
+        assertEq(colorScheme.normal.value,    "normal")
+        assertEq(colorScheme.light.value,     "light")
+        assertEq(colorScheme.dark.value,      "dark")
+        assertEq(colorScheme.lightDark.value, "light dark")
+        assertEq(colorScheme.darkLight.value, "dark light")
+        assertEq(colorScheme.onlyLight.value, "only light")
+        assertEq(colorScheme.onlyDark.value,  "only dark")
+      }
+      "containAndContainer" - {
+        assertEq(contain.none.value,                  "none")
+        assertEq(contain.strict.value,                "strict")
+        assertEq(contain.content.value,               "content")
+        assertEq(contain.size.value,                  "size")
+        assertEq(contain.inlineSize.value,            "inline-size")
+        assertEq(contain.layout.value,                "layout")
+        assertEq(contain.style.value,                 "style")
+        assertEq(contain.paint.value,                 "paint")
+        assertEq(overscrollBehavior(contain, none).value, "contain none")
+        assertEq(containerName.none.value,            "none")
+        assertEq(containerName("sidebar").value,      "sidebar")
+        assertEq(containerName("a", "b").value,       "a b")
+        assertEq(containerType.normal.value,          "normal")
+        assertEq(containerType.size.value,            "size")
+        assertEq(containerType.inlineSize.value,      "inline-size")
+        assertEq((container := "sidebar / inline-size").value, "sidebar / inline-size")
+      }
+      "placeContentAndItems" - {
+        def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
+        test(placeContent.center,                   "center")
+        test(placeContent.spaceBetween.center,      "space-between center")
+        test(placeContent.start.right.important,    "start right !important")
+        compileError("placeContent.left")
+        test(placeItems.center,                     "center")
+        test(placeItems.stretch.start,              "stretch start")
+        test(placeItems.center.auto,                "center auto")
+        test(placeItems.baseline.left.important,    "baseline left !important")
+        compileError("placeItems.left")
+      }
+      "individualTransforms" - {
+        assertEq(translate.none.value,                "none")
+        assertEq(translate.`0`.value,                 "0")
+        assertEq(translate(10.px).value,              "10px")
+        assertEq(translate(10.px, 50.%%).value,       "10px 50%")
+        assertEq(translate(10.px, 20.px, 30.px).value, "10px 20px 30px")
+        assertEq(rotate.none.value,                   "none")
+        assertEq(rotate(45.deg).value,                "45deg")
+        assertEq(rotate.x(90.deg).value,              "x 90deg")
+        assertEq(rotate.y(0.5.turn).value,            "y 0.5turn")
+        assertEq(rotate.z(1.rad).value,               "z 1rad")
+        assertEq(rotate(1, 1, 0, 45.deg).value,       "1 1 0 45deg")
+        assertEq(scale.none.value,                    "none")
+        assertEq(scale(2).value,                      "2")
+        assertEq(scale(1.5, 50.%%).value,             "1.5 50%")
+        assertEq(scale(1, 2, 0.5).value,              "1 2 0.5")
+      }
+      "textWrap" - {
+        assertEq(textWrap.wrap.value,    "wrap")
+        assertEq(textWrap.nowrap.value,  "nowrap")
+        assertEq(textWrap.balance.value, "balance")
+        assertEq(textWrap.pretty.value,  "pretty")
+        assertEq(textWrap.stable.value,  "stable")
+      }
+      "mask" - {
+        assertEq(maskClip.noClip.value,            "no-clip")
+        assertEq(maskClip.borderBox.value,         "border-box")
+        assertEq(maskComposite.exclude.value,      "exclude")
+        assertEq((maskImage := "url(m.svg)").value, "url(m.svg)")
+        assertEq(maskMode.luminance.value,         "luminance")
+        assertEq(maskMode.matchSource.value,       "match-source")
+        assertEq(maskOrigin.fillBox.value,         "fill-box")
+        assertEq((maskPosition := "center").value, "center")
+        assertEq(maskRepeat.noRepeat.value,        "no-repeat")
+        assertEq(maskRepeat(repeat, space).value,  "repeat space")
+        assertEq(maskSize.cover.value,             "cover")
+        assertEq(maskSize.contain.value,           "contain")
+        assertEq(maskSize(50.%%, auto).value,      "50% auto")
+      }
+      "logicalShorthands" - {
+        assertEq(inset.`0`.value,                    "0")
+        assertEq(inset.auto.value,                   "auto")
+        assertEq(inset(10.px).value,                 "10px")
+        assertEq(inset(10.px, 20.px).value,          "10px 20px")
+        assertEq(inset(1.px, 2.px, 3.px, 4.px).value, "1px 2px 3px 4px")
+        assertEq(border(1.px, inset, black).value,   "1px inset black")
+        assertEq(marginBlock.auto.value,             "auto")
+        assertEq(marginBlock.`0`.value,              "0")
+        assertEq(marginBlock(10.px).value,           "10px")
+        assertEq(marginBlock(10.px, 20.px).value,    "10px 20px")
+        assertEq(marginInline(auto).value,           "auto")
+        assertEq(marginInline(10.px, 5.%%).value,    "10px 5%")
+        assertEq(paddingBlock.`0`.value,             "0")
+        assertEq(paddingBlock(10.px, 20.px).value,   "10px 20px")
+        assertEq(paddingInline(10.px).value,         "10px")
+        assertEq(paddingInline(10.px, 5.%%).value,   "10px 5%")
+      }
     }
   }
 }

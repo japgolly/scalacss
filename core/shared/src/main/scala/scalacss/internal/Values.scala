@@ -14,7 +14,6 @@ trait TypedLiteralAliases {
 
   final def `0`                                                             = Typed.`0`
   final def auto                                                            = Typed.auto
-  final def contain                                                         = Typed.contain
   final def count(n: Int)                                                   = new Typed.count(n)
   final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
   final def dashed                                                          = Typed.dashed
@@ -31,7 +30,10 @@ trait TypedLiteralAliases {
   final def hidden                                                          = Typed.hidden
   final def inherit                                                         = Typed.inherit
   final def initial                                                         = Typed.initial
-  final def inset                                                           = Typed.inset
+  final def jumpBoth                                                        = Typed.jumpBoth
+  final def jumpEnd                                                         = Typed.jumpEnd
+  final def jumpNone                                                        = Typed.jumpNone
+  final def jumpStart                                                       = Typed.jumpStart
   final def linear                                                          = Typed.linear
   final def medium                                                          = Typed.medium
   final def none                                                            = Typed.none
@@ -40,6 +42,7 @@ trait TypedLiteralAliases {
   final def outset                                                          = Typed.outset
   final def repeat                                                          = Typed.repeat
   final def revert                                                          = Typed.revert
+  final def revertLayer                                                     = Typed.revertLayer
   final def ridge                                                           = Typed.ridge
   final def round                                                           = Typed.round
   final def solid                                                           = Typed.solid
@@ -65,6 +68,9 @@ trait TypedLiteralAliases {
  */
 object Literal extends TypedLiteralAliases {
 
+  final def contain = Typed.contain
+  final def inset   = Typed.inset
+
   object Typed {
     final val `0` = Length(0, LengthUnit.px)
 
@@ -76,10 +82,11 @@ object Literal extends TypedLiteralAliases {
 
     // any
     sealed trait Anywhere
-    object inherit extends Literal("inherit") with Anywhere
-    object initial extends Literal("initial") with Anywhere
-    object revert  extends Literal("revert")  with Anywhere
-    object unset   extends Literal("unset")   with Anywhere
+    object inherit     extends Literal("inherit")      with Anywhere
+    object initial     extends Literal("initial")      with Anywhere
+    object revert      extends Literal("revert")       with Anywhere
+    object revertLayer extends Literal("revert-layer") with Anywhere
+    object unset       extends Literal("unset")        with Anywhere
 
     // <br-width>
     sealed trait BrWidth
@@ -119,8 +126,12 @@ object Literal extends TypedLiteralAliases {
 
     // <timing-function>
     sealed trait TimingFunctionDirection { def value: Value }
-    object start  extends Literal("start") with TimingFunctionDirection
-    object end    extends Literal("end")   with TimingFunctionDirection
+    object start     extends Literal("start")      with TimingFunctionDirection
+    object end       extends Literal("end")        with TimingFunctionDirection
+    object jumpStart extends Literal("jump-start") with TimingFunctionDirection
+    object jumpEnd   extends Literal("jump-end")   with TimingFunctionDirection
+    object jumpNone  extends Literal("jump-none")  with TimingFunctionDirection
+    object jumpBoth  extends Literal("jump-both")  with TimingFunctionDirection
 
     sealed trait TimingFunction
     class cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) extends Literal(s"cubic-bezier($x1, $y1, $x2, $y2)") with TimingFunction
@@ -169,6 +180,7 @@ object Literal extends TypedLiteralAliases {
   def both               : Value = "both"
   def bottom             : Value = "bottom"
   def breakAll           : Value = "break-all"
+  def breakSpaces        : Value = "break-spaces"
   def breakWord          : Value = "break-word"
   def capitalize         : Value = "capitalize"
   def caption            : Value = "caption"

@@ -240,6 +240,16 @@ object ValueTTest extends TestSuite {
         ()
       }
 
+      "NumPct" - {
+                      test[NumPct](inherit)
+                      test[NumPct](1)
+                      test[NumPct](1.5)
+                      test[NumPct](%%)
+        compileError("test[NumPct](len)")
+        compileError("test[NumPct](Color.black)")
+        ()
+      }
+
     }
 
     "timeValues" - {
@@ -268,6 +278,15 @@ object ValueTTest extends TestSuite {
       assertEq((revert: ValueT[Number]).value, "revert")
       assertEq((revert: ValueT[Color]).value,  "revert")
       assertEq((revert: ValueT[Time]).value,   "revert")
+    }
+
+    "revertLayer" - {
+      import Dsl.revertLayer
+      assertEq((revertLayer: ValueT[Len]).value,    "revert-layer")
+      assertEq((revertLayer: ValueT[Pct]).value,    "revert-layer")
+      assertEq((revertLayer: ValueT[Number]).value, "revert-layer")
+      assertEq((revertLayer: ValueT[Color]).value,  "revert-layer")
+      assertEq((revertLayer: ValueT[Time]).value,   "revert-layer")
     }
 
     "doubleFormatting" - {
