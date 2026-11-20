@@ -22,6 +22,29 @@ object AttrTest extends TestSuite {
   def laws2: Prop[(Attr, Attr)] =
     Prop.equal("cmp is commutative: a.cmp(b) = b.cmp(a)", t => t._1 cmp t._2, t => t._2 cmp t._1)
 
+  def laws3: Prop[(Attr, Attr, Attr)] = {
+    val sameCongruent: Prop[(Attr, Attr, Attr)] =
+      Prop.test("Same is congruent: (a cmp b == Same) ==> (a cmp c == b cmp c)", {
+        case (a, b, c) => ((a cmp b) !=* AttrCmp.Same) || ((a cmp c) ==* (b cmp c))
+      })
+
+    val conflictsConsistent: Prop[(Attr, Attr, Attr)] =
+      Prop.equal[(Attr, Attr, Attr), Boolean](
+        "conflicts(a,b,c).nonEmpty == any pairwise conflict",
+        { case (a, b, c) => AttrCmp.conflicts(Vector(AV(a, "1"), AV(b, "2"), AV(c, "3"))).nonEmpty },
+        { case (a, b, c) => (a cmp b).conflict || (b cmp c).conflict || (a cmp c).conflict }
+      )
+
+    val conflictsOrderIndependent: Prop[(Attr, Attr, Attr)] =
+      Prop.equal[(Attr, Attr, Attr), Set[AV]](
+        "conflicts is order-independent",
+        { case (a, b, c) => AttrCmp.conflicts(Vector(AV(a, "1"), AV(b, "2"), AV(c, "3"))) },
+        { case (a, b, c) => AttrCmp.conflicts(Vector(AV(c, "3"), AV(b, "2"), AV(a, "1"))) }
+      )
+
+    sameCongruent & conflictsConsistent & conflictsOrderIndependent
+  }
+
   val builtInAttrs: NDomain[Attr] =
     NDomain.ofValues(Attrs.values.whole: _*)
 
@@ -46,7 +69,7 @@ object AttrTest extends TestSuite {
   override def tests = Tests {
     "laws1" - laws1.mustBeProvedBy(builtInAttrs)
     "laws2" - laws2.mustBeProvedBy(builtInAttrPairs)
-//    'laws3 - Attr.laws3.mustBeSatisfiedBy(builtInAttrTriplets)
+    "laws3" - laws3.mustBeSatisfiedBy(builtInAttrTriplets)
 
     "overlap" - {
       def test(e: AttrCmp, a: Attr, b: Attr)(implicit q: Line): Unit =

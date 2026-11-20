@@ -66,8 +66,90 @@ object RandomData {
     self
   }
 
+  val mediaQuery: Gen[Media.Query] = {
+    import Media._
+
+    val mediaType: Gen[TypeA] =
+      Gen.choose(All, Aural, Braille, Embossed, Handheld, Print, Projection, Screen, TTY, TV)
+
+    val typeExpr: Gen[TypeExpr] =
+      Gen.frequency(
+        4 -> mediaType.map(Just.apply),
+        1 -> mediaType.map(Only.apply),
+        1 -> mediaType.map(Not.apply)
+      )
+
+    val length: Gen[Length[Int]] =
+      Gen.apply2(Length.apply[Int])(
+        Gen.choose(100, 500, 800, 1024),
+        Gen.choose(LengthUnit.px, LengthUnit.em, LengthUnit.rem, LengthUnit.vw)
+      )
+
+    val ratio: Gen[Ratio] =
+      Gen.choose(Ratio.tvTraditional, Ratio.tvWidescreen, Ratio(1, 1))
+
+    val resolution: Gen[scalacss.internal.Resolution[Int]] =
+      Gen.apply2(scalacss.internal.Resolution.apply[Int])(
+        Gen.choose(1, 2, 96, 300),
+        Gen.choose(ResolutionUnit.dpi, ResolutionUnit.dpcm, ResolutionUnit.dppx)
+      )
+
+    val rangeOp: Gen[RangeOp] =
+      Gen.choose(RangeOp.Lt, RangeOp.Lte, RangeOp.Gt, RangeOp.Gte, RangeOp.Eql)
+
+    def valueExpr[T](g: Gen[T]): Gen[ValueExpr[T]] =
+      Gen.frequency(
+        2 -> g.map(Eql.apply),
+        2 -> g.map(Min.apply),
+        2 -> g.map(Max.apply),
+        2 -> Gen.apply2(Range.apply[T])(rangeOp, g),
+        1 -> Gen.apply2((a: T, b: T) => Between(a, RangeOp.Lte, RangeOp.Lte, b))(g, g)
+      )
+
+    val colorBits: Gen[Int] = Gen.choose(1, 4, 8, 16)
+
+    val feature: Gen[Feature] =
+      Gen.chooseGen(
+        valueExpr(length).map(Width(_)),
+        valueExpr(length).map(Height(_)),
+        valueExpr(length).map(DeviceWidth(_)),
+        valueExpr(length).map(DeviceHeight(_)),
+        valueExpr(ratio).map(AspectRatio(_)),
+        valueExpr(ratio).map(DeviceAspectRatio(_)),
+        valueExpr(resolution).map(Media.Resolution(_)),
+        valueExpr(colorBits).option.map(Media.Color(_)),
+        valueExpr(colorBits).option.map(ColorIndex(_)),
+        valueExpr(colorBits).option.map(Monochrome(_)),
+        Gen.choose(Landscape, Portrait).map(Orientation(_)),
+        Gen.choose(Progressive, Interlace).map(Scan(_)),
+        Gen.choose(0, 1).option.map(Grid(_)),
+        Gen.choose(ColorScheme.Light, ColorScheme.Dark).map(PrefersColorScheme(_)),
+        Gen.choose(ReducedMotion.NoPreference, ReducedMotion.Reduce).option.map(PrefersReducedMotion(_)),
+        Gen.choose(PointerValue.None, PointerValue.Coarse, PointerValue.Fine).option.map(Pointer(_)),
+        Gen.choose(HoverValue.None, HoverValue.Hover).option.map(Hover(_)),
+        Gen.choose(PointerValue.None, PointerValue.Coarse, PointerValue.Fine).option.map(AnyPointer(_)),
+        Gen.choose(HoverValue.None, HoverValue.Hover).option.map(AnyHover(_)),
+        Gen.choose(ContrastValue.NoPreference, ContrastValue.More, ContrastValue.Less, ContrastValue.Custom).option.map(PrefersContrast(_)),
+        Gen.choose(ForcedColorsValue.None, ForcedColorsValue.Active).option.map(ForcedColors(_))
+      )
+
+    val head: Gen[Either[TypeExpr, Feature]] =
+      Gen.frequency(
+        1 -> typeExpr.map(Left(_)),
+        2 -> feature.map(Right(_))
+      )
+
+    Gen.apply2(Query.apply)(head, feature.vector(0 to 2))
+  }
+
   val cond: Gen[Cond] =
-    pseduo.option map (Cond(_, Vector.empty)) // TODO no media queries in random data
+    Gen.apply2(Cond.apply)(
+      pseduo.option,
+      Gen.frequency(
+        3 -> Gen.pure(Vector.empty[Media.Query]),
+        2 -> mediaQuery.vector(1 to 2)
+      )
+    )
 
   val unsafeCssSelEndo: Gen[CssSelector => CssSelector] =
     Gen.alphaNumeric.string(1 to 8).pair.map {

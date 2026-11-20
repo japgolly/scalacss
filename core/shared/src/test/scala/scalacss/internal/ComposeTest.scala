@@ -11,11 +11,6 @@ object ComposeTest extends TestSuite {
 
   type TT = (StyleS, StyleS)
 
-//  val associativity =
-//    Prop.equal[TTT]("Associativity")(
-//      { case (a,b,c) => x((a compose b) compose c) },
-//      { case (a,b,c) => x(a compose (b compose c)) })
-
   def flat(s: StyleS) =
     Css.flatten4(s.copy(className = None).inspectCss)
 
@@ -39,8 +34,23 @@ object ComposeTest extends TestSuite {
     def all = "Props" rename_: (appendTest & replaceTest)
   }
 
+  case class AssocTest(a: StyleS, b: StyleS, c: StyleS) {
+    val E = EvalOver(this.toString.take(200))
+
+    def associativity = {
+      implicit val impc: Compose = Compose.trust
+      val lhs = (a compose b) compose c
+      val rhs = a compose (b compose c)
+      E.equal("flat((a∘b)∘c).distinct = flat(a∘(b∘c)).distinct", flat(lhs).distinct, flat(rhs).distinct) &
+      E.equal("((a∘b)∘c).addClassNames = (a∘(b∘c)).addClassNames", lhs.addClassNames, rhs.addClassNames)
+    }
+  }
+
   val propTest =
     RandomData.styleS.pair.map((PropTest.apply _).tupled)
+
+  val assocTest =
+    RandomData.styleS.triple.map((AssocTest.apply _).tupled)
 
   object Issue25 {
     import scalacss.defaults.Exports._
@@ -80,8 +90,9 @@ object ComposeTest extends TestSuite {
   }
 
   override def tests = Tests {
-    "props"   - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
-    "issue25" - Issue25.test()
+    "props"         - propTest.mustSatisfyE(_.all) //(defaultPropSettings.setSampleSize(2000))
+    "associativity" - assocTest.mustSatisfyE(_.associativity)
+    "issue25"       - Issue25.test()
 
     "values" - {
       import Dsl._
