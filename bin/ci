@@ -37,7 +37,7 @@ free -h
 echo
 
 # Test upstream
-rm -rf */target/scala-*/{,test-}classes
+rm -rf {.,*}/*/target/scala-*/{,test-}classes
 cmd=(
   sbt
     -J-Xmx3G
