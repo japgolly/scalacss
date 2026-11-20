@@ -123,11 +123,13 @@ object FontFace {
   }
 
   final class FontStyleBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
-    def italic                                        = b(Literal.italic)
-    def normal                                        = b(Literal.Typed.normal.value)
-    def oblique                                       = b(Literal.oblique)
-    def oblique(angle: Value): FontFace[FF]           = b(s"oblique $angle")
-    def oblique(from: Value, to: Value): FontFace[FF] = b(s"oblique $from $to")
+    def italic                                              = b(Literal.italic)
+    def normal                                              = b(Literal.Typed.normal.value)
+    def oblique                                             = b(Literal.oblique)
+    def oblique(angle: Value): FontFace[FF]                 = b(s"oblique $angle")
+    def oblique(from: Value, to: Value): FontFace[FF]       = b(s"oblique $from $to")
+    def oblique(angle: Angle[_]): FontFace[FF]              = b(s"oblique ${angle.value}")
+    def oblique(from: Angle[_], to: Angle[_]): FontFace[FF] = b(s"oblique ${from.value} ${to.value}")
   }
 
   final class FontWeightBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
@@ -151,20 +153,46 @@ object FontFace {
 
 sealed abstract class LengthUnit(val value: String)
 object LengthUnit {
-  case object cm   extends LengthUnit("cm")
-  case object ch   extends LengthUnit("ch")
-  case object em   extends LengthUnit("em")
-  case object ex   extends LengthUnit("ex")
-  case object in   extends LengthUnit("in")
-  case object mm   extends LengthUnit("mm")
-  case object pc   extends LengthUnit("pc")
-  case object pt   extends LengthUnit("pt")
-  case object px   extends LengthUnit("px")
-  case object rem  extends LengthUnit("rem")
-  case object vh   extends LengthUnit("vh")
-  case object vmin extends LengthUnit("vmin")
-  case object vmax extends LengthUnit("vmax")
-  case object vw   extends LengthUnit("vw")
+  case object ch    extends LengthUnit("ch")
+  case object cm    extends LengthUnit("cm")
+  case object cqb   extends LengthUnit("cqb")
+  case object cqh   extends LengthUnit("cqh")
+  case object cqi   extends LengthUnit("cqi")
+  case object cqmax extends LengthUnit("cqmax")
+  case object cqmin extends LengthUnit("cqmin")
+  case object cqw   extends LengthUnit("cqw")
+  case object dvb   extends LengthUnit("dvb")
+  case object dvh   extends LengthUnit("dvh")
+  case object dvi   extends LengthUnit("dvi")
+  case object dvmax extends LengthUnit("dvmax")
+  case object dvmin extends LengthUnit("dvmin")
+  case object dvw   extends LengthUnit("dvw")
+  case object em    extends LengthUnit("em")
+  case object ex    extends LengthUnit("ex")
+  case object in    extends LengthUnit("in")
+  case object lvb   extends LengthUnit("lvb")
+  case object lvh   extends LengthUnit("lvh")
+  case object lvi   extends LengthUnit("lvi")
+  case object lvmax extends LengthUnit("lvmax")
+  case object lvmin extends LengthUnit("lvmin")
+  case object lvw   extends LengthUnit("lvw")
+  case object mm    extends LengthUnit("mm")
+  case object pc    extends LengthUnit("pc")
+  case object pt    extends LengthUnit("pt")
+  case object px    extends LengthUnit("px")
+  case object rem   extends LengthUnit("rem")
+  case object svb   extends LengthUnit("svb")
+  case object svh   extends LengthUnit("svh")
+  case object svi   extends LengthUnit("svi")
+  case object svmax extends LengthUnit("svmax")
+  case object svmin extends LengthUnit("svmin")
+  case object svw   extends LengthUnit("svw")
+  case object vb    extends LengthUnit("vb")
+  case object vh    extends LengthUnit("vh")
+  case object vi    extends LengthUnit("vi")
+  case object vmax  extends LengthUnit("vmax")
+  case object vmin  extends LengthUnit("vmin")
+  case object vw    extends LengthUnit("vw")
   implicit def univEq: UnivEq[LengthUnit] = UnivEq.derive
 }
 
@@ -241,4 +269,61 @@ object Ratio {
 
   /** The 'widescreen', anamorphic, movie format. 2.39:1 */
   def movieWidescreen = Ratio(239, 100)
+}
+
+final case class Fr[@specialized(scala.Int, scala.Double) N](n: N) {
+  def value: Value = {
+    val s = ValueT.stripDotZero(n.toString)
+    if (s == "-0")
+      "0fr"
+    else
+      s + "fr"
+  }
+
+  def *(m: N)(implicit N: Numeric[N]): Fr[N] =
+    copy(n = N.times(this.n, m))
+
+  def /(m: Double)(implicit N: Numeric[N]): Fr[Double] =
+    copy(n = N.toDouble(n) / m)
+}
+object Fr {
+  @nowarn("cat=unused")
+  implicit def univEq[N: UnivEq]: UnivEq[Fr[N]] = UnivEq.derive
+}
+
+sealed abstract class AngleUnit(val value: String)
+object AngleUnit {
+  /** Degrees (full circle = 360deg). */
+  case object deg  extends AngleUnit("deg")
+  /** Gradians (full circle = 400grad). */
+  case object grad extends AngleUnit("grad")
+  /** Radians (full circle = 2π rad). */
+  case object rad  extends AngleUnit("rad")
+  /** Turns (full circle = 1turn). */
+  case object turn extends AngleUnit("turn")
+
+  implicit def univEq: UnivEq[AngleUnit] = UnivEq.derive
+}
+
+final case class Angle[@specialized(scala.Int, scala.Double) N](n: N, u: AngleUnit) {
+  def value: Value = {
+    val s = ValueT.stripDotZero(n.toString)
+    if (s == "-0")
+      "0" + u.value
+    else
+      s + u.value
+  }
+
+  def *(m: N)(implicit N: Numeric[N]): Angle[N] =
+    copy(n = N.times(this.n, m))
+
+  def /(m: Double)(implicit N: Numeric[N]): Angle[Double] =
+    copy(n = N.toDouble(n) / m)
+
+  def unary_-(implicit N: Numeric[N]): Angle[N] =
+    copy(n = N.negate(this.n))
+}
+object Angle {
+  @nowarn("cat=unused")
+  implicit def univEq[N: UnivEq]: UnivEq[Angle[N]] = UnivEq.derive
 }

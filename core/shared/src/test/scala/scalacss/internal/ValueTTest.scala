@@ -220,6 +220,26 @@ object ValueTTest extends TestSuite {
         ()
       }
 
+      "Flex" - {
+        val f = Fr(1)
+                      test[Flex](inherit)
+                      test[Flex](f)
+        compileError("test[Flex](len)")
+        compileError("test[Flex](1)")
+        compileError("test[Len](f)")
+        ()
+      }
+
+      "Ang" - {
+        val a = Angle(90, AngleUnit.deg)
+                      test[Ang](inherit)
+                      test[Ang](a)
+        compileError("test[Ang](len)")
+        compileError("test[Ang](1)")
+        compileError("test[Len](a)")
+        ()
+      }
+
     }
 
     "timeValues" - {
@@ -269,6 +289,71 @@ object ValueTTest extends TestSuite {
       assertEq(Resolution(300.0, ResolutionUnit.dpi).value, "300dpi")
       assertEq(Resolution(1.5, ResolutionUnit.dppx).value,  "1.5dppx")
       assertEq((300.0 dpi).value,                           "300dpi")
+    }
+
+    "viewportUnits" - {
+      import Dsl._
+      "vi" - assertEq(10.vi.value,    "10vi")
+      "vb" - assertEq(10.vb.value,    "10vb")
+      "svw" - assertEq(50.svw.value,   "50svw")
+      "svh" - assertEq(100.svh.value,  "100svh")
+      "svi" - assertEq(10.svi.value,   "10svi")
+      "svb" - assertEq(10.svb.value,   "10svb")
+      "svmin" - assertEq(10.svmin.value, "10svmin")
+      "svmax" - assertEq(10.svmax.value, "10svmax")
+      "lvw" - assertEq(50.lvw.value,   "50lvw")
+      "lvh" - assertEq(100.lvh.value,  "100lvh")
+      "lvi" - assertEq(10.lvi.value,   "10lvi")
+      "lvb" - assertEq(10.lvb.value,   "10lvb")
+      "lvmin" - assertEq(10.lvmin.value, "10lvmin")
+      "lvmax" - assertEq(10.lvmax.value, "10lvmax")
+      "dvw" - assertEq(50.dvw.value,   "50dvw")
+      "dvh" - assertEq(100.dvh.value,  "100dvh")
+      "dvi" - assertEq(10.dvi.value,   "10dvi")
+      "dvb" - assertEq(10.dvb.value,   "10dvb")
+      "dvmin" - assertEq(10.dvmin.value, "10dvmin")
+      "dvmax" - assertEq(10.dvmax.value, "10dvmax")
+      "height" - assertEq(height(100.dvh).value, "100dvh")
+    }
+
+    "containerQueryUnits" - {
+      import Dsl._
+      "cqw" - assertEq(10.cqw.value,   "10cqw")
+      "cqh" - assertEq(20.cqh.value,   "20cqh")
+      "cqi" - assertEq(5.cqi.value,    "5cqi")
+      "cqb" - assertEq(5.cqb.value,    "5cqb")
+      "cqmin" - assertEq(5.cqmin.value,  "5cqmin")
+      "cqmax" - assertEq(5.cqmax.value,  "5cqmax")
+      "fontSize" - assertEq(fontSize(5.cqi).value, "5cqi")
+    }
+
+    "frUnit" - {
+      import Dsl._
+      assertEq(1.fr.value,           "1fr")
+      assertEq(1.5.fr.value,         "1.5fr")
+      assertEq(2.0.fr.value,         "2fr")
+      assertEq(0.fr.value,           "0fr")
+      assertEq((-0.0).fr.value,      "0fr")
+      assertEq((2.fr * 3).value,     "6fr")
+      assertEq((3 * 2.fr).value,     "6fr")
+      assertEq((3.fr / 2).value,     "1.5fr")
+      assertEq((gridTemplateColumns := 1.fr).value, "1fr")
+    }
+
+    "angleUnits" - {
+      import Dsl._
+      assertEq(90.deg.value,         "90deg")
+      assertEq(100.grad.value,       "100grad")
+      assertEq(1.5.rad.value,        "1.5rad")
+      assertEq(0.5.turn.value,       "0.5turn")
+      assertEq(90.0.deg.value,       "90deg")
+      assertEq(0.deg.value,          "0deg")
+      assertEq((-0.0).deg.value,     "0deg")
+      assertEq((-(45.deg)).value,    "-45deg")
+      assertEq((45.deg * 2).value,   "90deg")
+      assertEq((2 * 45.deg).value,   "90deg")
+      assertEq((90.deg / 2).value,   "45deg")
+      assertEq((imageOrientation := 90.deg).value, "90deg")
     }
   }
 }

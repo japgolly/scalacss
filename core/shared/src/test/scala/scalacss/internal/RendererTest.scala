@@ -88,6 +88,13 @@ object RendererTest extends TestSuite {
           renderedSingle,
           "@font-face{font-family:SingleFont;src:url(s.woff2);font-display:optional;font-stretch:75%;font-style:oblique 14deg;font-weight:450}"
         )
+
+        val ffAngles = FontFace[FontFamily](FontFamily("AngleFont"), NonEmptyVector("url(a.woff2)"))
+          .fontStyle.oblique((-10).deg, 20.deg)
+        assertEq(
+          StringRenderer.formatTiny(Vector(Css.fontFaces(ffAngles))),
+          "@font-face{font-family:AngleFont;src:url(a.woff2);font-style:oblique -10deg 20deg}"
+        )
       }
     }
 

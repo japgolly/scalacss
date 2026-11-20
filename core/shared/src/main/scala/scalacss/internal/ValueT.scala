@@ -57,6 +57,8 @@ object ValueT {
   sealed trait GapStyle          extends ValueClass
   sealed trait TimingFunction    extends ValueClass
   sealed trait IterationCount    extends ValueClass
+  sealed trait Flex              extends ValueClass
+  sealed trait Ang               extends ValueClass
 
   private[internal] def stripDotZero(s: String): String =
     if (s.endsWith(".0")) s.substring(0, s.length - 2) else s
@@ -109,6 +111,8 @@ object ValueT {
 
     @inline implicit def ruleLen_L[N] : Len     <== Length[N]      = Rule(_.value)
     @inline implicit def rulePct_P[N] : Pct     <== Percentage[N]  = Rule(_.value)
+    @inline implicit def ruleFlex_F[N]: Flex    <== Fr[N]          = Rule(_.value)
+    @inline implicit def ruleAng_A[N] : Ang     <== Angle[N]       = Rule(_.value)
     @inline implicit def ruleInteger_I: Integer <== Int            = Rule(_.toString)
     @inline implicit def ruleNumber_I : Number  <== Int            = Rule(_.toString)
     @inline implicit def ruleNumber_D : Number  <== Double         = Rule(fmtDouble)
