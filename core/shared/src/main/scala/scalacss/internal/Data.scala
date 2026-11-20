@@ -67,17 +67,21 @@ object FontFamily {
   *
   * http://www.w3schools.com/cssref/css3_pr_font-face_rule.asp
   */
-final case class FontFace[FF](fontFamily         : FF,
-                              src                : NonEmptyVector[String],
-                              fontStretchValue   : Option[Value] = None,
-                              fontStyleValue     : Option[Value] = None,
-                              fontWeightValue    : Option[Value] = None,
-                              unicodeRangeValue  : Option[UnicodeRange] = None) {
+final case class FontFace[FF](fontFamily        : FF,
+                              src               : NonEmptyVector[String],
+                              fontStretchValue  : Option[Value] = None,
+                              fontStyleValue    : Option[Value] = None,
+                              fontWeightValue   : Option[Value] = None,
+                              unicodeRangeValue : Option[UnicodeRange] = None,
+                              fontDisplayValue  : Option[Value] = None,
+                              extraUnicodeRanges: Vector[UnicodeRange] = Vector.empty) {
   import FontFace._
-  def fontStretch                      = new FontStretchBuilder[FF](v => copy(fontStretchValue  = Some(v)))
-  def fontStyle                        = new FontStyleBuilder  [FF](v => copy(fontStyleValue    = Some(v)))
-  def fontWeight                       = new FontWeightBuilder [FF](v => copy(fontWeightValue   = Some(v)))
-  def unicodeRange(from: Int, to: Int) = copy(unicodeRangeValue = Some(UnicodeRange(from, to)))
+  def fontDisplay                                       = new FontDisplayBuilder[FF](v => copy(fontDisplayValue  = Some(v)))
+  def fontStretch                                       = new FontStretchBuilder[FF](v => copy(fontStretchValue  = Some(v)))
+  def fontStyle                                         = new FontStyleBuilder  [FF](v => copy(fontStyleValue    = Some(v)))
+  def fontWeight                                        = new FontWeightBuilder [FF](v => copy(fontWeightValue   = Some(v)))
+  def unicodeRange(from: Int, to: Int)                  = copy(unicodeRangeValue = Some(UnicodeRange(from, to)), extraUnicodeRanges = Vector.empty)
+  def unicodeRange(r1: UnicodeRange, rn: UnicodeRange*) = copy(unicodeRangeValue = Some(r1), extraUnicodeRanges = rn.toVector)
 }
 
 object FontFace {
@@ -96,7 +100,17 @@ object FontFace {
       FontFace(fontFamily, NonEmptyVector(src, additionalSrc.toVector))
   }
 
+  final class FontDisplayBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
+    def auto     = b(Literal.Typed.auto.value)
+    def block    = b(Literal.block)
+    def swap     = b(Literal.swap)
+    def fallback = b(Literal.fallback)
+    def optional = b(Literal.optional)
+  }
+
   final class FontStretchBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
+    def apply(p: Percentage[_]): FontFace[FF]                       = b(p.value)
+    def apply(from: Percentage[_], to: Percentage[_]): FontFace[FF] = b(s"${from.value} ${to.value}")
     def condensed      = b(Literal.condensed)
     def expanded       = b(Literal.expanded)
     def extraCondensed = b(Literal.extraCondensed)
@@ -109,12 +123,16 @@ object FontFace {
   }
 
   final class FontStyleBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
-    def italic  = b(Literal.italic)
-    def normal  = b(Literal.Typed.normal.value)
-    def oblique = b(Literal.oblique)
+    def italic                                        = b(Literal.italic)
+    def normal                                        = b(Literal.Typed.normal.value)
+    def oblique                                       = b(Literal.oblique)
+    def oblique(angle: Value): FontFace[FF]           = b(s"oblique $angle")
+    def oblique(from: Value, to: Value): FontFace[FF] = b(s"oblique $from $to")
   }
 
   final class FontWeightBuilder[FF](private val b: Value => FontFace[FF]) extends AnyVal {
+    def apply(weight: Int): FontFace[FF]        = b(weight.toString)
+    def apply(from: Int, to: Int): FontFace[FF] = b(s"$from $to")
     def _100    = b("100")
     def _200    = b("200")
     def _300    = b("300")

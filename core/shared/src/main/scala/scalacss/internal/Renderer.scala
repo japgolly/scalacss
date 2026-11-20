@@ -116,10 +116,18 @@ object StringRenderer {
     start()
     kv1("font-family", fontface.fontFamily.name, true)
     kvn("src", fontface.src.whole.mkString(","), false)
+    for (v <- fontface.fontDisplay ) kvn("font-display" , v         , false)
     for (v <- fontface.fontStretch ) kvn("font-stretch" , v         , false)
     for (v <- fontface.fontStyle   ) kvn("font-style"   , v         , false)
     for (v <- fontface.fontWeight  ) kvn("font-weight"  , v         , false)
-    for (v <- fontface.unicodeRange) kvn("unicode-range", v.toString, false)
+    for (r <- fontface.unicodeRange) {
+      val s =
+        if (fontface.extraUnicodeRanges.isEmpty)
+          r.toString
+        else
+          (r +: fontface.extraUnicodeRanges).map(_.toString).mkString(",")
+      kvn("unicode-range", s, false)
+    }
     end()
   }
 

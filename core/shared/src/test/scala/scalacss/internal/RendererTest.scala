@@ -64,6 +64,31 @@ object RendererTest extends TestSuite {
         assertEq(renderedFont, """@font-face{font-family:'My Font';src:url(font.woff)}""")
         assertEq(renderedStyle, """.c{font-family:'My Font'}""")
       }
+
+      "fontFaceDescriptors" - {
+        val ff = FontFace[FontFamily](FontFamily("VarFont"), NonEmptyVector("url(var.woff2)"))
+          .fontDisplay.swap
+          .fontWeight(100, 900)
+          .fontStretch(50.%%, 200.%%)
+          .fontStyle.oblique("-10deg", "20deg")
+          .unicodeRange(UnicodeRange(0x0000, 0x00FF), UnicodeRange(0x0131, 0x0131))
+        val rendered = StringRenderer.formatTiny(Vector(Css.fontFaces(ff)))
+        assertEq(
+          rendered,
+          "@font-face{font-family:VarFont;src:url(var.woff2);font-display:swap;font-stretch:50% 200%;font-style:oblique -10deg 20deg;font-weight:100 900;unicode-range:U+0-ff,U+131-131}"
+        )
+
+        val ffSingle = FontFace[FontFamily](FontFamily("SingleFont"), NonEmptyVector("url(s.woff2)"))
+          .fontDisplay.optional
+          .fontWeight(450)
+          .fontStretch(75.%%)
+          .fontStyle.oblique("14deg")
+        val renderedSingle = StringRenderer.formatTiny(Vector(Css.fontFaces(ffSingle)))
+        assertEq(
+          renderedSingle,
+          "@font-face{font-family:SingleFont;src:url(s.woff2);font-display:optional;font-stretch:75%;font-style:oblique 14deg;font-weight:450}"
+        )
+      }
     }
 
     "duplicateKeyframeSelectorsMerged" - {

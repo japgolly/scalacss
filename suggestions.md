@@ -69,18 +69,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `modernA` and `modernSL` don't accept `none` (unlike `modernNPN`/`modernH`), `rgbM`/`hslM` reject `rgba(...)` and `hsla(...)` with space-separated syntax, legacy `hsl`/`hsla` require integer hue and decimal alpha, and CSS Color 4 functions (`oklch`, `oklab`, `lch`, `lab`, `hwb`, `color(...)`) are unsupported.
     - **Fix:** Allow `none` in `modernA`/`modernSL`, `(?:rgb|rgba)` and `(?:hsl|hsla)` in modern syntax, decimal/angle hue and `%` alpha in legacy syntax, and add validators for modern color functions.
 
-34. **Attribute DSL gaps (`gridTemplateAreas.none`, `placeSelf`, `textIndent`, `GapStyle`, `fontFamily`, `FontFace`)**
-    - **Where:** `core/shared/src/main/scala/scalacss/internal/Attrs.scala:1153-1157, 1402-1405, 2223, 2321-2327, 2381, 2388, 3338-3357, 3416, 3488`, `ValueT.scala:144-146`, `Data.scala:70-81`
-    - **Issues:**
-      - `gridTemplateAreas` lacks `.none` (`gridTemplateAreas("none")` quotes it into `"\"none\""`).
-      - `placeSelf` lacks `apply` and single-keyword values (`auto`, `normal`, `center`, `stretch`, `start`, `end`, etc.).
-      - `textIndent` allows `(LenPct, hanging, eachLine)` but not `(LenPct, eachLine, hanging)`.
-      - `GapStyle` in `ValueT.Rules` omits `GapStyle <=< LenPct` (despite having `Len` and `Pct`).
-      - `textAlign.startEnd` emits obsolete `"start end"` while `justify-all` is missing.
-      - `flexBasis`, `svgFill`, `svgFloodColor`, `textStrokeColor`, `textStrokeWidth` are untyped `final def`s.
-      - `fontFamily` only accepts a single `FontFace` (no fallback stack / standard generic families like `serif`, `sans-serif`, `monospace`).
-      - `FontFace` lacks `font-display`, multi-range `unicode-range`, and variable-font descriptor ranges.
-
 35. **`Media.Query.and` with `Not(...)` and modern CSS features / units / pseudos**
     - **Where:** `core/shared/src/main/scala/scalacss/internal/Media.scala:170-183`, `Data.scala:134-151`, `Pseudo.scala`
     - **Issues:**

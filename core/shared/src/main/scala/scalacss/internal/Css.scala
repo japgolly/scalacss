@@ -48,7 +48,7 @@ object Css {
   }
 
   def fontFaces(ff: FontFace[FontFamily]): CssEntry.FontFace =
-    CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
+    CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue, ff.fontDisplayValue, ff.extraUnicodeRanges)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)

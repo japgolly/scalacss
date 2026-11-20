@@ -1070,7 +1070,13 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis">MDN</a>
    */
-  final lazy val flexBasis = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
+  object flexBasis extends TypedAttr_LenPctAuto {
+    override val attr = Attr.real("flex-basis", Transform keys CanIUse.flexbox)
+    def content    = av(L.content)
+    def fitContent = av(L.fitContent)
+    def maxContent = av(L.maxContent)
+    def minContent = av(L.minContent)
+  }
 
   /**
    * The CSS flex-direction property specifies how flex items are placed in the flex container defining the main axis and the direction (normal or reversed).
@@ -1150,8 +1156,22 @@ object Attrs {
    */
   object fontFamily extends TypedAttrBase {
     override val attr = Attr.real("font-family", Transform.values(CanIUse.fontFamilySystemUi)(L.systemUI))
-    def apply(a: FontFace[FontFamily]): AV = av(FontFace.quoteIfNeeded(a.fontFamily.name))
-    def systemUI = av(L.systemUI)
+    def apply(a: FontFace[FontFamily]): AV =
+      av(FontFace.quoteIfNeeded(a.fontFamily.name))
+    def apply(a: FontFace[FontFamily], b: String, more: String*): AV =
+      av((a.fontFamily.name +: b +: more).map(FontFace.quoteIfNeeded).mkString(", "))
+    def apply(a: String, more: String*): AV =
+      av((a +: more).map(FontFace.quoteIfNeeded).mkString(", "))
+    def cursive     = av(L.cursive)
+    def fantasy     = av(L.fantasy)
+    def monospace   = av(L.monospace)
+    def sansSerif   = av(L.sansSerif)
+    def serif       = av(L.serif)
+    def systemUI    = av(L.systemUI)
+    def uiMonospace = av(L.uiMonospace)
+    def uiRounded   = av(L.uiRounded)
+    def uiSansSerif = av(L.uiSansSerif)
+    def uiSerif     = av(L.uiSerif)
   }
 
   /**
@@ -1399,6 +1419,7 @@ object Attrs {
    */
   object gridTemplateAreas extends TypedAttrBase {
     override val attr = Attr.real("grid-template-areas", Transform keys CanIUse.grid)
+    def none = avl(LT.none)
     def apply(s1: String, sn: String*) = av((s1 +: sn).map("\"" + _ + "\"").mkString(" "))
   }
 
@@ -2216,10 +2237,12 @@ object Attrs {
     def center      = av(L.center)
     def end         = avl(L.end)
     def justify     = av(L.justify)
+    def justifyAll  = av(L.justifyAll)
     def left        = av(L.left)
     def matchParent = av(L.matchParent)
     def right       = av(L.right)
     def start       = avl(L.start)
+    @deprecated("Removed from CSS Text specification", "1.1.1")
     def startEnd    = av(L.startEnd)
   }
 
@@ -2324,6 +2347,7 @@ object Attrs {
     def apply(v: ValueT[LenPct], h: LT.hanging.type)                     : AV = av(s"${v.value} ${h.value}")
     def apply(v: ValueT[LenPct], h: LT.eachLine.type)                    : AV = av(s"${v.value} ${h.value}")
     def apply(v: ValueT[LenPct], h: LT.hanging.type, e: LT.eachLine.type): AV = av(s"${v.value} ${h.value} ${e.value}")
+    def apply(v: ValueT[LenPct], e: LT.eachLine.type, h: LT.hanging.type): AV = av(s"${v.value} ${e.value} ${h.value}")
   }
 
   /**
@@ -2378,14 +2402,18 @@ object Attrs {
    *
    * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-color">Safari CSS Reference</a>
    */
-  final lazy val textStrokeColor = Attr.real("text-stroke-color", Transform keys CanIUse.textStroke)
+  object textStrokeColor extends TypedAttr_Color {
+    override val attr = Attr.real("text-stroke-color", Transform keys CanIUse.textStroke)
+  }
 
   /**
    * Apple extension. Specifies the width for the text outline.
    *
    * @see <a href="https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-text-stroke-width">Safari CSS Reference</a>
    */
-  final lazy val textStrokeWidth = Attr.real("text-stroke-width", Transform keys CanIUse.textStroke)
+  object textStrokeWidth extends TypedAttr_BrWidth {
+    override val attr = Attr.real("text-stroke-width", Transform keys CanIUse.textStroke)
+  }
 
   /**
    * The text-transform CSS property specifies how to capitalize an element's text. It can be used to make text appear in all-uppercase or all-lowercase, or with each word capitalized.
@@ -3335,8 +3363,9 @@ object Attrs {
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/place-self">MDN</a>
    */
-  object placeSelf extends TypedAttrBase {
+  object placeSelf extends TypedAttrBase with PlaceSelfAlignOps[PlaceSelfNext] {
     override val attr = Attr.alias("place-self")(_(alignSelf, justifySelf))
+    override protected def next(v: Value): PlaceSelfNext = new PlaceSelfNext(v)
     def autoCenter         = av("auto center")
     def normalStart        = av("normal start")
     def centerNormal       = av("center normal")
@@ -3354,6 +3383,32 @@ object Attrs {
     def firstBaselineAuto  = av("first baseline auto")
     def lastBaselineNormal = av("last baseline normal")
     def stretchAuto        = av("stretch auto")
+  }
+  final class PlaceSelfNext(a: Value) extends ToAV with PlaceSelfJustifyOps[AV] {
+    override def av: AV = AV(placeSelf.attr, a)
+    override protected def next(b: Value): AV = AV(placeSelf.attr, s"$a $b")
+  }
+  sealed trait PlaceSelfAlignOps[Next] {
+    protected def next(v: Value): Next
+    final def auto          = next(LT.auto.value)
+    final def normal        = next(LT.normal.value)
+    final def stretch       = next(L.stretch)
+    final def center        = next(L.center)
+    final def start         = next(LT.start.value)
+    final def end           = next(LT.end.value)
+    final def flexStart     = next(L.flexStart)
+    final def flexEnd       = next(L.flexEnd)
+    final def selfStart     = next(L.selfStart)
+    final def selfEnd       = next(L.selfEnd)
+    final def baseline      = next(L.baseline)
+    final def firstBaseline = next(L.firstBaseline)
+    final def lastBaseline  = next(L.lastBaseline)
+    final def safeCenter    = next(L.safeCenter)
+    final def unsafeCenter  = next(L.unsafeCenter)
+  }
+  sealed trait PlaceSelfJustifyOps[Next] extends PlaceSelfAlignOps[Next] {
+    final def left  = next(L.left)
+    final def right = next(L.right)
   }
 
   /**
@@ -3413,7 +3468,9 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/flood-color">MDN</a>
     */
-  final lazy val svgFloodColor = Attr.real("flood-color")
+  object svgFloodColor extends TypedAttr_Color {
+    override val attr = Attr.real("flood-color")
+  }
 
   /**
     * The flood-opacity attribute indicates the opacity value to use across the current filter primitive subregion defined through the <feflood> element.
@@ -3485,7 +3542,10 @@ object Attrs {
     *
     * @see <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/fill">MDN</a>
     */
-  final lazy val svgFill = Attr.real("fill")
+  object svgFill extends TypedAttr_Color {
+    override val attr = Attr.real("fill")
+    def none = avl(LT.none)
+  }
 
   /**
     * This attribute specifies the opacity of the color or the content the current object is filled with.

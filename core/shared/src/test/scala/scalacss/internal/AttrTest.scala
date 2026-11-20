@@ -413,6 +413,7 @@ object AttrTest extends TestSuite {
       test(textIndent(length, hanging)          , "3px hanging")
       test(textIndent(length, eachLine)         , "3px each-line")
       test(textIndent(length, hanging, eachLine), "3px hanging each-line")
+      test(textIndent(length, eachLine, hanging), "3px each-line hanging")
     }
 
     "backgroundClip" - {
@@ -530,6 +531,7 @@ object AttrTest extends TestSuite {
 
     "gridTemplateAreas" - {
       def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp.trim)
+      test(gridTemplateAreas.none, "none")
       test(gridTemplateAreas("a b"), """ "a b" """)
       test(gridTemplateAreas("a b", "c d"), """ "a b" "c d" """)
     }
@@ -730,6 +732,86 @@ object AttrTest extends TestSuite {
       assertEq(outlineStyle.ridge.value,   "ridge")
       assertEq(outlineStyle.inset.value,   "inset")
       assertEq(outlineStyle.outset.value,  "outset")
+    }
+    "textAlign" - {
+      assertEq(textAlign.justifyAll.value, "justify-all")
+    }
+    "placeSelf" - {
+      def test(av: AV, exp: String)(implicit q: Line): Unit = assertEq(av.value, exp)
+      test(placeSelf.auto,                    "auto")
+      test(placeSelf.normal,                  "normal")
+      test(placeSelf.stretch,                 "stretch")
+      test(placeSelf.center,                  "center")
+      test(placeSelf.start,                   "start")
+      test(placeSelf.end,                     "end")
+      test(placeSelf.flexStart,               "flex-start")
+      test(placeSelf.flexEnd,                 "flex-end")
+      test(placeSelf.selfStart,               "self-start")
+      test(placeSelf.selfEnd,                 "self-end")
+      test(placeSelf.baseline,                "baseline")
+      test(placeSelf.firstBaseline,           "first baseline")
+      test(placeSelf.lastBaseline,            "last baseline")
+      test(placeSelf.safeCenter,              "safe center")
+      test(placeSelf.unsafeCenter,            "unsafe center")
+      test(placeSelf.center.important,        "center !important")
+      test(placeSelf.center.start,            "center start")
+      test(placeSelf.auto.left,               "auto left")
+      test(placeSelf.stretch.right.important, "stretch right !important")
+      test(placeSelf.firstBaseline.flexEnd,   "first baseline flex-end")
+      test(placeSelf.autoCenter,              "auto center")
+      compileError("placeSelf.left")
+      compileError("placeSelf.right")
+    }
+    "typedAttrs" - {
+      import Dsl._
+      "flexBasis" - {
+        assertEq(flexBasis.auto.value,       "auto")
+        assertEq(flexBasis.`0`.value,        "0")
+        assertEq(flexBasis.content.value,    "content")
+        assertEq(flexBasis.fitContent.value, "fit-content")
+        assertEq(flexBasis.maxContent.value, "max-content")
+        assertEq(flexBasis.minContent.value, "min-content")
+        assertEq(flexBasis(length).value,    "3px")
+        assertEq(flexBasis(pct).value,       "5%")
+        assertEq(flexBasis.inherit.value,    "inherit")
+      }
+      "svgFill" - {
+        assertEq(svgFill.none.value,         "none")
+        assertEq(svgFill.red.value,          "red")
+        assertEq(svgFill(c"#123").value,     "#123")
+        assertEq(svgFill.currentColor.value, "currentColor")
+      }
+      "svgFloodColor" - {
+        assertEq(svgFloodColor.red.value,      "red")
+        assertEq(svgFloodColor(c"#123").value, "#123")
+      }
+      "textStrokeColor" - {
+        assertEq(textStrokeColor.red.value,      "red")
+        assertEq(textStrokeColor(c"#123").value, "#123")
+      }
+      "textStrokeWidth" - {
+        assertEq(textStrokeWidth.thin.value,     "thin")
+        assertEq(textStrokeWidth.medium.value,   "medium")
+        assertEq(textStrokeWidth.thick.value,    "thick")
+        assertEq(textStrokeWidth.`0`.value,      "0")
+        assertEq(textStrokeWidth(length).value,  "3px")
+      }
+    }
+    "fontFamily" - {
+      val ff = FontFace[FontFamily](FontFamily("My Font"), NonEmptyVector("url(font.woff)"))
+      assertEq(fontFamily.serif.value,       "serif")
+      assertEq(fontFamily.sansSerif.value,   "sans-serif")
+      assertEq(fontFamily.monospace.value,   "monospace")
+      assertEq(fontFamily.cursive.value,     "cursive")
+      assertEq(fontFamily.fantasy.value,     "fantasy")
+      assertEq(fontFamily.systemUI.value,    "system-ui")
+      assertEq(fontFamily.uiSerif.value,     "ui-serif")
+      assertEq(fontFamily.uiSansSerif.value, "ui-sans-serif")
+      assertEq(fontFamily.uiMonospace.value, "ui-monospace")
+      assertEq(fontFamily.uiRounded.value,   "ui-rounded")
+      assertEq(fontFamily(ff).value,                                    "'My Font'")
+      assertEq(fontFamily("Helvetica Neue", "Arial", "sans-serif").value, "'Helvetica Neue', Arial, sans-serif")
+      assertEq(fontFamily(ff, "Helvetica Neue", "sans-serif").value,      "'My Font', 'Helvetica Neue', sans-serif")
     }
   }
 }
