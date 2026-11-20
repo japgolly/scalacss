@@ -84,11 +84,6 @@ A prioritized, numbered list of bugs, optimisations, CSS/API gaps, build/tooling
     - **Issue:** `p.base.toURI.toString.replaceFirst("[^/]+/?$", "")` strips only one path segment. For `coreJS` (`core/js/`) and `extScalatagsJS` (`ext-scalatags/js/`), it emits `.../core/` and `.../ext-scalatags/` instead of the repo root, dropping `core/` and `ext-scalatags/` from published GitHub source-map URLs (causing 404s).
     - **Fix:** Use `(LocalRootProject / baseDirectory).value.toURI.toString` as the source-map prefix `a`.
 
-37. **`downstream-tests/run` fails on macOS Bash 3.2 and leaves `$args` unquoted**
-    - **Where:** `downstream-tests/run:18-24, 114`
-    - **Issue:** Uses Bash 4+ `declare -A all_tests`, which fails on macOS's default `/bin/bash` (Bash 3.2), breaking local runs of `downstream-tests/run` and `bin/ci:57`. Line 114 also relies on unquoted word-splitting for `$args`.
-    - **Fix:** Replace the associative array with positional lookup into `all_tests_values` (`$((t - 1))`) and parse flags cleanly into an array.
-
 38. **`bin/ci` portability, incomplete clean glob, and duplicate JVM test execution**
     - **Where:** `bin/ci:36, 40, 46-51`
     - **Issue:** `free -h` fails on macOS under `set -euo pipefail`; `rm -rf */target/...` skips `*/*/target/...` (`core/{js,jvm}`, `ext-scalatags/{js,jvm}`); and lines 48–49 run `test` twice across all projects even though `FullOptStage` only applies to `rootJS`.
