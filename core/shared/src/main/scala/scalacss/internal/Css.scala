@@ -6,7 +6,7 @@ object Css {
 
   def apply(ss: IterableOnce[StyleA],
             kfs: IterableOnce[Keyframes],
-            ff: IterableOnce[FontFace[String]])
+            ff: IterableOnce[FontFace[FontFamily]])
            (implicit env: Env): Css = {
     val b = Vector.newBuilder[CssEntry]
     b ++= styles(ss)
@@ -21,7 +21,7 @@ object Css {
   def keyframes(kfs: IterableOnce[Keyframes])(implicit env: Env): KeyframeStream =
     kfs.iterator.map(keyframes).toList
 
-  def fontFaces(ff: IterableOnce[FontFace[String]]): FontFaceStream =
+  def fontFaces(ff: IterableOnce[FontFace[FontFamily]]): FontFaceStream =
     ff.iterator.map(fontFaces).toList
 
   def className(cn: ClassName): CssSelector =
@@ -39,13 +39,16 @@ object Css {
   def keyframes(kfs: Keyframes)(implicit env: Env): CssEntry.Keyframes = {
     val frames = kfs.frames.foldLeft(ListMap.empty[KeyframeSelector, StyleStream]) { case (acc, (ks, sa)) =>
       val cur = acc.getOrElse(ks, Vector.empty)
-      acc.updated(ks, cur ++ styleA(sa))
+      val kvs = sa.style.data.get(Cond.empty).fold(Vector.empty[CssKV])(_.avIterator.flatMap(_(env)).toVector)
+      val ss = NonEmptyVector.maybe(kvs, Vector.empty[CssEntry.Style])(c =>
+        Vector1(CssEntry.Style(None, className(sa.className), c)))
+      acc.updated(ks, cur ++ ss)
     }
     CssEntry.Keyframes(kfs.name, frames)
   }
 
-  def fontFaces(ff: FontFace[String]): CssEntry.FontFace =
-    CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue)
+  def fontFaces(ff: FontFace[FontFamily]): CssEntry.FontFace =
+    CssEntry.FontFace(ff.fontFamily, ff.src, ff.fontStretchValue, ff.fontStyleValue, ff.fontWeightValue, ff.unicodeRangeValue, ff.fontDisplayValue, ff.extraUnicodeRanges)
 
   def styleA(s: StyleA)(implicit env: Env): StyleStream =
     style(className(s.className), s.style)
@@ -54,7 +57,7 @@ object Css {
     def main: Iterator[CssEntry.Style] =
       s.dataSorted.iterator.flatMap {
         case (cond, avs) =>
-          val kvs = avs.avIterator.map(_(env)).foldLeft(Vector.empty[CssKV])(_ ++ _)
+          val kvs = avs.avIterator.flatMap(_(env)).toVector
           NonEmptyVector.maybe(kvs, List.empty[CssEntry.Style]) { c =>
             val mq = mediaQuery(cond)
             val s = selector(sel, cond)

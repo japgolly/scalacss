@@ -52,11 +52,16 @@ object Caniuse {
       ,"cssBackgroundOffsets"
       ,"cssFeaturequeries"
       ,"cssFixed"
+      ,"calc"
+      ,"canvas"
+      ,"cascadeLayers"
+      ,"cascadeScope"
       ,"cssGencontent"
       ,"cssImageOrientation"
       ,"currentcolor"
       ,"defaultPseudo"
       ,"descendantGtgt"
+      ,"deviceadaptation"
       ,"devicepixelratio"
       ,"dirPseudo"
       ,"elementFunction"
@@ -107,7 +112,6 @@ object Caniuse {
       ,"table"
       ,"ttf"
       ,"unsetValue"
-      ,"variables"
       ,"variables"
       ,"willChange"
       ,"zoom"
@@ -254,19 +258,7 @@ object Caniuse {
 
     def fmtpref2(p: String) = String.format("%-6s", p)
 
-    val valAttrs = Set(
-      "animation",
-      "borderImage",
-      "borderRadius",
-      "counters",
-      "flexbox",
-      "grid",
-      "masks",
-      "multicolumn",
-      "outline",
-      "shapes",
-      "textDecoration",
-      "transitions")
+    val valAttrs = Set.empty[String]
 
     def fmtpref(p: String): String = {
       val p2 = fmtpref2(p)

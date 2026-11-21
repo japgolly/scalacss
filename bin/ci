@@ -33,11 +33,11 @@ dryrun=
 # dryrun=-n
 
 # See how much memory is available
-free -h
+which free &>/dev/null && free -h || true
 echo
 
 # Test upstream
-rm -rf */target/scala-*/{,test-}classes
+rm -rf {.,*}/*/target/scala-*/{,test-}classes
 cmd=(
   sbt
     -J-Xmx3G
@@ -45,9 +45,9 @@ cmd=(
     ++$SCALA_VER
     'set ThisBuild / parallelExecution := false'
     'set Global / concurrentRestrictions += Tags.limit(ScalaJSTags.Link, 1)'
-    test                                                # Test development-mode
-    'set ThisBuild / scalaJSStage := FullOptStage' test # Test production-mode
-    publishLocal                                        # For downstream tests
+    test                                                   # Test development-mode
+    'set ThisBuild / scalaJSStage := FullOptStage' JS/test # Test production-mode
+    publishLocal                                           # For downstream tests
 )
 echo "> $(printf "%s\n    " "${cmd[@]}")"
 [[ $dryrun == "-n" ]] || "${cmd[@]}"

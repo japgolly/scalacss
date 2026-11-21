@@ -87,8 +87,101 @@ object DslBase {
     /** 1/100th of the width of the viewport. */
     def vw = mkUnit(LengthUnit.vw)
 
+    /** 1/100th of the viewport's inline-axis size. */
+    def vi = mkUnit(LengthUnit.vi)
+
+    /** 1/100th of the viewport's block-axis size. */
+    def vb = mkUnit(LengthUnit.vb)
+
+    /** 1/100th of the small viewport width. */
+    def svw = mkUnit(LengthUnit.svw)
+
+    /** 1/100th of the small viewport height. */
+    def svh = mkUnit(LengthUnit.svh)
+
+    /** 1/100th of the small viewport inline-axis size. */
+    def svi = mkUnit(LengthUnit.svi)
+
+    /** 1/100th of the small viewport block-axis size. */
+    def svb = mkUnit(LengthUnit.svb)
+
+    /** 1/100th of the smaller small viewport dimension. */
+    def svmin = mkUnit(LengthUnit.svmin)
+
+    /** 1/100th of the larger small viewport dimension. */
+    def svmax = mkUnit(LengthUnit.svmax)
+
+    /** 1/100th of the large viewport width. */
+    def lvw = mkUnit(LengthUnit.lvw)
+
+    /** 1/100th of the large viewport height. */
+    def lvh = mkUnit(LengthUnit.lvh)
+
+    /** 1/100th of the large viewport inline-axis size. */
+    def lvi = mkUnit(LengthUnit.lvi)
+
+    /** 1/100th of the large viewport block-axis size. */
+    def lvb = mkUnit(LengthUnit.lvb)
+
+    /** 1/100th of the smaller large viewport dimension. */
+    def lvmin = mkUnit(LengthUnit.lvmin)
+
+    /** 1/100th of the larger large viewport dimension. */
+    def lvmax = mkUnit(LengthUnit.lvmax)
+
+    /** 1/100th of the dynamic viewport width. */
+    def dvw = mkUnit(LengthUnit.dvw)
+
+    /** 1/100th of the dynamic viewport height. */
+    def dvh = mkUnit(LengthUnit.dvh)
+
+    /** 1/100th of the dynamic viewport inline-axis size. */
+    def dvi = mkUnit(LengthUnit.dvi)
+
+    /** 1/100th of the dynamic viewport block-axis size. */
+    def dvb = mkUnit(LengthUnit.dvb)
+
+    /** 1/100th of the smaller dynamic viewport dimension. */
+    def dvmin = mkUnit(LengthUnit.dvmin)
+
+    /** 1/100th of the larger dynamic viewport dimension. */
+    def dvmax = mkUnit(LengthUnit.dvmax)
+
+    /** 1/100th of a query container's width. */
+    def cqw = mkUnit(LengthUnit.cqw)
+
+    /** 1/100th of a query container's height. */
+    def cqh = mkUnit(LengthUnit.cqh)
+
+    /** 1/100th of a query container's inline size. */
+    def cqi = mkUnit(LengthUnit.cqi)
+
+    /** 1/100th of a query container's block size. */
+    def cqb = mkUnit(LengthUnit.cqb)
+
+    /** 1/100th of the smaller of a query container's inline or block size. */
+    def cqmin = mkUnit(LengthUnit.cqmin)
+
+    /** 1/100th of the larger of a query container's inline or block size. */
+    def cqmax = mkUnit(LengthUnit.cqmax)
+
     /** Size as a percentage. */
     def %% = Percentage(self)
+
+    /** Fraction of available space in a CSS Grid container. */
+    def fr = Fr(self)
+
+    /** Angle in degrees (full circle = 360deg). */
+    def deg = Angle(self, AngleUnit.deg)
+
+    /** Angle in gradians (full circle = 400grad). */
+    def grad = Angle(self, AngleUnit.grad)
+
+    /** Angle in radians (full circle = 2π rad). */
+    def rad = Angle(self, AngleUnit.rad)
+
+    /** Angle in turns (full circle = 1turn). */
+    def turn = Angle(self, AngleUnit.turn)
 
     /** Dots per inch */
     def dpi  = Resolution(self, ResolutionUnit.dpi)
@@ -105,6 +198,8 @@ object DslBase {
 
     def *(l: Length[N])    (implicit N: Numeric[N]) = l * self
     def *(l: Resolution[N])(implicit N: Numeric[N]) = l * self
+    def *(f: Fr[N])        (implicit N: Numeric[N]) = f * self
+    def *(a: Angle[N])     (implicit N: Numeric[N]) = a * self
   }
 
   //final class DslStr(val self: String) extends AnyVal {
@@ -141,9 +236,9 @@ object DslBase {
     @inline def &(b: AVs): AVs = self ++ b
   }
 
-  final class DslCond(c: Cond, b: DslBase) {
+  final class DslCond(private val c: Cond) extends AnyVal {
     def apply(t: ToStyle*)(implicit u: Compose): StyleS =
-      c applyToStyle b.mixin(t: _*)
+      c applyToStyle Dsl.style(t: _*)
   }
 
   final class ToStyle(val s: StyleS) extends AnyVal
@@ -187,7 +282,7 @@ abstract class DslBase
   @inline implicit final def autoDslAV   (a: AV)           : DslAV          = new DslAV(a)
   @inline implicit final def autoDslAVs  (a: AVs)          : DslAVs         = new DslAVs(a)
 
-          implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(f(x), this)
+  @inline implicit final def DslCond[C](x: C)(implicit f: C => Cond): DslCond = new DslCond(f(x))
 
   @inline implicit final def ToAVToAV(x: ToAV): AV = x.av
 
@@ -278,8 +373,8 @@ object DslMacros {
   }
 
   trait MFontFace {
-    def apply(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String]
-    def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String]
+    def apply(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily]
+    def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily]
   }
 
   val defaultStyleFClassNameSuffix: (Any, Int) => String =
@@ -303,5 +398,11 @@ object Dsl extends DslBase {
 
   def style(t: ToStyle*)(implicit c: Compose): StyleS =
     if (t.isEmpty) StyleS.empty
-    else t.map(_.s).reduce(_ compose _)
+    else {
+      val it = t.iterator
+      var acc = it.next().s
+      while (it.hasNext)
+        acc = acc compose it.next().s
+      acc
+    }
 }

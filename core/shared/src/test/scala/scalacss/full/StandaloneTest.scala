@@ -35,63 +35,136 @@ object MyStandalone extends StyleSheet.Standalone {
       paddingLeft(i * 2.ex)
 }
 
+object MyStandaloneFeatures extends StyleSheet.Standalone {
+  import dsl._
+
+  val ff = fontFace("myFont")(
+    _.src("url(font.woff)")
+     .fontStyle.italic
+  )
+
+  val fade = keyframes(
+    (0 %%)   -> keyframe(color.red),
+    (100 %%) -> keyframe(color.blue)
+  )
+
+  "div.animated" - (
+    fontFamily(ff),
+    animationName(fade)
+  )
+
+  ("h1, h2").hover -
+    color.red
+
+  "a, button" - (
+    &.focus -
+      color.blue
+  )
+
+  ":is(h1, h2)".hover -
+    color.green
+}
+
 object StandaloneTest extends utest.TestSuite {
   import japgolly.microlibs.testutil.TestUtil._
   import utest._
 
   override def tests = Tests {
     def norm(css: String) = css.trim
-    assertMultiline(norm(MyStandalone.render), norm(
-      """
-        |div.std {
-        |  margin: 12px auto;
-        |  text-align: left;
-        |  cursor: pointer;
-        |  -ms-user-select: none;
-        |  -webkit-user-select: none;
-        |  user-select: none;
-        |}
-        |
-        |div.std:hover {
-        |  cursor: -webkit-zoom-in;
-        |  cursor: zoom-in;
-        |}
-        |
-        |div.std span {
-        |  color: red;
-        |}
-        |
-        |h1:first-child {
-        |  font-weight: bold;
-        |}
-        |
-        |.indent-0 {
-        |  padding-left: 0;
-        |}
-        |
-        |.indent-1 {
-        |  padding-left: 2ex;
-        |}
-        |
-        |.indent-2 {
-        |  padding-left: 4ex;
-        |}
-        |
-        |.indent-3 {
-        |  padding-left: 6ex;
-        |}
-        |
-        |@media not handheld and (orientation:landscape) and (color) {
-        |  div.std {
-        |    width: 500px;
-        |  }
-        |}
-        |
-        |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dppx) {
-        |  div.std {
-        |    width: 600px;
-        |  }
-        |}
-      """.stripMargin))
+
+    "basic" - {
+      assertMultiline(norm(MyStandalone.render), norm(
+        """
+          |div.std {
+          |  margin: 12px auto;
+          |  text-align: left;
+          |  cursor: pointer;
+          |  -ms-user-select: none;
+          |  -webkit-user-select: none;
+          |  user-select: none;
+          |}
+          |
+          |div.std:hover {
+          |  cursor: -webkit-zoom-in;
+          |  cursor: zoom-in;
+          |}
+          |
+          |div.std span {
+          |  color: red;
+          |}
+          |
+          |h1:first-child {
+          |  font-weight: bold;
+          |}
+          |
+          |.indent-0 {
+          |  padding-left: 0;
+          |}
+          |
+          |.indent-1 {
+          |  padding-left: 2ex;
+          |}
+          |
+          |.indent-2 {
+          |  padding-left: 4ex;
+          |}
+          |
+          |.indent-3 {
+          |  padding-left: 6ex;
+          |}
+          |
+          |@media not handheld and (orientation:landscape) and (color) {
+          |  div.std {
+          |    width: 500px;
+          |  }
+          |}
+          |
+          |@media tv and (min-device-aspect-ratio:4/3), all and (resolution:300dppx) {
+          |  div.std {
+          |    width: 600px;
+          |  }
+          |}
+        """.stripMargin))
+    }
+
+    "keyframesFontFaceAndCommaSelectors" - {
+      assertMultiline(norm(MyStandaloneFeatures.render), norm(
+        """
+          |@font-face {
+          |  font-family: myFont;
+          |  src: url(font.woff);
+          |  font-style: italic;
+          |}
+          |
+          |@keyframes MyStandaloneFeatures-fade {
+          |  0% {
+          |    color: red;
+          |  }
+          |
+          |  100% {
+          |    color: blue;
+          |  }
+          |
+          |}
+          |
+          |div.animated {
+          |  font-family: myFont;
+          |  -webkit-animation-name: MyStandaloneFeatures-fade;
+          |  animation-name: MyStandaloneFeatures-fade;
+          |}
+          |
+          |h1:hover, h2:hover {
+          |  color: red;
+          |}
+          |
+          |a:focus, button:focus {
+          |  color: blue;
+          |}
+          |
+          |:is(h1, h2):hover {
+          |  color: green;
+          |}
+        """.stripMargin))
+    }
   }
 }

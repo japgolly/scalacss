@@ -15,11 +15,11 @@ all_tests_values=(
   "-Ddownstream_tests.expect.prod=1 -Ddownstream_tests.fullOptJS -Dscalacss.mode=prod"
 )
 all_tests_keys=()
-declare -A all_tests
+all_tests=()
 i=0
 for t in "${all_tests_values[@]}"; do
   i=$((i+1))
-  all_tests_keys+=($i)
+  all_tests_keys+=("$i")
   all_tests[$i]="$t"
 done
 
@@ -79,7 +79,7 @@ fi
 # Make sure all declared tests actually exist
 all_good=1
 for t in "${tests[@]}"; do
-  if [ "${all_tests[$t]-x}" = x ]; then
+  if [[ ! "$t" =~ ^[0-9]+$ ]] || [ -z "${all_tests[$t]:-}" ]; then
     echo "Invalid test: $t" >&2
     all_good=0
   fi
@@ -111,8 +111,14 @@ function run {
   if [ "${#sbt_cmds[@]}" -eq 0 ]; then
     echo "Skipped."
   else
-    local cmd=(sbt --warn $args "${sbt_cmds[@]}")
-    echo "> ${cmd[@]}"
+    local arg_arr=()
+    read -r -a arg_arr <<< "$args"
+    local cmd=(sbt --warn)
+    if [ "${#arg_arr[@]}" -gt 0 ]; then
+      cmd+=("${arg_arr[@]}")
+    fi
+    cmd+=("${sbt_cmds[@]}")
+    echo "> ${cmd[*]}"
     [ $dryrun -eq 1 ] || "${cmd[@]}"
   fi
 }

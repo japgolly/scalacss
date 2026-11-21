@@ -1,14 +1,6 @@
-CanIUse subjects pending action:
-* appearance
-* backgroundImgOpts
-* canvas
-
 CanIUse subjects affecting CSS values:
 * calc
-* imageSet
-* sticky
 * viewportUnits
 
 CanIUse subjects affecting media queries:
-* deviceadaptation
 * mediaResolution

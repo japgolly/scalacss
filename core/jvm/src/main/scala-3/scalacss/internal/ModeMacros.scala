@@ -12,10 +12,9 @@ import scala.quoted._
 
 object ModeMacros {
 
-  private def readConfig(key: String): Option[String] =
-    (Option(System.getProperty(key, null)) orElse Option(System.getenv(key)))
-      .map(_.trim.toLowerCase)
-      .filter(_.nonEmpty)
+  private def readConfig(propKey: String, envKey: String): Option[String] =
+    Option(System.getProperty(propKey, null)).map(_.trim.toLowerCase).filter(_.nonEmpty) orElse
+    Option(System.getenv(envKey)).map(_.trim.toLowerCase).filter(_.nonEmpty)
 
   trait DevOrProdDefaults {
     transparent inline def devOrProdDefaults: Exports with mutable.Settings =
@@ -30,16 +29,16 @@ object ModeMacros {
 
     type S = Exports with mutable.Settings
     val expr: Expr[S] =
-      readConfig("scalacss.mode") match {
+      readConfig("scalacss.mode", "SCALACSS_MODE") match {
 
         case Some("dev") | None =>
-          '{ scalacss.DevDefaults }
+          '{ _root_.scalacss.DevDefaults }
 
         case Some("prod") =>
-          '{ scalacss.ProdDefaults }
+          '{ _root_.scalacss.ProdDefaults }
 
         case Some(x) =>
-          fail(s"Unrecognise option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
+          fail(s"Unrecognised option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
       }
 
     Inlined(None, Nil, expr.asTerm).asExprOf[S]

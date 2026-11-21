@@ -114,12 +114,20 @@ object StringRenderer {
                     kvn     : (String, String, Boolean) => Unit, //Key, value, wrap
                     end     : ()                        => Unit) = {
     start()
-    kv1("font-family", fontface.fontFamily, true)
+    kv1("font-family", fontface.fontFamily.name, true)
     kvn("src", fontface.src.whole.mkString(","), false)
+    for (v <- fontface.fontDisplay ) kvn("font-display" , v         , false)
     for (v <- fontface.fontStretch ) kvn("font-stretch" , v         , false)
     for (v <- fontface.fontStyle   ) kvn("font-style"   , v         , false)
     for (v <- fontface.fontWeight  ) kvn("font-weight"  , v         , false)
-    for (v <- fontface.unicodeRange) kvn("unicode-range", v.toString, false)
+    for (r <- fontface.unicodeRange) {
+      val s =
+        if (fontface.extraUnicodeRanges.isEmpty)
+          r.toString
+        else
+          (r +: fontface.extraUnicodeRanges).map(_.toString).mkString(",")
+      kvn("unicode-range", s, false)
+    }
     end()
   }
 
@@ -133,18 +141,18 @@ object StringRenderer {
    * Generates tiny CSS intended for browsers. No unnecessary whitespace or colons.
    */
   lazy val formatTiny: Format = sb => {
-    def kv(c: CssKV, quote: Boolean = false): Unit = {
-      sb append c.key
+    def kv(key: String, value: String, quote: Boolean): Unit = {
+      sb append key
       sb append ':'
-      quoteIfNeeded(sb, c.value, quote)
+      quoteIfNeeded(sb, value, quote)
     }
     FormatSB(
       kfStart  = n         => { sb append "@keyframes "; sb append n; sb append '{' },
       kfsStart = s         => { sb append s; sb append '{' },
       mqStart  = m         => { sb append m; sb append '{' },
       selStart = (_, s)    => { sb append s; sb append '{' },
-      kv1      = (_, _, c) => kv(c),
-      kvn      = (_, _, c) => { sb append ';'; kv (c) },
+      kv1      = (_, _, c) => kv(c.key, c.value, false),
+      kvn      = (_, _, c) => { sb append ';'; kv(c.key, c.value, false) },
       selEnd   = (_, _)    => sb append '}',
       mqEnd    = _         => sb append '}',
       kfsEnd   = _         => sb append '}',
@@ -152,9 +160,9 @@ object StringRenderer {
       ff       = fontface  =>
         printFontFace(
           fontface,
-          () => sb append "@font-face {",
-          (key: String, value: String, quote: Boolean) => kv(CssKV(key, value), quote),
-          (key: String, value: String, quote: Boolean) => { sb append ';'; kv(CssKV(key, value), quote) },
+          () => sb append "@font-face{",
+          (key: String, value: String, quote: Boolean) => kv(key, value, quote),
+          (key: String, value: String, quote: Boolean) => { sb append ';'; kv(key, value, quote) },
           () => sb append "}"
         ),
       done     = ()        => ())
@@ -168,14 +176,14 @@ object StringRenderer {
       if (mq.isDefined) sb append indent
     def kfIndent(kf: KeyframeSelectorO): Unit =
       if (kf.isDefined) sb append indent
-    def kv(kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV, quote: Boolean = false) = {
+    def kv(kf: KeyframeSelectorO, mq: CssMediaQueryO, key: String, value: String, quote: Boolean): Unit = {
       kfIndent(kf)
       mqIndent(mq)
       sb append indent
-      sb append c.key
+      sb append key
       sb append ':'
       sb append postColon
-      quoteIfNeeded(sb, c.value, quote)
+      quoteIfNeeded(sb, value, quote)
       sb append ";\n"
     }
     FormatSB(
@@ -190,8 +198,8 @@ object StringRenderer {
                    sb append sel
                    sb append " {\n"
                  },
-      kv1      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c),
-      kvn      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c),
+      kv1      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c.key, c.value, false),
+      kvn      = (kf: KeyframeSelectorO, mq: CssMediaQueryO, c: CssKV) => kv(kf, mq, c.key, c.value, false),
       selEnd   = (mq, _) => {
                    mqIndent(mq)
                    sb append "}\n"
@@ -200,14 +208,16 @@ object StringRenderer {
       mqEnd    = _ => sb append "}\n\n",
       kfsEnd   = _ => { sb append indent; sb append "}\n\n" },
       kfEnd    = _ => sb append "}\n\n",
-      ff       = fontface =>
+      ff       = fontface => {
+        val fkv = (key: String, value: String, quote: Boolean) => kv(None, None, key, value, quote)
         printFontFace(
           fontface,
           () => sb append "@font-face {\n",
-          (key: String, value: String, quote: Boolean) => kv(None, None, CssKV(key, value), quote),
-          (key: String, value: String, quote: Boolean) => kv(None, None, CssKV(key, value), quote),
+          fkv,
+          fkv,
           () => sb append "}\n\n"
-        ),
+        )
+      },
       done     = () => ())
   }
 

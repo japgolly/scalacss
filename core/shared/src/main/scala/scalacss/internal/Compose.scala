@@ -24,11 +24,14 @@ final case class Compose(rules: Compose.Rules) {
       // never self-conflicting against other attributes from `newAVs` itself.
       var intoAttrs = into.data.keySet
 
-      // Same attribute with identical values is an exact match (not a conflict).
+      def containsValue(vs: NonEmptyVector[Value], v: Value): Boolean =
+        (vs.head ==* v) || vs.tail.contains(v)
+
+      // Same attribute with identical values in identical order is an exact match (not a conflict).
       // Different values or overlapping attributes (eg. margin vs margin-left) are conflicts.
       def isConflict(a: Attr, nvs: NonEmptyVector[Value])(k: Attr, kvs: NonEmptyVector[Value]): Boolean =
         if (k ==* a)
-          !nvs.whole.forall(kvs.toSet.contains)
+          kvs !=* nvs
         else
           a.cmp(k).conflict
 
@@ -41,7 +44,7 @@ final case class Compose(rules: Compose.Rules) {
               case None =>
                 results.addAll(a, nvs)
               case Some(ovs) =>
-                val newVals = nvs.whole.filterNot(ovs.toSet.contains)
+                val newVals = nvs.iterator.filterNot(containsValue(ovs, _)).toVector
                 NonEmptyVector.maybe(newVals, results)(results.addAll(a, _))
             }
 
@@ -60,7 +63,7 @@ final case class Compose(rules: Compose.Rules) {
     }
 
     val newData =
-      b.data.foldLeft(a.data) { case (data, (cond, newAVs)) =>
+      b.dataSorted.foldLeft(a.data) { case (data, (cond, newAVs)) =>
         data.updated(cond,
           data.get(cond).fold(newAVs)(oldAVs =>
             mergeAVs(cond, newAVs, into = oldAVs)))

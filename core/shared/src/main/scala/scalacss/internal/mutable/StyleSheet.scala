@@ -20,15 +20,54 @@ object StyleSheet {
   private def fixRepl(s: String): String =
     s.replaceFirst("""^\$line.+[.$]\$iw[.$]""", "")
 
-  abstract class Base {
+  private[mutable] def mkClassNameHint(rawName: String): ClassNameHint = {
+    val s1 = fixRepl(rawName)
+    val dot = s1.lastIndexOf('.')
+    val s2 = if (dot >= 0) s1.substring(dot + 1) else s1
+    val s3 = s2.replaceFirst("\\$+$", "").replaceAll("\\$+", "_")
+    val s4 = Register.MacroName.Use.sanitise(s3)
+    val s5 =
+      if (s4.isEmpty) "StyleSheet"
+      else if (Register.isCssIdentStart(s4.charAt(0))) s4
+      else "_" + s4
+    ClassNameHint(s5)
+  }
+
+  abstract class Base extends Macros.Dsl.BaseMixin {
     protected def cssRegister: Register
 
     protected implicit val classNameHint: ClassNameHint =
-      ClassNameHint(
-        fixRepl(getClass.getName)
-          .replaceFirst("\\$+$", "")
-          .replaceFirst("""^(?:.+\.)(.+?)$""", "$1")
-          .replaceAll("\\$+", "_"))
+      mkClassNameHint(getClass.getName)
+
+    override protected def __macroKeyframes(name: String) = new MKeyframes(name)
+    override protected def __macroKeyframe                = new MKStyle
+    override protected def __macroFontFace                = new MFontFace
+
+    protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
+      override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
+        cssRegister.registerKeyframes(name, frames)
+    }
+
+    protected class MKStyle extends DslMacros.MStyle {
+      private def mk(s: StyleS): StyleA =
+        StyleA(s.className getOrElse ClassName("keyframe"), s.addClassNames, s)
+
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+        mk(Dsl.style(t: _*))
+
+      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
+        mk(Dsl.style(className)(t: _*))
+    }
+
+    protected class MFontFace extends DslMacros.MFontFace {
+      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
+        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(None)))
+      }
+
+      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[FontFamily]]): FontFace[FontFamily] = {
+        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(FontFamily(fontFamily)))))
+      }
+    }
 
     protected object dsl extends DslBase {
       override def styleS(t: ToStyle*)(implicit c: Compose) = Dsl.style(t: _*)
@@ -41,7 +80,7 @@ object StyleSheet {
         new CondOps(f(x))
 
       final class CondOps(val cond: Cond) {
-        @inline def - = new DslCond(cond, dsl)
+        @inline def - = new DslCond(cond)
       }
     }
 
@@ -129,18 +168,12 @@ object StyleSheet {
    */
   abstract class Inline(protected implicit val cssRegister: Register) extends Base with Macros.Dsl.Mixin {
 
-    override protected def __macroStyle    (name: String) = new MStyle (name)
-    override protected def __macroStyleF   (name: String) = new MStyleF(name)
-    override protected def __macroKeyframes(name: String) = new MKeyframes(name)
-    override protected def __macroKeyframe                = new MKStyle
-    override protected def __macroFontFace                = new MFontFace
+    override protected def __macroStyle (name: String) = new MStyle (name)
+    override protected def __macroStyleF(name: String) = new MStyleF(name)
 
     protected class MStyle(name: String) extends DslMacros.MStyle {
-      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
-        val s1 = Dsl.style(t: _*)
-        val s2 = cssRegister.applyMacroName(name, s1)
-        cssRegister registerS s2
-      }
+      override def apply(t: ToStyle*)(implicit c: Compose): StyleA =
+        cssRegister.registerS(name, Dsl.style(t: _*))
 
       override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
         cssRegister registerS Dsl.style(className)(t: _*)
@@ -152,31 +185,6 @@ object StyleSheet {
           case None    => cssRegister.registerFM(StyleF(f)(d), name)(classNameSuffix)
           case Some(n) => cssRegister.registerF2(StyleF(f)(d), n)(classNameSuffix)
         }
-    }
-
-    protected class MKeyframes(name: String) extends DslMacros.MKeyframes {
-      override def apply(frames: (KeyframeSelector, StyleA)*): Keyframes =
-        cssRegister.registerKeyframes(Keyframes(ClassName(name), frames))
-    }
-
-    protected class MKStyle extends DslMacros.MStyle {
-      override def apply(t: ToStyle*)(implicit c: Compose): StyleA = {
-        val s = Dsl.style(t: _*)
-        StyleA(ClassName("keyframe"), s.addClassNames, s)
-      }
-
-      override def apply(className: String)(t: ToStyle*)(implicit c: Compose): StyleA =
-        apply(t:_*)
-    }
-
-    protected class MFontFace extends DslMacros.MFontFace {
-      override def apply(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String] = {
-        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(None)))
-      }
-
-      override def apply(fontFamily: String)(config: FontFace.FontSrcSelector => FontFace[Option[String]]): FontFace[String] = {
-        cssRegister.registerFontFace(config(new FontFace.FontSrcSelector(Some(fontFamily))))
-      }
     }
 
     @inline final protected def & : Cond =

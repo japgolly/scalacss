@@ -205,6 +205,51 @@ object ValueTTest extends TestSuite {
         ()
       }
 
+      "Overflow" - {
+                      test[Overflow](inherit)
+                      test[Overflow](Dsl.revert)
+                      test[Overflow](Literal.Typed.auto)
+                      test[Overflow](Literal.Typed.hidden)
+                      test[Overflow](Literal.Typed.clip)
+                      test[Overflow](Literal.Typed.scroll)
+                      test[Overflow](Literal.Typed.visible)
+        compileError("test[Overflow](1)")
+        compileError("test[Overflow](len)")
+        compileError("test[Overflow](Color.black)")
+        compileError("test[Overflow](Literal.Typed.solid)")
+        ()
+      }
+
+      "Flex" - {
+        val f = Fr(1)
+                      test[Flex](inherit)
+                      test[Flex](f)
+        compileError("test[Flex](len)")
+        compileError("test[Flex](1)")
+        compileError("test[Len](f)")
+        ()
+      }
+
+      "Ang" - {
+        val a = Angle(90, AngleUnit.deg)
+                      test[Ang](inherit)
+                      test[Ang](a)
+        compileError("test[Ang](len)")
+        compileError("test[Ang](1)")
+        compileError("test[Len](a)")
+        ()
+      }
+
+      "NumPct" - {
+                      test[NumPct](inherit)
+                      test[NumPct](1)
+                      test[NumPct](1.5)
+                      test[NumPct](%%)
+        compileError("test[NumPct](len)")
+        compileError("test[NumPct](Color.black)")
+        ()
+      }
+
     }
 
     "timeValues" - {
@@ -216,6 +261,118 @@ object ValueTTest extends TestSuite {
       "millis"  - test(250.millis,    "250ms")
       "seconds" - test(3.seconds,     "3s")
       "minutes" - test(2.minutes,     "120s")
+    }
+
+    "concat" - {
+      val s: ValueT[Time] = sec
+      val m: ValueT[Time] = ms
+      assertEq(ValueT.concat(" ", len, %%), "12px 25%")
+      assertEq(ValueT.concat(" ", len, %%, s), "12px 25% 3s")
+      assertEq(ValueT.concat(",", len, %%, s, m), "12px,25%,3s,3ms")
+    }
+
+    "revert" - {
+      import Dsl.revert
+      assertEq((revert: ValueT[Len]).value,    "revert")
+      assertEq((revert: ValueT[Pct]).value,    "revert")
+      assertEq((revert: ValueT[Number]).value, "revert")
+      assertEq((revert: ValueT[Color]).value,  "revert")
+      assertEq((revert: ValueT[Time]).value,   "revert")
+    }
+
+    "revertLayer" - {
+      import Dsl.revertLayer
+      assertEq((revertLayer: ValueT[Len]).value,    "revert-layer")
+      assertEq((revertLayer: ValueT[Pct]).value,    "revert-layer")
+      assertEq((revertLayer: ValueT[Number]).value, "revert-layer")
+      assertEq((revertLayer: ValueT[Color]).value,  "revert-layer")
+      assertEq((revertLayer: ValueT[Time]).value,   "revert-layer")
+    }
+
+    "doubleFormatting" - {
+      import Dsl._
+      assertEq((1.0: ValueT[Number]).value,                 "1")
+      assertEq((0.0: ValueT[Number]).value,                 "0")
+      assertEq((2.5: ValueT[Number]).value,                 "2.5")
+      assertEq((2.0: ValueT[LenPctNum]).value,              "2")
+      assertEq((3.0: ValueT[IterationCount]).value,         "3")
+      assertEq(Attrs.opacity(1.0).value,                    "1")
+      assertEq(Length(2.0, LengthUnit.px).value,            "2px")
+      assertEq(Length(2.5, LengthUnit.em).value,            "2.5em")
+      assertEq(Length(0.0, LengthUnit.px).value,            "0")
+      assertEq(Length(-0.0, LengthUnit.px).value,           "0")
+      assertEq((2.0 px).value,                              "2px")
+      assertEq(Percentage(50.0).value,                      "50%")
+      assertEq(Percentage(33.3).value,                      "33.3%")
+      assertEq((50.0 %%).value,                             "50%")
+      assertEq(Resolution(300.0, ResolutionUnit.dpi).value, "300dpi")
+      assertEq(Resolution(1.5, ResolutionUnit.dppx).value,  "1.5dppx")
+      assertEq((300.0 dpi).value,                           "300dpi")
+    }
+
+    "viewportUnits" - {
+      import Dsl._
+      "vi" - assertEq(10.vi.value,    "10vi")
+      "vb" - assertEq(10.vb.value,    "10vb")
+      "svw" - assertEq(50.svw.value,   "50svw")
+      "svh" - assertEq(100.svh.value,  "100svh")
+      "svi" - assertEq(10.svi.value,   "10svi")
+      "svb" - assertEq(10.svb.value,   "10svb")
+      "svmin" - assertEq(10.svmin.value, "10svmin")
+      "svmax" - assertEq(10.svmax.value, "10svmax")
+      "lvw" - assertEq(50.lvw.value,   "50lvw")
+      "lvh" - assertEq(100.lvh.value,  "100lvh")
+      "lvi" - assertEq(10.lvi.value,   "10lvi")
+      "lvb" - assertEq(10.lvb.value,   "10lvb")
+      "lvmin" - assertEq(10.lvmin.value, "10lvmin")
+      "lvmax" - assertEq(10.lvmax.value, "10lvmax")
+      "dvw" - assertEq(50.dvw.value,   "50dvw")
+      "dvh" - assertEq(100.dvh.value,  "100dvh")
+      "dvi" - assertEq(10.dvi.value,   "10dvi")
+      "dvb" - assertEq(10.dvb.value,   "10dvb")
+      "dvmin" - assertEq(10.dvmin.value, "10dvmin")
+      "dvmax" - assertEq(10.dvmax.value, "10dvmax")
+      "height" - assertEq(height(100.dvh).value, "100dvh")
+    }
+
+    "containerQueryUnits" - {
+      import Dsl._
+      "cqw" - assertEq(10.cqw.value,   "10cqw")
+      "cqh" - assertEq(20.cqh.value,   "20cqh")
+      "cqi" - assertEq(5.cqi.value,    "5cqi")
+      "cqb" - assertEq(5.cqb.value,    "5cqb")
+      "cqmin" - assertEq(5.cqmin.value,  "5cqmin")
+      "cqmax" - assertEq(5.cqmax.value,  "5cqmax")
+      "fontSize" - assertEq(fontSize(5.cqi).value, "5cqi")
+    }
+
+    "frUnit" - {
+      import Dsl._
+      assertEq(1.fr.value,           "1fr")
+      assertEq(1.5.fr.value,         "1.5fr")
+      assertEq(2.0.fr.value,         "2fr")
+      assertEq(0.fr.value,           "0fr")
+      assertEq((-0.0).fr.value,      "0fr")
+      assertEq((2.fr * 3).value,     "6fr")
+      assertEq((3 * 2.fr).value,     "6fr")
+      assertEq((3.fr / 2).value,     "1.5fr")
+      assertEq((gridTemplateColumns := 1.fr).value, "1fr")
+    }
+
+    "angleUnits" - {
+      import Dsl._
+      assertEq(90.deg.value,         "90deg")
+      assertEq(100.grad.value,       "100grad")
+      assertEq(1.5.rad.value,        "1.5rad")
+      assertEq(0.5.turn.value,       "0.5turn")
+      assertEq(90.0.deg.value,       "90deg")
+      assertEq(0.deg.value,          "0deg")
+      assertEq((-0.0).deg.value,     "0deg")
+      assertEq((-(45.deg)).value,    "-45deg")
+      assertEq((45.deg * 2).value,   "90deg")
+      assertEq((2 * 45.deg).value,   "90deg")
+      assertEq((90.deg / 2).value,   "45deg")
+      assertEq((imageOrientation := 90.deg).value, "90deg")
     }
   }
 }
