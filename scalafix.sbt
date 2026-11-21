@@ -4,5 +4,3 @@ ThisBuild / scalacOptions ++= {
   else
     Nil
 }
-
-ThisBuild / semanticdbEnabled := true

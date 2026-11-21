@@ -3,8 +3,6 @@ package scalacss.internal
 import japgolly.univeq._
 import scala.collection.immutable.SortedSet
 
-// TODO Rename PseudoXxxxx (selector probably)
-
 /** http://www.w3.org/TR/selectors/#selector-syntax */
 sealed abstract class PseudoType(val priority: Short)
 
@@ -32,7 +30,10 @@ sealed abstract class Pseudo extends Pseudo.ChainOps[Pseudo]  {
 
   // apply() is used by Dsl
   final def modSelector(sel: CssSelector): CssSelector =
-    sel + cssValue
+    if (sel.indexOf(',') < 0)
+      sel + cssValue
+    else
+      Pseudo.modSelectorList(sel, cssValue)
 
   protected final def addPseudo(that: Pseudo): Pseudo =
     (this, that) match {
@@ -74,6 +75,51 @@ object Pseudo {
 
   type PseudoF = ChainOps[Pseudo] => Pseudo
 
+  private[internal] def modSelectorList(sel: String, suffix: String): String = {
+    val len      = sel.length
+    val sb       = new java.lang.StringBuilder(len + suffix.length * 2)
+    var depth    = 0
+    var quote    = '\u0000'
+    var segStart = 0
+    var i        = 0
+
+    def appendSegment(start: Int, end: Int): Unit = {
+      var trimmedEnd = end
+      while (trimmedEnd > start && sel.charAt(trimmedEnd - 1).isWhitespace)
+        trimmedEnd -= 1
+      sb.append(sel, start, trimmedEnd)
+      if (trimmedEnd > start)
+        sb.append(suffix)
+      sb.append(sel, trimmedEnd, end)
+    }
+
+    while (i < len) {
+      val c = sel.charAt(i)
+      if (quote != '\u0000') {
+        if (c == '\\' && i + 1 < len)
+          i += 1
+        else if (c == quote)
+          quote = '\u0000'
+      } else if (c == '\\' && i + 1 < len) {
+        i += 1
+      } else if (c == '"' || c == '\'') {
+        quote = c
+      } else if (c == '(' || c == '[') {
+        depth += 1
+      } else if (c == ')' || c == ']') {
+        if (depth > 0)
+          depth -= 1
+      } else if (c == ',' && depth == 0) {
+        appendSegment(segStart, i)
+        sb.append(',')
+        segStart = i + 1
+      }
+      i += 1
+    }
+    appendSegment(segStart, len)
+    sb.toString
+  }
+
   /**
    * A single [[Pseudo]] instance. Not a composite.
    *
@@ -110,6 +156,9 @@ object Pseudo {
   /** Selects the active link. */
   case object Active extends Single(":active", PseudoType.Class)
 
+  /** Matches an element if the element would match either `:link` or `:visited`. */
+  case object AnyLink extends Single(":any-link", PseudoType.Class)
+
   /** Selects every checked &lt;input&gt; element. */
   case object Checked extends Single(":checked", PseudoType.Class)
 
@@ -131,6 +180,19 @@ object Pseudo {
   /** Selects the &lt;input&gt; element that has focus. */
   case object Focus extends Single(":focus", PseudoType.Class)
 
+  /** Selects an element that matches `:focus` and whose focus should be visibly indicated. */
+  case object FocusVisible extends Single(":focus-visible", PseudoType.Class)
+
+  /** Selects an element if it or any of its descendants has focus. */
+  case object FocusWithin extends Single(":focus-within", PseudoType.Class)
+
+  /** Matches an element if any of the relative selectors passed as parameters match at least one element when anchored against this element. */
+  final case class Has(selector: String) extends Single(s":has($selector)", PseudoType.Class)
+  object Has {
+    def apply(s: Pseudo, sn: Pseudo*): Has = Has(joinPseudos(s, sn))
+    def apply(f: PseudoF): Has             = Has(f(ChainOps))
+  }
+
   /** Selects links on mouse over. */
   case object Hover extends Single(":hover", PseudoType.Class)
 
@@ -139,6 +201,16 @@ object Pseudo {
 
   /** Selects all &lt;input&gt; elements with an invalid value. */
   case object Invalid extends Single(":invalid", PseudoType.Class)
+
+  private def joinPseudos(s: Pseudo, sn: Seq[Pseudo]): String =
+    if (sn.isEmpty) s.cssValue else (s +: sn).iterator.map(_.cssValue).mkString(", ")
+
+  /** Matches any element that matches any of the selectors in the list. */
+  final case class Is(selector: String) extends Single(s":is($selector)", PseudoType.Class)
+  object Is {
+    def apply(s: Pseudo, sn: Pseudo*): Is = Is(joinPseudos(s, sn))
+    def apply(f: PseudoF): Is             = Is(f(ChainOps))
+  }
 
   /** Selects every &lt;p&gt; element with a lang attribute value starting with "it". */
   final case class Lang(language: String) extends Single(s":lang($language)", PseudoType.Class)
@@ -152,25 +224,37 @@ object Pseudo {
   /** Selects all unvisited link. */
   case object Link extends Single(":link", PseudoType.Class)
 
-  /** Selects every element that is not a &lt;p&gt; element. */
+  /** Selects every element that does not match any of the given selectors. */
   final case class Not(selector: String) extends Single(s":not($selector)", PseudoType.Class)
   object Not {
-    def apply(selector: Pseudo): Not = Not(selector.cssValue)
-    def apply(f: PseudoF)      : Not = Not(f(ChainOps))
+    def apply(s: Pseudo, sn: Pseudo*): Not = Not(joinPseudos(s, sn))
+    def apply(f: PseudoF)            : Not = Not(f(ChainOps))
   }
 
   type NthQuery = String
 
   object NthChildBase {
-    val queryPattern = """^((\+|-)?\d+|odd|even)$""".r.pattern
-    val fQueryPattern = """^((\+|-)?\d*)?n((\+|-)\d+)?$""".r.pattern
+    private val queryPattern = """(?i)^(?:[+-]?\d+|odd|even)$""".r.pattern
+    private val fQueryPattern = """(?i)^[+-]?\d*n(?:\s*[+-]\s*\d+)?$""".r.pattern
+    private val ofSelectorPattern = """(?i)^(.+?)\s+of\s+(\S.*)$""".r.pattern
+
+    private def validate(cls: String, query: NthQuery): String = {
+      val trimmed = query.trim
+      val m = ofSelectorPattern.matcher(trimmed)
+      val anPlusB =
+        if ((cls == "nth-child" || cls == "nth-last-child") && m.matches())
+          m.group(1)
+        else
+          trimmed
+      require(
+        queryPattern.matcher(anPlusB).matches() || fQueryPattern.matcher(anPlusB).matches(),
+        s"Invalid NthQuery: '$query'")
+      trimmed
+    }
   }
 
-  sealed abstract class NthChildBase(cls: String, query: NthQuery) extends Single(s":$cls($query)", PseudoType.Class) {
-    require(
-      NthChildBase.queryPattern.matcher(query).matches() || NthChildBase.fQueryPattern.matcher(query).matches(),
-      s"Invalid NthQuery: '$query'")
-  }
+  sealed abstract class NthChildBase(cls: String, query: NthQuery)
+    extends Single(s":$cls(${NthChildBase.validate(cls, query)})", PseudoType.Class)
 
   /** Selects every &lt;p&gt; element that is the second child of its parent. */
   final case class NthChild(query: NthQuery) extends NthChildBase("nth-child", query)
@@ -196,6 +280,9 @@ object Pseudo {
   /** Selects &lt;input&gt; elements with a value outside a specified range. */
   case object OutOfRange extends Single(":out-of-range", PseudoType.Class)
 
+  /** Represents any &lt;input&gt; or &lt;textarea&gt; element that is currently displaying placeholder text. */
+  case object PlaceholderShown extends Single(":placeholder-shown", PseudoType.Class)
+
   /** Selects &lt;input&gt; elements with a "readonly" attribute specified. */
   case object ReadOnly extends Single(":read-only", PseudoType.Class)
 
@@ -205,8 +292,8 @@ object Pseudo {
   /** Selects &lt;input&gt; elements with a "required" attribute specified. */
   case object Required extends Single(":required", PseudoType.Class)
 
-  // /** Selects the document's root element. */
-  // case object Root extends Pseudo1(":root")
+  /** Selects the document's root element. */
+  case object Root extends Single(":root", PseudoType.Class)
 
   /** Selects the current active #news element (clicked on a URL containing that anchor name). */
   case object Target extends Single(":target", PseudoType.Class)
@@ -217,8 +304,18 @@ object Pseudo {
   /** Selects all visited link. */
   case object Visited extends Single(":visited", PseudoType.Class)
 
+  /** Matches any element that matches any of the selectors in the list with 0 specificity. */
+  final case class Where(selector: String) extends Single(s":where($selector)", PseudoType.Class)
+  object Where {
+    def apply(s: Pseudo, sn: Pseudo*): Where = Where(joinPseudos(s, sn))
+    def apply(f: PseudoF): Where             = Where(f(ChainOps))
+  }
+
   /** Insert content after every &lt;p&gt; element. */
   case object After extends Single("::after", PseudoType.Element)
+
+  /** A box the size of the viewport rendered immediately beneath any element being presented in the top layer. */
+  case object Backdrop extends Single("::backdrop", PseudoType.Element)
 
   /** Insert content before every &lt;p&gt; element. */
   case object Before extends Single("::before", PseudoType.Element)
@@ -229,31 +326,57 @@ object Pseudo {
   /** Selects the first line of every &lt;p&gt; element. */
   case object FirstLine extends Single("::first-line", PseudoType.Element)
 
+  /** Selects the marker box of a list item, which typically contains a bullet or number. */
+  case object Marker extends Single("::marker", PseudoType.Element)
+
+  /** Selects placeholder text inside an input or textarea element. */
+  case object Placeholder extends Single("::placeholder", PseudoType.Element)
+
   /** Selects the portion of an element that is selected by a user  . */
   case object Selection extends Single("::selection", PseudoType.Element)
+
+  /** Case-sensitivity flag for CSS attribute selectors. */
+  sealed abstract class AttrCase(final val cssSuffix: String)
+  object AttrCase {
+    case object Default     extends AttrCase("")
+    case object Insensitive extends AttrCase(" i")
+    case object Sensitive   extends AttrCase(" s")
+    implicit def univEq: UnivEq[AttrCase] = UnivEq.derive
+  }
 
   /** Selects all elements with a name attribute. */
   final case class AttrExists(name: String)
     extends Single(s"[$name]", PseudoType.Attr)
 
-  final case class AttrSelector(name: String, value: String, op: String)
-    extends Single(s"""[$name$op"$value"]""", PseudoType.Attr)
+  final case class AttrSelector(name: String, value: String, op: String, attrCase: AttrCase = AttrCase.Default)
+    extends Single(s"[$name$op${Util.quote(value, '"')}${attrCase.cssSuffix}]", PseudoType.Attr) {
+    def caseInsensitive: AttrSelector = copy(attrCase = AttrCase.Insensitive)
+    def caseSensitive  : AttrSelector = copy(attrCase = AttrCase.Sensitive)
+  }
 
   /** Selects all elements with a name="value". */
-  def Attr(name: String, value: String) =
-    AttrSelector(name, value, "=")
+  def Attr(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "=", attrCase)
 
   /** Selects all elements with a name containing the word value. */
-  def AttrContains(name: String, value: String) =
-    AttrSelector(name, value, "~=")
+  def AttrContains(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "~=", attrCase)
 
   /** Selects all elements with a name starting with value. */
-  def AttrStartsWith(name: String, value: String) =
-    AttrSelector(name, value, "^=")
+  def AttrStartsWith(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "^=", attrCase)
 
   /** Selects all elements with a name ends with value. */
-  def AttrEndsWith(name: String, value: String) =
-    AttrSelector(name, value, "$=")
+  def AttrEndsWith(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "$=", attrCase)
+
+  /** Selects all elements with an attribute equal to `value` or starting with `value-`. */
+  def AttrDashMatch(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "|=", attrCase)
+
+  /** Selects all elements with an attribute containing the substring `value`. */
+  def AttrSubstring(name: String, value: String, attrCase: AttrCase = AttrCase.Default) =
+    AttrSelector(name, value, "*=", attrCase)
 
   implicit def univEqSingle   : UnivEq[Single   ] = UnivEq.derive
   implicit def univEqComposite: UnivEq[Composite] = UnivEq.force
@@ -281,51 +404,70 @@ object Pseudo {
     */
   trait ChainOps[Out] {
     protected def addPseudo(p: Pseudo): Out
-    final def active                                     : Out = addPseudo(Active)
-    final def after                                      : Out = addPseudo(After)
-    final def attr          (name: String, value: String): Out = addPseudo(Attr(name, value))
-    final def attrContains  (name: String, value: String): Out = addPseudo(AttrContains(name, value))
-    final def attrEndsWith  (name: String, value: String): Out = addPseudo(AttrEndsWith(name, value))
-    final def attrExists    (name: String)               : Out = addPseudo(AttrExists(name))
-    final def attrStartsWith(name: String, value: String): Out = addPseudo(AttrStartsWith(name, value))
-    final def before                                     : Out = addPseudo(Before)
-    final def checked                                    : Out = addPseudo(Checked)
-    final def disabled                                   : Out = addPseudo(Disabled)
-    final def empty                                      : Out = addPseudo(Empty)
-    final def enabled                                    : Out = addPseudo(Enabled)
-    final def firstChild                                 : Out = addPseudo(FirstChild)
-    final def firstLetter                                : Out = addPseudo(FirstLetter)
-    final def firstLine                                  : Out = addPseudo(FirstLine)
-    final def firstOfType                                : Out = addPseudo(FirstOfType)
-    final def focus                                      : Out = addPseudo(Focus)
-    final def hover                                      : Out = addPseudo(Hover)
-    final def inRange                                    : Out = addPseudo(InRange)
-    final def invalid                                    : Out = addPseudo(Invalid)
-    final def lang          (language: String)           : Out = addPseudo(Lang(language))
-    final def lastChild                                  : Out = addPseudo(LastChild)
-    final def lastOfType                                 : Out = addPseudo(LastOfType)
-    final def link                                       : Out = addPseudo(Link)
-    final def not           (f: PseudoF)                 : Out = addPseudo(Not(f))
-    final def not           (selector: Pseudo)           : Out = addPseudo(Not(selector))
-    final def not           (selector: String)           : Out = addPseudo(Not(selector))
-    final def nthChild      (n: Int)                     : Out = addPseudo(NthChild(n.toString))
-    final def nthChild      (q: NthQuery)                : Out = addPseudo(NthChild(q))
-    final def nthLastChild  (n: Int)                     : Out = addPseudo(NthLastChild(n.toString))
-    final def nthLastChild  (q: NthQuery)                : Out = addPseudo(NthLastChild(q))
-    final def nthLastOfType (n: Int)                     : Out = addPseudo(NthLastOfType(n.toString))
-    final def nthLastOfType (q: NthQuery)                : Out = addPseudo(NthLastOfType(q))
-    final def nthOfType     (n: Int)                     : Out = addPseudo(NthOfType(n.toString))
-    final def nthOfType     (q: NthQuery)                : Out = addPseudo(NthOfType(q))
-    final def onlyChild                                  : Out = addPseudo(OnlyChild)
-    final def onlyOfType                                 : Out = addPseudo(OnlyOfType)
-    final def optional                                   : Out = addPseudo(Optional)
-    final def outOfRange                                 : Out = addPseudo(OutOfRange)
-    final def readOnly                                   : Out = addPseudo(ReadOnly)
-    final def readWrite                                  : Out = addPseudo(ReadWrite)
-    final def required                                   : Out = addPseudo(Required)
-    final def selection                                  : Out = addPseudo(Selection)
-    final def target                                     : Out = addPseudo(Target)
-    final def valid                                      : Out = addPseudo(Valid)
-    final def visited                                    : Out = addPseudo(Visited)
+    final def active                                                                            : Out = addPseudo(Active)
+    final def after                                                                             : Out = addPseudo(After)
+    final def anyLink                                                                           : Out = addPseudo(AnyLink)
+    final def attr          (name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(Attr(name, value, attrCase))
+    final def attrContains  (name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(AttrContains(name, value, attrCase))
+    final def attrDashMatch (name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(AttrDashMatch(name, value, attrCase))
+    final def attrEndsWith  (name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(AttrEndsWith(name, value, attrCase))
+    final def attrExists    (name: String)                                                      : Out = addPseudo(AttrExists(name))
+    final def attrStartsWith(name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(AttrStartsWith(name, value, attrCase))
+    final def attrSubstring (name: String, value: String, attrCase: AttrCase = AttrCase.Default): Out = addPseudo(AttrSubstring(name, value, attrCase))
+    final def backdrop                                                                          : Out = addPseudo(Backdrop)
+    final def before                                                                            : Out = addPseudo(Before)
+    final def checked                                                                           : Out = addPseudo(Checked)
+    final def disabled                                                                          : Out = addPseudo(Disabled)
+    final def empty                                                                             : Out = addPseudo(Empty)
+    final def enabled                                                                           : Out = addPseudo(Enabled)
+    final def firstChild                                                                        : Out = addPseudo(FirstChild)
+    final def firstLetter                                                                       : Out = addPseudo(FirstLetter)
+    final def firstLine                                                                         : Out = addPseudo(FirstLine)
+    final def firstOfType                                                                       : Out = addPseudo(FirstOfType)
+    final def focus                                                                             : Out = addPseudo(Focus)
+    final def focusVisible                                                                      : Out = addPseudo(FocusVisible)
+    final def focusWithin                                                                       : Out = addPseudo(FocusWithin)
+    final def has           (f: PseudoF)                                                        : Out = addPseudo(Has(f))
+    final def has           (s: Pseudo, sn: Pseudo*)                                            : Out = addPseudo(Has(s, sn: _*))
+    final def has           (selector: String)                                                  : Out = addPseudo(Has(selector))
+    final def hover                                                                             : Out = addPseudo(Hover)
+    final def inRange                                                                           : Out = addPseudo(InRange)
+    final def invalid                                                                           : Out = addPseudo(Invalid)
+    final def is            (f: PseudoF)                                                        : Out = addPseudo(Is(f))
+    final def is            (s: Pseudo, sn: Pseudo*)                                            : Out = addPseudo(Is(s, sn: _*))
+    final def is            (selector: String)                                                  : Out = addPseudo(Is(selector))
+    final def lang          (language: String)                                                  : Out = addPseudo(Lang(language))
+    final def lastChild                                                                         : Out = addPseudo(LastChild)
+    final def lastOfType                                                                        : Out = addPseudo(LastOfType)
+    final def link                                                                              : Out = addPseudo(Link)
+    final def marker                                                                            : Out = addPseudo(Marker)
+    final def not           (f: PseudoF)                                                        : Out = addPseudo(Not(f))
+    final def not           (s: Pseudo, sn: Pseudo*)                                            : Out = addPseudo(Not(s, sn: _*))
+    final def not           (selector: String)                                                  : Out = addPseudo(Not(selector))
+    final def nthChild      (n: Int)                                                            : Out = addPseudo(NthChild(n.toString))
+    final def nthChild      (q: NthQuery)                                                       : Out = addPseudo(NthChild(q))
+    final def nthLastChild  (n: Int)                                                            : Out = addPseudo(NthLastChild(n.toString))
+    final def nthLastChild  (q: NthQuery)                                                       : Out = addPseudo(NthLastChild(q))
+    final def nthLastOfType (n: Int)                                                            : Out = addPseudo(NthLastOfType(n.toString))
+    final def nthLastOfType (q: NthQuery)                                                       : Out = addPseudo(NthLastOfType(q))
+    final def nthOfType     (n: Int)                                                            : Out = addPseudo(NthOfType(n.toString))
+    final def nthOfType     (q: NthQuery)                                                       : Out = addPseudo(NthOfType(q))
+    final def onlyChild                                                                         : Out = addPseudo(OnlyChild)
+    final def onlyOfType                                                                        : Out = addPseudo(OnlyOfType)
+    final def optional                                                                          : Out = addPseudo(Optional)
+    final def outOfRange                                                                        : Out = addPseudo(OutOfRange)
+    final def placeholder                                                                       : Out = addPseudo(Placeholder)
+    final def placeholderShown                                                                  : Out = addPseudo(PlaceholderShown)
+    final def readOnly                                                                          : Out = addPseudo(ReadOnly)
+    final def readWrite                                                                         : Out = addPseudo(ReadWrite)
+    final def required                                                                          : Out = addPseudo(Required)
+    final def root                                                                              : Out = addPseudo(Root)
+    final def selection                                                                         : Out = addPseudo(Selection)
+    final def target                                                                            : Out = addPseudo(Target)
+    final def valid                                                                             : Out = addPseudo(Valid)
+    final def visited                                                                           : Out = addPseudo(Visited)
+    final def where         (f: PseudoF)                                                        : Out = addPseudo(Where(f))
+    final def where         (s: Pseudo, sn: Pseudo*)                                            : Out = addPseudo(Where(s, sn: _*))
+    final def where         (selector: String)                                                  : Out = addPseudo(Where(selector))
   }
 }

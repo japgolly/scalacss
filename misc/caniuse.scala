@@ -52,11 +52,16 @@ object Caniuse {
       ,"cssBackgroundOffsets"
       ,"cssFeaturequeries"
       ,"cssFixed"
+      ,"calc"
+      ,"canvas"
+      ,"cascadeLayers"
+      ,"cascadeScope"
       ,"cssGencontent"
       ,"cssImageOrientation"
       ,"currentcolor"
       ,"defaultPseudo"
       ,"descendantGtgt"
+      ,"deviceadaptation"
       ,"devicepixelratio"
       ,"dirPseudo"
       ,"elementFunction"
@@ -107,7 +112,6 @@ object Caniuse {
       ,"table"
       ,"ttf"
       ,"unsetValue"
-      ,"variables"
       ,"variables"
       ,"willChange"
       ,"zoom"
@@ -254,19 +258,7 @@ object Caniuse {
 
     def fmtpref2(p: String) = String.format("%-6s", p)
 
-    val valAttrs = Set(
-      "animation",
-      "borderImage",
-      "borderRadius",
-      "counters",
-      "flexbox",
-      "grid",
-      "masks",
-      "multicolumn",
-      "outline",
-      "shapes",
-      "textDecoration",
-      "transitions")
+    val valAttrs = Set.empty[String]
 
     def fmtpref(p: String): String = {
       val p2 = fmtpref2(p)
@@ -281,8 +273,7 @@ object Caniuse {
 
     def fmtAgent(a: Agent) = {
       import a._
-      val p2 = fmtpref2(prefix)
-      s"""val $key = Agent($p2, ${fmtmap(fmtstr, identity[String])(prefixExceptions)})"""
+      s"""val $key = Agent("${key.trim}", $prefix, ${fmtmap(fmtstr, identity[String])(prefixExceptions)})"""
     }
 
     def fmtData(d: Data) = {
@@ -341,7 +332,7 @@ object $obj {
 
   import Prefix._
 
-  final case class Agent(prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
+  final case class Agent(name: String, prefix: Prefix, prefixExceptions: Map[VerStr, Prefix])
   object Agent {
     ${agents.sortBy(_.key) map fmtAgent mkString "\n    "}
     implicit def univEq: UnivEq[Agent] = UnivEq.derive

@@ -284,13 +284,14 @@ object MyInlineWithFontFace extends StyleSheet.Inline {
     _.src("local(HelveticaNeue)", "url(font2.woff)")
       .fontStretch.ultraCondensed
       .fontWeight._200)
-  val ff4 = fontFace("myFont3")(_.src("local(HelveticaNeue)", "url(font2.woff)"))
+  val ff4 = fontFace("MyFont 4")(_.src("local(HelveticaNeue)", "url(font2.woff)"))
   val ff5 = fontFace(_.src("local(HelveticaNeue)", "url(font2.woff)"))
   val ff6 = fontFace(_.src("local(HelveticaNeue)", "url(font.woff)"))
 
   val myFontText = style(fontFamily(ff))
   val myFontText2 = style(fontFamily(ff3))
   val myFontText3 = style(fontFamily(ff6))
+  val myFontText4 = style(fontFamily(ff4))
 }
 
 object MyInlineAddClassNames extends StyleSheet.Inline {
@@ -318,6 +319,7 @@ object InlineTest extends utest.TestSuite {
         |  margin: 12px;
         |  padding: 0.5ex;
         |  cursor: pointer;
+        |  -webkit-text-decoration-line: underline overline;
         |  text-decoration-line: underline overline;
         |  background-image: -o-radial-gradient(5em circle at top left, yellow, blue);
         |  background-image: -webkit-radial-gradient(5em circle at top left, yellow, blue);
@@ -330,10 +332,12 @@ object InlineTest extends utest.TestSuite {
         |  font-weight: normal;
         |  line-height: 1em;
         |  padding: 0;
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:not(:first-child):visited {
+        |  -webkit-animation-delay: 60s,50ms;
         |  animation-delay: 60s,50ms;
         |  font-weight: bold;
         |  font: inherit;
@@ -511,10 +515,12 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.MyInline3-attr04 {
+        |  -webkit-initial-letter: 3;
         |  initial-letter: 3;
         |}
         |
         |.MyInline3-attr05 {
+        |  -webkit-initial-letter: 3.2 5;
         |  initial-letter: 3.2 5;
         |}
         |
@@ -549,70 +555,70 @@ object InlineTest extends utest.TestSuite {
       """.stripMargin))
 
     "classnames" - {
-      "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClass, "manual")
+      "manual" - assertEq(MyInline.noMacrosOrClassnameHintHere.htmlClasses, "manual")
 
       "manualF" - {
-        assertEq(MyInline3.innerObject.mybool(true).htmlClass, "blah-t")
-        assertEq(MyInline3.innerObject.mybool(false).htmlClass, "blah-f")
+        assertEq(MyInline3.innerObject.mybool(true).htmlClasses, "blah-t")
+        assertEq(MyInline3.innerObject.mybool(false).htmlClasses, "blah-f")
 
         object SS extends StyleSheet.Inline {
           import dsl._
           val s1 = styleF("custom")(Domain.boolean.option)(_ => styleS(color.red))
           val s2 = styleF("custom2")(Domain.boolean)(_ => styleS(color.blue), (_, i) => s"x$i")
         }
-        assertEq(SS.s1(None).htmlClass, "custom-1")
-        assertEq(SS.s1(Some(true)).htmlClass, "custom-2")
-        assertEq(SS.s1(Some(false)).htmlClass, "custom-3")
-        assertEq(SS.s2(true).htmlClass, "custom2-x0")
-        assertEq(SS.s2(false).htmlClass, "custom2-x1")
+        assertEq(SS.s1(None).htmlClasses, "custom-1")
+        assertEq(SS.s1(Some(true)).htmlClasses, "custom-2")
+        assertEq(SS.s1(Some(false)).htmlClasses, "custom-3")
+        assertEq(SS.s2(true).htmlClasses, "custom2-x0")
+        assertEq(SS.s2(false).htmlClasses, "custom2-x1")
       }
 
       "everythingOk" - {
-        assertEq(MyInline2.everythingOk(true) .htmlClass, "MyInline2-everythingOk-t")
-        assertEq(MyInline2.everythingOk(false).htmlClass, "MyInline2-everythingOk-f")
+        assertEq(MyInline2.everythingOk(true) .htmlClasses, "MyInline2-everythingOk-t")
+        assertEq(MyInline2.everythingOk(false).htmlClasses, "MyInline2-everythingOk-f")
       }
 
       "indent" - {
-        assertEq(MyInline2.indent(2).htmlClass, "MyInline2-indent-2")
-        assertEq(MyInline2.indent(3).htmlClass, "MyInline2-indent-3")
-        assertEq(MyInline2.indent(4).htmlClass, "MyInline2-indent-4")
+        assertEq(MyInline2.indent(2).htmlClasses, "MyInline2-indent-2")
+        assertEq(MyInline2.indent(3).htmlClasses, "MyInline2-indent-3")
+        assertEq(MyInline2.indent(4).htmlClasses, "MyInline2-indent-4")
       }
 
       "opbool" - {
-        assertEq(MyInline2.opbool(None)       .htmlClass, "MyInline2-opbool-1")
-        assertEq(MyInline2.opbool(Some(true)) .htmlClass, "MyInline2-opbool-2")
-        assertEq(MyInline2.opbool(Some(false)).htmlClass, "MyInline2-opbool-3")
+        assertEq(MyInline2.opbool(None)       .htmlClasses, "MyInline2-opbool-1")
+        assertEq(MyInline2.opbool(Some(true)) .htmlClasses, "MyInline2-opbool-2")
+        assertEq(MyInline2.opbool(Some(false)).htmlClasses, "MyInline2-opbool-3")
       }
 
-      "sb1" - assertEq(MyInline2.sb1.htmlClass, "btn btn-default")
-      "sb2" - assertEq(MyInline2.sb2.htmlClass, "MyInline2-sb2 btn btn-default")
+      "sb1" - assertEq(MyInline2.sb1.htmlClasses, "btn btn-default")
+      "sb2" - assertEq(MyInline2.sb2.htmlClasses, "MyInline2-sb2 btn btn-default")
 
-      "empty" - assertEq(MyInline.empty.htmlClass, "MyInline-0001")
+      "empty" - assertEq(MyInline.empty.htmlClasses, "MyInline-0001")
 
-      "wth" - assertEq(MyInline2.`what the hell??`.htmlClass, "MyInline2-what_the_hell__")
+      "wth" - assertEq(MyInline2.`what the hell??`.htmlClasses, "MyInline2-what_the_hell__")
 
       "dup1" - {
-        assertEq(MyInline3.dup1a.htmlClass, "MyInline3-dup1b")
-        assertEq(MyInline3.dup1b.htmlClass, "MyInline3-dup1b-2")
+        assertEq(MyInline3.dup1a.htmlClasses, "MyInline3-dup1b")
+        assertEq(MyInline3.dup1b.htmlClasses, "MyInline3-dup1b-2")
       }
 
       "dup2" - {
-        assertEq(MyInline3.dup2a.htmlClass, "MyInline3-dup2c")
-        assertEq(MyInline3.dup2b.htmlClass, "MyInline3-dup2c-2")
-        assertEq(MyInline3.dup2c.htmlClass, "MyInline3-dup2c-3")
+        assertEq(MyInline3.dup2a.htmlClasses, "MyInline3-dup2c")
+        assertEq(MyInline3.dup2b.htmlClasses, "MyInline3-dup2c-2")
+        assertEq(MyInline3.dup2c.htmlClasses, "MyInline3-dup2c-3")
       }
 
-      "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClass, "MyInline3-innerObject-depth1")
-      "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClass, "MyInline3-innerObject-andAgain-depth2")
+      "innerObject_1" - assertEq(MyInline3.innerObject.depth1.htmlClasses, "MyInline3-innerObject-depth1")
+      "innerObject_2" - assertEq(MyInline3.innerObject.andAgain.depth2.htmlClasses, "MyInline3-innerObject-andAgain-depth2")
 
       "addClassNames" - {
-        "btn"            - assertEq(MyInlineAddClassNames.btn.htmlClass, "btn")
-        "btnDefault"     - assertEq(MyInlineAddClassNames.btnDefault.htmlClass, "btn btn-default")
-        "btnPrimary"     - assertEq(MyInlineAddClassNames.btnPrimary.htmlClass, "btn btn-primary")
-        "composedMulti"  - assertEq(MyInlineAddClassNames.composedMulti.htmlClass, "MyInlineAddClassNames-composedMulti btn btn-default")
-        "composedSingle" - assertEq(MyInlineAddClassNames.composedSingle.htmlClass, "MyInlineAddClassNames-composedSingle btn")
-        "alias"          - assertEq(MyInlineAddClassNames.alias.htmlClass, "btn btn-default")
-        "aliasExtra"     - assertEq(MyInlineAddClassNames.aliasExtra.htmlClass, "btn btn-default extra")
+        "btn"            - assertEq(MyInlineAddClassNames.btn.htmlClasses, "btn")
+        "btnDefault"     - assertEq(MyInlineAddClassNames.btnDefault.htmlClasses, "btn btn-default")
+        "btnPrimary"     - assertEq(MyInlineAddClassNames.btnPrimary.htmlClasses, "btn btn-primary")
+        "composedMulti"  - assertEq(MyInlineAddClassNames.composedMulti.htmlClasses, "MyInlineAddClassNames-composedMulti btn btn-default")
+        "composedSingle" - assertEq(MyInlineAddClassNames.composedSingle.htmlClasses, "MyInlineAddClassNames-composedSingle btn")
+        "alias"          - assertEq(MyInlineAddClassNames.alias.htmlClasses, "btn btn-default")
+        "aliasExtra"     - assertEq(MyInlineAddClassNames.aliasExtra.htmlClasses, "btn btn-default extra")
       }
 
     }
@@ -657,11 +663,17 @@ object InlineTest extends utest.TestSuite {
        |}
        |
        |.MyInlineWithKeyframes-animation {
+       |  -webkit-animation-name: MyInlineWithKeyframes-kf1;
        |  animation-name: MyInlineWithKeyframes-kf1;
+       |  -webkit-animation-duration: 5s;
        |  animation-duration: 5s;
+       |  -webkit-animation-direction: alternate;
        |  animation-direction: alternate;
+       |  -webkit-animation-iteration-count: 5;
        |  animation-iteration-count: 5;
+       |  -webkit-animation-play-state: running;
        |  animation-play-state: running;
+       |  -webkit-animation-timing-function: ease;
        |  animation-timing-function: ease;
        |}
      """.stripMargin))
@@ -673,10 +685,12 @@ object InlineTest extends utest.TestSuite {
         |}
         |
         |.manual:hover {
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
         |.manual:nth-child(5) {
+        |  cursor: -webkit-zoom-in;
         |  cursor: zoom-in;
         |}
         |
@@ -757,7 +771,7 @@ object InlineTest extends utest.TestSuite {
          |}
          |
          |@font-face {
-         |  font-family: myFont3;
+         |  font-family: 'MyFont 4';
          |  src: local(HelveticaNeue),url(font2.woff);
          |}
          |
@@ -781,6 +795,10 @@ object InlineTest extends utest.TestSuite {
          |
          |.MyInlineWithFontFace-myFontText3 {
          |  font-family: MyInlineWithFontFace-0002;
+         |}
+         |
+         |.MyInlineWithFontFace-myFontText4 {
+         |  font-family: 'MyFont 4';
          |}
        """.stripMargin))
   }

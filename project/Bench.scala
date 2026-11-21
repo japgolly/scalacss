@@ -17,7 +17,10 @@ object BenchBuild {
   private def benchModuleJS(name: String, dir: File => File): Project =
     benchModule("bench-" + name, dir)
       .configure(commonSettings.js)
-      .settings(scalaJSUseMainModuleInitializer := true)
+      .settings(
+        scalaJSUseMainModuleInitializer := true,
+        Compile / fullLinkJS / scalaJSLinkerConfig ~= (_.withClosureCompiler(true)),
+      )
       .enablePlugins(ScalaJSPlugin)
 
   lazy val bench =

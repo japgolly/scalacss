@@ -55,7 +55,28 @@ final case class StyleS(data         : Map[Cond, AVs],
                         warnings     : Vector[Warning]) extends Style1 {
 
   def dataSorted: Vector[(Cond, AVs)] =
-    data.toVector.sortBy(_._1)
+    data.size match {
+      case 0 => Vector.empty
+      case 1 => Vector1(data.head)
+      case n =>
+        val keyed = new Array[(String, (Cond, AVs))](n)
+        val it    = data.iterator
+        var i     = 0
+        while (it.hasNext) {
+          val kv = it.next()
+          keyed(i) = (kv._1.toString, kv)
+          i += 1
+        }
+        scala.util.Sorting.quickSort(keyed)(StyleS.condKeyOrdering)
+        val b = Vector.newBuilder[(Cond, AVs)]
+        b.sizeHint(n)
+        i = 0
+        while (i < n) {
+          b += keyed(i)._2
+          i += 1
+        }
+        b.result()
+    }
 
   def compose   (r: StyleS     )(implicit c: Compose): StyleS      = c(this, r)
   def compose[I](r: StyleF  [I])(implicit c: Compose): StyleF  [I] = c(this, r)
@@ -85,6 +106,9 @@ final case class StyleS(data         : Map[Cond, AVs],
 }
 
 object StyleS {
+  private val condKeyOrdering: Ordering[(String, (Cond, AVs))] =
+    Ordering.by[(String, (Cond, AVs)), String](_._1)(NaturalOrdering)
+
   /** Helper method for common case where only data is specified. */
   def data(d: Map[Cond, AVs]): StyleS =
     new StyleS(d, Vector.empty, None, Vector.empty, Vector.empty)

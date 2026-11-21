@@ -7,7 +7,12 @@ import scalacss.DevDefaults._  // Always use dev settings
 import scalacss.ProdDefaults._ // Always use prod settings
 
 // This will choose between dev/prod depending on:
-//   1. `sbt -Dscalacss.mode=dev` or `sbt -Dscalacss.mode=prod`
+//
+//   1. `sbt -Dscalacss.mode=dev` or
+//      `sbt -Dscalacss.mode=prod` or
+//      `SCALACSS_MODE=dev sbt` or
+//      `SCALACSS_MODE=prod sbt`
+//
 //   2. Defaults to dev-mode unless in `fullOptJS`
 //
 val CssSettings = scalacss.devOrProdDefaults

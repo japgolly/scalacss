@@ -38,7 +38,7 @@ object RendererTest extends TestSuite {
 
       "noDoubleQuotesInFontFace" - {
         val ff = CssEntry.FontFace(
-          fontFamily = "\"My Font\"",
+          fontFamily = FontFamily("\"My Font\""),
           src = NonEmptyVector("url(font.woff)"),
           fontStretch = None,
           fontStyle = None,
@@ -47,12 +47,12 @@ object RendererTest extends TestSuite {
         )
         val rendered = StringRenderer.formatTiny(Vector(ff))
         assert(!rendered.contains("\"\""))
-        assertEq(rendered, """@font-face {font-family:"My Font";src:url(font.woff)}""")
+        assertEq(rendered, """@font-face{font-family:"My Font";src:url(font.woff)}""")
       }
 
       "consistencyWithStyle" - {
-        val ff = FontFace[String](
-          "My Font",
+        val ff = FontFace[FontFamily](
+          FontFamily("My Font"),
           NonEmptyVector("url(font.woff)")
         )
         val styleWithFont = Dsl.style(fontFamily(ff))
@@ -61,8 +61,40 @@ object RendererTest extends TestSuite {
         val renderedStyle = StringRenderer.formatTiny(styleEntry)
         val renderedFont = StringRenderer.formatTiny(Vector(fontEntry))
 
-        assertEq(renderedFont, """@font-face {font-family:'My Font';src:url(font.woff)}""")
+        assertEq(renderedFont, """@font-face{font-family:'My Font';src:url(font.woff)}""")
         assertEq(renderedStyle, """.c{font-family:'My Font'}""")
+      }
+
+      "fontFaceDescriptors" - {
+        val ff = FontFace[FontFamily](FontFamily("VarFont"), NonEmptyVector("url(var.woff2)"))
+          .fontDisplay.swap
+          .fontWeight(100, 900)
+          .fontStretch(50.%%, 200.%%)
+          .fontStyle.oblique("-10deg", "20deg")
+          .unicodeRange(UnicodeRange(0x0000, 0x00FF), UnicodeRange(0x0131, 0x0131))
+        val rendered = StringRenderer.formatTiny(Vector(Css.fontFaces(ff)))
+        assertEq(
+          rendered,
+          "@font-face{font-family:VarFont;src:url(var.woff2);font-display:swap;font-stretch:50% 200%;font-style:oblique -10deg 20deg;font-weight:100 900;unicode-range:U+0-ff,U+131-131}"
+        )
+
+        val ffSingle = FontFace[FontFamily](FontFamily("SingleFont"), NonEmptyVector("url(s.woff2)"))
+          .fontDisplay.optional
+          .fontWeight(450)
+          .fontStretch(75.%%)
+          .fontStyle.oblique("14deg")
+        val renderedSingle = StringRenderer.formatTiny(Vector(Css.fontFaces(ffSingle)))
+        assertEq(
+          renderedSingle,
+          "@font-face{font-family:SingleFont;src:url(s.woff2);font-display:optional;font-stretch:75%;font-style:oblique 14deg;font-weight:450}"
+        )
+
+        val ffAngles = FontFace[FontFamily](FontFamily("AngleFont"), NonEmptyVector("url(a.woff2)"))
+          .fontStyle.oblique((-10).deg, 20.deg)
+        assertEq(
+          StringRenderer.formatTiny(Vector(Css.fontFaces(ffAngles))),
+          "@font-face{font-family:AngleFont;src:url(a.woff2);font-style:oblique -10deg 20deg}"
+        )
       }
     }
 
@@ -80,6 +112,27 @@ object RendererTest extends TestSuite {
       val frame0 = cssKf.frames(Percentage(0))
       val props0 = frame0.flatMap(_.content.whole.map(_.key))
       assertEq(props0, Vector("color", "width"))
+    }
+
+    "keyframesIgnoresConditionsAndUnsafeExts" - {
+      import Dsl._
+      val & = Cond.empty
+      val s0 = Dsl.style(
+        color.red,
+        &.hover(color.blue),
+        media.minWidth(500 px)(margin(10 px)),
+        unsafeChild("span")(padding(5 px))
+      )
+      val s1 = Dsl.style(&.hover(backgroundColor.green))
+      val kf = Keyframes(
+        ClassName("anim"),
+        Seq(
+          (Percentage(0), StyleA(ClassName("k0"), Vector.empty, s0)),
+          (Percentage(100), StyleA(ClassName("k1"), Vector.empty, s1))
+        )
+      )
+      val rendered = StringRenderer.formatTiny(Vector(Css.keyframes(kf)(Env.empty)))
+      assertEq(rendered, "@keyframes anim{0%{color:red}100%{}}")
     }
 
   }

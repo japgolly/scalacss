@@ -8,4 +8,3 @@ if [ "$1" = "build" ] && [ -n "$3" ] && [[ "$3" != /* ]]; then
 fi
 
 exec "$ROOT/node_modules/.bin/honkit" "$@"
-

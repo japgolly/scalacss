@@ -1,6 +1,7 @@
 package scalacss.internal
 
 import scala.collection.immutable.SortedSet
+import scala.util.matching.Regex
 import scalacss.internal.CanIUse.Support._
 import scalacss.internal.CanIUse._
 import scalacss.internal.{Literal => L}
@@ -14,11 +15,12 @@ object CanIUse2 {
     Transform.values(intrinsicWidth)(
       L.fillAvailable, L.available, L.maxContent, L.minContent, L.fitContent, L.containFloats)
 
-  lazy val backgroundImageTransforms: Transform = {
-    val a = Transform.valueKeywords(gradients)("linear-gradient", "radial-gradient")
-    val b = Transform.valueKeywords(repeatingGradients)("repeating-linear-gradient", "repeating-radial-gradient")
-    a * b
-  }
+  lazy val backgroundImageTransforms: Transform =
+    Transform(runPlansLazy(Vector(
+      gradients          -> PrefixApply.keywords("linear-gradient", "radial-gradient"),
+      repeatingGradients -> PrefixApply.keywords("repeating-linear-gradient", "repeating-radial-gradient"),
+      imageSet           -> PrefixApply.keywords("image-set"),
+    ), CssKV.value))
 
   val needsPrefix: Support => Boolean = {
     case Unsupported | Full | Partial => false
@@ -44,17 +46,72 @@ object CanIUse2 {
       .foldLeft(emptyPrefixSet)(_ ++ _)
 
   type PrefixPlan = Vector[Option[Prefix]]
-  val prefixPlan: Subject => PrefixPlan =
-    memo { s =>
-      val prefixes = subjectPrefixes(s).toVector.map(Some.apply)
-      val noPrefix = s.exists(_._2 exists supportsWithoutPrefix)
-      if (noPrefix) prefixes :+ None else prefixes
+
+  private[this] val someMoz    = Some(Prefix.moz)
+  private[this] val someMs     = Some(Prefix.ms)
+  private[this] val someO      = Some(Prefix.o)
+  private[this] val someWebkit = Some(Prefix.webkit)
+
+  private def prefixBit(p: Prefix): Int = p match {
+    case Prefix.moz    => 1
+    case Prefix.ms     => 2
+    case Prefix.o      => 4
+    case Prefix.webkit => 8
+  }
+
+  private def agentPrefixMask(a: Agent): Int = {
+    var m = prefixBit(a.prefix)
+    if (a.prefixExceptions.nonEmpty) {
+      val it = a.prefixExceptions.valuesIterator
+      while (it.hasNext)
+        m |= prefixBit(it.next())
     }
+    m
+  }
+
+  private[internal] def prefixPlanForAgents(s: Subject, agents: Set[Agent]): PrefixPlan = {
+    val checkAgents = (agents ne null) && (agents ne Env.empty.agents)
+    var mask = 0
+    var noPrefix = false
+    val it = s.iterator
+    while (it.hasNext) {
+      val (agent, supports) = it.next()
+      if (!checkAgents || agents.contains(agent)) {
+        var agentNeedPrefix = false
+        val sit = supports.iterator
+        while (sit.hasNext) {
+          val sup = sit.next()
+          if (!agentNeedPrefix && needsPrefix(sup))
+            agentNeedPrefix = true
+          if (!noPrefix && supportsWithoutPrefix(sup))
+            noPrefix = true
+        }
+        if (agentNeedPrefix)
+          mask |= agentPrefixMask(agent)
+      }
+    }
+
+    val b = Vector.newBuilder[Option[Prefix]]
+    if ((mask & 1) != 0) b += someMoz
+    if ((mask & 2) != 0) b += someMs
+    if ((mask & 4) != 0) b += someO
+    if ((mask & 8) != 0) b += someWebkit
+    // prefixes can be empty if we have only Supported as the sole Support type.
+    // Rather than completely omit CSS the user has declared, we emit the CSS once without any prefixes.
+    if (noPrefix || mask == 0) b += None
+    b.result()
+  }
+
+  val prefixPlan: Subject => PrefixPlan =
+    prefixPlanForAgents(_, null)
+
+  private[this] val protectedCssSpan =
+    """url\((?:'[^']*'|"[^"]*"|[^)])*\)|'[^']*'|"[^"]*""""
 
   val prefixed: String => Boolean = {
     val prefixes = Prefix.values.iterator.map(_.prefix).mkString("|")
     val p = s"""(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:$prefixes)[a-zA-Z][\\s\\S]*""".r.pattern
-    val strip = """url\([^)]*\)|'[^']*'|"[^"]*"""".r
+    val strip = protectedCssSpan.r
     in => {
       val unquoted = strip.replaceAllIn(in, "")
       p.matcher(unquoted).matches
@@ -85,59 +142,88 @@ object CanIUse2 {
       // JS (and thus Scala.JS) doesn't support negative look-behind :(
       // JS (and thus Scala.JS) doesn't support Pattern.quote
       val ws = w1 +: wn
-      val r1 = ws.mkString("(?:^|[\\s\\S]*[^a-zA-Z0-9_-])(?:", "|", ")(?![a-zA-Z0-9_-])[\\s\\S]*").r.pattern
-      val r2 = ws.mkString("(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
+      val r = ws.mkString(s"(?:$protectedCssSpan)|(^|[^a-zA-Z0-9_-])(", "|", ")(?![a-zA-Z0-9_-])").r
       in =>
-        if (r1.matcher(in).matches)
-          Some(p => r2.replaceAllIn(in, m => m.group(1) + p.prefix + m.group(2)))
+        if (r.findAllMatchIn(in).exists(_.group(2) ne null))
+          Some(p => r.replaceAllIn(in, m =>
+            Regex.quoteReplacement(if (m.group(2) eq null) m.matched else m.group(1) + p.prefix + m.group(2))))
         else
           None
     }
   }
 
-  def runPlan(pp: PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
+  private[internal] def runPlanLazy(pp: => PrefixPlan, pa: PrefixApply, l: CssKV.Lens, kv: CssKV): Vector[CssKV] = {
     val tgt = l.get(kv)
     def nop = Vector1(kv)
     if (prefixed(tgt))
       nop
     else
-      pa(tgt).fold(nop)(apply =>
+      pa(tgt).fold(nop) { apply =>
         pp.map(op =>
           op.fold(kv)(p =>
-            l.set(kv, apply(p)))))
+            l.set(kv, apply(p))))
+      }
   }
 
-  def prefixKeys(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
-    runPlan(pp, pa, CssKV.key, kv)
-
-  def prefixValues(pp: PrefixPlan, pa: PrefixApply, kv: CssKV): Vector[CssKV] =
-    runPlan(pp, pa, CssKV.value, kv)
+  private[internal] def runPlansLazy(groups: Vector[(Subject, PrefixApply)], l: CssKV.Lens): Env => CssKV => Vector[CssKV] =
+    e => {
+      lazy val plans = groups.map(g => prefixPlanForAgents(g._1, e.agents))
+      kv => {
+        val tgt = l.get(kv)
+        def nop = Vector1(kv)
+        if (prefixed(tgt))
+          nop
+        else {
+          val matches = groups.indices.flatMap(i => groups(i)._2(tgt).map((i, _)))
+          if (matches.isEmpty)
+            nop
+          else if (matches.size == 1) {
+            val (i, apply) = matches.head
+            plans(i).map(_.fold(kv)(p => l.set(kv, apply(p))))
+          } else {
+            val activePlans = matches.map(m => plans(m._1))
+            val prefixes    = activePlans.flatten.flatten.distinct.sorted
+            val keepUnpref  = prefixes.isEmpty || activePlans.forall(_.contains(None))
+            val b = Vector.newBuilder[CssKV]
+            prefixes.foreach { p =>
+              val pOpt = Some(p)
+              val res = matches.foldLeft(tgt) { case (cur, (i, _)) =>
+                if (plans(i).contains(pOpt)) groups(i)._2(cur).fold(cur)(_(p)) else cur
+              }
+              b += l.set(kv, res)
+            }
+            if (keepUnpref) b += kv
+            b.result()
+          }
+        }
+      }
+    }
 
   def prefixesForPlatform(p: Env.Platform[Option]): SortedSet[Prefix] =
     agentsForPlatform(p).reduceMapLeft1(agentPrefixes)(_ ++ _)
 
   def agentsForPlatform(p: Env.Platform[Option]): NonEmptyVector[Agent] = {
     import Agent._
-    def dunno = Agent.values
-    if (p.toString.toLowerCase contains "android")
-      p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(AndroidChrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(AndroidFirefox)
-        case _                           => NonEmptyVector(AndroidBrowser, AndroidUC)
-      })
-    else
-      p.name.fold(dunno)({
-        case n if n startsWith "Chrome"  => NonEmptyVector(Chrome)
-        case n if n startsWith "Firefox" => NonEmptyVector(Firefox)
-        case "IE Mobile"                 => NonEmptyVector(IEMobile)
-        case n if n startsWith "IE"      => NonEmptyVector(IE)
-        case "Opera Mini"                => NonEmptyVector(OperaMini)
-        case "Opera Mobile"              => NonEmptyVector(OperaMobile)
-        case n if n startsWith "Opera"   => NonEmptyVector(Opera)
-        case "Safari"                    => NonEmptyVector(IOSSafari, Safari)
-        case n if n endsWith "Edge"      => NonEmptyVector(Edge)
-        case _                           => dunno
-      })
+    val isAndroid = p.os.exists(_.family.exists(_.toLowerCase.contains("android")))
+    val isIOS     = p.os.exists(_.family.exists(_.equalsIgnoreCase("iOS")))
+    p.name.fold(Agent.values)({
+      case n if n startsWith "Chrome"                       => NonEmptyVector(if (isAndroid) AndroidChrome else Chrome)
+      case n if n startsWith "Firefox"                      => NonEmptyVector(if (isAndroid) AndroidFirefox else Firefox)
+      case "IE Mobile"                                      => NonEmptyVector(IEMobile)
+      case n if n startsWith "IE"                           => NonEmptyVector(IE)
+      case "Opera Mini"                                     => NonEmptyVector(OperaMini)
+      case "Opera Mobile"                                   => NonEmptyVector(OperaMobile)
+      case n if n startsWith "Opera"                        => NonEmptyVector(Opera)
+      case n if n endsWith "Edge"                           => NonEmptyVector(Edge)
+      case n if n startsWith "Samsung"                      => NonEmptyVector(Samsung)
+      case n if n.toLowerCase startsWith "blackberry"       => NonEmptyVector(BlackberryBrowser)
+      case "Mobile Safari" | "Safari Mobile" | "iOS Safari" => NonEmptyVector(IOSSafari)
+      case "Safari"                                         => NonEmptyVector(if (isIOS) IOSSafari else Safari)
+      case "UC Browser"                                     => NonEmptyVector(AndroidUC)
+      case "Android Browser"                                => NonEmptyVector(AndroidBrowser)
+      case _ if isAndroid                                   => NonEmptyVector(AndroidBrowser, AndroidUC)
+      case _                                                => Agent.values
+    })
   }
 
   def filteredPrefixPlan(whitelist: Set[Prefix], pp: PrefixPlan): PrefixPlan =

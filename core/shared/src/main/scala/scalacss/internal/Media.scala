@@ -19,10 +19,73 @@ object Media {
   case object Interface   extends ScanValue("interface")
   case object Interlace   extends ScanValue("interlace")
 
+  sealed abstract class ColorScheme(final val value: String)
+  object ColorScheme {
+    case object Light extends ColorScheme("light")
+    case object Dark  extends ColorScheme("dark")
+    implicit def univEq: UnivEq[ColorScheme] = UnivEq.derive
+  }
+
+  sealed abstract class ReducedMotion(final val value: String)
+  object ReducedMotion {
+    case object NoPreference extends ReducedMotion("no-preference")
+    case object Reduce       extends ReducedMotion("reduce")
+    implicit def univEq: UnivEq[ReducedMotion] = UnivEq.derive
+  }
+
+  sealed abstract class PointerValue(final val value: String)
+  object PointerValue {
+    case object None   extends PointerValue("none")
+    case object Coarse extends PointerValue("coarse")
+    case object Fine   extends PointerValue("fine")
+    implicit def univEq: UnivEq[PointerValue] = UnivEq.derive
+  }
+
+  sealed abstract class HoverValue(final val value: String)
+  object HoverValue {
+    case object None  extends HoverValue("none")
+    case object Hover extends HoverValue("hover")
+    implicit def univEq: UnivEq[HoverValue] = UnivEq.derive
+  }
+
+  sealed abstract class ContrastValue(final val value: String)
+  object ContrastValue {
+    case object NoPreference extends ContrastValue("no-preference")
+    case object More         extends ContrastValue("more")
+    case object Less         extends ContrastValue("less")
+    case object Custom       extends ContrastValue("custom")
+    implicit def univEq: UnivEq[ContrastValue] = UnivEq.derive
+  }
+
+  sealed abstract class ForcedColorsValue(final val value: String)
+  object ForcedColorsValue {
+    case object None   extends ForcedColorsValue("none")
+    case object Active extends ForcedColorsValue("active")
+    implicit def univEq: UnivEq[ForcedColorsValue] = UnivEq.derive
+  }
+
+  sealed abstract class RangeOp(final val value: String)
+  object RangeOp {
+    case object Lt  extends RangeOp("<")
+    case object Lte extends RangeOp("<=")
+    case object Gt  extends RangeOp(">")
+    case object Gte extends RangeOp(">=")
+    case object Eql extends RangeOp("=")
+    implicit def univEq: UnivEq[RangeOp] = UnivEq.derive
+  }
+
   sealed trait ValueExpr[T]
   case class Eql[T](eql: T) extends ValueExpr[T]
   case class Max[T](max: T) extends ValueExpr[T]
   case class Min[T](min: T) extends ValueExpr[T]
+  case class Range[T](op: RangeOp, value: T) extends ValueExpr[T]
+  case class Between[T](min: T, minOp: RangeOp, maxOp: RangeOp, max: T) extends ValueExpr[T] {
+    require(
+      ((minOp ==* RangeOp.Lt || minOp ==* RangeOp.Lte) && (maxOp ==* RangeOp.Lt || maxOp ==* RangeOp.Lte)) ||
+      ((minOp ==* RangeOp.Gt || minOp ==* RangeOp.Gte) && (maxOp ==* RangeOp.Gt || maxOp ==* RangeOp.Gte)),
+      s"Range operators must have the same direction (< / <= or > / >=), got '${minOp.value}' and '${maxOp.value}'"
+    )
+  }
 
   sealed trait Feature
 
@@ -63,6 +126,30 @@ object Media {
 
   /** Determines whether the output device is a grid device or a bitmap device.  If the device is grid-based (such as a TTY terminal or a phone display with only one font), the value is 1.  Otherwise it is zero. */
   case class Grid(value: Option[Int]) extends Feature
+
+  /** Detects if the user has requested a light or dark color theme. */
+  case class PrefersColorScheme(value: ColorScheme) extends Feature
+
+  /** Detects if the user has requested that the system minimize non-essential motion. */
+  case class PrefersReducedMotion(value: Option[ReducedMotion]) extends Feature
+
+  /** Tests whether the primary input mechanism is a pointing device and how accurate it is. */
+  case class Pointer(value: Option[PointerValue]) extends Feature
+
+  /** Tests whether the primary input mechanism can hover over elements. */
+  case class Hover(value: Option[HoverValue]) extends Feature
+
+  /** Tests whether any available input mechanism is a pointing device and how accurate it is. */
+  case class AnyPointer(value: Option[PointerValue]) extends Feature
+
+  /** Tests whether any available input mechanism can hover over elements. */
+  case class AnyHover(value: Option[HoverValue]) extends Feature
+
+  /** Detects if the user has requested web content with higher or lower contrast. */
+  case class PrefersContrast(value: Option[ContrastValue]) extends Feature
+
+  /** Detects if the user agent has enabled a forced colors mode. */
+  case class ForcedColors(value: Option[ForcedColorsValue]) extends Feature
 
   sealed abstract class TypeA(final val value: String)
   case object All extends TypeA("all")
@@ -105,24 +192,61 @@ object Media {
       Cond(None, qn.foldLeft(Vector1(this) +: q2)(_ +: _))
 
     def and(that: Query): Query = {
-      def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
-        extra.foldLeft(base)((acc, f) =>
-          if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
-        )
+      def isNot(q: Query): Boolean =
+        q.head match {
+          case Left(_: Not) => true
+          case _            => false
+        }
 
-      (this.head, that.head) match {
-        case (Left(t1), Left(t2)) =>
-          val t = if (t1 ==* Just(All)) t2 else t1
-          Query(Left(t), merge(this.tail, that.tail, None))
+      def isBareAll(q: Query): Boolean =
+        q.tail.isEmpty && (q.head match {
+          case Left(Just(All)) => true
+          case _               => false
+        })
 
-        case (Left(t), Right(f)) =>
-          Query(Left(t), merge(this.tail, f +: that.tail, None))
+      if (isNot(this) || isNot(that)) {
+        if (this ==* that || isBareAll(that))
+          this
+        else if (isBareAll(this))
+          that
+        else
+          throw new IllegalArgumentException(
+            s"Cannot combine negated media query '${this.cssSuffix}' with '${that.cssSuffix}' using 'and' (CSS 'not' negates the entire query)")
+      } else {
+        def merge(base: Vector[Feature], extra: Vector[Feature], exclude: Option[Feature]): Vector[Feature] =
+          extra.foldLeft(base)((acc, f) =>
+            if (exclude.exists(_ ==* f) || acc.exists(_ ==* f)) acc else acc :+ f
+          )
 
-        case (Right(f), Left(t)) =>
-          Query(Left(t), merge(that.tail, f +: this.tail, None))
+        def mergeType(t1: TypeExpr, t2: TypeExpr): TypeExpr =
+          (t1, t2) match {
+            case _ if t1 ==* t2                 => t1
+            case (Just(All), _)                 => t2
+            case (_, Just(All))                 => t1
+            case (Only(All), Just(x))           => Only(x)
+            case (Just(x), Only(All))           => Only(x)
+            case (Only(All), Only(x))           => Only(x)
+            case (Only(x), Only(All))           => Only(x)
+            case (Only(x), Just(y)) if x ==* y  => t1
+            case (Just(x), Only(y)) if x ==* y  => t2
+            case _ =>
+              throw new IllegalArgumentException(
+                s"Cannot combine incompatible media queries: '${cssTypeExpr(t1)}' and '${cssTypeExpr(t2)}'")
+          }
 
-        case (Right(f1), Right(f2)) =>
-          Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))
+        (this.head, that.head) match {
+          case (Left(t1), Left(t2)) =>
+            Query(Left(mergeType(t1, t2)), merge(this.tail, that.tail, None))
+
+          case (Left(t), Right(f)) =>
+            Query(Left(t), merge(this.tail, f +: that.tail, None))
+
+          case (Right(f), Left(t)) =>
+            Query(Left(t), merge(f +: this.tail, that.tail, None))
+
+          case (Right(f1), Right(f2)) =>
+            Query(Right(f1), merge(this.tail, f2 +: that.tail, Some(f1)))
+        }
       }
     }
   }
@@ -155,6 +279,50 @@ object Media {
     final def tv        : Out = T(TV)
   }
 
+  final class RangeOps[T, Out](private val make: ValueExpr[T] => Out) extends AnyVal {
+    def <(v: T)  : Out = make(Range(RangeOp.Lt, v))
+    def <=(v: T) : Out = make(Range(RangeOp.Lte, v))
+    def >(v: T)  : Out = make(Range(RangeOp.Gt, v))
+    def >=(v: T) : Out = make(Range(RangeOp.Gte, v))
+    def ===(v: T): Out = make(Range(RangeOp.Eql, v))
+    def between(min: T, max: T): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    def betweenExclusive(min: T, max: T): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    def between(min: T, minOp: RangeOp, maxOp: RangeOp, max: T): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
+  sealed abstract class LengthRangeOps[Out] {
+    protected def make[N](e: ValueExpr[Length[N]]): Out
+    final def <[N](v: Length[N])  : Out = make(Range(RangeOp.Lt, v))
+    final def <=[N](v: Length[N]) : Out = make(Range(RangeOp.Lte, v))
+    final def >[N](v: Length[N])  : Out = make(Range(RangeOp.Gt, v))
+    final def >=[N](v: Length[N]) : Out = make(Range(RangeOp.Gte, v))
+    final def ===[N](v: Length[N]): Out = make(Range(RangeOp.Eql, v))
+    final def between[N](min: Length[N], max: Length[N]): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    final def betweenExclusive[N](min: Length[N], max: Length[N]): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    final def between[N](min: Length[N], minOp: RangeOp, maxOp: RangeOp, max: Length[N]): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
+  sealed abstract class ResolutionRangeOps[Out] {
+    protected def make[N](e: ValueExpr[Res[N]]): Out
+    final def <[N](v: Res[N])  : Out = make(Range(RangeOp.Lt, v))
+    final def <=[N](v: Res[N]) : Out = make(Range(RangeOp.Lte, v))
+    final def >[N](v: Res[N])  : Out = make(Range(RangeOp.Gt, v))
+    final def >=[N](v: Res[N]) : Out = make(Range(RangeOp.Gte, v))
+    final def ===[N](v: Res[N]): Out = make(Range(RangeOp.Eql, v))
+    final def between[N](min: Res[N], max: Res[N]): Out =
+      make(Between(min, RangeOp.Lte, RangeOp.Lte, max))
+    final def betweenExclusive[N](min: Res[N], max: Res[N]): Out =
+      make(Between(min, RangeOp.Lt, RangeOp.Lt, max))
+    final def between[N](min: Res[N], minOp: RangeOp, maxOp: RangeOp, max: Res[N]): Out =
+      make(Between(min, minOp, maxOp, max))
+  }
+
   trait FeatureOps[Out] {
     protected def F: Feature => Out
 
@@ -168,38 +336,45 @@ object Media {
     final def minColorIndex(v: Int): Out = F(ColorIndex(Some(Min(v))))
     final def maxColorIndex(v: Int): Out = F(ColorIndex(Some(Max(v))))
 
-    final def aspectRatio   (v: Ratio): Out = F(AspectRatio(Eql(v)))
-    final def minAspectRatio(v: Ratio): Out = F(AspectRatio(Min(v)))
-    final def maxAspectRatio(v: Ratio): Out = F(AspectRatio(Max(v)))
+    final def aspectRatio             : RangeOps[Ratio, Out] = new RangeOps(e => F(AspectRatio(e)))
+    final def aspectRatio   (v: Ratio): Out                  = F(AspectRatio(Eql(v)))
+    final def minAspectRatio(v: Ratio): Out                  = F(AspectRatio(Min(v)))
+    final def maxAspectRatio(v: Ratio): Out                  = F(AspectRatio(Max(v)))
 
-    final def height   [N](v: Length[N]): Out = F(Height(Eql(v)))
-    final def minHeight[N](v: Length[N]): Out = F(Height(Min(v)))
-    final def maxHeight[N](v: Length[N]): Out = F(Height(Max(v)))
+    final def height                  : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(Height(e)) }
+    final def height   [N](v: Length[N]): Out               = F(Height(Eql(v)))
+    final def minHeight[N](v: Length[N]): Out               = F(Height(Min(v)))
+    final def maxHeight[N](v: Length[N]): Out               = F(Height(Max(v)))
 
-    final def width   [N](v: Length[N]): Out = F(Width(Eql(v)))
-    final def minWidth[N](v: Length[N]): Out = F(Width(Min(v)))
-    final def maxWidth[N](v: Length[N]): Out = F(Width(Max(v)))
+    final def width                   : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(Width(e)) }
+    final def width   [N](v: Length[N]): Out                = F(Width(Eql(v)))
+    final def minWidth[N](v: Length[N]): Out                = F(Width(Min(v)))
+    final def maxWidth[N](v: Length[N]): Out                = F(Width(Max(v)))
 
-    final def deviceAspectRatio   (v: Ratio): Out = F(DeviceAspectRatio(Eql(v)))
-    final def minDeviceAspectRatio(v: Ratio): Out = F(DeviceAspectRatio(Min(v)))
-    final def maxDeviceAspectRatio(v: Ratio): Out = F(DeviceAspectRatio(Max(v)))
+    final def deviceAspectRatio             : RangeOps[Ratio, Out] = new RangeOps(e => F(DeviceAspectRatio(e)))
+    final def deviceAspectRatio   (v: Ratio): Out                  = F(DeviceAspectRatio(Eql(v)))
+    final def minDeviceAspectRatio(v: Ratio): Out                  = F(DeviceAspectRatio(Min(v)))
+    final def maxDeviceAspectRatio(v: Ratio): Out                  = F(DeviceAspectRatio(Max(v)))
 
-    final def deviceHeight   [N](v: Length[N]): Out = F(DeviceHeight(Eql(v)))
-    final def minDeviceHeight[N](v: Length[N]): Out = F(DeviceHeight(Min(v)))
-    final def maxDeviceHeight[N](v: Length[N]): Out = F(DeviceHeight(Max(v)))
+    final def deviceHeight                  : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(DeviceHeight(e)) }
+    final def deviceHeight   [N](v: Length[N]): Out               = F(DeviceHeight(Eql(v)))
+    final def minDeviceHeight[N](v: Length[N]): Out               = F(DeviceHeight(Min(v)))
+    final def maxDeviceHeight[N](v: Length[N]): Out               = F(DeviceHeight(Max(v)))
 
-    final def deviceWidth   [N](v: Length[N]): Out = F(DeviceWidth(Eql(v)))
-    final def minDeviceWidth[N](v: Length[N]): Out = F(DeviceWidth(Min(v)))
-    final def maxDeviceWidth[N](v: Length[N]): Out = F(DeviceWidth(Max(v)))
+    final def deviceWidth                   : LengthRangeOps[Out] = new LengthRangeOps[Out] { override protected def make[N](e: ValueExpr[Length[N]]) = F(DeviceWidth(e)) }
+    final def deviceWidth   [N](v: Length[N]): Out                = F(DeviceWidth(Eql(v)))
+    final def minDeviceWidth[N](v: Length[N]): Out                = F(DeviceWidth(Min(v)))
+    final def maxDeviceWidth[N](v: Length[N]): Out                = F(DeviceWidth(Max(v)))
 
     final def monochrome           : Out = F(Monochrome(None))
     final def monochrome   (v: Int): Out = F(Monochrome(Some(Eql(v))))
     final def minMonochrome(v: Int): Out = F(Monochrome(Some(Min(v))))
     final def maxMonochrome(v: Int): Out = F(Monochrome(Some(Max(v))))
 
-    final def resolution   [N](v: Res[N]): Out = F(Resolution(Eql(v)))
-    final def minResolution[N](v: Res[N]): Out = F(Resolution(Min(v)))
-    final def maxResolution[N](v: Res[N]): Out = F(Resolution(Max(v)))
+    final def resolution                : ResolutionRangeOps[Out] = new ResolutionRangeOps[Out] { override protected def make[N](e: ValueExpr[Res[N]]) = F(Resolution(e)) }
+    final def resolution   [N](v: Res[N]): Out                    = F(Resolution(Eql(v)))
+    final def minResolution[N](v: Res[N]): Out                    = F(Resolution(Min(v)))
+    final def maxResolution[N](v: Res[N]): Out                    = F(Resolution(Max(v)))
 
     final def orientation(v: OrientationValue): Out = F(Orientation(v))
     final def landscape                       : Out = F(Orientation(Landscape))
@@ -213,6 +388,49 @@ object Media {
 
     final def grid        : Out = F(Grid(None))
     final def grid(v: Int): Out = F(Grid(Some(v)))
+
+    final def prefersColorScheme(v: ColorScheme): Out = F(PrefersColorScheme(v))
+    final def prefersColorSchemeLight           : Out = prefersColorScheme(ColorScheme.Light)
+    final def prefersColorSchemeDark            : Out = prefersColorScheme(ColorScheme.Dark)
+
+    final def prefersReducedMotion                  : Out = F(PrefersReducedMotion(None))
+    final def prefersReducedMotion(v: ReducedMotion): Out = F(PrefersReducedMotion(Some(v)))
+    final def prefersReducedMotionNoPreference      : Out = prefersReducedMotion(ReducedMotion.NoPreference)
+    final def prefersReducedMotionReduce            : Out = prefersReducedMotion(ReducedMotion.Reduce)
+
+    final def pointer                 : Out = F(Pointer(None))
+    final def pointer(v: PointerValue): Out = F(Pointer(Some(v)))
+    final def pointerNone             : Out = pointer(PointerValue.None)
+    final def pointerCoarse           : Out = pointer(PointerValue.Coarse)
+    final def pointerFine             : Out = pointer(PointerValue.Fine)
+
+    final def hover               : Out = F(Hover(None))
+    final def hover(v: HoverValue): Out = F(Hover(Some(v)))
+    final def hoverNone           : Out = hover(HoverValue.None)
+    final def hoverHover          : Out = hover(HoverValue.Hover)
+
+    final def anyPointer                 : Out = F(AnyPointer(None))
+    final def anyPointer(v: PointerValue): Out = F(AnyPointer(Some(v)))
+    final def anyPointerNone             : Out = anyPointer(PointerValue.None)
+    final def anyPointerCoarse           : Out = anyPointer(PointerValue.Coarse)
+    final def anyPointerFine             : Out = anyPointer(PointerValue.Fine)
+
+    final def anyHover               : Out = F(AnyHover(None))
+    final def anyHover(v: HoverValue): Out = F(AnyHover(Some(v)))
+    final def anyHoverNone           : Out = anyHover(HoverValue.None)
+    final def anyHoverHover          : Out = anyHover(HoverValue.Hover)
+
+    final def prefersContrast                  : Out = F(PrefersContrast(None))
+    final def prefersContrast(v: ContrastValue): Out = F(PrefersContrast(Some(v)))
+    final def prefersContrastNoPreference      : Out = prefersContrast(ContrastValue.NoPreference)
+    final def prefersContrastMore              : Out = prefersContrast(ContrastValue.More)
+    final def prefersContrastLess              : Out = prefersContrast(ContrastValue.Less)
+    final def prefersContrastCustom            : Out = prefersContrast(ContrastValue.Custom)
+
+    final def forcedColors                      : Out = F(ForcedColors(None))
+    final def forcedColors(v: ForcedColorsValue): Out = F(ForcedColors(Some(v)))
+    final def forcedColorsNone                  : Out = forcedColors(ForcedColorsValue.None)
+    final def forcedColorsActive                : Out = forcedColors(ForcedColorsValue.Active)
   }
 
   // Ensure string concat doesn't accidentally call toString on something stupid.
@@ -237,9 +455,11 @@ object Media {
 
   private def cssValueExpr[T](e: ValueExpr[T], name: String)(implicit tc: T => String): String =
     e match {
-      case Eql(t) =>       name ~ `:` ~ tc(t)
-      case Min(t) => min ~ name ~ `:` ~ tc(t)
-      case Max(t) => max ~ name ~ `:` ~ tc(t)
+      case Eql(t)                      => name ~ `:` ~ tc(t)
+      case Min(t)                      => min ~ name ~ `:` ~ tc(t)
+      case Max(t)                      => max ~ name ~ `:` ~ tc(t)
+      case Range(op, t)                => name ~ " " ~ op.value ~ " " ~ tc(t)
+      case Between(lo, loOp, hiOp, hi) => tc(lo) ~ " " ~ loOp.value ~ " " ~ name ~ " " ~ hiOp.value ~ " " ~ tc(hi)
     }
 
   private def cssValueExprO[T](o: Option[ValueExpr[T]], name: String)(implicit tc: T => String): String =
@@ -262,9 +482,17 @@ object Media {
       case ColorIndex(v)        => cssValueExprO(v, "color-index")
       case Resolution(v)        => cssValueExpr (v, "resolution")
       case Monochrome(v)        => cssValueExprO(v, "monochrome")
-      case Orientation(v)       => "orientation:" ~ v.value
-      case Scan(v)              => "scan:"        ~ v.value
-      case Grid(v)              => opt(v, "grid")
+      case Orientation(v)          => "orientation:" ~ v.value
+      case Scan(v)                 => "scan:"        ~ v.value
+      case Grid(v)                 => opt(v, "grid")
+      case PrefersColorScheme(v)   => "prefers-color-scheme:" ~ v.value
+      case PrefersReducedMotion(v) => opt(v.map(_.value), "prefers-reduced-motion")
+      case Pointer(v)              => opt(v.map(_.value), "pointer")
+      case Hover(v)                => opt(v.map(_.value), "hover")
+      case AnyPointer(v)           => opt(v.map(_.value), "any-pointer")
+      case AnyHover(v)             => opt(v.map(_.value), "any-hover")
+      case PrefersContrast(v)      => opt(v.map(_.value), "prefers-contrast")
+      case ForcedColors(v)         => opt(v.map(_.value), "forced-colors")
     }
     // Parentheses are required around expressions; failing to use them is an error.
     f => paren(x(f))

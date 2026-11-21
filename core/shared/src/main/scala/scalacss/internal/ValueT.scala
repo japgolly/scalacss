@@ -7,6 +7,7 @@ import scalacss.internal.{Literal => L}
 
 trait ToAV {
   def av: AV
+  def important: AV = av.important
 }
 
 /**
@@ -46,13 +47,25 @@ object ValueT {
   sealed trait LenPct            extends ValueClass
   sealed trait LenPctAuto        extends ValueClass
   sealed trait LenPctNum         extends ValueClass
+  sealed trait NumPct            extends ValueClass
   sealed trait BrWidth           extends ValueClass
   sealed trait BrStyle           extends ValueClass
   sealed trait Color             extends ValueClass
   sealed trait WidStyCol         extends ValueClass
   sealed trait RepeatStyle       extends ValueClass
   sealed trait OverflowBehaviour extends ValueClass
+  sealed trait Overflow          extends ValueClass
   sealed trait GapStyle          extends ValueClass
+  sealed trait TimingFunction    extends ValueClass
+  sealed trait IterationCount    extends ValueClass
+  sealed trait Flex              extends ValueClass
+  sealed trait Ang               extends ValueClass
+
+  private[internal] def stripDotZero(s: String): String =
+    if (s.endsWith(".0")) s.substring(0, s.length - 2) else s
+
+  private[internal] def fmtDouble(d: Double): String =
+    if (d == 0.0) "0" else stripDotZero(d.toString)
 
   // =========
   //   Rules
@@ -99,13 +112,15 @@ object ValueT {
 
     @inline implicit def ruleLen_L[N] : Len     <== Length[N]      = Rule(_.value)
     @inline implicit def rulePct_P[N] : Pct     <== Percentage[N]  = Rule(_.value)
+    @inline implicit def ruleFlex_F[N]: Flex    <== Fr[N]          = Rule(_.value)
+    @inline implicit def ruleAng_A[N] : Ang     <== Angle[N]       = Rule(_.value)
     @inline implicit def ruleInteger_I: Integer <== Int            = Rule(_.toString)
     @inline implicit def ruleNumber_I : Number  <== Int            = Rule(_.toString)
-    @inline implicit def ruleNumber_D : Number  <== Double         = Rule(_.toString)
+    @inline implicit def ruleNumber_D : Number  <== Double         = Rule(fmtDouble)
     @inline implicit def ruleTime_FD  : Time    <== FiniteDuration =
       Rule(d => d.unit match {
-        case TimeUnit.NANOSECONDS  => (d.length / 1000000.0).toString.stripSuffix(".0") + "ms"
-        case TimeUnit.MICROSECONDS => (d.length / 1000.0).toString.stripSuffix(".0") + "ms"
+        case TimeUnit.NANOSECONDS  => fmtDouble(d.length / 1000000.0) + "ms"
+        case TimeUnit.MICROSECONDS => fmtDouble(d.length / 1000.0) + "ms"
         case TimeUnit.MILLISECONDS => d.length.toString + "ms"
         case _                     => d.toSeconds.toString + "s"
       })
@@ -116,6 +131,8 @@ object ValueT {
     @inline implicit def ruleLenPctAuto_A : LenPctAuto  <== LT.auto.type = Rule.literal
     @inline implicit def ruleLenPctNum_LP : LenPctNum   <=< LenPct       = Rule.retype
     @inline implicit def ruleLenPctNum_N  : LenPctNum   <=< Number       = Rule.retype
+    @inline implicit def ruleNumPct_N     : NumPct      <=< Number       = Rule.retype
+    @inline implicit def ruleNumPct_P     : NumPct      <=< Pct          = Rule.retype
     @inline implicit def ruleBrWidth_1    : BrWidth     <=< Len          = Rule.retype
     @inline implicit def ruleWidStyCol_W  : WidStyCol   <=< BrWidth      = Rule.retype
     @inline implicit def ruleWidStyCol_S  : WidStyCol   <=< BrStyle      = Rule.retype
@@ -123,8 +140,17 @@ object ValueT {
 
     @inline implicit def ruleBrWidth_2[L <: Literal with LT.BrWidth]: BrWidth <== L = Rule.literal
     @inline implicit def ruleBrStyle_L[L <: Literal with LT.BrStyle]: BrStyle <== L = Rule.literal
+    @inline implicit def ruleBrStyle_Inset: BrStyle <== Attrs.inset.type = Rule(_ => LT.inset.value)
     @inline implicit def ruleRepeatStyle[L <: Literal with LT.RepeatStyle]: RepeatStyle <== L = Rule.literal
     @inline implicit def ruleOverflowBehaviour[L <: Literal with LT.OverflowBehaviour]: OverflowBehaviour <== L = Rule.literal
+    @inline implicit def ruleOverflowBehaviour_Contain: OverflowBehaviour <== Attrs.contain.type = Rule(_ => LT.contain.value)
+    @inline implicit def ruleOverflow[L <: Literal with LT.Overflow]: Overflow <== L = Rule.literal
+    @inline implicit def ruleTimingFunction[L <: Literal with LT.TimingFunction]: TimingFunction <== L = Rule.literal
+
+    @inline implicit def ruleIterationCount_I    : IterationCount <== Int              = Rule(_.toString)
+    @inline implicit def ruleIterationCount_N    : IterationCount <=< Number           = Rule.retype
+    @inline implicit def ruleIterationCount_Count: IterationCount <== LT.count         = Rule(_.value)
+    @inline implicit def ruleIterationCount_Inf  : IterationCount <== LT.infinite.type = Rule.literal
 
     @inline implicit def ruleGapStyle_l[L <: Literal with LT.GapStyle]: GapStyle <== L = Rule.literal
     @inline implicit def ruleGapStyle_L: GapStyle <=< Len = Rule.retype
@@ -133,6 +159,7 @@ object ValueT {
     // diverging implicit expansion requires these ↙ :(
     @inline implicit def ruleWidStyCol_L : WidStyCol  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_I : LenPctNum  <== Int = Rule(_.toString)
+    @inline implicit def ruleNumPct_I    : NumPct     <== Int = Rule(_.toString)
     @inline implicit def ruleLenPctNum_L : LenPctNum  <=< Len = Rule.retype
     @inline implicit def ruleLenPctNum_P : LenPctNum  <=< Pct = Rule.retype
     @inline implicit def ruleLenPctAuto_L: LenPctAuto <=< Len = Rule.retype
@@ -167,6 +194,12 @@ object ValueT {
 
     /** The unset CSS keyword is the combination of the initial and inherit keywords. Like these two other CSS-wide keywords, it can be applied to any CSS property, including the CSS shorthand all. This keyword resets the property to its inherited value if it inherits from its parent or to its initial value if not. In other words, it behaves like the inherit keyword in the first case and like the initial keyword in the second case. */
     def unset = avl(L.unset)
+
+    /** The revert CSS keyword rolls back the cascaded value of the property to the previous origin's value. */
+    def revert = avl(L.revert)
+
+    /** The revert-layer CSS keyword rolls back the value of the property to the value in a previous cascade layer. */
+    def revertLayer = avl(L.revertLayer)
   }
 
   abstract class TypedAttrT1[T <: ValueClass] extends TypedAttrBase {
@@ -175,13 +208,13 @@ object ValueT {
   }
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_]): Value =
-    a.value + sep + b.value
+    s"${a.value}$sep${b.value}"
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_]): Value =
-    concat(sep, a, b) + sep + c.value
+    s"${a.value}$sep${b.value}$sep${c.value}"
 
   private[internal] def concat(sep: String, a: ValueT[_], b: ValueT[_], c: ValueT[_], d: ValueT[_]): Value =
-    concat(sep, a, b, c) + sep + d.value
+    s"${a.value}$sep${b.value}$sep${c.value}$sep${d.value}"
 
   abstract class TypedAttrT2[T <: ValueClass] extends TypedAttrBase {
     final def apply(both: ValueT[T])                           : AV = av(both.value)
@@ -248,6 +281,9 @@ object ValueT {
   abstract class TypedAttr_BrStyle extends TypedAttrBase //TypedAttrT[BrStyle]
     with BrStyleOps
 
+  abstract class TypedAttr_OutlineStyle extends TypedAttrBase
+    with OutlineStyleOps
+
   abstract class TypedAttr_Color extends TypedAttrT1[Color]
     with ColourOps
 
@@ -258,6 +294,18 @@ object ValueT {
 
   abstract class TypedAttr_BrWidthStyleColour extends TypedAttrT3[WidStyCol](" ")
     with BrWidthOps with BrStyleOps with ColourOps
+
+  abstract class TypedAttr_TimingFunction extends TypedAttrTN[TimingFunction](",") {
+    final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)       = avl(new LT.cubicBezier(x1, y1, x2, y2))
+    final def steps(steps: Int, direction: LT.TimingFunctionDirection = LT.end) = avl(new LT.steps(steps, direction))
+    final def linear                                                            = avl(LT.linear)
+    final def ease                                                              = avl(LT.ease)
+    final def easeIn                                                            = avl(LT.easeIn)
+    final def easeInOut                                                         = avl(LT.easeInOut)
+    final def easeOut                                                           = avl(LT.easeOut)
+    final def stepStart                                                         = avl(LT.stepStart)
+    final def stepEnd                                                           = avl(LT.stepEnd)
+  }
 
   abstract class TypedAttr_LenPctAuto extends TypedAttrT1[LenPctAuto] with ZeroLit {
     final def auto = avl(LT.auto)
@@ -320,10 +368,9 @@ object ValueT {
     final def thick  = avl(LT.thick)
   }
 
-  trait BrStyleOps {
+  trait OutlineStyleOps {
     this: TypedAttrBase =>
     final def none   = avl(LT.none)
-    final def hidden = avl(LT.hidden)
     final def dotted = avl(LT.dotted)
     final def dashed = avl(LT.dashed)
     final def solid  = avl(LT.solid)
@@ -332,6 +379,11 @@ object ValueT {
     final def ridge  = avl(LT.ridge)
     final def inset  = avl(LT.inset)
     final def outset = avl(LT.outset)
+  }
+
+  trait BrStyleOps extends OutlineStyleOps {
+    this: TypedAttrBase =>
+    final def hidden = avl(LT.hidden)
   }
 
   trait GapStyleOps extends ZeroLit {
@@ -352,6 +404,15 @@ object ValueT {
     def none   : AV = avl(LT.none)
     def auto   : AV = avl(LT.auto)
     def contain: AV = avl(LT.contain)
+  }
+
+  trait OverflowOps {
+    this: TypedAttrBase =>
+    def auto   : AV = avl(LT.auto)
+    def clip   : AV = avl(LT.clip)
+    def hidden : AV = avl(LT.hidden)
+    def scroll : AV = avl(LT.scroll)
+    def visible: AV = avl(LT.visible)
   }
 
   trait ColourOps extends ColorOps[AV] {

@@ -14,7 +14,7 @@ trait TypedLiteralAliases {
 
   final def `0`                                                             = Typed.`0`
   final def auto                                                            = Typed.auto
-  final def contain                                                         = Typed.contain
+  final def count(n: Int)                                                   = new Typed.count(n)
   final def cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double)     = new Typed.cubicBezier(x1, y1, x2, y2)
   final def dashed                                                          = Typed.dashed
   final def dotted                                                          = Typed.dotted
@@ -30,7 +30,10 @@ trait TypedLiteralAliases {
   final def hidden                                                          = Typed.hidden
   final def inherit                                                         = Typed.inherit
   final def initial                                                         = Typed.initial
-  final def inset                                                           = Typed.inset
+  final def jumpBoth                                                        = Typed.jumpBoth
+  final def jumpEnd                                                         = Typed.jumpEnd
+  final def jumpNone                                                        = Typed.jumpNone
+  final def jumpStart                                                       = Typed.jumpStart
   final def linear                                                          = Typed.linear
   final def medium                                                          = Typed.medium
   final def none                                                            = Typed.none
@@ -38,6 +41,8 @@ trait TypedLiteralAliases {
   final def normal                                                          = Typed.normal
   final def outset                                                          = Typed.outset
   final def repeat                                                          = Typed.repeat
+  final def revert                                                          = Typed.revert
+  final def revertLayer                                                     = Typed.revertLayer
   final def ridge                                                           = Typed.ridge
   final def round                                                           = Typed.round
   final def solid                                                           = Typed.solid
@@ -63,19 +68,25 @@ trait TypedLiteralAliases {
  */
 object Literal extends TypedLiteralAliases {
 
+  final def contain = Typed.contain
+  final def inset   = Typed.inset
+
   object Typed {
     final val `0` = Length(0, LengthUnit.px)
 
     class count(n: Int) extends Literal(n.toString)
+    object infinite     extends Literal("infinite")
 
     object hanging  extends Literal("hanging")
     object eachLine extends Literal("each-line")
 
     // any
     sealed trait Anywhere
-    object inherit extends Literal("inherit") with Anywhere
-    object initial extends Literal("initial") with Anywhere
-    object unset   extends Literal("unset")   with Anywhere
+    object inherit     extends Literal("inherit")      with Anywhere
+    object initial     extends Literal("initial")      with Anywhere
+    object revert      extends Literal("revert")       with Anywhere
+    object revertLayer extends Literal("revert-layer") with Anywhere
+    object unset       extends Literal("unset")        with Anywhere
 
     // <br-width>
     sealed trait BrWidth
@@ -85,7 +96,7 @@ object Literal extends TypedLiteralAliases {
 
     // <br-style>
     sealed trait BrStyle
-    object hidden extends Literal("hidden") with BrStyle
+    object hidden extends Literal("hidden") with BrStyle with Overflow
     object dotted extends Literal("dotted") with BrStyle
     object dashed extends Literal("dashed") with BrStyle
     object solid  extends Literal("solid")  with BrStyle
@@ -97,8 +108,14 @@ object Literal extends TypedLiteralAliases {
 
     // <overflow-behaviour>
     sealed trait OverflowBehaviour { def value: Value }
-    object auto    extends Literal("auto")    with OverflowBehaviour
+    object auto    extends Literal("auto")    with OverflowBehaviour with Overflow
     object contain extends Literal("contain") with OverflowBehaviour
+
+    // <overflow>
+    sealed trait Overflow
+    object clip    extends Literal("clip")    with Overflow
+    object scroll  extends Literal("scroll")  with Overflow
+    object visible extends Literal("visible") with Overflow
 
     // <repeat-style>
     sealed trait RepeatStyle { def value: Value }
@@ -109,8 +126,12 @@ object Literal extends TypedLiteralAliases {
 
     // <timing-function>
     sealed trait TimingFunctionDirection { def value: Value }
-    object start  extends Literal("start") with TimingFunctionDirection
-    object end    extends Literal("end")   with TimingFunctionDirection
+    object start     extends Literal("start")      with TimingFunctionDirection
+    object end       extends Literal("end")        with TimingFunctionDirection
+    object jumpStart extends Literal("jump-start") with TimingFunctionDirection
+    object jumpEnd   extends Literal("jump-end")   with TimingFunctionDirection
+    object jumpNone  extends Literal("jump-none")  with TimingFunctionDirection
+    object jumpBoth  extends Literal("jump-both")  with TimingFunctionDirection
 
     sealed trait TimingFunction
     class cubicBezier(x1: Double, y1: Double, x2: Double, y2: Double) extends Literal(s"cubic-bezier($x1, $y1, $x2, $y2)") with TimingFunction
@@ -159,6 +180,7 @@ object Literal extends TypedLiteralAliases {
   def both               : Value = "both"
   def bottom             : Value = "bottom"
   def breakAll           : Value = "break-all"
+  def breakSpaces        : Value = "break-spaces"
   def breakWord          : Value = "break-word"
   def capitalize         : Value = "capitalize"
   def caption            : Value = "caption"
@@ -181,6 +203,7 @@ object Literal extends TypedLiteralAliases {
   def cover              : Value = "cover"
   def crispEdges         : Value = "crisp-edges"
   def crosshair          : Value = "crosshair"
+  def cursive            : Value = "cursive"
   def default            : Value = "default"
   def disabled           : Value = "disabled"
   def ellipsis           : Value = "ellipsis"
@@ -190,6 +213,8 @@ object Literal extends TypedLiteralAliases {
   def expanded           : Value = "expanded"
   def extraCondensed     : Value = "extra-condensed"
   def extraExpanded      : Value = "extra-expanded"
+  def fallback           : Value = "fallback"
+  def fantasy            : Value = "fantasy"
   def fill               : Value = "fill"
   def fillAvailable      : Value = "fill-available"
   def firstBaseline      : Value = "first baseline"
@@ -229,6 +254,7 @@ object Literal extends TypedLiteralAliases {
   def isolateOverride    : Value = "isolate-override"
   def italic             : Value = "italic"
   def justify            : Value = "justify"
+  def justifyAll         : Value = "justify-all"
   def keepAll            : Value = "keep-all"
   def lastBaseline       : Value = "last baseline"
   def left               : Value = "left"
@@ -247,6 +273,7 @@ object Literal extends TypedLiteralAliases {
   def middle             : Value = "middle"
   def minContent         : Value = "min-content"
   def mixed              : Value = "mixed"
+  def monospace          : Value = "monospace"
   def move               : Value = "move"
   def neResize           : Value = "ne-resize"
   def neswResize         : Value = "nesw-resize"
@@ -261,6 +288,7 @@ object Literal extends TypedLiteralAliases {
   def nwseResize         : Value = "nwse-resize"
   def oblique            : Value = "oblique"
   def openQuote          : Value = "open-quote"
+  def optional           : Value = "optional"
   def ordinal            : Value = "ordinal"
   def outside            : Value = "outside"
   def over               : Value = "over"
@@ -294,6 +322,7 @@ object Literal extends TypedLiteralAliases {
   def runIn              : Value = "run-in"
   def running            : Value = "running"
   def safeCenter         : Value = "safe center"
+  def sansSerif          : Value = "sans-serif"
   def scaleDown          : Value = "scale-down"
   def scroll             : Value = "scroll"
   def semiCondensed      : Value = "semi-condensed"
@@ -302,6 +331,7 @@ object Literal extends TypedLiteralAliases {
   def selfStart          : Value = "self-start"
   def separate           : Value = "separate"
   def seResize           : Value = "se-resize"
+  def serif              : Value = "serif"
   def show               : Value = "show"
   def sideways           : Value = "sideways"
   def sidewaysLeft       : Value = "sideways-left"
@@ -324,6 +354,7 @@ object Literal extends TypedLiteralAliases {
   def style              : Value = "style"
   def sub                : Value = "sub"
   def super_             : Value = "super"
+  def swap               : Value = "swap"
   def swResize           : Value = "sw-resize"
   def systemUI           : Value = "system-ui"
   def table              : Value = "table"
@@ -339,6 +370,10 @@ object Literal extends TypedLiteralAliases {
   def textTop            : Value = "text-top"
   def titlingCaps        : Value = "titling-caps"
   def top                : Value = "top"
+  def uiMonospace        : Value = "ui-monospace"
+  def uiRounded          : Value = "ui-rounded"
+  def uiSansSerif        : Value = "ui-sans-serif"
+  def uiSerif            : Value = "ui-serif"
   def ultraCondensed     : Value = "ultra-condensed"
   def ultraExpanded      : Value = "ultra-expanded"
   def under              : Value = "under"

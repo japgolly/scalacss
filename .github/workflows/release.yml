@@ -5,9 +5,6 @@ on:
     tags:
       - v*.*.*
 
-permissions:
-  contents: write # for action-gh-release
-
 env:
   SBT: sbt -J-Xmx3G -DCI=1
 
@@ -32,8 +29,10 @@ jobs:
       - name: Setup Scala
         uses: japgolly/setup-everything-scala@v4.1
         with:
-          java-version: adoptium@1.${{ matrix.java }}
+          java-version: corretto:${{ matrix.java }}
           node-version: 26
+          jsdom-version: 26.1.0
+
 
       - name: Build and test
         shell: bash
@@ -49,8 +48,9 @@ jobs:
       - name: Setup Scala
         uses: japgolly/setup-everything-scala@v4.1
         with:
-          java-version: adoptium@1.8
+          java-version: corretto:8
           node-version: 26
+          jsdom-version: 26.1.0
 
       - name: Release
         run: $SBT ci-release
@@ -59,6 +59,3 @@ jobs:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3

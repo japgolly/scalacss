@@ -11,10 +11,9 @@ import scalacss.defaults._
 
 object ModeMacros {
 
-  private def readConfig(key: String): Option[String] =
-    (Option(System.getProperty(key, null)) orElse Option(System.getenv(key)))
-      .map(_.trim.toLowerCase)
-      .filter(_.nonEmpty)
+  private def readConfig(propKey: String, envKey: String): Option[String] =
+    Option(System.getProperty(propKey, null)).map(_.trim.toLowerCase).filter(_.nonEmpty) orElse
+    Option(System.getenv(envKey)).map(_.trim.toLowerCase).filter(_.nonEmpty)
 
   trait DevOrProdDefaults {
     def devOrProdDefaults: Exports with mutable.Settings =
@@ -28,7 +27,7 @@ object ModeMacros {
       c.abort(c.enclosingPosition, msg)
 
     c.Expr[Exports with mutable.Settings](
-      readConfig("scalacss.mode") match {
+      readConfig("scalacss.mode", "SCALACSS_MODE") match {
 
         case None =>
           q"""
@@ -45,7 +44,7 @@ object ModeMacros {
           q"_root_.scalacss.ProdDefaults"
 
         case Some(x) =>
-          fail(s"Unrecognise option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
+          fail(s"Unrecognised option for scalacss.mode: $x. Legal values are 'dev' and 'prod'.")
       }
     )
   }

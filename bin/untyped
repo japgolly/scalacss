@@ -1,7 +1,9 @@
 #!/bin/bash
+set -euo pipefail
 cd "$(dirname "$0")/.." || exit 1
 
-grep -v '^ *//' core/src/main/scala/scalacss/Attrs.scala \
-  | grep -P '^ *final val .*Attr[^\]]' \
-  | perl -pe 's/ *=.+//; s/ *final +val +//' \
+f=core/shared/src/main/scala/scalacss/internal/Attrs.scala
+
+grep -v '^ *//' $f \
+  | grep -E '^  final lazy val ' \
   | sort

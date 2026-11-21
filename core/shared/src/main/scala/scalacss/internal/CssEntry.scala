@@ -14,12 +14,14 @@ object CssEntry {
   case class Keyframes(name  : KeyframeAnimationName,
                        frames: ListMap[KeyframeSelector, StyleStream]) extends CssEntry
 
-  case class FontFace(fontFamily  : String,
-                      src         : NonEmptyVector[String],
-                      fontStretch : Option[Value],
-                      fontStyle   : Option[Value],
-                      fontWeight  : Option[Value],
-                      unicodeRange: Option[UnicodeRange]) extends CssEntry
+  case class FontFace(fontFamily        : FontFamily,
+                      src               : NonEmptyVector[String],
+                      fontStretch       : Option[Value],
+                      fontStyle         : Option[Value],
+                      fontWeight        : Option[Value],
+                      unicodeRange      : Option[UnicodeRange],
+                      fontDisplay       : Option[Value] = None,
+                      extraUnicodeRanges: Vector[UnicodeRange] = Vector.empty) extends CssEntry
 
   @inline implicit def univEqStyle    : UnivEq[Style    ] = UnivEq.derive
   @inline implicit def univEqKeyframes: UnivEq[Keyframes] = UnivEq.derive

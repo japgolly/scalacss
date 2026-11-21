@@ -2,6 +2,9 @@ package scalacss.internal
 
 object NaturalOrdering extends Ordering[String] {
 
+  private def isDigit(c: Char): Boolean =
+    c >= '0' && c <= '9'
+
   override def compare(a: String, b: String): Int = {
     var ia: Int = 0
     var ib: Int = 0
@@ -13,7 +16,7 @@ object NaturalOrdering extends Ordering[String] {
       val ca = a.charAt(ia)
       val cb = b.charAt(ib)
 
-      if (Character.isDigit(ca) && Character.isDigit(cb)) {
+      if (isDigit(ca) && isDigit(cb)) {
         // Both start a numeric run; count leading zeroes
         var nza = 0
         while (ia < aLen && a.charAt(ia) == '0') {
@@ -26,8 +29,8 @@ object NaturalOrdering extends Ordering[String] {
           ib += 1
         }
 
-        val aHasDigits = ia < aLen && Character.isDigit(a.charAt(ia))
-        val bHasDigits = ib < bLen && Character.isDigit(b.charAt(ib))
+        val aHasDigits = ia < aLen && isDigit(a.charAt(ia))
+        val bHasDigits = ib < bLen && isDigit(b.charAt(ib))
 
         if (!aHasDigits && !bHasDigits) {
           // Both numbers evaluated to 0
@@ -48,8 +51,8 @@ object NaturalOrdering extends Ordering[String] {
           var numResult = 0
 
           while (!done) {
-            val cr_aDigit = cr_ia < aLen && Character.isDigit(a.charAt(cr_ia))
-            val cr_bDigit = cr_ib < bLen && Character.isDigit(b.charAt(cr_ib))
+            val cr_aDigit = cr_ia < aLen && isDigit(a.charAt(cr_ia))
+            val cr_bDigit = cr_ib < bLen && isDigit(b.charAt(cr_ib))
 
             if (!cr_aDigit && !cr_bDigit) {
               done = true

@@ -119,13 +119,24 @@ object Transform {
   def apply(run: Env => CssKV => Vector[CssKV]): Transform =
     new Transform(run)
 
+  private final class PlanCache(val agents: Set[CanIUse.Agent], val pp: CanIUse2.PrefixPlan)
+
   private def prefix[R](subject: Subject, pa: PrefixApply, l: CssKV.Lens): Transform = {
-    import CanIUse2._
-    val pp0 = prefixPlan(subject)
-    Transform(e => {
-      val pp = filteredPrefixPlan(e.prefixWhitelist, pp0)
-      kv => runPlan(pp, pa, l, kv)
-    })
+    @volatile var cache: PlanCache = null
+    Transform { e =>
+      def getPP: CanIUse2.PrefixPlan = {
+        val agents = e.agents
+        val c = cache
+        if ((c ne null) && ((c.agents eq agents) || c.agents ==* agents))
+          c.pp
+        else {
+          val fresh = CanIUse2.prefixPlanForAgents(subject, agents)
+          cache = new PlanCache(agents, fresh)
+          fresh
+        }
+      }
+      kv => CanIUse2.runPlanLazy(getPP, pa, l, kv)
+    }
   }
 
   def keys(subject: Subject): Transform =
@@ -180,17 +191,21 @@ object AttrCmp {
       Some("inline-start")
     else if (id.contains("-inline-end") || id.startsWith("inline-end"))
       Some("inline-end")
-    else if (id.contains("block-size"))
+    else if (id.contains("block-size") || id.endsWith("-block"))
       Some("block")
-    else if (id.contains("inline-size"))
+    else if (id.contains("inline-size") || id.endsWith("-inline"))
       Some("inline")
     else
       None
 
   private def areOrthogonalLogicalProps(x: Attr, y: Attr): Boolean = {
-    val da = logicalDirection(x.id)
-    val db = logicalDirection(y.id)
-    da.isDefined && db.isDefined && da != db
+    (logicalDirection(x.id), logicalDirection(y.id)) match {
+      case (Some(da), Some(db)) =>
+        (da.startsWith("block") != db.startsWith("block")) ||
+          (da.length > 6 && db.length > 6 && da != db)
+      case _ =>
+        false
+    }
   }
 
   val byRealAttrs: Fn =

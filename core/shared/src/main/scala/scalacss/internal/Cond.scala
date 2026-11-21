@@ -34,7 +34,7 @@ final case class Cond(pseudo: Option[Pseudo], mediaQueries: Vector[Media.Query])
       warnings = s.warnings.map(w => w.copy(cond = this & w.cond))
     )
 
-    val composed = s.data.foldLeft(init) { case (q, (oldCond, av)) =>
+    val composed = s.dataSorted.foldLeft(init) { case (q, (oldCond, av)) =>
       val newCond = this & oldCond
       val item = StyleS.data1(newCond, av)
       c(q, item)
