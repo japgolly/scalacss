@@ -5,5 +5,5 @@ cd "$(dirname "$0")/.." || exit 1
 f=core/shared/src/main/scala/scalacss/internal/Attrs.scala
 
 grep -v '^ *//' $f \
-  | grep -E '^  final def ' \
+  | grep -E '^  final lazy val ' \
   | sort
