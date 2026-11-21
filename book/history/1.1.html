@@ -578,7 +578,158 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="110-commit-log">1.1.0 (<a href="https://github.com/japgolly/scalacss/compare/v1.0.0..v1.1.0" target="_blank">commit log</a>)</h1>
+                                <h1 id="111-commit-log">1.1.1 (<a href="https://github.com/japgolly/scalacss/compare/v1.1.0..v1.1.1" target="_blank">commit log</a>)</h1>
+<ul>
+<li>Add <code>::backdrop</code>, <code>::marker</code>, <code>::placeholder</code> pseudo-elements (<code>backdrop</code>, <code>marker</code>, <code>placeholder</code>)</li>
+<li>Add <code>:any-link</code>, <code>:focus-visible</code>, <code>:focus-within</code>, <code>:placeholder-shown</code>, <code>:root</code> pseudo-classes</li>
+<li>Add <code>:has(...)</code>, <code>:is(...)</code>, <code>:where(...)</code> pseudo-classes, and multi-arg <code>:not(...)</code></li>
+<li>Add <code>.important</code> support to <code>ToAV</code> attributes (<code>backgroundClip</code>, <code>borderRadius</code>, <code>quotes</code>, <code>textDecorationLine</code>)</li>
+<li>Add <code>[attr|="..."]</code> (<code>attrDashMatch</code>), <code>[attr*="..."]</code> (<code>attrSubstring</code>) attribute selectors and case-sensitivity flags (<code>AttrCase.Insensitive</code> / <code>i</code>, <code>AttrCase.Sensitive</code> / <code>s</code>)</li>
+<li>Add <code>animationFillMode.none</code></li>
+<li>Add <code>animationName.none</code></li>
+<li>Add <code>any-hover</code> media feature (<code>media.anyHover</code>, <code>media.anyHoverNone</code>, <code>media.anyHoverHover</code>)</li>
+<li>Add <code>any-pointer</code> media feature (<code>media.anyPointer</code>, <code>media.anyPointerNone</code>, <code>media.anyPointerCoarse</code>, <code>media.anyPointerFine</code>)</li>
+<li>Add <code>backgroundClip.text</code> with <code>CanIUse.backgroundClipText</code> prefixing</li>
+<li>Add <code>FontFace</code> <code>font-display</code>, multi-range <code>unicode-range</code>, and variable-font range descriptors (<code>fontWeight</code>, <code>fontStretch</code>, <code>fontStyle.oblique</code>)</li>
+<li>Add <code>fontFace</code>, <code>keyframe{,s}</code> to <code>StyleSheet.Standalone</code></li>
+<li>Add <code>fontFamily</code> generic font families and fallback stack overloads</li>
+<li>Add <code>forced-colors</code> media feature (<code>media.forcedColors</code>, <code>media.forcedColorsNone</code>, <code>media.forcedColorsActive</code>)</li>
+<li>Add <code>gridTemplateAreas.none</code></li>
+<li>Add <code>hover</code> media feature (<code>media.hover</code>, <code>media.hoverNone</code>, <code>media.hoverHover</code>)</li>
+<li>Add <code>jumpStart</code>, <code>jumpEnd</code>, <code>jumpNone</code>, <code>jumpBoth</code> step timing-function jump terms</li>
+<li>Add media query range syntax (eg. <code>media.width &gt;= 500.px</code>, <code>media.width.between(400.px, 800.px)</code>)</li>
+<li>Add <code>overflow.clip</code></li>
+<li>Add <code>overflowX.clip</code></li>
+<li>Add <code>overflowY.clip</code></li>
+<li>Add <code>placeSelf</code> single-keyword values and two-value chaining (eg. <code>placeSelf.center.start</code>)</li>
+<li>Add <code>pointer</code> media feature (<code>media.pointer</code>, <code>media.pointerNone</code>, <code>media.pointerCoarse</code>, <code>media.pointerFine</code>)</li>
+<li>Add <code>prefers-color-scheme</code> media feature (<code>media.prefersColorSchemeLight</code>, <code>media.prefersColorSchemeDark</code>)</li>
+<li>Add <code>prefers-contrast</code> media feature (<code>media.prefersContrast</code>, <code>media.prefersContrastNoPreference</code>, <code>media.prefersContrastMore</code>, <code>media.prefersContrastLess</code>, <code>media.prefersContrastCustom</code>)</li>
+<li>Add <code>prefers-reduced-motion</code> media feature (<code>media.prefersReducedMotion</code>, <code>media.prefersReducedMotionNoPreference</code>, <code>media.prefersReducedMotionReduce</code>)</li>
+<li>Add <code>revert</code> and <code>revertLayer</code> CSS keywords to all typed attributes</li>
+<li>Add <code>textAlign.justifyAll</code></li>
+<li>Add <code>textIndent(len, eachLine, hanging)</code> overload</li>
+<li>Add new CSS properties:<ul>
+<li><code>accentColor</code></li>
+<li><code>appearance</code></li>
+<li><code>aspectRatio</code></li>
+<li><code>backdropFilter</code></li>
+<li><code>colorScheme</code></li>
+<li><code>contain</code></li>
+<li><code>container</code></li>
+<li><code>containerName</code></li>
+<li><code>containerType</code></li>
+<li><code>inset</code></li>
+<li><code>insetBlock</code></li>
+<li><code>insetBlockEnd</code></li>
+<li><code>insetBlockStart</code></li>
+<li><code>insetInline</code></li>
+<li><code>insetInlineEnd</code></li>
+<li><code>insetInlineStart</code></li>
+<li><code>marginBlock</code></li>
+<li><code>marginInline</code></li>
+<li><code>maskClip</code></li>
+<li><code>maskComposite</code></li>
+<li><code>maskImage</code></li>
+<li><code>maskMode</code></li>
+<li><code>maskOrigin</code></li>
+<li><code>maskPosition</code></li>
+<li><code>maskRepeat</code></li>
+<li><code>maskSize</code></li>
+<li><code>paddingBlock</code></li>
+<li><code>paddingInline</code></li>
+<li><code>placeContent</code></li>
+<li><code>placeItems</code></li>
+<li><code>printColorAdjust</code></li>
+<li><code>rotate</code></li>
+<li><code>scale</code></li>
+<li><code>textWrap</code></li>
+<li><code>translate</code></li>
+</ul>
+</li>
+<li>Add typed DSLs for <code>flexBasis</code>, <code>overflowWrap</code>, <code>svgFill</code>, <code>svgFloodColor</code>, <code>textStrokeColor</code>, and <code>textStrokeWidth</code></li>
+<li>Add viewport units (<code>vi</code>, <code>vb</code>, <code>sv*</code>, <code>lv*</code>, <code>dv*</code>), container query units (<code>cqw</code>, <code>cqh</code>, <code>cqi</code>, <code>cqb</code>, <code>cqmin</code>, <code>cqmax</code>), <code>fr</code>, and angle units (<code>deg</code>, <code>grad</code>, <code>rad</code>, <code>turn</code>)</li>
+<li>Add <code>whiteSpace.breakSpaces</code></li>
+<li>Deprecate <code>boxSizing.paddingBox</code> (removed from CSS Box Sizing specification)</li>
+<li>Deprecate <code>Env.Media</code> — it is unused</li>
+<li>Deprecate <code>gridAutoPosition</code> (removed from CSS Grid specification)</li>
+<li>Deprecate <code>offsetBlockStart</code>, <code>offsetBlockEnd</code>, <code>offsetInlineStart</code>, <code>offsetInlineEnd</code> in favour of <code>insetBlock*</code> / <code>insetInline*</code></li>
+<li>Deprecate <code>PlatformJs</code> — replace <code>js.eval</code> of embedded <code>platform.js</code> with direct user-agent detection in <code>PlatformJsEnv</code>. This is now the default <code>Env</code> detection method on JS.</li>
+<li>Deprecate <code>textAlign.startEnd</code> (removed from CSS Text specification)</li>
+<li>Fix <code>-webkit-</code> prefixes not being emitted due to agent collision</li>
+<li>Fix <code>:nth-child</code> support for whitespace, case-insensitivity, and <code>of &lt;selector&gt;</code></li>
+<li>Fix <code>alignContent.spaceEvenly</code> missing <code>CanIUse.justifyContentSpaceEvenly</code> transform</li>
+<li>Fix <code>backgroundBlendMode</code> missing <code>CanIUse.backgroundblendmode</code> transform</li>
+<li>Fix <code>backgroundImage</code> / <code>background</code> dropping combined prefixes when mixing gradient and <code>image-set</code> functions</li>
+<li>Fix <code>backgroundOrigin</code> and <code>backgroundSize</code> missing <code>CanIUse.backgroundImgOpts</code> transform</li>
+<li>Fix <code>backgroundRepeat</code> missing <code>CanIUse.backgroundRepeatRoundSpace</code> transform</li>
+<li>Fix <code>CanIUse2.PrefixApply.keywords</code> crashing/corrupting on <code>$</code>/<code>\</code> and rewriting keywords inside <code>url(...)</code> or quoted strings</li>
+<li>Fix <code>columnCount</code> accepting floats instead of only integers</li>
+<li>Fix <code>Compose</code> dropping overriding values when they appear inside an existing fallback value list</li>
+<li>Fix <code>Compose</code> warning order being non-deterministic when composing styles with &gt;4 conditions</li>
+<li>Fix <code>Cond.applyToStyle</code> non-deterministic property ordering when styles have &gt;4 conditions</li>
+<li>Fix <code>cursor.grab</code> and <code>cursor.grabbing</code> prefixing to use <code>CanIUse.css3CursorsGrab</code></li>
+<li>Fix <code>Double</code> formatting inconsistencies between JVM and Scala.js</li>
+<li>Fix <code>fontVariantNumeric</code> missing <code>CanIUse.fontVariantNumeric</code> transform</li>
+<li>Fix <code>imageOrientation</code> missing <code>CanIUse.imageOrientation</code> transform</li>
+<li>Fix <code>justifyContent.spaceEvenly</code> missing <code>CanIUse.justifyContentSpaceEvenly</code> transform</li>
+<li>Fix <code>keyframe(className)</code> ignoring the specified <code>className</code></li>
+<li>Fix <code>keyframes</code> crashing when its <code>val</code> name contains whitespace (eg. backticked identifiers)</li>
+<li>Fix <code>keyframes</code> flattening pseudo-selectors, media queries, and <code>unsafe*</code> rules unconditionally into <code>@keyframes</code> stops instead of ignoring them with a warning</li>
+<li>Fix <code>MacroName.Use</code>, <code>Register.registerF2</code>, and <code>NameGen.numbered</code> potentially generating invalid CSS class identifiers</li>
+<li>Fix <code>Media.Query.and</code> silently dropping incompatible media types, mis-negating <code>Not(...)</code> conjunctions, and reordering features</li>
+<li>Fix <code>NameGen.short</code> prefix validation and <code>NameGen.Alphabet</code> guards for empty/negative inputs</li>
+<li>Fix <code>outlineStyle</code> allowing invalid <code>hidden</code> keyword</li>
+<li>Fix <code>overflow</code> missing <code>CanIUse.overflow</code> transform</li>
+<li>Fix <code>overflowX</code> and <code>overflowY</code> missing <code>CanIUse.overflow</code> transform</li>
+<li>Fix <code>position.sticky</code> missing <code>CanIUse.sticky</code> transform</li>
+<li>Fix <code>Pseudo.AttrSelector</code> CSS escaping</li>
+<li>Fix <code>Pseudo.modSelector</code> attaching pseudo-classes/elements only to the last selector in comma-separated selector lists</li>
+<li>Fix <code>Register.applyMacroName</code> overwriting explicit class names and ignoring empty styles</li>
+<li>Fix <code>Register.css</code> potentially reading a torn snapshot across separate locks</li>
+<li>Fix <code>Register.registerF2</code> overwriting explicit class names, overriding <code>addClassNames</code>-only branches, and skipping uniqueness checks</li>
+<li>Fix <code>Register.registerFontFace</code> crashing on multi-word <code>fontFamily</code> names</li>
+<li>Fix <code>Register.registerS</code> failing to reserve class names for empty styles</li>
+<li>Fix <code>Register</code> auto-generated class names colliding with existing manual names</li>
+<li>Fix <code>Register</code> exposing it's now-private mutable state</li>
+<li>Fix <code>rowGap</code> missing <code>CanIUse.flexboxGap</code> transform</li>
+<li>Fix <code>ScalatagsTextRenderer</code> failing to escape <code>&lt;/style</code> inside <code>&lt;style&gt;</code> tags</li>
+<li>Fix <code>StyleA.+</code> duplicating class names</li>
+<li>Fix <code>styleF</code> and <code>StyleSheet</code> class name generation (sanitising suffixes, empty manual names, <code>addClassNames</code>-only branches, and class name hints)</li>
+<li>Fix <code>StyleSheetRegistry</code> (<code>GlobalRegistry</code>) callback ordering/re-entrancy, deduplication, and add <code>registerListener</code>, <code>unregister</code>, <code>clear</code>, and <code>clearListeners</code></li>
+<li>Fix a thread-safety bug in internal memoisation</li>
+<li>Fix a thread-safety race between macro-naming and style registration</li>
+<li>Fix colour literals (<code>c"..."</code>) to accept case-insensitive <code>none</code>/<code>deg</code></li>
+<li>Fix default prod settings so that naming conflicts don't occur with more than 52 stylesheets</li>
+<li>Fix extra prefixes being emitted when a specific agent is detected/specified</li>
+<li>Fix prod defaults including an unnecessary space in <code>@font-face</code> CSS</li>
+<li>Fix Scala 3 macro-generated class names stripping literal <code>$</code> characters</li>
+<li>Harden <code>addToDocument{,OnRegistration}</code> to handle no <code>&lt;head&gt;</code> tag existing</li>
+<li>Improve <code>CanIUse2.agentsForPlatform</code> matching resulting in more accurate vendor prefixing on JS</li>
+<li>Optimise <code>Css.style</code> and <code>Compose</code> intermediate collection allocations</li>
+<li>Optimise <code>Dsl.style</code> and <code>DslBase.DslCond</code> allocations</li>
+<li>Optimise <code>Register</code> class-name uniqueness checks from O(N) to O(1)</li>
+<li>Optimise <code>StyleS.dataSorted</code> to compute <code>Cond.toString</code> once per condition and skip sorting for ≤1 condition</li>
+<li>Optimise memory usage of attributes</li>
+<li>Optimise prefix generation for both speed and garbage collection</li>
+<li>Optimise Scala.js output size</li>
+<li>Support <code>grad</code>, <code>rad</code>, <code>turn</code> angle units in modern <code>hsl</code> colour literals (<code>c"..."</code>)</li>
+<li>Support <code>image-set</code> prefixing on <code>background</code> and <code>backgroundImage</code></li>
+<li>Support 2-arg <code>overflow(x, y)</code></li>
+<li>Support decimal values in modern <code>hsl</code> colour literals (<code>c"..."</code>)</li>
+<li>Support decimal values in modern <code>rgb</code> colour literals (<code>c"..."</code>)</li>
+<li>Support fractional values on <code>animationIterationCount</code></li>
+<li>Support multiple <code>Platform</code>s in <code>Env</code>, allowing you to generate CSS for multiple specific platforms</li>
+<li>Support multiple values on <code>animationDirection</code></li>
+<li>Support multiple values on <code>animationFillMode</code></li>
+<li>Support multiple values on <code>animationIterationCount</code></li>
+<li>Support multiple values on <code>animationName</code></li>
+<li>Support multiple values on <code>animationPlayState</code></li>
+<li>Support multiple values on <code>animationTimingFunction</code></li>
+<li>Support multiple values on <code>transitionTimingFunction</code></li>
+<li>Support reading the dev/prod setting from env var <code>SCALACSS_MODE</code></li>
+</ul>
+<h1 id="110-commit-log">1.1.0 (<a href="https://github.com/japgolly/scalacss/compare/v1.0.0..v1.1.0" target="_blank">commit log</a>)</h1>
 <ul>
 <li>Add 9 missing attributes to <code>Attrs.values</code> (<code>justifyItems</code>, <code>overflowAnchor</code>, and 7 SVG attributes)</li>
 <li>Deprecate <code>unary_-</code> on <code>Resolution</code> as valid resolutions can't be negative</li>
@@ -695,7 +846,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"1.1.x","level":"1.8.1","depth":2,"next":{"title":"1.0.x","level":"1.8.2","depth":2,"path":"history/1.0.md","ref":"history/1.0.md","articles":[]},"previous":{"title":"History","level":"1.8","depth":1,"path":"history/index.md","ref":"history/index.md","articles":[{"title":"1.1.x","level":"1.8.1","depth":2,"path":"history/1.1.md","ref":"history/1.1.md","articles":[]},{"title":"1.0.x","level":"1.8.2","depth":2,"path":"history/1.0.md","ref":"history/1.0.md","articles":[]},{"title":"0.8.x","level":"1.8.3","depth":2,"path":"history/0.8.md","ref":"history/0.8.md","articles":[]},{"title":"0.7.x","level":"1.8.4","depth":2,"path":"history/0.7.md","ref":"history/0.7.md","articles":[]},{"title":"0.6.x","level":"1.8.5","depth":2,"path":"history/0.6.md","ref":"history/0.6.md","articles":[]},{"title":"0.5.x","level":"1.8.6","depth":2,"path":"history/0.5.md","ref":"history/0.5.md","articles":[]},{"title":"0.4.x","level":"1.8.7","depth":2,"path":"history/0.4.md","ref":"history/0.4.md","articles":[]},{"title":"0.3.x","level":"1.8.8","depth":2,"path":"history/0.3.md","ref":"history/0.3.md","articles":[]},{"title":"0.2.0","level":"1.8.9","depth":2,"path":"history/0.2.md","ref":"history/0.2.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"issue":"https://github.com/japgolly/scalacss/issues/","scalajsReact":"[scalajs-react](https://github.com/japgolly/scalajs-react)","ver":"1.1.0"},"title":"ScalaCSS","gitbook":"*"},"file":{"path":"history/1.1.md","mtime":"2026-11-06T01:54:22.725Z","type":"markdown"},"gitbook":{"version":"6.2.5","time":"2026-11-06T02:32:56.620Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"1.1.x","level":"1.8.1","depth":2,"next":{"title":"1.0.x","level":"1.8.2","depth":2,"path":"history/1.0.md","ref":"history/1.0.md","articles":[]},"previous":{"title":"History","level":"1.8","depth":1,"path":"history/index.md","ref":"history/index.md","articles":[{"title":"1.1.x","level":"1.8.1","depth":2,"path":"history/1.1.md","ref":"history/1.1.md","articles":[]},{"title":"1.0.x","level":"1.8.2","depth":2,"path":"history/1.0.md","ref":"history/1.0.md","articles":[]},{"title":"0.8.x","level":"1.8.3","depth":2,"path":"history/0.8.md","ref":"history/0.8.md","articles":[]},{"title":"0.7.x","level":"1.8.4","depth":2,"path":"history/0.7.md","ref":"history/0.7.md","articles":[]},{"title":"0.6.x","level":"1.8.5","depth":2,"path":"history/0.6.md","ref":"history/0.6.md","articles":[]},{"title":"0.5.x","level":"1.8.6","depth":2,"path":"history/0.5.md","ref":"history/0.5.md","articles":[]},{"title":"0.4.x","level":"1.8.7","depth":2,"path":"history/0.4.md","ref":"history/0.4.md","articles":[]},{"title":"0.3.x","level":"1.8.8","depth":2,"path":"history/0.3.md","ref":"history/0.3.md","articles":[]},{"title":"0.2.0","level":"1.8.9","depth":2,"path":"history/0.2.md","ref":"history/0.2.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{"issue":"https://github.com/japgolly/scalacss/issues/","scalajsReact":"[scalajs-react](https://github.com/japgolly/scalajs-react)","ver":"1.1.0"},"title":"ScalaCSS","gitbook":"*"},"file":{"path":"history/1.1.md","mtime":"2026-11-21T01:26:16.371Z","type":"markdown"},"gitbook":{"version":"6.2.5","time":"2026-11-21T01:26:59.314Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
