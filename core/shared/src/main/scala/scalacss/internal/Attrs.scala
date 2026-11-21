@@ -2112,11 +2112,16 @@ object Attrs {
   }
 
   /**
-   * REDIRECT https://developer.mozilla.org/en-US/docs/CSS/word-wrap
+   * The overflow-wrap CSS property applies to text, setting whether the browser should insert line breaks within an otherwise unbreakable string to prevent text from overflowing its line box.
    *
    * @see <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow-wrap">MDN</a>
    */
-  final lazy val overflowWrap = Attr.real("overflow-wrap")
+  object overflowWrap extends TypedAttrBase {
+    override val attr = Attr.real("overflow-wrap")
+    def normal   : AV = avl(LT.normal)
+    def breakWord: AV = av(L.breakWord)
+    def anywhere : AV = av("anywhere")
+  }
 
   /**
    * The overflow-x CSS property specifies whether to clip content, render a scroll bar or display overflow content of a block-level element, when it overflows at the left and right edges.
